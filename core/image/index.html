@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>package image - pkg.odin-lang.org</title>	<!-- REMEMBER TO REMOVE -->
+	<script type="text/javascript" src="https://livejs.com/live.js"></script>
+
+	<link rel="stylesheet" type="text/css" href="https://odin-lang.org/scss/custom.min.css">
+	<link rel=stylesheet href=//odin-lang.org/lib/highlight/styles/github-dark.min.css>
+	<script src=//odin-lang.org/lib/highlight/highlight.min.js></script>
+	<script>hljs.registerLanguage("odin",function(a){return{aliases:["odin","odinlang","odin-lang"],keywords:{keyword:"auto_cast bit_set break case cast context continue defer distinct do dynamic else enum fallthrough for foreign if import in map not_in or_else or_return package proc return struct switch transmute type_of typeid union using when where",literal:"true false nil",built_in:"abs align_of cap clamp complex conj expand_to_tuple imag jmag kmag len max min offset_of quaternion real size_of soa_unzip soa_zip swizzle type_info_of type_of typeid_of"},illegal:"</",contains:[a.C_LINE_COMMENT_MODE,a.C_BLOCK_COMMENT_MODE,{className:"string",variants:[a.QUOTE_STRING_MODE,{begin:"'",end:"[^\\\\]'"},{begin:"`",end:"`"}]},{className:"number",variants:[{begin:a.C_NUMBER_RE+"[ijk]",relevance:1},a.C_NUMBER_MODE]}]}})</script>
+	<script>hljs.highlightAll()</script>
+	<link rel="stylesheet" type="text/css" href="https://odin-lang.org/css/style.css">
+
+	<link rel="stylesheet" type="text/css" href="/style.css">
+
+	</style>
+</head>
+<body>
+<header class="sticky-top">
+	<nav class="navbar navbar-expand-lg navbar-dark bg-primary odin-menu">
+		<div class="container">
+			<a class="navbar-brand" href="/">
+			<img src="https://odin-lang.org/logo.svg" height="30" alt="Odin"></a>
+			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#odin-navbar-content" aria-controls="odin-navbar-content" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+			<div class="collapse navbar-collapse" id="odin-navbar-content">
+			<ul class="navbar-nav ms-md-auto">
+				<li class="nav-item"><a class="nav-link" href="https://odin-lang.org/">Home</a></li>
+				<li class="nav-item"><a class="nav-link" href="https://odin-lang.org/docs">Docs</a></li>
+				<li class="nav-item"><a class="nav-link active" href="/">Packages</a></li>
+				<li class="nav-item"><a class="nav-link" href="https://odin-lang.org/news">News</a></li>
+				<li class="nav-item"><a class="nav-link" href="https://odin-lang.org/community">Community</a></li>
+				<li class="nav-item"><a class="nav-link" href="https://github.com/odin-lang/Odin" target="_blank">GitHub</a></li>
+			</ul>
+		</div>
+		</div>
+	</nav>
+</header>
+<main>
+<div class="container"><div class="row odin-main">
+<nav id="pkg-sidebar" class="col-lg-2 odin-sidebar-border navbar-light">
+<div class="sticky-top odin-below-navbar py-3">
+<h4>Core Library</h4>
+<ul>
+<li class="nav-item"><a href="/core/bufio">bufio</a></li>
+<li class="nav-item"><a href="/core/bytes">bytes</a></li>
+<li class="nav-item"><a href="/core/c">c</a><ul>
+<li><a href="/core/c/frontend/preprocessor">frontend/preprocessor</a></li>
+<li><a href="/core/c/frontend/tokenizer">frontend/tokenizer</a></li>
+<li><a href="/core/c/libc">libc</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/compress">compress</a><ul>
+<li><a href="/core/compress/gzip">gzip</a></li>
+<li><a href="/core/compress/zlib">zlib</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/dynlib">dynlib</a></li>
+<li class="nav-item">encoding<ul>
+<li><a href="/core/encoding/base32">base32</a></li>
+<li><a href="/core/encoding/base64">base64</a></li>
+<li><a href="/core/encoding/csv">csv</a></li>
+<li><a href="/core/encoding/hxa">hxa</a></li>
+<li><a href="/core/encoding/json">json</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/fmt">fmt</a></li>
+<li class="nav-item"><a href="/core/hash">hash</a></li>
+<li class="nav-item"><a class="active" href="/core/image">image</a><ul>
+<li><a href="/core/image/png">png</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/io">io</a></li>
+<li class="nav-item"><a href="/core/log">log</a></li>
+<li class="nav-item"><a href="/core/math">math</a><ul>
+<li><a href="/core/math/big">big</a></li>
+<li><a href="/core/math/bits">bits</a></li>
+<li><a href="/core/math/fixed">fixed</a></li>
+<li><a href="/core/math/linalg">linalg</a></li>
+<li><a href="/core/math/linalg/glsl">linalg/glsl</a></li>
+<li><a href="/core/math/linalg/hlsl">linalg/hlsl</a></li>
+<li><a href="/core/math/rand">rand</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/mem">mem</a><ul>
+<li><a href="/core/mem/virtual">virtual</a></li>
+</ul>
+
+</li>
+<li class="nav-item">odin<ul>
+<li><a href="/core/odin/ast">ast</a></li>
+<li><a href="/core/odin/doc-format">doc-format</a></li>
+<li><a href="/core/odin/format">format</a></li>
+<li><a href="/core/odin/parser">parser</a></li>
+<li><a href="/core/odin/printer">printer</a></li>
+<li><a href="/core/odin/tokenizer">tokenizer</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/os">os</a></li>
+<li class="nav-item">path<ul>
+<li><a href="/core/path/filepath">filepath</a></li>
+<li><a href="/core/path/slashpath">slashpath</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/reflect">reflect</a></li>
+<li class="nav-item"><a href="/core/runtime">runtime</a></li>
+<li class="nav-item"><a href="/core/slice">slice</a></li>
+<li class="nav-item"><a href="/core/sort">sort</a></li>
+<li class="nav-item"><a href="/core/strconv">strconv</a><ul>
+<li><a href="/core/strconv/decimal">decimal</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/strings">strings</a></li>
+<li class="nav-item"><a href="/core/sync">sync</a><ul>
+<li><a href="/core/sync/sync2">sync2</a></li>
+</ul>
+
+</li>
+<li class="nav-item">text<ul>
+<li><a href="/core/text/scanner">scanner</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/thread">thread</a></li>
+<li class="nav-item"><a href="/core/time">time</a></li>
+<li class="nav-item"><a href="/core/unicode">unicode</a><ul>
+<li><a href="/core/unicode/utf16">utf16</a></li>
+<li><a href="/core/unicode/utf8">utf8</a></li>
+</ul>
+
+</li>
+</ul>
+</div>
+</nav>
+<article class="col-lg-8 p-4 documentation odin-article">
+<h1>package core:image</h1>
+<h2>Overview</h2>
+<div id="pkg-overview">
+<p>package image implements a general 2D image library to be used with other image related packages</p>
+</div>
+<h2>Index</h2>
+<div id="pkg-index">
+<div>
+<details open class="doc-index" id="doc-index-Types" aria-labelledby="#doc-index-Types-header">
+<summary id="#doc-index-Types-header">
+Types</summary>
+<ul>
+<li><a href="#Channel">Channel</a></li>
+<li><a href="#Error">Error</a></li>
+<li><a href="#General_Image_Error">General_Image_Error</a></li>
+<li><a href="#Image_Metadata">Image_Metadata</a></li>
+<li><a href="#Image">Image</a></li>
+<li><a href="#Option">Option</a></li>
+<li><a href="#Options">Options</a></li>
+<li><a href="#PNG_Chunk">PNG_Chunk</a></li>
+<li><a href="#PNG_Chunk_Header">PNG_Chunk_Header</a></li>
+<li><a href="#PNG_Chunk_Type">PNG_Chunk_Type</a></li>
+<li><a href="#PNG_Color_Type">PNG_Color_Type</a></li>
+<li><a href="#PNG_Color_Value">PNG_Color_Value</a></li>
+<li><a href="#PNG_Error">PNG_Error</a></li>
+<li><a href="#PNG_IHDR">PNG_IHDR</a></li>
+<li><a href="#PNG_Info">PNG_Info</a></li>
+<li><a href="#PNG_Interlace_Method">PNG_Interlace_Method</a></li>
+</ul>
+</details>
+</div>
+<div>
+<details open class="doc-index" id="doc-index-Constants" aria-labelledby="#doc-index-Constants-header">
+<summary id="#doc-index-Constants-header">
+Constants</summary>
+<ul>
+<li><a href="#PNG_IHDR_SIZE">PNG_IHDR_SIZE</a></li>
+</ul>
+</details>
+</div>
+<div>
+<details open class="doc-index" id="doc-index-Variables" aria-labelledby="#doc-index-Variables-header">
+<summary id="#doc-index-Variables-header">
+Variables</summary>
+<p>This section is empty.</p>
+</details>
+</div>
+<div>
+<details open class="doc-index" id="doc-index-Procedures" aria-labelledby="#doc-index-Procedures-header">
+<summary id="#doc-index-Procedures-header">
+Procedures</summary>
+<ul>
+<li><a href="#compute_buffer_size">compute_buffer_size</a></li>
+<li><a href="#return_single_channel">return_single_channel</a></li>
+</ul>
+</details>
+</div>
+<div>
+<details open class="doc-index" id="doc-index-Procedure Groups" aria-labelledby="#doc-index-Procedure Groups-header">
+<summary id="#doc-index-Procedure Groups-header">
+Procedure Groups</summary>
+<p>This section is empty.</p>
+</details>
+</div>
+</div>
+<h2 id="pkg-Types">Types</h2>
+<section class="documentation">
+<div class="pkg-entity">
+<h3 id="Channel"><span><a class="doc-id-link" href="#Channel">Channel<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L263"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Channel :: enum <a href="">u8</a> {
+	R = 1, 
+	G = 2, 
+	B = 3, 
+	A = 4, 
+}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>For when you have an RGB(A) image, but want a particular channel.</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="Error"><span><a class="doc-id-link" href="#Error">Error<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L121"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Error :: union {
+	<a class="code-typename" href="/image/#General_Image_Error">General_Image_Error</a>, 
+	<a class="code-typename" href="/image/#PNG_Error">PNG_Error</a>, 
+	compress.<a class="code-typename" href="/compress/#Error">Error</a>, 
+	compress.<a class="code-typename" href="/compress/#General_Error">General_Error</a>, 
+	compress.<a class="code-typename" href="/compress/#Deflate_Error">Deflate_Error</a>, 
+	compress.<a class="code-typename" href="/compress/#ZLIB_Error">ZLIB_Error</a>, 
+	runtime.<a class="code-typename" href="/runtime/#Allocator_Error">Allocator_Error</a>, 
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="General_Image_Error"><span><a class="doc-id-link" href="#General_Image_Error">General_Image_Error<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L132"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">General_Image_Error :: enum <a href="">int</a> {
+	None                          = 0, 
+	Invalid_Image_Dimensions, 
+	Image_Dimensions_Too_Large, 
+	Image_Does_Not_Adhere_to_Spec, 
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Image_Metadata"><span><a class="doc-id-link" href="#Image_Metadata">Image_Metadata<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L34"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Image_Metadata :: union {}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Image"><span><a class="doc-id-link" href="#Image">Image<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L18"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Image :: struct {
+	width:      <a href="">int</a>,
+	height:     <a href="">int</a>,
+	channels:   <a href="">int</a>,
+	depth:      <a href="">int</a>,
+	pixels:     bytes.<a class="code-typename" href="/bytes/#Buffer">Buffer</a>,
+	background: runtime.<a class="code-typename" href="/runtime/#Maybe">Maybe</a>([3]u16),
+	metadata:   <a class="code-typename" href="/image/#Image_Metadata">Image_Metadata</a>,
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Option"><span><a class="doc-id-link" href="#Option">Option<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L105"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Option :: enum <a href="">int</a> {
+	info                    = 0, 
+	do_not_decompress_image, 
+	return_header, 
+	return_metadata, 
+	alpha_add_if_missing, 
+	alpha_drop_if_present, 
+	alpha_premultiply, 
+	blend_background, 
+	do_not_expand_grayscale, 
+	do_not_expand_indexed, 
+	do_not_expand_channels, 
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Options"><span><a class="doc-id-link" href="#Options">Options<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L119"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Options :: distinct bit_set[<a class="code-typename" href="/image/#Option">Option</a>]</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="PNG_Chunk"><span><a class="doc-id-link" href="#PNG_Chunk">PNG_Chunk<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L173"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">PNG_Chunk :: struct #packed {
+	header: <a class="code-typename" href="/image/#PNG_Chunk_Header">PNG_Chunk_Header</a>,
+	data:   []<a href="">u8</a>,
+	crc:    <a href="">u32be</a>,
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="PNG_Chunk_Header"><span><a class="doc-id-link" href="#PNG_Chunk_Header">PNG_Chunk_Header<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L168"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">PNG_Chunk_Header :: struct #packed {
+	length: <a href="">u32be</a>,
+	type:   <a class="code-typename" href="/image/#PNG_Chunk_Type">PNG_Chunk_Type</a>,
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="PNG_Chunk_Type"><span><a class="doc-id-link" href="#PNG_Chunk_Type">PNG_Chunk_Type<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L179"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">PNG_Chunk_Type :: enum <a href="">u32be</a> {
+	IHDR = 1229472850, 
+	PLTE = 1347179589, 
+	bKGD = 1649100612, 
+	tRNS = 1951551059, 
+	IDAT = 1229209940, 
+	iTXt = 1767135348, 
+	tEXt = 1950701684, 
+	zTXt = 2052348020, 
+	iCCP = 1766015824, 
+	pHYs = 1883789683, 
+	gAMA = 1732332865, 
+	tIME = 1950960965, 
+	sPLT = 1934642260, 
+	sRGB = 1934772034, 
+	hIST = 1749635924, 
+	cHRM = 1665684045, 
+	sBIT = 1933723988, 
+	eXIf = 1700284774, 
+	IEND = 1229278788, 
+	iDOT = 1766084436, 
+	CbGI = 1130514505, 
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="PNG_Color_Type"><span><a class="doc-id-link" href="#PNG_Color_Type">PNG_Color_Type<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L245"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">PNG_Color_Type :: distinct bit_set[<a class="code-typename" href="/image/#PNG_Color_Value">PNG_Color_Value</a><a href="">u8</a>]</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="PNG_Color_Value"><span><a class="doc-id-link" href="#PNG_Color_Value">PNG_Color_Value<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L240"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">PNG_Color_Value :: enum <a href="">u8</a> {
+	Paletted = 0, 
+	Color    = 1, 
+	Alpha    = 2, 
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="PNG_Error"><span><a class="doc-id-link" href="#PNG_Error">PNG_Error<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L139"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">PNG_Error :: enum <a href="">int</a> {
+	Invalid_PNG_Signature, 
+	IHDR_Not_First_Chunk, 
+	IHDR_Corrupt, 
+	IDAT_Missing, 
+	IDAT_Must_Be_Contiguous, 
+	IDAT_Corrupt, 
+	IDAT_Size_Too_Large, 
+	PLTE_Encountered_Unexpectedly, 
+	PLTE_Invalid_Length, 
+	TRNS_Encountered_Unexpectedly, 
+	BKGD_Invalid_Length, 
+	Unknown_Color_Type, 
+	Invalid_Color_Bit_Depth_Combo, 
+	Unknown_Filter_Method, 
+	Unknown_Interlace_Method, 
+	Requested_Channel_Not_Present, 
+	Post_Processing_Error, 
+	Invalid_Chunk_Length, 
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="PNG_IHDR"><span><a class="doc-id-link" href="#PNG_IHDR">PNG_IHDR<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L228"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">PNG_IHDR :: struct #packed {
+	width:              <a href="">u32be</a>,
+	height:             <a href="">u32be</a>,
+	bit_depth:          <a href="">u8</a>,
+	color_type:         <a class="code-typename" href="/image/#PNG_Color_Type">PNG_Color_Type</a>,
+	compression_method: <a href="">u8</a>,
+	filter_method:      <a href="">u8</a>,
+	interlace_method:   <a class="code-typename" href="/image/#PNG_Interlace_Method">PNG_Interlace_Method</a>,
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="PNG_Info"><span><a class="doc-id-link" href="#PNG_Info">PNG_Info<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L163"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">PNG_Info :: struct {
+	header: <a class="code-typename" href="/image/#PNG_IHDR">PNG_IHDR</a>,
+	chunks: [dynamic]<a class="code-typename" href="/image/#PNG_Chunk">PNG_Chunk</a>,
+}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>PNG-specific structs</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="PNG_Interlace_Method"><span><a class="doc-id-link" href="#PNG_Interlace_Method">PNG_Interlace_Method<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L247"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">PNG_Interlace_Method :: enum <a href="">u8</a> {
+	None  = 0, 
+	Adam7 = 1, 
+}</pre>
+</div>
+</div>
+</section>
+<h2 id="pkg-Constants">Constants</h2>
+<section class="documentation">
+<div class="pkg-entity">
+<h3 id="PNG_IHDR_SIZE"><span><a class="doc-id-link" href="#PNG_IHDR_SIZE">PNG_IHDR_SIZE<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L237"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">PNG_IHDR_SIZE :: size_of(PNG_IHDR)</pre>
+</div>
+</div>
+</section>
+<h2 id="pkg-Variables">Variables</h2>
+<section class="documentation">
+<p>This section is empty.</p>
+</section>
+<h2 id="pkg-Procedures">Procedures</h2>
+<section class="documentation">
+<div class="pkg-entity">
+<h3 id="compute_buffer_size"><span><a class="doc-id-link" href="#compute_buffer_size">compute_buffer_size<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L255"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">compute_buffer_size :: proc(width, height, channels, depth: <a href="">int</a>, extra_row_bytes: <a href="">int</a> = int(0)) -> (size: <a href="">int</a>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Functions to help with image buffer calculations</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="return_single_channel"><span><a class="doc-id-link" href="#return_single_channel">return_single_channel<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L270"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">return_single_channel :: proc(img: ^<a class="code-typename" href="/image/#Image">Image</a>, channel: <a class="code-typename" href="/image/#Channel">Channel</a>) -> (res: ^<a class="code-typename" href="/image/#Image">Image</a>, ok: <a href="">bool</a>) {…}</pre>
+</div>
+</div>
+</section>
+<h2 id="pkg-Procedure Groups">Procedure Groups</h2>
+<section class="documentation">
+<p>This section is empty.</p>
+</section>
+<h2 id="pkg-source-files">Source Files</h2>
+<ul>
+<li><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin">common.odin</a></li>
+</ul>
+<h2 id="pkg-generation-information">Generation Information</h2>
+<p>Generated with <code>odin version dev-2022-01 (vendor "odin") windows_amd64 @ 2022-01-22 17:55:35.774605400 +0000 UTC</code></p>
+</article>
+<div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
+<nav id="TableOfContents">
+<ul>
+<li><a href="#pkg-overview">Overview</a><li><a href="#pkg-Types">Types</a><ul>
+<li><a href="#Channel">Channel</a></li>
+<li><a href="#Error">Error</a></li>
+<li><a href="#General_Image_Error">General_Image_Error</a></li>
+<li><a href="#Image_Metadata">Image_Metadata</a></li>
+<li><a href="#Image">Image</a></li>
+<li><a href="#Option">Option</a></li>
+<li><a href="#Options">Options</a></li>
+<li><a href="#PNG_Chunk">PNG_Chunk</a></li>
+<li><a href="#PNG_Chunk_Header">PNG_Chunk_Header</a></li>
+<li><a href="#PNG_Chunk_Type">PNG_Chunk_Type</a></li>
+<li><a href="#PNG_Color_Type">PNG_Color_Type</a></li>
+<li><a href="#PNG_Color_Value">PNG_Color_Value</a></li>
+<li><a href="#PNG_Error">PNG_Error</a></li>
+<li><a href="#PNG_IHDR">PNG_IHDR</a></li>
+<li><a href="#PNG_Info">PNG_Info</a></li>
+<li><a href="#PNG_Interlace_Method">PNG_Interlace_Method</a></li>
+</ul>
+</li>
+<li><a href="#pkg-Constants">Constants</a><ul>
+<li><a href="#PNG_IHDR_SIZE">PNG_IHDR_SIZE</a></li>
+</ul>
+</li>
+<li><a href="#pkg-Procedures">Procedures</a><ul>
+<li><a href="#compute_buffer_size">compute_buffer_size</a></li>
+<li><a href="#return_single_channel">return_single_channel</a></li>
+</ul>
+</li>
+<li><a href="#pkg-source-files">Source Files</a></ul>
+</nav>
+</div></div>
+</div>
+
+</div>
+</main>
+
+<footer class="odin-footer">
+	<div class="container pb-5 pt-5">
+		<div class="row g-4">
+		<div class="col">
+		<a class="navbar-brand" href="https://odin-lang.org">
+		<img class="mb-3" src="https://odin-lang.org/logo.svg" height="30" alt="Odin"></a>
+		<p>
+		The Data-Oriented Language for Sane Software Development.
+		</p>
+		</div>
+		<nav class="col-md-auto">
+			<h4 class="fw-normal">Resources</h4>
+			<ul class="list-unstyled">
+			<li><a href="https://odin-lang.org/docs" class="link-light">Docs</a></li>
+			<li><a href="https://odin-lang.org/news" class="link-light">Blog</a></li>
+			</ul>
+		</nav>
+		<nav class="col-md-auto">
+			<h4 class="fw-normal">Community</h4>
+			<ul class="list-unstyled">
+			<li><a href="https://github.com/odin-lang/Odin" target="_blank" class="link-light">GitHub</a></li>
+			<li><a href="https://discord.com/invite/sVBPHEv" target="_blank" class="link-light">Discord</a></li>
+			<li><a href="https://www.twitch.tv/ginger_bill" target="_blank" class="link-light">Twitch</a></li>
+			<li><a href="https://www.youtube.com/channel/UCUSck1dOH7VKmG4lRW7tZXg" target="_blank" class="link-light">YouTube</a></li>
+			</ul>
+		</nav>
+		<nav class="col-md-auto">
+			<h4 class="fw-normal">Contribute</h4>
+			<ul class="list-unstyled">
+			<li><a href="https://github.com/odin-lang/Odin/issues" target="_blank" class="link-light">Issues</a></li>
+			<li><a href="https://www.patreon.com/gingerbill" target="_blank" class="link-light">Donate</a></li>
+			</ul>
+			</nav>
+		</div>
+		<div class="mt-4 text-muted">© 2016–2022 Ginger Bill</div>
+	</div>
+</footer>
+
+<script src="https://odin-lang.org/lib/bootstrap/js/bootstrap.min.js"></script>
+<script src="https://odin-lang.org/js/script.js"></script>
+<script>hljs.highlightAll()</script>
+</body>
+</html>

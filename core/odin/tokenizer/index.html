@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>package odin/tokenizer - pkg.odin-lang.org</title>	<!-- REMEMBER TO REMOVE -->
+	<script type="text/javascript" src="https://livejs.com/live.js"></script>
+
+	<link rel="stylesheet" type="text/css" href="https://odin-lang.org/scss/custom.min.css">
+	<link rel=stylesheet href=//odin-lang.org/lib/highlight/styles/github-dark.min.css>
+	<script src=//odin-lang.org/lib/highlight/highlight.min.js></script>
+	<script>hljs.registerLanguage("odin",function(a){return{aliases:["odin","odinlang","odin-lang"],keywords:{keyword:"auto_cast bit_set break case cast context continue defer distinct do dynamic else enum fallthrough for foreign if import in map not_in or_else or_return package proc return struct switch transmute type_of typeid union using when where",literal:"true false nil",built_in:"abs align_of cap clamp complex conj expand_to_tuple imag jmag kmag len max min offset_of quaternion real size_of soa_unzip soa_zip swizzle type_info_of type_of typeid_of"},illegal:"</",contains:[a.C_LINE_COMMENT_MODE,a.C_BLOCK_COMMENT_MODE,{className:"string",variants:[a.QUOTE_STRING_MODE,{begin:"'",end:"[^\\\\]'"},{begin:"`",end:"`"}]},{className:"number",variants:[{begin:a.C_NUMBER_RE+"[ijk]",relevance:1},a.C_NUMBER_MODE]}]}})</script>
+	<script>hljs.highlightAll()</script>
+	<link rel="stylesheet" type="text/css" href="https://odin-lang.org/css/style.css">
+
+	<link rel="stylesheet" type="text/css" href="/style.css">
+
+	</style>
+</head>
+<body>
+<header class="sticky-top">
+	<nav class="navbar navbar-expand-lg navbar-dark bg-primary odin-menu">
+		<div class="container">
+			<a class="navbar-brand" href="/">
+			<img src="https://odin-lang.org/logo.svg" height="30" alt="Odin"></a>
+			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#odin-navbar-content" aria-controls="odin-navbar-content" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+			<div class="collapse navbar-collapse" id="odin-navbar-content">
+			<ul class="navbar-nav ms-md-auto">
+				<li class="nav-item"><a class="nav-link" href="https://odin-lang.org/">Home</a></li>
+				<li class="nav-item"><a class="nav-link" href="https://odin-lang.org/docs">Docs</a></li>
+				<li class="nav-item"><a class="nav-link active" href="/">Packages</a></li>
+				<li class="nav-item"><a class="nav-link" href="https://odin-lang.org/news">News</a></li>
+				<li class="nav-item"><a class="nav-link" href="https://odin-lang.org/community">Community</a></li>
+				<li class="nav-item"><a class="nav-link" href="https://github.com/odin-lang/Odin" target="_blank">GitHub</a></li>
+			</ul>
+		</div>
+		</div>
+	</nav>
+</header>
+<main>
+<div class="container"><div class="row odin-main">
+<nav id="pkg-sidebar" class="col-lg-2 odin-sidebar-border navbar-light">
+<div class="sticky-top odin-below-navbar py-3">
+<h4>Core Library</h4>
+<ul>
+<li class="nav-item"><a href="/core/bufio">bufio</a></li>
+<li class="nav-item"><a href="/core/bytes">bytes</a></li>
+<li class="nav-item"><a href="/core/c">c</a><ul>
+<li><a href="/core/c/frontend/preprocessor">frontend/preprocessor</a></li>
+<li><a href="/core/c/frontend/tokenizer">frontend/tokenizer</a></li>
+<li><a href="/core/c/libc">libc</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/compress">compress</a><ul>
+<li><a href="/core/compress/gzip">gzip</a></li>
+<li><a href="/core/compress/zlib">zlib</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/dynlib">dynlib</a></li>
+<li class="nav-item">encoding<ul>
+<li><a href="/core/encoding/base32">base32</a></li>
+<li><a href="/core/encoding/base64">base64</a></li>
+<li><a href="/core/encoding/csv">csv</a></li>
+<li><a href="/core/encoding/hxa">hxa</a></li>
+<li><a href="/core/encoding/json">json</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/fmt">fmt</a></li>
+<li class="nav-item"><a href="/core/hash">hash</a></li>
+<li class="nav-item"><a href="/core/image">image</a><ul>
+<li><a href="/core/image/png">png</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/io">io</a></li>
+<li class="nav-item"><a href="/core/log">log</a></li>
+<li class="nav-item"><a href="/core/math">math</a><ul>
+<li><a href="/core/math/big">big</a></li>
+<li><a href="/core/math/bits">bits</a></li>
+<li><a href="/core/math/fixed">fixed</a></li>
+<li><a href="/core/math/linalg">linalg</a></li>
+<li><a href="/core/math/linalg/glsl">linalg/glsl</a></li>
+<li><a href="/core/math/linalg/hlsl">linalg/hlsl</a></li>
+<li><a href="/core/math/rand">rand</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/mem">mem</a><ul>
+<li><a href="/core/mem/virtual">virtual</a></li>
+</ul>
+
+</li>
+<li class="nav-item">odin<ul>
+<li><a href="/core/odin/ast">ast</a></li>
+<li><a href="/core/odin/doc-format">doc-format</a></li>
+<li><a href="/core/odin/format">format</a></li>
+<li><a href="/core/odin/parser">parser</a></li>
+<li><a href="/core/odin/printer">printer</a></li>
+<li><a class="active" href="/core/odin/tokenizer">tokenizer</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/os">os</a></li>
+<li class="nav-item">path<ul>
+<li><a href="/core/path/filepath">filepath</a></li>
+<li><a href="/core/path/slashpath">slashpath</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/reflect">reflect</a></li>
+<li class="nav-item"><a href="/core/runtime">runtime</a></li>
+<li class="nav-item"><a href="/core/slice">slice</a></li>
+<li class="nav-item"><a href="/core/sort">sort</a></li>
+<li class="nav-item"><a href="/core/strconv">strconv</a><ul>
+<li><a href="/core/strconv/decimal">decimal</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/strings">strings</a></li>
+<li class="nav-item"><a href="/core/sync">sync</a><ul>
+<li><a href="/core/sync/sync2">sync2</a></li>
+</ul>
+
+</li>
+<li class="nav-item">text<ul>
+<li><a href="/core/text/scanner">scanner</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/thread">thread</a></li>
+<li class="nav-item"><a href="/core/time">time</a></li>
+<li class="nav-item"><a href="/core/unicode">unicode</a><ul>
+<li><a href="/core/unicode/utf16">utf16</a></li>
+<li><a href="/core/unicode/utf8">utf8</a></li>
+</ul>
+
+</li>
+</ul>
+</div>
+</nav>
+<article class="col-lg-8 p-4 documentation odin-article">
+<h1>package core:odin/tokenizer</h1>
+<h2>Index</h2>
+<div id="pkg-index">
+<div>
+<details open class="doc-index" id="doc-index-Types" aria-labelledby="#doc-index-Types-header">
+<summary id="#doc-index-Types-header">
+Types</summary>
+<ul>
+<li><a href="#Error_Handler">Error_Handler</a></li>
+<li><a href="#Flag">Flag</a></li>
+<li><a href="#Flags">Flags</a></li>
+<li><a href="#Pos">Pos</a></li>
+<li><a href="#Token">Token</a></li>
+<li><a href="#Token_Kind">Token_Kind</a></li>
+<li><a href="#Tokenizer">Tokenizer</a></li>
+</ul>
+</details>
+</div>
+<div>
+<details open class="doc-index" id="doc-index-Constants" aria-labelledby="#doc-index-Constants-header">
+<summary id="#doc-index-Constants-header">
+Constants</summary>
+<p>This section is empty.</p>
+</details>
+</div>
+<div>
+<details open class="doc-index" id="doc-index-Variables" aria-labelledby="#doc-index-Variables-header">
+<summary id="#doc-index-Variables-header">
+Variables</summary>
+<ul>
+<li><a href="#custom_keyword_tokens">custom_keyword_tokens</a></li>
+<li><a href="#tokens">tokens</a></li>
+</ul>
+</details>
+</div>
+<div>
+<details open class="doc-index" id="doc-index-Procedures" aria-labelledby="#doc-index-Procedures-header">
+<summary id="#doc-index-Procedures-header">
+Procedures</summary>
+<ul>
+<li><a href="#advance_rune">advance_rune</a></li>
+<li><a href="#default_error_handler">default_error_handler</a></li>
+<li><a href="#digit_val">digit_val</a></li>
+<li><a href="#error">error</a></li>
+<li><a href="#init">init</a></li>
+<li><a href="#is_assignment_operator">is_assignment_operator</a></li>
+<li><a href="#is_digit">is_digit</a></li>
+<li><a href="#is_keyword">is_keyword</a></li>
+<li><a href="#is_letter">is_letter</a></li>
+<li><a href="#is_literal">is_literal</a></li>
+<li><a href="#is_newline">is_newline</a></li>
+<li><a href="#is_operator">is_operator</a></li>
+<li><a href="#peek_byte">peek_byte</a></li>
+<li><a href="#pos_compare">pos_compare</a></li>
+<li><a href="#scan">scan</a></li>
+<li><a href="#scan_comment">scan_comment</a></li>
+<li><a href="#scan_escape">scan_escape</a></li>
+<li><a href="#scan_identifier">scan_identifier</a></li>
+<li><a href="#scan_number">scan_number</a></li>
+<li><a href="#scan_raw_string">scan_raw_string</a></li>
+<li><a href="#scan_rune">scan_rune</a></li>
+<li><a href="#scan_string">scan_string</a></li>
+<li><a href="#skip_whitespace">skip_whitespace</a></li>
+<li><a href="#to_string">to_string</a></li>
+<li><a href="#token_to_string">token_to_string</a></li>
+</ul>
+</details>
+</div>
+<div>
+<details open class="doc-index" id="doc-index-Procedure Groups" aria-labelledby="#doc-index-Procedure Groups-header">
+<summary id="#doc-index-Procedure Groups-header">
+Procedure Groups</summary>
+<p>This section is empty.</p>
+</details>
+</div>
+</div>
+<h2 id="pkg-Types">Types</h2>
+<section class="documentation">
+<div class="pkg-entity">
+<h3 id="Error_Handler"><span><a class="doc-id-link" href="#Error_Handler">Error_Handler<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/tokenizer/tokenizer.odin#L7"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Error_Handler :: proc(pos: <a class="code-typename" href="/odin/tokenizer/#Pos">Pos</a>, msg: <a href="">string</a>, args: ..<a href="">any</a>)</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Flag"><span><a class="doc-id-link" href="#Flag">Flag<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/tokenizer/tokenizer.odin#L9"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Flag :: enum <a href="">int</a> {
+	Insert_Semicolon, 
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Flags"><span><a class="doc-id-link" href="#Flags">Flags<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/tokenizer/tokenizer.odin#L12"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Flags :: distinct bit_set[<a class="code-typename" href="/odin/tokenizer/#Flag">Flag</a><a href="">u32</a>]</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Pos"><span><a class="doc-id-link" href="#Pos">Pos<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/tokenizer/token.odin#L11"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Pos :: struct {
+	file:   <a href="">string</a>,
+	offset: <a href="">int</a>,
+	line:   <a href="">int</a>,
+	column: <a href="">int</a>,
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Token"><span><a class="doc-id-link" href="#Token">Token<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/tokenizer/token.odin#L5"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Token :: struct {
+	kind: <a class="code-typename" href="/odin/tokenizer/#Token_Kind">Token_Kind</a>,
+	text: <a href="">string</a>,
+	pos:  <a class="code-typename" href="/odin/tokenizer/#Pos">Pos</a>,
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Token_Kind"><span><a class="doc-id-link" href="#Token_Kind">Token_Kind<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/tokenizer/token.odin#L31"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Token_Kind :: enum <a href="">u32</a> {
+	Invalid, 
+	EOF, 
+	Comment, 
+	B_Literal_Begin, 
+	Ident, 
+	Integer, 
+	Float, 
+	Imag, 
+	Rune, 
+	String, 
+	B_Literal_End, 
+	B_Operator_Begin, 
+	Eq, 
+	Not, 
+	Hash, 
+	At, 
+	Dollar, 
+	Pointer, 
+	Question, 
+	Add, 
+	Sub, 
+	Mul, 
+	Quo, 
+	Mod, 
+	Mod_Mod, 
+	And, 
+	Or, 
+	Xor, 
+	And_Not, 
+	Shl, 
+	Shr, 
+	Cmp_And, 
+	Cmp_Or, 
+	B_Assign_Op_Begin, 
+	Add_Eq, 
+	Sub_Eq, 
+	Mul_Eq, 
+	Quo_Eq, 
+	Mod_Eq, 
+	Mod_Mod_Eq, 
+	And_Eq, 
+	Or_Eq, 
+	Xor_Eq, 
+	And_Not_Eq, 
+	Shl_Eq, 
+	Shr_Eq, 
+	Cmp_And_Eq, 
+	Cmp_Or_Eq, 
+	B_Assign_Op_End, 
+	Increment, 
+	Decrement, 
+	Arrow_Right, 
+	Undef, 
+	B_Comparison_Begin, 
+	Cmp_Eq, 
+	Not_Eq, 
+	Lt, 
+	Gt, 
+	Lt_Eq, 
+	Gt_Eq, 
+	B_Comparison_End, 
+	Open_Paren, 
+	Close_Paren, 
+	Open_Bracket, 
+	Close_Bracket, 
+	Open_Brace, 
+	Close_Brace, 
+	Colon, 
+	Semicolon, 
+	Period, 
+	Comma, 
+	Ellipsis, 
+	Range_Half, 
+	Range_Full, 
+	B_Operator_End, 
+	B_Keyword_Begin, 
+	Import, 
+	Foreign, 
+	Package, 
+	Typeid, 
+	When, 
+	Where, 
+	If, 
+	Else, 
+	For, 
+	Switch, 
+	In, 
+	Not_In, 
+	Do, 
+	Case, 
+	Break, 
+	Continue, 
+	Fallthrough, 
+	Defer, 
+	Return, 
+	Proc, 
+	Struct, 
+	Union, 
+	Enum, 
+	Bit_Set, 
+	Map, 
+	Dynamic, 
+	Auto_Cast, 
+	Cast, 
+	Transmute, 
+	Distinct, 
+	Using, 
+	Context, 
+	Or_Else, 
+	Or_Return, 
+	Asm, 
+	Inline, 
+	No_Inline, 
+	Matrix, 
+	B_Keyword_End, 
+	COUNT, 
+	B_Custom_Keyword_Begin = 116, 
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Tokenizer"><span><a class="doc-id-link" href="#Tokenizer">Tokenizer<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/tokenizer/tokenizer.odin#L14"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Tokenizer :: struct {
+	path:             <a href="">string</a>,
+	src:              <a href="">string</a>,
+	err:              <a class="code-typename" href="/odin/tokenizer/#Error_Handler">Error_Handler</a>,
+	flags:            <a class="code-typename" href="/odin/tokenizer/#Flags">Flags</a>,
+	ch:               <a href="">rune</a>,
+	offset:           <a href="">int</a>,
+	read_offset:      <a href="">int</a>,
+	line_offset:      <a href="">int</a>,
+	line_count:       <a href="">int</a>,
+	insert_semicolon: <a href="">bool</a>,
+	error_count:      <a href="">int</a>,
+}</pre>
+</div>
+</div>
+</section>
+<h2 id="pkg-Constants">Constants</h2>
+<section class="documentation">
+<p>This section is empty.</p>
+</section>
+<h2 id="pkg-Variables">Variables</h2>
+<section class="documentation">
+<div class="pkg-entity">
+<h3 id="custom_keyword_tokens"><span><a class="doc-id-link" href="#custom_keyword_tokens">custom_keyword_tokens<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/tokenizer/token.odin#L288"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">custom_keyword_tokens: []<a href="">string</a></pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="tokens"><span><a class="doc-id-link" href="#tokens">tokens<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/tokenizer/token.odin#L162"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">tokens: [115]<a href="">string</a> = …</pre>
+</div>
+</div>
+</section>
+<h2 id="pkg-Procedures">Procedures</h2>
+<section class="documentation">
+<div class="pkg-entity">
+<h3 id="advance_rune"><span><a class="doc-id-link" href="#advance_rune">advance_rune<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/tokenizer/tokenizer.odin#L78"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">advance_rune :: proc(using t: ^<a class="code-typename" href="/odin/tokenizer/#Tokenizer">Tokenizer</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="default_error_handler"><span><a class="doc-id-link" href="#default_error_handler">default_error_handler<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/tokenizer/tokenizer.odin#L64"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">default_error_handler :: proc(pos: <a class="code-typename" href="/odin/tokenizer/#Pos">Pos</a>, msg: <a href="">string</a>, args: ..<a href="">any</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="digit_val"><span><a class="doc-id-link" href="#digit_val">digit_val<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/tokenizer/tokenizer.odin#L257"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">digit_val :: proc(c: <a href="">rune</a>) -> <a href="">int</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="error"><span><a class="doc-id-link" href="#error">error<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/tokenizer/tokenizer.odin#L70"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">error :: proc(t: ^<a class="code-typename" href="/odin/tokenizer/#Tokenizer">Tokenizer</a>, offset: <a href="">int</a>, msg: <a href="">string</a>, args: ..<a href="">any</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="init"><span><a class="doc-id-link" href="#init">init<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/tokenizer/tokenizer.odin#L34"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">init :: proc(t: ^<a class="code-typename" href="/odin/tokenizer/#Tokenizer">Tokenizer</a>, src: <a href="">string</a>, path: <a href="">string</a>, err: <a class="code-typename" href="/odin/tokenizer/#Error_Handler">Error_Handler</a> = default_error_handler) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="is_assignment_operator"><span><a class="doc-id-link" href="#is_assignment_operator">is_assignment_operator<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/tokenizer/token.odin#L331"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">is_assignment_operator :: proc(kind: <a class="code-typename" href="/odin/tokenizer/#Token_Kind">Token_Kind</a>) -> <a href="">bool</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="is_digit"><span><a class="doc-id-link" href="#is_digit">is_digit<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/tokenizer/tokenizer.odin#L149"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">is_digit :: proc(r: <a href="">rune</a>) -> <a href="">bool</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="is_keyword"><span><a class="doc-id-link" href="#is_keyword">is_keyword<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/tokenizer/token.odin#L334"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">is_keyword :: proc(kind: <a class="code-typename" href="/odin/tokenizer/#Token_Kind">Token_Kind</a>) -> <a href="">bool</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="is_letter"><span><a class="doc-id-link" href="#is_letter">is_letter<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/tokenizer/tokenizer.odin#L138"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">is_letter :: proc(r: <a href="">rune</a>) -> <a href="">bool</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="is_literal"><span><a class="doc-id-link" href="#is_literal">is_literal<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/tokenizer/token.odin#L317"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">is_literal :: proc(kind: <a class="code-typename" href="/odin/tokenizer/#Token_Kind">Token_Kind</a>) -> <a href="">bool</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="is_newline"><span><a class="doc-id-link" href="#is_newline">is_newline<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/tokenizer/token.odin#L291"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">is_newline :: proc(tok: <a class="code-typename" href="/odin/tokenizer/#Token">Token</a>) -> <a href="">bool</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="is_operator"><span><a class="doc-id-link" href="#is_operator">is_operator<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/tokenizer/token.odin#L320"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">is_operator :: proc(kind: <a class="code-typename" href="/odin/tokenizer/#Token_Kind">Token_Kind</a>) -> <a href="">bool</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="peek_byte"><span><a class="doc-id-link" href="#peek_byte">peek_byte<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/tokenizer/tokenizer.odin#L109"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">peek_byte :: proc(t: ^<a class="code-typename" href="/odin/tokenizer/#Tokenizer">Tokenizer</a>, offset: <a href="">int</a> = 0) -> <a href="">u8</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="pos_compare"><span><a class="doc-id-link" href="#pos_compare">pos_compare<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/tokenizer/token.odin#L18"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">pos_compare :: proc(lhs, rhs: <a class="code-typename" href="/odin/tokenizer/#Pos">Pos</a>) -> <a href="">int</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="scan"><span><a class="doc-id-link" href="#scan">scan<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/tokenizer/tokenizer.odin#L473"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">scan :: proc(using t: ^<a class="code-typename" href="/odin/tokenizer/#Tokenizer">Tokenizer</a>) -> <a class="code-typename" href="/odin/tokenizer/#Token">Token</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="scan_comment"><span><a class="doc-id-link" href="#scan_comment">scan_comment<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/tokenizer/tokenizer.odin#L157"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">scan_comment :: proc(using t: ^<a class="code-typename" href="/odin/tokenizer/#Tokenizer">Tokenizer</a>) -> <a href="">string</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="scan_escape"><span><a class="doc-id-link" href="#scan_escape">scan_escape<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/tokenizer/tokenizer.odin#L269"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">scan_escape :: proc(using t: ^<a class="code-typename" href="/odin/tokenizer/#Tokenizer">Tokenizer</a>) -> <a href="">bool</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="scan_identifier"><span><a class="doc-id-link" href="#scan_identifier">scan_identifier<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/tokenizer/tokenizer.odin#L208"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">scan_identifier :: proc(using t: ^<a class="code-typename" href="/odin/tokenizer/#Tokenizer">Tokenizer</a>) -> <a href="">string</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="scan_number"><span><a class="doc-id-link" href="#scan_number">scan_number<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/tokenizer/tokenizer.odin#L355"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">scan_number :: proc(t: ^<a class="code-typename" href="/odin/tokenizer/#Tokenizer">Tokenizer</a>, seen_decimal_point: <a href="">bool</a>) -> (<a class="code-typename" href="/odin/tokenizer/#Token_Kind">Token_Kind</a>, <a href="">string</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="scan_raw_string"><span><a class="doc-id-link" href="#scan_raw_string">scan_raw_string<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/tokenizer/tokenizer.odin#L239"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">scan_raw_string :: proc(using t: ^<a class="code-typename" href="/odin/tokenizer/#Tokenizer">Tokenizer</a>) -> <a href="">string</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="scan_rune"><span><a class="doc-id-link" href="#scan_rune">scan_rune<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/tokenizer/tokenizer.odin#L323"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">scan_rune :: proc(using t: ^<a class="code-typename" href="/odin/tokenizer/#Tokenizer">Tokenizer</a>) -> <a href="">string</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="scan_string"><span><a class="doc-id-link" href="#scan_string">scan_string<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/tokenizer/tokenizer.odin#L218"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">scan_string :: proc(using t: ^<a class="code-typename" href="/odin/tokenizer/#Tokenizer">Tokenizer</a>) -> <a href="">string</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="skip_whitespace"><span><a class="doc-id-link" href="#skip_whitespace">skip_whitespace<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/tokenizer/tokenizer.odin#L116"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">skip_whitespace :: proc(using t: ^<a class="code-typename" href="/odin/tokenizer/#Tokenizer">Tokenizer</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="to_string"><span><a class="doc-id-link" href="#to_string">to_string<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/tokenizer/token.odin#L303"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">to_string :: proc(kind: <a class="code-typename" href="/odin/tokenizer/#Token_Kind">Token_Kind</a>) -> <a href="">string</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="token_to_string"><span><a class="doc-id-link" href="#token_to_string">token_to_string<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/tokenizer/token.odin#L296"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">token_to_string :: proc(tok: <a class="code-typename" href="/odin/tokenizer/#Token">Token</a>) -> <a href="">string</a> {…}</pre>
+</div>
+</div>
+</section>
+<h2 id="pkg-Procedure Groups">Procedure Groups</h2>
+<section class="documentation">
+<p>This section is empty.</p>
+</section>
+<h2 id="pkg-source-files">Source Files</h2>
+<ul>
+<li><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/tokenizer/token.odin">token.odin</a></li>
+<li><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/tokenizer/tokenizer.odin">tokenizer.odin</a></li>
+</ul>
+<h2 id="pkg-generation-information">Generation Information</h2>
+<p>Generated with <code>odin version dev-2022-01 (vendor "odin") windows_amd64 @ 2022-01-22 17:55:35.865623700 +0000 UTC</code></p>
+</article>
+<div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
+<nav id="TableOfContents">
+<ul>
+<li><a href="#pkg-Types">Types</a><ul>
+<li><a href="#Error_Handler">Error_Handler</a></li>
+<li><a href="#Flag">Flag</a></li>
+<li><a href="#Flags">Flags</a></li>
+<li><a href="#Pos">Pos</a></li>
+<li><a href="#Token">Token</a></li>
+<li><a href="#Token_Kind">Token_Kind</a></li>
+<li><a href="#Tokenizer">Tokenizer</a></li>
+</ul>
+</li>
+<li><a href="#pkg-Variables">Variables</a><ul>
+<li><a href="#custom_keyword_tokens">custom_keyword_tokens</a></li>
+<li><a href="#tokens">tokens</a></li>
+</ul>
+</li>
+<li><a href="#pkg-Procedures">Procedures</a><ul>
+<li><a href="#advance_rune">advance_rune</a></li>
+<li><a href="#default_error_handler">default_error_handler</a></li>
+<li><a href="#digit_val">digit_val</a></li>
+<li><a href="#error">error</a></li>
+<li><a href="#init">init</a></li>
+<li><a href="#is_assignment_operator">is_assignment_operator</a></li>
+<li><a href="#is_digit">is_digit</a></li>
+<li><a href="#is_keyword">is_keyword</a></li>
+<li><a href="#is_letter">is_letter</a></li>
+<li><a href="#is_literal">is_literal</a></li>
+<li><a href="#is_newline">is_newline</a></li>
+<li><a href="#is_operator">is_operator</a></li>
+<li><a href="#peek_byte">peek_byte</a></li>
+<li><a href="#pos_compare">pos_compare</a></li>
+<li><a href="#scan">scan</a></li>
+<li><a href="#scan_comment">scan_comment</a></li>
+<li><a href="#scan_escape">scan_escape</a></li>
+<li><a href="#scan_identifier">scan_identifier</a></li>
+<li><a href="#scan_number">scan_number</a></li>
+<li><a href="#scan_raw_string">scan_raw_string</a></li>
+<li><a href="#scan_rune">scan_rune</a></li>
+<li><a href="#scan_string">scan_string</a></li>
+<li><a href="#skip_whitespace">skip_whitespace</a></li>
+<li><a href="#to_string">to_string</a></li>
+<li><a href="#token_to_string">token_to_string</a></li>
+</ul>
+</li>
+<li><a href="#pkg-source-files">Source Files</a></ul>
+</nav>
+</div></div>
+</div>
+
+</div>
+</main>
+
+<footer class="odin-footer">
+	<div class="container pb-5 pt-5">
+		<div class="row g-4">
+		<div class="col">
+		<a class="navbar-brand" href="https://odin-lang.org">
+		<img class="mb-3" src="https://odin-lang.org/logo.svg" height="30" alt="Odin"></a>
+		<p>
+		The Data-Oriented Language for Sane Software Development.
+		</p>
+		</div>
+		<nav class="col-md-auto">
+			<h4 class="fw-normal">Resources</h4>
+			<ul class="list-unstyled">
+			<li><a href="https://odin-lang.org/docs" class="link-light">Docs</a></li>
+			<li><a href="https://odin-lang.org/news" class="link-light">Blog</a></li>
+			</ul>
+		</nav>
+		<nav class="col-md-auto">
+			<h4 class="fw-normal">Community</h4>
+			<ul class="list-unstyled">
+			<li><a href="https://github.com/odin-lang/Odin" target="_blank" class="link-light">GitHub</a></li>
+			<li><a href="https://discord.com/invite/sVBPHEv" target="_blank" class="link-light">Discord</a></li>
+			<li><a href="https://www.twitch.tv/ginger_bill" target="_blank" class="link-light">Twitch</a></li>
+			<li><a href="https://www.youtube.com/channel/UCUSck1dOH7VKmG4lRW7tZXg" target="_blank" class="link-light">YouTube</a></li>
+			</ul>
+		</nav>
+		<nav class="col-md-auto">
+			<h4 class="fw-normal">Contribute</h4>
+			<ul class="list-unstyled">
+			<li><a href="https://github.com/odin-lang/Odin/issues" target="_blank" class="link-light">Issues</a></li>
+			<li><a href="https://www.patreon.com/gingerbill" target="_blank" class="link-light">Donate</a></li>
+			</ul>
+			</nav>
+		</div>
+		<div class="mt-4 text-muted">© 2016–2022 Ginger Bill</div>
+	</div>
+</footer>
+
+<script src="https://odin-lang.org/lib/bootstrap/js/bootstrap.min.js"></script>
+<script src="https://odin-lang.org/js/script.js"></script>
+<script>hljs.highlightAll()</script>
+</body>
+</html>

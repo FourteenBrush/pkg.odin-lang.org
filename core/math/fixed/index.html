@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>package math/fixed - pkg.odin-lang.org</title>	<!-- REMEMBER TO REMOVE -->
+	<script type="text/javascript" src="https://livejs.com/live.js"></script>
+
+	<link rel="stylesheet" type="text/css" href="https://odin-lang.org/scss/custom.min.css">
+	<link rel=stylesheet href=//odin-lang.org/lib/highlight/styles/github-dark.min.css>
+	<script src=//odin-lang.org/lib/highlight/highlight.min.js></script>
+	<script>hljs.registerLanguage("odin",function(a){return{aliases:["odin","odinlang","odin-lang"],keywords:{keyword:"auto_cast bit_set break case cast context continue defer distinct do dynamic else enum fallthrough for foreign if import in map not_in or_else or_return package proc return struct switch transmute type_of typeid union using when where",literal:"true false nil",built_in:"abs align_of cap clamp complex conj expand_to_tuple imag jmag kmag len max min offset_of quaternion real size_of soa_unzip soa_zip swizzle type_info_of type_of typeid_of"},illegal:"</",contains:[a.C_LINE_COMMENT_MODE,a.C_BLOCK_COMMENT_MODE,{className:"string",variants:[a.QUOTE_STRING_MODE,{begin:"'",end:"[^\\\\]'"},{begin:"`",end:"`"}]},{className:"number",variants:[{begin:a.C_NUMBER_RE+"[ijk]",relevance:1},a.C_NUMBER_MODE]}]}})</script>
+	<script>hljs.highlightAll()</script>
+	<link rel="stylesheet" type="text/css" href="https://odin-lang.org/css/style.css">
+
+	<link rel="stylesheet" type="text/css" href="/style.css">
+
+	</style>
+</head>
+<body>
+<header class="sticky-top">
+	<nav class="navbar navbar-expand-lg navbar-dark bg-primary odin-menu">
+		<div class="container">
+			<a class="navbar-brand" href="/">
+			<img src="https://odin-lang.org/logo.svg" height="30" alt="Odin"></a>
+			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#odin-navbar-content" aria-controls="odin-navbar-content" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+			<div class="collapse navbar-collapse" id="odin-navbar-content">
+			<ul class="navbar-nav ms-md-auto">
+				<li class="nav-item"><a class="nav-link" href="https://odin-lang.org/">Home</a></li>
+				<li class="nav-item"><a class="nav-link" href="https://odin-lang.org/docs">Docs</a></li>
+				<li class="nav-item"><a class="nav-link active" href="/">Packages</a></li>
+				<li class="nav-item"><a class="nav-link" href="https://odin-lang.org/news">News</a></li>
+				<li class="nav-item"><a class="nav-link" href="https://odin-lang.org/community">Community</a></li>
+				<li class="nav-item"><a class="nav-link" href="https://github.com/odin-lang/Odin" target="_blank">GitHub</a></li>
+			</ul>
+		</div>
+		</div>
+	</nav>
+</header>
+<main>
+<div class="container"><div class="row odin-main">
+<nav id="pkg-sidebar" class="col-lg-2 odin-sidebar-border navbar-light">
+<div class="sticky-top odin-below-navbar py-3">
+<h4>Core Library</h4>
+<ul>
+<li class="nav-item"><a href="/core/bufio">bufio</a></li>
+<li class="nav-item"><a href="/core/bytes">bytes</a></li>
+<li class="nav-item"><a href="/core/c">c</a><ul>
+<li><a href="/core/c/frontend/preprocessor">frontend/preprocessor</a></li>
+<li><a href="/core/c/frontend/tokenizer">frontend/tokenizer</a></li>
+<li><a href="/core/c/libc">libc</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/compress">compress</a><ul>
+<li><a href="/core/compress/gzip">gzip</a></li>
+<li><a href="/core/compress/zlib">zlib</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/dynlib">dynlib</a></li>
+<li class="nav-item">encoding<ul>
+<li><a href="/core/encoding/base32">base32</a></li>
+<li><a href="/core/encoding/base64">base64</a></li>
+<li><a href="/core/encoding/csv">csv</a></li>
+<li><a href="/core/encoding/hxa">hxa</a></li>
+<li><a href="/core/encoding/json">json</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/fmt">fmt</a></li>
+<li class="nav-item"><a href="/core/hash">hash</a></li>
+<li class="nav-item"><a href="/core/image">image</a><ul>
+<li><a href="/core/image/png">png</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/io">io</a></li>
+<li class="nav-item"><a href="/core/log">log</a></li>
+<li class="nav-item"><a href="/core/math">math</a><ul>
+<li><a href="/core/math/big">big</a></li>
+<li><a href="/core/math/bits">bits</a></li>
+<li><a class="active" href="/core/math/fixed">fixed</a></li>
+<li><a href="/core/math/linalg">linalg</a></li>
+<li><a href="/core/math/linalg/glsl">linalg/glsl</a></li>
+<li><a href="/core/math/linalg/hlsl">linalg/hlsl</a></li>
+<li><a href="/core/math/rand">rand</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/mem">mem</a><ul>
+<li><a href="/core/mem/virtual">virtual</a></li>
+</ul>
+
+</li>
+<li class="nav-item">odin<ul>
+<li><a href="/core/odin/ast">ast</a></li>
+<li><a href="/core/odin/doc-format">doc-format</a></li>
+<li><a href="/core/odin/format">format</a></li>
+<li><a href="/core/odin/parser">parser</a></li>
+<li><a href="/core/odin/printer">printer</a></li>
+<li><a href="/core/odin/tokenizer">tokenizer</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/os">os</a></li>
+<li class="nav-item">path<ul>
+<li><a href="/core/path/filepath">filepath</a></li>
+<li><a href="/core/path/slashpath">slashpath</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/reflect">reflect</a></li>
+<li class="nav-item"><a href="/core/runtime">runtime</a></li>
+<li class="nav-item"><a href="/core/slice">slice</a></li>
+<li class="nav-item"><a href="/core/sort">sort</a></li>
+<li class="nav-item"><a href="/core/strconv">strconv</a><ul>
+<li><a href="/core/strconv/decimal">decimal</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/strings">strings</a></li>
+<li class="nav-item"><a href="/core/sync">sync</a><ul>
+<li><a href="/core/sync/sync2">sync2</a></li>
+</ul>
+
+</li>
+<li class="nav-item">text<ul>
+<li><a href="/core/text/scanner">scanner</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/thread">thread</a></li>
+<li class="nav-item"><a href="/core/time">time</a></li>
+<li class="nav-item"><a href="/core/unicode">unicode</a><ul>
+<li><a href="/core/unicode/utf16">utf16</a></li>
+<li><a href="/core/unicode/utf8">utf8</a></li>
+</ul>
+
+</li>
+</ul>
+</div>
+</nav>
+<article class="col-lg-8 p-4 documentation odin-article">
+<h1>package core:math/fixed</h1>
+<h2>Index</h2>
+<div id="pkg-index">
+<div>
+<details open class="doc-index" id="doc-index-Types" aria-labelledby="#doc-index-Types-header">
+<summary id="#doc-index-Types-header">
+Types</summary>
+<ul>
+<li><a href="#Fixed">Fixed</a></li>
+<li><a href="#Fixed13_3">Fixed13_3</a></li>
+<li><a href="#Fixed16_16">Fixed16_16</a></li>
+<li><a href="#Fixed26_6">Fixed26_6</a></li>
+<li><a href="#Fixed32_32">Fixed32_32</a></li>
+<li><a href="#Fixed4_4">Fixed4_4</a></li>
+<li><a href="#Fixed52_12">Fixed52_12</a></li>
+<li><a href="#Fixed5_3">Fixed5_3</a></li>
+<li><a href="#Fixed6_2">Fixed6_2</a></li>
+<li><a href="#Fixed7_1">Fixed7_1</a></li>
+<li><a href="#Fixed8_8">Fixed8_8</a></li>
+</ul>
+</details>
+</div>
+<div>
+<details open class="doc-index" id="doc-index-Constants" aria-labelledby="#doc-index-Constants-header">
+<summary id="#doc-index-Constants-header">
+Constants</summary>
+<p>This section is empty.</p>
+</details>
+</div>
+<div>
+<details open class="doc-index" id="doc-index-Variables" aria-labelledby="#doc-index-Variables-header">
+<summary id="#doc-index-Variables-header">
+Variables</summary>
+<p>This section is empty.</p>
+</details>
+</div>
+<div>
+<details open class="doc-index" id="doc-index-Procedures" aria-labelledby="#doc-index-Procedures-header">
+<summary id="#doc-index-Procedures-header">
+Procedures</summary>
+<ul>
+<li><a href="#add">add</a></li>
+<li><a href="#append">append</a></li>
+<li><a href="#ceil">ceil</a></li>
+<li><a href="#div">div</a></li>
+<li><a href="#div_sat">div_sat</a></li>
+<li><a href="#floor">floor</a></li>
+<li><a href="#init_from_f64">init_from_f64</a></li>
+<li><a href="#init_from_parts">init_from_parts</a></li>
+<li><a href="#mul">mul</a></li>
+<li><a href="#mul_sat">mul_sat</a></li>
+<li><a href="#round">round</a></li>
+<li><a href="#sub">sub</a></li>
+<li><a href="#to_f64">to_f64</a></li>
+<li><a href="#to_string">to_string</a></li>
+</ul>
+</details>
+</div>
+<div>
+<details open class="doc-index" id="doc-index-Procedure Groups" aria-labelledby="#doc-index-Procedure Groups-header">
+<summary id="#doc-index-Procedure Groups-header">
+Procedure Groups</summary>
+<p>This section is empty.</p>
+</details>
+</div>
+</div>
+<h2 id="pkg-Types">Types</h2>
+<section class="documentation">
+<div class="pkg-entity">
+<h3 id="Fixed"><span><a class="doc-id-link" href="#Fixed">Fixed<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/fixed/fixed.odin#L8"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Fixed :: struct {}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Fixed13_3"><span><a class="doc-id-link" href="#Fixed13_3">Fixed13_3<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/fixed/fixed.odin#L22"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Fixed13_3 :: struct($Backing: <a href="">i16</a>, $Fraction_Width: <a href="">uint</a> = 8) where intrinsics.type_is_integer(Backing), 0 <= Fraction_Width, Fraction_Width <= 8 * size_of(Backing) {
+	i: <a href="">i16</a>,
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Fixed16_16"><span><a class="doc-id-link" href="#Fixed16_16">Fixed16_16<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/fixed/fixed.odin#L24"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Fixed16_16 :: struct($Backing: <a href="">i32</a>, $Fraction_Width: <a href="">uint</a> = 16) where intrinsics.type_is_integer(Backing), 0 <= Fraction_Width, Fraction_Width <= 8 * size_of(Backing) {
+	i: <a href="">i32</a>,
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Fixed26_6"><span><a class="doc-id-link" href="#Fixed26_6">Fixed26_6<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/fixed/fixed.odin#L25"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Fixed26_6 :: struct($Backing: <a href="">i32</a>, $Fraction_Width: <a href="">uint</a> = 16) where intrinsics.type_is_integer(Backing), 0 <= Fraction_Width, Fraction_Width <= 8 * size_of(Backing) {
+	i: <a href="">i32</a>,
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Fixed32_32"><span><a class="doc-id-link" href="#Fixed32_32">Fixed32_32<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/fixed/fixed.odin#L27"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Fixed32_32 :: struct($Backing: <a href="">i64</a>, $Fraction_Width: <a href="">uint</a> = 32) where intrinsics.type_is_integer(Backing), 0 <= Fraction_Width, Fraction_Width <= 8 * size_of(Backing) {
+	i: <a href="">i64</a>,
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Fixed4_4"><span><a class="doc-id-link" href="#Fixed4_4">Fixed4_4<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/fixed/fixed.odin#L16"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Fixed4_4 :: struct($Backing: <a href="">i8</a>, $Fraction_Width: <a href="">uint</a> = 4) where intrinsics.type_is_integer(Backing), 0 <= Fraction_Width, Fraction_Width <= 8 * size_of(Backing) {
+	i: <a href="">i8</a>,
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Fixed52_12"><span><a class="doc-id-link" href="#Fixed52_12">Fixed52_12<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/fixed/fixed.odin#L28"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Fixed52_12 :: struct($Backing: <a href="">i64</a>, $Fraction_Width: <a href="">uint</a> = 32) where intrinsics.type_is_integer(Backing), 0 <= Fraction_Width, Fraction_Width <= 8 * size_of(Backing) {
+	i: <a href="">i64</a>,
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Fixed5_3"><span><a class="doc-id-link" href="#Fixed5_3">Fixed5_3<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/fixed/fixed.odin#L17"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Fixed5_3 :: struct($Backing: <a href="">i8</a>, $Fraction_Width: <a href="">uint</a> = 4) where intrinsics.type_is_integer(Backing), 0 <= Fraction_Width, Fraction_Width <= 8 * size_of(Backing) {
+	i: <a href="">i8</a>,
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Fixed6_2"><span><a class="doc-id-link" href="#Fixed6_2">Fixed6_2<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/fixed/fixed.odin#L18"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Fixed6_2 :: struct($Backing: <a href="">i8</a>, $Fraction_Width: <a href="">uint</a> = 4) where intrinsics.type_is_integer(Backing), 0 <= Fraction_Width, Fraction_Width <= 8 * size_of(Backing) {
+	i: <a href="">i8</a>,
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Fixed7_1"><span><a class="doc-id-link" href="#Fixed7_1">Fixed7_1<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/fixed/fixed.odin#L19"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Fixed7_1 :: struct($Backing: <a href="">i8</a>, $Fraction_Width: <a href="">uint</a> = 4) where intrinsics.type_is_integer(Backing), 0 <= Fraction_Width, Fraction_Width <= 8 * size_of(Backing) {
+	i: <a href="">i8</a>,
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Fixed8_8"><span><a class="doc-id-link" href="#Fixed8_8">Fixed8_8<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/fixed/fixed.odin#L21"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Fixed8_8 :: struct($Backing: <a href="">i16</a>, $Fraction_Width: <a href="">uint</a> = 8) where intrinsics.type_is_integer(Backing), 0 <= Fraction_Width, Fraction_Width <= 8 * size_of(Backing) {
+	i: <a href="">i16</a>,
+}</pre>
+</div>
+</div>
+</section>
+<h2 id="pkg-Constants">Constants</h2>
+<section class="documentation">
+<p>This section is empty.</p>
+</section>
+<h2 id="pkg-Variables">Variables</h2>
+<section class="documentation">
+<p>This section is empty.</p>
+</section>
+<h2 id="pkg-Procedures">Procedures</h2>
+<section class="documentation">
+<div class="pkg-entity">
+<h3 id="add"><span><a class="doc-id-link" href="#add">add<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/fixed/fixed.odin#L53"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">add :: proc(x, y: $T/<a class="code-typename" href="/math/fixed/#Fixed">Fixed</a>) -> $T/<a class="code-typename" href="/math/fixed/#Fixed">Fixed</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="append"><span><a class="doc-id-link" href="#append">append<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/fixed/fixed.odin#L93"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">append :: proc(dst: []<a href="">u8</a>, x: $T/<a class="code-typename" href="/math/fixed/#Fixed">Fixed</a>($Backing, $Fraction_Width)) -> <a href="">string</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="ceil"><span><a class="doc-id-link" href="#ceil">ceil<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/fixed/fixed.odin#L82"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">ceil :: proc(x: $T/<a class="code-typename" href="/math/fixed/#Fixed">Fixed</a>($Backing, $Fraction_Width)) -> $ {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="div"><span><a class="doc-id-link" href="#div">div<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/fixed/fixed.odin#L69"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">div :: proc(x, y: $T/<a class="code-typename" href="/math/fixed/#Fixed">Fixed</a>($Backing, $Fraction_Width)) -> (z: $T/<a class="code-typename" href="/math/fixed/#Fixed">Fixed</a>($Backing, $Fraction_Width)) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="div_sat"><span><a class="doc-id-link" href="#div_sat">div_sat<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/fixed/fixed.odin#L73"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">div_sat :: proc(x, y: $T/<a class="code-typename" href="/math/fixed/#Fixed">Fixed</a>($Backing, $Fraction_Width)) -> (z: $T/<a class="code-typename" href="/math/fixed/#Fixed">Fixed</a>($Backing, $Fraction_Width)) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="floor"><span><a class="doc-id-link" href="#floor">floor<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/fixed/fixed.odin#L79"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">floor :: proc(x: $T/<a class="code-typename" href="/math/fixed/#Fixed">Fixed</a>($Backing, $Fraction_Width)) -> $ {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="init_from_f64"><span><a class="doc-id-link" href="#init_from_f64">init_from_f64<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/fixed/fixed.odin#L31"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">init_from_f64 :: proc(x: ^$T/<a class="code-typename" href="/math/fixed/#Fixed">Fixed</a>($Backing, $Fraction_Width), val: <a href="">f64</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="init_from_parts"><span><a class="doc-id-link" href="#init_from_parts">init_from_parts<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/fixed/fixed.odin#L39"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">init_from_parts :: proc(x: ^$T/<a class="code-typename" href="/math/fixed/#Fixed">Fixed</a>($Backing, $Fraction_Width), integer, fraction: $) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="mul"><span><a class="doc-id-link" href="#mul">mul<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/fixed/fixed.odin#L60"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">mul :: proc(x, y: $T/<a class="code-typename" href="/math/fixed/#Fixed">Fixed</a>($Backing, $Fraction_Width)) -> (z: $T/<a class="code-typename" href="/math/fixed/#Fixed">Fixed</a>($Backing, $Fraction_Width)) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="mul_sat"><span><a class="doc-id-link" href="#mul_sat">mul_sat<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/fixed/fixed.odin#L64"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">mul_sat :: proc(x, y: $T/<a class="code-typename" href="/math/fixed/#Fixed">Fixed</a>($Backing, $Fraction_Width)) -> (z: $T/<a class="code-typename" href="/math/fixed/#Fixed">Fixed</a>($Backing, $Fraction_Width)) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="round"><span><a class="doc-id-link" href="#round">round<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/fixed/fixed.odin#L86"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">round :: proc(x: $T/<a class="code-typename" href="/math/fixed/#Fixed">Fixed</a>($Backing, $Fraction_Width)) -> $ {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="sub"><span><a class="doc-id-link" href="#sub">sub<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/fixed/fixed.odin#L56"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">sub :: proc(x, y: $T/<a class="code-typename" href="/math/fixed/#Fixed">Fixed</a>) -> $T/<a class="code-typename" href="/math/fixed/#Fixed">Fixed</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="to_f64"><span><a class="doc-id-link" href="#to_f64">to_f64<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/fixed/fixed.odin#L46"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">to_f64 :: proc(x: $T/<a class="code-typename" href="/math/fixed/#Fixed">Fixed</a>($Backing, $Fraction_Width)) -> <a href="">f64</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="to_string"><span><a class="doc-id-link" href="#to_string">to_string<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/fixed/fixed.odin#L126"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">to_string :: proc(x: $T/<a class="code-typename" href="/math/fixed/#Fixed">Fixed</a>($Backing, $Fraction_Width), allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> <a href="">string</a> {…}</pre>
+</div>
+</div>
+</section>
+<h2 id="pkg-Procedure Groups">Procedure Groups</h2>
+<section class="documentation">
+<p>This section is empty.</p>
+</section>
+<h2 id="pkg-source-files">Source Files</h2>
+<ul>
+<li><a href="https://github.com/odin-lang/Odin/tree/master/core/math/fixed/fixed.odin">fixed.odin</a></li>
+</ul>
+<h2 id="pkg-generation-information">Generation Information</h2>
+<p>Generated with <code>odin version dev-2022-01 (vendor "odin") windows_amd64 @ 2022-01-22 17:55:35.821615400 +0000 UTC</code></p>
+</article>
+<div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
+<nav id="TableOfContents">
+<ul>
+<li><a href="#pkg-Types">Types</a><ul>
+<li><a href="#Fixed">Fixed</a></li>
+<li><a href="#Fixed13_3">Fixed13_3</a></li>
+<li><a href="#Fixed16_16">Fixed16_16</a></li>
+<li><a href="#Fixed26_6">Fixed26_6</a></li>
+<li><a href="#Fixed32_32">Fixed32_32</a></li>
+<li><a href="#Fixed4_4">Fixed4_4</a></li>
+<li><a href="#Fixed52_12">Fixed52_12</a></li>
+<li><a href="#Fixed5_3">Fixed5_3</a></li>
+<li><a href="#Fixed6_2">Fixed6_2</a></li>
+<li><a href="#Fixed7_1">Fixed7_1</a></li>
+<li><a href="#Fixed8_8">Fixed8_8</a></li>
+</ul>
+</li>
+<li><a href="#pkg-Procedures">Procedures</a><ul>
+<li><a href="#add">add</a></li>
+<li><a href="#append">append</a></li>
+<li><a href="#ceil">ceil</a></li>
+<li><a href="#div">div</a></li>
+<li><a href="#div_sat">div_sat</a></li>
+<li><a href="#floor">floor</a></li>
+<li><a href="#init_from_f64">init_from_f64</a></li>
+<li><a href="#init_from_parts">init_from_parts</a></li>
+<li><a href="#mul">mul</a></li>
+<li><a href="#mul_sat">mul_sat</a></li>
+<li><a href="#round">round</a></li>
+<li><a href="#sub">sub</a></li>
+<li><a href="#to_f64">to_f64</a></li>
+<li><a href="#to_string">to_string</a></li>
+</ul>
+</li>
+<li><a href="#pkg-source-files">Source Files</a></ul>
+</nav>
+</div></div>
+</div>
+
+</div>
+</main>
+
+<footer class="odin-footer">
+	<div class="container pb-5 pt-5">
+		<div class="row g-4">
+		<div class="col">
+		<a class="navbar-brand" href="https://odin-lang.org">
+		<img class="mb-3" src="https://odin-lang.org/logo.svg" height="30" alt="Odin"></a>
+		<p>
+		The Data-Oriented Language for Sane Software Development.
+		</p>
+		</div>
+		<nav class="col-md-auto">
+			<h4 class="fw-normal">Resources</h4>
+			<ul class="list-unstyled">
+			<li><a href="https://odin-lang.org/docs" class="link-light">Docs</a></li>
+			<li><a href="https://odin-lang.org/news" class="link-light">Blog</a></li>
+			</ul>
+		</nav>
+		<nav class="col-md-auto">
+			<h4 class="fw-normal">Community</h4>
+			<ul class="list-unstyled">
+			<li><a href="https://github.com/odin-lang/Odin" target="_blank" class="link-light">GitHub</a></li>
+			<li><a href="https://discord.com/invite/sVBPHEv" target="_blank" class="link-light">Discord</a></li>
+			<li><a href="https://www.twitch.tv/ginger_bill" target="_blank" class="link-light">Twitch</a></li>
+			<li><a href="https://www.youtube.com/channel/UCUSck1dOH7VKmG4lRW7tZXg" target="_blank" class="link-light">YouTube</a></li>
+			</ul>
+		</nav>
+		<nav class="col-md-auto">
+			<h4 class="fw-normal">Contribute</h4>
+			<ul class="list-unstyled">
+			<li><a href="https://github.com/odin-lang/Odin/issues" target="_blank" class="link-light">Issues</a></li>
+			<li><a href="https://www.patreon.com/gingerbill" target="_blank" class="link-light">Donate</a></li>
+			</ul>
+			</nav>
+		</div>
+		<div class="mt-4 text-muted">© 2016–2022 Ginger Bill</div>
+	</div>
+</footer>
+
+<script src="https://odin-lang.org/lib/bootstrap/js/bootstrap.min.js"></script>
+<script src="https://odin-lang.org/js/script.js"></script>
+<script>hljs.highlightAll()</script>
+</body>
+</html>

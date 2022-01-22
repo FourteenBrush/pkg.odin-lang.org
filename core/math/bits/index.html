@@ -1,0 +1,1152 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>package math/bits - pkg.odin-lang.org</title>	<!-- REMEMBER TO REMOVE -->
+	<script type="text/javascript" src="https://livejs.com/live.js"></script>
+
+	<link rel="stylesheet" type="text/css" href="https://odin-lang.org/scss/custom.min.css">
+	<link rel=stylesheet href=//odin-lang.org/lib/highlight/styles/github-dark.min.css>
+	<script src=//odin-lang.org/lib/highlight/highlight.min.js></script>
+	<script>hljs.registerLanguage("odin",function(a){return{aliases:["odin","odinlang","odin-lang"],keywords:{keyword:"auto_cast bit_set break case cast context continue defer distinct do dynamic else enum fallthrough for foreign if import in map not_in or_else or_return package proc return struct switch transmute type_of typeid union using when where",literal:"true false nil",built_in:"abs align_of cap clamp complex conj expand_to_tuple imag jmag kmag len max min offset_of quaternion real size_of soa_unzip soa_zip swizzle type_info_of type_of typeid_of"},illegal:"</",contains:[a.C_LINE_COMMENT_MODE,a.C_BLOCK_COMMENT_MODE,{className:"string",variants:[a.QUOTE_STRING_MODE,{begin:"'",end:"[^\\\\]'"},{begin:"`",end:"`"}]},{className:"number",variants:[{begin:a.C_NUMBER_RE+"[ijk]",relevance:1},a.C_NUMBER_MODE]}]}})</script>
+	<script>hljs.highlightAll()</script>
+	<link rel="stylesheet" type="text/css" href="https://odin-lang.org/css/style.css">
+
+	<link rel="stylesheet" type="text/css" href="/style.css">
+
+	</style>
+</head>
+<body>
+<header class="sticky-top">
+	<nav class="navbar navbar-expand-lg navbar-dark bg-primary odin-menu">
+		<div class="container">
+			<a class="navbar-brand" href="/">
+			<img src="https://odin-lang.org/logo.svg" height="30" alt="Odin"></a>
+			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#odin-navbar-content" aria-controls="odin-navbar-content" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+			<div class="collapse navbar-collapse" id="odin-navbar-content">
+			<ul class="navbar-nav ms-md-auto">
+				<li class="nav-item"><a class="nav-link" href="https://odin-lang.org/">Home</a></li>
+				<li class="nav-item"><a class="nav-link" href="https://odin-lang.org/docs">Docs</a></li>
+				<li class="nav-item"><a class="nav-link active" href="/">Packages</a></li>
+				<li class="nav-item"><a class="nav-link" href="https://odin-lang.org/news">News</a></li>
+				<li class="nav-item"><a class="nav-link" href="https://odin-lang.org/community">Community</a></li>
+				<li class="nav-item"><a class="nav-link" href="https://github.com/odin-lang/Odin" target="_blank">GitHub</a></li>
+			</ul>
+		</div>
+		</div>
+	</nav>
+</header>
+<main>
+<div class="container"><div class="row odin-main">
+<nav id="pkg-sidebar" class="col-lg-2 odin-sidebar-border navbar-light">
+<div class="sticky-top odin-below-navbar py-3">
+<h4>Core Library</h4>
+<ul>
+<li class="nav-item"><a href="/core/bufio">bufio</a></li>
+<li class="nav-item"><a href="/core/bytes">bytes</a></li>
+<li class="nav-item"><a href="/core/c">c</a><ul>
+<li><a href="/core/c/frontend/preprocessor">frontend/preprocessor</a></li>
+<li><a href="/core/c/frontend/tokenizer">frontend/tokenizer</a></li>
+<li><a href="/core/c/libc">libc</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/compress">compress</a><ul>
+<li><a href="/core/compress/gzip">gzip</a></li>
+<li><a href="/core/compress/zlib">zlib</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/dynlib">dynlib</a></li>
+<li class="nav-item">encoding<ul>
+<li><a href="/core/encoding/base32">base32</a></li>
+<li><a href="/core/encoding/base64">base64</a></li>
+<li><a href="/core/encoding/csv">csv</a></li>
+<li><a href="/core/encoding/hxa">hxa</a></li>
+<li><a href="/core/encoding/json">json</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/fmt">fmt</a></li>
+<li class="nav-item"><a href="/core/hash">hash</a></li>
+<li class="nav-item"><a href="/core/image">image</a><ul>
+<li><a href="/core/image/png">png</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/io">io</a></li>
+<li class="nav-item"><a href="/core/log">log</a></li>
+<li class="nav-item"><a href="/core/math">math</a><ul>
+<li><a href="/core/math/big">big</a></li>
+<li><a class="active" href="/core/math/bits">bits</a></li>
+<li><a href="/core/math/fixed">fixed</a></li>
+<li><a href="/core/math/linalg">linalg</a></li>
+<li><a href="/core/math/linalg/glsl">linalg/glsl</a></li>
+<li><a href="/core/math/linalg/hlsl">linalg/hlsl</a></li>
+<li><a href="/core/math/rand">rand</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/mem">mem</a><ul>
+<li><a href="/core/mem/virtual">virtual</a></li>
+</ul>
+
+</li>
+<li class="nav-item">odin<ul>
+<li><a href="/core/odin/ast">ast</a></li>
+<li><a href="/core/odin/doc-format">doc-format</a></li>
+<li><a href="/core/odin/format">format</a></li>
+<li><a href="/core/odin/parser">parser</a></li>
+<li><a href="/core/odin/printer">printer</a></li>
+<li><a href="/core/odin/tokenizer">tokenizer</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/os">os</a></li>
+<li class="nav-item">path<ul>
+<li><a href="/core/path/filepath">filepath</a></li>
+<li><a href="/core/path/slashpath">slashpath</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/reflect">reflect</a></li>
+<li class="nav-item"><a href="/core/runtime">runtime</a></li>
+<li class="nav-item"><a href="/core/slice">slice</a></li>
+<li class="nav-item"><a href="/core/sort">sort</a></li>
+<li class="nav-item"><a href="/core/strconv">strconv</a><ul>
+<li><a href="/core/strconv/decimal">decimal</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/strings">strings</a></li>
+<li class="nav-item"><a href="/core/sync">sync</a><ul>
+<li><a href="/core/sync/sync2">sync2</a></li>
+</ul>
+
+</li>
+<li class="nav-item">text<ul>
+<li><a href="/core/text/scanner">scanner</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/thread">thread</a></li>
+<li class="nav-item"><a href="/core/time">time</a></li>
+<li class="nav-item"><a href="/core/unicode">unicode</a><ul>
+<li><a href="/core/unicode/utf16">utf16</a></li>
+<li><a href="/core/unicode/utf8">utf8</a></li>
+</ul>
+
+</li>
+</ul>
+</div>
+</nav>
+<article class="col-lg-8 p-4 documentation odin-article">
+<h1>package core:math/bits</h1>
+<h2>Index</h2>
+<div id="pkg-index">
+<div>
+<details open class="doc-index" id="doc-index-Types" aria-labelledby="#doc-index-Types-header">
+<summary id="#doc-index-Types-header">
+Types</summary>
+<p>This section is empty.</p>
+</details>
+</div>
+<div>
+<details open class="doc-index" id="doc-index-Constants" aria-labelledby="#doc-index-Constants-header">
+<summary id="#doc-index-Constants-header">
+Constants</summary>
+<ul>
+<li><a href="#I16_MAX">I16_MAX</a></li>
+<li><a href="#I16_MIN">I16_MIN</a></li>
+<li><a href="#I32_MAX">I32_MAX</a></li>
+<li><a href="#I32_MIN">I32_MIN</a></li>
+<li><a href="#I64_MAX">I64_MAX</a></li>
+<li><a href="#I64_MIN">I64_MIN</a></li>
+<li><a href="#I8_MAX">I8_MAX</a></li>
+<li><a href="#I8_MIN">I8_MIN</a></li>
+<li><a href="#U16_MAX">U16_MAX</a></li>
+<li><a href="#U16_MIN">U16_MIN</a></li>
+<li><a href="#U32_MAX">U32_MAX</a></li>
+<li><a href="#U32_MIN">U32_MIN</a></li>
+<li><a href="#U64_MAX">U64_MAX</a></li>
+<li><a href="#U64_MIN">U64_MIN</a></li>
+<li><a href="#U8_MAX">U8_MAX</a></li>
+<li><a href="#U8_MIN">U8_MIN</a></li>
+</ul>
+</details>
+</div>
+<div>
+<details open class="doc-index" id="doc-index-Variables" aria-labelledby="#doc-index-Variables-header">
+<summary id="#doc-index-Variables-header">
+Variables</summary>
+<p>This section is empty.</p>
+</details>
+</div>
+<div>
+<details open class="doc-index" id="doc-index-Procedures" aria-labelledby="#doc-index-Procedures-header">
+<summary id="#doc-index-Procedures-header">
+Procedures</summary>
+<ul>
+<li><a href="#add_u32">add_u32</a></li>
+<li><a href="#add_u64">add_u64</a></li>
+<li><a href="#add_uint">add_uint</a></li>
+<li><a href="#bitfield_extract_i128">bitfield_extract_i128</a></li>
+<li><a href="#bitfield_extract_i16">bitfield_extract_i16</a></li>
+<li><a href="#bitfield_extract_i32">bitfield_extract_i32</a></li>
+<li><a href="#bitfield_extract_i64">bitfield_extract_i64</a></li>
+<li><a href="#bitfield_extract_i8">bitfield_extract_i8</a></li>
+<li><a href="#bitfield_extract_int">bitfield_extract_int</a></li>
+<li><a href="#bitfield_extract_u128">bitfield_extract_u128</a></li>
+<li><a href="#bitfield_extract_u16">bitfield_extract_u16</a></li>
+<li><a href="#bitfield_extract_u32">bitfield_extract_u32</a></li>
+<li><a href="#bitfield_extract_u64">bitfield_extract_u64</a></li>
+<li><a href="#bitfield_extract_u8">bitfield_extract_u8</a></li>
+<li><a href="#bitfield_extract_uint">bitfield_extract_uint</a></li>
+<li><a href="#bitfield_insert_i128">bitfield_insert_i128</a></li>
+<li><a href="#bitfield_insert_i16">bitfield_insert_i16</a></li>
+<li><a href="#bitfield_insert_i32">bitfield_insert_i32</a></li>
+<li><a href="#bitfield_insert_i64">bitfield_insert_i64</a></li>
+<li><a href="#bitfield_insert_i8">bitfield_insert_i8</a></li>
+<li><a href="#bitfield_insert_int">bitfield_insert_int</a></li>
+<li><a href="#bitfield_insert_u128">bitfield_insert_u128</a></li>
+<li><a href="#bitfield_insert_u16">bitfield_insert_u16</a></li>
+<li><a href="#bitfield_insert_u32">bitfield_insert_u32</a></li>
+<li><a href="#bitfield_insert_u64">bitfield_insert_u64</a></li>
+<li><a href="#bitfield_insert_u8">bitfield_insert_u8</a></li>
+<li><a href="#bitfield_insert_uint">bitfield_insert_uint</a></li>
+<li><a href="#div_u32">div_u32</a></li>
+<li><a href="#div_u64">div_u64</a></li>
+<li><a href="#div_uint">div_uint</a></li>
+<li><a href="#from_be_u16">from_be_u16</a></li>
+<li><a href="#from_be_u32">from_be_u32</a></li>
+<li><a href="#from_be_u64">from_be_u64</a></li>
+<li><a href="#from_be_u8">from_be_u8</a></li>
+<li><a href="#from_be_uint">from_be_uint</a></li>
+<li><a href="#from_le_u16">from_le_u16</a></li>
+<li><a href="#from_le_u32">from_le_u32</a></li>
+<li><a href="#from_le_u64">from_le_u64</a></li>
+<li><a href="#from_le_u8">from_le_u8</a></li>
+<li><a href="#from_le_uint">from_le_uint</a></li>
+<li><a href="#is_power_of_two_i16">is_power_of_two_i16</a></li>
+<li><a href="#is_power_of_two_i32">is_power_of_two_i32</a></li>
+<li><a href="#is_power_of_two_i64">is_power_of_two_i64</a></li>
+<li><a href="#is_power_of_two_i8">is_power_of_two_i8</a></li>
+<li><a href="#is_power_of_two_int">is_power_of_two_int</a></li>
+<li><a href="#is_power_of_two_u16">is_power_of_two_u16</a></li>
+<li><a href="#is_power_of_two_u32">is_power_of_two_u32</a></li>
+<li><a href="#is_power_of_two_u64">is_power_of_two_u64</a></li>
+<li><a href="#is_power_of_two_u8">is_power_of_two_u8</a></li>
+<li><a href="#is_power_of_two_uint">is_power_of_two_uint</a></li>
+<li><a href="#len_u16">len_u16</a></li>
+<li><a href="#len_u32">len_u32</a></li>
+<li><a href="#len_u64">len_u64</a></li>
+<li><a href="#len_u8">len_u8</a></li>
+<li><a href="#len_uint">len_uint</a></li>
+<li><a href="#log2">log2</a></li>
+<li><a href="#mul_u32">mul_u32</a></li>
+<li><a href="#mul_u64">mul_u64</a></li>
+<li><a href="#mul_uint">mul_uint</a></li>
+<li><a href="#rotate_left">rotate_left</a></li>
+<li><a href="#rotate_left16">rotate_left16</a></li>
+<li><a href="#rotate_left32">rotate_left32</a></li>
+<li><a href="#rotate_left64">rotate_left64</a></li>
+<li><a href="#rotate_left8">rotate_left8</a></li>
+<li><a href="#sub_u32">sub_u32</a></li>
+<li><a href="#sub_u64">sub_u64</a></li>
+<li><a href="#sub_uint">sub_uint</a></li>
+<li><a href="#to_be_u16">to_be_u16</a></li>
+<li><a href="#to_be_u32">to_be_u32</a></li>
+<li><a href="#to_be_u64">to_be_u64</a></li>
+<li><a href="#to_be_u8">to_be_u8</a></li>
+<li><a href="#to_be_uint">to_be_uint</a></li>
+<li><a href="#to_le_u16">to_le_u16</a></li>
+<li><a href="#to_le_u32">to_le_u32</a></li>
+<li><a href="#to_le_u64">to_le_u64</a></li>
+<li><a href="#to_le_u8">to_le_u8</a></li>
+<li><a href="#to_le_uint">to_le_uint</a></li>
+</ul>
+</details>
+</div>
+<div>
+<details open class="doc-index" id="doc-index-Procedure Groups" aria-labelledby="#doc-index-Procedure Groups-header">
+<summary id="#doc-index-Procedure Groups-header">
+Procedure Groups</summary>
+<ul>
+<li><a href="#add">add</a></li>
+<li><a href="#bitfield_extract">bitfield_extract</a></li>
+<li><a href="#bitfield_insert">bitfield_insert</a></li>
+<li><a href="#div">div</a></li>
+<li><a href="#is_power_of_two">is_power_of_two</a></li>
+<li><a href="#len">len</a></li>
+<li><a href="#mul">mul</a></li>
+<li><a href="#sub">sub</a></li>
+</ul>
+</details>
+</div>
+</div>
+<h2 id="pkg-Types">Types</h2>
+<section class="documentation">
+<p>This section is empty.</p>
+</section>
+<h2 id="pkg-Constants">Constants</h2>
+<section class="documentation">
+<div class="pkg-entity">
+<h3 id="I16_MAX"><span><a class="doc-id-link" href="#I16_MAX">I16_MAX<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L21"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">I16_MAX :: 1 << 15 - 1</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="I16_MIN"><span><a class="doc-id-link" href="#I16_MIN">I16_MIN<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L16"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">I16_MIN :: -1 << 15</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="I32_MAX"><span><a class="doc-id-link" href="#I32_MAX">I32_MAX<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L22"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">I32_MAX :: 1 << 31 - 1</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="I32_MIN"><span><a class="doc-id-link" href="#I32_MIN">I32_MIN<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L17"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">I32_MIN :: -1 << 31</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="I64_MAX"><span><a class="doc-id-link" href="#I64_MAX">I64_MAX<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L23"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">I64_MAX :: 1 << 63 - 1</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="I64_MIN"><span><a class="doc-id-link" href="#I64_MIN">I64_MIN<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L18"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">I64_MIN :: -1 << 63</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="I8_MAX"><span><a class="doc-id-link" href="#I8_MAX">I8_MAX<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L20"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">I8_MAX :: 1 << 7 - 1</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="I8_MIN"><span><a class="doc-id-link" href="#I8_MIN">I8_MIN<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L15"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">I8_MIN :: -1 << 7</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="U16_MAX"><span><a class="doc-id-link" href="#U16_MAX">U16_MAX<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L11"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">U16_MAX :: 1 << 16 - 1</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="U16_MIN"><span><a class="doc-id-link" href="#U16_MIN">U16_MIN<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L6"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">U16_MIN :: 0</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="U32_MAX"><span><a class="doc-id-link" href="#U32_MAX">U32_MAX<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L12"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">U32_MAX :: 1 << 32 - 1</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="U32_MIN"><span><a class="doc-id-link" href="#U32_MIN">U32_MIN<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L7"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">U32_MIN :: 0</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="U64_MAX"><span><a class="doc-id-link" href="#U64_MAX">U64_MAX<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L13"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">U64_MAX :: 1 << 64 - 1</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="U64_MIN"><span><a class="doc-id-link" href="#U64_MIN">U64_MIN<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L8"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">U64_MIN :: 0</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="U8_MAX"><span><a class="doc-id-link" href="#U8_MAX">U8_MAX<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L10"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">U8_MAX :: 1 << 8 - 1</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="U8_MIN"><span><a class="doc-id-link" href="#U8_MIN">U8_MIN<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L5"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">U8_MIN :: 0</pre>
+</div>
+</div>
+</section>
+<h2 id="pkg-Variables">Variables</h2>
+<section class="documentation">
+<p>This section is empty.</p>
+</section>
+<h2 id="pkg-Procedures">Procedures</h2>
+<section class="documentation">
+<div class="pkg-entity">
+<h3 id="add_u32"><span><a class="doc-id-link" href="#add_u32">add_u32<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L149"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">add_u32 :: proc(x, y, carry: <a href="">u32</a>) -> (sum, carry_out: <a href="">u32</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="add_u64"><span><a class="doc-id-link" href="#add_u64">add_u64<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L156"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">add_u64 :: proc(x, y, carry: <a href="">u64</a>) -> (sum, carry_out: <a href="">u64</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="add_uint"><span><a class="doc-id-link" href="#add_uint">add_uint<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L163"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">add_uint :: proc(hi, lo, y: <a href="">uint</a>) -> (quo, rem: <a href="">uint</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="bitfield_extract_i128"><span><a class="doc-id-link" href="#bitfield_extract_i128">bitfield_extract_i128<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L354"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">bitfield_extract_i128 :: proc(value: <a href="">i128</a>, offset, bits: <a href="">uint</a>) -> <a href="">i128</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="bitfield_extract_i16"><span><a class="doc-id-link" href="#bitfield_extract_i16">bitfield_extract_i16<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L336"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">bitfield_extract_i16 :: proc(value: <a href="">i16</a>, offset, bits: <a href="">uint</a>) -> <a href="">i16</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="bitfield_extract_i32"><span><a class="doc-id-link" href="#bitfield_extract_i32">bitfield_extract_i32<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L342"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">bitfield_extract_i32 :: proc(value: <a href="">i32</a>, offset, bits: <a href="">uint</a>) -> <a href="">i32</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="bitfield_extract_i64"><span><a class="doc-id-link" href="#bitfield_extract_i64">bitfield_extract_i64<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L348"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">bitfield_extract_i64 :: proc(value: <a href="">i64</a>, offset, bits: <a href="">uint</a>) -> <a href="">i64</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="bitfield_extract_i8"><span><a class="doc-id-link" href="#bitfield_extract_i8">bitfield_extract_i8<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L330"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">bitfield_extract_i8 :: proc(value: <a href="">i8</a>, offset, bits: <a href="">uint</a>) -> <a href="">i8</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="bitfield_extract_int"><span><a class="doc-id-link" href="#bitfield_extract_int">bitfield_extract_int<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L360"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">bitfield_extract_int :: proc(value: <a href="">int</a>, offset, bits: <a href="">uint</a>) -> <a href="">int</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="bitfield_extract_u128"><span><a class="doc-id-link" href="#bitfield_extract_u128">bitfield_extract_u128<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L327"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">bitfield_extract_u128 :: proc(value: <a href="">u128</a>, offset, bits: <a href="">uint</a>) -> <a href="">u128</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="bitfield_extract_u16"><span><a class="doc-id-link" href="#bitfield_extract_u16">bitfield_extract_u16<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L324"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">bitfield_extract_u16 :: proc(value: <a href="">u16</a>, offset, bits: <a href="">uint</a>) -> <a href="">u16</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="bitfield_extract_u32"><span><a class="doc-id-link" href="#bitfield_extract_u32">bitfield_extract_u32<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L325"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">bitfield_extract_u32 :: proc(value: <a href="">u32</a>, offset, bits: <a href="">uint</a>) -> <a href="">u32</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="bitfield_extract_u64"><span><a class="doc-id-link" href="#bitfield_extract_u64">bitfield_extract_u64<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L326"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">bitfield_extract_u64 :: proc(value: <a href="">u64</a>, offset, bits: <a href="">uint</a>) -> <a href="">u64</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="bitfield_extract_u8"><span><a class="doc-id-link" href="#bitfield_extract_u8">bitfield_extract_u8<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L323"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">bitfield_extract_u8 :: proc(value: <a href="">u8</a>, offset, bits: <a href="">uint</a>) -> <a href="">u8</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="bitfield_extract_uint"><span><a class="doc-id-link" href="#bitfield_extract_uint">bitfield_extract_uint<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L328"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">bitfield_extract_uint :: proc(value: <a href="">uint</a>, offset, bits: <a href="">uint</a>) -> <a href="">uint</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="bitfield_insert_i128"><span><a class="doc-id-link" href="#bitfield_insert_i128">bitfield_insert_i128<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L425"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">bitfield_insert_i128 :: proc(base, insert: <a href="">i128</a>, offset, bits: <a href="">uint</a>) -> <a href="">i128</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="bitfield_insert_i16"><span><a class="doc-id-link" href="#bitfield_insert_i16">bitfield_insert_i16<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L413"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">bitfield_insert_i16 :: proc(base, insert: <a href="">i16</a>, offset, bits: <a href="">uint</a>) -> <a href="">i16</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="bitfield_insert_i32"><span><a class="doc-id-link" href="#bitfield_insert_i32">bitfield_insert_i32<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L417"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">bitfield_insert_i32 :: proc(base, insert: <a href="">i32</a>, offset, bits: <a href="">uint</a>) -> <a href="">i32</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="bitfield_insert_i64"><span><a class="doc-id-link" href="#bitfield_insert_i64">bitfield_insert_i64<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L421"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">bitfield_insert_i64 :: proc(base, insert: <a href="">i64</a>, offset, bits: <a href="">uint</a>) -> <a href="">i64</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="bitfield_insert_i8"><span><a class="doc-id-link" href="#bitfield_insert_i8">bitfield_insert_i8<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L409"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">bitfield_insert_i8 :: proc(base, insert: <a href="">i8</a>, offset, bits: <a href="">uint</a>) -> <a href="">i8</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="bitfield_insert_int"><span><a class="doc-id-link" href="#bitfield_insert_int">bitfield_insert_int<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L429"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">bitfield_insert_int :: proc(base, insert: <a href="">int</a>, offset, bits: <a href="">uint</a>) -> <a href="">int</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="bitfield_insert_u128"><span><a class="doc-id-link" href="#bitfield_insert_u128">bitfield_insert_u128<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L400"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">bitfield_insert_u128 :: proc(base, insert: <a href="">u128</a>, offset, bits: <a href="">uint</a>) -> <a href="">u128</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="bitfield_insert_u16"><span><a class="doc-id-link" href="#bitfield_insert_u16">bitfield_insert_u16<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L388"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">bitfield_insert_u16 :: proc(base, insert: <a href="">u16</a>, offset, bits: <a href="">uint</a>) -> <a href="">u16</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="bitfield_insert_u32"><span><a class="doc-id-link" href="#bitfield_insert_u32">bitfield_insert_u32<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L392"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">bitfield_insert_u32 :: proc(base, insert: <a href="">u32</a>, offset, bits: <a href="">uint</a>) -> <a href="">u32</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="bitfield_insert_u64"><span><a class="doc-id-link" href="#bitfield_insert_u64">bitfield_insert_u64<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L396"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">bitfield_insert_u64 :: proc(base, insert: <a href="">u64</a>, offset, bits: <a href="">uint</a>) -> <a href="">u64</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="bitfield_insert_u8"><span><a class="doc-id-link" href="#bitfield_insert_u8">bitfield_insert_u8<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L384"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">bitfield_insert_u8 :: proc(base, insert: <a href="">u8</a>, offset, bits: <a href="">uint</a>) -> <a href="">u8</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="bitfield_insert_uint"><span><a class="doc-id-link" href="#bitfield_insert_uint">bitfield_insert_uint<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L404"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">bitfield_insert_uint :: proc(base, insert: <a href="">uint</a>, offset, bits: <a href="">uint</a>) -> <a href="">uint</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="div_u32"><span><a class="doc-id-link" href="#div_u32">div_u32<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L225"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">div_u32 :: proc(x, y, carry: <a href="">u32</a>) -> (sum, carry_out: <a href="">u32</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="div_u64"><span><a class="doc-id-link" href="#div_u64">div_u64<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L231"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">div_u64 :: proc(x, y, carry: <a href="">u64</a>) -> (sum, carry_out: <a href="">u64</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="div_uint"><span><a class="doc-id-link" href="#div_uint">div_uint<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L276"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">div_uint :: proc(hi, lo, y: <a href="">uint</a>) -> (quo, rem: <a href="">uint</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="from_be_u16"><span><a class="doc-id-link" href="#from_be_u16">from_be_u16<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L72"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">from_be_u16 :: proc(value: <a href="">u16</a>) -> <a href="">u16</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="from_be_u32"><span><a class="doc-id-link" href="#from_be_u32">from_be_u32<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L73"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">from_be_u32 :: proc(value: <a href="">u32</a>) -> <a href="">u32</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="from_be_u64"><span><a class="doc-id-link" href="#from_be_u64">from_be_u64<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L74"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">from_be_u64 :: proc(i: <a href="">u64</a>) -> <a href="">u64</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="from_be_u8"><span><a class="doc-id-link" href="#from_be_u8">from_be_u8<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L71"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">from_be_u8 :: proc(x: <a href="">u8</a>) -> <a href="">u8</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="from_be_uint"><span><a class="doc-id-link" href="#from_be_uint">from_be_uint<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L75"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">from_be_uint :: proc(i: <a href="">uint</a>) -> <a href="">uint</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="from_le_u16"><span><a class="doc-id-link" href="#from_le_u16">from_le_u16<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L78"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">from_le_u16 :: proc(value: <a href="">u16</a>) -> <a href="">u16</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="from_le_u32"><span><a class="doc-id-link" href="#from_le_u32">from_le_u32<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L79"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">from_le_u32 :: proc(value: <a href="">u32</a>) -> <a href="">u32</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="from_le_u64"><span><a class="doc-id-link" href="#from_le_u64">from_le_u64<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L80"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">from_le_u64 :: proc(i: <a href="">u64</a>) -> <a href="">u64</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="from_le_u8"><span><a class="doc-id-link" href="#from_le_u8">from_le_u8<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L77"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">from_le_u8 :: proc(x: <a href="">u8</a>) -> <a href="">u8</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="from_le_uint"><span><a class="doc-id-link" href="#from_le_uint">from_le_uint<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L81"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">from_le_uint :: proc(i: <a href="">uint</a>) -> <a href="">uint</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="is_power_of_two_i16"><span><a class="doc-id-link" href="#is_power_of_two_i16">is_power_of_two_i16<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L292"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">is_power_of_two_i16 :: proc(i: <a href="">i16</a>) -> <a href="">bool</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="is_power_of_two_i32"><span><a class="doc-id-link" href="#is_power_of_two_i32">is_power_of_two_i32<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L294"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">is_power_of_two_i32 :: proc(i: <a href="">i32</a>) -> <a href="">bool</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="is_power_of_two_i64"><span><a class="doc-id-link" href="#is_power_of_two_i64">is_power_of_two_i64<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L296"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">is_power_of_two_i64 :: proc(i: <a href="">i64</a>) -> <a href="">bool</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="is_power_of_two_i8"><span><a class="doc-id-link" href="#is_power_of_two_i8">is_power_of_two_i8<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L290"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">is_power_of_two_i8 :: proc(i: <a href="">i8</a>) -> <a href="">bool</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="is_power_of_two_int"><span><a class="doc-id-link" href="#is_power_of_two_int">is_power_of_two_int<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L298"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">is_power_of_two_int :: proc(a: <a href="">int</a>) -> <a href="">bool</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="is_power_of_two_u16"><span><a class="doc-id-link" href="#is_power_of_two_u16">is_power_of_two_u16<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L291"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">is_power_of_two_u16 :: proc(i: <a href="">u16</a>) -> <a href="">bool</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="is_power_of_two_u32"><span><a class="doc-id-link" href="#is_power_of_two_u32">is_power_of_two_u32<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L293"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">is_power_of_two_u32 :: proc(i: <a href="">u32</a>) -> <a href="">bool</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="is_power_of_two_u64"><span><a class="doc-id-link" href="#is_power_of_two_u64">is_power_of_two_u64<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L295"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">is_power_of_two_u64 :: proc(i: <a href="">u64</a>) -> <a href="">bool</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="is_power_of_two_u8"><span><a class="doc-id-link" href="#is_power_of_two_u8">is_power_of_two_u8<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L289"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">is_power_of_two_u8 :: proc(x: <a href="">u8</a>) -> <a href="">bool</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="is_power_of_two_uint"><span><a class="doc-id-link" href="#is_power_of_two_uint">is_power_of_two_uint<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L297"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">is_power_of_two_uint :: proc(i: <a href="">uint</a>) -> <a href="">bool</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="len_u16"><span><a class="doc-id-link" href="#len_u16">len_u16<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L101"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">len_u16 :: proc(x: <a href="">u16</a>) -> (n: <a href="">int</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="len_u32"><span><a class="doc-id-link" href="#len_u32">len_u32<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L109"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">len_u32 :: proc(x: <a href="">u32</a>) -> (n: <a href="">int</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="len_u64"><span><a class="doc-id-link" href="#len_u64">len_u64<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L121"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">len_u64 :: proc(x: <a href="">u64</a>) -> (n: <a href="">int</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="len_u8"><span><a class="doc-id-link" href="#len_u8">len_u8<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L98"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">len_u8 :: proc(x: <a href="">u8</a>) -> <a href="">int</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="len_uint"><span><a class="doc-id-link" href="#len_uint">len_uint<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L137"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">len_uint :: proc(x: <a href="">uint</a>) -> (n: <a href="">int</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="log2"><span><a class="doc-id-link" href="#log2">log2<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L40"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">log2 :: proc(value: $) -> (log2: $) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="mul_u32"><span><a class="doc-id-link" href="#mul_u32">mul_u32<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L201"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">mul_u32 :: proc(x, y: <a href="">u32</a>) -> (hi, lo: <a href="">u32</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="mul_u64"><span><a class="doc-id-link" href="#mul_u64">mul_u64<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L206"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">mul_u64 :: proc(x, y: <a href="">u64</a>) -> (hi, lo: <a href="">u64</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="mul_uint"><span><a class="doc-id-link" href="#mul_uint">mul_uint<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L212"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">mul_uint :: proc(x, y: <a href="">uint</a>) -> (hi, lo: <a href="">uint</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="rotate_left"><span><a class="doc-id-link" href="#rotate_left">rotate_left<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L65"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">rotate_left :: proc(x: <a href="">uint</a>, k: <a href="">int</a>) -> <a href="">uint</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="rotate_left16"><span><a class="doc-id-link" href="#rotate_left16">rotate_left16<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L49"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">rotate_left16 :: proc(x: <a href="">u16</a>, k: <a href="">int</a>) -> <a href="">u16</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="rotate_left32"><span><a class="doc-id-link" href="#rotate_left32">rotate_left32<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L54"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">rotate_left32 :: proc(x: <a href="">u32</a>, k: <a href="">int</a>) -> <a href="">u32</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="rotate_left64"><span><a class="doc-id-link" href="#rotate_left64">rotate_left64<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L59"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">rotate_left64 :: proc(x: <a href="">u64</a>, k: <a href="">int</a>) -> <a href="">u64</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="rotate_left8"><span><a class="doc-id-link" href="#rotate_left8">rotate_left8<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L44"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">rotate_left8 :: proc(x: <a href="">u8</a>, k: <a href="">int</a>) -> <a href="">u8</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="sub_u32"><span><a class="doc-id-link" href="#sub_u32">sub_u32<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L175"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">sub_u32 :: proc(x, y, carry: <a href="">u32</a>) -> (sum, carry_out: <a href="">u32</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="sub_u64"><span><a class="doc-id-link" href="#sub_u64">sub_u64<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L182"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">sub_u64 :: proc(x, y, carry: <a href="">u64</a>) -> (sum, carry_out: <a href="">u64</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="sub_uint"><span><a class="doc-id-link" href="#sub_uint">sub_uint<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L189"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">sub_uint :: proc(hi, lo, y: <a href="">uint</a>) -> (quo, rem: <a href="">uint</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="to_be_u16"><span><a class="doc-id-link" href="#to_be_u16">to_be_u16<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L84"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">to_be_u16 :: proc(value: <a href="">u16</a>) -> <a href="">u16</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="to_be_u32"><span><a class="doc-id-link" href="#to_be_u32">to_be_u32<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L85"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">to_be_u32 :: proc(value: <a href="">u32</a>) -> <a href="">u32</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="to_be_u64"><span><a class="doc-id-link" href="#to_be_u64">to_be_u64<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L86"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">to_be_u64 :: proc(i: <a href="">u64</a>) -> <a href="">u64</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="to_be_u8"><span><a class="doc-id-link" href="#to_be_u8">to_be_u8<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L83"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">to_be_u8 :: proc(x: <a href="">u8</a>) -> <a href="">u8</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="to_be_uint"><span><a class="doc-id-link" href="#to_be_uint">to_be_uint<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L87"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">to_be_uint :: proc(i: <a href="">uint</a>) -> <a href="">uint</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="to_le_u16"><span><a class="doc-id-link" href="#to_le_u16">to_le_u16<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L91"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">to_le_u16 :: proc(value: <a href="">u16</a>) -> <a href="">u16</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="to_le_u32"><span><a class="doc-id-link" href="#to_le_u32">to_le_u32<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L92"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">to_le_u32 :: proc(value: <a href="">u32</a>) -> <a href="">u32</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="to_le_u64"><span><a class="doc-id-link" href="#to_le_u64">to_le_u64<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L93"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">to_le_u64 :: proc(i: <a href="">u64</a>) -> <a href="">u64</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="to_le_u8"><span><a class="doc-id-link" href="#to_le_u8">to_le_u8<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L90"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">to_le_u8 :: proc(x: <a href="">u8</a>) -> <a href="">u8</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="to_le_uint"><span><a class="doc-id-link" href="#to_le_uint">to_le_uint<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L94"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">to_le_uint :: proc(i: <a href="">uint</a>) -> <a href="">uint</a> {…}</pre>
+</div>
+</div>
+</section>
+<h2 id="pkg-Procedure Groups">Procedure Groups</h2>
+<section class="documentation">
+<div class="pkg-entity">
+<h3 id="add"><span><a class="doc-id-link" href="#add">add<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L172"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">add :: proc{
+	<a class="code-procedure" href="/core/math/bits/#add_u32">add_u32</a>,
+	<a class="code-procedure" href="/core/math/bits/#add_u64">add_u64</a>,
+	<a class="code-procedure" href="/core/math/bits/#add_uint">add_uint</a>,
+}
+</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="bitfield_extract"><span><a class="doc-id-link" href="#bitfield_extract">bitfield_extract<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L368"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">bitfield_extract :: proc{
+	<a class="code-procedure" href="/core/math/bits/#bitfield_extract_u8">bitfield_extract_u8</a>,
+	<a class="code-procedure" href="/core/math/bits/#bitfield_extract_u16">bitfield_extract_u16</a>,
+	<a class="code-procedure" href="/core/math/bits/#bitfield_extract_u32">bitfield_extract_u32</a>,
+	<a class="code-procedure" href="/core/math/bits/#bitfield_extract_u64">bitfield_extract_u64</a>,
+	<a class="code-procedure" href="/core/math/bits/#bitfield_extract_u128">bitfield_extract_u128</a>,
+	<a class="code-procedure" href="/core/math/bits/#bitfield_extract_uint">bitfield_extract_uint</a>,
+	<a class="code-procedure" href="/core/math/bits/#bitfield_extract_i8">bitfield_extract_i8</a>,
+	<a class="code-procedure" href="/core/math/bits/#bitfield_extract_i16">bitfield_extract_i16</a>,
+	<a class="code-procedure" href="/core/math/bits/#bitfield_extract_i32">bitfield_extract_i32</a>,
+	<a class="code-procedure" href="/core/math/bits/#bitfield_extract_i64">bitfield_extract_i64</a>,
+	<a class="code-procedure" href="/core/math/bits/#bitfield_extract_i128">bitfield_extract_i128</a>,
+	<a class="code-procedure" href="/core/math/bits/#bitfield_extract_int">bitfield_extract_int</a>,
+}
+</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="bitfield_insert"><span><a class="doc-id-link" href="#bitfield_insert">bitfield_insert<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L434"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">bitfield_insert :: proc{
+	<a class="code-procedure" href="/core/math/bits/#bitfield_insert_u8">bitfield_insert_u8</a>,
+	<a class="code-procedure" href="/core/math/bits/#bitfield_insert_u16">bitfield_insert_u16</a>,
+	<a class="code-procedure" href="/core/math/bits/#bitfield_insert_u32">bitfield_insert_u32</a>,
+	<a class="code-procedure" href="/core/math/bits/#bitfield_insert_u64">bitfield_insert_u64</a>,
+	<a class="code-procedure" href="/core/math/bits/#bitfield_insert_u128">bitfield_insert_u128</a>,
+	<a class="code-procedure" href="/core/math/bits/#bitfield_insert_uint">bitfield_insert_uint</a>,
+	<a class="code-procedure" href="/core/math/bits/#bitfield_insert_i8">bitfield_insert_i8</a>,
+	<a class="code-procedure" href="/core/math/bits/#bitfield_insert_i16">bitfield_insert_i16</a>,
+	<a class="code-procedure" href="/core/math/bits/#bitfield_insert_i32">bitfield_insert_i32</a>,
+	<a class="code-procedure" href="/core/math/bits/#bitfield_insert_i64">bitfield_insert_i64</a>,
+	<a class="code-procedure" href="/core/math/bits/#bitfield_insert_i128">bitfield_insert_i128</a>,
+	<a class="code-procedure" href="/core/math/bits/#bitfield_insert_int">bitfield_insert_int</a>,
+}
+</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="div"><span><a class="doc-id-link" href="#div">div<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L285"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">div :: proc{
+	<a class="code-procedure" href="/core/math/bits/#div_u32">div_u32</a>,
+	<a class="code-procedure" href="/core/math/bits/#div_u64">div_u64</a>,
+	<a class="code-procedure" href="/core/math/bits/#div_uint">div_uint</a>,
+}
+</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="is_power_of_two"><span><a class="doc-id-link" href="#is_power_of_two">is_power_of_two<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L300"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">is_power_of_two :: proc{
+	<a class="code-procedure" href="/core/math/bits/#is_power_of_two_u8">is_power_of_two_u8</a>,
+	<a class="code-procedure" href="/core/math/bits/#is_power_of_two_i8">is_power_of_two_i8</a>,
+	<a class="code-procedure" href="/core/math/bits/#is_power_of_two_u16">is_power_of_two_u16</a>,
+	<a class="code-procedure" href="/core/math/bits/#is_power_of_two_i16">is_power_of_two_i16</a>,
+	<a class="code-procedure" href="/core/math/bits/#is_power_of_two_u32">is_power_of_two_u32</a>,
+	<a class="code-procedure" href="/core/math/bits/#is_power_of_two_i32">is_power_of_two_i32</a>,
+	<a class="code-procedure" href="/core/math/bits/#is_power_of_two_u64">is_power_of_two_u64</a>,
+	<a class="code-procedure" href="/core/math/bits/#is_power_of_two_i64">is_power_of_two_i64</a>,
+	<a class="code-procedure" href="/core/math/bits/#is_power_of_two_uint">is_power_of_two_uint</a>,
+	<a class="code-procedure" href="/core/math/bits/#is_power_of_two_int">is_power_of_two_int</a>,
+}
+</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="len"><span><a class="doc-id-link" href="#len">len<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L146"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">len :: proc{
+	<a class="code-procedure" href="/core/math/bits/#len_u8">len_u8</a>,
+	<a class="code-procedure" href="/core/math/bits/#len_u16">len_u16</a>,
+	<a class="code-procedure" href="/core/math/bits/#len_u32">len_u32</a>,
+	<a class="code-procedure" href="/core/math/bits/#len_u64">len_u64</a>,
+	<a class="code-procedure" href="/core/math/bits/#len_uint">len_uint</a>,
+}
+</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>returns the minimum number of bits required to represent x</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="mul"><span><a class="doc-id-link" href="#mul">mul<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L222"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">mul :: proc{
+	<a class="code-procedure" href="/core/math/bits/#mul_u32">mul_u32</a>,
+	<a class="code-procedure" href="/core/math/bits/#mul_u64">mul_u64</a>,
+	<a class="code-procedure" href="/core/math/bits/#mul_uint">mul_uint</a>,
+}
+</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="sub"><span><a class="doc-id-link" href="#sub">sub<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin#L198"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">sub :: proc{
+	<a class="code-procedure" href="/core/math/bits/#sub_u32">sub_u32</a>,
+	<a class="code-procedure" href="/core/math/bits/#sub_u64">sub_u64</a>,
+	<a class="code-procedure" href="/core/math/bits/#sub_uint">sub_uint</a>,
+}
+</pre>
+</div>
+</div>
+</section>
+<h2 id="pkg-source-files">Source Files</h2>
+<ul>
+<li><a href="https://github.com/odin-lang/Odin/tree/master/core/math/bits/bits.odin">bits.odin</a></li>
+</ul>
+<h2 id="pkg-generation-information">Generation Information</h2>
+<p>Generated with <code>odin version dev-2022-01 (vendor "odin") windows_amd64 @ 2022-01-22 17:55:35.820615700 +0000 UTC</code></p>
+</article>
+<div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
+<nav id="TableOfContents">
+<ul>
+<li><a href="#pkg-Constants">Constants</a><ul>
+<li><a href="#I16_MAX">I16_MAX</a></li>
+<li><a href="#I16_MIN">I16_MIN</a></li>
+<li><a href="#I32_MAX">I32_MAX</a></li>
+<li><a href="#I32_MIN">I32_MIN</a></li>
+<li><a href="#I64_MAX">I64_MAX</a></li>
+<li><a href="#I64_MIN">I64_MIN</a></li>
+<li><a href="#I8_MAX">I8_MAX</a></li>
+<li><a href="#I8_MIN">I8_MIN</a></li>
+<li><a href="#U16_MAX">U16_MAX</a></li>
+<li><a href="#U16_MIN">U16_MIN</a></li>
+<li><a href="#U32_MAX">U32_MAX</a></li>
+<li><a href="#U32_MIN">U32_MIN</a></li>
+<li><a href="#U64_MAX">U64_MAX</a></li>
+<li><a href="#U64_MIN">U64_MIN</a></li>
+<li><a href="#U8_MAX">U8_MAX</a></li>
+<li><a href="#U8_MIN">U8_MIN</a></li>
+</ul>
+</li>
+<li><a href="#pkg-Procedures">Procedures</a><ul>
+<li><a href="#add_u32">add_u32</a></li>
+<li><a href="#add_u64">add_u64</a></li>
+<li><a href="#add_uint">add_uint</a></li>
+<li><a href="#bitfield_extract_i128">bitfield_extract_i128</a></li>
+<li><a href="#bitfield_extract_i16">bitfield_extract_i16</a></li>
+<li><a href="#bitfield_extract_i32">bitfield_extract_i32</a></li>
+<li><a href="#bitfield_extract_i64">bitfield_extract_i64</a></li>
+<li><a href="#bitfield_extract_i8">bitfield_extract_i8</a></li>
+<li><a href="#bitfield_extract_int">bitfield_extract_int</a></li>
+<li><a href="#bitfield_extract_u128">bitfield_extract_u128</a></li>
+<li><a href="#bitfield_extract_u16">bitfield_extract_u16</a></li>
+<li><a href="#bitfield_extract_u32">bitfield_extract_u32</a></li>
+<li><a href="#bitfield_extract_u64">bitfield_extract_u64</a></li>
+<li><a href="#bitfield_extract_u8">bitfield_extract_u8</a></li>
+<li><a href="#bitfield_extract_uint">bitfield_extract_uint</a></li>
+<li><a href="#bitfield_insert_i128">bitfield_insert_i128</a></li>
+<li><a href="#bitfield_insert_i16">bitfield_insert_i16</a></li>
+<li><a href="#bitfield_insert_i32">bitfield_insert_i32</a></li>
+<li><a href="#bitfield_insert_i64">bitfield_insert_i64</a></li>
+<li><a href="#bitfield_insert_i8">bitfield_insert_i8</a></li>
+<li><a href="#bitfield_insert_int">bitfield_insert_int</a></li>
+<li><a href="#bitfield_insert_u128">bitfield_insert_u128</a></li>
+<li><a href="#bitfield_insert_u16">bitfield_insert_u16</a></li>
+<li><a href="#bitfield_insert_u32">bitfield_insert_u32</a></li>
+<li><a href="#bitfield_insert_u64">bitfield_insert_u64</a></li>
+<li><a href="#bitfield_insert_u8">bitfield_insert_u8</a></li>
+<li><a href="#bitfield_insert_uint">bitfield_insert_uint</a></li>
+<li><a href="#div_u32">div_u32</a></li>
+<li><a href="#div_u64">div_u64</a></li>
+<li><a href="#div_uint">div_uint</a></li>
+<li><a href="#from_be_u16">from_be_u16</a></li>
+<li><a href="#from_be_u32">from_be_u32</a></li>
+<li><a href="#from_be_u64">from_be_u64</a></li>
+<li><a href="#from_be_u8">from_be_u8</a></li>
+<li><a href="#from_be_uint">from_be_uint</a></li>
+<li><a href="#from_le_u16">from_le_u16</a></li>
+<li><a href="#from_le_u32">from_le_u32</a></li>
+<li><a href="#from_le_u64">from_le_u64</a></li>
+<li><a href="#from_le_u8">from_le_u8</a></li>
+<li><a href="#from_le_uint">from_le_uint</a></li>
+<li><a href="#is_power_of_two_i16">is_power_of_two_i16</a></li>
+<li><a href="#is_power_of_two_i32">is_power_of_two_i32</a></li>
+<li><a href="#is_power_of_two_i64">is_power_of_two_i64</a></li>
+<li><a href="#is_power_of_two_i8">is_power_of_two_i8</a></li>
+<li><a href="#is_power_of_two_int">is_power_of_two_int</a></li>
+<li><a href="#is_power_of_two_u16">is_power_of_two_u16</a></li>
+<li><a href="#is_power_of_two_u32">is_power_of_two_u32</a></li>
+<li><a href="#is_power_of_two_u64">is_power_of_two_u64</a></li>
+<li><a href="#is_power_of_two_u8">is_power_of_two_u8</a></li>
+<li><a href="#is_power_of_two_uint">is_power_of_two_uint</a></li>
+<li><a href="#len_u16">len_u16</a></li>
+<li><a href="#len_u32">len_u32</a></li>
+<li><a href="#len_u64">len_u64</a></li>
+<li><a href="#len_u8">len_u8</a></li>
+<li><a href="#len_uint">len_uint</a></li>
+<li><a href="#log2">log2</a></li>
+<li><a href="#mul_u32">mul_u32</a></li>
+<li><a href="#mul_u64">mul_u64</a></li>
+<li><a href="#mul_uint">mul_uint</a></li>
+<li><a href="#rotate_left">rotate_left</a></li>
+<li><a href="#rotate_left16">rotate_left16</a></li>
+<li><a href="#rotate_left32">rotate_left32</a></li>
+<li><a href="#rotate_left64">rotate_left64</a></li>
+<li><a href="#rotate_left8">rotate_left8</a></li>
+<li><a href="#sub_u32">sub_u32</a></li>
+<li><a href="#sub_u64">sub_u64</a></li>
+<li><a href="#sub_uint">sub_uint</a></li>
+<li><a href="#to_be_u16">to_be_u16</a></li>
+<li><a href="#to_be_u32">to_be_u32</a></li>
+<li><a href="#to_be_u64">to_be_u64</a></li>
+<li><a href="#to_be_u8">to_be_u8</a></li>
+<li><a href="#to_be_uint">to_be_uint</a></li>
+<li><a href="#to_le_u16">to_le_u16</a></li>
+<li><a href="#to_le_u32">to_le_u32</a></li>
+<li><a href="#to_le_u64">to_le_u64</a></li>
+<li><a href="#to_le_u8">to_le_u8</a></li>
+<li><a href="#to_le_uint">to_le_uint</a></li>
+</ul>
+</li>
+<li><a href="#pkg-Procedure Groups">Procedure Groups</a><ul>
+<li><a href="#add">add</a></li>
+<li><a href="#bitfield_extract">bitfield_extract</a></li>
+<li><a href="#bitfield_insert">bitfield_insert</a></li>
+<li><a href="#div">div</a></li>
+<li><a href="#is_power_of_two">is_power_of_two</a></li>
+<li><a href="#len">len</a></li>
+<li><a href="#mul">mul</a></li>
+<li><a href="#sub">sub</a></li>
+</ul>
+</li>
+<li><a href="#pkg-source-files">Source Files</a></ul>
+</nav>
+</div></div>
+</div>
+
+</div>
+</main>
+
+<footer class="odin-footer">
+	<div class="container pb-5 pt-5">
+		<div class="row g-4">
+		<div class="col">
+		<a class="navbar-brand" href="https://odin-lang.org">
+		<img class="mb-3" src="https://odin-lang.org/logo.svg" height="30" alt="Odin"></a>
+		<p>
+		The Data-Oriented Language for Sane Software Development.
+		</p>
+		</div>
+		<nav class="col-md-auto">
+			<h4 class="fw-normal">Resources</h4>
+			<ul class="list-unstyled">
+			<li><a href="https://odin-lang.org/docs" class="link-light">Docs</a></li>
+			<li><a href="https://odin-lang.org/news" class="link-light">Blog</a></li>
+			</ul>
+		</nav>
+		<nav class="col-md-auto">
+			<h4 class="fw-normal">Community</h4>
+			<ul class="list-unstyled">
+			<li><a href="https://github.com/odin-lang/Odin" target="_blank" class="link-light">GitHub</a></li>
+			<li><a href="https://discord.com/invite/sVBPHEv" target="_blank" class="link-light">Discord</a></li>
+			<li><a href="https://www.twitch.tv/ginger_bill" target="_blank" class="link-light">Twitch</a></li>
+			<li><a href="https://www.youtube.com/channel/UCUSck1dOH7VKmG4lRW7tZXg" target="_blank" class="link-light">YouTube</a></li>
+			</ul>
+		</nav>
+		<nav class="col-md-auto">
+			<h4 class="fw-normal">Contribute</h4>
+			<ul class="list-unstyled">
+			<li><a href="https://github.com/odin-lang/Odin/issues" target="_blank" class="link-light">Issues</a></li>
+			<li><a href="https://www.patreon.com/gingerbill" target="_blank" class="link-light">Donate</a></li>
+			</ul>
+			</nav>
+		</div>
+		<div class="mt-4 text-muted">© 2016–2022 Ginger Bill</div>
+	</div>
+</footer>
+
+<script src="https://odin-lang.org/lib/bootstrap/js/bootstrap.min.js"></script>
+<script src="https://odin-lang.org/js/script.js"></script>
+<script>hljs.highlightAll()</script>
+</body>
+</html>

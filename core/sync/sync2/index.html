@@ -1,0 +1,1554 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>package sync/sync2 - pkg.odin-lang.org</title>	<!-- REMEMBER TO REMOVE -->
+	<script type="text/javascript" src="https://livejs.com/live.js"></script>
+
+	<link rel="stylesheet" type="text/css" href="https://odin-lang.org/scss/custom.min.css">
+	<link rel=stylesheet href=//odin-lang.org/lib/highlight/styles/github-dark.min.css>
+	<script src=//odin-lang.org/lib/highlight/highlight.min.js></script>
+	<script>hljs.registerLanguage("odin",function(a){return{aliases:["odin","odinlang","odin-lang"],keywords:{keyword:"auto_cast bit_set break case cast context continue defer distinct do dynamic else enum fallthrough for foreign if import in map not_in or_else or_return package proc return struct switch transmute type_of typeid union using when where",literal:"true false nil",built_in:"abs align_of cap clamp complex conj expand_to_tuple imag jmag kmag len max min offset_of quaternion real size_of soa_unzip soa_zip swizzle type_info_of type_of typeid_of"},illegal:"</",contains:[a.C_LINE_COMMENT_MODE,a.C_BLOCK_COMMENT_MODE,{className:"string",variants:[a.QUOTE_STRING_MODE,{begin:"'",end:"[^\\\\]'"},{begin:"`",end:"`"}]},{className:"number",variants:[{begin:a.C_NUMBER_RE+"[ijk]",relevance:1},a.C_NUMBER_MODE]}]}})</script>
+	<script>hljs.highlightAll()</script>
+	<link rel="stylesheet" type="text/css" href="https://odin-lang.org/css/style.css">
+
+	<link rel="stylesheet" type="text/css" href="/style.css">
+
+	</style>
+</head>
+<body>
+<header class="sticky-top">
+	<nav class="navbar navbar-expand-lg navbar-dark bg-primary odin-menu">
+		<div class="container">
+			<a class="navbar-brand" href="/">
+			<img src="https://odin-lang.org/logo.svg" height="30" alt="Odin"></a>
+			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#odin-navbar-content" aria-controls="odin-navbar-content" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+			<div class="collapse navbar-collapse" id="odin-navbar-content">
+			<ul class="navbar-nav ms-md-auto">
+				<li class="nav-item"><a class="nav-link" href="https://odin-lang.org/">Home</a></li>
+				<li class="nav-item"><a class="nav-link" href="https://odin-lang.org/docs">Docs</a></li>
+				<li class="nav-item"><a class="nav-link active" href="/">Packages</a></li>
+				<li class="nav-item"><a class="nav-link" href="https://odin-lang.org/news">News</a></li>
+				<li class="nav-item"><a class="nav-link" href="https://odin-lang.org/community">Community</a></li>
+				<li class="nav-item"><a class="nav-link" href="https://github.com/odin-lang/Odin" target="_blank">GitHub</a></li>
+			</ul>
+		</div>
+		</div>
+	</nav>
+</header>
+<main>
+<div class="container"><div class="row odin-main">
+<nav id="pkg-sidebar" class="col-lg-2 odin-sidebar-border navbar-light">
+<div class="sticky-top odin-below-navbar py-3">
+<h4>Core Library</h4>
+<ul>
+<li class="nav-item"><a href="/core/bufio">bufio</a></li>
+<li class="nav-item"><a href="/core/bytes">bytes</a></li>
+<li class="nav-item"><a href="/core/c">c</a><ul>
+<li><a href="/core/c/frontend/preprocessor">frontend/preprocessor</a></li>
+<li><a href="/core/c/frontend/tokenizer">frontend/tokenizer</a></li>
+<li><a href="/core/c/libc">libc</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/compress">compress</a><ul>
+<li><a href="/core/compress/gzip">gzip</a></li>
+<li><a href="/core/compress/zlib">zlib</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/dynlib">dynlib</a></li>
+<li class="nav-item">encoding<ul>
+<li><a href="/core/encoding/base32">base32</a></li>
+<li><a href="/core/encoding/base64">base64</a></li>
+<li><a href="/core/encoding/csv">csv</a></li>
+<li><a href="/core/encoding/hxa">hxa</a></li>
+<li><a href="/core/encoding/json">json</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/fmt">fmt</a></li>
+<li class="nav-item"><a href="/core/hash">hash</a></li>
+<li class="nav-item"><a href="/core/image">image</a><ul>
+<li><a href="/core/image/png">png</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/io">io</a></li>
+<li class="nav-item"><a href="/core/log">log</a></li>
+<li class="nav-item"><a href="/core/math">math</a><ul>
+<li><a href="/core/math/big">big</a></li>
+<li><a href="/core/math/bits">bits</a></li>
+<li><a href="/core/math/fixed">fixed</a></li>
+<li><a href="/core/math/linalg">linalg</a></li>
+<li><a href="/core/math/linalg/glsl">linalg/glsl</a></li>
+<li><a href="/core/math/linalg/hlsl">linalg/hlsl</a></li>
+<li><a href="/core/math/rand">rand</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/mem">mem</a><ul>
+<li><a href="/core/mem/virtual">virtual</a></li>
+</ul>
+
+</li>
+<li class="nav-item">odin<ul>
+<li><a href="/core/odin/ast">ast</a></li>
+<li><a href="/core/odin/doc-format">doc-format</a></li>
+<li><a href="/core/odin/format">format</a></li>
+<li><a href="/core/odin/parser">parser</a></li>
+<li><a href="/core/odin/printer">printer</a></li>
+<li><a href="/core/odin/tokenizer">tokenizer</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/os">os</a></li>
+<li class="nav-item">path<ul>
+<li><a href="/core/path/filepath">filepath</a></li>
+<li><a href="/core/path/slashpath">slashpath</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/reflect">reflect</a></li>
+<li class="nav-item"><a href="/core/runtime">runtime</a></li>
+<li class="nav-item"><a href="/core/slice">slice</a></li>
+<li class="nav-item"><a href="/core/sort">sort</a></li>
+<li class="nav-item"><a href="/core/strconv">strconv</a><ul>
+<li><a href="/core/strconv/decimal">decimal</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/strings">strings</a></li>
+<li class="nav-item"><a href="/core/sync">sync</a><ul>
+<li><a class="active" href="/core/sync/sync2">sync2</a></li>
+</ul>
+
+</li>
+<li class="nav-item">text<ul>
+<li><a href="/core/text/scanner">scanner</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/thread">thread</a></li>
+<li class="nav-item"><a href="/core/time">time</a></li>
+<li class="nav-item"><a href="/core/unicode">unicode</a><ul>
+<li><a href="/core/unicode/utf16">utf16</a></li>
+<li><a href="/core/unicode/utf8">utf8</a></li>
+</ul>
+
+</li>
+</ul>
+</div>
+</nav>
+<article class="col-lg-8 p-4 documentation odin-article">
+<h1>package core:sync/sync2</h1>
+<h2>Index</h2>
+<div id="pkg-index">
+<div>
+<details open class="doc-index" id="doc-index-Types" aria-labelledby="#doc-index-Types-header">
+<summary id="#doc-index-Types-header">
+Types</summary>
+<ul>
+<li><a href="#Atomic_Cond">Atomic_Cond</a></li>
+<li><a href="#Atomic_Mutex">Atomic_Mutex</a></li>
+<li><a href="#Atomic_Mutex_State">Atomic_Mutex_State</a></li>
+<li><a href="#Atomic_RW_Mutex">Atomic_RW_Mutex</a></li>
+<li><a href="#Atomic_RW_Mutex_State">Atomic_RW_Mutex_State</a></li>
+<li><a href="#Atomic_Recursive_Mutex">Atomic_Recursive_Mutex</a></li>
+<li><a href="#Atomic_Sema">Atomic_Sema</a></li>
+<li><a href="#Auto_Reset_Event">Auto_Reset_Event</a></li>
+<li><a href="#Barrier">Barrier</a></li>
+<li><a href="#Benaphore">Benaphore</a></li>
+<li><a href="#Cond">Cond</a></li>
+<li><a href="#Futex">Futex</a></li>
+<li><a href="#Mutex">Mutex</a></li>
+<li><a href="#Once">Once</a></li>
+<li><a href="#RW_Mutex">RW_Mutex</a></li>
+<li><a href="#Recursive_Benaphore">Recursive_Benaphore</a></li>
+<li><a href="#Recursive_Mutex">Recursive_Mutex</a></li>
+<li><a href="#Sema">Sema</a></li>
+<li><a href="#Ticket_Mutex">Ticket_Mutex</a></li>
+<li><a href="#Wait_Group">Wait_Group</a></li>
+</ul>
+</details>
+</div>
+<div>
+<details open class="doc-index" id="doc-index-Constants" aria-labelledby="#doc-index-Constants-header">
+<summary id="#doc-index-Constants-header">
+Constants</summary>
+<ul>
+<li><a href="#Atomic_RW_Mutex_State_Half_Width">Atomic_RW_Mutex_State_Half_Width</a></li>
+<li><a href="#Atomic_RW_Mutex_State_Is_Writing">Atomic_RW_Mutex_State_Is_Writing</a></li>
+<li><a href="#Atomic_RW_Mutex_State_Reader">Atomic_RW_Mutex_State_Reader</a></li>
+<li><a href="#Atomic_RW_Mutex_State_Reader_Mask">Atomic_RW_Mutex_State_Reader_Mask</a></li>
+<li><a href="#Atomic_RW_Mutex_State_Writer">Atomic_RW_Mutex_State_Writer</a></li>
+<li><a href="#Atomic_RW_Mutex_State_Writer_Mask">Atomic_RW_Mutex_State_Writer_Mask</a></li>
+</ul>
+</details>
+</div>
+<div>
+<details open class="doc-index" id="doc-index-Variables" aria-labelledby="#doc-index-Variables-header">
+<summary id="#doc-index-Variables-header">
+Variables</summary>
+<p>This section is empty.</p>
+</details>
+</div>
+<div>
+<details open class="doc-index" id="doc-index-Procedures" aria-labelledby="#doc-index-Procedures-header">
+<summary id="#doc-index-Procedures-header">
+Procedures</summary>
+<ul>
+<li><a href="#atomic_cond_broadcast">atomic_cond_broadcast</a></li>
+<li><a href="#atomic_cond_signal">atomic_cond_signal</a></li>
+<li><a href="#atomic_cond_wait_with_timeout">atomic_cond_wait_with_timeout</a></li>
+<li><a href="#atomic_cond_wait">atomic_cond_wait</a></li>
+<li><a href="#atomic_mutex_guard">atomic_mutex_guard</a></li>
+<li><a href="#atomic_mutex_lock">atomic_mutex_lock</a></li>
+<li><a href="#atomic_mutex_try_lock">atomic_mutex_try_lock</a></li>
+<li><a href="#atomic_mutex_unlock">atomic_mutex_unlock</a></li>
+<li><a href="#atomic_recursive_mutex_guard">atomic_recursive_mutex_guard</a></li>
+<li><a href="#atomic_recursive_mutex_lock">atomic_recursive_mutex_lock</a></li>
+<li><a href="#atomic_recursive_mutex_try_lock">atomic_recursive_mutex_try_lock</a></li>
+<li><a href="#atomic_recursive_mutex_unlock">atomic_recursive_mutex_unlock</a></li>
+<li><a href="#atomic_rw_mutex_guard">atomic_rw_mutex_guard</a></li>
+<li><a href="#atomic_rw_mutex_lock">atomic_rw_mutex_lock</a></li>
+<li><a href="#atomic_rw_mutex_shared_guard">atomic_rw_mutex_shared_guard</a></li>
+<li><a href="#atomic_rw_mutex_shared_lock">atomic_rw_mutex_shared_lock</a></li>
+<li><a href="#atomic_rw_mutex_shared_unlock">atomic_rw_mutex_shared_unlock</a></li>
+<li><a href="#atomic_rw_mutex_try_lock">atomic_rw_mutex_try_lock</a></li>
+<li><a href="#atomic_rw_mutex_try_shared_lock">atomic_rw_mutex_try_shared_lock</a></li>
+<li><a href="#atomic_rw_mutex_unlock">atomic_rw_mutex_unlock</a></li>
+<li><a href="#atomic_sema_post">atomic_sema_post</a></li>
+<li><a href="#atomic_sema_wait">atomic_sema_wait</a></li>
+<li><a href="#atomic_sema_wait_with_timeout">atomic_sema_wait_with_timeout</a></li>
+<li><a href="#auto_reset_event_signal">auto_reset_event_signal</a></li>
+<li><a href="#auto_reset_event_wait">auto_reset_event_wait</a></li>
+<li><a href="#barrier_init">barrier_init</a></li>
+<li><a href="#barrier_wait">barrier_wait</a></li>
+<li><a href="#benaphore_guard">benaphore_guard</a></li>
+<li><a href="#benaphore_lock">benaphore_lock</a></li>
+<li><a href="#benaphore_try_lock">benaphore_try_lock</a></li>
+<li><a href="#benaphore_unlock">benaphore_unlock</a></li>
+<li><a href="#cond_broadcast">cond_broadcast</a></li>
+<li><a href="#cond_signal">cond_signal</a></li>
+<li><a href="#cond_wait">cond_wait</a></li>
+<li><a href="#cond_wait_with_timeout">cond_wait_with_timeout</a></li>
+<li><a href="#current_thread_id">current_thread_id</a></li>
+<li><a href="#futex_broadcast">futex_broadcast</a></li>
+<li><a href="#futex_signal">futex_signal</a></li>
+<li><a href="#futex_wait">futex_wait</a></li>
+<li><a href="#futex_wait_with_timeout">futex_wait_with_timeout</a></li>
+<li><a href="#mutex_guard">mutex_guard</a></li>
+<li><a href="#mutex_lock">mutex_lock</a></li>
+<li><a href="#mutex_try_lock">mutex_try_lock</a></li>
+<li><a href="#mutex_unlock">mutex_unlock</a></li>
+<li><a href="#once_do">once_do</a></li>
+<li><a href="#recursive_benaphore_guard">recursive_benaphore_guard</a></li>
+<li><a href="#recursive_benaphore_lock">recursive_benaphore_lock</a></li>
+<li><a href="#recursive_benaphore_try_lock">recursive_benaphore_try_lock</a></li>
+<li><a href="#recursive_benaphore_unlock">recursive_benaphore_unlock</a></li>
+<li><a href="#recursive_mutex_guard">recursive_mutex_guard</a></li>
+<li><a href="#recursive_mutex_lock">recursive_mutex_lock</a></li>
+<li><a href="#recursive_mutex_try_lock">recursive_mutex_try_lock</a></li>
+<li><a href="#recursive_mutex_unlock">recursive_mutex_unlock</a></li>
+<li><a href="#rw_mutex_guard">rw_mutex_guard</a></li>
+<li><a href="#rw_mutex_lock">rw_mutex_lock</a></li>
+<li><a href="#rw_mutex_shared_guard">rw_mutex_shared_guard</a></li>
+<li><a href="#rw_mutex_shared_lock">rw_mutex_shared_lock</a></li>
+<li><a href="#rw_mutex_shared_unlock">rw_mutex_shared_unlock</a></li>
+<li><a href="#rw_mutex_try_lock">rw_mutex_try_lock</a></li>
+<li><a href="#rw_mutex_try_shared_lock">rw_mutex_try_shared_lock</a></li>
+<li><a href="#rw_mutex_unlock">rw_mutex_unlock</a></li>
+<li><a href="#sema_post">sema_post</a></li>
+<li><a href="#sema_wait_with_timeout">sema_wait_with_timeout</a></li>
+<li><a href="#sema_wait">sema_wait</a></li>
+<li><a href="#ticket_mutex_guard">ticket_mutex_guard</a></li>
+<li><a href="#ticket_mutex_lock">ticket_mutex_lock</a></li>
+<li><a href="#ticket_mutex_unlock">ticket_mutex_unlock</a></li>
+<li><a href="#wait_group_add">wait_group_add</a></li>
+<li><a href="#wait_group_done">wait_group_done</a></li>
+<li><a href="#wait_group_wait">wait_group_wait</a></li>
+<li><a href="#wait_group_wait_with_timeout">wait_group_wait_with_timeout</a></li>
+</ul>
+</details>
+</div>
+<div>
+<details open class="doc-index" id="doc-index-Procedure Groups" aria-labelledby="#doc-index-Procedure Groups-header">
+<summary id="#doc-index-Procedure Groups-header">
+Procedure Groups</summary>
+<ul>
+<li><a href="#broadcast">broadcast</a></li>
+<li><a href="#guard">guard</a></li>
+<li><a href="#lock">lock</a></li>
+<li><a href="#post">post</a></li>
+<li><a href="#shared_guard">shared_guard</a></li>
+<li><a href="#shared_lock">shared_lock</a></li>
+<li><a href="#shared_unlock">shared_unlock</a></li>
+<li><a href="#signal">signal</a></li>
+<li><a href="#try_lock">try_lock</a></li>
+<li><a href="#try_shared_lock">try_shared_lock</a></li>
+<li><a href="#unlock">unlock</a></li>
+<li><a href="#wait">wait</a></li>
+<li><a href="#wait_with_timeout">wait_with_timeout</a></li>
+</ul>
+</details>
+</div>
+</div>
+<h2 id="pkg-Types">Types</h2>
+<section class="documentation">
+<div class="pkg-entity">
+<h3 id="Atomic_Cond"><span><a class="doc-id-link" href="#Atomic_Cond">Atomic_Cond<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/primitives_atomic.odin#L325"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Atomic_Cond :: struct {
+	queue_mutex: <a class="code-typename" href="/sync/sync2/#Atomic_Mutex">Atomic_Mutex</a>,
+	queue_head:  ^Queue_Item,
+	pending:     <a href="">bool</a>,
+}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Atomic_Cond implements a condition variable, a rendezvous point for threads
+waiting for signalling the occurence of an event</p>
+<p>An Atomic_Cond must not be copied after first use</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="Atomic_Mutex"><span><a class="doc-id-link" href="#Atomic_Mutex">Atomic_Mutex<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/primitives_atomic.odin#L16"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Atomic_Mutex :: struct {
+	state: <a class="code-typename" href="/sync/sync2/#Atomic_Mutex_State">Atomic_Mutex_State</a>,
+}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>An Atomic_Mutex is a mutual exclusion lock
+The zero value for a Atomic_Mutex is an unlocked mutex</p>
+<p>An Atomic_Mutex must not be copied after first use</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="Atomic_Mutex_State"><span><a class="doc-id-link" href="#Atomic_Mutex_State">Atomic_Mutex_State<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/primitives_atomic.odin#L5"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Atomic_Mutex_State :: enum <a class="code-typename" href="/sync/sync2/#Futex">Futex</a> {
+	Unlocked = 0, 
+	Locked   = 1, 
+	Waiting  = 2, 
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Atomic_RW_Mutex"><span><a class="doc-id-link" href="#Atomic_RW_Mutex">Atomic_RW_Mutex<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/primitives_atomic.odin#L113"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Atomic_RW_Mutex :: struct {
+	state: <a class="code-typename" href="/sync/sync2/#Atomic_RW_Mutex_State">Atomic_RW_Mutex_State</a>,
+	mutex: <a class="code-typename" href="/sync/sync2/#Atomic_Mutex">Atomic_Mutex</a>,
+	sema:  <a class="code-typename" href="/sync/sync2/#Atomic_Sema">Atomic_Sema</a>,
+}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>An Atomic_RW_Mutex is a reader/writer mutual exclusion lock
+The lock can be held by any arbitrary number of readers or a single writer
+The zero value for an Atomic_RW_Mutex is an unlocked mutex</p>
+<p>An Atomic_RW_Mutex must not be copied after first use</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="Atomic_RW_Mutex_State"><span><a class="doc-id-link" href="#Atomic_RW_Mutex_State">Atomic_RW_Mutex_State<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/primitives_atomic.odin#L98"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Atomic_RW_Mutex_State :: distinct <a href="">uint</a></pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Atomic_Recursive_Mutex"><span><a class="doc-id-link" href="#Atomic_Recursive_Mutex">Atomic_Recursive_Mutex<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/primitives_atomic.odin#L226"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Atomic_Recursive_Mutex :: struct {
+	owner:     <a href="">int</a>,
+	recursion: <a href="">int</a>,
+	mutex:     <a class="code-typename" href="/sync/sync2/#Mutex">Mutex</a>,
+}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>An Atomic_Recursive_Mutex is a recursive mutual exclusion lock
+The zero value for a Recursive_Mutex is an unlocked mutex</p>
+<p>An Atomic_Recursive_Mutex must not be copied after first use</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="Atomic_Sema"><span><a class="doc-id-link" href="#Atomic_Sema">Atomic_Sema<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/primitives_atomic.odin#L403"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Atomic_Sema :: struct {
+	mutex: <a class="code-typename" href="/sync/sync2/#Atomic_Mutex">Atomic_Mutex</a>,
+	cond:  <a class="code-typename" href="/sync/sync2/#Atomic_Cond">Atomic_Cond</a>,
+	count: <a href="">int</a>,
+}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>When waited upon, blocks until the internal count is greater than zero, then subtracts one.
+Posting to the semaphore increases the count by one, or the provided amount.</p>
+<p>An Atomic_Sema must not be copied after first use</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="Auto_Reset_Event"><span><a class="doc-id-link" href="#Auto_Reset_Event">Auto_Reset_Event<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/extended.odin#L140"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Auto_Reset_Event :: struct {
+	status: <a href="">i32</a>,
+	sema:   <a class="code-typename" href="/sync/sync2/#Sema">Sema</a>,
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Barrier"><span><a class="doc-id-link" href="#Barrier">Barrier<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/extended.odin#L105"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Barrier :: struct {
+	mutex:         <a class="code-typename" href="/sync/sync2/#Mutex">Mutex</a>,
+	cond:          <a class="code-typename" href="/sync/sync2/#Cond">Cond</a>,
+	index:         <a href="">int</a>,
+	generation_id: <a href="">int</a>,
+	thread_count:  <a href="">int</a>,
+}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>A barrier enabling multiple threads to synchronize the beginning of some computation</p>
+<p></p>
+<details open class="code-example">
+<summary>Example:</summary>
+<pre><code class="hljs" data-lang="odin">package example
+
+import "core:fmt"
+import "core:sync"
+import "core:thread"
+
+barrier := &sync.Barrier{}
+
+main :: proc() {
+	fmt.println("Start")
+
+	THREAD_COUNT :: 4
+	threads: [THREAD_COUNT]^thread.Thread
+
+	sync.barrier_init(barrier, THREAD_COUNT)
+
+	for _, i in threads {
+		threads[i] = thread.create_and_start(proc(t: ^thread.Thread) {
+			// Same messages will be printed together but without any interleaving
+			fmt.println("Getting ready!")
+			sync.barrier_wait(barrier)
+			fmt.println("Off their marks they go!")
+		})
+	}
+
+	for t in threads {
+		thread.destroy(t) // join and free thread
+	}
+	fmt.println("Finished")
+}
+</code></pre>
+</details>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="Benaphore"><span><a class="doc-id-link" href="#Benaphore">Benaphore<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/extended.odin#L193"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Benaphore :: struct {
+	counter: <a href="">i32</a>,
+	sema:    <a class="code-typename" href="/sync/sync2/#Sema">Sema</a>,
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Cond"><span><a class="doc-id-link" href="#Cond">Cond<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/primitives.odin#L146"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Cond :: struct {
+	impl: _Cond,
+}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Cond implements a condition variable, a rendezvous point for threads
+waiting for signalling the occurence of an event</p>
+<p>A Cond must not be copied after first use</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="Futex"><span><a class="doc-id-link" href="#Futex">Futex<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/primitives.odin#L195"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Futex :: distinct <a href="">u32</a></pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Futex is a fast userspace mutual exclusion lock, using a 32-bit memory address as a hint</p>
+<p>An Futex must not be copied after first use</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="Mutex"><span><a class="doc-id-link" href="#Mutex">Mutex<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/primitives.odin#L13"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Mutex :: struct {
+	impl: _Mutex,
+}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>A Mutex is a mutual exclusion lock
+The zero value for a Mutex is an unlocked mutex</p>
+<p>A Mutex must not be copied after first use</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="Once"><span><a class="doc-id-link" href="#Once">Once<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/extended.odin#L283"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Once :: struct {
+	m:    <a class="code-typename" href="/sync/sync2/#Mutex">Mutex</a>,
+	done: <a href="">bool</a>,
+}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Once is a data value that will perform exactly on action.</p>
+<p>A Once must not be copied after first use.</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="RW_Mutex"><span><a class="doc-id-link" href="#RW_Mutex">RW_Mutex<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/primitives.odin#L49"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">RW_Mutex :: struct {
+	impl: _RW_Mutex,
+}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>A RW_Mutex is a reader/writer mutual exclusion lock
+The lock can be held by any arbitrary number of readers or a single writer
+The zero value for a RW_Mutex is an unlocked mutex</p>
+<p>A RW_Mutex must not be copied after first use</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="Recursive_Benaphore"><span><a class="doc-id-link" href="#Recursive_Benaphore">Recursive_Benaphore<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/extended.odin#L221"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Recursive_Benaphore :: struct {
+	counter:   <a href="">int</a>,
+	owner:     <a href="">int</a>,
+	recursion: <a href="">i32</a>,
+	sema:      <a class="code-typename" href="/sync/sync2/#Sema">Sema</a>,
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Recursive_Mutex"><span><a class="doc-id-link" href="#Recursive_Mutex">Recursive_Mutex<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/primitives.odin#L113"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Recursive_Mutex :: struct {
+	impl: _Recursive_Mutex,
+}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>A Recursive_Mutex is a recursive mutual exclusion lock
+The zero value for a Recursive_Mutex is an unlocked mutex</p>
+<p>A Recursive_Mutex must not be copied after first use</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="Sema"><span><a class="doc-id-link" href="#Sema">Sema<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/primitives.odin#L174"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Sema :: struct {
+	impl: _Sema,
+}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>When waited upon, blocks until the internal count is greater than zero, then subtracts one.
+Posting to the semaphore increases the count by one, or the provided amount.</p>
+<p>A Sema must not be copied after first use</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="Ticket_Mutex"><span><a class="doc-id-link" href="#Ticket_Mutex">Ticket_Mutex<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/extended.odin#L171"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Ticket_Mutex :: struct {
+	ticket:  <a href="">uint</a>,
+	serving: <a href="">uint</a>,
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Wait_Group"><span><a class="doc-id-link" href="#Wait_Group">Wait_Group<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/extended.odin#L8"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Wait_Group :: struct {
+	counter: <a href="">int</a>,
+	mutex:   <a class="code-typename" href="/sync/sync2/#Mutex">Mutex</a>,
+	cond:    <a class="code-typename" href="/sync/sync2/#Cond">Cond</a>,
+}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>A Wait_Group waits for a collection of threads to finish</p>
+<p>A Wait_Group must not be copied after first use</p>
+</details>
+</div>
+</section>
+<h2 id="pkg-Constants">Constants</h2>
+<section class="documentation">
+<div class="pkg-entity">
+<h3 id="Atomic_RW_Mutex_State_Half_Width"><span><a class="doc-id-link" href="#Atomic_RW_Mutex_State_Half_Width">Atomic_RW_Mutex_State_Half_Width<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/primitives_atomic.odin#L99"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Atomic_RW_Mutex_State_Half_Width :: size_of(Atomic_RW_Mutex_State) * 8 / 2</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Atomic_RW_Mutex_State_Is_Writing"><span><a class="doc-id-link" href="#Atomic_RW_Mutex_State_Is_Writing">Atomic_RW_Mutex_State_Is_Writing<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/primitives_atomic.odin#L100"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Atomic_RW_Mutex_State_Is_Writing :: Atomic_RW_Mutex_State(1)</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Atomic_RW_Mutex_State_Reader"><span><a class="doc-id-link" href="#Atomic_RW_Mutex_State_Reader">Atomic_RW_Mutex_State_Reader<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/primitives_atomic.odin#L102"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Atomic_RW_Mutex_State_Reader :: Atomic_RW_Mutex_State(1) << Atomic_RW_Mutex_State_Half_Width</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Atomic_RW_Mutex_State_Reader_Mask"><span><a class="doc-id-link" href="#Atomic_RW_Mutex_State_Reader_Mask">Atomic_RW_Mutex_State_Reader_Mask<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/primitives_atomic.odin#L105"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Atomic_RW_Mutex_State_Reader_Mask :: Atomic_RW_Mutex_State(1 << (Atomic_RW_Mutex_State_Half_Width - 1) - 1) << Atomic_RW_Mutex_State_Half_Width</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Atomic_RW_Mutex_State_Writer"><span><a class="doc-id-link" href="#Atomic_RW_Mutex_State_Writer">Atomic_RW_Mutex_State_Writer<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/primitives_atomic.odin#L101"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Atomic_RW_Mutex_State_Writer :: Atomic_RW_Mutex_State(1) << 1</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Atomic_RW_Mutex_State_Writer_Mask"><span><a class="doc-id-link" href="#Atomic_RW_Mutex_State_Writer_Mask">Atomic_RW_Mutex_State_Writer_Mask<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/primitives_atomic.odin#L104"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Atomic_RW_Mutex_State_Writer_Mask :: Atomic_RW_Mutex_State(1 << (Atomic_RW_Mutex_State_Half_Width - 1) - 1) << 1</pre>
+</div>
+</div>
+</section>
+<h2 id="pkg-Variables">Variables</h2>
+<section class="documentation">
+<p>This section is empty.</p>
+</section>
+<h2 id="pkg-Procedures">Procedures</h2>
+<section class="documentation">
+<div class="pkg-entity">
+<h3 id="atomic_cond_broadcast"><span><a class="doc-id-link" href="#atomic_cond_broadcast">atomic_cond_broadcast<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/primitives_atomic.odin#L381"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">atomic_cond_broadcast :: proc(c: ^<a class="code-typename" href="/sync/sync2/#Atomic_Cond">Atomic_Cond</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="atomic_cond_signal"><span><a class="doc-id-link" href="#atomic_cond_signal">atomic_cond_signal<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/primitives_atomic.odin#L363"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">atomic_cond_signal :: proc(c: ^<a class="code-typename" href="/sync/sync2/#Atomic_Cond">Atomic_Cond</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="atomic_cond_wait_with_timeout"><span><a class="doc-id-link" href="#atomic_cond_wait_with_timeout">atomic_cond_wait_with_timeout<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/primitives_atomic.odin#L346"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">atomic_cond_wait_with_timeout :: proc(c: ^<a class="code-typename" href="/sync/sync2/#Atomic_Cond">Atomic_Cond</a>, m: ^<a class="code-typename" href="/sync/sync2/#Atomic_Mutex">Atomic_Mutex</a>, duration: time.<a class="code-typename" href="/time/#Duration">Duration</a>) -> (ok: <a href="">bool</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="atomic_cond_wait"><span><a class="doc-id-link" href="#atomic_cond_wait">atomic_cond_wait<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/primitives_atomic.odin#L331"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">atomic_cond_wait :: proc(c: ^<a class="code-typename" href="/sync/sync2/#Atomic_Cond">Atomic_Cond</a>, m: ^<a class="code-typename" href="/sync/sync2/#Atomic_Mutex">Atomic_Mutex</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="atomic_mutex_guard"><span><a class="doc-id-link" href="#atomic_mutex_guard">atomic_mutex_guard<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/primitives_atomic.odin#L92"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">atomic_mutex_guard :: proc(m: ^<a class="code-typename" href="/sync/sync2/#Atomic_Mutex">Atomic_Mutex</a>) -> <a href="">bool</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="atomic_mutex_lock"><span><a class="doc-id-link" href="#atomic_mutex_lock">atomic_mutex_lock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/primitives_atomic.odin#L21"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">atomic_mutex_lock :: proc(m: ^<a class="code-typename" href="/sync/sync2/#Atomic_Mutex">Atomic_Mutex</a>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>atomic_mutex_lock locks m</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="atomic_mutex_try_lock"><span><a class="doc-id-link" href="#atomic_mutex_try_lock">atomic_mutex_try_lock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/primitives_atomic.odin#L80"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">atomic_mutex_try_lock :: proc(m: ^<a class="code-typename" href="/sync/sync2/#Atomic_Mutex">Atomic_Mutex</a>) -> <a href="">bool</a> {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>atomic_mutex_try_lock tries to lock m, will return true on success, and false on failure</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="atomic_mutex_unlock"><span><a class="doc-id-link" href="#atomic_mutex_unlock">atomic_mutex_unlock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/primitives_atomic.odin#L62"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">atomic_mutex_unlock :: proc(m: ^<a class="code-typename" href="/sync/sync2/#Atomic_Mutex">Atomic_Mutex</a>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>atomic_mutex_unlock unlocks m</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="atomic_recursive_mutex_guard"><span><a class="doc-id-link" href="#atomic_recursive_mutex_guard">atomic_recursive_mutex_guard<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/primitives_atomic.odin#L278"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">atomic_recursive_mutex_guard :: proc(m: ^<a class="code-typename" href="/sync/sync2/#Atomic_Recursive_Mutex">Atomic_Recursive_Mutex</a>) -> <a href="">bool</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="atomic_recursive_mutex_lock"><span><a class="doc-id-link" href="#atomic_recursive_mutex_lock">atomic_recursive_mutex_lock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/primitives_atomic.odin#L232"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">atomic_recursive_mutex_lock :: proc(m: ^<a class="code-typename" href="/sync/sync2/#Atomic_Recursive_Mutex">Atomic_Recursive_Mutex</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="atomic_recursive_mutex_try_lock"><span><a class="doc-id-link" href="#atomic_recursive_mutex_try_lock">atomic_recursive_mutex_try_lock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/primitives_atomic.odin#L257"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">atomic_recursive_mutex_try_lock :: proc(m: ^<a class="code-typename" href="/sync/sync2/#Atomic_Recursive_Mutex">Atomic_Recursive_Mutex</a>) -> <a href="">bool</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="atomic_recursive_mutex_unlock"><span><a class="doc-id-link" href="#atomic_recursive_mutex_unlock">atomic_recursive_mutex_unlock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/primitives_atomic.odin#L242"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">atomic_recursive_mutex_unlock :: proc(m: ^<a class="code-typename" href="/sync/sync2/#Atomic_Recursive_Mutex">Atomic_Recursive_Mutex</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="atomic_rw_mutex_guard"><span><a class="doc-id-link" href="#atomic_rw_mutex_guard">atomic_rw_mutex_guard<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/primitives_atomic.odin#L202"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">atomic_rw_mutex_guard :: proc(m: ^<a class="code-typename" href="/sync/sync2/#Atomic_RW_Mutex">Atomic_RW_Mutex</a>) -> <a href="">bool</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="atomic_rw_mutex_lock"><span><a class="doc-id-link" href="#atomic_rw_mutex_lock">atomic_rw_mutex_lock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/primitives_atomic.odin#L121"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">atomic_rw_mutex_lock :: proc(rw: ^<a class="code-typename" href="/sync/sync2/#Atomic_RW_Mutex">Atomic_RW_Mutex</a>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>atomic_rw_mutex_lock locks rw for writing (with a single writer)
+If the mutex is already locked for reading or writing, the mutex blocks until the mutex is available.</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="atomic_rw_mutex_shared_guard"><span><a class="doc-id-link" href="#atomic_rw_mutex_shared_guard">atomic_rw_mutex_shared_guard<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/primitives_atomic.odin#L214"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">atomic_rw_mutex_shared_guard :: proc(m: ^<a class="code-typename" href="/sync/sync2/#Atomic_RW_Mutex">Atomic_RW_Mutex</a>) -> <a href="">bool</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="atomic_rw_mutex_shared_lock"><span><a class="doc-id-link" href="#atomic_rw_mutex_shared_lock">atomic_rw_mutex_shared_lock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/primitives_atomic.odin#L152"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">atomic_rw_mutex_shared_lock :: proc(rw: ^<a class="code-typename" href="/sync/sync2/#Atomic_RW_Mutex">Atomic_RW_Mutex</a>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>atomic_rw_mutex_shared_lock locks rw for reading (with arbitrary number of readers)</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="atomic_rw_mutex_shared_unlock"><span><a class="doc-id-link" href="#atomic_rw_mutex_shared_unlock">atomic_rw_mutex_shared_unlock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/primitives_atomic.odin#L168"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">atomic_rw_mutex_shared_unlock :: proc(rw: ^<a class="code-typename" href="/sync/sync2/#Atomic_RW_Mutex">Atomic_RW_Mutex</a>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>atomic_rw_mutex_shared_unlock unlocks rw for reading (with arbitrary number of readers)</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="atomic_rw_mutex_try_lock"><span><a class="doc-id-link" href="#atomic_rw_mutex_try_lock">atomic_rw_mutex_try_lock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/primitives_atomic.odin#L138"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">atomic_rw_mutex_try_lock :: proc(m: ^<a class="code-typename" href="/sync/sync2/#Atomic_RW_Mutex">Atomic_RW_Mutex</a>) -> <a href="">bool</a> {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>atomic_rw_mutex_try_lock tries to lock rw for writing (with a single writer)</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="atomic_rw_mutex_try_shared_lock"><span><a class="doc-id-link" href="#atomic_rw_mutex_try_shared_lock">atomic_rw_mutex_try_shared_lock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/primitives_atomic.odin#L178"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">atomic_rw_mutex_try_shared_lock :: proc(m: ^<a class="code-typename" href="/sync/sync2/#Atomic_RW_Mutex">Atomic_RW_Mutex</a>) -> <a href="">bool</a> {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>atomic_rw_mutex_try_shared_lock tries to lock rw for reading (with arbitrary number of readers)</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="atomic_rw_mutex_unlock"><span><a class="doc-id-link" href="#atomic_rw_mutex_unlock">atomic_rw_mutex_unlock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/primitives_atomic.odin#L132"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">atomic_rw_mutex_unlock :: proc(rw: ^<a class="code-typename" href="/sync/sync2/#Atomic_RW_Mutex">Atomic_RW_Mutex</a>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>atomic_rw_mutex_unlock unlocks rw for writing (with a single writer)</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="atomic_sema_post"><span><a class="doc-id-link" href="#atomic_sema_post">atomic_sema_post<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/primitives_atomic.odin#L409"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">atomic_sema_post :: proc(s: ^<a class="code-typename" href="/sync/sync2/#Atomic_Sema">Atomic_Sema</a>, count: <a href="">int</a> = 1) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="atomic_sema_wait"><span><a class="doc-id-link" href="#atomic_sema_wait">atomic_sema_wait<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/primitives_atomic.odin#L417"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">atomic_sema_wait :: proc(s: ^<a class="code-typename" href="/sync/sync2/#Atomic_Sema">Atomic_Sema</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="atomic_sema_wait_with_timeout"><span><a class="doc-id-link" href="#atomic_sema_wait_with_timeout">atomic_sema_wait_with_timeout<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/primitives_atomic.odin#L431"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">atomic_sema_wait_with_timeout :: proc(s: ^<a class="code-typename" href="/sync/sync2/#Atomic_Sema">Atomic_Sema</a>, duration: time.<a class="code-typename" href="/time/#Duration">Duration</a>) -> <a href="">bool</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="auto_reset_event_signal"><span><a class="doc-id-link" href="#auto_reset_event_signal">auto_reset_event_signal<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/extended.odin#L148"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">auto_reset_event_signal :: proc(e: ^<a class="code-typename" href="/sync/sync2/#Auto_Reset_Event">Auto_Reset_Event</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="auto_reset_event_wait"><span><a class="doc-id-link" href="#auto_reset_event_wait">auto_reset_event_wait<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/extended.odin#L162"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">auto_reset_event_wait :: proc(e: ^<a class="code-typename" href="/sync/sync2/#Auto_Reset_Event">Auto_Reset_Event</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="barrier_init"><span><a class="doc-id-link" href="#barrier_init">barrier_init<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/extended.odin#L113"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">barrier_init :: proc(b: ^<a class="code-typename" href="/sync/sync2/#Barrier">Barrier</a>, thread_count: <a href="">int</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="barrier_wait"><span><a class="doc-id-link" href="#barrier_wait">barrier_wait<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/extended.odin#L121"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">barrier_wait :: proc(b: ^<a class="code-typename" href="/sync/sync2/#Barrier">Barrier</a>) -> (is_leader: <a href="">bool</a>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Block the current thread until all threads have rendezvoused
+Barrier can be reused after all threads rendezvoused once, and can be used continuously</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="benaphore_guard"><span><a class="doc-id-link" href="#benaphore_guard">benaphore_guard<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/extended.odin#L216"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">benaphore_guard :: proc(m: ^<a class="code-typename" href="/sync/sync2/#Benaphore">Benaphore</a>) -> <a href="">bool</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="benaphore_lock"><span><a class="doc-id-link" href="#benaphore_lock">benaphore_lock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/extended.odin#L198"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">benaphore_lock :: proc(b: ^<a class="code-typename" href="/sync/sync2/#Benaphore">Benaphore</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="benaphore_try_lock"><span><a class="doc-id-link" href="#benaphore_try_lock">benaphore_try_lock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/extended.odin#L204"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">benaphore_try_lock :: proc(m: ^<a class="code-typename" href="/sync/sync2/#Benaphore">Benaphore</a>) -> <a href="">bool</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="benaphore_unlock"><span><a class="doc-id-link" href="#benaphore_unlock">benaphore_unlock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/extended.odin#L209"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">benaphore_unlock :: proc(b: ^<a class="code-typename" href="/sync/sync2/#Benaphore">Benaphore</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="cond_broadcast"><span><a class="doc-id-link" href="#cond_broadcast">cond_broadcast<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/primitives.odin#L165"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">cond_broadcast :: proc(c: ^<a class="code-typename" href="/sync/sync2/#Cond">Cond</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="cond_signal"><span><a class="doc-id-link" href="#cond_signal">cond_signal<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/primitives.odin#L161"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">cond_signal :: proc(c: ^<a class="code-typename" href="/sync/sync2/#Cond">Cond</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="cond_wait"><span><a class="doc-id-link" href="#cond_wait">cond_wait<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/primitives.odin#L150"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">cond_wait :: proc(c: ^<a class="code-typename" href="/sync/sync2/#Cond">Cond</a>, m: ^<a class="code-typename" href="/sync/sync2/#Mutex">Mutex</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="cond_wait_with_timeout"><span><a class="doc-id-link" href="#cond_wait_with_timeout">cond_wait_with_timeout<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/primitives.odin#L154"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">cond_wait_with_timeout :: proc(c: ^<a class="code-typename" href="/sync/sync2/#Cond">Cond</a>, m: ^<a class="code-typename" href="/sync/sync2/#Mutex">Mutex</a>, duration: time.<a class="code-typename" href="/time/#Duration">Duration</a>) -> <a href="">bool</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="current_thread_id"><span><a class="doc-id-link" href="#current_thread_id">current_thread_id<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/primitives.odin#L5"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">current_thread_id :: proc "contextless" () -> <a href="">int</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="futex_broadcast"><span><a class="doc-id-link" href="#futex_broadcast">futex_broadcast<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/primitives.odin#L221"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">futex_broadcast :: proc(f: ^<a class="code-typename" href="/sync/sync2/#Futex">Futex</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="futex_signal"><span><a class="doc-id-link" href="#futex_signal">futex_signal<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/primitives.odin#L217"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">futex_signal :: proc(f: ^<a class="code-typename" href="/sync/sync2/#Futex">Futex</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="futex_wait"><span><a class="doc-id-link" href="#futex_wait">futex_wait<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/primitives.odin#L197"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">futex_wait :: proc(f: ^<a class="code-typename" href="/sync/sync2/#Futex">Futex</a>, expected: <a href="">u32</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="futex_wait_with_timeout"><span><a class="doc-id-link" href="#futex_wait_with_timeout">futex_wait_with_timeout<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/primitives.odin#L206"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">futex_wait_with_timeout :: proc(f: ^<a class="code-typename" href="/sync/sync2/#Futex">Futex</a>, expected: <a href="">u32</a>, duration: time.<a class="code-typename" href="/time/#Duration">Duration</a>) -> <a href="">bool</a> {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>returns true if the wait happened within the duration, false if it exceeded the time duration</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="mutex_guard"><span><a class="doc-id-link" href="#mutex_guard">mutex_guard<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/primitives.odin#L39"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">mutex_guard :: proc(m: ^<a class="code-typename" href="/sync/sync2/#Mutex">Mutex</a>) -> <a href="">bool</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="mutex_lock"><span><a class="doc-id-link" href="#mutex_lock">mutex_lock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/primitives.odin#L18"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">mutex_lock :: proc(m: ^<a class="code-typename" href="/sync/sync2/#Mutex">Mutex</a>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>mutex_lock locks m</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="mutex_try_lock"><span><a class="doc-id-link" href="#mutex_try_lock">mutex_try_lock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/primitives.odin#L28"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">mutex_try_lock :: proc(m: ^<a class="code-typename" href="/sync/sync2/#Mutex">Mutex</a>) -> <a href="">bool</a> {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>mutex_try_lock tries to lock m, will return true on success, and false on failure</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="mutex_unlock"><span><a class="doc-id-link" href="#mutex_unlock">mutex_unlock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/primitives.odin#L23"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">mutex_unlock :: proc(m: ^<a class="code-typename" href="/sync/sync2/#Mutex">Mutex</a>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>mutex_unlock unlocks m</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="once_do"><span><a class="doc-id-link" href="#once_do">once_do<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/extended.odin#L289"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">once_do :: proc(o: ^<a class="code-typename" href="/sync/sync2/#Once">Once</a>, fn: proc()) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>once_do calls the procedure fn if and only if once_do is being called for the first for this instance of Once.</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="recursive_benaphore_guard"><span><a class="doc-id-link" href="#recursive_benaphore_guard">recursive_benaphore_guard<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/extended.odin#L272"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">recursive_benaphore_guard :: proc(m: ^<a class="code-typename" href="/sync/sync2/#Recursive_Benaphore">Recursive_Benaphore</a>) -> <a href="">bool</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="recursive_benaphore_lock"><span><a class="doc-id-link" href="#recursive_benaphore_lock">recursive_benaphore_lock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/extended.odin#L228"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">recursive_benaphore_lock :: proc(b: ^<a class="code-typename" href="/sync/sync2/#Recursive_Benaphore">Recursive_Benaphore</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="recursive_benaphore_try_lock"><span><a class="doc-id-link" href="#recursive_benaphore_try_lock">recursive_benaphore_try_lock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/extended.odin#L240"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">recursive_benaphore_try_lock :: proc(m: ^<a class="code-typename" href="/sync/sync2/#Recursive_Benaphore">Recursive_Benaphore</a>) -> <a href="">bool</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="recursive_benaphore_unlock"><span><a class="doc-id-link" href="#recursive_benaphore_unlock">recursive_benaphore_unlock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/extended.odin#L255"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">recursive_benaphore_unlock :: proc(b: ^<a class="code-typename" href="/sync/sync2/#Recursive_Benaphore">Recursive_Benaphore</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="recursive_mutex_guard"><span><a class="doc-id-link" href="#recursive_mutex_guard">recursive_mutex_guard<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/primitives.odin#L136"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">recursive_mutex_guard :: proc(m: ^<a class="code-typename" href="/sync/sync2/#Recursive_Mutex">Recursive_Mutex</a>) -> <a href="">bool</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="recursive_mutex_lock"><span><a class="doc-id-link" href="#recursive_mutex_lock">recursive_mutex_lock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/primitives.odin#L117"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">recursive_mutex_lock :: proc(m: ^<a class="code-typename" href="/sync/sync2/#Recursive_Mutex">Recursive_Mutex</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="recursive_mutex_try_lock"><span><a class="doc-id-link" href="#recursive_mutex_try_lock">recursive_mutex_try_lock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/primitives.odin#L125"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">recursive_mutex_try_lock :: proc(m: ^<a class="code-typename" href="/sync/sync2/#Recursive_Mutex">Recursive_Mutex</a>) -> <a href="">bool</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="recursive_mutex_unlock"><span><a class="doc-id-link" href="#recursive_mutex_unlock">recursive_mutex_unlock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/primitives.odin#L121"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">recursive_mutex_unlock :: proc(m: ^<a class="code-typename" href="/sync/sync2/#Recursive_Mutex">Recursive_Mutex</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="rw_mutex_guard"><span><a class="doc-id-link" href="#rw_mutex_guard">rw_mutex_guard<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/primitives.odin#L90"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">rw_mutex_guard :: proc(m: ^<a class="code-typename" href="/sync/sync2/#RW_Mutex">RW_Mutex</a>) -> <a href="">bool</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="rw_mutex_lock"><span><a class="doc-id-link" href="#rw_mutex_lock">rw_mutex_lock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/primitives.odin#L55"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">rw_mutex_lock :: proc(rw: ^<a class="code-typename" href="/sync/sync2/#RW_Mutex">RW_Mutex</a>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>rw_mutex_lock locks rw for writing (with a single writer)
+If the mutex is already locked for reading or writing, the mutex blocks until the mutex is available.</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="rw_mutex_shared_guard"><span><a class="doc-id-link" href="#rw_mutex_shared_guard">rw_mutex_shared_guard<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/primitives.odin#L102"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">rw_mutex_shared_guard :: proc(m: ^<a class="code-typename" href="/sync/sync2/#RW_Mutex">RW_Mutex</a>) -> <a href="">bool</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="rw_mutex_shared_lock"><span><a class="doc-id-link" href="#rw_mutex_shared_lock">rw_mutex_shared_lock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/primitives.odin#L70"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">rw_mutex_shared_lock :: proc(rw: ^<a class="code-typename" href="/sync/sync2/#RW_Mutex">RW_Mutex</a>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>rw_mutex_shared_lock locks rw for reading (with arbitrary number of readers)</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="rw_mutex_shared_unlock"><span><a class="doc-id-link" href="#rw_mutex_shared_unlock">rw_mutex_shared_unlock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/primitives.odin#L75"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">rw_mutex_shared_unlock :: proc(rw: ^<a class="code-typename" href="/sync/sync2/#RW_Mutex">RW_Mutex</a>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>rw_mutex_shared_unlock unlocks rw for reading (with arbitrary number of readers)</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="rw_mutex_try_lock"><span><a class="doc-id-link" href="#rw_mutex_try_lock">rw_mutex_try_lock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/primitives.odin#L65"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">rw_mutex_try_lock :: proc(m: ^<a class="code-typename" href="/sync/sync2/#RW_Mutex">RW_Mutex</a>) -> <a href="">bool</a> {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>rw_mutex_try_lock tries to lock rw for writing (with a single writer)</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="rw_mutex_try_shared_lock"><span><a class="doc-id-link" href="#rw_mutex_try_shared_lock">rw_mutex_try_shared_lock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/primitives.odin#L80"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">rw_mutex_try_shared_lock :: proc(m: ^<a class="code-typename" href="/sync/sync2/#RW_Mutex">RW_Mutex</a>) -> <a href="">bool</a> {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>rw_mutex_try_shared_lock tries to lock rw for reading (with arbitrary number of readers)</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="rw_mutex_unlock"><span><a class="doc-id-link" href="#rw_mutex_unlock">rw_mutex_unlock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/primitives.odin#L60"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">rw_mutex_unlock :: proc(rw: ^<a class="code-typename" href="/sync/sync2/#RW_Mutex">RW_Mutex</a>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>rw_mutex_unlock unlocks rw for writing (with a single writer)</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="sema_post"><span><a class="doc-id-link" href="#sema_post">sema_post<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/primitives.odin#L178"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">sema_post :: proc(s: ^<a class="code-typename" href="/sync/sync2/#Sema">Sema</a>, count: <a href="">int</a> = 1) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="sema_wait_with_timeout"><span><a class="doc-id-link" href="#sema_wait_with_timeout">sema_wait_with_timeout<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/primitives.odin#L186"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">sema_wait_with_timeout :: proc(s: ^<a class="code-typename" href="/sync/sync2/#Sema">Sema</a>, duration: time.<a class="code-typename" href="/time/#Duration">Duration</a>) -> <a href="">bool</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="sema_wait"><span><a class="doc-id-link" href="#sema_wait">sema_wait<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/primitives.odin#L182"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">sema_wait :: proc(s: ^<a class="code-typename" href="/sync/sync2/#Sema">Sema</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="ticket_mutex_guard"><span><a class="doc-id-link" href="#ticket_mutex_guard">ticket_mutex_guard<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/extended.odin#L187"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">ticket_mutex_guard :: proc(m: ^<a class="code-typename" href="/sync/sync2/#Ticket_Mutex">Ticket_Mutex</a>) -> <a href="">bool</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="ticket_mutex_lock"><span><a class="doc-id-link" href="#ticket_mutex_lock">ticket_mutex_lock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/extended.odin#L176"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">ticket_mutex_lock :: proc(m: ^<a class="code-typename" href="/sync/sync2/#Ticket_Mutex">Ticket_Mutex</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="ticket_mutex_unlock"><span><a class="doc-id-link" href="#ticket_mutex_unlock">ticket_mutex_unlock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/extended.odin#L183"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">ticket_mutex_unlock :: proc(m: ^<a class="code-typename" href="/sync/sync2/#Ticket_Mutex">Ticket_Mutex</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="wait_group_add"><span><a class="doc-id-link" href="#wait_group_add">wait_group_add<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/extended.odin#L14"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">wait_group_add :: proc(wg: ^<a class="code-typename" href="/sync/sync2/#Wait_Group">Wait_Group</a>, delta: <a href="">int</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="wait_group_done"><span><a class="doc-id-link" href="#wait_group_done">wait_group_done<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/extended.odin#L34"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">wait_group_done :: proc(wg: ^<a class="code-typename" href="/sync/sync2/#Wait_Group">Wait_Group</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="wait_group_wait"><span><a class="doc-id-link" href="#wait_group_wait">wait_group_wait<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/extended.odin#L38"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">wait_group_wait :: proc(wg: ^<a class="code-typename" href="/sync/sync2/#Wait_Group">Wait_Group</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="wait_group_wait_with_timeout"><span><a class="doc-id-link" href="#wait_group_wait_with_timeout">wait_group_wait_with_timeout<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/extended.odin#L50"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">wait_group_wait_with_timeout :: proc(wg: ^<a class="code-typename" href="/sync/sync2/#Wait_Group">Wait_Group</a>, duration: time.<a class="code-typename" href="/time/#Duration">Duration</a>) -> <a href="">bool</a> {…}</pre>
+</div>
+</div>
+</section>
+<h2 id="pkg-Procedure Groups">Procedure Groups</h2>
+<section class="documentation">
+<div class="pkg-entity">
+<h3 id="broadcast"><span><a class="doc-id-link" href="#broadcast">broadcast<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/sync_util.odin#L112"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">broadcast :: proc{
+	<a class="code-procedure" href="/core/sync/sync2/#cond_broadcast">cond_broadcast</a>,
+	<a class="code-procedure" href="/core/sync/sync2/#atomic_cond_broadcast">atomic_cond_broadcast</a>,
+	<a class="code-procedure" href="/core/sync/sync2/#futex_broadcast">futex_broadcast</a>,
+}
+</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="guard"><span><a class="doc-id-link" href="#guard">guard<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/sync_util.odin#L9"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">guard :: proc{
+	<a class="code-procedure" href="/core/sync/sync2/#mutex_guard">mutex_guard</a>,
+	<a class="code-procedure" href="/core/sync/sync2/#rw_mutex_guard">rw_mutex_guard</a>,
+	<a class="code-procedure" href="/core/sync/sync2/#ticket_mutex_guard">ticket_mutex_guard</a>,
+	<a class="code-procedure" href="/core/sync/sync2/#benaphore_guard">benaphore_guard</a>,
+	<a class="code-procedure" href="/core/sync/sync2/#recursive_benaphore_guard">recursive_benaphore_guard</a>,
+	<a class="code-procedure" href="/core/sync/sync2/#atomic_mutex_guard">atomic_mutex_guard</a>,
+	<a class="code-procedure" href="/core/sync/sync2/#atomic_recursive_mutex_guard">atomic_recursive_mutex_guard</a>,
+	<a class="code-procedure" href="/core/sync/sync2/#atomic_rw_mutex_guard">atomic_rw_mutex_guard</a>,
+}
+</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p></p>
+<details open class="code-example">
+<summary>Example:</summary>
+<pre><code class="hljs" data-lang="odin">if guard(&m) {
+	...
+}
+</code></pre>
+</details>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="lock"><span><a class="doc-id-link" href="#lock">lock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/sync_util.odin#L31"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">lock :: proc{
+	<a class="code-procedure" href="/core/sync/sync2/#mutex_lock">mutex_lock</a>,
+	<a class="code-procedure" href="/core/sync/sync2/#rw_mutex_lock">rw_mutex_lock</a>,
+	<a class="code-procedure" href="/core/sync/sync2/#ticket_mutex_lock">ticket_mutex_lock</a>,
+	<a class="code-procedure" href="/core/sync/sync2/#benaphore_lock">benaphore_lock</a>,
+	<a class="code-procedure" href="/core/sync/sync2/#recursive_benaphore_lock">recursive_benaphore_lock</a>,
+	<a class="code-procedure" href="/core/sync/sync2/#atomic_mutex_lock">atomic_mutex_lock</a>,
+	<a class="code-procedure" href="/core/sync/sync2/#atomic_recursive_mutex_lock">atomic_recursive_mutex_lock</a>,
+	<a class="code-procedure" href="/core/sync/sync2/#atomic_rw_mutex_lock">atomic_rw_mutex_lock</a>,
+}
+</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>lock locks m</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="post"><span><a class="doc-id-link" href="#post">post<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/sync_util.odin#L101"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">post :: proc{
+	<a class="code-procedure" href="/core/sync/sync2/#sema_post">sema_post</a>,
+	<a class="code-procedure" href="/core/sync/sync2/#atomic_sema_post">atomic_sema_post</a>,
+}
+</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="shared_guard"><span><a class="doc-id-link" href="#shared_guard">shared_guard<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/sync_util.odin#L25"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">shared_guard :: proc{
+	<a class="code-procedure" href="/core/sync/sync2/#rw_mutex_shared_guard">rw_mutex_shared_guard</a>,
+	<a class="code-procedure" href="/core/sync/sync2/#atomic_rw_mutex_shared_guard">atomic_rw_mutex_shared_guard</a>,
+}
+</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p></p>
+<details open class="code-example">
+<summary>Example:</summary>
+<pre><code class="hljs" data-lang="odin">if shared_guard(&m) {
+	...
+}
+</code></pre>
+</details>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="shared_lock"><span><a class="doc-id-link" href="#shared_lock">shared_lock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/sync_util.odin#L66"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">shared_lock :: proc{
+	<a class="code-procedure" href="/core/sync/sync2/#rw_mutex_shared_lock">rw_mutex_shared_lock</a>,
+	<a class="code-procedure" href="/core/sync/sync2/#atomic_rw_mutex_shared_lock">atomic_rw_mutex_shared_lock</a>,
+}
+</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>shared_lock locks rw for reading (with arbitrary number of readers)</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="shared_unlock"><span><a class="doc-id-link" href="#shared_unlock">shared_unlock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/sync_util.odin#L72"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">shared_unlock :: proc{
+	<a class="code-procedure" href="/core/sync/sync2/#rw_mutex_shared_unlock">rw_mutex_shared_unlock</a>,
+	<a class="code-procedure" href="/core/sync/sync2/#atomic_rw_mutex_shared_unlock">atomic_rw_mutex_shared_unlock</a>,
+}
+</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>shared_unlock unlocks rw for reading (with arbitrary number of readers)</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="signal"><span><a class="doc-id-link" href="#signal">signal<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/sync_util.odin#L106"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">signal :: proc{
+	<a class="code-procedure" href="/core/sync/sync2/#cond_signal">cond_signal</a>,
+	<a class="code-procedure" href="/core/sync/sync2/#atomic_cond_signal">atomic_cond_signal</a>,
+	<a class="code-procedure" href="/core/sync/sync2/#futex_signal">futex_signal</a>,
+}
+</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="try_lock"><span><a class="doc-id-link" href="#try_lock">try_lock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/sync_util.odin#L55"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">try_lock :: proc{
+	<a class="code-procedure" href="/core/sync/sync2/#mutex_try_lock">mutex_try_lock</a>,
+	<a class="code-procedure" href="/core/sync/sync2/#rw_mutex_try_lock">rw_mutex_try_lock</a>,
+	<a class="code-procedure" href="/core/sync/sync2/#benaphore_try_lock">benaphore_try_lock</a>,
+	<a class="code-procedure" href="/core/sync/sync2/#recursive_benaphore_try_lock">recursive_benaphore_try_lock</a>,
+	<a class="code-procedure" href="/core/sync/sync2/#atomic_mutex_try_lock">atomic_mutex_try_lock</a>,
+	<a class="code-procedure" href="/core/sync/sync2/#atomic_recursive_mutex_try_lock">atomic_recursive_mutex_try_lock</a>,
+	<a class="code-procedure" href="/core/sync/sync2/#atomic_rw_mutex_try_lock">atomic_rw_mutex_try_lock</a>,
+}
+</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>try_lock tries to lock m, will return true on success, and false on failure</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="try_shared_lock"><span><a class="doc-id-link" href="#try_shared_lock">try_shared_lock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/sync_util.odin#L78"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">try_shared_lock :: proc{
+	<a class="code-procedure" href="/core/sync/sync2/#rw_mutex_try_shared_lock">rw_mutex_try_shared_lock</a>,
+	<a class="code-procedure" href="/core/sync/sync2/#atomic_rw_mutex_try_shared_lock">atomic_rw_mutex_try_shared_lock</a>,
+}
+</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>try_shared_lock tries to lock rw for reading (with arbitrary number of readers)</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="unlock"><span><a class="doc-id-link" href="#unlock">unlock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/sync_util.odin#L43"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">unlock :: proc{
+	<a class="code-procedure" href="/core/sync/sync2/#mutex_unlock">mutex_unlock</a>,
+	<a class="code-procedure" href="/core/sync/sync2/#rw_mutex_unlock">rw_mutex_unlock</a>,
+	<a class="code-procedure" href="/core/sync/sync2/#ticket_mutex_unlock">ticket_mutex_unlock</a>,
+	<a class="code-procedure" href="/core/sync/sync2/#benaphore_unlock">benaphore_unlock</a>,
+	<a class="code-procedure" href="/core/sync/sync2/#recursive_benaphore_unlock">recursive_benaphore_unlock</a>,
+	<a class="code-procedure" href="/core/sync/sync2/#atomic_mutex_unlock">atomic_mutex_unlock</a>,
+	<a class="code-procedure" href="/core/sync/sync2/#atomic_recursive_mutex_unlock">atomic_recursive_mutex_unlock</a>,
+	<a class="code-procedure" href="/core/sync/sync2/#atomic_rw_mutex_unlock">atomic_rw_mutex_unlock</a>,
+}
+</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>unlock locks m</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="wait"><span><a class="doc-id-link" href="#wait">wait<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/sync_util.odin#L85"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">wait :: proc{
+	<a class="code-procedure" href="/core/sync/sync2/#cond_wait">cond_wait</a>,
+	<a class="code-procedure" href="/core/sync/sync2/#sema_wait">sema_wait</a>,
+	<a class="code-procedure" href="/core/sync/sync2/#atomic_cond_wait">atomic_cond_wait</a>,
+	<a class="code-procedure" href="/core/sync/sync2/#atomic_sema_wait">atomic_sema_wait</a>,
+	<a class="code-procedure" href="/core/sync/sync2/#futex_wait">futex_wait</a>,
+}
+</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="wait_with_timeout"><span><a class="doc-id-link" href="#wait_with_timeout">wait_with_timeout<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/sync_util.odin#L93"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">wait_with_timeout :: proc{
+	<a class="code-procedure" href="/core/sync/sync2/#cond_wait_with_timeout">cond_wait_with_timeout</a>,
+	<a class="code-procedure" href="/core/sync/sync2/#sema_wait_with_timeout">sema_wait_with_timeout</a>,
+	<a class="code-procedure" href="/core/sync/sync2/#atomic_cond_wait_with_timeout">atomic_cond_wait_with_timeout</a>,
+	<a class="code-procedure" href="/core/sync/sync2/#atomic_sema_wait_with_timeout">atomic_sema_wait_with_timeout</a>,
+	<a class="code-procedure" href="/core/sync/sync2/#futex_wait_with_timeout">futex_wait_with_timeout</a>,
+}
+</pre>
+</div>
+</div>
+</section>
+<h2 id="pkg-source-files">Source Files</h2>
+<ul>
+<li><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/atomic.odin">atomic.odin</a></li>
+<li><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/extended.odin">extended.odin</a></li>
+<li><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/primitives.odin">primitives.odin</a></li>
+<li><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/primitives_atomic.odin">primitives_atomic.odin</a></li>
+<li><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/primitives_internal.odin">primitives_internal.odin</a></li>
+<li><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/sema_internal.odin">sema_internal.odin</a></li>
+<li><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync2/sync_util.odin">sync_util.odin</a></li>
+<li><em>(hidden platform specific files)</em></li>
+</ul>
+<h2 id="pkg-generation-information">Generation Information</h2>
+<p>Generated with <code>odin version dev-2022-01 (vendor "odin") windows_amd64 @ 2022-01-22 17:55:35.894632800 +0000 UTC</code></p>
+</article>
+<div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
+<nav id="TableOfContents">
+<ul>
+<li><a href="#pkg-Types">Types</a><ul>
+<li><a href="#Atomic_Cond">Atomic_Cond</a></li>
+<li><a href="#Atomic_Mutex">Atomic_Mutex</a></li>
+<li><a href="#Atomic_Mutex_State">Atomic_Mutex_State</a></li>
+<li><a href="#Atomic_RW_Mutex">Atomic_RW_Mutex</a></li>
+<li><a href="#Atomic_RW_Mutex_State">Atomic_RW_Mutex_State</a></li>
+<li><a href="#Atomic_Recursive_Mutex">Atomic_Recursive_Mutex</a></li>
+<li><a href="#Atomic_Sema">Atomic_Sema</a></li>
+<li><a href="#Auto_Reset_Event">Auto_Reset_Event</a></li>
+<li><a href="#Barrier">Barrier</a></li>
+<li><a href="#Benaphore">Benaphore</a></li>
+<li><a href="#Cond">Cond</a></li>
+<li><a href="#Futex">Futex</a></li>
+<li><a href="#Mutex">Mutex</a></li>
+<li><a href="#Once">Once</a></li>
+<li><a href="#RW_Mutex">RW_Mutex</a></li>
+<li><a href="#Recursive_Benaphore">Recursive_Benaphore</a></li>
+<li><a href="#Recursive_Mutex">Recursive_Mutex</a></li>
+<li><a href="#Sema">Sema</a></li>
+<li><a href="#Ticket_Mutex">Ticket_Mutex</a></li>
+<li><a href="#Wait_Group">Wait_Group</a></li>
+</ul>
+</li>
+<li><a href="#pkg-Constants">Constants</a><ul>
+<li><a href="#Atomic_RW_Mutex_State_Half_Width">Atomic_RW_Mutex_State_Half_Width</a></li>
+<li><a href="#Atomic_RW_Mutex_State_Is_Writing">Atomic_RW_Mutex_State_Is_Writing</a></li>
+<li><a href="#Atomic_RW_Mutex_State_Reader">Atomic_RW_Mutex_State_Reader</a></li>
+<li><a href="#Atomic_RW_Mutex_State_Reader_Mask">Atomic_RW_Mutex_State_Reader_Mask</a></li>
+<li><a href="#Atomic_RW_Mutex_State_Writer">Atomic_RW_Mutex_State_Writer</a></li>
+<li><a href="#Atomic_RW_Mutex_State_Writer_Mask">Atomic_RW_Mutex_State_Writer_Mask</a></li>
+</ul>
+</li>
+<li><a href="#pkg-Procedures">Procedures</a><ul>
+<li><a href="#atomic_cond_broadcast">atomic_cond_broadcast</a></li>
+<li><a href="#atomic_cond_signal">atomic_cond_signal</a></li>
+<li><a href="#atomic_cond_wait_with_timeout">atomic_cond_wait_with_timeout</a></li>
+<li><a href="#atomic_cond_wait">atomic_cond_wait</a></li>
+<li><a href="#atomic_mutex_guard">atomic_mutex_guard</a></li>
+<li><a href="#atomic_mutex_lock">atomic_mutex_lock</a></li>
+<li><a href="#atomic_mutex_try_lock">atomic_mutex_try_lock</a></li>
+<li><a href="#atomic_mutex_unlock">atomic_mutex_unlock</a></li>
+<li><a href="#atomic_recursive_mutex_guard">atomic_recursive_mutex_guard</a></li>
+<li><a href="#atomic_recursive_mutex_lock">atomic_recursive_mutex_lock</a></li>
+<li><a href="#atomic_recursive_mutex_try_lock">atomic_recursive_mutex_try_lock</a></li>
+<li><a href="#atomic_recursive_mutex_unlock">atomic_recursive_mutex_unlock</a></li>
+<li><a href="#atomic_rw_mutex_guard">atomic_rw_mutex_guard</a></li>
+<li><a href="#atomic_rw_mutex_lock">atomic_rw_mutex_lock</a></li>
+<li><a href="#atomic_rw_mutex_shared_guard">atomic_rw_mutex_shared_guard</a></li>
+<li><a href="#atomic_rw_mutex_shared_lock">atomic_rw_mutex_shared_lock</a></li>
+<li><a href="#atomic_rw_mutex_shared_unlock">atomic_rw_mutex_shared_unlock</a></li>
+<li><a href="#atomic_rw_mutex_try_lock">atomic_rw_mutex_try_lock</a></li>
+<li><a href="#atomic_rw_mutex_try_shared_lock">atomic_rw_mutex_try_shared_lock</a></li>
+<li><a href="#atomic_rw_mutex_unlock">atomic_rw_mutex_unlock</a></li>
+<li><a href="#atomic_sema_post">atomic_sema_post</a></li>
+<li><a href="#atomic_sema_wait">atomic_sema_wait</a></li>
+<li><a href="#atomic_sema_wait_with_timeout">atomic_sema_wait_with_timeout</a></li>
+<li><a href="#auto_reset_event_signal">auto_reset_event_signal</a></li>
+<li><a href="#auto_reset_event_wait">auto_reset_event_wait</a></li>
+<li><a href="#barrier_init">barrier_init</a></li>
+<li><a href="#barrier_wait">barrier_wait</a></li>
+<li><a href="#benaphore_guard">benaphore_guard</a></li>
+<li><a href="#benaphore_lock">benaphore_lock</a></li>
+<li><a href="#benaphore_try_lock">benaphore_try_lock</a></li>
+<li><a href="#benaphore_unlock">benaphore_unlock</a></li>
+<li><a href="#cond_broadcast">cond_broadcast</a></li>
+<li><a href="#cond_signal">cond_signal</a></li>
+<li><a href="#cond_wait">cond_wait</a></li>
+<li><a href="#cond_wait_with_timeout">cond_wait_with_timeout</a></li>
+<li><a href="#current_thread_id">current_thread_id</a></li>
+<li><a href="#futex_broadcast">futex_broadcast</a></li>
+<li><a href="#futex_signal">futex_signal</a></li>
+<li><a href="#futex_wait">futex_wait</a></li>
+<li><a href="#futex_wait_with_timeout">futex_wait_with_timeout</a></li>
+<li><a href="#mutex_guard">mutex_guard</a></li>
+<li><a href="#mutex_lock">mutex_lock</a></li>
+<li><a href="#mutex_try_lock">mutex_try_lock</a></li>
+<li><a href="#mutex_unlock">mutex_unlock</a></li>
+<li><a href="#once_do">once_do</a></li>
+<li><a href="#recursive_benaphore_guard">recursive_benaphore_guard</a></li>
+<li><a href="#recursive_benaphore_lock">recursive_benaphore_lock</a></li>
+<li><a href="#recursive_benaphore_try_lock">recursive_benaphore_try_lock</a></li>
+<li><a href="#recursive_benaphore_unlock">recursive_benaphore_unlock</a></li>
+<li><a href="#recursive_mutex_guard">recursive_mutex_guard</a></li>
+<li><a href="#recursive_mutex_lock">recursive_mutex_lock</a></li>
+<li><a href="#recursive_mutex_try_lock">recursive_mutex_try_lock</a></li>
+<li><a href="#recursive_mutex_unlock">recursive_mutex_unlock</a></li>
+<li><a href="#rw_mutex_guard">rw_mutex_guard</a></li>
+<li><a href="#rw_mutex_lock">rw_mutex_lock</a></li>
+<li><a href="#rw_mutex_shared_guard">rw_mutex_shared_guard</a></li>
+<li><a href="#rw_mutex_shared_lock">rw_mutex_shared_lock</a></li>
+<li><a href="#rw_mutex_shared_unlock">rw_mutex_shared_unlock</a></li>
+<li><a href="#rw_mutex_try_lock">rw_mutex_try_lock</a></li>
+<li><a href="#rw_mutex_try_shared_lock">rw_mutex_try_shared_lock</a></li>
+<li><a href="#rw_mutex_unlock">rw_mutex_unlock</a></li>
+<li><a href="#sema_post">sema_post</a></li>
+<li><a href="#sema_wait_with_timeout">sema_wait_with_timeout</a></li>
+<li><a href="#sema_wait">sema_wait</a></li>
+<li><a href="#ticket_mutex_guard">ticket_mutex_guard</a></li>
+<li><a href="#ticket_mutex_lock">ticket_mutex_lock</a></li>
+<li><a href="#ticket_mutex_unlock">ticket_mutex_unlock</a></li>
+<li><a href="#wait_group_add">wait_group_add</a></li>
+<li><a href="#wait_group_done">wait_group_done</a></li>
+<li><a href="#wait_group_wait">wait_group_wait</a></li>
+<li><a href="#wait_group_wait_with_timeout">wait_group_wait_with_timeout</a></li>
+</ul>
+</li>
+<li><a href="#pkg-Procedure Groups">Procedure Groups</a><ul>
+<li><a href="#broadcast">broadcast</a></li>
+<li><a href="#guard">guard</a></li>
+<li><a href="#lock">lock</a></li>
+<li><a href="#post">post</a></li>
+<li><a href="#shared_guard">shared_guard</a></li>
+<li><a href="#shared_lock">shared_lock</a></li>
+<li><a href="#shared_unlock">shared_unlock</a></li>
+<li><a href="#signal">signal</a></li>
+<li><a href="#try_lock">try_lock</a></li>
+<li><a href="#try_shared_lock">try_shared_lock</a></li>
+<li><a href="#unlock">unlock</a></li>
+<li><a href="#wait">wait</a></li>
+<li><a href="#wait_with_timeout">wait_with_timeout</a></li>
+</ul>
+</li>
+<li><a href="#pkg-source-files">Source Files</a></ul>
+</nav>
+</div></div>
+</div>
+
+</div>
+</main>
+
+<footer class="odin-footer">
+	<div class="container pb-5 pt-5">
+		<div class="row g-4">
+		<div class="col">
+		<a class="navbar-brand" href="https://odin-lang.org">
+		<img class="mb-3" src="https://odin-lang.org/logo.svg" height="30" alt="Odin"></a>
+		<p>
+		The Data-Oriented Language for Sane Software Development.
+		</p>
+		</div>
+		<nav class="col-md-auto">
+			<h4 class="fw-normal">Resources</h4>
+			<ul class="list-unstyled">
+			<li><a href="https://odin-lang.org/docs" class="link-light">Docs</a></li>
+			<li><a href="https://odin-lang.org/news" class="link-light">Blog</a></li>
+			</ul>
+		</nav>
+		<nav class="col-md-auto">
+			<h4 class="fw-normal">Community</h4>
+			<ul class="list-unstyled">
+			<li><a href="https://github.com/odin-lang/Odin" target="_blank" class="link-light">GitHub</a></li>
+			<li><a href="https://discord.com/invite/sVBPHEv" target="_blank" class="link-light">Discord</a></li>
+			<li><a href="https://www.twitch.tv/ginger_bill" target="_blank" class="link-light">Twitch</a></li>
+			<li><a href="https://www.youtube.com/channel/UCUSck1dOH7VKmG4lRW7tZXg" target="_blank" class="link-light">YouTube</a></li>
+			</ul>
+		</nav>
+		<nav class="col-md-auto">
+			<h4 class="fw-normal">Contribute</h4>
+			<ul class="list-unstyled">
+			<li><a href="https://github.com/odin-lang/Odin/issues" target="_blank" class="link-light">Issues</a></li>
+			<li><a href="https://www.patreon.com/gingerbill" target="_blank" class="link-light">Donate</a></li>
+			</ul>
+			</nav>
+		</div>
+		<div class="mt-4 text-muted">© 2016–2022 Ginger Bill</div>
+	</div>
+</footer>
+
+<script src="https://odin-lang.org/lib/bootstrap/js/bootstrap.min.js"></script>
+<script src="https://odin-lang.org/js/script.js"></script>
+<script>hljs.highlightAll()</script>
+</body>
+</html>

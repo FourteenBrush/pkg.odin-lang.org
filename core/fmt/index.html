@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>package fmt - pkg.odin-lang.org</title>	<!-- REMEMBER TO REMOVE -->
+	<script type="text/javascript" src="https://livejs.com/live.js"></script>
+
+	<link rel="stylesheet" type="text/css" href="https://odin-lang.org/scss/custom.min.css">
+	<link rel=stylesheet href=//odin-lang.org/lib/highlight/styles/github-dark.min.css>
+	<script src=//odin-lang.org/lib/highlight/highlight.min.js></script>
+	<script>hljs.registerLanguage("odin",function(a){return{aliases:["odin","odinlang","odin-lang"],keywords:{keyword:"auto_cast bit_set break case cast context continue defer distinct do dynamic else enum fallthrough for foreign if import in map not_in or_else or_return package proc return struct switch transmute type_of typeid union using when where",literal:"true false nil",built_in:"abs align_of cap clamp complex conj expand_to_tuple imag jmag kmag len max min offset_of quaternion real size_of soa_unzip soa_zip swizzle type_info_of type_of typeid_of"},illegal:"</",contains:[a.C_LINE_COMMENT_MODE,a.C_BLOCK_COMMENT_MODE,{className:"string",variants:[a.QUOTE_STRING_MODE,{begin:"'",end:"[^\\\\]'"},{begin:"`",end:"`"}]},{className:"number",variants:[{begin:a.C_NUMBER_RE+"[ijk]",relevance:1},a.C_NUMBER_MODE]}]}})</script>
+	<script>hljs.highlightAll()</script>
+	<link rel="stylesheet" type="text/css" href="https://odin-lang.org/css/style.css">
+
+	<link rel="stylesheet" type="text/css" href="/style.css">
+
+	</style>
+</head>
+<body>
+<header class="sticky-top">
+	<nav class="navbar navbar-expand-lg navbar-dark bg-primary odin-menu">
+		<div class="container">
+			<a class="navbar-brand" href="/">
+			<img src="https://odin-lang.org/logo.svg" height="30" alt="Odin"></a>
+			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#odin-navbar-content" aria-controls="odin-navbar-content" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+			<div class="collapse navbar-collapse" id="odin-navbar-content">
+			<ul class="navbar-nav ms-md-auto">
+				<li class="nav-item"><a class="nav-link" href="https://odin-lang.org/">Home</a></li>
+				<li class="nav-item"><a class="nav-link" href="https://odin-lang.org/docs">Docs</a></li>
+				<li class="nav-item"><a class="nav-link active" href="/">Packages</a></li>
+				<li class="nav-item"><a class="nav-link" href="https://odin-lang.org/news">News</a></li>
+				<li class="nav-item"><a class="nav-link" href="https://odin-lang.org/community">Community</a></li>
+				<li class="nav-item"><a class="nav-link" href="https://github.com/odin-lang/Odin" target="_blank">GitHub</a></li>
+			</ul>
+		</div>
+		</div>
+	</nav>
+</header>
+<main>
+<div class="container"><div class="row odin-main">
+<nav id="pkg-sidebar" class="col-lg-2 odin-sidebar-border navbar-light">
+<div class="sticky-top odin-below-navbar py-3">
+<h4>Core Library</h4>
+<ul>
+<li class="nav-item"><a href="/core/bufio">bufio</a></li>
+<li class="nav-item"><a href="/core/bytes">bytes</a></li>
+<li class="nav-item"><a href="/core/c">c</a><ul>
+<li><a href="/core/c/frontend/preprocessor">frontend/preprocessor</a></li>
+<li><a href="/core/c/frontend/tokenizer">frontend/tokenizer</a></li>
+<li><a href="/core/c/libc">libc</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/compress">compress</a><ul>
+<li><a href="/core/compress/gzip">gzip</a></li>
+<li><a href="/core/compress/zlib">zlib</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/dynlib">dynlib</a></li>
+<li class="nav-item">encoding<ul>
+<li><a href="/core/encoding/base32">base32</a></li>
+<li><a href="/core/encoding/base64">base64</a></li>
+<li><a href="/core/encoding/csv">csv</a></li>
+<li><a href="/core/encoding/hxa">hxa</a></li>
+<li><a href="/core/encoding/json">json</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a class="active" href="/core/fmt">fmt</a></li>
+<li class="nav-item"><a href="/core/hash">hash</a></li>
+<li class="nav-item"><a href="/core/image">image</a><ul>
+<li><a href="/core/image/png">png</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/io">io</a></li>
+<li class="nav-item"><a href="/core/log">log</a></li>
+<li class="nav-item"><a href="/core/math">math</a><ul>
+<li><a href="/core/math/big">big</a></li>
+<li><a href="/core/math/bits">bits</a></li>
+<li><a href="/core/math/fixed">fixed</a></li>
+<li><a href="/core/math/linalg">linalg</a></li>
+<li><a href="/core/math/linalg/glsl">linalg/glsl</a></li>
+<li><a href="/core/math/linalg/hlsl">linalg/hlsl</a></li>
+<li><a href="/core/math/rand">rand</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/mem">mem</a><ul>
+<li><a href="/core/mem/virtual">virtual</a></li>
+</ul>
+
+</li>
+<li class="nav-item">odin<ul>
+<li><a href="/core/odin/ast">ast</a></li>
+<li><a href="/core/odin/doc-format">doc-format</a></li>
+<li><a href="/core/odin/format">format</a></li>
+<li><a href="/core/odin/parser">parser</a></li>
+<li><a href="/core/odin/printer">printer</a></li>
+<li><a href="/core/odin/tokenizer">tokenizer</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/os">os</a></li>
+<li class="nav-item">path<ul>
+<li><a href="/core/path/filepath">filepath</a></li>
+<li><a href="/core/path/slashpath">slashpath</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/reflect">reflect</a></li>
+<li class="nav-item"><a href="/core/runtime">runtime</a></li>
+<li class="nav-item"><a href="/core/slice">slice</a></li>
+<li class="nav-item"><a href="/core/sort">sort</a></li>
+<li class="nav-item"><a href="/core/strconv">strconv</a><ul>
+<li><a href="/core/strconv/decimal">decimal</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/strings">strings</a></li>
+<li class="nav-item"><a href="/core/sync">sync</a><ul>
+<li><a href="/core/sync/sync2">sync2</a></li>
+</ul>
+
+</li>
+<li class="nav-item">text<ul>
+<li><a href="/core/text/scanner">scanner</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/thread">thread</a></li>
+<li class="nav-item"><a href="/core/time">time</a></li>
+<li class="nav-item"><a href="/core/unicode">unicode</a><ul>
+<li><a href="/core/unicode/utf16">utf16</a></li>
+<li><a href="/core/unicode/utf8">utf8</a></li>
+</ul>
+
+</li>
+</ul>
+</div>
+</nav>
+<article class="col-lg-8 p-4 documentation odin-article">
+<h1>package core:fmt</h1>
+<h2>Overview</h2>
+<div id="pkg-overview">
+<p>package fmt implemented formatted I/O with procedures similar to C's printf and Python's format.
+The format 'verbs' are derived from C's but simpler.</p>
+<p>Printing</p>
+<p>The verbs:</p>
+<p>General:</p>
+<pre>%v     the value in a default format
+%#v    an expanded format of %v with newlines and indentation
+%T     an Odin-syntax representation of the type of the value
+%%     a literal percent sign; consumes no value
+{{     a literal open brace; consumes no value
+}}     a literal close brace; consumes no value
+{:v}   equivalent to %v (Python-like formatting syntax)
+
+</pre>
+<p>Boolean:</p>
+<pre>%t    the word "true" or "false"
+</pre>
+<p>Integer:</p>
+<pre>%b    base 2
+%c    the character represented by the corresponding Unicode code point
+%r    synonym for %c
+%o    base 8
+%d    base 10
+%i    base 10
+%z    base 12
+%x    base 16, with lower-case letters for a-f
+%X    base 16, with upper-case letters for A-F
+%U    Unicode format: U+1234; same as "U+%04X"
+</pre>
+<p>Floating-point, complex numbers, and quaternions:</p>
+<pre>%e    scientific notation, e.g. -1.23456e+78
+%E    scientific notation, e.g. -1.23456E+78
+%f    decimal point but no exponent, e.g. 123.456
+%F    synonym for %f
+%h    hexadecimal (lower-case) representation with 0h prefix (0h01234abcd)
+%H    hexadecimal (upper-case) representation with 0H prefix (0h01234ABCD)
+</pre>
+<p>String and slice of bytes</p>
+<pre>%s    the uninterpreted bytes of the string or slice
+%q    a double-quoted string safely escaped with Odin syntax
+%x    base 16, lower-case, two characters per byte
+%X    base 16, upper-case, two characters per byte
+</pre>
+<p>Slice and dynamic array:</p>
+<pre>%p    address of the 0th element in base 16 notation (upper-case), with leading 0x
+</pre>
+<p>Pointer:</p>
+<pre>%p    base 16 notation (upper-case), with leading 0x
+The %b, %d, %o, %z, %x, %X verbs also work with pointers,
+treating it as if it was an integer
+</pre>
+<p>Enums:</p>
+<pre>%s    prints the name of the enum field
+The %i, %d, %f verbs also work with enums,
+treating it as if it was a number
+
+</pre>
+<p>For compound values, the elements are printed using these rules recursively; laid out like the following:</p>
+<pre>struct:            {name0 = field0, name1 = field1, ...}
+array              [elem0, elem1, elem2, ...]
+enumerated array   [key0 = elem0, key1 = elem1, key2 = elem2, ...]
+maps:              map[key0 = value0, key1 = value1, ...]
+bit sets           {key0 = elem0, key1 = elem1, ...}
+pointer to above:  &{}, &[], &map[]
+
+</pre>
+<p>Width is specified by an optional decimal number immediately preceding the verb.
+If not present, the width is whatever is necessary to represent the value.
+Precision is specified after the (optional) width followed by a period followed by a decimal number.
+If no period is present, a default precision is used.
+A period with no following number specifies a precision of 0.</p>
+<p>Examples:</p>
+<pre>%f     default width, default precision
+%8f    width 8, default precision
+%.3f   default width, precision 2
+%8.3f  width 8, precision 3
+%8.f   width 8, precision 0
+
+</pre>
+<p>Width and precision are measured in units of Unicode code points (runes).
+n.b. C's printf uses units of bytes</p>
+<p>Other flags:</p>
+<pre>+      always print a sign for numeric values
+-      pad with spaces on the right rather the left (left-justify the field)
+#      alternate format:
+               add leading 0b for binary (%#b)
+               add leading 0o for octal (%#o)
+               add leading 0z for dozenal (%#z)
+               add leading 0x or 0X for hexadecimal (%#x or %#X)
+               remove leading 0x for %p (%#p)
+' '    (space) leave a space for elided sign in numbers (% d)
+0      pad with leading zeros rather than spaces
+
+
+</pre>
+<p>Flags are ignored by verbs that don't expect them</p>
+<p>For each printf-like procedure, there is a print function that takes no
+format, and is equivalent to doing %v for every value and inserts a separator
+between each value (default is a single space).
+Another procedure println which has the same functionality as print but appends a newline.</p>
+<p>Explicit argument indices:</p>
+<p>In printf-like procedures, the default behaviour is for each formatting verb to format successive
+arguments passed in the call. However, the notation [n] immediately before the verb indicates that
+the nth zero-index argument is to be formatted instead.
+The same notation before an '*' for a width or precision selecting the argument index holding the value.
+Python-like syntax with argument indices differs for the selecting the argument index: {N:v}</p>
+<p>Examples:</p>
+<pre>fmt.printf("%[1]d %[0]d\n", 13, 37); // C-like syntax
+fmt.printf("{1:d} {0:d}\n", 13, 37); // Python-like syntax
+</pre>
+<p>prints "37 13", whilst:</p>
+<pre>fmt.printf("%[2]*.[1]*[0]f\n",  17.0, 2, 6); // C-like syntax
+fmt.printf("%{0:[2]*.[1]*f}\n", 17.0, 2, 6); // Python-like syntax
+</pre>
+<p>equivalent to:</p>
+<pre>fmt.printf("%6.2f\n",   17.0, 2, 6); // C-like syntax
+fmt.printf("{:6.2f}\n", 17.0, 2, 6); // Python-like syntax
+</pre>
+<p>prints "17.00"</p>
+<p>Format errors:</p>
+<p>If an invalid argument is given for a verb, such as providing a string to %d, the generated string
+will contain a description of the problem. For example:</p>
+<pre>Bad enum value:
+	%!(BAD ENUM VALUE)
+Too many arguments:
+	%!(EXTRA <value>, <value>, ...)
+Too few arguments:
+	%!(MISSING ARGUMENT)
+Invalid width or precision
+	%!(BAD WIDTH)
+	%!(BAD PRECISION)
+Missing verb:
+	%!(NO VERB)
+Invalid or invalid use of argument index:
+	%!(BAD ARGUMENT NUMBER)
+Missing close brace when using Python-like formatting syntax:
+	%!(MISSING CLOSE BRACE)
+</pre>
+</div>
+<h2>Index</h2>
+<div id="pkg-index">
+<div>
+<details open class="doc-index" id="doc-index-Types" aria-labelledby="#doc-index-Types-header">
+<summary id="#doc-index-Types-header">
+Types</summary>
+<ul>
+<li><a href="#Info">Info</a></li>
+<li><a href="#Register_User_Formatter_Error">Register_User_Formatter_Error</a></li>
+<li><a href="#User_Formatter">User_Formatter</a></li>
+</ul>
+</details>
+</div>
+<div>
+<details open class="doc-index" id="doc-index-Constants" aria-labelledby="#doc-index-Constants-header">
+<summary id="#doc-index-Constants-header">
+Constants</summary>
+<p>This section is empty.</p>
+</details>
+</div>
+<div>
+<details open class="doc-index" id="doc-index-Variables" aria-labelledby="#doc-index-Variables-header">
+<summary id="#doc-index-Variables-header">
+Variables</summary>
+<p>This section is empty.</p>
+</details>
+</div>
+<div>
+<details open class="doc-index" id="doc-index-Procedures" aria-labelledby="#doc-index-Procedures-header">
+<summary id="#doc-index-Procedures-header">
+Procedures</summary>
+<ul>
+<li><a href="#aprintln">aprintln</a></li>
+<li><a href="#aprint">aprint</a></li>
+<li><a href="#aprintf">aprintf</a></li>
+<li><a href="#assertf">assertf</a></li>
+<li><a href="#bprintln">bprintln</a></li>
+<li><a href="#bprint">bprint</a></li>
+<li><a href="#bprintf">bprintf</a></li>
+<li><a href="#enum_value_to_string">enum_value_to_string</a></li>
+<li><a href="#eprint">eprint</a></li>
+<li><a href="#eprintf">eprintf</a></li>
+<li><a href="#eprintln">eprintln</a></li>
+<li><a href="#fmt_arg">fmt_arg</a></li>
+<li><a href="#fmt_bad_verb">fmt_bad_verb</a></li>
+<li><a href="#fmt_bit_set">fmt_bit_set</a></li>
+<li><a href="#fmt_bool">fmt_bool</a></li>
+<li><a href="#fmt_complex">fmt_complex</a></li>
+<li><a href="#fmt_cstring">fmt_cstring</a></li>
+<li><a href="#fmt_enum">fmt_enum</a></li>
+<li><a href="#fmt_float">fmt_float</a></li>
+<li><a href="#fmt_int">fmt_int</a></li>
+<li><a href="#fmt_int_128">fmt_int_128</a></li>
+<li><a href="#fmt_pointer">fmt_pointer</a></li>
+<li><a href="#fmt_quaternion">fmt_quaternion</a></li>
+<li><a href="#fmt_rune">fmt_rune</a></li>
+<li><a href="#fmt_string">fmt_string</a></li>
+<li><a href="#fmt_value">fmt_value</a></li>
+<li><a href="#fmt_write_array">fmt_write_array</a></li>
+<li><a href="#fmt_write_indent">fmt_write_indent</a></li>
+<li><a href="#fmt_write_padding">fmt_write_padding</a></li>
+<li><a href="#fprint">fprint</a></li>
+<li><a href="#fprint_typeid">fprint_typeid</a></li>
+<li><a href="#fprint_type">fprint_type</a></li>
+<li><a href="#fprintf">fprintf</a></li>
+<li><a href="#fprintln">fprintln</a></li>
+<li><a href="#int_from_arg">int_from_arg</a></li>
+<li><a href="#panicf">panicf</a></li>
+<li><a href="#print">print</a></li>
+<li><a href="#printf">printf</a></li>
+<li><a href="#println">println</a></li>
+<li><a href="#register_user_formatter">register_user_formatter</a></li>
+<li><a href="#sbprint">sbprint</a></li>
+<li><a href="#sbprintf">sbprintf</a></li>
+<li><a href="#sbprintln">sbprintln</a></li>
+<li><a href="#set_user_formatters">set_user_formatters</a></li>
+<li><a href="#stored_enum_value_to_string">stored_enum_value_to_string</a></li>
+<li><a href="#string_to_enum_value">string_to_enum_value</a></li>
+<li><a href="#tprintf">tprintf</a></li>
+<li><a href="#tprint">tprint</a></li>
+<li><a href="#tprintln">tprintln</a></li>
+<li><a href="#wprintf">wprintf</a></li>
+<li><a href="#wprint">wprint</a></li>
+<li><a href="#wprint_type">wprint_type</a></li>
+<li><a href="#wprint_typeid">wprint_typeid</a></li>
+<li><a href="#wprintln">wprintln</a></li>
+</ul>
+</details>
+</div>
+<div>
+<details open class="doc-index" id="doc-index-Procedure Groups" aria-labelledby="#doc-index-Procedure Groups-header">
+<summary id="#doc-index-Procedure Groups-header">
+Procedure Groups</summary>
+<p>This section is empty.</p>
+</details>
+</div>
+</div>
+<h2 id="pkg-Types">Types</h2>
+<section class="documentation">
+<div class="pkg-entity">
+<h3 id="Info"><span><a class="doc-id-link" href="#Info">Info<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L14"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Info :: struct {
+	minus:                  <a href="">bool</a>,
+	plus:                   <a href="">bool</a>,
+	space:                  <a href="">bool</a>,
+	zero:                   <a href="">bool</a>,
+	hash:                   <a href="">bool</a>,
+	width_set:              <a href="">bool</a>,
+	prec_set:               <a href="">bool</a>,
+	width:                  <a href="">int</a>,
+	prec:                   <a href="">int</a>,
+	indent:                 <a href="">int</a>,
+	reordered:              <a href="">bool</a>,
+	good_arg_index:         <a href="">bool</a>,
+	ignore_user_formatters: <a href="">bool</a>,
+	writer:                 io.<a class="code-typename" href="/io/#Writer">Writer</a>,
+	arg:                    <a href="">any</a>,
+	record_level:           <a href="">int</a>,
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Register_User_Formatter_Error"><span><a class="doc-id-link" href="#Register_User_Formatter_Error">Register_User_Formatter_Error<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L39"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Register_User_Formatter_Error :: enum <a href="">int</a> {
+	None, 
+	No_User_Formatter, 
+	Formatter_Previously_Found, 
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="User_Formatter"><span><a class="doc-id-link" href="#User_Formatter">User_Formatter<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L37"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">User_Formatter :: proc(fi: ^<a class="code-typename" href="/fmt/#Info">Info</a>, arg: <a href="">any</a>, verb: <a href="">rune</a>) -> <a href="">bool</a></pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Custom formatter signature. It returns true if the formatting was successful and false when it could not be done</p>
+</details>
+</div>
+</section>
+<h2 id="pkg-Constants">Constants</h2>
+<section class="documentation">
+<p>This section is empty.</p>
+</section>
+<h2 id="pkg-Variables">Variables</h2>
+<section class="documentation">
+<p>This section is empty.</p>
+</section>
+<h2 id="pkg-Procedures">Procedures</h2>
+<section class="documentation">
+<div class="pkg-entity">
+<h3 id="aprintln"><span><a class="doc-id-link" href="#aprintln">aprintln<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L72"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">aprintln :: proc(args: ..<a href="">any</a>, sep: <a href="">string</a> = "" "") -> <a href="">string</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="aprint"><span><a class="doc-id-link" href="#aprint">aprint<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L66"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">aprint :: proc(args: ..<a href="">any</a>, sep: <a href="">string</a> = "" "") -> <a href="">string</a> {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>aprint* procedures return a string that was allocated with the current context
+They must be freed accordingly</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="aprintf"><span><a class="doc-id-link" href="#aprintf">aprintf<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L78"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">aprintf :: proc(fmt: <a href="">string</a>, args: ..<a href="">any</a>) -> <a href="">string</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="assertf"><span><a class="doc-id-link" href="#assertf">assertf<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L122"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">assertf :: proc(condition: <a href="">bool</a>, fmt: <a href="">string</a>, args: ..<a href="">any</a>, loc := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>) -> <a href="">bool</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="bprintln"><span><a class="doc-id-link" href="#bprintln">bprintln<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L112"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">bprintln :: proc(buf: []<a href="">u8</a>, args: ..<a href="">any</a>, sep: <a href="">string</a> = "" "") -> <a href="">string</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="bprint"><span><a class="doc-id-link" href="#bprint">bprint<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L108"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">bprint :: proc(buf: []<a href="">u8</a>, args: ..<a href="">any</a>, sep: <a href="">string</a> = "" "") -> <a href="">string</a> {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>bprint* procedures return a string using a buffer from an array</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="bprintf"><span><a class="doc-id-link" href="#bprintf">bprintf<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L116"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">bprintf :: proc(buf: []<a href="">u8</a>, fmt: <a href="">string</a>, args: ..<a href="">any</a>) -> <a href="">string</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="enum_value_to_string"><span><a class="doc-id-link" href="#enum_value_to_string">enum_value_to_string<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L988"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">enum_value_to_string :: proc(val: <a href="">any</a>) -> (<a href="">string</a>, <a href="">bool</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="eprint"><span><a class="doc-id-link" href="#eprint">eprint<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt_os.odin#L35"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">eprint :: proc(args: ..<a href="">any</a>, sep: <a href="">string</a> = "" "") -> <a href="">int</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="eprintf"><span><a class="doc-id-link" href="#eprintf">eprintf<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt_os.odin#L37"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">eprintf :: proc(fmt: <a href="">string</a>, args: ..<a href="">any</a>) -> <a href="">int</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="eprintln"><span><a class="doc-id-link" href="#eprintln">eprintln<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt_os.odin#L36"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">eprintln :: proc(args: ..<a href="">any</a>, sep: <a href="">string</a> = "" "") -> <a href="">int</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="fmt_arg"><span><a class="doc-id-link" href="#fmt_arg">fmt_arg<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L2015"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">fmt_arg :: proc(fi: ^<a class="code-typename" href="/fmt/#Info">Info</a>, arg: <a href="">any</a>, verb: <a href="">rune</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="fmt_bad_verb"><span><a class="doc-id-link" href="#fmt_bad_verb">fmt_bad_verb<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L578"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">fmt_bad_verb :: proc(using fi: ^<a class="code-typename" href="/fmt/#Info">Info</a>, verb: <a href="">rune</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="fmt_bit_set"><span><a class="doc-id-link" href="#fmt_bit_set">fmt_bit_set<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L1085"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">fmt_bit_set :: proc(fi: ^<a class="code-typename" href="/fmt/#Info">Info</a>, v: <a href="">any</a>, name: <a href="">string</a> = """") {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="fmt_bool"><span><a class="doc-id-link" href="#fmt_bool">fmt_bool<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L592"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">fmt_bool :: proc(using fi: ^<a class="code-typename" href="/fmt/#Info">Info</a>, b: <a href="">bool</a>, verb: <a href="">rune</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="fmt_complex"><span><a class="doc-id-link" href="#fmt_complex">fmt_complex<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L1967"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">fmt_complex :: proc(fi: ^<a class="code-typename" href="/fmt/#Info">Info</a>, c: <a href="">complex128</a>, bits: <a href="">int</a>, verb: <a href="">rune</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="fmt_cstring"><span><a class="doc-id-link" href="#fmt_cstring">fmt_cstring<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L963"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">fmt_cstring :: proc(fi: ^<a class="code-typename" href="/fmt/#Info">Info</a>, s: <a href="">cstring</a>, verb: <a href="">rune</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="fmt_enum"><span><a class="doc-id-link" href="#fmt_enum">fmt_enum<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L1032"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">fmt_enum :: proc(fi: ^<a class="code-typename" href="/fmt/#Info">Info</a>, arg: <a href="">any</a>, verb: <a href="">rune</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="fmt_float"><span><a class="doc-id-link" href="#fmt_float">fmt_float<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L830"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">fmt_float :: proc(fi: ^<a class="code-typename" href="/fmt/#Info">Info</a>, v: <a href="">f64</a>, bit_size: <a href="">int</a>, verb: <a href="">rune</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="fmt_int"><span><a class="doc-id-link" href="#fmt_int">fmt_int<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L763"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">fmt_int :: proc(fi: ^<a class="code-typename" href="/fmt/#Info">Info</a>, u: <a href="">u64</a>, is_signed: <a href="">bool</a>, bit_size: <a href="">int</a>, verb: <a href="">rune</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="fmt_int_128"><span><a class="doc-id-link" href="#fmt_int_128">fmt_int_128<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L788"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">fmt_int_128 :: proc(fi: ^<a class="code-typename" href="/fmt/#Info">Info</a>, u: <a href="">u128</a>, is_signed: <a href="">bool</a>, bit_size: <a href="">int</a>, verb: <a href="">rune</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="fmt_pointer"><span><a class="doc-id-link" href="#fmt_pointer">fmt_pointer<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L967"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">fmt_pointer :: proc(fi: ^<a class="code-typename" href="/fmt/#Info">Info</a>, p: <a href="">rawptr</a>, verb: <a href="">rune</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="fmt_quaternion"><span><a class="doc-id-link" href="#fmt_quaternion">fmt_quaternion<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L1984"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">fmt_quaternion :: proc(fi: ^<a class="code-typename" href="/fmt/#Info">Info</a>, q: <a href="">quaternion256</a>, bits: <a href="">int</a>, verb: <a href="">rune</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="fmt_rune"><span><a class="doc-id-link" href="#fmt_rune">fmt_rune<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L752"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">fmt_rune :: proc(fi: ^<a class="code-typename" href="/fmt/#Info">Info</a>, r: <a href="">rune</a>, verb: <a href="">rune</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="fmt_string"><span><a class="doc-id-link" href="#fmt_string">fmt_string<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L930"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">fmt_string :: proc(fi: ^<a class="code-typename" href="/fmt/#Info">Info</a>, s: <a href="">string</a>, verb: <a href="">rune</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="fmt_value"><span><a class="doc-id-link" href="#fmt_value">fmt_value<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L1219"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">fmt_value :: proc(fi: ^<a class="code-typename" href="/fmt/#Info">Info</a>, arg: <a href="">any</a>, verb: <a href="">rune</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="fmt_write_array"><span><a class="doc-id-link" href="#fmt_write_array">fmt_write_array<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L1185"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">fmt_write_array :: proc(fi: ^<a class="code-typename" href="/fmt/#Info">Info</a>, array_data: <a href="">rawptr</a>, count: <a href="">int</a>, elem_size: <a href="">int</a>, elem_id: <a href="">typeid</a>, verb: <a href="">rune</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="fmt_write_indent"><span><a class="doc-id-link" href="#fmt_write_indent">fmt_write_indent<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L1179"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">fmt_write_indent :: proc(fi: ^<a class="code-typename" href="/fmt/#Info">Info</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="fmt_write_padding"><span><a class="doc-id-link" href="#fmt_write_padding">fmt_write_padding<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L602"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">fmt_write_padding :: proc(fi: ^<a class="code-typename" href="/fmt/#Info">Info</a>, width: <a href="">int</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="fprint"><span><a class="doc-id-link" href="#fprint">fprint<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt_os.odin#L8"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">fprint :: proc(fd: os.<a class="code-typename" href="/os/#Handle">Handle</a>, args: ..<a href="">any</a>, sep: <a href="">string</a> = "" "") -> <a href="">int</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="fprint_typeid"><span><a class="doc-id-link" href="#fprint_typeid">fprint_typeid<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt_os.odin#L25"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">fprint_typeid :: proc(fd: os.<a class="code-typename" href="/os/#Handle">Handle</a>, id: <a href="">typeid</a>) -> (n: <a href="">int</a>, err: io.<a class="code-typename" href="/io/#Error">Error</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="fprint_type"><span><a class="doc-id-link" href="#fprint_type">fprint_type<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt_os.odin#L21"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">fprint_type :: proc(fd: os.<a class="code-typename" href="/os/#Handle">Handle</a>, info: ^runtime.<a class="code-typename" href="/runtime/#Type_Info">Type_Info</a>) -> (n: <a href="">int</a>, err: io.<a class="code-typename" href="/io/#Error">Error</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="fprintf"><span><a class="doc-id-link" href="#fprintf">fprintf<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt_os.odin#L17"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">fprintf :: proc(fd: os.<a class="code-typename" href="/os/#Handle">Handle</a>, fmt: <a href="">string</a>, args: ..<a href="">any</a>) -> <a href="">int</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="fprintln"><span><a class="doc-id-link" href="#fprintln">fprintln<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt_os.odin#L13"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">fprintln :: proc(fd: os.<a class="code-typename" href="/os/#Handle">Handle</a>, args: ..<a href="">any</a>, sep: <a href="">string</a> = "" "") -> <a href="">int</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="int_from_arg"><span><a class="doc-id-link" href="#int_from_arg">int_from_arg<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L562"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">int_from_arg :: proc(args: []<a href="">any</a>, arg_index: <a href="">int</a>) -> (<a href="">int</a>, <a href="">int</a>, <a href="">bool</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="panicf"><span><a class="doc-id-link" href="#panicf">panicf<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L134"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">panicf :: proc(fmt: <a href="">string</a>, args: ..<a href="">any</a>, loc := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>) -> ! {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="print"><span><a class="doc-id-link" href="#print">print<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt_os.odin#L31"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">print :: proc(args: ..<a href="">any</a>, sep: <a href="">string</a> = "" "") -> <a href="">int</a> {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>print* procedures return the number of bytes written</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="printf"><span><a class="doc-id-link" href="#printf">printf<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt_os.odin#L33"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">printf :: proc(fmt: <a href="">string</a>, args: ..<a href="">any</a>) -> <a href="">int</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="println"><span><a class="doc-id-link" href="#println">println<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt_os.odin#L32"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">println :: proc(args: ..<a href="">any</a>, sep: <a href="">string</a> = "" "") -> <a href="">int</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="register_user_formatter"><span><a class="doc-id-link" href="#register_user_formatter">register_user_formatter<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L52"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">register_user_formatter :: proc(id: <a href="">typeid</a>, formatter: <a class="code-typename" href="/fmt/#User_Formatter">User_Formatter</a>) -> <a class="code-typename" href="/fmt/#Register_User_Formatter_Error">Register_User_Formatter_Error</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="sbprint"><span><a class="doc-id-link" href="#sbprint">sbprint<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L147"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">sbprint :: proc(buf: ^strings.<a class="code-typename" href="/strings/#Builder">Builder</a>, args: ..<a href="">any</a>, sep: <a href="">string</a> = "" "") -> <a href="">string</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="sbprintf"><span><a class="doc-id-link" href="#sbprintf">sbprintf<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L157"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">sbprintf :: proc(buf: ^strings.<a class="code-typename" href="/strings/#Builder">Builder</a>, fmt: <a href="">string</a>, args: ..<a href="">any</a>) -> <a href="">string</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="sbprintln"><span><a class="doc-id-link" href="#sbprintln">sbprintln<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L152"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">sbprintln :: proc(buf: ^strings.<a class="code-typename" href="/strings/#Builder">Builder</a>, args: ..<a href="">any</a>, sep: <a href="">string</a> = "" "") -> <a href="">string</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="set_user_formatters"><span><a class="doc-id-link" href="#set_user_formatters">set_user_formatters<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L49"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">set_user_formatters :: proc(m: ^map[<a href="">typeid</a>]<a class="code-typename" href="/fmt/#User_Formatter">User_Formatter</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="stored_enum_value_to_string"><span><a class="doc-id-link" href="#stored_enum_value_to_string">stored_enum_value_to_string<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L1057"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">stored_enum_value_to_string :: proc(enum_type: ^runtime.<a class="code-typename" href="/runtime/#Type_Info">Type_Info</a>, ev: runtime.<a class="code-typename" href="/runtime/#Type_Info_Enum_Value">Type_Info_Enum_Value</a>, offset: <a href="">int</a> = 0) -> (<a href="">string</a>, <a href="">bool</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="string_to_enum_value"><span><a class="doc-id-link" href="#string_to_enum_value">string_to_enum_value<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L1018"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">string_to_enum_value :: proc($T: <a href="">typeid</a>, s: <a href="">string</a>) -> (<a href="">typeid</a>, <a href="">bool</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="tprintf"><span><a class="doc-id-link" href="#tprintf">tprintf<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L99"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">tprintf :: proc(fmt: <a href="">string</a>, args: ..<a href="">any</a>) -> <a href="">string</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="tprint"><span><a class="doc-id-link" href="#tprint">tprint<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L87"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">tprint :: proc(args: ..<a href="">any</a>, sep: <a href="">string</a> = "" "") -> <a href="">string</a> {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>tprint* procedures return a string that was allocated with the current context's temporary allocator</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="tprintln"><span><a class="doc-id-link" href="#tprintln">tprintln<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L93"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">tprintln :: proc(args: ..<a href="">any</a>, sep: <a href="">string</a> = "" "") -> <a href="">string</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="wprintf"><span><a class="doc-id-link" href="#wprintf">wprintf<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L217"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">wprintf :: proc(w: io.<a class="code-typename" href="/io/#Writer">Writer</a>, fmt: <a href="">string</a>, args: ..<a href="">any</a>) -> <a href="">int</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="wprint"><span><a class="doc-id-link" href="#wprint">wprint<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L163"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">wprint :: proc(w: io.<a class="code-typename" href="/io/#Writer">Writer</a>, args: ..<a href="">any</a>, sep: <a href="">string</a> = "" "") -> <a href="">int</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="wprint_type"><span><a class="doc-id-link" href="#wprint_type">wprint_type<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L496"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">wprint_type :: proc(w: io.<a class="code-typename" href="/io/#Writer">Writer</a>, info: ^runtime.<a class="code-typename" href="/runtime/#Type_Info">Type_Info</a>) -> (<a href="">int</a>, io.<a class="code-typename" href="/io/#Error">Error</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="wprint_typeid"><span><a class="doc-id-link" href="#wprint_typeid">wprint_typeid<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L501"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">wprint_typeid :: proc(w: io.<a class="code-typename" href="/io/#Writer">Writer</a>, id: <a href="">typeid</a>) -> (<a href="">int</a>, io.<a class="code-typename" href="/io/#Error">Error</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="wprintln"><span><a class="doc-id-link" href="#wprintln">wprintln<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L197"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">wprintln :: proc(w: io.<a class="code-typename" href="/io/#Writer">Writer</a>, args: ..<a href="">any</a>, sep: <a href="">string</a> = "" "") -> <a href="">int</a> {…}</pre>
+</div>
+</div>
+</section>
+<h2 id="pkg-Procedure Groups">Procedure Groups</h2>
+<section class="documentation">
+<p>This section is empty.</p>
+</section>
+<h2 id="pkg-source-files">Source Files</h2>
+<ul>
+<li><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/doc.odin">doc.odin</a></li>
+<li><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin">fmt.odin</a></li>
+<li><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt_os.odin">fmt_os.odin</a></li>
+</ul>
+<h2 id="pkg-generation-information">Generation Information</h2>
+<p>Generated with <code>odin version dev-2022-01 (vendor "odin") windows_amd64 @ 2022-01-22 17:55:35.765598400 +0000 UTC</code></p>
+</article>
+<div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
+<nav id="TableOfContents">
+<ul>
+<li><a href="#pkg-overview">Overview</a><li><a href="#pkg-Types">Types</a><ul>
+<li><a href="#Info">Info</a></li>
+<li><a href="#Register_User_Formatter_Error">Register_User_Formatter_Error</a></li>
+<li><a href="#User_Formatter">User_Formatter</a></li>
+</ul>
+</li>
+<li><a href="#pkg-Procedures">Procedures</a><ul>
+<li><a href="#aprintln">aprintln</a></li>
+<li><a href="#aprint">aprint</a></li>
+<li><a href="#aprintf">aprintf</a></li>
+<li><a href="#assertf">assertf</a></li>
+<li><a href="#bprintln">bprintln</a></li>
+<li><a href="#bprint">bprint</a></li>
+<li><a href="#bprintf">bprintf</a></li>
+<li><a href="#enum_value_to_string">enum_value_to_string</a></li>
+<li><a href="#eprint">eprint</a></li>
+<li><a href="#eprintf">eprintf</a></li>
+<li><a href="#eprintln">eprintln</a></li>
+<li><a href="#fmt_arg">fmt_arg</a></li>
+<li><a href="#fmt_bad_verb">fmt_bad_verb</a></li>
+<li><a href="#fmt_bit_set">fmt_bit_set</a></li>
+<li><a href="#fmt_bool">fmt_bool</a></li>
+<li><a href="#fmt_complex">fmt_complex</a></li>
+<li><a href="#fmt_cstring">fmt_cstring</a></li>
+<li><a href="#fmt_enum">fmt_enum</a></li>
+<li><a href="#fmt_float">fmt_float</a></li>
+<li><a href="#fmt_int">fmt_int</a></li>
+<li><a href="#fmt_int_128">fmt_int_128</a></li>
+<li><a href="#fmt_pointer">fmt_pointer</a></li>
+<li><a href="#fmt_quaternion">fmt_quaternion</a></li>
+<li><a href="#fmt_rune">fmt_rune</a></li>
+<li><a href="#fmt_string">fmt_string</a></li>
+<li><a href="#fmt_value">fmt_value</a></li>
+<li><a href="#fmt_write_array">fmt_write_array</a></li>
+<li><a href="#fmt_write_indent">fmt_write_indent</a></li>
+<li><a href="#fmt_write_padding">fmt_write_padding</a></li>
+<li><a href="#fprint">fprint</a></li>
+<li><a href="#fprint_typeid">fprint_typeid</a></li>
+<li><a href="#fprint_type">fprint_type</a></li>
+<li><a href="#fprintf">fprintf</a></li>
+<li><a href="#fprintln">fprintln</a></li>
+<li><a href="#int_from_arg">int_from_arg</a></li>
+<li><a href="#panicf">panicf</a></li>
+<li><a href="#print">print</a></li>
+<li><a href="#printf">printf</a></li>
+<li><a href="#println">println</a></li>
+<li><a href="#register_user_formatter">register_user_formatter</a></li>
+<li><a href="#sbprint">sbprint</a></li>
+<li><a href="#sbprintf">sbprintf</a></li>
+<li><a href="#sbprintln">sbprintln</a></li>
+<li><a href="#set_user_formatters">set_user_formatters</a></li>
+<li><a href="#stored_enum_value_to_string">stored_enum_value_to_string</a></li>
+<li><a href="#string_to_enum_value">string_to_enum_value</a></li>
+<li><a href="#tprintf">tprintf</a></li>
+<li><a href="#tprint">tprint</a></li>
+<li><a href="#tprintln">tprintln</a></li>
+<li><a href="#wprintf">wprintf</a></li>
+<li><a href="#wprint">wprint</a></li>
+<li><a href="#wprint_type">wprint_type</a></li>
+<li><a href="#wprint_typeid">wprint_typeid</a></li>
+<li><a href="#wprintln">wprintln</a></li>
+</ul>
+</li>
+<li><a href="#pkg-source-files">Source Files</a></ul>
+</nav>
+</div></div>
+</div>
+
+</div>
+</main>
+
+<footer class="odin-footer">
+	<div class="container pb-5 pt-5">
+		<div class="row g-4">
+		<div class="col">
+		<a class="navbar-brand" href="https://odin-lang.org">
+		<img class="mb-3" src="https://odin-lang.org/logo.svg" height="30" alt="Odin"></a>
+		<p>
+		The Data-Oriented Language for Sane Software Development.
+		</p>
+		</div>
+		<nav class="col-md-auto">
+			<h4 class="fw-normal">Resources</h4>
+			<ul class="list-unstyled">
+			<li><a href="https://odin-lang.org/docs" class="link-light">Docs</a></li>
+			<li><a href="https://odin-lang.org/news" class="link-light">Blog</a></li>
+			</ul>
+		</nav>
+		<nav class="col-md-auto">
+			<h4 class="fw-normal">Community</h4>
+			<ul class="list-unstyled">
+			<li><a href="https://github.com/odin-lang/Odin" target="_blank" class="link-light">GitHub</a></li>
+			<li><a href="https://discord.com/invite/sVBPHEv" target="_blank" class="link-light">Discord</a></li>
+			<li><a href="https://www.twitch.tv/ginger_bill" target="_blank" class="link-light">Twitch</a></li>
+			<li><a href="https://www.youtube.com/channel/UCUSck1dOH7VKmG4lRW7tZXg" target="_blank" class="link-light">YouTube</a></li>
+			</ul>
+		</nav>
+		<nav class="col-md-auto">
+			<h4 class="fw-normal">Contribute</h4>
+			<ul class="list-unstyled">
+			<li><a href="https://github.com/odin-lang/Odin/issues" target="_blank" class="link-light">Issues</a></li>
+			<li><a href="https://www.patreon.com/gingerbill" target="_blank" class="link-light">Donate</a></li>
+			</ul>
+			</nav>
+		</div>
+		<div class="mt-4 text-muted">© 2016–2022 Ginger Bill</div>
+	</div>
+</footer>
+
+<script src="https://odin-lang.org/lib/bootstrap/js/bootstrap.min.js"></script>
+<script src="https://odin-lang.org/js/script.js"></script>
+<script>hljs.highlightAll()</script>
+</body>
+</html>

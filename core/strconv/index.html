@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>package strconv - pkg.odin-lang.org</title>	<!-- REMEMBER TO REMOVE -->
+	<script type="text/javascript" src="https://livejs.com/live.js"></script>
+
+	<link rel="stylesheet" type="text/css" href="https://odin-lang.org/scss/custom.min.css">
+	<link rel=stylesheet href=//odin-lang.org/lib/highlight/styles/github-dark.min.css>
+	<script src=//odin-lang.org/lib/highlight/highlight.min.js></script>
+	<script>hljs.registerLanguage("odin",function(a){return{aliases:["odin","odinlang","odin-lang"],keywords:{keyword:"auto_cast bit_set break case cast context continue defer distinct do dynamic else enum fallthrough for foreign if import in map not_in or_else or_return package proc return struct switch transmute type_of typeid union using when where",literal:"true false nil",built_in:"abs align_of cap clamp complex conj expand_to_tuple imag jmag kmag len max min offset_of quaternion real size_of soa_unzip soa_zip swizzle type_info_of type_of typeid_of"},illegal:"</",contains:[a.C_LINE_COMMENT_MODE,a.C_BLOCK_COMMENT_MODE,{className:"string",variants:[a.QUOTE_STRING_MODE,{begin:"'",end:"[^\\\\]'"},{begin:"`",end:"`"}]},{className:"number",variants:[{begin:a.C_NUMBER_RE+"[ijk]",relevance:1},a.C_NUMBER_MODE]}]}})</script>
+	<script>hljs.highlightAll()</script>
+	<link rel="stylesheet" type="text/css" href="https://odin-lang.org/css/style.css">
+
+	<link rel="stylesheet" type="text/css" href="/style.css">
+
+	</style>
+</head>
+<body>
+<header class="sticky-top">
+	<nav class="navbar navbar-expand-lg navbar-dark bg-primary odin-menu">
+		<div class="container">
+			<a class="navbar-brand" href="/">
+			<img src="https://odin-lang.org/logo.svg" height="30" alt="Odin"></a>
+			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#odin-navbar-content" aria-controls="odin-navbar-content" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+			<div class="collapse navbar-collapse" id="odin-navbar-content">
+			<ul class="navbar-nav ms-md-auto">
+				<li class="nav-item"><a class="nav-link" href="https://odin-lang.org/">Home</a></li>
+				<li class="nav-item"><a class="nav-link" href="https://odin-lang.org/docs">Docs</a></li>
+				<li class="nav-item"><a class="nav-link active" href="/">Packages</a></li>
+				<li class="nav-item"><a class="nav-link" href="https://odin-lang.org/news">News</a></li>
+				<li class="nav-item"><a class="nav-link" href="https://odin-lang.org/community">Community</a></li>
+				<li class="nav-item"><a class="nav-link" href="https://github.com/odin-lang/Odin" target="_blank">GitHub</a></li>
+			</ul>
+		</div>
+		</div>
+	</nav>
+</header>
+<main>
+<div class="container"><div class="row odin-main">
+<nav id="pkg-sidebar" class="col-lg-2 odin-sidebar-border navbar-light">
+<div class="sticky-top odin-below-navbar py-3">
+<h4>Core Library</h4>
+<ul>
+<li class="nav-item"><a href="/core/bufio">bufio</a></li>
+<li class="nav-item"><a href="/core/bytes">bytes</a></li>
+<li class="nav-item"><a href="/core/c">c</a><ul>
+<li><a href="/core/c/frontend/preprocessor">frontend/preprocessor</a></li>
+<li><a href="/core/c/frontend/tokenizer">frontend/tokenizer</a></li>
+<li><a href="/core/c/libc">libc</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/compress">compress</a><ul>
+<li><a href="/core/compress/gzip">gzip</a></li>
+<li><a href="/core/compress/zlib">zlib</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/dynlib">dynlib</a></li>
+<li class="nav-item">encoding<ul>
+<li><a href="/core/encoding/base32">base32</a></li>
+<li><a href="/core/encoding/base64">base64</a></li>
+<li><a href="/core/encoding/csv">csv</a></li>
+<li><a href="/core/encoding/hxa">hxa</a></li>
+<li><a href="/core/encoding/json">json</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/fmt">fmt</a></li>
+<li class="nav-item"><a href="/core/hash">hash</a></li>
+<li class="nav-item"><a href="/core/image">image</a><ul>
+<li><a href="/core/image/png">png</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/io">io</a></li>
+<li class="nav-item"><a href="/core/log">log</a></li>
+<li class="nav-item"><a href="/core/math">math</a><ul>
+<li><a href="/core/math/big">big</a></li>
+<li><a href="/core/math/bits">bits</a></li>
+<li><a href="/core/math/fixed">fixed</a></li>
+<li><a href="/core/math/linalg">linalg</a></li>
+<li><a href="/core/math/linalg/glsl">linalg/glsl</a></li>
+<li><a href="/core/math/linalg/hlsl">linalg/hlsl</a></li>
+<li><a href="/core/math/rand">rand</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/mem">mem</a><ul>
+<li><a href="/core/mem/virtual">virtual</a></li>
+</ul>
+
+</li>
+<li class="nav-item">odin<ul>
+<li><a href="/core/odin/ast">ast</a></li>
+<li><a href="/core/odin/doc-format">doc-format</a></li>
+<li><a href="/core/odin/format">format</a></li>
+<li><a href="/core/odin/parser">parser</a></li>
+<li><a href="/core/odin/printer">printer</a></li>
+<li><a href="/core/odin/tokenizer">tokenizer</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/os">os</a></li>
+<li class="nav-item">path<ul>
+<li><a href="/core/path/filepath">filepath</a></li>
+<li><a href="/core/path/slashpath">slashpath</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/reflect">reflect</a></li>
+<li class="nav-item"><a href="/core/runtime">runtime</a></li>
+<li class="nav-item"><a href="/core/slice">slice</a></li>
+<li class="nav-item"><a href="/core/sort">sort</a></li>
+<li class="nav-item"><a class="active" href="/core/strconv">strconv</a><ul>
+<li><a href="/core/strconv/decimal">decimal</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/strings">strings</a></li>
+<li class="nav-item"><a href="/core/sync">sync</a><ul>
+<li><a href="/core/sync/sync2">sync2</a></li>
+</ul>
+
+</li>
+<li class="nav-item">text<ul>
+<li><a href="/core/text/scanner">scanner</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/thread">thread</a></li>
+<li class="nav-item"><a href="/core/time">time</a></li>
+<li class="nav-item"><a href="/core/unicode">unicode</a><ul>
+<li><a href="/core/unicode/utf16">utf16</a></li>
+<li><a href="/core/unicode/utf8">utf8</a></li>
+</ul>
+
+</li>
+</ul>
+</div>
+</nav>
+<article class="col-lg-8 p-4 documentation odin-article">
+<h1>package core:strconv</h1>
+<h2>Index</h2>
+<div id="pkg-index">
+<div>
+<details open class="doc-index" id="doc-index-Types" aria-labelledby="#doc-index-Types-header">
+<summary id="#doc-index-Types-header">
+Types</summary>
+<ul>
+<li><a href="#Decimal_Slice">Decimal_Slice</a></li>
+<li><a href="#Float_Info">Float_Info</a></li>
+<li><a href="#Int_Flag">Int_Flag</a></li>
+<li><a href="#Int_Flags">Int_Flags</a></li>
+</ul>
+</details>
+</div>
+<div>
+<details open class="doc-index" id="doc-index-Constants" aria-labelledby="#doc-index-Constants-header">
+<summary id="#doc-index-Constants-header">
+Constants</summary>
+<ul>
+<li><a href="#MAX_BASE">MAX_BASE</a></li>
+</ul>
+</details>
+</div>
+<div>
+<details open class="doc-index" id="doc-index-Variables" aria-labelledby="#doc-index-Variables-header">
+<summary id="#doc-index-Variables-header">
+Variables</summary>
+<ul>
+<li><a href="#digits">digits</a></li>
+</ul>
+</details>
+</div>
+<div>
+<details open class="doc-index" id="doc-index-Procedures" aria-labelledby="#doc-index-Procedures-header">
+<summary id="#doc-index-Procedures-header">
+Procedures</summary>
+<ul>
+<li><a href="#append_bits">append_bits</a></li>
+<li><a href="#append_bits_128">append_bits_128</a></li>
+<li><a href="#append_bool">append_bool</a></li>
+<li><a href="#append_float">append_float</a></li>
+<li><a href="#append_float">append_float</a></li>
+<li><a href="#append_int">append_int</a></li>
+<li><a href="#append_uint">append_uint</a></li>
+<li><a href="#atof">atof</a></li>
+<li><a href="#atoi">atoi</a></li>
+<li><a href="#format_digits">format_digits</a></li>
+<li><a href="#generic_ftoa">generic_ftoa</a></li>
+<li><a href="#is_integer_negative">is_integer_negative</a></li>
+<li><a href="#is_integer_negative_128">is_integer_negative_128</a></li>
+<li><a href="#itoa">itoa</a></li>
+<li><a href="#parse_bool">parse_bool</a></li>
+<li><a href="#parse_f32">parse_f32</a></li>
+<li><a href="#parse_f64">parse_f64</a></li>
+<li><a href="#parse_i128_maybe_prefixed">parse_i128_maybe_prefixed</a></li>
+<li><a href="#parse_i128_of_base">parse_i128_of_base</a></li>
+<li><a href="#parse_i64_maybe_prefixed">parse_i64_maybe_prefixed</a></li>
+<li><a href="#parse_i64_of_base">parse_i64_of_base</a></li>
+<li><a href="#parse_int">parse_int</a></li>
+<li><a href="#parse_u128_maybe_prefixed">parse_u128_maybe_prefixed</a></li>
+<li><a href="#parse_u128_of_base">parse_u128_of_base</a></li>
+<li><a href="#parse_u64_maybe_prefixed">parse_u64_maybe_prefixed</a></li>
+<li><a href="#parse_u64_of_base">parse_u64_of_base</a></li>
+<li><a href="#parse_uint">parse_uint</a></li>
+<li><a href="#quote">quote</a></li>
+<li><a href="#quote_rune">quote_rune</a></li>
+<li><a href="#round_shortest">round_shortest</a></li>
+<li><a href="#unquote_char">unquote_char</a></li>
+<li><a href="#unquote_string">unquote_string</a></li>
+</ul>
+</details>
+</div>
+<div>
+<details open class="doc-index" id="doc-index-Procedure Groups" aria-labelledby="#doc-index-Procedure Groups-header">
+<summary id="#doc-index-Procedure Groups-header">
+Procedure Groups</summary>
+<ul>
+<li><a href="#parse_i128">parse_i128</a></li>
+<li><a href="#parse_i64">parse_i64</a></li>
+<li><a href="#parse_u128">parse_u128</a></li>
+<li><a href="#parse_u64">parse_u64</a></li>
+</ul>
+</details>
+</div>
+</div>
+<h2 id="pkg-Types">Types</h2>
+<section class="documentation">
+<div class="pkg-entity">
+<h3 id="Decimal_Slice"><span><a class="doc-id-link" href="#Decimal_Slice">Decimal_Slice<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strconv/generic_float.odin#L5"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Decimal_Slice :: struct {
+	digits:        []<a href="">u8</a>,
+	count:         <a href="">int</a>,
+	decimal_point: <a href="">int</a>,
+	neg:           <a href="">bool</a>,
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Float_Info"><span><a class="doc-id-link" href="#Float_Info">Float_Info<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strconv/generic_float.odin#L12"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Float_Info :: struct {
+	mantbits: <a href="">uint</a>,
+	expbits:  <a href="">uint</a>,
+	bias:     <a href="">int</a>,
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Int_Flag"><span><a class="doc-id-link" href="#Int_Flag">Int_Flag<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strconv/integers.odin#L3"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Int_Flag :: enum <a href="">int</a> {
+	Prefix, 
+	Plus, 
+	Space, 
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Int_Flags"><span><a class="doc-id-link" href="#Int_Flags">Int_Flags<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strconv/integers.odin#L8"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Int_Flags :: bit_set[<a class="code-typename" href="/strconv/#Int_Flag">Int_Flag</a>]</pre>
+</div>
+</div>
+</section>
+<h2 id="pkg-Constants">Constants</h2>
+<section class="documentation">
+<div class="pkg-entity">
+<h3 id="MAX_BASE"><span><a class="doc-id-link" href="#MAX_BASE">MAX_BASE<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strconv/integers.odin#L10"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">MAX_BASE :: 32</pre>
+</div>
+</div>
+</section>
+<h2 id="pkg-Variables">Variables</h2>
+<section class="documentation">
+<div class="pkg-entity">
+<h3 id="digits"><span><a class="doc-id-link" href="#digits">digits<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strconv/integers.odin#L11"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">digits: <a href="">string</a> = …</pre>
+</div>
+</div>
+</section>
+<h2 id="pkg-Procedures">Procedures</h2>
+<section class="documentation">
+<div class="pkg-entity">
+<h3 id="append_bits"><span><a class="doc-id-link" href="#append_bits">append_bits<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strconv/integers.odin#L41"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">append_bits :: proc(buf: []<a href="">u8</a>, x: <a href="">u64</a>, base: <a href="">int</a>, is_signed: <a href="">bool</a>, bit_size: <a href="">int</a>, digits: <a href="">string</a>, flags: bit_set[<a class="code-typename" href="/strconv/#Int_Flag">Int_Flag</a>]) -> <a href="">string</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="append_bits_128"><span><a class="doc-id-link" href="#append_bits_128">append_bits_128<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strconv/integers.odin#L118"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">append_bits_128 :: proc(buf: []<a href="">u8</a>, x: <a href="">u128</a>, base: <a href="">int</a>, is_signed: <a href="">bool</a>, bit_size: <a href="">int</a>, digits: <a href="">string</a>, flags: bit_set[<a class="code-typename" href="/strconv/#Int_Flag">Int_Flag</a>]) -> <a href="">string</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="append_bool"><span><a class="doc-id-link" href="#append_bool">append_bool<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strconv/strconv.odin#L648"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">append_bool :: proc(buf: []<a href="">u8</a>, b: <a href="">bool</a>) -> <a href="">string</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="append_float"><span><a class="doc-id-link" href="#append_float">append_float<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strconv/strconv.odin#L678"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">append_float :: proc(buf: []<a href="">u8</a>, f: <a href="">f64</a>, fmt: <a href="">u8</a>, prec, bit_size: <a href="">int</a>) -> <a href="">string</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="append_float"><span><a class="doc-id-link" href="#append_float">append_float<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strconv/strconv.odin#L678"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">append_float :: proc(buf: []<a href="">u8</a>, f: <a href="">f64</a>, fmt: <a href="">u8</a>, prec, bit_size: <a href="">int</a>) -> <a href="">string</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="append_int"><span><a class="doc-id-link" href="#append_int">append_int<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strconv/strconv.odin#L661"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">append_int :: proc(buf: []<a href="">u8</a>, i: <a href="">i64</a>, base: <a href="">int</a>) -> <a href="">string</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="append_uint"><span><a class="doc-id-link" href="#append_uint">append_uint<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strconv/strconv.odin#L658"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">append_uint :: proc(buf: []<a href="">u8</a>, u: <a href="">u64</a>, base: <a href="">int</a>) -> <a href="">string</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="atof"><span><a class="doc-id-link" href="#atof">atof<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strconv/strconv.odin#L672"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">atof :: proc(s: <a href="">string</a>) -> <a href="">f64</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="atoi"><span><a class="doc-id-link" href="#atoi">atoi<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strconv/strconv.odin#L668"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">atoi :: proc(str: <a href="">string</a>) -> (w: <a href="">int</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="format_digits"><span><a class="doc-id-link" href="#format_digits">format_digits<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strconv/generic_float.odin#L100"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">format_digits :: proc(buf: []<a href="">u8</a>, shortest: <a href="">bool</a>, neg: <a href="">bool</a>, digs: <a class="code-typename" href="/strconv/#Decimal_Slice">Decimal_Slice</a>, precision: <a href="">int</a>, fmt: <a href="">u8</a>) -> []<a href="">u8</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="generic_ftoa"><span><a class="doc-id-link" href="#generic_ftoa">generic_ftoa<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strconv/generic_float.odin#L24"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">generic_ftoa :: proc(buf: []<a href="">u8</a>, val: <a href="">f64</a>, fmt: <a href="">u8</a>, precision, bit_size: <a href="">int</a>) -> []<a href="">u8</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="is_integer_negative"><span><a class="doc-id-link" href="#is_integer_negative">is_integer_negative<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strconv/integers.odin#L14"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">is_integer_negative :: proc(x: <a href="">u64</a>, is_signed: <a href="">bool</a>, bit_size: <a href="">int</a>) -> (u: <a href="">u64</a>, neg: <a href="">bool</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="is_integer_negative_128"><span><a class="doc-id-link" href="#is_integer_negative_128">is_integer_negative_128<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strconv/integers.odin#L85"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">is_integer_negative_128 :: proc(x: <a href="">u128</a>, is_signed: <a href="">bool</a>, bit_size: <a href="">int</a>) -> (u: <a href="">u128</a>, neg: <a href="">bool</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="itoa"><span><a class="doc-id-link" href="#itoa">itoa<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strconv/strconv.odin#L665"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">itoa :: proc(buf: []<a href="">u8</a>, i: <a href="">int</a>) -> <a href="">string</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="parse_bool"><span><a class="doc-id-link" href="#parse_bool">parse_bool<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strconv/strconv.odin#L5"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">parse_bool :: proc(s: <a href="">string</a>) -> (result: <a href="">bool</a> = false, ok: <a href="">bool</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="parse_f32"><span><a class="doc-id-link" href="#parse_f32">parse_f32<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strconv/strconv.odin#L538"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">parse_f32 :: proc(s: <a href="">string</a>) -> (value: <a href="">f32</a>, ok: <a href="">bool</a>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Parses a 32-bit floating point number from a string.</p>
+<p>Returns ok=false if a base 10 float could not be found,
+or if the input string contained more than just the number.</p>
+<p>```
+n, ok := strconv.parse_f32("12.34eee");
+assert(n == 12.34 && ok);</p>
+<p>n, ok = strconv.parse_f32("12.34");
+assert(n == 12.34 && ok);
+```</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="parse_f64"><span><a class="doc-id-link" href="#parse_f64">parse_f64<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strconv/strconv.odin#L556"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">parse_f64 :: proc(str: <a href="">string</a>) -> (value: <a href="">f64</a>, ok: <a href="">bool</a>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Parses a 64-bit floating point number from a string.</p>
+<p>Returns ok=false if a base 10 float could not be found,
+or if the input string contained more than just the number.</p>
+<p>```
+n, ok := strconv.parse_f32("12.34eee");
+assert(n == 12.34 && ok);</p>
+<p>n, ok = strconv.parse_f32("12.34");
+assert(n == 12.34 && ok);
+```</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="parse_i128_maybe_prefixed"><span><a class="doc-id-link" href="#parse_i128_maybe_prefixed">parse_i128_maybe_prefixed<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strconv/strconv.odin#L367"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">parse_i128_maybe_prefixed :: proc(str: <a href="">string</a>) -> (value: <a href="">i128</a>, ok: <a href="">bool</a>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Parses a integer value from a string, in base 10, unless there's a prefix.</p>
+<p>Returns ok=false if a valid integer could not be found,
+or if the input string contained more than just the number.</p>
+<p>```
+n, ok := strconv.parse_i128_maybe_prefixed("1234");
+assert(n == 1234 && ok);</p>
+<p>n, ok = strconv.parse_i128_maybe_prefixed("0xeeee");
+assert(n == 0xeeee && ok);
+```</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="parse_i128_of_base"><span><a class="doc-id-link" href="#parse_i128_of_base">parse_i128_of_base<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strconv/strconv.odin#L312"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">parse_i128_of_base :: proc(str: <a href="">string</a>, base: <a href="">int</a>) -> (value: <a href="">i128</a>, ok: <a href="">bool</a>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Parses an integer value from a string, in the given base, without a prefix.</p>
+<p>Returns ok=false if no numeric value of the appropriate base could be found,
+or if the input string contained more than just the number.</p>
+<p>```
+n, ok := strconv.parse_i128_of_base("-1234eeee", 10);
+assert(n == -1234 && ok);
+```</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="parse_i64_maybe_prefixed"><span><a class="doc-id-link" href="#parse_i64_maybe_prefixed">parse_i64_maybe_prefixed<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strconv/strconv.odin#L90"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">parse_i64_maybe_prefixed :: proc(str: <a href="">string</a>) -> (value: <a href="">i64</a>, ok: <a href="">bool</a>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Parses a integer value from a string, in base 10, unless there's a prefix.</p>
+<p>Returns ok=false if a valid integer could not be found,
+or if the input string contained more than just the number.</p>
+<p>```
+n, ok := strconv.parse_i64_maybe_prefixed("1234");
+assert(n == 1234 && ok);</p>
+<p>n, ok = strconv.parse_i64_maybe_prefixed("0xeeee");
+assert(n == 0xeeee && ok);
+```</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="parse_i64_of_base"><span><a class="doc-id-link" href="#parse_i64_of_base">parse_i64_of_base<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strconv/strconv.odin#L35"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">parse_i64_of_base :: proc(str: <a href="">string</a>, base: <a href="">int</a>) -> (value: <a href="">i64</a>, ok: <a href="">bool</a>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Parses an integer value from a string, in the given base, without a prefix.</p>
+<p>Returns ok=false if no numeric value of the appropriate base could be found,
+or if the input string contained more than just the number.</p>
+<p>```
+n, ok := strconv.parse_i64_of_base("-1234eeee", 10);
+assert(n == -1234 && ok);
+```</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="parse_int"><span><a class="doc-id-link" href="#parse_int">parse_int<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strconv/strconv.odin#L262"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">parse_int :: proc(s: <a href="">string</a>, base: <a href="">int</a> = 0) -> (value: <a href="">int</a>, ok: <a href="">bool</a>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Parses an integer value from a string in the given base, or
+- if the string has a prefix (e.g: '0x') then that will determine the base;
+- otherwise, assumes base 10.</p>
+<p>Returns ok=false if no appropriate value could be found, or if the input string
+contained more than just the number.</p>
+<p>```
+n, ok := strconv.parse_int("1234"); // without prefix, inferred base 10
+assert(n == 1234 && ok);</p>
+<p>n, ok = strconv.parse_int("ffff", 16); // without prefix, explicit base
+assert(n == 0xffff && ok);</p>
+<p>n, ok = strconv.parse_int("0xffff"); // with prefix and inferred base
+assert(n == 0xffff && ok);
+```</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="parse_u128_maybe_prefixed"><span><a class="doc-id-link" href="#parse_u128_maybe_prefixed">parse_u128_maybe_prefixed<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strconv/strconv.odin#L478"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">parse_u128_maybe_prefixed :: proc(str: <a href="">string</a>) -> (value: <a href="">u128</a>, ok: <a href="">bool</a>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Parses an unsigned integer value from a string in base 10, unless there's a prefix.</p>
+<p>Returns ok=false if a valid integer could not be found, if the value was negative,
+or if the input string contained more than just the number.</p>
+<p>```
+n, ok := strconv.parse_u128_maybe_prefixed("1234");
+assert(n == 1234 && ok);</p>
+<p>n, ok = strconv.parse_u128_maybe_prefixed("0xeeee");
+assert(n == 0xeeee && ok);
+```</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="parse_u128_of_base"><span><a class="doc-id-link" href="#parse_u128_of_base">parse_u128_of_base<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strconv/strconv.odin#L435"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">parse_u128_of_base :: proc(str: <a href="">string</a>, base: <a href="">int</a>) -> (value: <a href="">u128</a>, ok: <a href="">bool</a>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Parses an unsigned integer value from a string, in the given base, and
+without a prefix.</p>
+<p>Returns ok=false if no numeric value of the appropriate base could be found,
+or if the input string contained more than just the number.</p>
+<p>```
+n, ok := strconv.parse_u128_of_base("1234eeee", 10);
+assert(n == 1234 && ok);</p>
+<p>n, ok = strconv.parse_u128_of_base("5678eeee", 16);
+assert(n == 0x5678eeee && ok);
+```</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="parse_u64_maybe_prefixed"><span><a class="doc-id-link" href="#parse_u64_maybe_prefixed">parse_u64_maybe_prefixed<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strconv/strconv.odin#L201"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">parse_u64_maybe_prefixed :: proc(str: <a href="">string</a>) -> (value: <a href="">u64</a>, ok: <a href="">bool</a>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Parses an unsigned integer value from a string in base 10, unless there's a prefix.</p>
+<p>Returns ok=false if a valid integer could not be found, if the value was negative,
+or if the input string contained more than just the number.</p>
+<p>```
+n, ok := strconv.parse_u64_maybe_prefixed("1234");
+assert(n == 1234 && ok);</p>
+<p>n, ok = strconv.parse_u64_maybe_prefixed("0xeeee");
+assert(n == 0xeeee && ok);
+```</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="parse_u64_of_base"><span><a class="doc-id-link" href="#parse_u64_of_base">parse_u64_of_base<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strconv/strconv.odin#L158"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">parse_u64_of_base :: proc(str: <a href="">string</a>, base: <a href="">int</a>) -> (value: <a href="">u64</a>, ok: <a href="">bool</a>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Parses an unsigned integer value from a string, in the given base, and
+without a prefix.</p>
+<p>Returns ok=false if no numeric value of the appropriate base could be found,
+or if the input string contained more than just the number.</p>
+<p>```
+n, ok := strconv.parse_u64_of_base("1234eeee", 10);
+assert(n == 1234 && ok);</p>
+<p>n, ok = strconv.parse_u64_of_base("5678eeee", 16);
+assert(n == 0x5678eeee && ok);
+```</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="parse_uint"><span><a class="doc-id-link" href="#parse_uint">parse_uint<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strconv/strconv.odin#L292"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">parse_uint :: proc(s: <a href="">string</a>, base: <a href="">int</a> = 0) -> (value: <a href="">uint</a>, ok: <a href="">bool</a>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Parses an unsigned integer value from a string in the given base, or
+- if the string has a prefix (e.g: '0x') then that will determine the base;
+- otherwise, assumes base 10.</p>
+<p>Returns ok=false if:
+- no appropriate value could be found; or
+- the value was negative.
+- the input string contained more than just the number.</p>
+<p>```
+n, ok := strconv.parse_uint("1234"); // without prefix, inferred base 10
+assert(n == 1234 && ok);</p>
+<p>n, ok = strconv.parse_uint("ffff", 16); // without prefix, explicit base
+assert(n == 0xffff && ok);</p>
+<p>n, ok = strconv.parse_uint("0xffff"); // with prefix and inferred base
+assert(n == 0xffff && ok);
+```</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="quote"><span><a class="doc-id-link" href="#quote">quote<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strconv/strconv.odin#L683"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">quote :: proc(buf: []<a href="">u8</a>, str: <a href="">string</a>) -> <a href="">string</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="quote_rune"><span><a class="doc-id-link" href="#quote_rune">quote_rune<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strconv/strconv.odin#L721"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">quote_rune :: proc(buf: []<a href="">u8</a>, r: <a href="">rune</a>) -> <a href="">string</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="round_shortest"><span><a class="doc-id-link" href="#round_shortest">round_shortest<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strconv/generic_float.odin#L221"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">round_shortest :: proc(d: ^strconv_decimal.<a class="code-typename" href="/strconv/decimal/#Decimal">Decimal</a>, mant: <a href="">u64</a>, exp: <a href="">int</a>, flt: ^<a class="code-typename" href="/strconv/#Float_Info">Float_Info</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="unquote_char"><span><a class="doc-id-link" href="#unquote_char">unquote_char<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strconv/strconv.odin#L780"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">unquote_char :: proc(str: <a href="">string</a>, quote: <a href="">u8</a>) -> (r: <a href="">rune</a>, multiple_bytes: <a href="">bool</a>, tail_string: <a href="">string</a>, success: <a href="">bool</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="unquote_string"><span><a class="doc-id-link" href="#unquote_string">unquote_string<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strconv/strconv.odin#L875"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">unquote_string :: proc(lit: <a href="">string</a>, allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> (res: <a href="">string</a>, allocated, success: <a href="">bool</a>) {…}</pre>
+</div>
+</div>
+</section>
+<h2 id="pkg-Procedure Groups">Procedure Groups</h2>
+<section class="documentation">
+<div class="pkg-entity">
+<h3 id="parse_i128"><span><a class="doc-id-link" href="#parse_i128">parse_i128<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strconv/strconv.odin#L420"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">parse_i128 :: proc{
+	<a class="code-procedure" href="/core/strconv/#parse_i128_maybe_prefixed">parse_i128_maybe_prefixed</a>,
+	<a class="code-procedure" href="/core/strconv/#parse_i128_of_base">parse_i128_of_base</a>,
+}
+</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="parse_i64"><span><a class="doc-id-link" href="#parse_i64">parse_i64<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strconv/strconv.odin#L143"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">parse_i64 :: proc{
+	<a class="code-procedure" href="/core/strconv/#parse_i64_maybe_prefixed">parse_i64_maybe_prefixed</a>,
+	<a class="code-procedure" href="/core/strconv/#parse_i64_of_base">parse_i64_of_base</a>,
+}
+</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="parse_u128"><span><a class="doc-id-link" href="#parse_u128">parse_u128<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strconv/strconv.odin#L520"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">parse_u128 :: proc{
+	<a class="code-procedure" href="/core/strconv/#parse_u128_maybe_prefixed">parse_u128_maybe_prefixed</a>,
+	<a class="code-procedure" href="/core/strconv/#parse_u128_of_base">parse_u128_of_base</a>,
+}
+</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="parse_u64"><span><a class="doc-id-link" href="#parse_u64">parse_u64<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strconv/strconv.odin#L243"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">parse_u64 :: proc{
+	<a class="code-procedure" href="/core/strconv/#parse_u64_maybe_prefixed">parse_u64_maybe_prefixed</a>,
+	<a class="code-procedure" href="/core/strconv/#parse_u64_of_base">parse_u64_of_base</a>,
+}
+</pre>
+</div>
+</div>
+</section>
+<h2 id="pkg-source-files">Source Files</h2>
+<ul>
+<li><a href="https://github.com/odin-lang/Odin/tree/master/core/strconv/generic_float.odin">generic_float.odin</a></li>
+<li><a href="https://github.com/odin-lang/Odin/tree/master/core/strconv/integers.odin">integers.odin</a></li>
+<li><a href="https://github.com/odin-lang/Odin/tree/master/core/strconv/strconv.odin">strconv.odin</a></li>
+</ul>
+<h2 id="pkg-generation-information">Generation Information</h2>
+<p>Generated with <code>odin version dev-2022-01 (vendor "odin") windows_amd64 @ 2022-01-22 17:55:35.885628200 +0000 UTC</code></p>
+</article>
+<div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
+<nav id="TableOfContents">
+<ul>
+<li><a href="#pkg-Types">Types</a><ul>
+<li><a href="#Decimal_Slice">Decimal_Slice</a></li>
+<li><a href="#Float_Info">Float_Info</a></li>
+<li><a href="#Int_Flag">Int_Flag</a></li>
+<li><a href="#Int_Flags">Int_Flags</a></li>
+</ul>
+</li>
+<li><a href="#pkg-Constants">Constants</a><ul>
+<li><a href="#MAX_BASE">MAX_BASE</a></li>
+</ul>
+</li>
+<li><a href="#pkg-Variables">Variables</a><ul>
+<li><a href="#digits">digits</a></li>
+</ul>
+</li>
+<li><a href="#pkg-Procedures">Procedures</a><ul>
+<li><a href="#append_bits">append_bits</a></li>
+<li><a href="#append_bits_128">append_bits_128</a></li>
+<li><a href="#append_bool">append_bool</a></li>
+<li><a href="#append_float">append_float</a></li>
+<li><a href="#append_float">append_float</a></li>
+<li><a href="#append_int">append_int</a></li>
+<li><a href="#append_uint">append_uint</a></li>
+<li><a href="#atof">atof</a></li>
+<li><a href="#atoi">atoi</a></li>
+<li><a href="#format_digits">format_digits</a></li>
+<li><a href="#generic_ftoa">generic_ftoa</a></li>
+<li><a href="#is_integer_negative">is_integer_negative</a></li>
+<li><a href="#is_integer_negative_128">is_integer_negative_128</a></li>
+<li><a href="#itoa">itoa</a></li>
+<li><a href="#parse_bool">parse_bool</a></li>
+<li><a href="#parse_f32">parse_f32</a></li>
+<li><a href="#parse_f64">parse_f64</a></li>
+<li><a href="#parse_i128_maybe_prefixed">parse_i128_maybe_prefixed</a></li>
+<li><a href="#parse_i128_of_base">parse_i128_of_base</a></li>
+<li><a href="#parse_i64_maybe_prefixed">parse_i64_maybe_prefixed</a></li>
+<li><a href="#parse_i64_of_base">parse_i64_of_base</a></li>
+<li><a href="#parse_int">parse_int</a></li>
+<li><a href="#parse_u128_maybe_prefixed">parse_u128_maybe_prefixed</a></li>
+<li><a href="#parse_u128_of_base">parse_u128_of_base</a></li>
+<li><a href="#parse_u64_maybe_prefixed">parse_u64_maybe_prefixed</a></li>
+<li><a href="#parse_u64_of_base">parse_u64_of_base</a></li>
+<li><a href="#parse_uint">parse_uint</a></li>
+<li><a href="#quote">quote</a></li>
+<li><a href="#quote_rune">quote_rune</a></li>
+<li><a href="#round_shortest">round_shortest</a></li>
+<li><a href="#unquote_char">unquote_char</a></li>
+<li><a href="#unquote_string">unquote_string</a></li>
+</ul>
+</li>
+<li><a href="#pkg-Procedure Groups">Procedure Groups</a><ul>
+<li><a href="#parse_i128">parse_i128</a></li>
+<li><a href="#parse_i64">parse_i64</a></li>
+<li><a href="#parse_u128">parse_u128</a></li>
+<li><a href="#parse_u64">parse_u64</a></li>
+</ul>
+</li>
+<li><a href="#pkg-source-files">Source Files</a></ul>
+</nav>
+</div></div>
+</div>
+
+</div>
+</main>
+
+<footer class="odin-footer">
+	<div class="container pb-5 pt-5">
+		<div class="row g-4">
+		<div class="col">
+		<a class="navbar-brand" href="https://odin-lang.org">
+		<img class="mb-3" src="https://odin-lang.org/logo.svg" height="30" alt="Odin"></a>
+		<p>
+		The Data-Oriented Language for Sane Software Development.
+		</p>
+		</div>
+		<nav class="col-md-auto">
+			<h4 class="fw-normal">Resources</h4>
+			<ul class="list-unstyled">
+			<li><a href="https://odin-lang.org/docs" class="link-light">Docs</a></li>
+			<li><a href="https://odin-lang.org/news" class="link-light">Blog</a></li>
+			</ul>
+		</nav>
+		<nav class="col-md-auto">
+			<h4 class="fw-normal">Community</h4>
+			<ul class="list-unstyled">
+			<li><a href="https://github.com/odin-lang/Odin" target="_blank" class="link-light">GitHub</a></li>
+			<li><a href="https://discord.com/invite/sVBPHEv" target="_blank" class="link-light">Discord</a></li>
+			<li><a href="https://www.twitch.tv/ginger_bill" target="_blank" class="link-light">Twitch</a></li>
+			<li><a href="https://www.youtube.com/channel/UCUSck1dOH7VKmG4lRW7tZXg" target="_blank" class="link-light">YouTube</a></li>
+			</ul>
+		</nav>
+		<nav class="col-md-auto">
+			<h4 class="fw-normal">Contribute</h4>
+			<ul class="list-unstyled">
+			<li><a href="https://github.com/odin-lang/Odin/issues" target="_blank" class="link-light">Issues</a></li>
+			<li><a href="https://www.patreon.com/gingerbill" target="_blank" class="link-light">Donate</a></li>
+			</ul>
+			</nav>
+		</div>
+		<div class="mt-4 text-muted">© 2016–2022 Ginger Bill</div>
+	</div>
+</footer>
+
+<script src="https://odin-lang.org/lib/bootstrap/js/bootstrap.min.js"></script>
+<script src="https://odin-lang.org/js/script.js"></script>
+<script>hljs.highlightAll()</script>
+</body>
+</html>

@@ -1,0 +1,1393 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>package io - pkg.odin-lang.org</title>	<!-- REMEMBER TO REMOVE -->
+	<script type="text/javascript" src="https://livejs.com/live.js"></script>
+
+	<link rel="stylesheet" type="text/css" href="https://odin-lang.org/scss/custom.min.css">
+	<link rel=stylesheet href=//odin-lang.org/lib/highlight/styles/github-dark.min.css>
+	<script src=//odin-lang.org/lib/highlight/highlight.min.js></script>
+	<script>hljs.registerLanguage("odin",function(a){return{aliases:["odin","odinlang","odin-lang"],keywords:{keyword:"auto_cast bit_set break case cast context continue defer distinct do dynamic else enum fallthrough for foreign if import in map not_in or_else or_return package proc return struct switch transmute type_of typeid union using when where",literal:"true false nil",built_in:"abs align_of cap clamp complex conj expand_to_tuple imag jmag kmag len max min offset_of quaternion real size_of soa_unzip soa_zip swizzle type_info_of type_of typeid_of"},illegal:"</",contains:[a.C_LINE_COMMENT_MODE,a.C_BLOCK_COMMENT_MODE,{className:"string",variants:[a.QUOTE_STRING_MODE,{begin:"'",end:"[^\\\\]'"},{begin:"`",end:"`"}]},{className:"number",variants:[{begin:a.C_NUMBER_RE+"[ijk]",relevance:1},a.C_NUMBER_MODE]}]}})</script>
+	<script>hljs.highlightAll()</script>
+	<link rel="stylesheet" type="text/css" href="https://odin-lang.org/css/style.css">
+
+	<link rel="stylesheet" type="text/css" href="/style.css">
+
+	</style>
+</head>
+<body>
+<header class="sticky-top">
+	<nav class="navbar navbar-expand-lg navbar-dark bg-primary odin-menu">
+		<div class="container">
+			<a class="navbar-brand" href="/">
+			<img src="https://odin-lang.org/logo.svg" height="30" alt="Odin"></a>
+			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#odin-navbar-content" aria-controls="odin-navbar-content" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+			<div class="collapse navbar-collapse" id="odin-navbar-content">
+			<ul class="navbar-nav ms-md-auto">
+				<li class="nav-item"><a class="nav-link" href="https://odin-lang.org/">Home</a></li>
+				<li class="nav-item"><a class="nav-link" href="https://odin-lang.org/docs">Docs</a></li>
+				<li class="nav-item"><a class="nav-link active" href="/">Packages</a></li>
+				<li class="nav-item"><a class="nav-link" href="https://odin-lang.org/news">News</a></li>
+				<li class="nav-item"><a class="nav-link" href="https://odin-lang.org/community">Community</a></li>
+				<li class="nav-item"><a class="nav-link" href="https://github.com/odin-lang/Odin" target="_blank">GitHub</a></li>
+			</ul>
+		</div>
+		</div>
+	</nav>
+</header>
+<main>
+<div class="container"><div class="row odin-main">
+<nav id="pkg-sidebar" class="col-lg-2 odin-sidebar-border navbar-light">
+<div class="sticky-top odin-below-navbar py-3">
+<h4>Core Library</h4>
+<ul>
+<li class="nav-item"><a href="/core/bufio">bufio</a></li>
+<li class="nav-item"><a href="/core/bytes">bytes</a></li>
+<li class="nav-item"><a href="/core/c">c</a><ul>
+<li><a href="/core/c/frontend/preprocessor">frontend/preprocessor</a></li>
+<li><a href="/core/c/frontend/tokenizer">frontend/tokenizer</a></li>
+<li><a href="/core/c/libc">libc</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/compress">compress</a><ul>
+<li><a href="/core/compress/gzip">gzip</a></li>
+<li><a href="/core/compress/zlib">zlib</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/dynlib">dynlib</a></li>
+<li class="nav-item">encoding<ul>
+<li><a href="/core/encoding/base32">base32</a></li>
+<li><a href="/core/encoding/base64">base64</a></li>
+<li><a href="/core/encoding/csv">csv</a></li>
+<li><a href="/core/encoding/hxa">hxa</a></li>
+<li><a href="/core/encoding/json">json</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/fmt">fmt</a></li>
+<li class="nav-item"><a href="/core/hash">hash</a></li>
+<li class="nav-item"><a href="/core/image">image</a><ul>
+<li><a href="/core/image/png">png</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a class="active" href="/core/io">io</a></li>
+<li class="nav-item"><a href="/core/log">log</a></li>
+<li class="nav-item"><a href="/core/math">math</a><ul>
+<li><a href="/core/math/big">big</a></li>
+<li><a href="/core/math/bits">bits</a></li>
+<li><a href="/core/math/fixed">fixed</a></li>
+<li><a href="/core/math/linalg">linalg</a></li>
+<li><a href="/core/math/linalg/glsl">linalg/glsl</a></li>
+<li><a href="/core/math/linalg/hlsl">linalg/hlsl</a></li>
+<li><a href="/core/math/rand">rand</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/mem">mem</a><ul>
+<li><a href="/core/mem/virtual">virtual</a></li>
+</ul>
+
+</li>
+<li class="nav-item">odin<ul>
+<li><a href="/core/odin/ast">ast</a></li>
+<li><a href="/core/odin/doc-format">doc-format</a></li>
+<li><a href="/core/odin/format">format</a></li>
+<li><a href="/core/odin/parser">parser</a></li>
+<li><a href="/core/odin/printer">printer</a></li>
+<li><a href="/core/odin/tokenizer">tokenizer</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/os">os</a></li>
+<li class="nav-item">path<ul>
+<li><a href="/core/path/filepath">filepath</a></li>
+<li><a href="/core/path/slashpath">slashpath</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/reflect">reflect</a></li>
+<li class="nav-item"><a href="/core/runtime">runtime</a></li>
+<li class="nav-item"><a href="/core/slice">slice</a></li>
+<li class="nav-item"><a href="/core/sort">sort</a></li>
+<li class="nav-item"><a href="/core/strconv">strconv</a><ul>
+<li><a href="/core/strconv/decimal">decimal</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/strings">strings</a></li>
+<li class="nav-item"><a href="/core/sync">sync</a><ul>
+<li><a href="/core/sync/sync2">sync2</a></li>
+</ul>
+
+</li>
+<li class="nav-item">text<ul>
+<li><a href="/core/text/scanner">scanner</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/thread">thread</a></li>
+<li class="nav-item"><a href="/core/time">time</a></li>
+<li class="nav-item"><a href="/core/unicode">unicode</a><ul>
+<li><a href="/core/unicode/utf16">utf16</a></li>
+<li><a href="/core/unicode/utf8">utf8</a></li>
+</ul>
+
+</li>
+</ul>
+</div>
+</nav>
+<article class="col-lg-8 p-4 documentation odin-article">
+<h1>package core:io</h1>
+<h2>Index</h2>
+<div id="pkg-index">
+<div>
+<details open class="doc-index" id="doc-index-Types" aria-labelledby="#doc-index-Types-header">
+<summary id="#doc-index-Types-header">
+Types</summary>
+<ul>
+<li><a href="#Byte_Reader">Byte_Reader</a></li>
+<li><a href="#Byte_Scanner">Byte_Scanner</a></li>
+<li><a href="#Byte_Writer">Byte_Writer</a></li>
+<li><a href="#Close_Proc">Close_Proc</a></li>
+<li><a href="#Closer">Closer</a></li>
+<li><a href="#Destroy_Proc">Destroy_Proc</a></li>
+<li><a href="#Error">Error</a></li>
+<li><a href="#Flush_Proc">Flush_Proc</a></li>
+<li><a href="#Flusher">Flusher</a></li>
+<li><a href="#Limited_Reader">Limited_Reader</a></li>
+<li><a href="#Multi_Reader">Multi_Reader</a></li>
+<li><a href="#Multi_Writer">Multi_Writer</a></li>
+<li><a href="#Read_At_Proc">Read_At_Proc</a></li>
+<li><a href="#Read_Byte_Proc">Read_Byte_Proc</a></li>
+<li><a href="#Read_Closer">Read_Closer</a></li>
+<li><a href="#Read_From_Proc">Read_From_Proc</a></li>
+<li><a href="#Read_Proc">Read_Proc</a></li>
+<li><a href="#Read_Rune_Proc">Read_Rune_Proc</a></li>
+<li><a href="#Read_Write_Closer">Read_Write_Closer</a></li>
+<li><a href="#Read_Write_Seeker">Read_Write_Seeker</a></li>
+<li><a href="#Read_Writer">Read_Writer</a></li>
+<li><a href="#Reader">Reader</a></li>
+<li><a href="#Reader_At">Reader_At</a></li>
+<li><a href="#Reader_From">Reader_From</a></li>
+<li><a href="#Rune_Reader">Rune_Reader</a></li>
+<li><a href="#Rune_Scanner">Rune_Scanner</a></li>
+<li><a href="#Section_Reader">Section_Reader</a></li>
+<li><a href="#Seek_From">Seek_From</a></li>
+<li><a href="#Seek_Proc">Seek_Proc</a></li>
+<li><a href="#Seeker">Seeker</a></li>
+<li><a href="#Size_Proc">Size_Proc</a></li>
+<li><a href="#Stream">Stream</a></li>
+<li><a href="#Stream_VTable">Stream_VTable</a></li>
+<li><a href="#Tee_Reader">Tee_Reader</a></li>
+<li><a href="#Unread_Byte_Proc">Unread_Byte_Proc</a></li>
+<li><a href="#Unread_Rune_Proc">Unread_Rune_Proc</a></li>
+<li><a href="#Write_At_Proc">Write_At_Proc</a></li>
+<li><a href="#Write_Byte_Proc">Write_Byte_Proc</a></li>
+<li><a href="#Write_Closer">Write_Closer</a></li>
+<li><a href="#Write_Flush_Closer">Write_Flush_Closer</a></li>
+<li><a href="#Write_Flusher">Write_Flusher</a></li>
+<li><a href="#Write_Proc">Write_Proc</a></li>
+<li><a href="#Write_Rune_Proc">Write_Rune_Proc</a></li>
+<li><a href="#Write_Seeker">Write_Seeker</a></li>
+<li><a href="#Write_To_Proc">Write_To_Proc</a></li>
+<li><a href="#Writer">Writer</a></li>
+<li><a href="#Writer_At">Writer_At</a></li>
+<li><a href="#Writer_To">Writer_To</a></li>
+</ul>
+</details>
+</div>
+<div>
+<details open class="doc-index" id="doc-index-Constants" aria-labelledby="#doc-index-Constants-header">
+<summary id="#doc-index-Constants-header">
+Constants</summary>
+<p>This section is empty.</p>
+</details>
+</div>
+<div>
+<details open class="doc-index" id="doc-index-Variables" aria-labelledby="#doc-index-Variables-header">
+<summary id="#doc-index-Variables-header">
+Variables</summary>
+<p>This section is empty.</p>
+</details>
+</div>
+<div>
+<details open class="doc-index" id="doc-index-Procedures" aria-labelledby="#doc-index-Procedures-header">
+<summary id="#doc-index-Procedures-header">
+Procedures</summary>
+<ul>
+<li><a href="#close">close</a></li>
+<li><a href="#copy">copy</a></li>
+<li><a href="#copy_buffer">copy_buffer</a></li>
+<li><a href="#copy_n">copy_n</a></li>
+<li><a href="#destroy">destroy</a></li>
+<li><a href="#flush">flush</a></li>
+<li><a href="#limited_reader_init">limited_reader_init</a></li>
+<li><a href="#limited_reader_to_reader">limited_reader_to_reader</a></li>
+<li><a href="#multi_reader_destroy">multi_reader_destroy</a></li>
+<li><a href="#multi_reader_init">multi_reader_init</a></li>
+<li><a href="#multi_writer_destroy">multi_writer_destroy</a></li>
+<li><a href="#multi_writer_init">multi_writer_init</a></li>
+<li><a href="#n_wrapper">n_wrapper</a></li>
+<li><a href="#read_at_least">read_at_least</a></li>
+<li><a href="#read_from">read_from</a></li>
+<li><a href="#read_ptr">read_ptr</a></li>
+<li><a href="#read">read</a></li>
+<li><a href="#read_at">read_at</a></li>
+<li><a href="#read_byte">read_byte</a></li>
+<li><a href="#read_full">read_full</a></li>
+<li><a href="#read_ptr_at">read_ptr_at</a></li>
+<li><a href="#read_rune">read_rune</a></li>
+<li><a href="#section_reader_init">section_reader_init</a></li>
+<li><a href="#section_reader_to_stream">section_reader_to_stream</a></li>
+<li><a href="#seek">seek</a></li>
+<li><a href="#size">size</a></li>
+<li><a href="#tee_reader_init">tee_reader_init</a></li>
+<li><a href="#tee_reader_to_reader">tee_reader_to_reader</a></li>
+<li><a href="#to_byte_reader">to_byte_reader</a></li>
+<li><a href="#to_byte_scanner">to_byte_scanner</a></li>
+<li><a href="#to_byte_writer">to_byte_writer</a></li>
+<li><a href="#to_closer">to_closer</a></li>
+<li><a href="#to_flusher">to_flusher</a></li>
+<li><a href="#to_read_closer">to_read_closer</a></li>
+<li><a href="#to_read_write_closer">to_read_write_closer</a></li>
+<li><a href="#to_read_write_seeker">to_read_write_seeker</a></li>
+<li><a href="#to_read_writer">to_read_writer</a></li>
+<li><a href="#to_reader_from">to_reader_from</a></li>
+<li><a href="#to_reader">to_reader</a></li>
+<li><a href="#to_reader_at">to_reader_at</a></li>
+<li><a href="#to_rune_reader">to_rune_reader</a></li>
+<li><a href="#to_rune_scanner">to_rune_scanner</a></li>
+<li><a href="#to_seeker">to_seeker</a></li>
+<li><a href="#to_write_closer">to_write_closer</a></li>
+<li><a href="#to_write_flush_closer">to_write_flush_closer</a></li>
+<li><a href="#to_write_flusher">to_write_flusher</a></li>
+<li><a href="#to_write_seeker">to_write_seeker</a></li>
+<li><a href="#to_writer">to_writer</a></li>
+<li><a href="#to_writer_at">to_writer_at</a></li>
+<li><a href="#to_writer_to">to_writer_to</a></li>
+<li><a href="#unread_byte">unread_byte</a></li>
+<li><a href="#unread_rune">unread_rune</a></li>
+<li><a href="#write_at">write_at</a></li>
+<li><a href="#write_f16">write_f16</a></li>
+<li><a href="#write">write</a></li>
+<li><a href="#write_byte_to_byte_writer">write_byte_to_byte_writer</a></li>
+<li><a href="#write_byte_to_writer">write_byte_to_writer</a></li>
+<li><a href="#write_encoded_rune">write_encoded_rune</a></li>
+<li><a href="#write_escaped_rune">write_escaped_rune</a></li>
+<li><a href="#write_f32">write_f32</a></li>
+<li><a href="#write_f64">write_f64</a></li>
+<li><a href="#write_i128">write_i128</a></li>
+<li><a href="#write_i64">write_i64</a></li>
+<li><a href="#write_int">write_int</a></li>
+<li><a href="#write_ptr">write_ptr</a></li>
+<li><a href="#write_ptr_at">write_ptr_at</a></li>
+<li><a href="#write_quoted_string">write_quoted_string</a></li>
+<li><a href="#write_rune">write_rune</a></li>
+<li><a href="#write_string">write_string</a></li>
+<li><a href="#write_to">write_to</a></li>
+<li><a href="#write_u128">write_u128</a></li>
+<li><a href="#write_u64">write_u64</a></li>
+<li><a href="#write_uint">write_uint</a></li>
+</ul>
+</details>
+</div>
+<div>
+<details open class="doc-index" id="doc-index-Procedure Groups" aria-labelledby="#doc-index-Procedure Groups-header">
+<summary id="#doc-index-Procedure Groups-header">
+Procedure Groups</summary>
+<ul>
+<li><a href="#write_byte">write_byte</a></li>
+</ul>
+</details>
+</div>
+</div>
+<h2 id="pkg-Types">Types</h2>
+<section class="documentation">
+<div class="pkg-entity">
+<h3 id="Byte_Reader"><span><a class="doc-id-link" href="#Byte_Reader">Byte_Reader<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/io.odin#L123"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Byte_Reader :: struct {
+	stream: <a class="code-typename" href="/io/#Stream">Stream</a>,
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Byte_Scanner"><span><a class="doc-id-link" href="#Byte_Scanner">Byte_Scanner<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/io.odin#L124"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Byte_Scanner :: struct {
+	stream: <a class="code-typename" href="/io/#Stream">Stream</a>,
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Byte_Writer"><span><a class="doc-id-link" href="#Byte_Writer">Byte_Writer<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/io.odin#L125"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Byte_Writer :: struct {
+	stream: <a class="code-typename" href="/io/#Stream">Stream</a>,
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Close_Proc"><span><a class="doc-id-link" href="#Close_Proc">Close_Proc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/io.odin#L53"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Close_Proc :: proc(s: <a class="code-typename" href="/io/#Stream">Stream</a>) -> <a class="code-typename" href="/io/#Error">Error</a></pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Closer"><span><a class="doc-id-link" href="#Closer">Closer<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/io.odin#L104"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Closer :: struct {
+	stream: <a class="code-typename" href="/io/#Stream">Stream</a>,
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Destroy_Proc"><span><a class="doc-id-link" href="#Destroy_Proc">Destroy_Proc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/io.odin#L69"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Destroy_Proc :: proc(s: <a class="code-typename" href="/io/#Stream">Stream</a>) -> <a class="code-typename" href="/io/#Error">Error</a></pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Error"><span><a class="doc-id-link" href="#Error">Error<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/io.odin#L13"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Error :: enum <a href="">i32</a> {
+	None           = 0, 
+	EOF, 
+	Unexpected_EOF, 
+	Short_Write, 
+	Invalid_Write, 
+	Short_Buffer, 
+	No_Progress, 
+	Invalid_Whence, 
+	Invalid_Offset, 
+	Invalid_Unread, 
+	Negative_Read, 
+	Negative_Write, 
+	Negative_Count, 
+	Buffer_Full, 
+	Unknown, 
+	Empty          = -1, 
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Flush_Proc"><span><a class="doc-id-link" href="#Flush_Proc">Flush_Proc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/io.odin#L54"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Flush_Proc :: proc(s: <a class="code-typename" href="/io/#Stream">Stream</a>) -> <a class="code-typename" href="/io/#Error">Error</a></pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Flusher"><span><a class="doc-id-link" href="#Flusher">Flusher<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/io.odin#L105"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Flusher :: struct {
+	stream: <a class="code-typename" href="/io/#Stream">Stream</a>,
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Limited_Reader"><span><a class="doc-id-link" href="#Limited_Reader">Limited_Reader<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/util.odin#L292"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Limited_Reader :: struct {
+	r: <a class="code-typename" href="/io/#Reader">Reader</a>,
+	n: <a href="">i64</a>,
+}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>A Limited_Reader reads from r but limits the amount of data returned to just n bytes.
+Each call to read updates n to reflect the new amount remaining.
+read returns EOF when n <= 0 or when the underlying r returns EOF.</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="Multi_Reader"><span><a class="doc-id-link" href="#Multi_Reader">Multi_Reader<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/multi.odin#L3"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Multi_Reader :: struct {
+	readers: [dynamic]<a class="code-typename" href="/io/#Reader">Reader</a>,
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Multi_Writer"><span><a class="doc-id-link" href="#Multi_Writer">Multi_Writer<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/multi.odin#L53"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Multi_Writer :: struct {
+	writers: [dynamic]<a class="code-typename" href="/io/#Writer">Writer</a>,
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Read_At_Proc"><span><a class="doc-id-link" href="#Read_At_Proc">Read_At_Proc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/io.odin#L58"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Read_At_Proc :: proc(using s: <a class="code-typename" href="/io/#Stream">Stream</a>, p: []<a href="">u8</a>, off: <a href="">i64</a>) -> (n: <a href="">int</a>, err: <a class="code-typename" href="/io/#Error">Error</a>)</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Read_Byte_Proc"><span><a class="doc-id-link" href="#Read_Byte_Proc">Read_Byte_Proc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/io.odin#L60"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Read_Byte_Proc :: proc(s: <a class="code-typename" href="/io/#Stream">Stream</a>) -> (<a href="">u8</a>, <a class="code-typename" href="/io/#Error">Error</a>)</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Read_Closer"><span><a class="doc-id-link" href="#Read_Closer">Read_Closer<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/io.odin#L109"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Read_Closer :: struct {
+	stream: <a class="code-typename" href="/io/#Stream">Stream</a>,
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Read_From_Proc"><span><a class="doc-id-link" href="#Read_From_Proc">Read_From_Proc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/io.odin#L59"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Read_From_Proc :: proc(using s: <a class="code-typename" href="/io/#Stream">Stream</a>, r: <a class="code-typename" href="/io/#Reader">Reader</a>) -> (n: <a href="">i64</a>, err: <a class="code-typename" href="/io/#Error">Error</a>)</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Read_Proc"><span><a class="doc-id-link" href="#Read_Proc">Read_Proc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/io.odin#L57"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Read_Proc :: proc(using s: <a class="code-typename" href="/io/#Stream">Stream</a>, p: []<a href="">u8</a>) -> (n: <a href="">int</a>, err: <a class="code-typename" href="/io/#Error">Error</a>)</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Read_Rune_Proc"><span><a class="doc-id-link" href="#Read_Rune_Proc">Read_Rune_Proc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/io.odin#L61"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Read_Rune_Proc :: proc(s: <a class="code-typename" href="/io/#Stream">Stream</a>) -> (ch: <a href="">rune</a>, size: <a href="">int</a>, err: <a class="code-typename" href="/io/#Error">Error</a>)</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Read_Write_Closer"><span><a class="doc-id-link" href="#Read_Write_Closer">Read_Write_Closer<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/io.odin#L110"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Read_Write_Closer :: struct {
+	stream: <a class="code-typename" href="/io/#Stream">Stream</a>,
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Read_Write_Seeker"><span><a class="doc-id-link" href="#Read_Write_Seeker">Read_Write_Seeker<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/io.odin#L111"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Read_Write_Seeker :: struct {
+	stream: <a class="code-typename" href="/io/#Stream">Stream</a>,
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Read_Writer"><span><a class="doc-id-link" href="#Read_Writer">Read_Writer<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/io.odin#L108"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Read_Writer :: struct {
+	stream: <a class="code-typename" href="/io/#Stream">Stream</a>,
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Reader"><span><a class="doc-id-link" href="#Reader">Reader<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/io.odin#L102"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Reader :: struct {
+	stream: <a class="code-typename" href="/io/#Stream">Stream</a>,
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Reader_At"><span><a class="doc-id-link" href="#Reader_At">Reader_At<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/io.odin#L118"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Reader_At :: struct {
+	stream: <a class="code-typename" href="/io/#Stream">Stream</a>,
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Reader_From"><span><a class="doc-id-link" href="#Reader_From">Reader_From<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/io.odin#L120"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Reader_From :: struct {
+	stream: <a class="code-typename" href="/io/#Stream">Stream</a>,
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Rune_Reader"><span><a class="doc-id-link" href="#Rune_Reader">Rune_Reader<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/io.odin#L127"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Rune_Reader :: struct {
+	stream: <a class="code-typename" href="/io/#Stream">Stream</a>,
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Rune_Scanner"><span><a class="doc-id-link" href="#Rune_Scanner">Rune_Scanner<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/io.odin#L128"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Rune_Scanner :: struct {
+	stream: <a class="code-typename" href="/io/#Stream">Stream</a>,
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Section_Reader"><span><a class="doc-id-link" href="#Section_Reader">Section_Reader<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/util.odin#L327"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Section_Reader :: struct {
+	r:     <a class="code-typename" href="/io/#Reader_At">Reader_At</a>,
+	base:  <a href="">i64</a>,
+	off:   <a href="">i64</a>,
+	limit: <a href="">i64</a>,
+}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Section_Reader implements read, seek, and read_at on a section of an underlying Reader_At</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="Seek_From"><span><a class="doc-id-link" href="#Seek_From">Seek_From<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/io.odin#L7"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Seek_From :: enum <a href="">int</a> {
+	Start   = 0, 
+	Current = 1, 
+	End     = 2, 
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Seek_Proc"><span><a class="doc-id-link" href="#Seek_Proc">Seek_Proc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/io.odin#L55"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Seek_Proc :: proc(using s: <a class="code-typename" href="/io/#Stream">Stream</a>, offset: <a href="">i64</a>, whence: <a class="code-typename" href="/io/#Seek_From">Seek_From</a>) -> (n: <a href="">i64</a>, err: <a class="code-typename" href="/io/#Error">Error</a>)</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Seeker"><span><a class="doc-id-link" href="#Seeker">Seeker<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/io.odin#L106"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Seeker :: struct {
+	stream: <a class="code-typename" href="/io/#Stream">Stream</a>,
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Size_Proc"><span><a class="doc-id-link" href="#Size_Proc">Size_Proc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/io.odin#L56"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Size_Proc :: proc(s: <a class="code-typename" href="/io/#Stream">Stream</a>) -> <a href="">i64</a></pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Stream"><span><a class="doc-id-link" href="#Stream">Stream<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/io.odin#L72"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Stream :: struct {
+	stream_vtable: ^<a class="code-typename" href="/io/#Stream_VTable">Stream_VTable</a>,
+	stream_data:   <a href="">rawptr</a>,
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Stream_VTable"><span><a class="doc-id-link" href="#Stream_VTable">Stream_VTable<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/io.odin#L76"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Stream_VTable :: struct {
+	impl_close:       <a class="code-typename" href="/io/#Close_Proc">Close_Proc</a>,
+	impl_flush:       <a class="code-typename" href="/io/#Flush_Proc">Flush_Proc</a>,
+	impl_seek:        <a class="code-typename" href="/io/#Seek_Proc">Seek_Proc</a>,
+	impl_size:        <a class="code-typename" href="/io/#Size_Proc">Size_Proc</a>,
+	impl_read:        <a class="code-typename" href="/io/#Read_Proc">Read_Proc</a>,
+	impl_read_at:     <a class="code-typename" href="/io/#Read_At_Proc">Read_At_Proc</a>,
+	impl_read_byte:   <a class="code-typename" href="/io/#Read_Byte_Proc">Read_Byte_Proc</a>,
+	impl_read_rune:   <a class="code-typename" href="/io/#Read_Rune_Proc">Read_Rune_Proc</a>,
+	impl_write_to:    <a class="code-typename" href="/io/#Write_To_Proc">Write_To_Proc</a>,
+	impl_write:       <a class="code-typename" href="/io/#Write_Proc">Write_Proc</a>,
+	impl_write_at:    <a class="code-typename" href="/io/#Write_At_Proc">Write_At_Proc</a>,
+	impl_write_byte:  <a class="code-typename" href="/io/#Write_Byte_Proc">Write_Byte_Proc</a>,
+	impl_write_rune:  <a class="code-typename" href="/io/#Write_Rune_Proc">Write_Rune_Proc</a>,
+	impl_read_from:   <a class="code-typename" href="/io/#Read_From_Proc">Read_From_Proc</a>,
+	impl_unread_byte: <a class="code-typename" href="/io/#Unread_Byte_Proc">Unread_Byte_Proc</a>,
+	impl_unread_rune: <a class="code-typename" href="/io/#Unread_Rune_Proc">Unread_Rune_Proc</a>,
+	impl_destroy:     <a class="code-typename" href="/io/#Destroy_Proc">Destroy_Proc</a>,
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Tee_Reader"><span><a class="doc-id-link" href="#Tee_Reader">Tee_Reader<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/util.odin#L252"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Tee_Reader :: struct {
+	r: <a class="code-typename" href="/io/#Reader">Reader</a>,
+	w: <a class="code-typename" href="/io/#Writer">Writer</a>,
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Unread_Byte_Proc"><span><a class="doc-id-link" href="#Unread_Byte_Proc">Unread_Byte_Proc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/io.odin#L62"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Unread_Byte_Proc :: proc(s: <a class="code-typename" href="/io/#Stream">Stream</a>) -> <a class="code-typename" href="/io/#Error">Error</a></pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Unread_Rune_Proc"><span><a class="doc-id-link" href="#Unread_Rune_Proc">Unread_Rune_Proc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/io.odin#L63"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Unread_Rune_Proc :: proc(s: <a class="code-typename" href="/io/#Stream">Stream</a>) -> <a class="code-typename" href="/io/#Error">Error</a></pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Write_At_Proc"><span><a class="doc-id-link" href="#Write_At_Proc">Write_At_Proc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/io.odin#L65"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Write_At_Proc :: proc(using s: <a class="code-typename" href="/io/#Stream">Stream</a>, p: []<a href="">u8</a>, off: <a href="">i64</a>) -> (n: <a href="">int</a>, err: <a class="code-typename" href="/io/#Error">Error</a>)</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Write_Byte_Proc"><span><a class="doc-id-link" href="#Write_Byte_Proc">Write_Byte_Proc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/io.odin#L67"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Write_Byte_Proc :: proc(using s: <a class="code-typename" href="/io/#Stream">Stream</a>, c: <a href="">u8</a>) -> <a class="code-typename" href="/io/#Error">Error</a></pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Write_Closer"><span><a class="doc-id-link" href="#Write_Closer">Write_Closer<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/io.odin#L113"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Write_Closer :: struct {
+	stream: <a class="code-typename" href="/io/#Stream">Stream</a>,
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Write_Flush_Closer"><span><a class="doc-id-link" href="#Write_Flush_Closer">Write_Flush_Closer<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/io.odin#L116"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Write_Flush_Closer :: struct {
+	stream: <a class="code-typename" href="/io/#Stream">Stream</a>,
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Write_Flusher"><span><a class="doc-id-link" href="#Write_Flusher">Write_Flusher<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/io.odin#L115"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Write_Flusher :: struct {
+	stream: <a class="code-typename" href="/io/#Stream">Stream</a>,
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Write_Proc"><span><a class="doc-id-link" href="#Write_Proc">Write_Proc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/io.odin#L64"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Write_Proc :: proc(using s: <a class="code-typename" href="/io/#Stream">Stream</a>, p: []<a href="">u8</a>) -> (n: <a href="">int</a>, err: <a class="code-typename" href="/io/#Error">Error</a>)</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Write_Rune_Proc"><span><a class="doc-id-link" href="#Write_Rune_Proc">Write_Rune_Proc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/io.odin#L68"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Write_Rune_Proc :: proc(using s: <a class="code-typename" href="/io/#Stream">Stream</a>, r: <a href="">rune</a>) -> (size: <a href="">int</a>, err: <a class="code-typename" href="/io/#Error">Error</a>)</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Write_Seeker"><span><a class="doc-id-link" href="#Write_Seeker">Write_Seeker<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/io.odin#L114"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Write_Seeker :: struct {
+	stream: <a class="code-typename" href="/io/#Stream">Stream</a>,
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Write_To_Proc"><span><a class="doc-id-link" href="#Write_To_Proc">Write_To_Proc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/io.odin#L66"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Write_To_Proc :: proc(using s: <a class="code-typename" href="/io/#Stream">Stream</a>, w: <a class="code-typename" href="/io/#Writer">Writer</a>) -> (n: <a href="">i64</a>, err: <a class="code-typename" href="/io/#Error">Error</a>)</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Writer"><span><a class="doc-id-link" href="#Writer">Writer<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/io.odin#L103"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Writer :: struct {
+	stream: <a class="code-typename" href="/io/#Stream">Stream</a>,
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Writer_At"><span><a class="doc-id-link" href="#Writer_At">Writer_At<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/io.odin#L119"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Writer_At :: struct {
+	stream: <a class="code-typename" href="/io/#Stream">Stream</a>,
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Writer_To"><span><a class="doc-id-link" href="#Writer_To">Writer_To<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/io.odin#L121"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Writer_To :: struct {
+	stream: <a class="code-typename" href="/io/#Stream">Stream</a>,
+}</pre>
+</div>
+</div>
+</section>
+<h2 id="pkg-Constants">Constants</h2>
+<section class="documentation">
+<p>This section is empty.</p>
+</section>
+<h2 id="pkg-Variables">Variables</h2>
+<section class="documentation">
+<p>This section is empty.</p>
+</section>
+<h2 id="pkg-Procedures">Procedures</h2>
+<section class="documentation">
+<div class="pkg-entity">
+<h3 id="close"><span><a class="doc-id-link" href="#close">close<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/io.odin#L171"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">close :: proc(s: <a class="code-typename" href="/io/#Closer">Closer</a>) -> <a class="code-typename" href="/io/#Error">Error</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="copy"><span><a class="doc-id-link" href="#copy">copy<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/io.odin#L459"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">copy :: proc(dst: <a class="code-typename" href="/io/#Writer">Writer</a>, src: <a class="code-typename" href="/io/#Reader">Reader</a>) -> (written: <a href="">i64</a>, err: <a class="code-typename" href="/io/#Error">Error</a>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>copy copies from src to dst till either EOF is reached on src or an error occurs
+It returns the number of bytes copied and the first error that occurred whilst copying, if any.</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="copy_buffer"><span><a class="doc-id-link" href="#copy_buffer">copy_buffer<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/io.odin#L466"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">copy_buffer :: proc(dst: <a class="code-typename" href="/io/#Writer">Writer</a>, src: <a class="code-typename" href="/io/#Reader">Reader</a>, buf: []<a href="">u8</a>) -> (written: <a href="">i64</a>, err: <a class="code-typename" href="/io/#Error">Error</a>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>copy_buffer is the same as copy except that it stages through the provided buffer (if one is required)
+rather than allocating a temporary one on the stack through `intrinsics.alloca`
+If buf is `nil`, it is allocate through `intrinsics.alloca`; otherwise if it has zero length, it will panic</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="copy_n"><span><a class="doc-id-link" href="#copy_n">copy_n<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/io.odin#L478"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">copy_n :: proc(dst: <a class="code-typename" href="/io/#Writer">Writer</a>, src: <a class="code-typename" href="/io/#Reader">Reader</a>, n: <a href="">i64</a>) -> (written: <a href="">i64</a>, err: <a class="code-typename" href="/io/#Error">Error</a>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>copy_n copies n bytes (or till an error) from src to dst.
+It returns the number of bytes copied and the first error that occurred whilst copying, if any.
+On return, written == n IFF err == nil</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="destroy"><span><a class="doc-id-link" href="#destroy">destroy<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/io.odin#L131"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">destroy :: proc(s: <a class="code-typename" href="/io/#Stream">Stream</a>) -> <a class="code-typename" href="/io/#Error">Error</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="flush"><span><a class="doc-id-link" href="#flush">flush<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/io.odin#L179"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">flush :: proc(s: <a class="code-typename" href="/io/#Flusher">Flusher</a>) -> <a class="code-typename" href="/io/#Error">Error</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="limited_reader_init"><span><a class="doc-id-link" href="#limited_reader_init">limited_reader_init<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/util.odin#L314"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">limited_reader_init :: proc(l: ^<a class="code-typename" href="/io/#Limited_Reader">Limited_Reader</a>, r: <a class="code-typename" href="/io/#Reader">Reader</a>, n: <a href="">i64</a>) -> <a class="code-typename" href="/io/#Reader">Reader</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="limited_reader_to_reader"><span><a class="doc-id-link" href="#limited_reader_to_reader">limited_reader_to_reader<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/util.odin#L320"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">limited_reader_to_reader :: proc(l: ^<a class="code-typename" href="/io/#Limited_Reader">Limited_Reader</a>) -> (r: <a class="code-typename" href="/io/#Reader">Reader</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="multi_reader_destroy"><span><a class="doc-id-link" href="#multi_reader_destroy">multi_reader_destroy<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/multi.odin#L48"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">multi_reader_destroy :: proc(mr: ^<a class="code-typename" href="/io/#Multi_Reader">Multi_Reader</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="multi_reader_init"><span><a class="doc-id-link" href="#multi_reader_init">multi_reader_init<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/multi.odin#L29"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">multi_reader_init :: proc(mr: ^<a class="code-typename" href="/io/#Multi_Reader">Multi_Reader</a>, readers: ..<a class="code-typename" href="/io/#Reader">Reader</a>, allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> (r: <a class="code-typename" href="/io/#Reader">Reader</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="multi_writer_destroy"><span><a class="doc-id-link" href="#multi_writer_destroy">multi_writer_destroy<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/multi.odin#L93"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">multi_writer_destroy :: proc(mw: ^<a class="code-typename" href="/io/#Multi_Writer">Multi_Writer</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="multi_writer_init"><span><a class="doc-id-link" href="#multi_writer_init">multi_writer_init<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/multi.odin#L76"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">multi_writer_init :: proc(mw: ^<a class="code-typename" href="/io/#Multi_Writer">Multi_Writer</a>, writers: ..<a class="code-typename" href="/io/#Writer">Writer</a>, allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> (out: <a class="code-typename" href="/io/#Writer">Writer</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="n_wrapper"><span><a class="doc-id-link" href="#n_wrapper">n_wrapper<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/util.odin#L105"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">n_wrapper :: proc(n: <a href="">int</a>, err: <a class="code-typename" href="/io/#Error">Error</a>, bytes_processed: ^<a href="">int</a>) -> <a class="code-typename" href="/io/#Error">Error</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="read_at_least"><span><a class="doc-id-link" href="#read_at_least">read_at_least<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/io.odin#L439"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">read_at_least :: proc(r: <a class="code-typename" href="/io/#Reader">Reader</a>, buf: []<a href="">u8</a>, min: <a href="">int</a>) -> (n: <a href="">int</a>, err: <a class="code-typename" href="/io/#Error">Error</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="read_from"><span><a class="doc-id-link" href="#read_from">read_from<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/io.odin#L286"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">read_from :: proc(w: <a class="code-typename" href="/io/#Reader_From">Reader_From</a>, r: <a class="code-typename" href="/io/#Reader">Reader</a>) -> (n: <a href="">i64</a>, err: <a class="code-typename" href="/io/#Error">Error</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="read_ptr"><span><a class="doc-id-link" href="#read_ptr">read_ptr<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/util.odin#L6"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">read_ptr :: proc(r: <a class="code-typename" href="/io/#Reader">Reader</a>, p: <a href="">rawptr</a>, byte_size: <a href="">int</a>, n_read: ^<a href="">int</a> = nil) -> (n: <a href="">int</a>, err: <a class="code-typename" href="/io/#Error">Error</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="read"><span><a class="doc-id-link" href="#read">read<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/io.odin#L142"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">read :: proc(s: <a class="code-typename" href="/io/#Reader">Reader</a>, p: []<a href="">u8</a>, n_read: ^<a href="">int</a> = nil) -> (n: <a href="">int</a>, err: <a class="code-typename" href="/io/#Error">Error</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="read_at"><span><a class="doc-id-link" href="#read_at">read_at<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/io.odin#L218"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">read_at :: proc(r: <a class="code-typename" href="/io/#Reader_At">Reader_At</a>, p: []<a href="">u8</a>, offset: <a href="">i64</a>, n_read: ^<a href="">int</a> = nil) -> (n: <a href="">int</a>, err: <a class="code-typename" href="/io/#Error">Error</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="read_byte"><span><a class="doc-id-link" href="#read_byte">read_byte<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/io.odin#L297"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">read_byte :: proc(r: <a class="code-typename" href="/io/#Byte_Reader">Byte_Reader</a>, n_read: ^<a href="">int</a> = nil) -> (b: <a href="">u8</a>, err: <a class="code-typename" href="/io/#Error">Error</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="read_full"><span><a class="doc-id-link" href="#read_full">read_full<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/io.odin#L434"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">read_full :: proc(r: <a class="code-typename" href="/io/#Reader">Reader</a>, buf: []<a href="">u8</a>) -> (n: <a href="">int</a>, err: <a class="code-typename" href="/io/#Error">Error</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="read_ptr_at"><span><a class="doc-id-link" href="#read_ptr_at">read_ptr_at<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/util.odin#L14"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">read_ptr_at :: proc(r: <a class="code-typename" href="/io/#Reader_At">Reader_At</a>, p: <a href="">rawptr</a>, byte_size: <a href="">int</a>, offset: <a href="">i64</a>, n_read: ^<a href="">int</a> = nil) -> (n: <a href="">int</a>, err: <a class="code-typename" href="/io/#Error">Error</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="read_rune"><span><a class="doc-id-link" href="#read_rune">read_rune<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/io.odin#L350"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">read_rune :: proc(br: <a class="code-typename" href="/io/#Rune_Reader">Rune_Reader</a>, n_read: ^<a href="">int</a> = nil) -> (ch: <a href="">rune</a>, size: <a href="">int</a>, err: <a class="code-typename" href="/io/#Error">Error</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="section_reader_init"><span><a class="doc-id-link" href="#section_reader_init">section_reader_init<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/util.odin#L334"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">section_reader_init :: proc(s: ^<a class="code-typename" href="/io/#Section_Reader">Section_Reader</a>, r: <a class="code-typename" href="/io/#Reader_At">Reader_At</a>, off: <a href="">i64</a>, n: <a href="">i64</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="section_reader_to_stream"><span><a class="doc-id-link" href="#section_reader_to_stream">section_reader_to_stream<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/util.odin#L340"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">section_reader_to_stream :: proc(s: ^<a class="code-typename" href="/io/#Section_Reader">Section_Reader</a>) -> (out: <a class="code-typename" href="/io/#Stream">Stream</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="seek"><span><a class="doc-id-link" href="#seek">seek<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/io.odin#L164"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">seek :: proc(s: <a class="code-typename" href="/io/#Seeker">Seeker</a>, offset: <a href="">i64</a>, whence: <a class="code-typename" href="/io/#Seek_From">Seek_From</a>) -> (n: <a href="">i64</a>, err: <a class="code-typename" href="/io/#Error">Error</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="size"><span><a class="doc-id-link" href="#size">size<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/io.odin#L187"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">size :: proc(s: <a class="code-typename" href="/io/#Stream">Stream</a>) -> <a href="">i64</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="tee_reader_init"><span><a class="doc-id-link" href="#tee_reader_init">tee_reader_init<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/util.odin#L277"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">tee_reader_init :: proc(t: ^<a class="code-typename" href="/io/#Tee_Reader">Tee_Reader</a>, r: <a class="code-typename" href="/io/#Reader">Reader</a>, w: <a class="code-typename" href="/io/#Writer">Writer</a>, allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> <a class="code-typename" href="/io/#Reader">Reader</a> {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>tee_reader_init returns a Reader that writes to 'w' what it reads from 'r'
+All reads from 'r' performed through it are matched with a corresponding write to 'w'
+There is no internal buffering done
+The write must complete before th read completes
+Any error encountered whilst writing is reported as a 'read' error
+tee_reader_init must call io.destroy when done with</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="tee_reader_to_reader"><span><a class="doc-id-link" href="#tee_reader_to_reader">tee_reader_to_reader<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/util.odin#L282"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">tee_reader_to_reader :: proc(t: ^<a class="code-typename" href="/io/#Tee_Reader">Tee_Reader</a>) -> (r: <a class="code-typename" href="/io/#Reader">Reader</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="to_byte_reader"><span><a class="doc-id-link" href="#to_byte_reader">to_byte_reader<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/conv.odin#L127"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">to_byte_reader :: proc(s: <a class="code-typename" href="/io/#Stream">Stream</a>) -> (b: <a class="code-typename" href="/io/#Byte_Reader">Byte_Reader</a>, ok: <a href="">bool</a> = true) #optional_ok {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="to_byte_scanner"><span><a class="doc-id-link" href="#to_byte_scanner">to_byte_scanner<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/conv.odin#L137"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">to_byte_scanner :: proc(s: <a class="code-typename" href="/io/#Stream">Stream</a>) -> (b: <a class="code-typename" href="/io/#Byte_Scanner">Byte_Scanner</a>, ok: <a href="">bool</a> = true) #optional_ok {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="to_byte_writer"><span><a class="doc-id-link" href="#to_byte_writer">to_byte_writer<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/conv.odin#L154"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">to_byte_writer :: proc(s: <a class="code-typename" href="/io/#Stream">Stream</a>) -> (b: <a class="code-typename" href="/io/#Byte_Writer">Byte_Writer</a>, ok: <a href="">bool</a> = true) #optional_ok {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="to_closer"><span><a class="doc-id-link" href="#to_closer">to_closer<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/conv.odin#L18"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">to_closer :: proc(s: <a class="code-typename" href="/io/#Stream">Stream</a>) -> (c: <a class="code-typename" href="/io/#Closer">Closer</a>, ok: <a href="">bool</a> = true) #optional_ok {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="to_flusher"><span><a class="doc-id-link" href="#to_flusher">to_flusher<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/conv.odin#L25"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">to_flusher :: proc(s: <a class="code-typename" href="/io/#Stream">Stream</a>) -> (f: <a class="code-typename" href="/io/#Flusher">Flusher</a>, ok: <a href="">bool</a> = true) #optional_ok {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="to_read_closer"><span><a class="doc-id-link" href="#to_read_closer">to_read_closer<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/conv.odin#L47"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">to_read_closer :: proc(s: <a class="code-typename" href="/io/#Stream">Stream</a>) -> (r: <a class="code-typename" href="/io/#Read_Closer">Read_Closer</a>, ok: <a href="">bool</a> = true) #optional_ok {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="to_read_write_closer"><span><a class="doc-id-link" href="#to_read_write_closer">to_read_write_closer<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/conv.odin#L54"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">to_read_write_closer :: proc(s: <a class="code-typename" href="/io/#Stream">Stream</a>) -> (r: <a class="code-typename" href="/io/#Read_Write_Closer">Read_Write_Closer</a>, ok: <a href="">bool</a> = true) #optional_ok {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="to_read_write_seeker"><span><a class="doc-id-link" href="#to_read_write_seeker">to_read_write_seeker<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/conv.odin#L61"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">to_read_write_seeker :: proc(s: <a class="code-typename" href="/io/#Stream">Stream</a>) -> (r: <a class="code-typename" href="/io/#Read_Write_Seeker">Read_Write_Seeker</a>, ok: <a href="">bool</a> = true) #optional_ok {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="to_read_writer"><span><a class="doc-id-link" href="#to_read_writer">to_read_writer<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/conv.odin#L40"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">to_read_writer :: proc(s: <a class="code-typename" href="/io/#Stream">Stream</a>) -> (r: <a class="code-typename" href="/io/#Read_Writer">Read_Writer</a>, ok: <a href="">bool</a> = true) #optional_ok {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="to_reader_from"><span><a class="doc-id-link" href="#to_reader_from">to_reader_from<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/conv.odin#L97"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">to_reader_from :: proc(s: <a class="code-typename" href="/io/#Stream">Stream</a>) -> (r: <a class="code-typename" href="/io/#Reader_From">Reader_From</a>, ok: <a href="">bool</a> = true) #optional_ok {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="to_reader"><span><a class="doc-id-link" href="#to_reader">to_reader<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/conv.odin#L3"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">to_reader :: proc(s: <a class="code-typename" href="/io/#Stream">Stream</a>) -> (r: <a class="code-typename" href="/io/#Reader">Reader</a>, ok: <a href="">bool</a> = true) #optional_ok {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="to_reader_at"><span><a class="doc-id-link" href="#to_reader_at">to_reader_at<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/conv.odin#L83"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">to_reader_at :: proc(s: <a class="code-typename" href="/io/#Stream">Stream</a>) -> (r: <a class="code-typename" href="/io/#Reader_At">Reader_At</a>, ok: <a href="">bool</a> = true) #optional_ok {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="to_rune_reader"><span><a class="doc-id-link" href="#to_rune_reader">to_rune_reader<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/conv.odin#L165"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">to_rune_reader :: proc(s: <a class="code-typename" href="/io/#Stream">Stream</a>) -> (r: <a class="code-typename" href="/io/#Rune_Reader">Rune_Reader</a>, ok: <a href="">bool</a> = true) #optional_ok {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="to_rune_scanner"><span><a class="doc-id-link" href="#to_rune_scanner">to_rune_scanner<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/conv.odin#L176"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">to_rune_scanner :: proc(s: <a class="code-typename" href="/io/#Stream">Stream</a>) -> (r: <a class="code-typename" href="/io/#Rune_Scanner">Rune_Scanner</a>, ok: <a href="">bool</a> = true) #optional_ok {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="to_seeker"><span><a class="doc-id-link" href="#to_seeker">to_seeker<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/conv.odin#L32"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">to_seeker :: proc(s: <a class="code-typename" href="/io/#Stream">Stream</a>) -> (seeker: <a class="code-typename" href="/io/#Seeker">Seeker</a>, ok: <a href="">bool</a> = true) #optional_ok {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="to_write_closer"><span><a class="doc-id-link" href="#to_write_closer">to_write_closer<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/conv.odin#L111"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">to_write_closer :: proc(s: <a class="code-typename" href="/io/#Stream">Stream</a>) -> (w: <a class="code-typename" href="/io/#Write_Closer">Write_Closer</a>, ok: <a href="">bool</a> = true) #optional_ok {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="to_write_flush_closer"><span><a class="doc-id-link" href="#to_write_flush_closer">to_write_flush_closer<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/conv.odin#L75"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">to_write_flush_closer :: proc(s: <a class="code-typename" href="/io/#Stream">Stream</a>) -> (w: <a class="code-typename" href="/io/#Write_Flush_Closer">Write_Flush_Closer</a>, ok: <a href="">bool</a> = true) #optional_ok {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="to_write_flusher"><span><a class="doc-id-link" href="#to_write_flusher">to_write_flusher<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/conv.odin#L68"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">to_write_flusher :: proc(s: <a class="code-typename" href="/io/#Stream">Stream</a>) -> (w: <a class="code-typename" href="/io/#Write_Flusher">Write_Flusher</a>, ok: <a href="">bool</a> = true) #optional_ok {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="to_write_seeker"><span><a class="doc-id-link" href="#to_write_seeker">to_write_seeker<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/conv.odin#L118"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">to_write_seeker :: proc(s: <a class="code-typename" href="/io/#Stream">Stream</a>) -> (w: <a class="code-typename" href="/io/#Write_Seeker">Write_Seeker</a>, ok: <a href="">bool</a> = true) #optional_ok {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="to_writer"><span><a class="doc-id-link" href="#to_writer">to_writer<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/conv.odin#L10"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">to_writer :: proc(s: <a class="code-typename" href="/io/#Stream">Stream</a>) -> (w: <a class="code-typename" href="/io/#Writer">Writer</a>, ok: <a href="">bool</a> = true) #optional_ok {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="to_writer_at"><span><a class="doc-id-link" href="#to_writer_at">to_writer_at<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/conv.odin#L90"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">to_writer_at :: proc(s: <a class="code-typename" href="/io/#Stream">Stream</a>) -> (w: <a class="code-typename" href="/io/#Writer_At">Writer_At</a>, ok: <a href="">bool</a> = true) #optional_ok {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="to_writer_to"><span><a class="doc-id-link" href="#to_writer_to">to_writer_to<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/conv.odin#L104"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">to_writer_to :: proc(s: <a class="code-typename" href="/io/#Stream">Stream</a>) -> (w: <a class="code-typename" href="/io/#Writer_To">Writer_To</a>, ok: <a href="">bool</a> = true) #optional_ok {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="unread_byte"><span><a class="doc-id-link" href="#unread_byte">unread_byte<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/io.odin#L394"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">unread_byte :: proc(s: <a class="code-typename" href="/io/#Byte_Scanner">Byte_Scanner</a>) -> <a class="code-typename" href="/io/#Error">Error</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="unread_rune"><span><a class="doc-id-link" href="#unread_rune">unread_rune<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/io.odin#L400"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">unread_rune :: proc(s: <a class="code-typename" href="/io/#Rune_Scanner">Rune_Scanner</a>) -> <a class="code-typename" href="/io/#Error">Error</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="write_at"><span><a class="doc-id-link" href="#write_at">write_at<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/io.odin#L248"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">write_at :: proc(w: <a class="code-typename" href="/io/#Writer_At">Writer_At</a>, p: []<a href="">u8</a>, offset: <a href="">i64</a>, n_written: ^<a href="">int</a> = nil) -> (n: <a href="">int</a>, err: <a class="code-typename" href="/io/#Error">Error</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="write_f16"><span><a class="doc-id-link" href="#write_f16">write_f16<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/util.odin#L50"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">write_f16 :: proc(w: <a class="code-typename" href="/io/#Writer">Writer</a>, val: <a href="">f16</a>, n_written: ^<a href="">int</a> = nil) -> (n: <a href="">int</a>, err: <a class="code-typename" href="/io/#Error">Error</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="write"><span><a class="doc-id-link" href="#write">write<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/io.odin#L153"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">write :: proc(s: <a class="code-typename" href="/io/#Writer">Writer</a>, p: []<a href="">u8</a>, n_written: ^<a href="">int</a> = nil) -> (n: <a href="">int</a>, err: <a class="code-typename" href="/io/#Error">Error</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="write_byte_to_byte_writer"><span><a class="doc-id-link" href="#write_byte_to_byte_writer">write_byte_to_byte_writer<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/io.odin#L322"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">write_byte_to_byte_writer :: proc(w: <a class="code-typename" href="/io/#Byte_Writer">Byte_Writer</a>, c: <a href="">u8</a>, n_written: ^<a href="">int</a> = nil) -> <a class="code-typename" href="/io/#Error">Error</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="write_byte_to_writer"><span><a class="doc-id-link" href="#write_byte_to_writer">write_byte_to_writer<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/io.odin#L326"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">write_byte_to_writer :: proc(w: <a class="code-typename" href="/io/#Writer">Writer</a>, c: <a href="">u8</a>, n_written: ^<a href="">int</a> = nil) -> <a class="code-typename" href="/io/#Error">Error</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="write_encoded_rune"><span><a class="doc-id-link" href="#write_encoded_rune">write_encoded_rune<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/util.odin#L111"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">write_encoded_rune :: proc(w: <a class="code-typename" href="/io/#Writer">Writer</a>, r: <a href="">rune</a>, write_quote: <a href="">bool</a> = true, n_written: ^<a href="">int</a> = nil) -> (n: <a href="">int</a>, err: <a class="code-typename" href="/io/#Error">Error</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="write_escaped_rune"><span><a class="doc-id-link" href="#write_escaped_rune">write_escaped_rune<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/util.odin#L149"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">write_escaped_rune :: proc(w: <a class="code-typename" href="/io/#Writer">Writer</a>, r: <a href="">rune</a>, quote: <a href="">u8</a>, html_safe: <a href="">bool</a> = false, n_written: ^<a href="">int</a> = nil) -> (n: <a href="">int</a>, err: <a class="code-typename" href="/io/#Error">Error</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="write_f32"><span><a class="doc-id-link" href="#write_f32">write_f32<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/util.odin#L66"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">write_f32 :: proc(w: <a class="code-typename" href="/io/#Writer">Writer</a>, val: <a href="">f32</a>, n_written: ^<a href="">int</a> = nil) -> (n: <a href="">int</a>, err: <a class="code-typename" href="/io/#Error">Error</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="write_f64"><span><a class="doc-id-link" href="#write_f64">write_f64<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/util.odin#L82"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">write_f64 :: proc(w: <a class="code-typename" href="/io/#Writer">Writer</a>, val: <a href="">f64</a>, n_written: ^<a href="">int</a> = nil) -> (n: <a href="">int</a>, err: <a class="code-typename" href="/io/#Error">Error</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="write_i128"><span><a class="doc-id-link" href="#write_i128">write_i128<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/util.odin#L45"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">write_i128 :: proc(w: <a class="code-typename" href="/io/#Writer">Writer</a>, i: <a href="">i128</a>, base: <a href="">int</a> = 10, n_written: ^<a href="">int</a> = nil) -> (n: <a href="">int</a>, err: <a class="code-typename" href="/io/#Error">Error</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="write_i64"><span><a class="doc-id-link" href="#write_i64">write_i64<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/util.odin#L27"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">write_i64 :: proc(w: <a class="code-typename" href="/io/#Writer">Writer</a>, i: <a href="">i64</a>, base: <a href="">int</a> = 10, n_written: ^<a href="">int</a> = nil) -> (n: <a href="">int</a>, err: <a class="code-typename" href="/io/#Error">Error</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="write_int"><span><a class="doc-id-link" href="#write_int">write_int<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/util.odin#L36"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">write_int :: proc(w: <a class="code-typename" href="/io/#Writer">Writer</a>, i: <a href="">int</a>, base: <a href="">int</a> = 10, n_written: ^<a href="">int</a> = nil) -> (n: <a href="">int</a>, err: <a class="code-typename" href="/io/#Error">Error</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="write_ptr"><span><a class="doc-id-link" href="#write_ptr">write_ptr<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/util.odin#L10"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">write_ptr :: proc(w: <a class="code-typename" href="/io/#Writer">Writer</a>, p: <a href="">rawptr</a>, byte_size: <a href="">int</a>, n_written: ^<a href="">int</a> = nil) -> (n: <a href="">int</a>, err: <a class="code-typename" href="/io/#Error">Error</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="write_ptr_at"><span><a class="doc-id-link" href="#write_ptr_at">write_ptr_at<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/util.odin#L18"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">write_ptr_at :: proc(w: <a class="code-typename" href="/io/#Writer_At">Writer_At</a>, p: <a href="">rawptr</a>, byte_size: <a href="">int</a>, offset: <a href="">i64</a>, n_written: ^<a href="">int</a> = nil) -> (n: <a href="">int</a>, err: <a class="code-typename" href="/io/#Error">Error</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="write_quoted_string"><span><a class="doc-id-link" href="#write_quoted_string">write_quoted_string<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/util.odin#L224"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">write_quoted_string :: proc(w: <a class="code-typename" href="/io/#Writer">Writer</a>, str: <a href="">string</a>, quote: <a href="">u8</a> = ''"'', n_written: ^<a href="">int</a> = nil) -> (n: <a href="">int</a>, err: <a class="code-typename" href="/io/#Error">Error</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="write_rune"><span><a class="doc-id-link" href="#write_rune">write_rune<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/io.odin#L412"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">write_rune :: proc(s: <a class="code-typename" href="/io/#Writer">Writer</a>, r: <a href="">rune</a>, n_written: ^<a href="">int</a> = nil) -> (size: <a href="">int</a>, err: <a class="code-typename" href="/io/#Error">Error</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="write_string"><span><a class="doc-id-link" href="#write_string">write_string<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/io.odin#L408"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">write_string :: proc(s: <a class="code-typename" href="/io/#Writer">Writer</a>, str: <a href="">string</a>, n_written: ^<a href="">int</a> = nil) -> (n: <a href="">int</a>, err: <a class="code-typename" href="/io/#Error">Error</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="write_to"><span><a class="doc-id-link" href="#write_to">write_to<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/io.odin#L277"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">write_to :: proc(r: <a class="code-typename" href="/io/#Writer_To">Writer_To</a>, w: <a class="code-typename" href="/io/#Writer">Writer</a>) -> (n: <a href="">i64</a>, err: <a class="code-typename" href="/io/#Error">Error</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="write_u128"><span><a class="doc-id-link" href="#write_u128">write_u128<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/util.odin#L40"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">write_u128 :: proc(w: <a class="code-typename" href="/io/#Writer">Writer</a>, i: <a href="">u128</a>, base: <a href="">int</a> = 10, n_written: ^<a href="">int</a> = nil) -> (n: <a href="">int</a>, err: <a class="code-typename" href="/io/#Error">Error</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="write_u64"><span><a class="doc-id-link" href="#write_u64">write_u64<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/util.odin#L22"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">write_u64 :: proc(w: <a class="code-typename" href="/io/#Writer">Writer</a>, i: <a href="">u64</a>, base: <a href="">int</a> = 10, n_written: ^<a href="">int</a> = nil) -> (n: <a href="">int</a>, err: <a class="code-typename" href="/io/#Error">Error</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="write_uint"><span><a class="doc-id-link" href="#write_uint">write_uint<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/util.odin#L33"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">write_uint :: proc(w: <a class="code-typename" href="/io/#Writer">Writer</a>, i: <a href="">uint</a>, base: <a href="">int</a> = 10, n_written: ^<a href="">int</a> = nil) -> (n: <a href="">int</a>, err: <a class="code-typename" href="/io/#Error">Error</a>) {…}</pre>
+</div>
+</div>
+</section>
+<h2 id="pkg-Procedure Groups">Procedure Groups</h2>
+<section class="documentation">
+<div class="pkg-entity">
+<h3 id="write_byte"><span><a class="doc-id-link" href="#write_byte">write_byte<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/io/io.odin#L317"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">write_byte :: proc{
+	<a class="code-procedure" href="/core/io/#write_byte_to_byte_writer">write_byte_to_byte_writer</a>,
+	<a class="code-procedure" href="/core/io/#write_byte_to_writer">write_byte_to_writer</a>,
+}
+</pre>
+</div>
+</div>
+</section>
+<h2 id="pkg-source-files">Source Files</h2>
+<ul>
+<li><a href="https://github.com/odin-lang/Odin/tree/master/core/io/conv.odin">conv.odin</a></li>
+<li><a href="https://github.com/odin-lang/Odin/tree/master/core/io/io.odin">io.odin</a></li>
+<li><a href="https://github.com/odin-lang/Odin/tree/master/core/io/multi.odin">multi.odin</a></li>
+<li><a href="https://github.com/odin-lang/Odin/tree/master/core/io/util.odin">util.odin</a></li>
+</ul>
+<h2 id="pkg-generation-information">Generation Information</h2>
+<p>Generated with <code>odin version dev-2022-01 (vendor "odin") windows_amd64 @ 2022-01-22 17:55:35.777605800 +0000 UTC</code></p>
+</article>
+<div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
+<nav id="TableOfContents">
+<ul>
+<li><a href="#pkg-Types">Types</a><ul>
+<li><a href="#Byte_Reader">Byte_Reader</a></li>
+<li><a href="#Byte_Scanner">Byte_Scanner</a></li>
+<li><a href="#Byte_Writer">Byte_Writer</a></li>
+<li><a href="#Close_Proc">Close_Proc</a></li>
+<li><a href="#Closer">Closer</a></li>
+<li><a href="#Destroy_Proc">Destroy_Proc</a></li>
+<li><a href="#Error">Error</a></li>
+<li><a href="#Flush_Proc">Flush_Proc</a></li>
+<li><a href="#Flusher">Flusher</a></li>
+<li><a href="#Limited_Reader">Limited_Reader</a></li>
+<li><a href="#Multi_Reader">Multi_Reader</a></li>
+<li><a href="#Multi_Writer">Multi_Writer</a></li>
+<li><a href="#Read_At_Proc">Read_At_Proc</a></li>
+<li><a href="#Read_Byte_Proc">Read_Byte_Proc</a></li>
+<li><a href="#Read_Closer">Read_Closer</a></li>
+<li><a href="#Read_From_Proc">Read_From_Proc</a></li>
+<li><a href="#Read_Proc">Read_Proc</a></li>
+<li><a href="#Read_Rune_Proc">Read_Rune_Proc</a></li>
+<li><a href="#Read_Write_Closer">Read_Write_Closer</a></li>
+<li><a href="#Read_Write_Seeker">Read_Write_Seeker</a></li>
+<li><a href="#Read_Writer">Read_Writer</a></li>
+<li><a href="#Reader">Reader</a></li>
+<li><a href="#Reader_At">Reader_At</a></li>
+<li><a href="#Reader_From">Reader_From</a></li>
+<li><a href="#Rune_Reader">Rune_Reader</a></li>
+<li><a href="#Rune_Scanner">Rune_Scanner</a></li>
+<li><a href="#Section_Reader">Section_Reader</a></li>
+<li><a href="#Seek_From">Seek_From</a></li>
+<li><a href="#Seek_Proc">Seek_Proc</a></li>
+<li><a href="#Seeker">Seeker</a></li>
+<li><a href="#Size_Proc">Size_Proc</a></li>
+<li><a href="#Stream">Stream</a></li>
+<li><a href="#Stream_VTable">Stream_VTable</a></li>
+<li><a href="#Tee_Reader">Tee_Reader</a></li>
+<li><a href="#Unread_Byte_Proc">Unread_Byte_Proc</a></li>
+<li><a href="#Unread_Rune_Proc">Unread_Rune_Proc</a></li>
+<li><a href="#Write_At_Proc">Write_At_Proc</a></li>
+<li><a href="#Write_Byte_Proc">Write_Byte_Proc</a></li>
+<li><a href="#Write_Closer">Write_Closer</a></li>
+<li><a href="#Write_Flush_Closer">Write_Flush_Closer</a></li>
+<li><a href="#Write_Flusher">Write_Flusher</a></li>
+<li><a href="#Write_Proc">Write_Proc</a></li>
+<li><a href="#Write_Rune_Proc">Write_Rune_Proc</a></li>
+<li><a href="#Write_Seeker">Write_Seeker</a></li>
+<li><a href="#Write_To_Proc">Write_To_Proc</a></li>
+<li><a href="#Writer">Writer</a></li>
+<li><a href="#Writer_At">Writer_At</a></li>
+<li><a href="#Writer_To">Writer_To</a></li>
+</ul>
+</li>
+<li><a href="#pkg-Procedures">Procedures</a><ul>
+<li><a href="#close">close</a></li>
+<li><a href="#copy">copy</a></li>
+<li><a href="#copy_buffer">copy_buffer</a></li>
+<li><a href="#copy_n">copy_n</a></li>
+<li><a href="#destroy">destroy</a></li>
+<li><a href="#flush">flush</a></li>
+<li><a href="#limited_reader_init">limited_reader_init</a></li>
+<li><a href="#limited_reader_to_reader">limited_reader_to_reader</a></li>
+<li><a href="#multi_reader_destroy">multi_reader_destroy</a></li>
+<li><a href="#multi_reader_init">multi_reader_init</a></li>
+<li><a href="#multi_writer_destroy">multi_writer_destroy</a></li>
+<li><a href="#multi_writer_init">multi_writer_init</a></li>
+<li><a href="#n_wrapper">n_wrapper</a></li>
+<li><a href="#read_at_least">read_at_least</a></li>
+<li><a href="#read_from">read_from</a></li>
+<li><a href="#read_ptr">read_ptr</a></li>
+<li><a href="#read">read</a></li>
+<li><a href="#read_at">read_at</a></li>
+<li><a href="#read_byte">read_byte</a></li>
+<li><a href="#read_full">read_full</a></li>
+<li><a href="#read_ptr_at">read_ptr_at</a></li>
+<li><a href="#read_rune">read_rune</a></li>
+<li><a href="#section_reader_init">section_reader_init</a></li>
+<li><a href="#section_reader_to_stream">section_reader_to_stream</a></li>
+<li><a href="#seek">seek</a></li>
+<li><a href="#size">size</a></li>
+<li><a href="#tee_reader_init">tee_reader_init</a></li>
+<li><a href="#tee_reader_to_reader">tee_reader_to_reader</a></li>
+<li><a href="#to_byte_reader">to_byte_reader</a></li>
+<li><a href="#to_byte_scanner">to_byte_scanner</a></li>
+<li><a href="#to_byte_writer">to_byte_writer</a></li>
+<li><a href="#to_closer">to_closer</a></li>
+<li><a href="#to_flusher">to_flusher</a></li>
+<li><a href="#to_read_closer">to_read_closer</a></li>
+<li><a href="#to_read_write_closer">to_read_write_closer</a></li>
+<li><a href="#to_read_write_seeker">to_read_write_seeker</a></li>
+<li><a href="#to_read_writer">to_read_writer</a></li>
+<li><a href="#to_reader_from">to_reader_from</a></li>
+<li><a href="#to_reader">to_reader</a></li>
+<li><a href="#to_reader_at">to_reader_at</a></li>
+<li><a href="#to_rune_reader">to_rune_reader</a></li>
+<li><a href="#to_rune_scanner">to_rune_scanner</a></li>
+<li><a href="#to_seeker">to_seeker</a></li>
+<li><a href="#to_write_closer">to_write_closer</a></li>
+<li><a href="#to_write_flush_closer">to_write_flush_closer</a></li>
+<li><a href="#to_write_flusher">to_write_flusher</a></li>
+<li><a href="#to_write_seeker">to_write_seeker</a></li>
+<li><a href="#to_writer">to_writer</a></li>
+<li><a href="#to_writer_at">to_writer_at</a></li>
+<li><a href="#to_writer_to">to_writer_to</a></li>
+<li><a href="#unread_byte">unread_byte</a></li>
+<li><a href="#unread_rune">unread_rune</a></li>
+<li><a href="#write_at">write_at</a></li>
+<li><a href="#write_f16">write_f16</a></li>
+<li><a href="#write">write</a></li>
+<li><a href="#write_byte_to_byte_writer">write_byte_to_byte_writer</a></li>
+<li><a href="#write_byte_to_writer">write_byte_to_writer</a></li>
+<li><a href="#write_encoded_rune">write_encoded_rune</a></li>
+<li><a href="#write_escaped_rune">write_escaped_rune</a></li>
+<li><a href="#write_f32">write_f32</a></li>
+<li><a href="#write_f64">write_f64</a></li>
+<li><a href="#write_i128">write_i128</a></li>
+<li><a href="#write_i64">write_i64</a></li>
+<li><a href="#write_int">write_int</a></li>
+<li><a href="#write_ptr">write_ptr</a></li>
+<li><a href="#write_ptr_at">write_ptr_at</a></li>
+<li><a href="#write_quoted_string">write_quoted_string</a></li>
+<li><a href="#write_rune">write_rune</a></li>
+<li><a href="#write_string">write_string</a></li>
+<li><a href="#write_to">write_to</a></li>
+<li><a href="#write_u128">write_u128</a></li>
+<li><a href="#write_u64">write_u64</a></li>
+<li><a href="#write_uint">write_uint</a></li>
+</ul>
+</li>
+<li><a href="#pkg-Procedure Groups">Procedure Groups</a><ul>
+<li><a href="#write_byte">write_byte</a></li>
+</ul>
+</li>
+<li><a href="#pkg-source-files">Source Files</a></ul>
+</nav>
+</div></div>
+</div>
+
+</div>
+</main>
+
+<footer class="odin-footer">
+	<div class="container pb-5 pt-5">
+		<div class="row g-4">
+		<div class="col">
+		<a class="navbar-brand" href="https://odin-lang.org">
+		<img class="mb-3" src="https://odin-lang.org/logo.svg" height="30" alt="Odin"></a>
+		<p>
+		The Data-Oriented Language for Sane Software Development.
+		</p>
+		</div>
+		<nav class="col-md-auto">
+			<h4 class="fw-normal">Resources</h4>
+			<ul class="list-unstyled">
+			<li><a href="https://odin-lang.org/docs" class="link-light">Docs</a></li>
+			<li><a href="https://odin-lang.org/news" class="link-light">Blog</a></li>
+			</ul>
+		</nav>
+		<nav class="col-md-auto">
+			<h4 class="fw-normal">Community</h4>
+			<ul class="list-unstyled">
+			<li><a href="https://github.com/odin-lang/Odin" target="_blank" class="link-light">GitHub</a></li>
+			<li><a href="https://discord.com/invite/sVBPHEv" target="_blank" class="link-light">Discord</a></li>
+			<li><a href="https://www.twitch.tv/ginger_bill" target="_blank" class="link-light">Twitch</a></li>
+			<li><a href="https://www.youtube.com/channel/UCUSck1dOH7VKmG4lRW7tZXg" target="_blank" class="link-light">YouTube</a></li>
+			</ul>
+		</nav>
+		<nav class="col-md-auto">
+			<h4 class="fw-normal">Contribute</h4>
+			<ul class="list-unstyled">
+			<li><a href="https://github.com/odin-lang/Odin/issues" target="_blank" class="link-light">Issues</a></li>
+			<li><a href="https://www.patreon.com/gingerbill" target="_blank" class="link-light">Donate</a></li>
+			</ul>
+			</nav>
+		</div>
+		<div class="mt-4 text-muted">© 2016–2022 Ginger Bill</div>
+	</div>
+</footer>
+
+<script src="https://odin-lang.org/lib/bootstrap/js/bootstrap.min.js"></script>
+<script src="https://odin-lang.org/js/script.js"></script>
+<script>hljs.highlightAll()</script>
+</body>
+</html>

@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>package slice - pkg.odin-lang.org</title>	<!-- REMEMBER TO REMOVE -->
+	<script type="text/javascript" src="https://livejs.com/live.js"></script>
+
+	<link rel="stylesheet" type="text/css" href="https://odin-lang.org/scss/custom.min.css">
+	<link rel=stylesheet href=//odin-lang.org/lib/highlight/styles/github-dark.min.css>
+	<script src=//odin-lang.org/lib/highlight/highlight.min.js></script>
+	<script>hljs.registerLanguage("odin",function(a){return{aliases:["odin","odinlang","odin-lang"],keywords:{keyword:"auto_cast bit_set break case cast context continue defer distinct do dynamic else enum fallthrough for foreign if import in map not_in or_else or_return package proc return struct switch transmute type_of typeid union using when where",literal:"true false nil",built_in:"abs align_of cap clamp complex conj expand_to_tuple imag jmag kmag len max min offset_of quaternion real size_of soa_unzip soa_zip swizzle type_info_of type_of typeid_of"},illegal:"</",contains:[a.C_LINE_COMMENT_MODE,a.C_BLOCK_COMMENT_MODE,{className:"string",variants:[a.QUOTE_STRING_MODE,{begin:"'",end:"[^\\\\]'"},{begin:"`",end:"`"}]},{className:"number",variants:[{begin:a.C_NUMBER_RE+"[ijk]",relevance:1},a.C_NUMBER_MODE]}]}})</script>
+	<script>hljs.highlightAll()</script>
+	<link rel="stylesheet" type="text/css" href="https://odin-lang.org/css/style.css">
+
+	<link rel="stylesheet" type="text/css" href="/style.css">
+
+	</style>
+</head>
+<body>
+<header class="sticky-top">
+	<nav class="navbar navbar-expand-lg navbar-dark bg-primary odin-menu">
+		<div class="container">
+			<a class="navbar-brand" href="/">
+			<img src="https://odin-lang.org/logo.svg" height="30" alt="Odin"></a>
+			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#odin-navbar-content" aria-controls="odin-navbar-content" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+			<div class="collapse navbar-collapse" id="odin-navbar-content">
+			<ul class="navbar-nav ms-md-auto">
+				<li class="nav-item"><a class="nav-link" href="https://odin-lang.org/">Home</a></li>
+				<li class="nav-item"><a class="nav-link" href="https://odin-lang.org/docs">Docs</a></li>
+				<li class="nav-item"><a class="nav-link active" href="/">Packages</a></li>
+				<li class="nav-item"><a class="nav-link" href="https://odin-lang.org/news">News</a></li>
+				<li class="nav-item"><a class="nav-link" href="https://odin-lang.org/community">Community</a></li>
+				<li class="nav-item"><a class="nav-link" href="https://github.com/odin-lang/Odin" target="_blank">GitHub</a></li>
+			</ul>
+		</div>
+		</div>
+	</nav>
+</header>
+<main>
+<div class="container"><div class="row odin-main">
+<nav id="pkg-sidebar" class="col-lg-2 odin-sidebar-border navbar-light">
+<div class="sticky-top odin-below-navbar py-3">
+<h4>Core Library</h4>
+<ul>
+<li class="nav-item"><a href="/core/bufio">bufio</a></li>
+<li class="nav-item"><a href="/core/bytes">bytes</a></li>
+<li class="nav-item"><a href="/core/c">c</a><ul>
+<li><a href="/core/c/frontend/preprocessor">frontend/preprocessor</a></li>
+<li><a href="/core/c/frontend/tokenizer">frontend/tokenizer</a></li>
+<li><a href="/core/c/libc">libc</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/compress">compress</a><ul>
+<li><a href="/core/compress/gzip">gzip</a></li>
+<li><a href="/core/compress/zlib">zlib</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/dynlib">dynlib</a></li>
+<li class="nav-item">encoding<ul>
+<li><a href="/core/encoding/base32">base32</a></li>
+<li><a href="/core/encoding/base64">base64</a></li>
+<li><a href="/core/encoding/csv">csv</a></li>
+<li><a href="/core/encoding/hxa">hxa</a></li>
+<li><a href="/core/encoding/json">json</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/fmt">fmt</a></li>
+<li class="nav-item"><a href="/core/hash">hash</a></li>
+<li class="nav-item"><a href="/core/image">image</a><ul>
+<li><a href="/core/image/png">png</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/io">io</a></li>
+<li class="nav-item"><a href="/core/log">log</a></li>
+<li class="nav-item"><a href="/core/math">math</a><ul>
+<li><a href="/core/math/big">big</a></li>
+<li><a href="/core/math/bits">bits</a></li>
+<li><a href="/core/math/fixed">fixed</a></li>
+<li><a href="/core/math/linalg">linalg</a></li>
+<li><a href="/core/math/linalg/glsl">linalg/glsl</a></li>
+<li><a href="/core/math/linalg/hlsl">linalg/hlsl</a></li>
+<li><a href="/core/math/rand">rand</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/mem">mem</a><ul>
+<li><a href="/core/mem/virtual">virtual</a></li>
+</ul>
+
+</li>
+<li class="nav-item">odin<ul>
+<li><a href="/core/odin/ast">ast</a></li>
+<li><a href="/core/odin/doc-format">doc-format</a></li>
+<li><a href="/core/odin/format">format</a></li>
+<li><a href="/core/odin/parser">parser</a></li>
+<li><a href="/core/odin/printer">printer</a></li>
+<li><a href="/core/odin/tokenizer">tokenizer</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/os">os</a></li>
+<li class="nav-item">path<ul>
+<li><a href="/core/path/filepath">filepath</a></li>
+<li><a href="/core/path/slashpath">slashpath</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/reflect">reflect</a></li>
+<li class="nav-item"><a href="/core/runtime">runtime</a></li>
+<li class="nav-item"><a class="active" href="/core/slice">slice</a></li>
+<li class="nav-item"><a href="/core/sort">sort</a></li>
+<li class="nav-item"><a href="/core/strconv">strconv</a><ul>
+<li><a href="/core/strconv/decimal">decimal</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/strings">strings</a></li>
+<li class="nav-item"><a href="/core/sync">sync</a><ul>
+<li><a href="/core/sync/sync2">sync2</a></li>
+</ul>
+
+</li>
+<li class="nav-item">text<ul>
+<li><a href="/core/text/scanner">scanner</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/thread">thread</a></li>
+<li class="nav-item"><a href="/core/time">time</a></li>
+<li class="nav-item"><a href="/core/unicode">unicode</a><ul>
+<li><a href="/core/unicode/utf16">utf16</a></li>
+<li><a href="/core/unicode/utf8">utf8</a></li>
+</ul>
+
+</li>
+</ul>
+</div>
+</nav>
+<article class="col-lg-8 p-4 documentation odin-article">
+<h1>package core:slice</h1>
+<h2>Index</h2>
+<div id="pkg-index">
+<div>
+<details open class="doc-index" id="doc-index-Types" aria-labelledby="#doc-index-Types-header">
+<summary id="#doc-index-Types-header">
+Types</summary>
+<ul>
+<li><a href="#Map_Entry">Map_Entry</a></li>
+<li><a href="#Map_Entry_Info">Map_Entry_Info</a></li>
+<li><a href="#Ordering">Ordering</a></li>
+</ul>
+</details>
+</div>
+<div>
+<details open class="doc-index" id="doc-index-Constants" aria-labelledby="#doc-index-Constants-header">
+<summary id="#doc-index-Constants-header">
+Constants</summary>
+<p>This section is empty.</p>
+</details>
+</div>
+<div>
+<details open class="doc-index" id="doc-index-Variables" aria-labelledby="#doc-index-Variables-header">
+<summary id="#doc-index-Variables-header">
+Variables</summary>
+<p>This section is empty.</p>
+</details>
+</div>
+<div>
+<details open class="doc-index" id="doc-index-Procedures" aria-labelledby="#doc-index-Procedures-header">
+<summary id="#doc-index-Procedures-header">
+Procedures</summary>
+<ul>
+<li><a href="#as_ptr">as_ptr</a></li>
+<li><a href="#binary_search">binary_search</a></li>
+<li><a href="#clone_to_dynamic">clone_to_dynamic</a></li>
+<li><a href="#clone_to_dynamic">clone_to_dynamic</a></li>
+<li><a href="#clone">clone</a></li>
+<li><a href="#cmp">cmp</a></li>
+<li><a href="#cmp_proc">cmp_proc</a></li>
+<li><a href="#concatenate">concatenate</a></li>
+<li><a href="#contains">contains</a></li>
+<li><a href="#dot_product">dot_product</a></li>
+<li><a href="#equal">equal</a></li>
+<li><a href="#fill">fill</a></li>
+<li><a href="#filter">filter</a></li>
+<li><a href="#first">first</a></li>
+<li><a href="#first_ptr">first_ptr</a></li>
+<li><a href="#get">get</a></li>
+<li><a href="#get_ptr">get_ptr</a></li>
+<li><a href="#has_prefix">has_prefix</a></li>
+<li><a href="#has_suffix">has_suffix</a></li>
+<li><a href="#into_dynamic">into_dynamic</a></li>
+<li><a href="#is_empty">is_empty</a></li>
+<li><a href="#is_sorted_cmp">is_sorted_cmp</a></li>
+<li><a href="#is_sorted">is_sorted</a></li>
+<li><a href="#is_sorted_by">is_sorted_by</a></li>
+<li><a href="#is_sorted_by_key">is_sorted_by_key</a></li>
+<li><a href="#last_ptr">last_ptr</a></li>
+<li><a href="#last">last</a></li>
+<li><a href="#length">length</a></li>
+<li><a href="#linear_search">linear_search</a></li>
+<li><a href="#linear_search_proc">linear_search_proc</a></li>
+<li><a href="#map_entries">map_entries</a></li>
+<li><a href="#map_entry_infos">map_entry_infos</a></li>
+<li><a href="#map_keys">map_keys</a></li>
+<li><a href="#map_values">map_values</a></li>
+<li><a href="#mapper">mapper</a></li>
+<li><a href="#max">max</a></li>
+<li><a href="#min">min</a></li>
+<li><a href="#ptr_add">ptr_add</a></li>
+<li><a href="#ptr_rotate">ptr_rotate</a></li>
+<li><a href="#ptr_sub">ptr_sub</a></li>
+<li><a href="#ptr_swap_non_overlapping">ptr_swap_non_overlapping</a></li>
+<li><a href="#ptr_swap_overlapping">ptr_swap_overlapping</a></li>
+<li><a href="#reduce">reduce</a></li>
+<li><a href="#reverse_sort_by_key">reverse_sort_by_key</a></li>
+<li><a href="#reverse">reverse</a></li>
+<li><a href="#reverse_sort">reverse_sort</a></li>
+<li><a href="#reverse_sort_by">reverse_sort_by</a></li>
+<li><a href="#reverse_sort_by_cmp">reverse_sort_by_cmp</a></li>
+<li><a href="#rotate_left">rotate_left</a></li>
+<li><a href="#rotate_right">rotate_right</a></li>
+<li><a href="#scanner">scanner</a></li>
+<li><a href="#simple_equal">simple_equal</a></li>
+<li><a href="#sort">sort</a></li>
+<li><a href="#sort_by_cmp">sort_by_cmp</a></li>
+<li><a href="#sort_by_key">sort_by_key</a></li>
+<li><a href="#sort_by">sort_by</a></li>
+<li><a href="#split_at">split_at</a></li>
+<li><a href="#split_first">split_first</a></li>
+<li><a href="#split_last">split_last</a></li>
+<li><a href="#swap_with_slice">swap_with_slice</a></li>
+<li><a href="#swap">swap</a></li>
+<li><a href="#swap_between">swap_between</a></li>
+</ul>
+</details>
+</div>
+<div>
+<details open class="doc-index" id="doc-index-Procedure Groups" aria-labelledby="#doc-index-Procedure Groups-header">
+<summary id="#doc-index-Procedure Groups-header">
+Procedure Groups</summary>
+<p>This section is empty.</p>
+</details>
+</div>
+</div>
+<h2 id="pkg-Types">Types</h2>
+<section class="documentation">
+<div class="pkg-entity">
+<h3 id="Map_Entry"><span><a class="doc-id-link" href="#Map_Entry">Map_Entry<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/slice/map.odin#L30"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Map_Entry :: struct {}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Map_Entry_Info"><span><a class="doc-id-link" href="#Map_Entry_Info">Map_Entry_Info<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/slice/map.odin#L35"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Map_Entry_Info :: struct {}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Ordering"><span><a class="doc-id-link" href="#Ordering">Ordering<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/slice/sort.odin#L8"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Ordering :: enum <a href="">int</a> {
+	Less    = -1, 
+	Equal   = 0, 
+	Greater = 1, 
+}</pre>
+</div>
+</div>
+</section>
+<h2 id="pkg-Constants">Constants</h2>
+<section class="documentation">
+<p>This section is empty.</p>
+</section>
+<h2 id="pkg-Variables">Variables</h2>
+<section class="documentation">
+<p>This section is empty.</p>
+</section>
+<h2 id="pkg-Procedures">Procedures</h2>
+<section class="documentation">
+<div class="pkg-entity">
+<h3 id="as_ptr"><span><a class="doc-id-link" href="#as_ptr">as_ptr<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/slice/slice.odin#L276"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">as_ptr :: proc(array: $T/[]$) -> [^]$ {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="binary_search"><span><a class="doc-id-link" href="#binary_search">binary_search<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/slice/slice.odin#L63"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">binary_search :: proc(array: $T/[]$, key: $) -> (index: <a href="">int</a>, found: <a href="">bool</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="clone_to_dynamic"><span><a class="doc-id-link" href="#clone_to_dynamic">clone_to_dynamic<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/slice/slice.odin#L197"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">clone_to_dynamic :: proc(a: $T/[]$, allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> [dynamic]$ {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>copies slice into a new dynamic array</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="clone_to_dynamic"><span><a class="doc-id-link" href="#clone_to_dynamic">clone_to_dynamic<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/slice/slice.odin#L197"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">clone_to_dynamic :: proc(a: $T/[]$, allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> [dynamic]$ {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>copies slice into a new dynamic array</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="clone"><span><a class="doc-id-link" href="#clone">clone<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/slice/slice.odin#L189"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">clone :: proc(a: $T/[]$, allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> []$ {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>copies a slice into a new slice</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="cmp"><span><a class="doc-id-link" href="#cmp">cmp<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/slice/sort.odin#L14"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">cmp :: proc(a, b: $) -> <a class="code-typename" href="/slice/#Ordering">Ordering</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="cmp_proc"><span><a class="doc-id-link" href="#cmp_proc">cmp_proc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/slice/sort.odin#L24"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">cmp_proc :: proc($E: <a href="">typeid</a>) -> proc(_: <a href="">typeid</a>, _: <a href="">typeid</a>) -> <a class="code-typename" href="/slice/#Ordering">Ordering</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="concatenate"><span><a class="doc-id-link" href="#concatenate">concatenate<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/slice/slice.odin#L172"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">concatenate :: proc(a: []$T/[]$, allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> (res: $T/[]$) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="contains"><span><a class="doc-id-link" href="#contains">contains<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/slice/slice.odin#L39"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">contains :: proc(array: $T/[]$, value: $) -> <a href="">bool</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="dot_product"><span><a class="doc-id-link" href="#dot_product">dot_product<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/slice/slice.odin#L348"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">dot_product :: proc(a, b: $T/[]$) -> $ {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="equal"><span><a class="doc-id-link" href="#equal">equal<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/slice/slice.odin#L103"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">equal :: proc(a, b: $T/[]$) -> <a href="">bool</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="fill"><span><a class="doc-id-link" href="#fill">fill<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/slice/slice.odin#L145"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">fill :: proc(array: $T/[]$, value: $) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="filter"><span><a class="doc-id-link" href="#filter">filter<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/slice/slice.odin#L297"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">filter :: proc(s: $T/[]$, f: proc(x: $) -> <a href="">bool</a>, allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> $T/[]$ {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="first"><span><a class="doc-id-link" href="#first">first<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/slice/slice.odin#L240"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">first :: proc(array: $T/[]$) -> $ {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="first_ptr"><span><a class="doc-id-link" href="#first_ptr">first_ptr<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/slice/slice.odin#L248"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">first_ptr :: proc(array: $T/[]$) -> ^$ {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="get"><span><a class="doc-id-link" href="#get">get<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/slice/slice.odin#L261"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">get :: proc(array: $T/[]$, index: <a href="">int</a>) -> (value: $, ok: <a href="">bool</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="get_ptr"><span><a class="doc-id-link" href="#get_ptr">get_ptr<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/slice/slice.odin#L268"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">get_ptr :: proc(array: $T/[]$, index: <a href="">int</a>) -> (value: ^$, ok: <a href="">bool</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="has_prefix"><span><a class="doc-id-link" href="#has_prefix">has_prefix<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/slice/slice.odin#L127"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">has_prefix :: proc(array: $T/[]$, value: $) -> <a href="">bool</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="has_suffix"><span><a class="doc-id-link" href="#has_suffix">has_suffix<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/slice/slice.odin#L136"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">has_suffix :: proc(array: $T/[]$, value: $) -> <a href="">bool</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="into_dynamic"><span><a class="doc-id-link" href="#into_dynamic">into_dynamic<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/slice/slice.odin#L205"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">into_dynamic :: proc(a: $T/[]$) -> [dynamic]$ {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Converts slice into a dynamic array without cloning or allocating memory</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="is_empty"><span><a class="doc-id-link" href="#is_empty">is_empty<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/slice/slice.odin#L220"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">is_empty :: proc(a: $T/[]$) -> <a href="">bool</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="is_sorted_cmp"><span><a class="doc-id-link" href="#is_sorted_cmp">is_sorted_cmp<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/slice/sort.odin#L82"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">is_sorted_cmp :: proc(array: $T/[]$, cmp: proc(a, b: $) -> <a class="code-typename" href="/slice/#Ordering">Ordering</a>) -> <a href="">bool</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="is_sorted"><span><a class="doc-id-link" href="#is_sorted">is_sorted<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/slice/sort.odin#L64"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">is_sorted :: proc(a: $T/[]$) -> <a href="">bool</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="is_sorted_by"><span><a class="doc-id-link" href="#is_sorted_by">is_sorted_by<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/slice/sort.odin#L73"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">is_sorted_by :: proc(array: $T/[]$, less: proc(x, y: $) -> (out: <a href="">bool</a>)) -> <a href="">bool</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="is_sorted_by_key"><span><a class="doc-id-link" href="#is_sorted_by_key">is_sorted_by_key<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/slice/sort.odin#L134"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">is_sorted_by_key :: proc(array: $T/[]$, key: proc(value: $) -> (log2: $)) -> <a href="">bool</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="last_ptr"><span><a class="doc-id-link" href="#last_ptr">last_ptr<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/slice/slice.odin#L254"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">last_ptr :: proc(array: $T/[]$) -> ^$ {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="last"><span><a class="doc-id-link" href="#last">last<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/slice/slice.odin#L243"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">last :: proc(array: $T/[]$) -> $ {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="length"><span><a class="doc-id-link" href="#length">length<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/slice/slice.odin#L217"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">length :: proc(a: $T/[]$) -> <a href="">int</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="linear_search"><span><a class="doc-id-link" href="#linear_search">linear_search<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/slice/slice.odin#L44"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">linear_search :: proc(array: $T/[]$, key: $) -> (index: <a href="">int</a>, found: <a href="">bool</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="linear_search_proc"><span><a class="doc-id-link" href="#linear_search_proc">linear_search_proc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/slice/slice.odin#L54"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">linear_search_proc :: proc(array: $T/[]$, f: proc(x: $) -> <a href="">bool</a>) -> (index: <a href="">int</a>, found: <a href="">bool</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="map_entries"><span><a class="doc-id-link" href="#map_entries">map_entries<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/slice/map.odin#L42"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">map_entries :: proc(m: $/map[$]$, allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> (entries: []<a class="code-typename" href="/slice/#Map_Entry">Map_Entry</a>(K, V)) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="map_entry_infos"><span><a class="doc-id-link" href="#map_entry_infos">map_entry_infos<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/slice/map.odin#L53"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">map_entry_infos :: proc(m: $/map[$]$, allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> (entries: []<a class="code-typename" href="/slice/#Map_Entry_Info">Map_Entry_Info</a>(K, V)) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="map_keys"><span><a class="doc-id-link" href="#map_keys">map_keys<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/slice/map.odin#L11"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">map_keys :: proc(m: $/map[$]$, allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> (keys: []$) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="map_values"><span><a class="doc-id-link" href="#map_values">map_values<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/slice/map.odin#L20"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">map_values :: proc(m: $/map[$]$, allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> (keys: []$) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="mapper"><span><a class="doc-id-link" href="#mapper">mapper<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/slice/slice.odin#L281"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">mapper :: proc(s: $T/[]$, f: proc(value: $) -> (log2: $), allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> []$ {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="max"><span><a class="doc-id-link" href="#max">max<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/slice/slice.odin#L336"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">max :: proc(s: $T/[]$) -> (res: $, ok: <a href="">bool</a>) #optional_ok {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="min"><span><a class="doc-id-link" href="#min">min<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/slice/slice.odin#L326"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">min :: proc(s: $T/[]$) -> (res: $, ok: <a href="">bool</a>) #optional_ok {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="ptr_add"><span><a class="doc-id-link" href="#ptr_add">ptr_add<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/slice/ptr.odin#L6"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">ptr_add :: proc(p: $P/^$, x: <a href="">int</a>) -> ^$ {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="ptr_rotate"><span><a class="doc-id-link" href="#ptr_rotate">ptr_rotate<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/slice/ptr.odin#L71"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">ptr_rotate :: proc(left: <a href="">int</a>, mid: ^$, right: <a href="">int</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="ptr_sub"><span><a class="doc-id-link" href="#ptr_sub">ptr_sub<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/slice/ptr.odin#L9"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">ptr_sub :: proc(p: $P/^$, x: <a href="">int</a>) -> ^$ {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="ptr_swap_non_overlapping"><span><a class="doc-id-link" href="#ptr_swap_non_overlapping">ptr_swap_non_overlapping<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/slice/ptr.odin#L13"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">ptr_swap_non_overlapping :: proc(x, y: <a href="">rawptr</a>, len: <a href="">int</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="ptr_swap_overlapping"><span><a class="doc-id-link" href="#ptr_swap_overlapping">ptr_swap_overlapping<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/slice/ptr.odin#L47"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">ptr_swap_overlapping :: proc(x, y: <a href="">rawptr</a>, len: <a href="">int</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="reduce"><span><a class="doc-id-link" href="#reduce">reduce<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/slice/slice.odin#L289"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">reduce :: proc(s: $T/[]$, initializer: $, f: proc(y, x: $) -> (out: $)) -> $ {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="reverse_sort_by_key"><span><a class="doc-id-link" href="#reverse_sort_by_key">reverse_sort_by_key<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/slice/sort.odin#L126"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">reverse_sort_by_key :: proc(data: $T/[]$, key: proc(value: $) -> (log2: $)) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="reverse"><span><a class="doc-id-link" href="#reverse">reverse<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/slice/slice.odin#L30"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">reverse :: proc(array: $T/[]$) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="reverse_sort"><span><a class="doc-id-link" href="#reverse_sort">reverse_sort<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/slice/sort.odin#L93"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">reverse_sort :: proc(array: $T/[]$) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="reverse_sort_by"><span><a class="doc-id-link" href="#reverse_sort_by">reverse_sort_by<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/slice/sort.odin#L100"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">reverse_sort_by :: proc(data: $T/[]$, less: proc(x, y: $) -> (out: <a href="">bool</a>)) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="reverse_sort_by_cmp"><span><a class="doc-id-link" href="#reverse_sort_by_cmp">reverse_sort_by_cmp<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/slice/sort.odin#L108"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">reverse_sort_by_cmp :: proc(data: $T/[]$, cmp: proc(a, b: $) -> <a class="code-typename" href="/slice/#Ordering">Ordering</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="rotate_left"><span><a class="doc-id-link" href="#rotate_left">rotate_left<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/slice/slice.odin#L155"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">rotate_left :: proc(array: $T/[]$, mid: <a href="">int</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="rotate_right"><span><a class="doc-id-link" href="#rotate_right">rotate_right<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/slice/slice.odin#L162"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">rotate_right :: proc(array: $T/[]$, mid: <a href="">int</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="scanner"><span><a class="doc-id-link" href="#scanner">scanner<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/slice/slice.odin#L307"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">scanner :: proc(s: $T/[]$, initializer: $, f: proc(y, x: $) -> (out: $), allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> []$ {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="simple_equal"><span><a class="doc-id-link" href="#simple_equal">simple_equal<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/slice/slice.odin#L119"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">simple_equal :: proc(a, b: $T/[]$) -> <a href="">bool</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="sort"><span><a class="doc-id-link" href="#sort">sort<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/slice/sort.odin#L38"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">sort :: proc(array: $T/[]$) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>sort sorts a slice
+This sort is not guaranteed to be stable</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="sort_by_cmp"><span><a class="doc-id-link" href="#sort_by_cmp">sort_by_cmp<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/slice/sort.odin#L56"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">sort_by_cmp :: proc(data: $T/[]$, cmp: proc(a, b: $) -> <a class="code-typename" href="/slice/#Ordering">Ordering</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="sort_by_key"><span><a class="doc-id-link" href="#sort_by_key">sort_by_key<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/slice/sort.odin#L118"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">sort_by_key :: proc(data: $T/[]$, key: proc(value: $) -> (log2: $)) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>TODO(bill): Should `sort_by_key` exist or is `sort_by` more than enough?</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="sort_by"><span><a class="doc-id-link" href="#sort_by">sort_by<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/slice/sort.odin#L48"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">sort_by :: proc(data: $T/[]$, less: proc(x, y: $) -> (out: <a href="">bool</a>)) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>sort_by sorts a slice with a given procedure to test whether two values are ordered "i < j"
+This sort is not guaranteed to be stable</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="split_at"><span><a class="doc-id-link" href="#split_at">split_at<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/slice/slice.odin#L227"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">split_at :: proc(array: $T/[]$, index: <a href="">int</a>) -> (a, b: $T/[]$) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="split_first"><span><a class="doc-id-link" href="#split_first">split_first<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/slice/slice.odin#L232"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">split_first :: proc(array: $T/[]$) -> (first: $, rest: $T/[]$) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="split_last"><span><a class="doc-id-link" href="#split_last">split_last<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/slice/slice.odin#L235"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">split_last :: proc(array: $T/[]$) -> (rest: $T/[]$, last: $) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="swap_with_slice"><span><a class="doc-id-link" href="#swap_with_slice">swap_with_slice<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/slice/slice.odin#L166"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">swap_with_slice :: proc(a, b: $T/[]$, loc := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="swap"><span><a class="doc-id-link" href="#swap">swap<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/slice/slice.odin#L14"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">swap :: proc(array: $T/[]$, a, b: <a href="">int</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="swap_between"><span><a class="doc-id-link" href="#swap_between">swap_between<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/slice/slice.odin#L22"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">swap_between :: proc(a, b: $T/[]$) {…}</pre>
+</div>
+</div>
+</section>
+<h2 id="pkg-Procedure Groups">Procedure Groups</h2>
+<section class="documentation">
+<p>This section is empty.</p>
+</section>
+<h2 id="pkg-source-files">Source Files</h2>
+<ul>
+<li><a href="https://github.com/odin-lang/Odin/tree/master/core/slice/map.odin">map.odin</a></li>
+<li><a href="https://github.com/odin-lang/Odin/tree/master/core/slice/ptr.odin">ptr.odin</a></li>
+<li><a href="https://github.com/odin-lang/Odin/tree/master/core/slice/slice.odin">slice.odin</a></li>
+<li><a href="https://github.com/odin-lang/Odin/tree/master/core/slice/sort.odin">sort.odin</a></li>
+</ul>
+<h2 id="pkg-generation-information">Generation Information</h2>
+<p>Generated with <code>odin version dev-2022-01 (vendor "odin") windows_amd64 @ 2022-01-22 17:55:35.882628400 +0000 UTC</code></p>
+</article>
+<div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
+<nav id="TableOfContents">
+<ul>
+<li><a href="#pkg-Types">Types</a><ul>
+<li><a href="#Map_Entry">Map_Entry</a></li>
+<li><a href="#Map_Entry_Info">Map_Entry_Info</a></li>
+<li><a href="#Ordering">Ordering</a></li>
+</ul>
+</li>
+<li><a href="#pkg-Procedures">Procedures</a><ul>
+<li><a href="#as_ptr">as_ptr</a></li>
+<li><a href="#binary_search">binary_search</a></li>
+<li><a href="#clone_to_dynamic">clone_to_dynamic</a></li>
+<li><a href="#clone_to_dynamic">clone_to_dynamic</a></li>
+<li><a href="#clone">clone</a></li>
+<li><a href="#cmp">cmp</a></li>
+<li><a href="#cmp_proc">cmp_proc</a></li>
+<li><a href="#concatenate">concatenate</a></li>
+<li><a href="#contains">contains</a></li>
+<li><a href="#dot_product">dot_product</a></li>
+<li><a href="#equal">equal</a></li>
+<li><a href="#fill">fill</a></li>
+<li><a href="#filter">filter</a></li>
+<li><a href="#first">first</a></li>
+<li><a href="#first_ptr">first_ptr</a></li>
+<li><a href="#get">get</a></li>
+<li><a href="#get_ptr">get_ptr</a></li>
+<li><a href="#has_prefix">has_prefix</a></li>
+<li><a href="#has_suffix">has_suffix</a></li>
+<li><a href="#into_dynamic">into_dynamic</a></li>
+<li><a href="#is_empty">is_empty</a></li>
+<li><a href="#is_sorted_cmp">is_sorted_cmp</a></li>
+<li><a href="#is_sorted">is_sorted</a></li>
+<li><a href="#is_sorted_by">is_sorted_by</a></li>
+<li><a href="#is_sorted_by_key">is_sorted_by_key</a></li>
+<li><a href="#last_ptr">last_ptr</a></li>
+<li><a href="#last">last</a></li>
+<li><a href="#length">length</a></li>
+<li><a href="#linear_search">linear_search</a></li>
+<li><a href="#linear_search_proc">linear_search_proc</a></li>
+<li><a href="#map_entries">map_entries</a></li>
+<li><a href="#map_entry_infos">map_entry_infos</a></li>
+<li><a href="#map_keys">map_keys</a></li>
+<li><a href="#map_values">map_values</a></li>
+<li><a href="#mapper">mapper</a></li>
+<li><a href="#max">max</a></li>
+<li><a href="#min">min</a></li>
+<li><a href="#ptr_add">ptr_add</a></li>
+<li><a href="#ptr_rotate">ptr_rotate</a></li>
+<li><a href="#ptr_sub">ptr_sub</a></li>
+<li><a href="#ptr_swap_non_overlapping">ptr_swap_non_overlapping</a></li>
+<li><a href="#ptr_swap_overlapping">ptr_swap_overlapping</a></li>
+<li><a href="#reduce">reduce</a></li>
+<li><a href="#reverse_sort_by_key">reverse_sort_by_key</a></li>
+<li><a href="#reverse">reverse</a></li>
+<li><a href="#reverse_sort">reverse_sort</a></li>
+<li><a href="#reverse_sort_by">reverse_sort_by</a></li>
+<li><a href="#reverse_sort_by_cmp">reverse_sort_by_cmp</a></li>
+<li><a href="#rotate_left">rotate_left</a></li>
+<li><a href="#rotate_right">rotate_right</a></li>
+<li><a href="#scanner">scanner</a></li>
+<li><a href="#simple_equal">simple_equal</a></li>
+<li><a href="#sort">sort</a></li>
+<li><a href="#sort_by_cmp">sort_by_cmp</a></li>
+<li><a href="#sort_by_key">sort_by_key</a></li>
+<li><a href="#sort_by">sort_by</a></li>
+<li><a href="#split_at">split_at</a></li>
+<li><a href="#split_first">split_first</a></li>
+<li><a href="#split_last">split_last</a></li>
+<li><a href="#swap_with_slice">swap_with_slice</a></li>
+<li><a href="#swap">swap</a></li>
+<li><a href="#swap_between">swap_between</a></li>
+</ul>
+</li>
+<li><a href="#pkg-source-files">Source Files</a></ul>
+</nav>
+</div></div>
+</div>
+
+</div>
+</main>
+
+<footer class="odin-footer">
+	<div class="container pb-5 pt-5">
+		<div class="row g-4">
+		<div class="col">
+		<a class="navbar-brand" href="https://odin-lang.org">
+		<img class="mb-3" src="https://odin-lang.org/logo.svg" height="30" alt="Odin"></a>
+		<p>
+		The Data-Oriented Language for Sane Software Development.
+		</p>
+		</div>
+		<nav class="col-md-auto">
+			<h4 class="fw-normal">Resources</h4>
+			<ul class="list-unstyled">
+			<li><a href="https://odin-lang.org/docs" class="link-light">Docs</a></li>
+			<li><a href="https://odin-lang.org/news" class="link-light">Blog</a></li>
+			</ul>
+		</nav>
+		<nav class="col-md-auto">
+			<h4 class="fw-normal">Community</h4>
+			<ul class="list-unstyled">
+			<li><a href="https://github.com/odin-lang/Odin" target="_blank" class="link-light">GitHub</a></li>
+			<li><a href="https://discord.com/invite/sVBPHEv" target="_blank" class="link-light">Discord</a></li>
+			<li><a href="https://www.twitch.tv/ginger_bill" target="_blank" class="link-light">Twitch</a></li>
+			<li><a href="https://www.youtube.com/channel/UCUSck1dOH7VKmG4lRW7tZXg" target="_blank" class="link-light">YouTube</a></li>
+			</ul>
+		</nav>
+		<nav class="col-md-auto">
+			<h4 class="fw-normal">Contribute</h4>
+			<ul class="list-unstyled">
+			<li><a href="https://github.com/odin-lang/Odin/issues" target="_blank" class="link-light">Issues</a></li>
+			<li><a href="https://www.patreon.com/gingerbill" target="_blank" class="link-light">Donate</a></li>
+			</ul>
+			</nav>
+		</div>
+		<div class="mt-4 text-muted">© 2016–2022 Ginger Bill</div>
+	</div>
+</footer>
+
+<script src="https://odin-lang.org/lib/bootstrap/js/bootstrap.min.js"></script>
+<script src="https://odin-lang.org/js/script.js"></script>
+<script>hljs.highlightAll()</script>
+</body>
+</html>

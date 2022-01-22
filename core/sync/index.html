@@ -1,0 +1,1482 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>package sync - pkg.odin-lang.org</title>	<!-- REMEMBER TO REMOVE -->
+	<script type="text/javascript" src="https://livejs.com/live.js"></script>
+
+	<link rel="stylesheet" type="text/css" href="https://odin-lang.org/scss/custom.min.css">
+	<link rel=stylesheet href=//odin-lang.org/lib/highlight/styles/github-dark.min.css>
+	<script src=//odin-lang.org/lib/highlight/highlight.min.js></script>
+	<script>hljs.registerLanguage("odin",function(a){return{aliases:["odin","odinlang","odin-lang"],keywords:{keyword:"auto_cast bit_set break case cast context continue defer distinct do dynamic else enum fallthrough for foreign if import in map not_in or_else or_return package proc return struct switch transmute type_of typeid union using when where",literal:"true false nil",built_in:"abs align_of cap clamp complex conj expand_to_tuple imag jmag kmag len max min offset_of quaternion real size_of soa_unzip soa_zip swizzle type_info_of type_of typeid_of"},illegal:"</",contains:[a.C_LINE_COMMENT_MODE,a.C_BLOCK_COMMENT_MODE,{className:"string",variants:[a.QUOTE_STRING_MODE,{begin:"'",end:"[^\\\\]'"},{begin:"`",end:"`"}]},{className:"number",variants:[{begin:a.C_NUMBER_RE+"[ijk]",relevance:1},a.C_NUMBER_MODE]}]}})</script>
+	<script>hljs.highlightAll()</script>
+	<link rel="stylesheet" type="text/css" href="https://odin-lang.org/css/style.css">
+
+	<link rel="stylesheet" type="text/css" href="/style.css">
+
+	</style>
+</head>
+<body>
+<header class="sticky-top">
+	<nav class="navbar navbar-expand-lg navbar-dark bg-primary odin-menu">
+		<div class="container">
+			<a class="navbar-brand" href="/">
+			<img src="https://odin-lang.org/logo.svg" height="30" alt="Odin"></a>
+			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#odin-navbar-content" aria-controls="odin-navbar-content" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+			<div class="collapse navbar-collapse" id="odin-navbar-content">
+			<ul class="navbar-nav ms-md-auto">
+				<li class="nav-item"><a class="nav-link" href="https://odin-lang.org/">Home</a></li>
+				<li class="nav-item"><a class="nav-link" href="https://odin-lang.org/docs">Docs</a></li>
+				<li class="nav-item"><a class="nav-link active" href="/">Packages</a></li>
+				<li class="nav-item"><a class="nav-link" href="https://odin-lang.org/news">News</a></li>
+				<li class="nav-item"><a class="nav-link" href="https://odin-lang.org/community">Community</a></li>
+				<li class="nav-item"><a class="nav-link" href="https://github.com/odin-lang/Odin" target="_blank">GitHub</a></li>
+			</ul>
+		</div>
+		</div>
+	</nav>
+</header>
+<main>
+<div class="container"><div class="row odin-main">
+<nav id="pkg-sidebar" class="col-lg-2 odin-sidebar-border navbar-light">
+<div class="sticky-top odin-below-navbar py-3">
+<h4>Core Library</h4>
+<ul>
+<li class="nav-item"><a href="/core/bufio">bufio</a></li>
+<li class="nav-item"><a href="/core/bytes">bytes</a></li>
+<li class="nav-item"><a href="/core/c">c</a><ul>
+<li><a href="/core/c/frontend/preprocessor">frontend/preprocessor</a></li>
+<li><a href="/core/c/frontend/tokenizer">frontend/tokenizer</a></li>
+<li><a href="/core/c/libc">libc</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/compress">compress</a><ul>
+<li><a href="/core/compress/gzip">gzip</a></li>
+<li><a href="/core/compress/zlib">zlib</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/dynlib">dynlib</a></li>
+<li class="nav-item">encoding<ul>
+<li><a href="/core/encoding/base32">base32</a></li>
+<li><a href="/core/encoding/base64">base64</a></li>
+<li><a href="/core/encoding/csv">csv</a></li>
+<li><a href="/core/encoding/hxa">hxa</a></li>
+<li><a href="/core/encoding/json">json</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/fmt">fmt</a></li>
+<li class="nav-item"><a href="/core/hash">hash</a></li>
+<li class="nav-item"><a href="/core/image">image</a><ul>
+<li><a href="/core/image/png">png</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/io">io</a></li>
+<li class="nav-item"><a href="/core/log">log</a></li>
+<li class="nav-item"><a href="/core/math">math</a><ul>
+<li><a href="/core/math/big">big</a></li>
+<li><a href="/core/math/bits">bits</a></li>
+<li><a href="/core/math/fixed">fixed</a></li>
+<li><a href="/core/math/linalg">linalg</a></li>
+<li><a href="/core/math/linalg/glsl">linalg/glsl</a></li>
+<li><a href="/core/math/linalg/hlsl">linalg/hlsl</a></li>
+<li><a href="/core/math/rand">rand</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/mem">mem</a><ul>
+<li><a href="/core/mem/virtual">virtual</a></li>
+</ul>
+
+</li>
+<li class="nav-item">odin<ul>
+<li><a href="/core/odin/ast">ast</a></li>
+<li><a href="/core/odin/doc-format">doc-format</a></li>
+<li><a href="/core/odin/format">format</a></li>
+<li><a href="/core/odin/parser">parser</a></li>
+<li><a href="/core/odin/printer">printer</a></li>
+<li><a href="/core/odin/tokenizer">tokenizer</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/os">os</a></li>
+<li class="nav-item">path<ul>
+<li><a href="/core/path/filepath">filepath</a></li>
+<li><a href="/core/path/slashpath">slashpath</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/reflect">reflect</a></li>
+<li class="nav-item"><a href="/core/runtime">runtime</a></li>
+<li class="nav-item"><a href="/core/slice">slice</a></li>
+<li class="nav-item"><a href="/core/sort">sort</a></li>
+<li class="nav-item"><a href="/core/strconv">strconv</a><ul>
+<li><a href="/core/strconv/decimal">decimal</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/strings">strings</a></li>
+<li class="nav-item"><a class="active" href="/core/sync">sync</a><ul>
+<li><a href="/core/sync/sync2">sync2</a></li>
+</ul>
+
+</li>
+<li class="nav-item">text<ul>
+<li><a href="/core/text/scanner">scanner</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/thread">thread</a></li>
+<li class="nav-item"><a href="/core/time">time</a></li>
+<li class="nav-item"><a href="/core/unicode">unicode</a><ul>
+<li><a href="/core/unicode/utf16">utf16</a></li>
+<li><a href="/core/unicode/utf8">utf8</a></li>
+</ul>
+
+</li>
+</ul>
+</div>
+</nav>
+<article class="col-lg-8 p-4 documentation odin-article">
+<h1>package core:sync</h1>
+<h2>Index</h2>
+<div id="pkg-index">
+<div>
+<details open class="doc-index" id="doc-index-Types" aria-labelledby="#doc-index-Types-header">
+<summary id="#doc-index-Types-header">
+Types</summary>
+<ul>
+<li><a href="#Barrier">Barrier</a></li>
+<li><a href="#Benaphore">Benaphore</a></li>
+<li><a href="#Blocking_Mutex">Blocking_Mutex</a></li>
+<li><a href="#Channel">Channel</a></li>
+<li><a href="#Channel_Direction">Channel_Direction</a></li>
+<li><a href="#Condition">Condition</a></li>
+<li><a href="#Condition_Mutex_Ptr">Condition_Mutex_Ptr</a></li>
+<li><a href="#Mutex">Mutex</a></li>
+<li><a href="#Ordering">Ordering</a></li>
+<li><a href="#RW_Lock">RW_Lock</a></li>
+<li><a href="#Raw_Channel">Raw_Channel</a></li>
+<li><a href="#Raw_Channel_Wait_Queue">Raw_Channel_Wait_Queue</a></li>
+<li><a href="#Recursive_Benaphore">Recursive_Benaphore</a></li>
+<li><a href="#Select_Channel">Select_Channel</a></li>
+<li><a href="#Select_Command">Select_Command</a></li>
+<li><a href="#Semaphore">Semaphore</a></li>
+<li><a href="#Ticket_Mutex">Ticket_Mutex</a></li>
+<li><a href="#Wait_Group">Wait_Group</a></li>
+</ul>
+</details>
+</div>
+<div>
+<details open class="doc-index" id="doc-index-Constants" aria-labelledby="#doc-index-Constants-header">
+<summary id="#doc-index-Constants-header">
+Constants</summary>
+<ul>
+<li><a href="#MAX_SELECT_CHANNELS">MAX_SELECT_CHANNELS</a></li>
+<li><a href="#SELECT_MAX_TIMEOUT">SELECT_MAX_TIMEOUT</a></li>
+</ul>
+</details>
+</div>
+<div>
+<details open class="doc-index" id="doc-index-Variables" aria-labelledby="#doc-index-Variables-header">
+<summary id="#doc-index-Variables-header">
+Variables</summary>
+<ul>
+<li><a href="#strongest_failure_ordering_table">strongest_failure_ordering_table</a></li>
+</ul>
+</details>
+</div>
+<div>
+<details open class="doc-index" id="doc-index-Procedures" aria-labelledby="#doc-index-Procedures-header">
+<summary id="#doc-index-Procedures-header">
+Procedures</summary>
+<ul>
+<li><a href="#atomic_add">atomic_add</a></li>
+<li><a href="#atomic_and">atomic_and</a></li>
+<li><a href="#atomic_compare_exchange">atomic_compare_exchange</a></li>
+<li><a href="#atomic_compare_exchange_weak">atomic_compare_exchange_weak</a></li>
+<li><a href="#atomic_load">atomic_load</a></li>
+<li><a href="#atomic_nand">atomic_nand</a></li>
+<li><a href="#atomic_or">atomic_or</a></li>
+<li><a href="#atomic_store">atomic_store</a></li>
+<li><a href="#atomic_sub">atomic_sub</a></li>
+<li><a href="#atomic_swap">atomic_swap</a></li>
+<li><a href="#atomic_xor">atomic_xor</a></li>
+<li><a href="#barrier_destroy">barrier_destroy</a></li>
+<li><a href="#barrier_init">barrier_init</a></li>
+<li><a href="#barrier_wait">barrier_wait</a></li>
+<li><a href="#benaphore_destroy">benaphore_destroy</a></li>
+<li><a href="#benaphore_init">benaphore_init</a></li>
+<li><a href="#benaphore_lock">benaphore_lock</a></li>
+<li><a href="#benaphore_try_lock">benaphore_try_lock</a></li>
+<li><a href="#benaphore_unlock">benaphore_unlock</a></li>
+<li><a href="#blocking_mutex_destroy">blocking_mutex_destroy</a></li>
+<li><a href="#blocking_mutex_init">blocking_mutex_init</a></li>
+<li><a href="#blocking_mutex_lock">blocking_mutex_lock</a></li>
+<li><a href="#blocking_mutex_try_lock">blocking_mutex_try_lock</a></li>
+<li><a href="#blocking_mutex_unlock">blocking_mutex_unlock</a></li>
+<li><a href="#channel_as_recv">channel_as_recv</a></li>
+<li><a href="#channel_as_send">channel_as_send</a></li>
+<li><a href="#channel_can_recv">channel_can_recv</a></li>
+<li><a href="#channel_can_send">channel_can_send</a></li>
+<li><a href="#channel_cap">channel_cap</a></li>
+<li><a href="#channel_close">channel_close</a></li>
+<li><a href="#channel_destroy">channel_destroy</a></li>
+<li><a href="#channel_drain">channel_drain</a></li>
+<li><a href="#channel_eq">channel_eq</a></li>
+<li><a href="#channel_init">channel_init</a></li>
+<li><a href="#channel_is_nil">channel_is_nil</a></li>
+<li><a href="#channel_is_open">channel_is_open</a></li>
+<li><a href="#channel_iterator">channel_iterator</a></li>
+<li><a href="#channel_len">channel_len</a></li>
+<li><a href="#channel_make">channel_make</a></li>
+<li><a href="#channel_make_recv">channel_make_recv</a></li>
+<li><a href="#channel_make_send">channel_make_send</a></li>
+<li><a href="#channel_move">channel_move</a></li>
+<li><a href="#channel_ne">channel_ne</a></li>
+<li><a href="#channel_peek">channel_peek</a></li>
+<li><a href="#channel_recv">channel_recv</a></li>
+<li><a href="#channel_send">channel_send</a></li>
+<li><a href="#channel_try_recv">channel_try_recv</a></li>
+<li><a href="#channel_try_recv_ptr">channel_try_recv_ptr</a></li>
+<li><a href="#channel_try_send">channel_try_send</a></li>
+<li><a href="#condition_broadcast">condition_broadcast</a></li>
+<li><a href="#condition_destroy">condition_destroy</a></li>
+<li><a href="#condition_init">condition_init</a></li>
+<li><a href="#condition_signal">condition_signal</a></li>
+<li><a href="#condition_wait_for">condition_wait_for</a></li>
+<li><a href="#condition_wait_for_timeout">condition_wait_for_timeout</a></li>
+<li><a href="#cpu_relax">cpu_relax</a></li>
+<li><a href="#current_thread_id">current_thread_id</a></li>
+<li><a href="#fence">fence</a></li>
+<li><a href="#mutex_destroy">mutex_destroy</a></li>
+<li><a href="#mutex_init">mutex_init</a></li>
+<li><a href="#mutex_lock">mutex_lock</a></li>
+<li><a href="#mutex_try_lock">mutex_try_lock</a></li>
+<li><a href="#mutex_unlock">mutex_unlock</a></li>
+<li><a href="#raw_channel_can_recv">raw_channel_can_recv</a></li>
+<li><a href="#raw_channel_can_send">raw_channel_can_send</a></li>
+<li><a href="#raw_channel_close">raw_channel_close</a></li>
+<li><a href="#raw_channel_create">raw_channel_create</a></li>
+<li><a href="#raw_channel_destroy">raw_channel_destroy</a></li>
+<li><a href="#raw_channel_drain">raw_channel_drain</a></li>
+<li><a href="#raw_channel_recv_impl">raw_channel_recv_impl</a></li>
+<li><a href="#raw_channel_send_impl">raw_channel_send_impl</a></li>
+<li><a href="#raw_channel_wait_queue_broadcast">raw_channel_wait_queue_broadcast</a></li>
+<li><a href="#raw_channel_wait_queue_insert">raw_channel_wait_queue_insert</a></li>
+<li><a href="#raw_channel_wait_queue_remove">raw_channel_wait_queue_remove</a></li>
+<li><a href="#raw_channel_wait_queue_signal">raw_channel_wait_queue_signal</a></li>
+<li><a href="#raw_channel_wait_queue_wait_on">raw_channel_wait_queue_wait_on</a></li>
+<li><a href="#recursive_benaphore_destroy">recursive_benaphore_destroy</a></li>
+<li><a href="#recursive_benaphore_init">recursive_benaphore_init</a></li>
+<li><a href="#recursive_benaphore_lock">recursive_benaphore_lock</a></li>
+<li><a href="#recursive_benaphore_try_lock">recursive_benaphore_try_lock</a></li>
+<li><a href="#recursive_benaphore_unlock">recursive_benaphore_unlock</a></li>
+<li><a href="#rw_lock_destroy">rw_lock_destroy</a></li>
+<li><a href="#rw_lock_init">rw_lock_init</a></li>
+<li><a href="#rw_lock_read">rw_lock_read</a></li>
+<li><a href="#rw_lock_read_unlock">rw_lock_read_unlock</a></li>
+<li><a href="#rw_lock_try_read">rw_lock_try_read</a></li>
+<li><a href="#rw_lock_try_write">rw_lock_try_write</a></li>
+<li><a href="#rw_lock_write">rw_lock_write</a></li>
+<li><a href="#rw_lock_write_unlock">rw_lock_write_unlock</a></li>
+<li><a href="#select">select</a></li>
+<li><a href="#select_recv">select_recv</a></li>
+<li><a href="#select_recv_msg">select_recv_msg</a></li>
+<li><a href="#select_send">select_send</a></li>
+<li><a href="#select_send_msg">select_send_msg</a></li>
+<li><a href="#select_timeout">select_timeout</a></li>
+<li><a href="#select_try">select_try</a></li>
+<li><a href="#select_try_recv">select_try_recv</a></li>
+<li><a href="#select_try_recv_msg">select_try_recv_msg</a></li>
+<li><a href="#select_try_send">select_try_send</a></li>
+<li><a href="#select_try_send_msg">select_try_send_msg</a></li>
+<li><a href="#semaphore_destroy">semaphore_destroy</a></li>
+<li><a href="#semaphore_init">semaphore_init</a></li>
+<li><a href="#semaphore_post">semaphore_post</a></li>
+<li><a href="#semaphore_wait_for">semaphore_wait_for</a></li>
+<li><a href="#strongest_failure_ordering">strongest_failure_ordering</a></li>
+<li><a href="#thread_yield">thread_yield</a></li>
+<li><a href="#ticket_mutex_init">ticket_mutex_init</a></li>
+<li><a href="#ticket_mutex_lock">ticket_mutex_lock</a></li>
+<li><a href="#ticket_mutex_unlock">ticket_mutex_unlock</a></li>
+<li><a href="#wait_group_add">wait_group_add</a></li>
+<li><a href="#wait_group_destroy">wait_group_destroy</a></li>
+<li><a href="#wait_group_done">wait_group_done</a></li>
+<li><a href="#wait_group_init">wait_group_init</a></li>
+<li><a href="#wait_group_wait">wait_group_wait</a></li>
+</ul>
+</details>
+</div>
+<div>
+<details open class="doc-index" id="doc-index-Procedure Groups" aria-labelledby="#doc-index-Procedure Groups-header">
+<summary id="#doc-index-Procedure Groups-header">
+Procedure Groups</summary>
+<p>This section is empty.</p>
+</details>
+</div>
+</div>
+<h2 id="pkg-Types">Types</h2>
+<section class="documentation">
+<div class="pkg-entity">
+<h3 id="Barrier"><span><a class="doc-id-link" href="#Barrier">Barrier<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/barrier.odin#L41"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Barrier :: struct {
+	mutex:         <a class="code-typename" href="/sync/#Blocking_Mutex">Blocking_Mutex</a>,
+	cond:          <a class="code-typename" href="/sync/#Condition">Condition</a>,
+	index:         <a href="">int</a>,
+	generation_id: <a href="">int</a>,
+	thread_count:  <a href="">int</a>,
+}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>A barrier enabling multiple threads to synchronize the beginning of some computation
+Example:</p>
+<pre>package example
+
+import "core:fmt"
+import "core:sync"
+import "core:thread"
+
+barrier := &sync.Barrier{};
+
+main :: proc() {
+	fmt.println("Start");
+
+	THREAD_COUNT :: 4;
+	threads: [THREAD_COUNT]^thread.Thread;
+
+	sync.barrier_init(barrier, THREAD_COUNT);
+	defer sync.barrier_destroy(barrier);
+
+
+	for _, i in threads {
+		threads[i] = thread.create_and_start(proc(t: ^thread.Thread) {
+			// Same messages will be printed together but without any interleaving
+			fmt.println("Getting ready!");
+			sync.barrier_wait(barrier);
+			fmt.println("Off their marks they go!");
+		});
+	}
+
+	for t in threads {
+		thread.destroy(t); // join and free thread
+	}
+	fmt.println("Finished");
+}
+</pre>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="Benaphore"><span><a class="doc-id-link" href="#Benaphore">Benaphore<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync.odin#L34"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Benaphore :: struct {
+	counter: <a href="">int</a>,
+	sema:    <a class="code-typename" href="/sync/#Semaphore">Semaphore</a>,
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Blocking_Mutex"><span><a class="doc-id-link" href="#Blocking_Mutex">Blocking_Mutex<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync_windows.odin#L62"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Blocking_Mutex :: struct {
+	_handle: sys_windows.<a class="code-typename" href="//#SRWLOCK">SRWLOCK</a>,
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Channel"><span><a class="doc-id-link" href="#Channel">Channel<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/channel.odin#L16"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Channel :: struct {}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Channel_Direction"><span><a class="doc-id-link" href="#Channel_Direction">Channel_Direction<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/channel.odin#L10"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Channel_Direction :: enum <a href="">i8</a> {
+	Both = 0, 
+	Send = 1, 
+	Recv = -1, 
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Condition"><span><a class="doc-id-link" href="#Condition">Condition<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync_windows.odin#L90"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Condition :: struct {
+	_handle: sys_windows.<a class="code-typename" href="//#CONDITION_VARIABLE">CONDITION_VARIABLE</a>,
+	mutex:   <a class="code-typename" href="/sync/#Condition_Mutex_Ptr">Condition_Mutex_Ptr</a>,
+}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Blocks until signalled.
+When signalled, awakens exactly one waiting thread.</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="Condition_Mutex_Ptr"><span><a class="doc-id-link" href="#Condition_Mutex_Ptr">Condition_Mutex_Ptr<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync.odin#L9"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Condition_Mutex_Ptr :: union {
+	^<a class="code-typename" href="/sync/#Mutex">Mutex</a>, 
+	^<a class="code-typename" href="/sync/#Blocking_Mutex">Blocking_Mutex</a>, 
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Mutex"><span><a class="doc-id-link" href="#Mutex">Mutex<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync_windows.odin#L37"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Mutex :: struct {
+	_critical_section: sys_windows.<a class="code-typename" href="//#CRITICAL_SECTION">CRITICAL_SECTION</a>,
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Ordering"><span><a class="doc-id-link" href="#Ordering">Ordering<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/atomic.odin#L5"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Ordering :: enum <a href="">int</a> {
+	Relaxed, 
+	Release, 
+	Acquire, 
+	Acquire_Release, 
+	Sequentially_Consistent, 
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="RW_Lock"><span><a class="doc-id-link" href="#RW_Lock">RW_Lock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync_windows.odin#L147"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">RW_Lock :: struct {
+	_handle: sys_windows.<a class="code-typename" href="//#SRWLOCK">SRWLOCK</a>,
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Raw_Channel"><span><a class="doc-id-link" href="#Raw_Channel">Raw_Channel<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/channel.odin#L177"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Raw_Channel :: struct {
+	closed:      <a href="">bool</a>,
+	ready:       <a href="">bool</a>,
+	data_offset: <a href="">u16</a>,
+	elem_size:   <a href="">u32</a>,
+	len,
+	cap:         <a href="">int</a>,
+	read,
+	write:       <a href="">int</a>,
+	mutex:       <a class="code-typename" href="/sync/#Mutex">Mutex</a>,
+	cond:        <a class="code-typename" href="/sync/#Condition">Condition</a>,
+	allocator:   runtime.<a class="code-typename" href="/runtime/#Allocator">Allocator</a>,
+	sendq:       ^<a class="code-typename" href="/sync/#Raw_Channel_Wait_Queue">Raw_Channel_Wait_Queue</a>,
+	recvq:       ^<a class="code-typename" href="/sync/#Raw_Channel_Wait_Queue">Raw_Channel_Wait_Queue</a>,
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Raw_Channel_Wait_Queue"><span><a class="doc-id-link" href="#Raw_Channel_Wait_Queue">Raw_Channel_Wait_Queue<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/channel.odin#L171"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Raw_Channel_Wait_Queue :: struct {
+	next:  ^<a class="code-typename" href="/sync/#Raw_Channel_Wait_Queue">Raw_Channel_Wait_Queue</a>,
+	state: ^<a href="">uintptr</a>,
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Recursive_Benaphore"><span><a class="doc-id-link" href="#Recursive_Benaphore">Recursive_Benaphore<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync.odin#L65"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Recursive_Benaphore :: struct {
+	counter:   <a href="">int</a>,
+	owner:     <a href="">int</a>,
+	recursion: <a href="">int</a>,
+	sema:      <a class="code-typename" href="/sync/#Semaphore">Semaphore</a>,
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Select_Channel"><span><a class="doc-id-link" href="#Select_Channel">Select_Channel<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/channel.odin#L388"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Select_Channel :: struct {
+	channel: ^<a class="code-typename" href="/sync/#Raw_Channel">Raw_Channel</a>,
+	command: <a class="code-typename" href="/sync/#Select_Command">Select_Command</a>,
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Select_Command"><span><a class="doc-id-link" href="#Select_Command">Select_Command<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/channel.odin#L383"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Select_Command :: enum <a href="">int</a> {
+	Recv, 
+	Send, 
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Semaphore"><span><a class="doc-id-link" href="#Semaphore">Semaphore<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync_windows.odin#L14"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Semaphore :: struct {
+	_handle: sys_windows.<a class="code-typename" href="//#HANDLE">HANDLE</a>,
+}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>When waited upon, blocks until the internal count is greater than zero, then subtracts one.
+Posting to the semaphore increases the count by one, or the provided amount.</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="Ticket_Mutex"><span><a class="doc-id-link" href="#Ticket_Mutex">Ticket_Mutex<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync.odin#L12"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Ticket_Mutex :: struct {
+	ticket:  <a href="">u64</a>,
+	serving: <a href="">u64</a>,
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Wait_Group"><span><a class="doc-id-link" href="#Wait_Group">Wait_Group<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/wait_group.odin#L5"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Wait_Group :: struct {
+	counter: <a href="">int</a>,
+	mutex:   <a class="code-typename" href="/sync/#Blocking_Mutex">Blocking_Mutex</a>,
+	cond:    <a class="code-typename" href="/sync/#Condition">Condition</a>,
+}</pre>
+</div>
+</div>
+</section>
+<h2 id="pkg-Constants">Constants</h2>
+<section class="documentation">
+<div class="pkg-entity">
+<h3 id="MAX_SELECT_CHANNELS"><span><a class="doc-id-link" href="#MAX_SELECT_CHANNELS">MAX_SELECT_CHANNELS<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/channel.odin#L380"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">MAX_SELECT_CHANNELS :: 64</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="SELECT_MAX_TIMEOUT"><span><a class="doc-id-link" href="#SELECT_MAX_TIMEOUT">SELECT_MAX_TIMEOUT<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/channel.odin#L381"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">SELECT_MAX_TIMEOUT: time.<a class="code-typename" href="/time/#Duration">Duration</a> : max(time.Duration)</pre>
+</div>
+</div>
+</section>
+<h2 id="pkg-Variables">Variables</h2>
+<section class="documentation">
+<div class="pkg-entity">
+<h3 id="strongest_failure_ordering_table"><span><a class="doc-id-link" href="#strongest_failure_ordering_table">strongest_failure_ordering_table<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/atomic.odin#L13"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">strongest_failure_ordering_table: [<a class="code-typename" href="/sync/#Ordering">Ordering</a>]<a class="code-typename" href="/sync/#Ordering">Ordering</a> = …</pre>
+</div>
+</div>
+</section>
+<h2 id="pkg-Procedures">Procedures</h2>
+<section class="documentation">
+<div class="pkg-entity">
+<h3 id="atomic_add"><span><a class="doc-id-link" href="#atomic_add">atomic_add<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/atomic.odin#L115"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">atomic_add :: proc(dst: ^$, val: $, $order: <a class="code-typename" href="/sync/#Ordering">Ordering</a> = ) -> $ {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="atomic_and"><span><a class="doc-id-link" href="#atomic_and">atomic_and<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/atomic.odin#L133"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">atomic_and :: proc(dst: ^$, val: $, $order: <a class="code-typename" href="/sync/#Ordering">Ordering</a> = ) -> $ {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="atomic_compare_exchange"><span><a class="doc-id-link" href="#atomic_compare_exchange">atomic_compare_exchange<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/atomic.odin#L62"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">atomic_compare_exchange :: proc(dst: ^$, old, new: $, $success, $failure: <a class="code-typename" href="/sync/#Ordering">Ordering</a> = ) -> (val: $, ok: <a href="">bool</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="atomic_compare_exchange_weak"><span><a class="doc-id-link" href="#atomic_compare_exchange_weak">atomic_compare_exchange_weak<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/atomic.odin#L88"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">atomic_compare_exchange_weak :: proc(dst: ^$, old, new: $, $success, $failure: <a class="code-typename" href="/sync/#Ordering">Ordering</a> = ) -> (val: $, ok: <a href="">bool</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="atomic_load"><span><a class="doc-id-link" href="#atomic_load">atomic_load<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/atomic.odin#L44"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">atomic_load :: proc(dst: ^$, $order: <a class="code-typename" href="/sync/#Ordering">Ordering</a> = ) -> $ {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="atomic_nand"><span><a class="doc-id-link" href="#atomic_nand">atomic_nand<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/atomic.odin#L142"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">atomic_nand :: proc(dst: ^$, val: $, $order: <a class="code-typename" href="/sync/#Ordering">Ordering</a> = ) -> $ {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="atomic_or"><span><a class="doc-id-link" href="#atomic_or">atomic_or<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/atomic.odin#L151"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">atomic_or :: proc(dst: ^$, val: $, $order: <a class="code-typename" href="/sync/#Ordering">Ordering</a> = ) -> $ {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="atomic_store"><span><a class="doc-id-link" href="#atomic_store">atomic_store<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/atomic.odin#L35"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">atomic_store :: proc(dst: ^$, val: $, $order: <a class="code-typename" href="/sync/#Ordering">Ordering</a> = ) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="atomic_sub"><span><a class="doc-id-link" href="#atomic_sub">atomic_sub<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/atomic.odin#L124"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">atomic_sub :: proc(dst: ^$, val: $, $order: <a class="code-typename" href="/sync/#Ordering">Ordering</a> = ) -> $ {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="atomic_swap"><span><a class="doc-id-link" href="#atomic_swap">atomic_swap<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/atomic.odin#L53"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">atomic_swap :: proc(dst: ^$, val: $, $order: <a class="code-typename" href="/sync/#Ordering">Ordering</a> = ) -> $ {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="atomic_xor"><span><a class="doc-id-link" href="#atomic_xor">atomic_xor<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/atomic.odin#L160"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">atomic_xor :: proc(dst: ^$, val: $, $order: <a class="code-typename" href="/sync/#Ordering">Ordering</a> = ) -> $ {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="barrier_destroy"><span><a class="doc-id-link" href="#barrier_destroy">barrier_destroy<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/barrier.odin#L57"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">barrier_destroy :: proc(b: ^<a class="code-typename" href="/sync/#Barrier">Barrier</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="barrier_init"><span><a class="doc-id-link" href="#barrier_init">barrier_init<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/barrier.odin#L49"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">barrier_init :: proc(b: ^<a class="code-typename" href="/sync/#Barrier">Barrier</a>, thread_count: <a href="">int</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="barrier_wait"><span><a class="doc-id-link" href="#barrier_wait">barrier_wait<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/barrier.odin#L64"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">barrier_wait :: proc(b: ^<a class="code-typename" href="/sync/#Barrier">Barrier</a>) -> (is_leader: <a href="">bool</a>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Block the current thread until all threads have rendezvoused
+Barrier can be reused after all threads rendezvoused once, and can be used continuously</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="benaphore_destroy"><span><a class="doc-id-link" href="#benaphore_destroy">benaphore_destroy<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync.odin#L44"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">benaphore_destroy :: proc(b: ^<a class="code-typename" href="/sync/#Benaphore">Benaphore</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="benaphore_init"><span><a class="doc-id-link" href="#benaphore_init">benaphore_init<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync.odin#L39"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">benaphore_init :: proc(b: ^<a class="code-typename" href="/sync/#Benaphore">Benaphore</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="benaphore_lock"><span><a class="doc-id-link" href="#benaphore_lock">benaphore_lock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync.odin#L48"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">benaphore_lock :: proc(b: ^<a class="code-typename" href="/sync/#Benaphore">Benaphore</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="benaphore_try_lock"><span><a class="doc-id-link" href="#benaphore_try_lock">benaphore_try_lock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync.odin#L54"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">benaphore_try_lock :: proc(b: ^<a class="code-typename" href="/sync/#Benaphore">Benaphore</a>) -> <a href="">bool</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="benaphore_unlock"><span><a class="doc-id-link" href="#benaphore_unlock">benaphore_unlock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync.odin#L59"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">benaphore_unlock :: proc(b: ^<a class="code-typename" href="/sync/#Benaphore">Benaphore</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="blocking_mutex_destroy"><span><a class="doc-id-link" href="#blocking_mutex_destroy">blocking_mutex_destroy<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync_windows.odin#L71"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">blocking_mutex_destroy :: proc(m: ^<a class="code-typename" href="/sync/#Blocking_Mutex">Blocking_Mutex</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="blocking_mutex_init"><span><a class="doc-id-link" href="#blocking_mutex_init">blocking_mutex_init<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync_windows.odin#L67"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">blocking_mutex_init :: proc(m: ^<a class="code-typename" href="/sync/#Blocking_Mutex">Blocking_Mutex</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="blocking_mutex_lock"><span><a class="doc-id-link" href="#blocking_mutex_lock">blocking_mutex_lock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync_windows.odin#L75"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">blocking_mutex_lock :: proc(m: ^<a class="code-typename" href="/sync/#Blocking_Mutex">Blocking_Mutex</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="blocking_mutex_try_lock"><span><a class="doc-id-link" href="#blocking_mutex_try_lock">blocking_mutex_try_lock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync_windows.odin#L79"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">blocking_mutex_try_lock :: proc(m: ^<a class="code-typename" href="/sync/#Blocking_Mutex">Blocking_Mutex</a>) -> <a href="">bool</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="blocking_mutex_unlock"><span><a class="doc-id-link" href="#blocking_mutex_unlock">blocking_mutex_unlock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync_windows.odin#L83"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">blocking_mutex_unlock :: proc(m: ^<a class="code-typename" href="/sync/#Blocking_Mutex">Blocking_Mutex</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="channel_as_recv"><span><a class="doc-id-link" href="#channel_as_recv">channel_as_recv<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/channel.odin#L52"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">channel_as_recv :: proc(ch: $C/<a class="code-typename" href="/sync/#Channel">Channel</a>($T, .Both)) -> (res: <a class="code-typename" href="/sync/#Channel">Channel</a>(T, .Recv)) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="channel_as_send"><span><a class="doc-id-link" href="#channel_as_send">channel_as_send<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/channel.odin#L47"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">channel_as_send :: proc(ch: $C/<a class="code-typename" href="/sync/#Channel">Channel</a>($T, .Both)) -> (res: <a class="code-typename" href="/sync/#Channel">Channel</a>(T, .Send)) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="channel_can_recv"><span><a class="doc-id-link" href="#channel_can_recv">channel_can_recv<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/channel.odin#L126"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">channel_can_recv :: proc(ch: $C/<a class="code-typename" href="/sync/#Channel">Channel</a>($T, $D)) -> (ok: <a href="">bool</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="channel_can_send"><span><a class="doc-id-link" href="#channel_can_send">channel_can_send<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/channel.odin#L123"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">channel_can_send :: proc(ch: $C/<a class="code-typename" href="/sync/#Channel">Channel</a>($T, $D)) -> (ok: <a href="">bool</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="channel_cap"><span><a class="doc-id-link" href="#channel_cap">channel_cap<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/channel.odin#L61"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">channel_cap :: proc(ch: $C/<a class="code-typename" href="/sync/#Channel">Channel</a>($T, $D)) -> <a href="">int</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="channel_close"><span><a class="doc-id-link" href="#channel_close">channel_close<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/channel.odin#L143"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">channel_close :: proc(ch: $C/<a class="code-typename" href="/sync/#Channel">Channel</a>($T, $D), loc := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="channel_destroy"><span><a class="doc-id-link" href="#channel_destroy">channel_destroy<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/channel.odin#L43"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">channel_destroy :: proc(ch: $C/<a class="code-typename" href="/sync/#Channel">Channel</a>($T, $D)) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="channel_drain"><span><a class="doc-id-link" href="#channel_drain">channel_drain<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/channel.odin#L159"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">channel_drain :: proc(ch: $C/<a class="code-typename" href="/sync/#Channel">Channel</a>($T, $D)) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="channel_eq"><span><a class="doc-id-link" href="#channel_eq">channel_eq<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/channel.odin#L115"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">channel_eq :: proc(a, b: $C/<a class="code-typename" href="/sync/#Channel">Channel</a>($T, $D)) -> <a href="">bool</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="channel_init"><span><a class="doc-id-link" href="#channel_init">channel_init<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/channel.odin#L20"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">channel_init :: proc(ch: ^$C/<a class="code-typename" href="/sync/#Channel">Channel</a>($T, $D), cap: <a href="">int</a> = 0, allocator := <a href="/core/runtime/#Context">context.allocator</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="channel_is_nil"><span><a class="doc-id-link" href="#channel_is_nil">channel_is_nil<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/channel.odin#L106"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">channel_is_nil :: proc(ch: $C/<a class="code-typename" href="/sync/#Channel">Channel</a>($T, $D)) -> <a href="">bool</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="channel_is_open"><span><a class="doc-id-link" href="#channel_is_open">channel_is_open<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/channel.odin#L109"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">channel_is_open :: proc(ch: $C/<a class="code-typename" href="/sync/#Channel">Channel</a>($T, $D)) -> <a href="">bool</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="channel_iterator"><span><a class="doc-id-link" href="#channel_iterator">channel_iterator<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/channel.odin#L148"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">channel_iterator :: proc(ch: $C/<a class="code-typename" href="/sync/#Channel">Channel</a>($T, $D)) -> (msg: $, ok: <a href="">bool</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="channel_len"><span><a class="doc-id-link" href="#channel_len">channel_len<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/channel.odin#L58"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">channel_len :: proc(ch: $C/<a class="code-typename" href="/sync/#Channel">Channel</a>($T, $D)) -> <a href="">int</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="channel_make"><span><a class="doc-id-link" href="#channel_make">channel_make<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/channel.odin#L26"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">channel_make :: proc($T: <a href="">typeid</a>, cap: <a href="">int</a> = 0, allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> (ch: <a class="code-typename" href="/sync/#Channel">Channel</a>(T, .Both)) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="channel_make_recv"><span><a class="doc-id-link" href="#channel_make_recv">channel_make_recv<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/channel.odin#L37"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">channel_make_recv :: proc($T: <a href="">typeid</a>, cap: <a href="">int</a> = 0, allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> (ch: <a class="code-typename" href="/sync/#Channel">Channel</a>(T, .Recv)) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="channel_make_send"><span><a class="doc-id-link" href="#channel_make_send">channel_make_send<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/channel.odin#L32"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">channel_make_send :: proc($T: <a href="">typeid</a>, cap: <a href="">int</a> = 0, allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> (ch: <a class="code-typename" href="/sync/#Channel">Channel</a>(T, .Send)) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="channel_move"><span><a class="doc-id-link" href="#channel_move">channel_move<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/channel.odin#L164"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">channel_move :: proc(dst: $C1/<a class="code-typename" href="/sync/#Channel">Channel</a>($T, $D1), src: $C2/<a class="code-typename" href="/sync/#Channel">Channel</a>(T, $D2)) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="channel_ne"><span><a class="doc-id-link" href="#channel_ne">channel_ne<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/channel.odin#L118"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">channel_ne :: proc(a, b: $C/<a class="code-typename" href="/sync/#Channel">Channel</a>($T, $D)) -> <a href="">bool</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="channel_peek"><span><a class="doc-id-link" href="#channel_peek">channel_peek<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/channel.odin#L131"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">channel_peek :: proc(ch: $C/<a class="code-typename" href="/sync/#Channel">Channel</a>($T, $D)) -> <a href="">int</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="channel_recv"><span><a class="doc-id-link" href="#channel_recv">channel_recv<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/channel.odin#L75"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">channel_recv :: proc(ch: $C/<a class="code-typename" href="/sync/#Channel">Channel</a>($T, $D), loc := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>) -> (msg: $) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="channel_send"><span><a class="doc-id-link" href="#channel_send">channel_send<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/channel.odin#L66"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">channel_send :: proc(ch: $C/<a class="code-typename" href="/sync/#Channel">Channel</a>($T, $D), msg: $, loc := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="channel_try_recv"><span><a class="doc-id-link" href="#channel_try_recv">channel_try_recv<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/channel.odin#L85"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">channel_try_recv :: proc(ch: $C/<a class="code-typename" href="/sync/#Channel">Channel</a>($T, $D), loc := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>) -> (msg: $, ok: <a href="">bool</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="channel_try_recv_ptr"><span><a class="doc-id-link" href="#channel_try_recv_ptr">channel_try_recv_ptr<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/channel.odin#L96"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">channel_try_recv_ptr :: proc(ch: $C/<a class="code-typename" href="/sync/#Channel">Channel</a>($T, $D), msg: ^$, loc := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>) -> (ok: <a href="">bool</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="channel_try_send"><span><a class="doc-id-link" href="#channel_try_send">channel_try_send<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/channel.odin#L70"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">channel_try_send :: proc(ch: $C/<a class="code-typename" href="/sync/#Channel">Channel</a>($T, $D), msg: $, loc := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>) -> <a href="">bool</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="condition_broadcast"><span><a class="doc-id-link" href="#condition_broadcast">condition_broadcast<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync_windows.odin#L116"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">condition_broadcast :: proc(c: ^<a class="code-typename" href="/sync/#Condition">Condition</a>) -> <a href="">bool</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="condition_destroy"><span><a class="doc-id-link" href="#condition_destroy">condition_destroy<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync_windows.odin#L104"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">condition_destroy :: proc(c: ^<a class="code-typename" href="/sync/#Condition">Condition</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="condition_init"><span><a class="doc-id-link" href="#condition_init">condition_init<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync_windows.odin#L97"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">condition_init :: proc(c: ^<a class="code-typename" href="/sync/#Condition">Condition</a>, mutex: <a class="code-typename" href="/sync/#Condition_Mutex_Ptr">Condition_Mutex_Ptr</a>) -> <a href="">bool</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="condition_signal"><span><a class="doc-id-link" href="#condition_signal">condition_signal<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync_windows.odin#L108"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">condition_signal :: proc(c: ^<a class="code-typename" href="/sync/#Condition">Condition</a>) -> <a href="">bool</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="condition_wait_for"><span><a class="doc-id-link" href="#condition_wait_for">condition_wait_for<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync_windows.odin#L124"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">condition_wait_for :: proc(c: ^<a class="code-typename" href="/sync/#Condition">Condition</a>) -> <a href="">bool</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="condition_wait_for_timeout"><span><a class="doc-id-link" href="#condition_wait_for_timeout">condition_wait_for_timeout<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync_windows.odin#L133"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">condition_wait_for_timeout :: proc(c: ^<a class="code-typename" href="/sync/#Condition">Condition</a>, duration: time.<a class="code-typename" href="/time/#Duration">Duration</a>) -> <a href="">bool</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="cpu_relax"><span><a class="doc-id-link" href="#cpu_relax">cpu_relax<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync.odin#L5"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">cpu_relax :: proc "contextless" () {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="current_thread_id"><span><a class="doc-id-link" href="#current_thread_id">current_thread_id<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync_windows.odin#L7"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">current_thread_id :: proc "contextless" () -> <a href="">int</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="fence"><span><a class="doc-id-link" href="#fence">fence<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/atomic.odin#L25"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">fence :: proc($order: <a class="code-typename" href="/sync/#Ordering">Ordering</a> = ) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="mutex_destroy"><span><a class="doc-id-link" href="#mutex_destroy">mutex_destroy<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync_windows.odin#L46"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">mutex_destroy :: proc(m: ^<a class="code-typename" href="/sync/#Mutex">Mutex</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="mutex_init"><span><a class="doc-id-link" href="#mutex_init">mutex_init<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync_windows.odin#L42"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">mutex_init :: proc(m: ^<a class="code-typename" href="/sync/#Mutex">Mutex</a>, spin_count: <a href="">int</a> = 0) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="mutex_lock"><span><a class="doc-id-link" href="#mutex_lock">mutex_lock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync_windows.odin#L50"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">mutex_lock :: proc(m: ^<a class="code-typename" href="/sync/#Mutex">Mutex</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="mutex_try_lock"><span><a class="doc-id-link" href="#mutex_try_lock">mutex_try_lock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync_windows.odin#L54"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">mutex_try_lock :: proc(m: ^<a class="code-typename" href="/sync/#Mutex">Mutex</a>) -> <a href="">bool</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="mutex_unlock"><span><a class="doc-id-link" href="#mutex_unlock">mutex_unlock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync_windows.odin#L58"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">mutex_unlock :: proc(m: ^<a class="code-typename" href="/sync/#Mutex">Mutex</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="raw_channel_can_recv"><span><a class="doc-id-link" href="#raw_channel_can_recv">raw_channel_can_recv<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/channel.odin#L356"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">raw_channel_can_recv :: proc(c: ^<a class="code-typename" href="/sync/#Raw_Channel">Raw_Channel</a>) -> (ok: <a href="">bool</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="raw_channel_can_send"><span><a class="doc-id-link" href="#raw_channel_can_send">raw_channel_can_send<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/channel.odin#L340"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">raw_channel_can_send :: proc(c: ^<a class="code-typename" href="/sync/#Raw_Channel">Raw_Channel</a>) -> (ok: <a href="">bool</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="raw_channel_close"><span><a class="doc-id-link" href="#raw_channel_close">raw_channel_close<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/channel.odin#L247"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">raw_channel_close :: proc(c: ^<a class="code-typename" href="/sync/#Raw_Channel">Raw_Channel</a>, loc := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="raw_channel_create"><span><a class="doc-id-link" href="#raw_channel_create">raw_channel_create<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/channel.odin#L207"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">raw_channel_create :: proc(elem_size, elem_align: <a href="">int</a>, cap: <a href="">int</a> = 0) -> ^<a class="code-typename" href="/sync/#Raw_Channel">Raw_Channel</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="raw_channel_destroy"><span><a class="doc-id-link" href="#raw_channel_destroy">raw_channel_destroy<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/channel.odin#L235"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">raw_channel_destroy :: proc(c: ^<a class="code-typename" href="/sync/#Raw_Channel">Raw_Channel</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="raw_channel_drain"><span><a class="doc-id-link" href="#raw_channel_drain">raw_channel_drain<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/channel.odin#L367"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">raw_channel_drain :: proc(c: ^<a class="code-typename" href="/sync/#Raw_Channel">Raw_Channel</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="raw_channel_recv_impl"><span><a class="doc-id-link" href="#raw_channel_recv_impl">raw_channel_recv_impl<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/channel.odin#L306"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">raw_channel_recv_impl :: proc(c: ^<a class="code-typename" href="/sync/#Raw_Channel">Raw_Channel</a>, res: <a href="">rawptr</a>, loc := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="raw_channel_send_impl"><span><a class="doc-id-link" href="#raw_channel_send_impl">raw_channel_send_impl<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/channel.odin#L263"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">raw_channel_send_impl :: proc(c: ^<a class="code-typename" href="/sync/#Raw_Channel">Raw_Channel</a>, msg: <a href="">rawptr</a>, block: <a href="">bool</a>, loc := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>) -> <a href="">bool</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="raw_channel_wait_queue_broadcast"><span><a class="doc-id-link" href="#raw_channel_wait_queue_broadcast">raw_channel_wait_queue_broadcast<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/channel_windows.odin#L28"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">raw_channel_wait_queue_broadcast :: proc(q: ^<a class="code-typename" href="/sync/#Raw_Channel_Wait_Queue">Raw_Channel_Wait_Queue</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="raw_channel_wait_queue_insert"><span><a class="doc-id-link" href="#raw_channel_wait_queue_insert">raw_channel_wait_queue_insert<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/channel.odin#L192"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">raw_channel_wait_queue_insert :: proc(head: ^^<a class="code-typename" href="/sync/#Raw_Channel_Wait_Queue">Raw_Channel_Wait_Queue</a>, val: ^<a class="code-typename" href="/sync/#Raw_Channel_Wait_Queue">Raw_Channel_Wait_Queue</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="raw_channel_wait_queue_remove"><span><a class="doc-id-link" href="#raw_channel_wait_queue_remove">raw_channel_wait_queue_remove<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/channel.odin#L196"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">raw_channel_wait_queue_remove :: proc(head: ^^<a class="code-typename" href="/sync/#Raw_Channel_Wait_Queue">Raw_Channel_Wait_Queue</a>, val: ^<a class="code-typename" href="/sync/#Raw_Channel_Wait_Queue">Raw_Channel_Wait_Queue</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="raw_channel_wait_queue_signal"><span><a class="doc-id-link" href="#raw_channel_wait_queue_signal">raw_channel_wait_queue_signal<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/channel_windows.odin#L21"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">raw_channel_wait_queue_signal :: proc(q: ^<a class="code-typename" href="/sync/#Raw_Channel_Wait_Queue">Raw_Channel_Wait_Queue</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="raw_channel_wait_queue_wait_on"><span><a class="doc-id-link" href="#raw_channel_wait_queue_wait_on">raw_channel_wait_queue_wait_on<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/channel_windows.odin#L7"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">raw_channel_wait_queue_wait_on :: proc(state: ^<a href="">uintptr</a>, timeout: time.<a class="code-typename" href="/time/#Duration">Duration</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="recursive_benaphore_destroy"><span><a class="doc-id-link" href="#recursive_benaphore_destroy">recursive_benaphore_destroy<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync.odin#L77"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">recursive_benaphore_destroy :: proc(b: ^<a class="code-typename" href="/sync/#Recursive_Benaphore">Recursive_Benaphore</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="recursive_benaphore_init"><span><a class="doc-id-link" href="#recursive_benaphore_init">recursive_benaphore_init<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync.odin#L72"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">recursive_benaphore_init :: proc(b: ^<a class="code-typename" href="/sync/#Recursive_Benaphore">Recursive_Benaphore</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="recursive_benaphore_lock"><span><a class="doc-id-link" href="#recursive_benaphore_lock">recursive_benaphore_lock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync.odin#L81"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">recursive_benaphore_lock :: proc(b: ^<a class="code-typename" href="/sync/#Recursive_Benaphore">Recursive_Benaphore</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="recursive_benaphore_try_lock"><span><a class="doc-id-link" href="#recursive_benaphore_try_lock">recursive_benaphore_try_lock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync.odin#L93"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">recursive_benaphore_try_lock :: proc(b: ^<a class="code-typename" href="/sync/#Recursive_Benaphore">Recursive_Benaphore</a>) -> <a href="">bool</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="recursive_benaphore_unlock"><span><a class="doc-id-link" href="#recursive_benaphore_unlock">recursive_benaphore_unlock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync.odin#L109"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">recursive_benaphore_unlock :: proc(b: ^<a class="code-typename" href="/sync/#Recursive_Benaphore">Recursive_Benaphore</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="rw_lock_destroy"><span><a class="doc-id-link" href="#rw_lock_destroy">rw_lock_destroy<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync_windows.odin#L154"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">rw_lock_destroy :: proc(l: ^<a class="code-typename" href="/sync/#RW_Lock">RW_Lock</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="rw_lock_init"><span><a class="doc-id-link" href="#rw_lock_init">rw_lock_init<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync_windows.odin#L151"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">rw_lock_init :: proc(l: ^<a class="code-typename" href="/sync/#RW_Lock">RW_Lock</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="rw_lock_read"><span><a class="doc-id-link" href="#rw_lock_read">rw_lock_read<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync_windows.odin#L157"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">rw_lock_read :: proc(l: ^<a class="code-typename" href="/sync/#RW_Lock">RW_Lock</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="rw_lock_read_unlock"><span><a class="doc-id-link" href="#rw_lock_read_unlock">rw_lock_read_unlock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync_windows.odin#L169"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">rw_lock_read_unlock :: proc(l: ^<a class="code-typename" href="/sync/#RW_Lock">RW_Lock</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="rw_lock_try_read"><span><a class="doc-id-link" href="#rw_lock_try_read">rw_lock_try_read<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync_windows.odin#L160"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">rw_lock_try_read :: proc(l: ^<a class="code-typename" href="/sync/#RW_Lock">RW_Lock</a>) -> <a href="">bool</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="rw_lock_try_write"><span><a class="doc-id-link" href="#rw_lock_try_write">rw_lock_try_write<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync_windows.odin#L166"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">rw_lock_try_write :: proc(l: ^<a class="code-typename" href="/sync/#RW_Lock">RW_Lock</a>) -> <a href="">bool</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="rw_lock_write"><span><a class="doc-id-link" href="#rw_lock_write">rw_lock_write<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync_windows.odin#L163"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">rw_lock_write :: proc(l: ^<a class="code-typename" href="/sync/#RW_Lock">RW_Lock</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="rw_lock_write_unlock"><span><a class="doc-id-link" href="#rw_lock_write_unlock">rw_lock_write_unlock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync_windows.odin#L172"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">rw_lock_write_unlock :: proc(l: ^<a class="code-typename" href="/sync/#RW_Lock">RW_Lock</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="select"><span><a class="doc-id-link" href="#select">select<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/channel.odin#L395"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">select :: proc(channels: ..<a class="code-typename" href="/sync/#Select_Channel">Select_Channel</a>) -> (index: <a href="">int</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="select_recv"><span><a class="doc-id-link" href="#select_recv">select_recv<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/channel.odin#L490"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">select_recv :: proc(channels: ..^<a class="code-typename" href="/sync/#Raw_Channel">Raw_Channel</a>) -> (index: <a href="">int</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="select_recv_msg"><span><a class="doc-id-link" href="#select_recv_msg">select_recv_msg<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/channel.odin#L542"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">select_recv_msg :: proc(channels: ..$C/<a class="code-typename" href="/sync/#Channel">Channel</a>($T, $D)) -> (msg: $, index: <a href="">int</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="select_send"><span><a class="doc-id-link" href="#select_send">select_send<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/channel.odin#L650"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">select_send :: proc(channels: ..^<a class="code-typename" href="/sync/#Raw_Channel">Raw_Channel</a>) -> (index: <a href="">int</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="select_send_msg"><span><a class="doc-id-link" href="#select_send_msg">select_send_msg<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/channel.odin#L593"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">select_send_msg :: proc(msg: $, channels: ..$C/<a class="code-typename" href="/sync/#Channel">Channel</a>(T, $D)) -> (index: <a href="">int</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="select_timeout"><span><a class="doc-id-link" href="#select_timeout">select_timeout<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/channel.odin#L398"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">select_timeout :: proc(timeout: time.<a class="code-typename" href="/time/#Duration">Duration</a>, channels: ..<a class="code-typename" href="/sync/#Select_Channel">Select_Channel</a>) -> (index: <a href="">int</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="select_try"><span><a class="doc-id-link" href="#select_try">select_try<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/channel.odin#L698"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">select_try :: proc(channels: ..<a class="code-typename" href="/sync/#Select_Channel">Select_Channel</a>) -> (index: <a href="">int</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="select_try_recv"><span><a class="doc-id-link" href="#select_try_recv">select_try_recv<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/channel.odin#L741"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">select_try_recv :: proc(channels: ..^<a class="code-typename" href="/sync/#Raw_Channel">Raw_Channel</a>) -> (index: <a href="">int</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="select_try_recv_msg"><span><a class="doc-id-link" href="#select_try_recv_msg">select_try_recv_msg<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/channel.odin#L814"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">select_try_recv_msg :: proc(channels: ..$C/<a class="code-typename" href="/sync/#Channel">Channel</a>($T, $D)) -> (msg: $, index: <a href="">int</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="select_try_send"><span><a class="doc-id-link" href="#select_try_send">select_try_send<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/channel.odin#L779"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">select_try_send :: proc(channels: ..^<a class="code-typename" href="/sync/#Raw_Channel">Raw_Channel</a>) -> (index: <a href="">int</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="select_try_send_msg"><span><a class="doc-id-link" href="#select_try_send_msg">select_try_send_msg<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/channel.odin#L852"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">select_try_send_msg :: proc(msg: $, channels: ..$C/<a class="code-typename" href="/sync/#Channel">Channel</a>(T, $D)) -> (index: <a href="">int</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="semaphore_destroy"><span><a class="doc-id-link" href="#semaphore_destroy">semaphore_destroy<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync_windows.odin#L22"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">semaphore_destroy :: proc(s: ^<a class="code-typename" href="/sync/#Semaphore">Semaphore</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="semaphore_init"><span><a class="doc-id-link" href="#semaphore_init">semaphore_init<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync_windows.odin#L18"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">semaphore_init :: proc(s: ^<a class="code-typename" href="/sync/#Semaphore">Semaphore</a>, initial_count: <a href="">int</a> = 0) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="semaphore_post"><span><a class="doc-id-link" href="#semaphore_post">semaphore_post<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync_windows.odin#L26"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">semaphore_post :: proc(s: ^<a class="code-typename" href="/sync/#Semaphore">Semaphore</a>, initial_count: <a href="">int</a> = 0) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="semaphore_wait_for"><span><a class="doc-id-link" href="#semaphore_wait_for">semaphore_wait_for<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync_windows.odin#L30"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">semaphore_wait_for :: proc(s: ^<a class="code-typename" href="/sync/#Semaphore">Semaphore</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="strongest_failure_ordering"><span><a class="doc-id-link" href="#strongest_failure_ordering">strongest_failure_ordering<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/atomic.odin#L21"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">strongest_failure_ordering :: proc(order: <a class="code-typename" href="/sync/#Ordering">Ordering</a>) -> <a class="code-typename" href="/sync/#Ordering">Ordering</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="thread_yield"><span><a class="doc-id-link" href="#thread_yield">thread_yield<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync_windows.odin#L177"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">thread_yield :: proc() {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="ticket_mutex_init"><span><a class="doc-id-link" href="#ticket_mutex_init">ticket_mutex_init<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync.odin#L17"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">ticket_mutex_init :: proc(m: ^<a class="code-typename" href="/sync/#Ticket_Mutex">Ticket_Mutex</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="ticket_mutex_lock"><span><a class="doc-id-link" href="#ticket_mutex_lock">ticket_mutex_lock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync.odin#L22"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">ticket_mutex_lock :: proc(m: ^<a class="code-typename" href="/sync/#Ticket_Mutex">Ticket_Mutex</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="ticket_mutex_unlock"><span><a class="doc-id-link" href="#ticket_mutex_unlock">ticket_mutex_unlock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync.odin#L29"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">ticket_mutex_unlock :: proc(m: ^<a class="code-typename" href="/sync/#Ticket_Mutex">Ticket_Mutex</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="wait_group_add"><span><a class="doc-id-link" href="#wait_group_add">wait_group_add<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/wait_group.odin#L23"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">wait_group_add :: proc(wg: ^<a class="code-typename" href="/sync/#Wait_Group">Wait_Group</a>, delta: <a href="">int</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="wait_group_destroy"><span><a class="doc-id-link" href="#wait_group_destroy">wait_group_destroy<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/wait_group.odin#L18"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">wait_group_destroy :: proc(wg: ^<a class="code-typename" href="/sync/#Wait_Group">Wait_Group</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="wait_group_done"><span><a class="doc-id-link" href="#wait_group_done">wait_group_done<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/wait_group.odin#L43"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">wait_group_done :: proc(wg: ^<a class="code-typename" href="/sync/#Wait_Group">Wait_Group</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="wait_group_init"><span><a class="doc-id-link" href="#wait_group_init">wait_group_init<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/wait_group.odin#L11"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">wait_group_init :: proc(wg: ^<a class="code-typename" href="/sync/#Wait_Group">Wait_Group</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="wait_group_wait"><span><a class="doc-id-link" href="#wait_group_wait">wait_group_wait<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/wait_group.odin#L47"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">wait_group_wait :: proc(wg: ^<a class="code-typename" href="/sync/#Wait_Group">Wait_Group</a>) {…}</pre>
+</div>
+</div>
+</section>
+<h2 id="pkg-Procedure Groups">Procedure Groups</h2>
+<section class="documentation">
+<p>This section is empty.</p>
+</section>
+<h2 id="pkg-source-files">Source Files</h2>
+<ul>
+<li><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/atomic.odin">atomic.odin</a></li>
+<li><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/barrier.odin">barrier.odin</a></li>
+<li><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/channel.odin">channel.odin</a></li>
+<li><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync.odin">sync.odin</a></li>
+<li><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/wait_group.odin">wait_group.odin</a></li>
+<li><em>(hidden platform specific files)</em></li>
+</ul>
+<h2 id="pkg-generation-information">Generation Information</h2>
+<p>Generated with <code>odin version dev-2022-01 (vendor "odin") windows_amd64 @ 2022-01-22 17:55:35.892625800 +0000 UTC</code></p>
+</article>
+<div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
+<nav id="TableOfContents">
+<ul>
+<li><a href="#pkg-Types">Types</a><ul>
+<li><a href="#Barrier">Barrier</a></li>
+<li><a href="#Benaphore">Benaphore</a></li>
+<li><a href="#Blocking_Mutex">Blocking_Mutex</a></li>
+<li><a href="#Channel">Channel</a></li>
+<li><a href="#Channel_Direction">Channel_Direction</a></li>
+<li><a href="#Condition">Condition</a></li>
+<li><a href="#Condition_Mutex_Ptr">Condition_Mutex_Ptr</a></li>
+<li><a href="#Mutex">Mutex</a></li>
+<li><a href="#Ordering">Ordering</a></li>
+<li><a href="#RW_Lock">RW_Lock</a></li>
+<li><a href="#Raw_Channel">Raw_Channel</a></li>
+<li><a href="#Raw_Channel_Wait_Queue">Raw_Channel_Wait_Queue</a></li>
+<li><a href="#Recursive_Benaphore">Recursive_Benaphore</a></li>
+<li><a href="#Select_Channel">Select_Channel</a></li>
+<li><a href="#Select_Command">Select_Command</a></li>
+<li><a href="#Semaphore">Semaphore</a></li>
+<li><a href="#Ticket_Mutex">Ticket_Mutex</a></li>
+<li><a href="#Wait_Group">Wait_Group</a></li>
+</ul>
+</li>
+<li><a href="#pkg-Constants">Constants</a><ul>
+<li><a href="#MAX_SELECT_CHANNELS">MAX_SELECT_CHANNELS</a></li>
+<li><a href="#SELECT_MAX_TIMEOUT">SELECT_MAX_TIMEOUT</a></li>
+</ul>
+</li>
+<li><a href="#pkg-Variables">Variables</a><ul>
+<li><a href="#strongest_failure_ordering_table">strongest_failure_ordering_table</a></li>
+</ul>
+</li>
+<li><a href="#pkg-Procedures">Procedures</a><ul>
+<li><a href="#atomic_add">atomic_add</a></li>
+<li><a href="#atomic_and">atomic_and</a></li>
+<li><a href="#atomic_compare_exchange">atomic_compare_exchange</a></li>
+<li><a href="#atomic_compare_exchange_weak">atomic_compare_exchange_weak</a></li>
+<li><a href="#atomic_load">atomic_load</a></li>
+<li><a href="#atomic_nand">atomic_nand</a></li>
+<li><a href="#atomic_or">atomic_or</a></li>
+<li><a href="#atomic_store">atomic_store</a></li>
+<li><a href="#atomic_sub">atomic_sub</a></li>
+<li><a href="#atomic_swap">atomic_swap</a></li>
+<li><a href="#atomic_xor">atomic_xor</a></li>
+<li><a href="#barrier_destroy">barrier_destroy</a></li>
+<li><a href="#barrier_init">barrier_init</a></li>
+<li><a href="#barrier_wait">barrier_wait</a></li>
+<li><a href="#benaphore_destroy">benaphore_destroy</a></li>
+<li><a href="#benaphore_init">benaphore_init</a></li>
+<li><a href="#benaphore_lock">benaphore_lock</a></li>
+<li><a href="#benaphore_try_lock">benaphore_try_lock</a></li>
+<li><a href="#benaphore_unlock">benaphore_unlock</a></li>
+<li><a href="#blocking_mutex_destroy">blocking_mutex_destroy</a></li>
+<li><a href="#blocking_mutex_init">blocking_mutex_init</a></li>
+<li><a href="#blocking_mutex_lock">blocking_mutex_lock</a></li>
+<li><a href="#blocking_mutex_try_lock">blocking_mutex_try_lock</a></li>
+<li><a href="#blocking_mutex_unlock">blocking_mutex_unlock</a></li>
+<li><a href="#channel_as_recv">channel_as_recv</a></li>
+<li><a href="#channel_as_send">channel_as_send</a></li>
+<li><a href="#channel_can_recv">channel_can_recv</a></li>
+<li><a href="#channel_can_send">channel_can_send</a></li>
+<li><a href="#channel_cap">channel_cap</a></li>
+<li><a href="#channel_close">channel_close</a></li>
+<li><a href="#channel_destroy">channel_destroy</a></li>
+<li><a href="#channel_drain">channel_drain</a></li>
+<li><a href="#channel_eq">channel_eq</a></li>
+<li><a href="#channel_init">channel_init</a></li>
+<li><a href="#channel_is_nil">channel_is_nil</a></li>
+<li><a href="#channel_is_open">channel_is_open</a></li>
+<li><a href="#channel_iterator">channel_iterator</a></li>
+<li><a href="#channel_len">channel_len</a></li>
+<li><a href="#channel_make">channel_make</a></li>
+<li><a href="#channel_make_recv">channel_make_recv</a></li>
+<li><a href="#channel_make_send">channel_make_send</a></li>
+<li><a href="#channel_move">channel_move</a></li>
+<li><a href="#channel_ne">channel_ne</a></li>
+<li><a href="#channel_peek">channel_peek</a></li>
+<li><a href="#channel_recv">channel_recv</a></li>
+<li><a href="#channel_send">channel_send</a></li>
+<li><a href="#channel_try_recv">channel_try_recv</a></li>
+<li><a href="#channel_try_recv_ptr">channel_try_recv_ptr</a></li>
+<li><a href="#channel_try_send">channel_try_send</a></li>
+<li><a href="#condition_broadcast">condition_broadcast</a></li>
+<li><a href="#condition_destroy">condition_destroy</a></li>
+<li><a href="#condition_init">condition_init</a></li>
+<li><a href="#condition_signal">condition_signal</a></li>
+<li><a href="#condition_wait_for">condition_wait_for</a></li>
+<li><a href="#condition_wait_for_timeout">condition_wait_for_timeout</a></li>
+<li><a href="#cpu_relax">cpu_relax</a></li>
+<li><a href="#current_thread_id">current_thread_id</a></li>
+<li><a href="#fence">fence</a></li>
+<li><a href="#mutex_destroy">mutex_destroy</a></li>
+<li><a href="#mutex_init">mutex_init</a></li>
+<li><a href="#mutex_lock">mutex_lock</a></li>
+<li><a href="#mutex_try_lock">mutex_try_lock</a></li>
+<li><a href="#mutex_unlock">mutex_unlock</a></li>
+<li><a href="#raw_channel_can_recv">raw_channel_can_recv</a></li>
+<li><a href="#raw_channel_can_send">raw_channel_can_send</a></li>
+<li><a href="#raw_channel_close">raw_channel_close</a></li>
+<li><a href="#raw_channel_create">raw_channel_create</a></li>
+<li><a href="#raw_channel_destroy">raw_channel_destroy</a></li>
+<li><a href="#raw_channel_drain">raw_channel_drain</a></li>
+<li><a href="#raw_channel_recv_impl">raw_channel_recv_impl</a></li>
+<li><a href="#raw_channel_send_impl">raw_channel_send_impl</a></li>
+<li><a href="#raw_channel_wait_queue_broadcast">raw_channel_wait_queue_broadcast</a></li>
+<li><a href="#raw_channel_wait_queue_insert">raw_channel_wait_queue_insert</a></li>
+<li><a href="#raw_channel_wait_queue_remove">raw_channel_wait_queue_remove</a></li>
+<li><a href="#raw_channel_wait_queue_signal">raw_channel_wait_queue_signal</a></li>
+<li><a href="#raw_channel_wait_queue_wait_on">raw_channel_wait_queue_wait_on</a></li>
+<li><a href="#recursive_benaphore_destroy">recursive_benaphore_destroy</a></li>
+<li><a href="#recursive_benaphore_init">recursive_benaphore_init</a></li>
+<li><a href="#recursive_benaphore_lock">recursive_benaphore_lock</a></li>
+<li><a href="#recursive_benaphore_try_lock">recursive_benaphore_try_lock</a></li>
+<li><a href="#recursive_benaphore_unlock">recursive_benaphore_unlock</a></li>
+<li><a href="#rw_lock_destroy">rw_lock_destroy</a></li>
+<li><a href="#rw_lock_init">rw_lock_init</a></li>
+<li><a href="#rw_lock_read">rw_lock_read</a></li>
+<li><a href="#rw_lock_read_unlock">rw_lock_read_unlock</a></li>
+<li><a href="#rw_lock_try_read">rw_lock_try_read</a></li>
+<li><a href="#rw_lock_try_write">rw_lock_try_write</a></li>
+<li><a href="#rw_lock_write">rw_lock_write</a></li>
+<li><a href="#rw_lock_write_unlock">rw_lock_write_unlock</a></li>
+<li><a href="#select">select</a></li>
+<li><a href="#select_recv">select_recv</a></li>
+<li><a href="#select_recv_msg">select_recv_msg</a></li>
+<li><a href="#select_send">select_send</a></li>
+<li><a href="#select_send_msg">select_send_msg</a></li>
+<li><a href="#select_timeout">select_timeout</a></li>
+<li><a href="#select_try">select_try</a></li>
+<li><a href="#select_try_recv">select_try_recv</a></li>
+<li><a href="#select_try_recv_msg">select_try_recv_msg</a></li>
+<li><a href="#select_try_send">select_try_send</a></li>
+<li><a href="#select_try_send_msg">select_try_send_msg</a></li>
+<li><a href="#semaphore_destroy">semaphore_destroy</a></li>
+<li><a href="#semaphore_init">semaphore_init</a></li>
+<li><a href="#semaphore_post">semaphore_post</a></li>
+<li><a href="#semaphore_wait_for">semaphore_wait_for</a></li>
+<li><a href="#strongest_failure_ordering">strongest_failure_ordering</a></li>
+<li><a href="#thread_yield">thread_yield</a></li>
+<li><a href="#ticket_mutex_init">ticket_mutex_init</a></li>
+<li><a href="#ticket_mutex_lock">ticket_mutex_lock</a></li>
+<li><a href="#ticket_mutex_unlock">ticket_mutex_unlock</a></li>
+<li><a href="#wait_group_add">wait_group_add</a></li>
+<li><a href="#wait_group_destroy">wait_group_destroy</a></li>
+<li><a href="#wait_group_done">wait_group_done</a></li>
+<li><a href="#wait_group_init">wait_group_init</a></li>
+<li><a href="#wait_group_wait">wait_group_wait</a></li>
+</ul>
+</li>
+<li><a href="#pkg-source-files">Source Files</a></ul>
+</nav>
+</div></div>
+</div>
+
+</div>
+</main>
+
+<footer class="odin-footer">
+	<div class="container pb-5 pt-5">
+		<div class="row g-4">
+		<div class="col">
+		<a class="navbar-brand" href="https://odin-lang.org">
+		<img class="mb-3" src="https://odin-lang.org/logo.svg" height="30" alt="Odin"></a>
+		<p>
+		The Data-Oriented Language for Sane Software Development.
+		</p>
+		</div>
+		<nav class="col-md-auto">
+			<h4 class="fw-normal">Resources</h4>
+			<ul class="list-unstyled">
+			<li><a href="https://odin-lang.org/docs" class="link-light">Docs</a></li>
+			<li><a href="https://odin-lang.org/news" class="link-light">Blog</a></li>
+			</ul>
+		</nav>
+		<nav class="col-md-auto">
+			<h4 class="fw-normal">Community</h4>
+			<ul class="list-unstyled">
+			<li><a href="https://github.com/odin-lang/Odin" target="_blank" class="link-light">GitHub</a></li>
+			<li><a href="https://discord.com/invite/sVBPHEv" target="_blank" class="link-light">Discord</a></li>
+			<li><a href="https://www.twitch.tv/ginger_bill" target="_blank" class="link-light">Twitch</a></li>
+			<li><a href="https://www.youtube.com/channel/UCUSck1dOH7VKmG4lRW7tZXg" target="_blank" class="link-light">YouTube</a></li>
+			</ul>
+		</nav>
+		<nav class="col-md-auto">
+			<h4 class="fw-normal">Contribute</h4>
+			<ul class="list-unstyled">
+			<li><a href="https://github.com/odin-lang/Odin/issues" target="_blank" class="link-light">Issues</a></li>
+			<li><a href="https://www.patreon.com/gingerbill" target="_blank" class="link-light">Donate</a></li>
+			</ul>
+			</nav>
+		</div>
+		<div class="mt-4 text-muted">© 2016–2022 Ginger Bill</div>
+	</div>
+</footer>
+
+<script src="https://odin-lang.org/lib/bootstrap/js/bootstrap.min.js"></script>
+<script src="https://odin-lang.org/js/script.js"></script>
+<script>hljs.highlightAll()</script>
+</body>
+</html>

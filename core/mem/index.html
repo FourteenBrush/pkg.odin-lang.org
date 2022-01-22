@@ -1,0 +1,1526 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>package mem - pkg.odin-lang.org</title>	<!-- REMEMBER TO REMOVE -->
+	<script type="text/javascript" src="https://livejs.com/live.js"></script>
+
+	<link rel="stylesheet" type="text/css" href="https://odin-lang.org/scss/custom.min.css">
+	<link rel=stylesheet href=//odin-lang.org/lib/highlight/styles/github-dark.min.css>
+	<script src=//odin-lang.org/lib/highlight/highlight.min.js></script>
+	<script>hljs.registerLanguage("odin",function(a){return{aliases:["odin","odinlang","odin-lang"],keywords:{keyword:"auto_cast bit_set break case cast context continue defer distinct do dynamic else enum fallthrough for foreign if import in map not_in or_else or_return package proc return struct switch transmute type_of typeid union using when where",literal:"true false nil",built_in:"abs align_of cap clamp complex conj expand_to_tuple imag jmag kmag len max min offset_of quaternion real size_of soa_unzip soa_zip swizzle type_info_of type_of typeid_of"},illegal:"</",contains:[a.C_LINE_COMMENT_MODE,a.C_BLOCK_COMMENT_MODE,{className:"string",variants:[a.QUOTE_STRING_MODE,{begin:"'",end:"[^\\\\]'"},{begin:"`",end:"`"}]},{className:"number",variants:[{begin:a.C_NUMBER_RE+"[ijk]",relevance:1},a.C_NUMBER_MODE]}]}})</script>
+	<script>hljs.highlightAll()</script>
+	<link rel="stylesheet" type="text/css" href="https://odin-lang.org/css/style.css">
+
+	<link rel="stylesheet" type="text/css" href="/style.css">
+
+	</style>
+</head>
+<body>
+<header class="sticky-top">
+	<nav class="navbar navbar-expand-lg navbar-dark bg-primary odin-menu">
+		<div class="container">
+			<a class="navbar-brand" href="/">
+			<img src="https://odin-lang.org/logo.svg" height="30" alt="Odin"></a>
+			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#odin-navbar-content" aria-controls="odin-navbar-content" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+			<div class="collapse navbar-collapse" id="odin-navbar-content">
+			<ul class="navbar-nav ms-md-auto">
+				<li class="nav-item"><a class="nav-link" href="https://odin-lang.org/">Home</a></li>
+				<li class="nav-item"><a class="nav-link" href="https://odin-lang.org/docs">Docs</a></li>
+				<li class="nav-item"><a class="nav-link active" href="/">Packages</a></li>
+				<li class="nav-item"><a class="nav-link" href="https://odin-lang.org/news">News</a></li>
+				<li class="nav-item"><a class="nav-link" href="https://odin-lang.org/community">Community</a></li>
+				<li class="nav-item"><a class="nav-link" href="https://github.com/odin-lang/Odin" target="_blank">GitHub</a></li>
+			</ul>
+		</div>
+		</div>
+	</nav>
+</header>
+<main>
+<div class="container"><div class="row odin-main">
+<nav id="pkg-sidebar" class="col-lg-2 odin-sidebar-border navbar-light">
+<div class="sticky-top odin-below-navbar py-3">
+<h4>Core Library</h4>
+<ul>
+<li class="nav-item"><a href="/core/bufio">bufio</a></li>
+<li class="nav-item"><a href="/core/bytes">bytes</a></li>
+<li class="nav-item"><a href="/core/c">c</a><ul>
+<li><a href="/core/c/frontend/preprocessor">frontend/preprocessor</a></li>
+<li><a href="/core/c/frontend/tokenizer">frontend/tokenizer</a></li>
+<li><a href="/core/c/libc">libc</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/compress">compress</a><ul>
+<li><a href="/core/compress/gzip">gzip</a></li>
+<li><a href="/core/compress/zlib">zlib</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/dynlib">dynlib</a></li>
+<li class="nav-item">encoding<ul>
+<li><a href="/core/encoding/base32">base32</a></li>
+<li><a href="/core/encoding/base64">base64</a></li>
+<li><a href="/core/encoding/csv">csv</a></li>
+<li><a href="/core/encoding/hxa">hxa</a></li>
+<li><a href="/core/encoding/json">json</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/fmt">fmt</a></li>
+<li class="nav-item"><a href="/core/hash">hash</a></li>
+<li class="nav-item"><a href="/core/image">image</a><ul>
+<li><a href="/core/image/png">png</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/io">io</a></li>
+<li class="nav-item"><a href="/core/log">log</a></li>
+<li class="nav-item"><a href="/core/math">math</a><ul>
+<li><a href="/core/math/big">big</a></li>
+<li><a href="/core/math/bits">bits</a></li>
+<li><a href="/core/math/fixed">fixed</a></li>
+<li><a href="/core/math/linalg">linalg</a></li>
+<li><a href="/core/math/linalg/glsl">linalg/glsl</a></li>
+<li><a href="/core/math/linalg/hlsl">linalg/hlsl</a></li>
+<li><a href="/core/math/rand">rand</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a class="active" href="/core/mem">mem</a><ul>
+<li><a href="/core/mem/virtual">virtual</a></li>
+</ul>
+
+</li>
+<li class="nav-item">odin<ul>
+<li><a href="/core/odin/ast">ast</a></li>
+<li><a href="/core/odin/doc-format">doc-format</a></li>
+<li><a href="/core/odin/format">format</a></li>
+<li><a href="/core/odin/parser">parser</a></li>
+<li><a href="/core/odin/printer">printer</a></li>
+<li><a href="/core/odin/tokenizer">tokenizer</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/os">os</a></li>
+<li class="nav-item">path<ul>
+<li><a href="/core/path/filepath">filepath</a></li>
+<li><a href="/core/path/slashpath">slashpath</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/reflect">reflect</a></li>
+<li class="nav-item"><a href="/core/runtime">runtime</a></li>
+<li class="nav-item"><a href="/core/slice">slice</a></li>
+<li class="nav-item"><a href="/core/sort">sort</a></li>
+<li class="nav-item"><a href="/core/strconv">strconv</a><ul>
+<li><a href="/core/strconv/decimal">decimal</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/strings">strings</a></li>
+<li class="nav-item"><a href="/core/sync">sync</a><ul>
+<li><a href="/core/sync/sync2">sync2</a></li>
+</ul>
+
+</li>
+<li class="nav-item">text<ul>
+<li><a href="/core/text/scanner">scanner</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/thread">thread</a></li>
+<li class="nav-item"><a href="/core/time">time</a></li>
+<li class="nav-item"><a href="/core/unicode">unicode</a><ul>
+<li><a href="/core/unicode/utf16">utf16</a></li>
+<li><a href="/core/unicode/utf8">utf8</a></li>
+</ul>
+
+</li>
+</ul>
+</div>
+</nav>
+<article class="col-lg-8 p-4 documentation odin-article">
+<h1>package core:mem</h1>
+<h2>Index</h2>
+<div id="pkg-index">
+<div>
+<details open class="doc-index" id="doc-index-Types" aria-labelledby="#doc-index-Types-header">
+<summary id="#doc-index-Types-header">
+Types</summary>
+<ul>
+<li><a href="#Allocator">Allocator</a></li>
+<li><a href="#Allocator_Error">Allocator_Error</a></li>
+<li><a href="#Allocator_Mode">Allocator_Mode</a></li>
+<li><a href="#Allocator_Mode_Set">Allocator_Mode_Set</a></li>
+<li><a href="#Allocator_Proc">Allocator_Proc</a></li>
+<li><a href="#Allocator_Query_Info">Allocator_Query_Info</a></li>
+<li><a href="#Arena">Arena</a></li>
+<li><a href="#Arena_Temp_Memory">Arena_Temp_Memory</a></li>
+<li><a href="#Dynamic_Pool">Dynamic_Pool</a></li>
+<li><a href="#Fixed_Byte_Buffer">Fixed_Byte_Buffer</a></li>
+<li><a href="#Poly_Raw_Map">Poly_Raw_Map</a></li>
+<li><a href="#Poly_Raw_Map_Entry">Poly_Raw_Map_Entry</a></li>
+<li><a href="#Raw_Any">Raw_Any</a></li>
+<li><a href="#Raw_Complex128">Raw_Complex128</a></li>
+<li><a href="#Raw_Complex64">Raw_Complex64</a></li>
+<li><a href="#Raw_Cstring">Raw_Cstring</a></li>
+<li><a href="#Raw_Dynamic_Array">Raw_Dynamic_Array</a></li>
+<li><a href="#Raw_Map">Raw_Map</a></li>
+<li><a href="#Raw_Quaternion128">Raw_Quaternion128</a></li>
+<li><a href="#Raw_Quaternion128_Vector_Scalar">Raw_Quaternion128_Vector_Scalar</a></li>
+<li><a href="#Raw_Quaternion256">Raw_Quaternion256</a></li>
+<li><a href="#Raw_Quaternion256_Vector_Scalar">Raw_Quaternion256_Vector_Scalar</a></li>
+<li><a href="#Raw_Slice">Raw_Slice</a></li>
+<li><a href="#Raw_String">Raw_String</a></li>
+<li><a href="#Scratch_Allocator">Scratch_Allocator</a></li>
+<li><a href="#Small_Stack">Small_Stack</a></li>
+<li><a href="#Small_Stack_Allocation_Header">Small_Stack_Allocation_Header</a></li>
+<li><a href="#Stack">Stack</a></li>
+<li><a href="#Stack_Allocation_Header">Stack_Allocation_Header</a></li>
+<li><a href="#Tracking_Allocator">Tracking_Allocator</a></li>
+<li><a href="#Tracking_Allocator_Bad_Free_Entry">Tracking_Allocator_Bad_Free_Entry</a></li>
+<li><a href="#Tracking_Allocator_Entry">Tracking_Allocator_Entry</a></li>
+</ul>
+</details>
+</div>
+<div>
+<details open class="doc-index" id="doc-index-Constants" aria-labelledby="#doc-index-Constants-header">
+<summary id="#doc-index-Constants-header">
+Constants</summary>
+<ul>
+<li><a href="#DEFAULT_ALIGNMENT">DEFAULT_ALIGNMENT</a></li>
+<li><a href="#DEFAULT_RESERVE_CAPACITY">DEFAULT_RESERVE_CAPACITY</a></li>
+<li><a href="#DYNAMIC_POOL_BLOCK_SIZE_DEFAULT">DYNAMIC_POOL_BLOCK_SIZE_DEFAULT</a></li>
+<li><a href="#DYNAMIC_POOL_OUT_OF_BAND_SIZE_DEFAULT">DYNAMIC_POOL_OUT_OF_BAND_SIZE_DEFAULT</a></li>
+</ul>
+</details>
+</div>
+<div>
+<details open class="doc-index" id="doc-index-Variables" aria-labelledby="#doc-index-Variables-header">
+<summary id="#doc-index-Variables-header">
+Variables</summary>
+<p>This section is empty.</p>
+</details>
+</div>
+<div>
+<details open class="doc-index" id="doc-index-Procedures" aria-labelledby="#doc-index-Procedures-header">
+<summary id="#doc-index-Procedures-header">
+Procedures</summary>
+<ul>
+<li><a href="#align_backward_uintptr">align_backward_uintptr</a></li>
+<li><a href="#align_backward">align_backward</a></li>
+<li><a href="#align_backward_int">align_backward_int</a></li>
+<li><a href="#align_backward_uint">align_backward_uint</a></li>
+<li><a href="#align_formula">align_formula</a></li>
+<li><a href="#align_forward">align_forward</a></li>
+<li><a href="#align_forward_int">align_forward_int</a></li>
+<li><a href="#align_forward_uint">align_forward_uint</a></li>
+<li><a href="#align_forward_uintptr">align_forward_uintptr</a></li>
+<li><a href="#alloc_bytes">alloc_bytes</a></li>
+<li><a href="#alloc">alloc</a></li>
+<li><a href="#any_to_bytes">any_to_bytes</a></li>
+<li><a href="#arena_allocator">arena_allocator</a></li>
+<li><a href="#arena_allocator_proc">arena_allocator_proc</a></li>
+<li><a href="#begin_arena_temp_memory">begin_arena_temp_memory</a></li>
+<li><a href="#buffer_from_slice">buffer_from_slice</a></li>
+<li><a href="#byte_slice">byte_slice</a></li>
+<li><a href="#calc_padding_with_header">calc_padding_with_header</a></li>
+<li><a href="#check_zero">check_zero</a></li>
+<li><a href="#check_zero_ptr">check_zero_ptr</a></li>
+<li><a href="#clone_slice">clone_slice</a></li>
+<li><a href="#compare">compare</a></li>
+<li><a href="#compare_byte_ptrs">compare_byte_ptrs</a></li>
+<li><a href="#compare_ptrs">compare_ptrs</a></li>
+<li><a href="#context_from_allocator">context_from_allocator</a></li>
+<li><a href="#copy">copy</a></li>
+<li><a href="#copy_non_overlapping">copy_non_overlapping</a></li>
+<li><a href="#default_resize_align">default_resize_align</a></li>
+<li><a href="#default_resize_bytes_align">default_resize_bytes_align</a></li>
+<li><a href="#delete_cstring">delete_cstring</a></li>
+<li><a href="#delete_dynamic_array">delete_dynamic_array</a></li>
+<li><a href="#delete_map">delete_map</a></li>
+<li><a href="#delete_slice">delete_slice</a></li>
+<li><a href="#delete_string">delete_string</a></li>
+<li><a href="#dynamic_pool_allocator_proc">dynamic_pool_allocator_proc</a></li>
+<li><a href="#dynamic_pool_allocator">dynamic_pool_allocator</a></li>
+<li><a href="#dynamic_pool_alloc">dynamic_pool_alloc</a></li>
+<li><a href="#dynamic_pool_alloc_bytes">dynamic_pool_alloc_bytes</a></li>
+<li><a href="#dynamic_pool_destroy">dynamic_pool_destroy</a></li>
+<li><a href="#dynamic_pool_free_all">dynamic_pool_free_all</a></li>
+<li><a href="#dynamic_pool_init">dynamic_pool_init</a></li>
+<li><a href="#dynamic_pool_reset">dynamic_pool_reset</a></li>
+<li><a href="#end_arena_temp_memory">end_arena_temp_memory</a></li>
+<li><a href="#free">free</a></li>
+<li><a href="#free_all">free_all</a></li>
+<li><a href="#free_bytes">free_bytes</a></li>
+<li><a href="#gigabytes">gigabytes</a></li>
+<li><a href="#init_arena">init_arena</a></li>
+<li><a href="#init_small_stack">init_small_stack</a></li>
+<li><a href="#init_stack">init_stack</a></li>
+<li><a href="#is_power_of_two">is_power_of_two</a></li>
+<li><a href="#kilobytes">kilobytes</a></li>
+<li><a href="#make_aligned">make_aligned</a></li>
+<li><a href="#make_any">make_any</a></li>
+<li><a href="#make_dynamic_array_len">make_dynamic_array_len</a></li>
+<li><a href="#make_dynamic_array">make_dynamic_array</a></li>
+<li><a href="#make_dynamic_array_len_cap">make_dynamic_array_len_cap</a></li>
+<li><a href="#make_fixed_byte_buffer">make_fixed_byte_buffer</a></li>
+<li><a href="#make_map">make_map</a></li>
+<li><a href="#make_multi_pointer">make_multi_pointer</a></li>
+<li><a href="#make_slice">make_slice</a></li>
+<li><a href="#megabytes">megabytes</a></li>
+<li><a href="#new">new</a></li>
+<li><a href="#new_aligned">new_aligned</a></li>
+<li><a href="#new_clone">new_clone</a></li>
+<li><a href="#nil_allocator">nil_allocator</a></li>
+<li><a href="#nil_allocator_proc">nil_allocator_proc</a></li>
+<li><a href="#panic_allocator">panic_allocator</a></li>
+<li><a href="#panic_allocator_proc">panic_allocator_proc</a></li>
+<li><a href="#ptr_to_bytes">ptr_to_bytes</a></li>
+<li><a href="#query_features">query_features</a></li>
+<li><a href="#query_info">query_info</a></li>
+<li><a href="#raw_array_data">raw_array_data</a></li>
+<li><a href="#raw_dynamic_array_data">raw_dynamic_array_data</a></li>
+<li><a href="#raw_slice_data">raw_slice_data</a></li>
+<li><a href="#raw_string_data">raw_string_data</a></li>
+<li><a href="#reinterpret_copy">reinterpret_copy</a></li>
+<li><a href="#resize_bytes">resize_bytes</a></li>
+<li><a href="#resize">resize</a></li>
+<li><a href="#scratch_allocator">scratch_allocator</a></li>
+<li><a href="#scratch_allocator_destroy">scratch_allocator_destroy</a></li>
+<li><a href="#scratch_allocator_init">scratch_allocator_init</a></li>
+<li><a href="#scratch_allocator_proc">scratch_allocator_proc</a></li>
+<li><a href="#set">set</a></li>
+<li><a href="#simple_equal">simple_equal</a></li>
+<li><a href="#slice_data_cast">slice_data_cast</a></li>
+<li><a href="#slice_ptr">slice_ptr</a></li>
+<li><a href="#slice_to_bytes">slice_to_bytes</a></li>
+<li><a href="#slice_to_components">slice_to_components</a></li>
+<li><a href="#small_stack_allocator_proc">small_stack_allocator_proc</a></li>
+<li><a href="#small_stack_allocator">small_stack_allocator</a></li>
+<li><a href="#stack_allocator">stack_allocator</a></li>
+<li><a href="#stack_allocator_proc">stack_allocator_proc</a></li>
+<li><a href="#terabytes">terabytes</a></li>
+<li><a href="#tracking_allocator_destroy">tracking_allocator_destroy</a></li>
+<li><a href="#tracking_allocator">tracking_allocator</a></li>
+<li><a href="#tracking_allocator_init">tracking_allocator_init</a></li>
+<li><a href="#tracking_allocator_proc">tracking_allocator_proc</a></li>
+<li><a href="#zero">zero</a></li>
+<li><a href="#zero_explicit">zero_explicit</a></li>
+<li><a href="#zero_item">zero_item</a></li>
+<li><a href="#zero_slice">zero_slice</a></li>
+</ul>
+</details>
+</div>
+<div>
+<details open class="doc-index" id="doc-index-Procedure Groups" aria-labelledby="#doc-index-Procedure Groups-header">
+<summary id="#doc-index-Procedure Groups-header">
+Procedure Groups</summary>
+<ul>
+<li><a href="#delete">delete</a></li>
+<li><a href="#make">make</a></li>
+<li><a href="#raw_data">raw_data</a></li>
+</ul>
+</details>
+</div>
+</div>
+<h2 id="pkg-Types">Types</h2>
+<section class="documentation">
+<div class="pkg-entity">
+<h3 id="Allocator"><span><a class="doc-id-link" href="#Allocator">Allocator<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/alloc.odin#L48"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Allocator :: runtime.<a class="code-typename" href="/runtime/#Allocator">Allocator</a></pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Allocator_Error"><span><a class="doc-id-link" href="#Allocator_Error">Allocator_Error<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/alloc.odin#L31"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Allocator_Error :: runtime.<a class="code-typename" href="/runtime/#Allocator_Error">Allocator_Error</a></pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Allocator_Mode"><span><a class="doc-id-link" href="#Allocator_Mode">Allocator_Mode<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/alloc.odin#L6"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Allocator_Mode :: runtime.<a class="code-typename" href="/runtime/#Allocator_Mode">Allocator_Mode</a></pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>NOTE(bill, 2019-12-31): These are defined in `package runtime` as they are used in the `context`. This is to prevent an import definition cycle.</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="Allocator_Mode_Set"><span><a class="doc-id-link" href="#Allocator_Mode_Set">Allocator_Mode_Set<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/alloc.odin#L17"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Allocator_Mode_Set :: runtime.<a class="code-typename" href="/runtime/#Allocator_Mode_Set">Allocator_Mode_Set</a></pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Allocator_Proc"><span><a class="doc-id-link" href="#Allocator_Proc">Allocator_Proc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/alloc.odin#L41"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Allocator_Proc :: runtime.<a class="code-typename" href="/runtime/#Allocator_Proc">Allocator_Proc</a></pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Allocator_Error :: enum byte {</p>
+<pre>None                 = 0,
+Out_Of_Memory        = 1,
+Invalid_Pointer      = 2,
+Invalid_Argument     = 3,
+Mode_Not_Implemented = 4,
+</pre>
+<p>}</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="Allocator_Query_Info"><span><a class="doc-id-link" href="#Allocator_Query_Info">Allocator_Query_Info<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/alloc.odin#L22"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Allocator_Query_Info :: runtime.<a class="code-typename" href="/runtime/#Allocator_Query_Info">Allocator_Query_Info</a></pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Arena"><span><a class="doc-id-link" href="#Arena">Arena<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/allocators.odin#L21"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Arena :: struct {
+	data:       []<a href="">u8</a>,
+	offset:     <a href="">int</a>,
+	peak_used:  <a href="">int</a>,
+	temp_count: <a href="">int</a>,
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Arena_Temp_Memory"><span><a class="doc-id-link" href="#Arena_Temp_Memory">Arena_Temp_Memory<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/allocators.odin#L28"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Arena_Temp_Memory :: struct {
+	arena:       ^<a class="code-typename" href="/mem/#Arena">Arena</a>,
+	prev_offset: <a href="">int</a>,
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Dynamic_Pool"><span><a class="doc-id-link" href="#Dynamic_Pool">Dynamic_Pool<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/allocators.odin#L574"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Dynamic_Pool :: struct {
+	block_size:           <a href="">int</a>,
+	out_band_size:        <a href="">int</a>,
+	alignment:            <a href="">int</a>,
+	unused_blocks:        [dynamic]<a href="">rawptr</a>,
+	used_blocks:          [dynamic]<a href="">rawptr</a>,
+	out_band_allocations: [dynamic]<a href="">rawptr</a>,
+	current_block:        <a href="">rawptr</a>,
+	current_pos:          <a href="">rawptr</a>,
+	bytes_left:           <a href="">int</a>,
+	block_allocator:      runtime.<a class="code-typename" href="/runtime/#Allocator">Allocator</a>,
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Fixed_Byte_Buffer"><span><a class="doc-id-link" href="#Fixed_Byte_Buffer">Fixed_Byte_Buffer<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/mem.odin#L255"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Fixed_Byte_Buffer :: distinct [dynamic]<a href="">u8</a></pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Poly_Raw_Map"><span><a class="doc-id-link" href="#Poly_Raw_Map">Poly_Raw_Map<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/raw.odin#L46"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Poly_Raw_Map :: struct {}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Poly_Raw_Map_Entry"><span><a class="doc-id-link" href="#Poly_Raw_Map_Entry">Poly_Raw_Map_Entry<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/raw.odin#L39"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Poly_Raw_Map_Entry :: struct {}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Raw_Any"><span><a class="doc-id-link" href="#Raw_Any">Raw_Any<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/raw.odin#L5"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Raw_Any :: runtime.<a class="code-typename" href="/runtime/#Raw_Any">Raw_Any</a></pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Raw_Complex128"><span><a class="doc-id-link" href="#Raw_Complex128">Raw_Complex128<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/raw.odin#L13"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Raw_Complex128 :: struct {
+	real,
+	imag: <a href="">f64</a>,
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Raw_Complex64"><span><a class="doc-id-link" href="#Raw_Complex64">Raw_Complex64<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/raw.odin#L12"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Raw_Complex64 :: struct {
+	real,
+	imag: <a href="">f32</a>,
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Raw_Cstring"><span><a class="doc-id-link" href="#Raw_Cstring">Raw_Cstring<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/raw.odin#L7"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Raw_Cstring :: runtime.<a class="code-typename" href="/runtime/#Raw_Cstring">Raw_Cstring</a></pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Raw_Dynamic_Array"><span><a class="doc-id-link" href="#Raw_Dynamic_Array">Raw_Dynamic_Array<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/raw.odin#L9"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Raw_Dynamic_Array :: runtime.<a class="code-typename" href="/runtime/#Raw_Dynamic_Array">Raw_Dynamic_Array</a></pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Raw_Map"><span><a class="doc-id-link" href="#Raw_Map">Raw_Map<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/raw.odin#L10"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Raw_Map :: runtime.<a class="code-typename" href="/runtime/#Raw_Map">Raw_Map</a></pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Raw_Quaternion128"><span><a class="doc-id-link" href="#Raw_Quaternion128">Raw_Quaternion128<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/raw.odin#L14"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Raw_Quaternion128 :: struct {
+	imag,
+	jmag,
+	kmag: <a href="">f32</a>,
+	real: <a href="">f32</a>,
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Raw_Quaternion128_Vector_Scalar"><span><a class="doc-id-link" href="#Raw_Quaternion128_Vector_Scalar">Raw_Quaternion128_Vector_Scalar<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/raw.odin#L16"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Raw_Quaternion128_Vector_Scalar :: struct {
+	vector: [3]<a href="">f32</a>,
+	scalar: <a href="">f32</a>,
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Raw_Quaternion256"><span><a class="doc-id-link" href="#Raw_Quaternion256">Raw_Quaternion256<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/raw.odin#L15"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Raw_Quaternion256 :: struct {
+	imag,
+	jmag,
+	kmag: <a href="">f64</a>,
+	real: <a href="">f64</a>,
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Raw_Quaternion256_Vector_Scalar"><span><a class="doc-id-link" href="#Raw_Quaternion256_Vector_Scalar">Raw_Quaternion256_Vector_Scalar<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/raw.odin#L17"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Raw_Quaternion256_Vector_Scalar :: struct {
+	vector: [3]<a href="">f64</a>,
+	scalar: <a href="">f64</a>,
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Raw_Slice"><span><a class="doc-id-link" href="#Raw_Slice">Raw_Slice<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/raw.odin#L8"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Raw_Slice :: runtime.<a class="code-typename" href="/runtime/#Raw_Slice">Raw_Slice</a></pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Raw_String"><span><a class="doc-id-link" href="#Raw_String">Raw_String<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/raw.odin#L6"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Raw_String :: runtime.<a class="code-typename" href="/runtime/#Raw_String">Raw_String</a></pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Scratch_Allocator"><span><a class="doc-id-link" href="#Scratch_Allocator">Scratch_Allocator<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/allocators.odin#L109"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Scratch_Allocator :: struct {
+	data:               []<a href="">u8</a>,
+	curr_offset:        <a href="">int</a>,
+	prev_allocation:    <a href="">rawptr</a>,
+	backup_allocator:   runtime.<a class="code-typename" href="/runtime/#Allocator">Allocator</a>,
+	leaked_allocations: [dynamic][]<a href="">u8</a>,
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Small_Stack"><span><a class="doc-id-link" href="#Small_Stack">Small_Stack<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/allocators.odin#L446"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Small_Stack :: struct {
+	data:      []<a href="">u8</a>,
+	offset:    <a href="">int</a>,
+	peak_used: <a href="">int</a>,
+}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Small_Stack is a stack-like allocator which uses the smallest possible header but at the cost of non-strict memory freeing order</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="Small_Stack_Allocation_Header"><span><a class="doc-id-link" href="#Small_Stack_Allocation_Header">Small_Stack_Allocation_Header<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/allocators.odin#L441"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Small_Stack_Allocation_Header :: struct {
+	padding: <a href="">u8</a>,
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Stack"><span><a class="doc-id-link" href="#Stack">Stack<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/allocators.odin#L288"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Stack :: struct {
+	data:        []<a href="">u8</a>,
+	prev_offset: <a href="">int</a>,
+	curr_offset: <a href="">int</a>,
+	peak_used:   <a href="">int</a>,
+}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Stack is a stack-like allocator which has a strict memory freeing order</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="Stack_Allocation_Header"><span><a class="doc-id-link" href="#Stack_Allocation_Header">Stack_Allocation_Header<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/allocators.odin#L282"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Stack_Allocation_Header :: struct {
+	prev_offset: <a href="">int</a>,
+	padding:     <a href="">int</a>,
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Tracking_Allocator"><span><a class="doc-id-link" href="#Tracking_Allocator">Tracking_Allocator<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/allocators.odin#L814"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Tracking_Allocator :: struct {
+	backing:           runtime.<a class="code-typename" href="/runtime/#Allocator">Allocator</a>,
+	allocation_map:    map[<a href="">rawptr</a>]<a class="code-typename" href="/mem/#Tracking_Allocator_Entry">Tracking_Allocator_Entry</a>,
+	bad_free_array:    [dynamic]<a class="code-typename" href="/mem/#Tracking_Allocator_Bad_Free_Entry">Tracking_Allocator_Bad_Free_Entry</a>,
+	clear_on_free_all: <a href="">bool</a>,
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Tracking_Allocator_Bad_Free_Entry"><span><a class="doc-id-link" href="#Tracking_Allocator_Bad_Free_Entry">Tracking_Allocator_Bad_Free_Entry<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/allocators.odin#L810"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Tracking_Allocator_Bad_Free_Entry :: struct {
+	memory:   <a href="">rawptr</a>,
+	location: runtime.<a class="code-typename" href="/runtime/#Source_Code_Location">Source_Code_Location</a>,
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Tracking_Allocator_Entry"><span><a class="doc-id-link" href="#Tracking_Allocator_Entry">Tracking_Allocator_Entry<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/allocators.odin#L803"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Tracking_Allocator_Entry :: struct {
+	memory:    <a href="">rawptr</a>,
+	size:      <a href="">int</a>,
+	alignment: <a href="">int</a>,
+	err:       runtime.<a class="code-typename" href="/runtime/#Allocator_Error">Allocator_Error</a>,
+	location:  runtime.<a class="code-typename" href="/runtime/#Source_Code_Location">Source_Code_Location</a>,
+}</pre>
+</div>
+</div>
+</section>
+<h2 id="pkg-Constants">Constants</h2>
+<section class="documentation">
+<div class="pkg-entity">
+<h3 id="DEFAULT_ALIGNMENT"><span><a class="doc-id-link" href="#DEFAULT_ALIGNMENT">DEFAULT_ALIGNMENT<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/alloc.odin#L56"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">DEFAULT_ALIGNMENT :: 2 * align_of(rawptr)</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="DEFAULT_RESERVE_CAPACITY"><span><a class="doc-id-link" href="#DEFAULT_RESERVE_CAPACITY">DEFAULT_RESERVE_CAPACITY<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/alloc.odin#L228"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">DEFAULT_RESERVE_CAPACITY :: 16</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="DYNAMIC_POOL_BLOCK_SIZE_DEFAULT"><span><a class="doc-id-link" href="#DYNAMIC_POOL_BLOCK_SIZE_DEFAULT">DYNAMIC_POOL_BLOCK_SIZE_DEFAULT<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/allocators.odin#L591"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">DYNAMIC_POOL_BLOCK_SIZE_DEFAULT :: 65536</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="DYNAMIC_POOL_OUT_OF_BAND_SIZE_DEFAULT"><span><a class="doc-id-link" href="#DYNAMIC_POOL_OUT_OF_BAND_SIZE_DEFAULT">DYNAMIC_POOL_OUT_OF_BAND_SIZE_DEFAULT<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/allocators.odin#L592"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">DYNAMIC_POOL_OUT_OF_BAND_SIZE_DEFAULT :: 6554</pre>
+</div>
+</div>
+</section>
+<h2 id="pkg-Variables">Variables</h2>
+<section class="documentation">
+<p>This section is empty.</p>
+</section>
+<h2 id="pkg-Procedures">Procedures</h2>
+<section class="documentation">
+<div class="pkg-entity">
+<h3 id="align_backward_uintptr"><span><a class="doc-id-link" href="#align_backward_uintptr">align_backward_uintptr<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/mem.odin#L233"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">align_backward_uintptr :: proc(ptr, align: <a href="">uintptr</a>) -> <a href="">uintptr</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="align_backward"><span><a class="doc-id-link" href="#align_backward">align_backward<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/mem.odin#L229"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">align_backward :: proc(ptr: <a href="">rawptr</a>, align: <a href="">uintptr</a>) -> <a href="">rawptr</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="align_backward_int"><span><a class="doc-id-link" href="#align_backward_int">align_backward_int<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/mem.odin#L237"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">align_backward_int :: proc(ptr, align: <a href="">int</a>) -> <a href="">int</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="align_backward_uint"><span><a class="doc-id-link" href="#align_backward_uint">align_backward_uint<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/mem.odin#L240"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">align_backward_uint :: proc(ptr, align: <a href="">uint</a>) -> <a href="">uint</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="align_formula"><span><a class="doc-id-link" href="#align_formula">align_formula<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/mem.odin#L272"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">align_formula :: proc "contextless" (n, k: <a href="">int</a>) -> <a href="">int</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="align_forward"><span><a class="doc-id-link" href="#align_forward">align_forward<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/mem.odin#L207"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">align_forward :: proc(ptr: <a href="">rawptr</a>, align: <a href="">uintptr</a>) -> <a href="">rawptr</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="align_forward_int"><span><a class="doc-id-link" href="#align_forward_int">align_forward_int<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/mem.odin#L222"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">align_forward_int :: proc(ptr, align: <a href="">int</a>) -> <a href="">int</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="align_forward_uint"><span><a class="doc-id-link" href="#align_forward_uint">align_forward_uint<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/mem.odin#L225"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">align_forward_uint :: proc(ptr, align: <a href="">uint</a>) -> <a href="">uint</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="align_forward_uintptr"><span><a class="doc-id-link" href="#align_forward_uintptr">align_forward_uintptr<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/mem.odin#L211"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">align_forward_uintptr :: proc(ptr, align: <a href="">uintptr</a>) -> <a href="">uintptr</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="alloc_bytes"><span><a class="doc-id-link" href="#alloc_bytes">alloc_bytes<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/alloc.odin#L70"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">alloc_bytes :: proc(size: <a href="">int</a>, alignment: <a href="">int</a> = DEFAULT_ALIGNMENT, allocator := <a href="/core/runtime/#Context">context.allocator</a>, loc := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>) -> ([]<a href="">u8</a>, runtime.<a class="code-typename" href="/runtime/#Allocator_Error">Allocator_Error</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="alloc"><span><a class="doc-id-link" href="#alloc">alloc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/alloc.odin#L58"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">alloc :: proc(size: <a href="">int</a>, alignment: <a href="">int</a> = DEFAULT_ALIGNMENT, allocator := <a href="/core/runtime/#Context">context.allocator</a>, loc := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>) -> <a href="">rawptr</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="any_to_bytes"><span><a class="doc-id-link" href="#any_to_bytes">any_to_bytes<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/mem.odin#L188"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">any_to_bytes :: proc "contextless" (val: <a href="">any</a>) -> []<a href="">u8</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="arena_allocator"><span><a class="doc-id-link" href="#arena_allocator">arena_allocator<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/allocators.odin#L41"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">arena_allocator :: proc(arena: ^<a class="code-typename" href="/mem/#Arena">Arena</a>) -> runtime.<a class="code-typename" href="/runtime/#Allocator">Allocator</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="arena_allocator_proc"><span><a class="doc-id-link" href="#arena_allocator_proc">arena_allocator_proc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/allocators.odin#L48"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">arena_allocator_proc :: proc(allocator_data: <a href="">rawptr</a>, mode: runtime.<a class="code-typename" href="/runtime/#Allocator_Mode">Allocator_Mode</a>, size, alignment: <a href="">int</a>, old_memory: <a href="">rawptr</a>, old_size: <a href="">int</a>, location := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>) -> ([]<a href="">u8</a>, runtime.<a class="code-typename" href="/runtime/#Allocator_Error">Allocator_Error</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="begin_arena_temp_memory"><span><a class="doc-id-link" href="#begin_arena_temp_memory">begin_arena_temp_memory<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/allocators.odin#L92"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">begin_arena_temp_memory :: proc(a: ^<a class="code-typename" href="/mem/#Arena">Arena</a>) -> <a class="code-typename" href="/mem/#Arena_Temp_Memory">Arena_Temp_Memory</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="buffer_from_slice"><span><a class="doc-id-link" href="#buffer_from_slice">buffer_from_slice<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/mem.odin#L172"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">buffer_from_slice :: proc "contextless" (backing: $T/[]$) -> [dynamic]$ {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="byte_slice"><span><a class="doc-id-link" href="#byte_slice">byte_slice<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/mem.odin#L147"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">byte_slice :: proc "contextless" (data: <a href="">rawptr</a>, len: <a href="">int</a>) -> []<a href="">u8</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="calc_padding_with_header"><span><a class="doc-id-link" href="#calc_padding_with_header">calc_padding_with_header<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/mem.odin#L277"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">calc_padding_with_header :: proc "contextless" (ptr: <a href="">uintptr</a>, align: <a href="">uintptr</a>, header_size: <a href="">int</a>) -> <a href="">int</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="check_zero"><span><a class="doc-id-link" href="#check_zero">check_zero<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/mem.odin#L93"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">check_zero :: proc(data: []<a href="">u8</a>) -> <a href="">bool</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="check_zero_ptr"><span><a class="doc-id-link" href="#check_zero_ptr">check_zero_ptr<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/mem.odin#L97"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">check_zero_ptr :: proc(ptr: <a href="">rawptr</a>, len: <a href="">int</a>) -> <a href="">bool</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="clone_slice"><span><a class="doc-id-link" href="#clone_slice">clone_slice<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/mem.odin#L302"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">clone_slice :: proc(slice: $T/[]$, allocator := <a href="/core/runtime/#Context">context.allocator</a>, loc := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>) -> (new_slice: $T/[]$) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="compare"><span><a class="doc-id-link" href="#compare">compare<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/mem.odin#L38"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">compare :: proc "contextless" (a, b: []<a href="">u8</a>) -> <a href="">int</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="compare_byte_ptrs"><span><a class="doc-id-link" href="#compare_byte_ptrs">compare_byte_ptrs<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/mem.odin#L48"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">compare_byte_ptrs :: proc "contextless" (a, b: ^<a href="">u8</a>, n: <a href="">int</a>) -> <a href="">int</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="compare_ptrs"><span><a class="doc-id-link" href="#compare_ptrs">compare_ptrs<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/mem.odin#L136"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">compare_ptrs :: proc "contextless" (a, b: <a href="">rawptr</a>, n: <a href="">int</a>) -> <a href="">int</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="context_from_allocator"><span><a class="doc-id-link" href="#context_from_allocator">context_from_allocator<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/mem.odin#L244"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">context_from_allocator :: proc(a: runtime.<a class="code-typename" href="/runtime/#Allocator">Allocator</a>) -> runtime.<a class="code-typename" href="/runtime/#Context">Context</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="copy"><span><a class="doc-id-link" href="#copy">copy<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/mem.odin#L30"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">copy :: proc "contextless" (dst, src: <a href="">rawptr</a>, len: <a href="">int</a>) -> <a href="">rawptr</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="copy_non_overlapping"><span><a class="doc-id-link" href="#copy_non_overlapping">copy_non_overlapping<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/mem.odin#L34"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">copy_non_overlapping :: proc "contextless" (dst, src: <a href="">rawptr</a>, len: <a href="">int</a>) -> <a href="">rawptr</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="default_resize_align"><span><a class="doc-id-link" href="#default_resize_align">default_resize_align<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/alloc.odin#L287"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">default_resize_align :: proc(old_memory: <a href="">rawptr</a>, old_size, new_size, alignment: <a href="">int</a>, allocator := <a href="/core/runtime/#Context">context.allocator</a>, loc := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>) -> <a href="">rawptr</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="default_resize_bytes_align"><span><a class="doc-id-link" href="#default_resize_bytes_align">default_resize_bytes_align<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/alloc.odin#L310"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">default_resize_bytes_align :: proc(old_data: []<a href="">u8</a>, new_size, alignment: <a href="">int</a>, allocator := <a href="/core/runtime/#Context">context.allocator</a>, loc := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>) -> ([]<a href="">u8</a>, runtime.<a class="code-typename" href="/runtime/#Allocator_Error">Allocator_Error</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="delete_cstring"><span><a class="doc-id-link" href="#delete_cstring">delete_cstring<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/alloc.odin#L185"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">delete_cstring :: proc(str: <a href="">cstring</a>, allocator := <a href="/core/runtime/#Context">context.allocator</a>, loc := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="delete_dynamic_array"><span><a class="doc-id-link" href="#delete_dynamic_array">delete_dynamic_array<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/alloc.odin#L188"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">delete_dynamic_array :: proc(array: $T/[dynamic]$, loc := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="delete_map"><span><a class="doc-id-link" href="#delete_map">delete_map<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/alloc.odin#L194"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">delete_map :: proc(m: $/map[$]$, loc := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="delete_slice"><span><a class="doc-id-link" href="#delete_slice">delete_slice<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/alloc.odin#L191"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">delete_slice :: proc(array: $T/[]$, allocator := <a href="/core/runtime/#Context">context.allocator</a>, loc := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="delete_string"><span><a class="doc-id-link" href="#delete_string">delete_string<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/alloc.odin#L182"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">delete_string :: proc(str: <a href="">string</a>, allocator := <a href="/core/runtime/#Context">context.allocator</a>, loc := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="dynamic_pool_allocator_proc"><span><a class="doc-id-link" href="#dynamic_pool_allocator_proc">dynamic_pool_allocator_proc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/allocators.odin#L596"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">dynamic_pool_allocator_proc :: proc(allocator_data: <a href="">rawptr</a>, mode: runtime.<a class="code-typename" href="/runtime/#Allocator_Mode">Allocator_Mode</a>, size, alignment: <a href="">int</a>, old_memory: <a href="">rawptr</a>, old_size: <a href="">int</a>, location := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>) -> ([]<a href="">u8</a>, runtime.<a class="code-typename" href="/runtime/#Allocator_Error">Allocator_Error</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="dynamic_pool_allocator"><span><a class="doc-id-link" href="#dynamic_pool_allocator">dynamic_pool_allocator<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/allocators.odin#L639"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">dynamic_pool_allocator :: proc(pool: ^<a class="code-typename" href="/mem/#Dynamic_Pool">Dynamic_Pool</a>) -> runtime.<a class="code-typename" href="/runtime/#Allocator">Allocator</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="dynamic_pool_alloc"><span><a class="doc-id-link" href="#dynamic_pool_alloc">dynamic_pool_alloc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/allocators.odin#L670"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">dynamic_pool_alloc :: proc(pool: ^<a class="code-typename" href="/mem/#Dynamic_Pool">Dynamic_Pool</a>, bytes: <a href="">int</a>) -> <a href="">rawptr</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="dynamic_pool_alloc_bytes"><span><a class="doc-id-link" href="#dynamic_pool_alloc_bytes">dynamic_pool_alloc_bytes<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/allocators.odin#L676"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">dynamic_pool_alloc_bytes :: proc(pool: ^<a class="code-typename" href="/mem/#Dynamic_Pool">Dynamic_Pool</a>, bytes: <a href="">int</a>) -> ([]<a href="">u8</a>, runtime.<a class="code-typename" href="/runtime/#Allocator_Error">Allocator_Error</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="dynamic_pool_destroy"><span><a class="doc-id-link" href="#dynamic_pool_destroy">dynamic_pool_destroy<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/allocators.odin#L661"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">dynamic_pool_destroy :: proc(pool: ^<a class="code-typename" href="/mem/#Dynamic_Pool">Dynamic_Pool</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="dynamic_pool_free_all"><span><a class="doc-id-link" href="#dynamic_pool_free_all">dynamic_pool_free_all<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/allocators.odin#L751"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">dynamic_pool_free_all :: proc(pool: ^<a class="code-typename" href="/mem/#Dynamic_Pool">Dynamic_Pool</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="dynamic_pool_init"><span><a class="doc-id-link" href="#dynamic_pool_init">dynamic_pool_init<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/allocators.odin#L646"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">dynamic_pool_init :: proc(pool: ^<a class="code-typename" href="/mem/#Dynamic_Pool">Dynamic_Pool</a>, block_allocator := <a href="/core/runtime/#Context">context.allocator</a>, array_allocator := <a href="/core/runtime/#Context">context.allocator</a>, block_size: <a href="">int</a> = DYNAMIC_POOL_BLOCK_SIZE_DEFAULT, out_band_size: <a href="">int</a> = DYNAMIC_POOL_OUT_OF_BAND_SIZE_DEFAULT, alignment: <a href="">int</a> = 8) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="dynamic_pool_reset"><span><a class="doc-id-link" href="#dynamic_pool_reset">dynamic_pool_reset<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/allocators.odin#L734"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">dynamic_pool_reset :: proc(pool: ^<a class="code-typename" href="/mem/#Dynamic_Pool">Dynamic_Pool</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="end_arena_temp_memory"><span><a class="doc-id-link" href="#end_arena_temp_memory">end_arena_temp_memory<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/allocators.odin#L100"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">end_arena_temp_memory :: proc(using tmp: <a class="code-typename" href="/mem/#Arena_Temp_Memory">Arena_Temp_Memory</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="free"><span><a class="doc-id-link" href="#free">free<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/alloc.odin#L80"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">free :: proc(ptr: <a href="">rawptr</a>, allocator := <a href="/core/runtime/#Context">context.allocator</a>, loc := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>) -> runtime.<a class="code-typename" href="/runtime/#Allocator_Error">Allocator_Error</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="free_all"><span><a class="doc-id-link" href="#free_all">free_all<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/alloc.odin#L102"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">free_all :: proc(allocator := <a href="/core/runtime/#Context">context.allocator</a>, loc := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>) -> runtime.<a class="code-typename" href="/runtime/#Allocator_Error">Allocator_Error</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="free_bytes"><span><a class="doc-id-link" href="#free_bytes">free_bytes<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/alloc.odin#L91"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">free_bytes :: proc(bytes: []<a href="">u8</a>, allocator := <a href="/core/runtime/#Context">context.allocator</a>, loc := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>) -> runtime.<a class="code-typename" href="/runtime/#Allocator_Error">Allocator_Error</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="gigabytes"><span><a class="doc-id-link" href="#gigabytes">gigabytes<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/mem.odin#L197"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">gigabytes :: proc "contextless" (n: <a href="">int</a>) -> <a href="">int</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="init_arena"><span><a class="doc-id-link" href="#init_arena">init_arena<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/allocators.odin#L34"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">init_arena :: proc(a: ^<a class="code-typename" href="/mem/#Arena">Arena</a>, data: []<a href="">u8</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="init_small_stack"><span><a class="doc-id-link" href="#init_small_stack">init_small_stack<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/allocators.odin#L452"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">init_small_stack :: proc(s: ^<a class="code-typename" href="/mem/#Small_Stack">Small_Stack</a>, data: []<a href="">u8</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="init_stack"><span><a class="doc-id-link" href="#init_stack">init_stack<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/allocators.odin#L295"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">init_stack :: proc(s: ^<a class="code-typename" href="/mem/#Stack">Stack</a>, data: []<a href="">u8</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="is_power_of_two"><span><a class="doc-id-link" href="#is_power_of_two">is_power_of_two<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/mem.odin#L200"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">is_power_of_two :: proc "contextless" (x: <a href="">uintptr</a>) -> <a href="">bool</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="kilobytes"><span><a class="doc-id-link" href="#kilobytes">kilobytes<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/mem.odin#L195"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">kilobytes :: proc "contextless" (n: <a href="">int</a>) -> <a href="">int</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="make_aligned"><span><a class="doc-id-link" href="#make_aligned">make_aligned<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/alloc.odin#L230"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">make_aligned :: proc($T: typeid/[]$, #any_int len: <a href="">int</a>, alignment: <a href="">int</a>, allocator := <a href="/core/runtime/#Context">context.allocator</a>, loc := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>) -> (slice: T, err: runtime.<a class="code-typename" href="/runtime/#Allocator_Error">Allocator_Error</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="make_any"><span><a class="doc-id-link" href="#make_any">make_any<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/raw.odin#L19"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">make_any :: proc "contextless" (data: <a href="">rawptr</a>, id: <a href="">typeid</a>) -> <a href="">any</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="make_dynamic_array_len"><span><a class="doc-id-link" href="#make_dynamic_array_len">make_dynamic_array_len<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/alloc.odin#L245"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">make_dynamic_array_len :: proc($T: typeid/[dynamic]$, #any_int len: <a href="">int</a>, allocator := <a href="/core/runtime/#Context">context.allocator</a>, loc := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>) -> (T, runtime.<a class="code-typename" href="/runtime/#Allocator_Error">Allocator_Error</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="make_dynamic_array"><span><a class="doc-id-link" href="#make_dynamic_array">make_dynamic_array<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/alloc.odin#L242"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">make_dynamic_array :: proc($T: typeid/[dynamic]$, allocator := <a href="/core/runtime/#Context">context.allocator</a>, loc := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>) -> (T, runtime.<a class="code-typename" href="/runtime/#Allocator_Error">Allocator_Error</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="make_dynamic_array_len_cap"><span><a class="doc-id-link" href="#make_dynamic_array_len_cap">make_dynamic_array_len_cap<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/alloc.odin#L248"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">make_dynamic_array_len_cap :: proc($T: typeid/[dynamic]$, #any_int len: <a href="">int</a>, #any_int cap: <a href="">int</a>, allocator := <a href="/core/runtime/#Context">context.allocator</a>, loc := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>) -> (array: T, err: runtime.<a class="code-typename" href="/runtime/#Allocator_Error">Allocator_Error</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="make_fixed_byte_buffer"><span><a class="doc-id-link" href="#make_fixed_byte_buffer">make_fixed_byte_buffer<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/mem.odin#L257"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">make_fixed_byte_buffer :: proc "contextless" (backing: []<a href="">u8</a>) -> <a class="code-typename" href="/mem/#Fixed_Byte_Buffer">Fixed_Byte_Buffer</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="make_map"><span><a class="doc-id-link" href="#make_map">make_map<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/alloc.odin#L258"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">make_map :: proc($T: typeid/map[$]$, #any_int cap: <a href="">int</a> = DEFAULT_RESERVE_CAPACITY, allocator := <a href="/core/runtime/#Context">context.allocator</a>, loc := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>) -> $/map[$]$ {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="make_multi_pointer"><span><a class="doc-id-link" href="#make_multi_pointer">make_multi_pointer<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/alloc.odin#L266"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">make_multi_pointer :: proc($T: typeid/[^]$, #any_int len: <a href="">int</a>, allocator := <a href="/core/runtime/#Context">context.allocator</a>, loc := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>) -> (mp: $/[^]$, err: runtime.<a class="code-typename" href="/runtime/#Allocator_Error">Allocator_Error</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="make_slice"><span><a class="doc-id-link" href="#make_slice">make_slice<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/alloc.odin#L239"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">make_slice :: proc($T: typeid/[]$, #any_int len: <a href="">int</a>, allocator := <a href="/core/runtime/#Context">context.allocator</a>, loc := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>) -> (T, runtime.<a class="code-typename" href="/runtime/#Allocator_Error">Allocator_Error</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="megabytes"><span><a class="doc-id-link" href="#megabytes">megabytes<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/mem.odin#L196"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">megabytes :: proc "contextless" (n: <a href="">int</a>) -> <a href="">int</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="new"><span><a class="doc-id-link" href="#new">new<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/alloc.odin#L210"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">new :: proc($T: <a href="">typeid</a>, allocator := <a href="/core/runtime/#Context">context.allocator</a>, loc := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>) -> (^<a href="">typeid</a>, runtime.<a class="code-typename" href="/runtime/#Allocator_Error">Allocator_Error</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="new_aligned"><span><a class="doc-id-link" href="#new_aligned">new_aligned<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/alloc.odin#L213"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">new_aligned :: proc($T: <a href="">typeid</a>, alignment: <a href="">int</a>, allocator := <a href="/core/runtime/#Context">context.allocator</a>, loc := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>) -> (t: ^<a href="">typeid</a>, err: runtime.<a class="code-typename" href="/runtime/#Allocator_Error">Allocator_Error</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="new_clone"><span><a class="doc-id-link" href="#new_clone">new_clone<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/alloc.odin#L218"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">new_clone :: proc(data: $, allocator := <a href="/core/runtime/#Context">context.allocator</a>, loc := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>) -> (t: ^$, err: runtime.<a class="code-typename" href="/runtime/#Allocator_Error">Allocator_Error</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="nil_allocator"><span><a class="doc-id-link" href="#nil_allocator">nil_allocator<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/allocators.odin#L12"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">nil_allocator :: proc() -> runtime.<a class="code-typename" href="/runtime/#Allocator">Allocator</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="nil_allocator_proc"><span><a class="doc-id-link" href="#nil_allocator_proc">nil_allocator_proc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/allocators.odin#L6"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">nil_allocator_proc :: proc(allocator_data: <a href="">rawptr</a>, mode: runtime.<a class="code-typename" href="/runtime/#Allocator_Mode">Allocator_Mode</a>, size, alignment: <a href="">int</a>, old_memory: <a href="">rawptr</a>, old_size: <a href="">int</a>, location := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>) -> ([]<a href="">u8</a>, runtime.<a class="code-typename" href="/runtime/#Allocator_Error">Allocator_Error</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="panic_allocator"><span><a class="doc-id-link" href="#panic_allocator">panic_allocator<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/allocators.odin#L795"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">panic_allocator :: proc() -> runtime.<a class="code-typename" href="/runtime/#Allocator">Allocator</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="panic_allocator_proc"><span><a class="doc-id-link" href="#panic_allocator_proc">panic_allocator_proc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/allocators.odin#L761"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">panic_allocator_proc :: proc(allocator_data: <a href="">rawptr</a>, mode: runtime.<a class="code-typename" href="/runtime/#Allocator_Mode">Allocator_Mode</a>, size, alignment: <a href="">int</a>, old_memory: <a href="">rawptr</a>, old_size: <a href="">int</a>, location := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>) -> ([]<a href="">u8</a>, runtime.<a class="code-typename" href="/runtime/#Allocator_Error">Allocator_Error</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="ptr_to_bytes"><span><a class="doc-id-link" href="#ptr_to_bytes">ptr_to_bytes<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/mem.odin#L184"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">ptr_to_bytes :: proc "contextless" (ptr: ^$, len: <a href="">int</a> = 1) -> []<a href="">u8</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="query_features"><span><a class="doc-id-link" href="#query_features">query_features<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/alloc.odin#L164"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">query_features :: proc(allocator := <a href="/core/runtime/#Context">context.allocator</a>, loc := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>) -> (set: runtime.<a class="code-typename" href="/runtime/#Allocator_Mode_Set">Allocator_Mode_Set</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="query_info"><span><a class="doc-id-link" href="#query_info">query_info<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/alloc.odin#L172"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">query_info :: proc(pointer: <a href="">rawptr</a>, allocator: runtime.<a class="code-typename" href="/runtime/#Allocator">Allocator</a>, loc := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>) -> (props: runtime.<a class="code-typename" href="/runtime/#Allocator_Query_Info">Allocator_Query_Info</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="raw_array_data"><span><a class="doc-id-link" href="#raw_array_data">raw_array_data<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/raw.odin#L23"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">raw_array_data :: proc "contextless" (a: $P/^$V/[0]$) -> ^$ {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="raw_dynamic_array_data"><span><a class="doc-id-link" href="#raw_dynamic_array_data">raw_dynamic_array_data<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/raw.odin#L32"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">raw_dynamic_array_data :: proc "contextless" (a: $T/[dynamic]$) -> ^$ {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="raw_slice_data"><span><a class="doc-id-link" href="#raw_slice_data">raw_slice_data<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/raw.odin#L29"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">raw_slice_data :: proc "contextless" (a: $T/[]$) -> ^$ {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="raw_string_data"><span><a class="doc-id-link" href="#raw_string_data">raw_string_data<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/raw.odin#L26"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">raw_string_data :: proc "contextless" (s: $T/<a href="">string</a>) -> ^<a href="">u8</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="reinterpret_copy"><span><a class="doc-id-link" href="#reinterpret_copy">reinterpret_copy<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/mem.odin#L249"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">reinterpret_copy :: proc "contextless" ($T: <a href="">typeid</a>, ptr: <a href="">rawptr</a>) -> (value: <a href="">typeid</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="resize_bytes"><span><a class="doc-id-link" href="#resize_bytes">resize_bytes<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/alloc.odin#L137"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">resize_bytes :: proc(old_data: []<a href="">u8</a>, new_size, alignment: <a href="">int</a>, allocator := <a href="/core/runtime/#Context">context.allocator</a>, loc := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>) -> ([]<a href="">u8</a>, runtime.<a class="code-typename" href="/runtime/#Allocator_Error">Allocator_Error</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="resize"><span><a class="doc-id-link" href="#resize">resize<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/alloc.odin#L110"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">resize :: proc(old_memory: <a href="">rawptr</a>, old_size, new_size, alignment: <a href="">int</a>, allocator := <a href="/core/runtime/#Context">context.allocator</a>, loc := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>) -> <a href="">rawptr</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="scratch_allocator"><span><a class="doc-id-link" href="#scratch_allocator">scratch_allocator<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/allocators.odin#L271"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">scratch_allocator :: proc(allocator: ^<a class="code-typename" href="/mem/#Scratch_Allocator">Scratch_Allocator</a>) -> runtime.<a class="code-typename" href="/runtime/#Allocator">Allocator</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="scratch_allocator_destroy"><span><a class="doc-id-link" href="#scratch_allocator_destroy">scratch_allocator_destroy<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/allocators.odin#L126"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">scratch_allocator_destroy :: proc(s: ^<a class="code-typename" href="/mem/#Scratch_Allocator">Scratch_Allocator</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="scratch_allocator_init"><span><a class="doc-id-link" href="#scratch_allocator_init">scratch_allocator_init<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/allocators.odin#L117"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">scratch_allocator_init :: proc(s: ^<a class="code-typename" href="/mem/#Scratch_Allocator">Scratch_Allocator</a>, size: <a href="">int</a>, backup_allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> runtime.<a class="code-typename" href="/runtime/#Allocator_Error">Allocator_Error</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="scratch_allocator_proc"><span><a class="doc-id-link" href="#scratch_allocator_proc">scratch_allocator_proc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/allocators.odin#L138"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">scratch_allocator_proc :: proc(allocator_data: <a href="">rawptr</a>, mode: runtime.<a class="code-typename" href="/runtime/#Allocator_Mode">Allocator_Mode</a>, size, alignment: <a href="">int</a>, old_memory: <a href="">rawptr</a>, old_size: <a href="">int</a>, location := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>) -> ([]<a href="">u8</a>, runtime.<a class="code-typename" href="/runtime/#Allocator_Error">Allocator_Error</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="set"><span><a class="doc-id-link" href="#set">set<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/mem.odin#L6"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">set :: proc "contextless" (data: <a href="">rawptr</a>, value: <a href="">u8</a>, len: <a href="">int</a>) -> <a href="">rawptr</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="simple_equal"><span><a class="doc-id-link" href="#simple_equal">simple_equal<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/mem.odin#L131"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">simple_equal :: proc "contextless" (a, b: $) -> <a href="">bool</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="slice_data_cast"><span><a class="doc-id-link" href="#slice_data_cast">slice_data_cast<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/mem.odin#L157"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">slice_data_cast :: proc "contextless" ($T: typeid/[]$, slice: T) -> T {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="slice_ptr"><span><a class="doc-id-link" href="#slice_ptr">slice_ptr<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/mem.odin#L143"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">slice_ptr :: proc "contextless" (ptr: ^$, len: <a href="">int</a> = 1) -> []$ {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="slice_to_bytes"><span><a class="doc-id-link" href="#slice_to_bytes">slice_to_bytes<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/mem.odin#L151"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">slice_to_bytes :: proc "contextless" (slice: $T/[]$) -> []<a href="">u8</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="slice_to_components"><span><a class="doc-id-link" href="#slice_to_components">slice_to_components<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/mem.odin#L167"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">slice_to_components :: proc "contextless" (slice: $T/[]$) -> (data: ^$, len: <a href="">int</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="small_stack_allocator_proc"><span><a class="doc-id-link" href="#small_stack_allocator_proc">small_stack_allocator_proc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/allocators.odin#L465"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">small_stack_allocator_proc :: proc(allocator_data: <a href="">rawptr</a>, mode: runtime.<a class="code-typename" href="/runtime/#Allocator_Mode">Allocator_Mode</a>, size, alignment: <a href="">int</a>, old_memory: <a href="">rawptr</a>, old_size: <a href="">int</a>, location := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>) -> ([]<a href="">u8</a>, runtime.<a class="code-typename" href="/runtime/#Allocator_Error">Allocator_Error</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="small_stack_allocator"><span><a class="doc-id-link" href="#small_stack_allocator">small_stack_allocator<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/allocators.odin#L458"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">small_stack_allocator :: proc(stack: ^<a class="code-typename" href="/mem/#Small_Stack">Small_Stack</a>) -> runtime.<a class="code-typename" href="/runtime/#Allocator">Allocator</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="stack_allocator"><span><a class="doc-id-link" href="#stack_allocator">stack_allocator<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/allocators.odin#L302"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">stack_allocator :: proc(stack: ^<a class="code-typename" href="/mem/#Stack">Stack</a>) -> runtime.<a class="code-typename" href="/runtime/#Allocator">Allocator</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="stack_allocator_proc"><span><a class="doc-id-link" href="#stack_allocator_proc">stack_allocator_proc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/allocators.odin#L310"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">stack_allocator_proc :: proc(allocator_data: <a href="">rawptr</a>, mode: runtime.<a class="code-typename" href="/runtime/#Allocator_Mode">Allocator_Mode</a>, size, alignment: <a href="">int</a>, old_memory: <a href="">rawptr</a>, old_size: <a href="">int</a>, location := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>) -> ([]<a href="">u8</a>, runtime.<a class="code-typename" href="/runtime/#Allocator_Error">Allocator_Error</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="terabytes"><span><a class="doc-id-link" href="#terabytes">terabytes<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/mem.odin#L198"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">terabytes :: proc "contextless" (n: <a href="">int</a>) -> <a href="">int</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="tracking_allocator_destroy"><span><a class="doc-id-link" href="#tracking_allocator_destroy">tracking_allocator_destroy<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/allocators.odin#L827"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">tracking_allocator_destroy :: proc(t: ^<a class="code-typename" href="/mem/#Tracking_Allocator">Tracking_Allocator</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="tracking_allocator"><span><a class="doc-id-link" href="#tracking_allocator">tracking_allocator<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/allocators.odin#L832"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">tracking_allocator :: proc(data: ^<a class="code-typename" href="/mem/#Tracking_Allocator">Tracking_Allocator</a>) -> runtime.<a class="code-typename" href="/runtime/#Allocator">Allocator</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="tracking_allocator_init"><span><a class="doc-id-link" href="#tracking_allocator_init">tracking_allocator_init<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/allocators.odin#L821"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">tracking_allocator_init :: proc(t: ^<a class="code-typename" href="/mem/#Tracking_Allocator">Tracking_Allocator</a>, backing_allocator: runtime.<a class="code-typename" href="/runtime/#Allocator">Allocator</a>, internals_allocator := <a href="/core/runtime/#Context">context.allocator</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="tracking_allocator_proc"><span><a class="doc-id-link" href="#tracking_allocator_proc">tracking_allocator_proc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/allocators.odin#L839"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">tracking_allocator_proc :: proc(allocator_data: <a href="">rawptr</a>, mode: runtime.<a class="code-typename" href="/runtime/#Allocator_Mode">Allocator_Mode</a>, size, alignment: <a href="">int</a>, old_memory: <a href="">rawptr</a>, old_size: <a href="">int</a>, location := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>) -> ([]<a href="">u8</a>, runtime.<a class="code-typename" href="/runtime/#Allocator_Error">Allocator_Error</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="zero"><span><a class="doc-id-link" href="#zero">zero<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/mem.odin#L9"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">zero :: proc "contextless" (data: <a href="">rawptr</a>, len: <a href="">int</a>) -> <a href="">rawptr</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="zero_explicit"><span><a class="doc-id-link" href="#zero_explicit">zero_explicit<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/mem.odin#L13"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">zero_explicit :: proc "contextless" (data: <a href="">rawptr</a>, len: <a href="">int</a>) -> <a href="">rawptr</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="zero_item"><span><a class="doc-id-link" href="#zero_item">zero_item<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/mem.odin#L22"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">zero_item :: proc "contextless" (item: $P/^$) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="zero_slice"><span><a class="doc-id-link" href="#zero_slice">zero_slice<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/mem.odin#L25"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">zero_slice :: proc "contextless" (data: $T/[]$) {…}</pre>
+</div>
+</div>
+</section>
+<h2 id="pkg-Procedure Groups">Procedure Groups</h2>
+<section class="documentation">
+<div class="pkg-entity">
+<h3 id="delete"><span><a class="doc-id-link" href="#delete">delete<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/alloc.odin#L201"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">delete :: proc{
+	<a class="code-procedure" href="/core/mem/#delete_string">delete_string</a>,
+	<a class="code-procedure" href="/core/mem/#delete_cstring">delete_cstring</a>,
+	<a class="code-procedure" href="/core/mem/#delete_dynamic_array">delete_dynamic_array</a>,
+	<a class="code-procedure" href="/core/mem/#delete_slice">delete_slice</a>,
+	<a class="code-procedure" href="/core/mem/#delete_map">delete_map</a>,
+}
+</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="make"><span><a class="doc-id-link" href="#make">make<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/alloc.odin#L276"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">make :: proc{
+	<a class="code-procedure" href="/core/mem/#make_slice">make_slice</a>,
+	<a class="code-procedure" href="/core/mem/#make_dynamic_array">make_dynamic_array</a>,
+	<a class="code-procedure" href="/core/mem/#make_dynamic_array_len">make_dynamic_array_len</a>,
+	<a class="code-procedure" href="/core/mem/#make_dynamic_array_len_cap">make_dynamic_array_len_cap</a>,
+	<a class="code-procedure" href="/core/mem/#make_map">make_map</a>,
+	<a class="code-procedure" href="/core/mem/#make_multi_pointer">make_multi_pointer</a>,
+}
+</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="raw_data"><span><a class="doc-id-link" href="#raw_data">raw_data<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/raw.odin#L36"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">raw_data :: proc{
+	<a class="code-procedure" href="/core/mem/#raw_array_data">raw_array_data</a>,
+	<a class="code-procedure" href="/core/mem/#raw_string_data">raw_string_data</a>,
+	<a class="code-procedure" href="/core/mem/#raw_slice_data">raw_slice_data</a>,
+	<a class="code-procedure" href="/core/mem/#raw_dynamic_array_data">raw_dynamic_array_data</a>,
+}
+</pre>
+</div>
+</div>
+</section>
+<h2 id="pkg-source-files">Source Files</h2>
+<ul>
+<li><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/alloc.odin">alloc.odin</a></li>
+<li><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/allocators.odin">allocators.odin</a></li>
+<li><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/mem.odin">mem.odin</a></li>
+<li><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/raw.odin">raw.odin</a></li>
+</ul>
+<h2 id="pkg-generation-information">Generation Information</h2>
+<p>Generated with <code>odin version dev-2022-01 (vendor "odin") windows_amd64 @ 2022-01-22 17:55:35.857618800 +0000 UTC</code></p>
+</article>
+<div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
+<nav id="TableOfContents">
+<ul>
+<li><a href="#pkg-Types">Types</a><ul>
+<li><a href="#Allocator">Allocator</a></li>
+<li><a href="#Allocator_Error">Allocator_Error</a></li>
+<li><a href="#Allocator_Mode">Allocator_Mode</a></li>
+<li><a href="#Allocator_Mode_Set">Allocator_Mode_Set</a></li>
+<li><a href="#Allocator_Proc">Allocator_Proc</a></li>
+<li><a href="#Allocator_Query_Info">Allocator_Query_Info</a></li>
+<li><a href="#Arena">Arena</a></li>
+<li><a href="#Arena_Temp_Memory">Arena_Temp_Memory</a></li>
+<li><a href="#Dynamic_Pool">Dynamic_Pool</a></li>
+<li><a href="#Fixed_Byte_Buffer">Fixed_Byte_Buffer</a></li>
+<li><a href="#Poly_Raw_Map">Poly_Raw_Map</a></li>
+<li><a href="#Poly_Raw_Map_Entry">Poly_Raw_Map_Entry</a></li>
+<li><a href="#Raw_Any">Raw_Any</a></li>
+<li><a href="#Raw_Complex128">Raw_Complex128</a></li>
+<li><a href="#Raw_Complex64">Raw_Complex64</a></li>
+<li><a href="#Raw_Cstring">Raw_Cstring</a></li>
+<li><a href="#Raw_Dynamic_Array">Raw_Dynamic_Array</a></li>
+<li><a href="#Raw_Map">Raw_Map</a></li>
+<li><a href="#Raw_Quaternion128">Raw_Quaternion128</a></li>
+<li><a href="#Raw_Quaternion128_Vector_Scalar">Raw_Quaternion128_Vector_Scalar</a></li>
+<li><a href="#Raw_Quaternion256">Raw_Quaternion256</a></li>
+<li><a href="#Raw_Quaternion256_Vector_Scalar">Raw_Quaternion256_Vector_Scalar</a></li>
+<li><a href="#Raw_Slice">Raw_Slice</a></li>
+<li><a href="#Raw_String">Raw_String</a></li>
+<li><a href="#Scratch_Allocator">Scratch_Allocator</a></li>
+<li><a href="#Small_Stack">Small_Stack</a></li>
+<li><a href="#Small_Stack_Allocation_Header">Small_Stack_Allocation_Header</a></li>
+<li><a href="#Stack">Stack</a></li>
+<li><a href="#Stack_Allocation_Header">Stack_Allocation_Header</a></li>
+<li><a href="#Tracking_Allocator">Tracking_Allocator</a></li>
+<li><a href="#Tracking_Allocator_Bad_Free_Entry">Tracking_Allocator_Bad_Free_Entry</a></li>
+<li><a href="#Tracking_Allocator_Entry">Tracking_Allocator_Entry</a></li>
+</ul>
+</li>
+<li><a href="#pkg-Constants">Constants</a><ul>
+<li><a href="#DEFAULT_ALIGNMENT">DEFAULT_ALIGNMENT</a></li>
+<li><a href="#DEFAULT_RESERVE_CAPACITY">DEFAULT_RESERVE_CAPACITY</a></li>
+<li><a href="#DYNAMIC_POOL_BLOCK_SIZE_DEFAULT">DYNAMIC_POOL_BLOCK_SIZE_DEFAULT</a></li>
+<li><a href="#DYNAMIC_POOL_OUT_OF_BAND_SIZE_DEFAULT">DYNAMIC_POOL_OUT_OF_BAND_SIZE_DEFAULT</a></li>
+</ul>
+</li>
+<li><a href="#pkg-Procedures">Procedures</a><ul>
+<li><a href="#align_backward_uintptr">align_backward_uintptr</a></li>
+<li><a href="#align_backward">align_backward</a></li>
+<li><a href="#align_backward_int">align_backward_int</a></li>
+<li><a href="#align_backward_uint">align_backward_uint</a></li>
+<li><a href="#align_formula">align_formula</a></li>
+<li><a href="#align_forward">align_forward</a></li>
+<li><a href="#align_forward_int">align_forward_int</a></li>
+<li><a href="#align_forward_uint">align_forward_uint</a></li>
+<li><a href="#align_forward_uintptr">align_forward_uintptr</a></li>
+<li><a href="#alloc_bytes">alloc_bytes</a></li>
+<li><a href="#alloc">alloc</a></li>
+<li><a href="#any_to_bytes">any_to_bytes</a></li>
+<li><a href="#arena_allocator">arena_allocator</a></li>
+<li><a href="#arena_allocator_proc">arena_allocator_proc</a></li>
+<li><a href="#begin_arena_temp_memory">begin_arena_temp_memory</a></li>
+<li><a href="#buffer_from_slice">buffer_from_slice</a></li>
+<li><a href="#byte_slice">byte_slice</a></li>
+<li><a href="#calc_padding_with_header">calc_padding_with_header</a></li>
+<li><a href="#check_zero">check_zero</a></li>
+<li><a href="#check_zero_ptr">check_zero_ptr</a></li>
+<li><a href="#clone_slice">clone_slice</a></li>
+<li><a href="#compare">compare</a></li>
+<li><a href="#compare_byte_ptrs">compare_byte_ptrs</a></li>
+<li><a href="#compare_ptrs">compare_ptrs</a></li>
+<li><a href="#context_from_allocator">context_from_allocator</a></li>
+<li><a href="#copy">copy</a></li>
+<li><a href="#copy_non_overlapping">copy_non_overlapping</a></li>
+<li><a href="#default_resize_align">default_resize_align</a></li>
+<li><a href="#default_resize_bytes_align">default_resize_bytes_align</a></li>
+<li><a href="#delete_cstring">delete_cstring</a></li>
+<li><a href="#delete_dynamic_array">delete_dynamic_array</a></li>
+<li><a href="#delete_map">delete_map</a></li>
+<li><a href="#delete_slice">delete_slice</a></li>
+<li><a href="#delete_string">delete_string</a></li>
+<li><a href="#dynamic_pool_allocator_proc">dynamic_pool_allocator_proc</a></li>
+<li><a href="#dynamic_pool_allocator">dynamic_pool_allocator</a></li>
+<li><a href="#dynamic_pool_alloc">dynamic_pool_alloc</a></li>
+<li><a href="#dynamic_pool_alloc_bytes">dynamic_pool_alloc_bytes</a></li>
+<li><a href="#dynamic_pool_destroy">dynamic_pool_destroy</a></li>
+<li><a href="#dynamic_pool_free_all">dynamic_pool_free_all</a></li>
+<li><a href="#dynamic_pool_init">dynamic_pool_init</a></li>
+<li><a href="#dynamic_pool_reset">dynamic_pool_reset</a></li>
+<li><a href="#end_arena_temp_memory">end_arena_temp_memory</a></li>
+<li><a href="#free">free</a></li>
+<li><a href="#free_all">free_all</a></li>
+<li><a href="#free_bytes">free_bytes</a></li>
+<li><a href="#gigabytes">gigabytes</a></li>
+<li><a href="#init_arena">init_arena</a></li>
+<li><a href="#init_small_stack">init_small_stack</a></li>
+<li><a href="#init_stack">init_stack</a></li>
+<li><a href="#is_power_of_two">is_power_of_two</a></li>
+<li><a href="#kilobytes">kilobytes</a></li>
+<li><a href="#make_aligned">make_aligned</a></li>
+<li><a href="#make_any">make_any</a></li>
+<li><a href="#make_dynamic_array_len">make_dynamic_array_len</a></li>
+<li><a href="#make_dynamic_array">make_dynamic_array</a></li>
+<li><a href="#make_dynamic_array_len_cap">make_dynamic_array_len_cap</a></li>
+<li><a href="#make_fixed_byte_buffer">make_fixed_byte_buffer</a></li>
+<li><a href="#make_map">make_map</a></li>
+<li><a href="#make_multi_pointer">make_multi_pointer</a></li>
+<li><a href="#make_slice">make_slice</a></li>
+<li><a href="#megabytes">megabytes</a></li>
+<li><a href="#new">new</a></li>
+<li><a href="#new_aligned">new_aligned</a></li>
+<li><a href="#new_clone">new_clone</a></li>
+<li><a href="#nil_allocator">nil_allocator</a></li>
+<li><a href="#nil_allocator_proc">nil_allocator_proc</a></li>
+<li><a href="#panic_allocator">panic_allocator</a></li>
+<li><a href="#panic_allocator_proc">panic_allocator_proc</a></li>
+<li><a href="#ptr_to_bytes">ptr_to_bytes</a></li>
+<li><a href="#query_features">query_features</a></li>
+<li><a href="#query_info">query_info</a></li>
+<li><a href="#raw_array_data">raw_array_data</a></li>
+<li><a href="#raw_dynamic_array_data">raw_dynamic_array_data</a></li>
+<li><a href="#raw_slice_data">raw_slice_data</a></li>
+<li><a href="#raw_string_data">raw_string_data</a></li>
+<li><a href="#reinterpret_copy">reinterpret_copy</a></li>
+<li><a href="#resize_bytes">resize_bytes</a></li>
+<li><a href="#resize">resize</a></li>
+<li><a href="#scratch_allocator">scratch_allocator</a></li>
+<li><a href="#scratch_allocator_destroy">scratch_allocator_destroy</a></li>
+<li><a href="#scratch_allocator_init">scratch_allocator_init</a></li>
+<li><a href="#scratch_allocator_proc">scratch_allocator_proc</a></li>
+<li><a href="#set">set</a></li>
+<li><a href="#simple_equal">simple_equal</a></li>
+<li><a href="#slice_data_cast">slice_data_cast</a></li>
+<li><a href="#slice_ptr">slice_ptr</a></li>
+<li><a href="#slice_to_bytes">slice_to_bytes</a></li>
+<li><a href="#slice_to_components">slice_to_components</a></li>
+<li><a href="#small_stack_allocator_proc">small_stack_allocator_proc</a></li>
+<li><a href="#small_stack_allocator">small_stack_allocator</a></li>
+<li><a href="#stack_allocator">stack_allocator</a></li>
+<li><a href="#stack_allocator_proc">stack_allocator_proc</a></li>
+<li><a href="#terabytes">terabytes</a></li>
+<li><a href="#tracking_allocator_destroy">tracking_allocator_destroy</a></li>
+<li><a href="#tracking_allocator">tracking_allocator</a></li>
+<li><a href="#tracking_allocator_init">tracking_allocator_init</a></li>
+<li><a href="#tracking_allocator_proc">tracking_allocator_proc</a></li>
+<li><a href="#zero">zero</a></li>
+<li><a href="#zero_explicit">zero_explicit</a></li>
+<li><a href="#zero_item">zero_item</a></li>
+<li><a href="#zero_slice">zero_slice</a></li>
+</ul>
+</li>
+<li><a href="#pkg-Procedure Groups">Procedure Groups</a><ul>
+<li><a href="#delete">delete</a></li>
+<li><a href="#make">make</a></li>
+<li><a href="#raw_data">raw_data</a></li>
+</ul>
+</li>
+<li><a href="#pkg-source-files">Source Files</a></ul>
+</nav>
+</div></div>
+</div>
+
+</div>
+</main>
+
+<footer class="odin-footer">
+	<div class="container pb-5 pt-5">
+		<div class="row g-4">
+		<div class="col">
+		<a class="navbar-brand" href="https://odin-lang.org">
+		<img class="mb-3" src="https://odin-lang.org/logo.svg" height="30" alt="Odin"></a>
+		<p>
+		The Data-Oriented Language for Sane Software Development.
+		</p>
+		</div>
+		<nav class="col-md-auto">
+			<h4 class="fw-normal">Resources</h4>
+			<ul class="list-unstyled">
+			<li><a href="https://odin-lang.org/docs" class="link-light">Docs</a></li>
+			<li><a href="https://odin-lang.org/news" class="link-light">Blog</a></li>
+			</ul>
+		</nav>
+		<nav class="col-md-auto">
+			<h4 class="fw-normal">Community</h4>
+			<ul class="list-unstyled">
+			<li><a href="https://github.com/odin-lang/Odin" target="_blank" class="link-light">GitHub</a></li>
+			<li><a href="https://discord.com/invite/sVBPHEv" target="_blank" class="link-light">Discord</a></li>
+			<li><a href="https://www.twitch.tv/ginger_bill" target="_blank" class="link-light">Twitch</a></li>
+			<li><a href="https://www.youtube.com/channel/UCUSck1dOH7VKmG4lRW7tZXg" target="_blank" class="link-light">YouTube</a></li>
+			</ul>
+		</nav>
+		<nav class="col-md-auto">
+			<h4 class="fw-normal">Contribute</h4>
+			<ul class="list-unstyled">
+			<li><a href="https://github.com/odin-lang/Odin/issues" target="_blank" class="link-light">Issues</a></li>
+			<li><a href="https://www.patreon.com/gingerbill" target="_blank" class="link-light">Donate</a></li>
+			</ul>
+			</nav>
+		</div>
+		<div class="mt-4 text-muted">© 2016–2022 Ginger Bill</div>
+	</div>
+</footer>
+
+<script src="https://odin-lang.org/lib/bootstrap/js/bootstrap.min.js"></script>
+<script src="https://odin-lang.org/js/script.js"></script>
+<script>hljs.highlightAll()</script>
+</body>
+</html>
