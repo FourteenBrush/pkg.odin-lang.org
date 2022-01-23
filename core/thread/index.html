@@ -231,8 +231,8 @@ Procedure Groups</summary>
 	allocator:             runtime.<a class="code-typename" href="/runtime/#Allocator">Allocator</a>,
 	mutex:                 sync.<a class="code-typename" href="/sync/#Mutex">Mutex</a>,
 	sem_available:         sync.<a class="code-typename" href="/sync/#Semaphore">Semaphore</a>,
-	processing_task_count: <a href="">int</a>,
-	is_running:            <a href="">bool</a>,
+	processing_task_count: int,
+	is_running:            bool,
 	threads:               []^<a class="code-typename" href="/thread/#Thread">Thread</a>,
 	tasks:                 [dynamic]<a class="code-typename" href="/thread/#Task">Task</a>,
 }</pre>
@@ -243,15 +243,15 @@ Procedure Groups</summary>
 <div>
 <pre class="doc-code">Task :: struct {
 	procedure:  <a class="code-typename" href="/thread/#Task_Proc">Task_Proc</a>,
-	data:       <a href="">rawptr</a>,
-	user_index: <a href="">int</a>,
+	data:       rawptr,
+	user_index: int,
 }</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="Task_Id"><span><a class="doc-id-link" href="#Task_Id">Task_Id<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread_pool.odin#L22"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">Task_Id :: distinct <a href="">i32</a></pre>
+<pre class="doc-code">Task_Id :: distinct i32</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -263,7 +263,7 @@ Procedure Groups</summary>
 <div class="pkg-entity">
 <h3 id="Task_Status"><span><a class="doc-id-link" href="#Task_Status">Task_Status<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread_pool.odin#L7"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">Task_Status :: enum <a href="">i32</a> {
+<pre class="doc-code">Task_Status :: enum i32 {
 	Ready, 
 	Busy, 
 	Waiting, 
@@ -276,11 +276,11 @@ Procedure Groups</summary>
 <div>
 <pre class="doc-code">Thread :: struct {
 	specific:           Thread_Os_Specific,
-	id:                 <a href="">int</a>,
+	id:                 int,
 	procedure:          <a class="code-typename" href="/thread/#Thread_Proc">Thread_Proc</a>,
-	data:               <a href="">rawptr</a>,
-	user_index:         <a href="">int</a>,
-	user_args:          [8]<a href="">rawptr</a>,
+	data:               rawptr,
+	user_index:         int,
+	user_args:          [8]rawptr,
 	init_context:       runtime.<a class="code-typename" href="/runtime/#Maybe">Maybe</a>(runtime.Context),
 	creation_allocator: runtime.<a class="code-typename" href="/runtime/#Allocator">Allocator</a>,
 }</pre>
@@ -289,7 +289,7 @@ Procedure Groups</summary>
 <div class="pkg-entity">
 <h3 id="Thread_Priority"><span><a class="doc-id-link" href="#Thread_Priority">Thread_Priority<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L29"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">Thread_Priority :: enum <a href="">int</a> {
+<pre class="doc-code">Thread_Priority :: enum int {
 	Normal, 
 	Low, 
 	High, 
@@ -339,7 +339,7 @@ Procedure Groups</summary>
 <div class="pkg-entity">
 <h3 id="create_and_start_with_data"><span><a class="doc-id-link" href="#create_and_start_with_data">create_and_start_with_data<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L198"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">create_and_start_with_data :: proc(data: <a href="">rawptr</a>, fn: proc(ptr: <a href="">rawptr</a>), init_context: runtime.<a class="code-typename" href="/runtime/#Maybe">Maybe</a>(runtime.Context) = nil, priority: <a class="code-typename" href="/thread/#Thread_Priority">Thread_Priority</a> = Thread_Priority.Normal) -> ^<a class="code-typename" href="/thread/#Thread">Thread</a> {…}</pre>
+<pre class="doc-code">create_and_start_with_data :: proc(data: rawptr, fn: proc(ptr: rawptr), init_context: runtime.<a class="code-typename" href="/runtime/#Maybe">Maybe</a>(runtime.Context) = nil, priority: <a class="code-typename" href="/thread/#Thread_Priority">Thread_Priority</a> = Thread_Priority.Normal) -> ^<a class="code-typename" href="/thread/#Thread">Thread</a> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -375,7 +375,7 @@ Procedure Groups</summary>
 <div class="pkg-entity">
 <h3 id="is_done"><span><a class="doc-id-link" href="#is_done">is_done<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L46"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">is_done :: proc(thread: ^<a class="code-typename" href="/thread/#Thread">Thread</a>) -> <a href="">bool</a> {…}</pre>
+<pre class="doc-code">is_done :: proc(thread: ^<a class="code-typename" href="/thread/#Thread">Thread</a>) -> bool {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -393,7 +393,7 @@ Procedure Groups</summary>
 <div class="pkg-entity">
 <h3 id="pool_add_task"><span><a class="doc-id-link" href="#pool_add_task">pool_add_task<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread_pool.odin#L102"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">pool_add_task :: proc(pool: ^<a class="code-typename" href="/thread/#Pool">Pool</a>, procedure: <a class="code-typename" href="/thread/#Task_Proc">Task_Proc</a>, data: <a href="">rawptr</a>, user_index: <a href="">int</a> = 0) {…}</pre>
+<pre class="doc-code">pool_add_task :: proc(pool: ^<a class="code-typename" href="/thread/#Pool">Pool</a>, procedure: <a class="code-typename" href="/thread/#Task_Proc">Task_Proc</a>, data: rawptr, user_index: int = 0) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -411,7 +411,7 @@ Procedure Groups</summary>
 <div class="pkg-entity">
 <h3 id="pool_init"><span><a class="doc-id-link" href="#pool_init">pool_init<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread_pool.odin#L38"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">pool_init :: proc(pool: ^<a class="code-typename" href="/thread/#Pool">Pool</a>, thread_count: <a href="">int</a>, allocator := <a href="/core/runtime/#Context">context.allocator</a>) {…}</pre>
+<pre class="doc-code">pool_init :: proc(pool: ^<a class="code-typename" href="/thread/#Pool">Pool</a>, thread_count: int, allocator := <a href="/core/runtime/#Context">context.allocator</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -429,7 +429,7 @@ Procedure Groups</summary>
 <div class="pkg-entity">
 <h3 id="pool_try_and_pop_task"><span><a class="doc-id-link" href="#pool_try_and_pop_task">pool_try_and_pop_task<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread_pool.odin#L115"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">pool_try_and_pop_task :: proc(pool: ^<a class="code-typename" href="/thread/#Pool">Pool</a>) -> (task: <a class="code-typename" href="/thread/#Task">Task</a>, got_task: <a href="">bool</a> = false) {…}</pre>
+<pre class="doc-code">pool_try_and_pop_task :: proc(pool: ^<a class="code-typename" href="/thread/#Pool">Pool</a>) -> (task: <a class="code-typename" href="/thread/#Task">Task</a>, got_task: bool = false) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -441,7 +441,7 @@ Procedure Groups</summary>
 <div class="pkg-entity">
 <h3 id="run_with_data"><span><a class="doc-id-link" href="#run_with_data">run_with_data<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L82"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">run_with_data :: proc(data: <a href="">rawptr</a>, fn: proc(ptr: <a href="">rawptr</a>), init_context: runtime.<a class="code-typename" href="/runtime/#Maybe">Maybe</a>(runtime.Context) = nil, priority: <a class="code-typename" href="/thread/#Thread_Priority">Thread_Priority</a> = Thread_Priority.Normal) {…}</pre>
+<pre class="doc-code">run_with_data :: proc(data: rawptr, fn: proc(ptr: rawptr), init_context: runtime.<a class="code-typename" href="/runtime/#Maybe">Maybe</a>(runtime.Context) = nil, priority: <a class="code-typename" href="/thread/#Thread_Priority">Thread_Priority</a> = Thread_Priority.Normal) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -483,7 +483,7 @@ Procedure Groups</summary>
 <div class="pkg-entity">
 <h3 id="terminate"><span><a class="doc-id-link" href="#terminate">terminate<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L60"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">terminate :: proc(thread: ^<a class="code-typename" href="/thread/#Thread">Thread</a>, exit_code: <a href="">int</a>) {…}</pre>
+<pre class="doc-code">terminate :: proc(thread: ^<a class="code-typename" href="/thread/#Thread">Thread</a>, exit_code: int) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -504,7 +504,7 @@ Procedure Groups</summary>
 <li><em>(hidden platform specific files)</em></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2022-01 (vendor "odin") windows_amd64 @ 2022-01-23 17:02:28.260897900 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2022-01 (vendor "odin") windows_amd64 @ 2022-01-23 18:53:29.796069300 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
