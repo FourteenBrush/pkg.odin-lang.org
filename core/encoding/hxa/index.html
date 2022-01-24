@@ -38,9 +38,10 @@
 	</nav>
 </header>
 <main>
-<div class="container"><div class="row odin-main">
-<nav id="pkg-sidebar" class="col-lg-2 odin-sidebar-border navbar-light">
-<div class="sticky-top odin-below-navbar py-3">
+<div class="container full-width">
+<div class="row odin-main" id="pkg">
+<nav id="pkg-sidebar" class="col-lg-2 odin-sidebar-border navbar-light sticky-top odin-below-navbar">
+<div class="py-3">
 <h4>Core Library</h4>
 <ul>
 <li class="nav-item"><a href="/core/bufio">bufio</a></li>
@@ -142,7 +143,7 @@
 </div>
 </nav>
 <article class="col-lg-8 p-4 documentation odin-article">
-<h1>package core:encoding/hxa</h1>
+<h1>package core:encoding/hxa<div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/hxa"><em>Source</em></a></div></h1>
 <h2>Overview</h2>
 <div id="pkg-overview">
 <p>Implementation of the HxA 3D asset format
@@ -332,9 +333,9 @@ Procedure Groups</summary>
 <div class="pkg-entity">
 <h3 id="File"><span><a class="doc-id-link" href="#File">File<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/hxa/hxa.odin#L16"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">File :: struct {
+<pre class="doc-code">File :: <span class="keyword-type">struct</span> {
 	header:    <a class="code-typename" href="/core/encoding/hxa/#Header">Header</a>,
-	backing:   []u8,
+	backing:   []<span class="doc-builtin">u8</span>,
 	allocator: runtime.<a class="code-typename" href="/core/runtime/#Allocator">Allocator</a>,
 	nodes:     []<a class="code-typename" href="/core/encoding/hxa/#Node">Node</a>,
 }</pre>
@@ -343,17 +344,17 @@ Procedure Groups</summary>
 <div class="pkg-entity">
 <h3 id="Header"><span><a class="doc-id-link" href="#Header">Header<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/hxa/hxa.odin#L10"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">Header :: struct #packed {
-	magic_number:        u32le,
-	version:             u32le,
-	internal_node_count: u32le,
+<pre class="doc-code">Header :: <span class="keyword-type">struct</span> <span class="directive">#packed</span> {
+	magic_number:        <span class="doc-builtin">u32le</span>,
+	version:             <span class="doc-builtin">u32le</span>,
+	internal_node_count: <span class="doc-builtin">u32le</span>,
 }</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="Image_Type"><span><a class="doc-id-link" href="#Image_Type">Image_Type<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/hxa/hxa.odin#L37"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">Image_Type :: enum u8 {
+<pre class="doc-code">Image_Type :: <span class="keyword-type">enum</span> <span class="doc-builtin">u8</span> {
 	Image_Cube = 0, 
 	Image_1D   = 1, 
 	Image_2D   = 2, 
@@ -368,14 +369,16 @@ Procedure Groups</summary>
 <div class="pkg-entity">
 <h3 id="Layer"><span><a class="doc-id-link" href="#Layer">Layer<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/hxa/hxa.odin#L65"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">Layer :: struct {
-	name:       string,
-	components: u8,
-	data:       union {
-		[]u8, 
-		[]i32le, 
-		[]f32le, 
-		[]f64le, 
+<pre class="doc-code">Layer :: <span class="keyword-type">struct</span> {
+	name:       <span class="doc-builtin">string</span>,
+	<span class="comment">// name of the layer (maximum length is 255)</span>
+	components: <span class="doc-builtin">u8</span>,
+	<span class="comment">// 2 for uv, 3 for xyz/rgb, 4 for rgba</span>
+	data:       <span class="keyword-type">union</span> {
+		[]<span class="doc-builtin">u8</span>, 
+		[]<span class="doc-builtin">i32le</span>, 
+		[]<span class="doc-builtin">f32le</span>, 
+		[]<span class="doc-builtin">f64le</span>, 
 	},
 }</pre>
 </div>
@@ -383,7 +386,7 @@ Procedure Groups</summary>
 <div class="pkg-entity">
 <h3 id="Layer_Data_Type"><span><a class="doc-id-link" href="#Layer_Data_Type">Layer_Data_Type<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/hxa/hxa.odin#L29"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">Layer_Data_Type :: enum u8 {
+<pre class="doc-code">Layer_Data_Type :: <span class="keyword-type">enum</span> <span class="doc-builtin">u8</span> {
 	Uint8  = 0, 
 	Int32  = 1, 
 	Float  = 2, 
@@ -404,14 +407,15 @@ Procedure Groups</summary>
 <div class="pkg-entity">
 <h3 id="Meta"><span><a class="doc-id-link" href="#Meta">Meta<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/hxa/hxa.odin#L53"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">Meta :: struct {
-	name:  string,
-	value: union {
-		[]i64le, 
-		[]f64le, 
+<pre class="doc-code">Meta :: <span class="keyword-type">struct</span> {
+	name:  <span class="doc-builtin">string</span>,
+	<span class="comment">// name of the meta data value (maximum length is 255)</span>
+	value: <span class="keyword-type">union</span> {
+		[]<span class="doc-builtin">i64le</span>, 
+		[]<span class="doc-builtin">f64le</span>, 
 		[]<a class="code-typename" href="/core/encoding/hxa/#Node_Index">Node_Index</a>, 
-		string, 
-		[]u8, 
+		<span class="doc-builtin">string</span>, 
+		[]<span class="doc-builtin">u8</span>, 
 		[]<a class="code-typename" href="/core/encoding/hxa/#Meta">Meta</a>, 
 	},
 }</pre>
@@ -420,7 +424,7 @@ Procedure Groups</summary>
 <div class="pkg-entity">
 <h3 id="Meta_Value_Type"><span><a class="doc-id-link" href="#Meta_Value_Type">Meta_Value_Type<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/hxa/hxa.odin#L44"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">Meta_Value_Type :: enum u8 {
+<pre class="doc-code">Meta_Value_Type :: <span class="keyword-type">enum</span> <span class="doc-builtin">u8</span> {
 	Int64  = 0, 
 	Double = 1, 
 	Node   = 2, 
@@ -433,9 +437,9 @@ Procedure Groups</summary>
 <div class="pkg-entity">
 <h3 id="Node"><span><a class="doc-id-link" href="#Node">Node<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/hxa/hxa.odin#L98"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">Node :: struct {
+<pre class="doc-code">Node :: <span class="keyword-type">struct</span> {
 	meta_data: []<a class="code-typename" href="/core/encoding/hxa/#Meta">Meta</a>,
-	content:   union {
+	content:   <span class="keyword-type">union</span> {
 		<a class="code-typename" href="/core/encoding/hxa/#Node_Geometry">Node_Geometry</a>, 
 		<a class="code-typename" href="/core/encoding/hxa/#Node_Image">Node_Image</a>, 
 	},
@@ -449,13 +453,19 @@ Procedure Groups</summary>
 <div class="pkg-entity">
 <h3 id="Node_Geometry"><span><a class="doc-id-link" href="#Node_Geometry">Node_Geometry<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/hxa/hxa.odin#L79"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">Node_Geometry :: struct {
-	vertex_count:      u32le,
+<pre class="doc-code">Node_Geometry :: <span class="keyword-type">struct</span> {
+	vertex_count:      <span class="doc-builtin">u32le</span>,
+	<span class="comment">// number of vertices</span>
 	vertex_stack:      <a class="code-typename" href="/core/encoding/hxa/#Layer_Stack">Layer_Stack</a>,
-	edge_corner_count: u32le,
+	<span class="comment">// stack of vertex arrays. the first layer is always the vertex positions</span>
+	edge_corner_count: <span class="doc-builtin">u32le</span>,
+	<span class="comment">// number of corners</span>
 	corner_stack:      <a class="code-typename" href="/core/encoding/hxa/#Layer_Stack">Layer_Stack</a>,
+	<span class="comment">// stack of corner arrays, the first layer is always a reference array (see below)</span>
 	edge_stack:        <a class="code-typename" href="/core/encoding/hxa/#Layer_Stack">Layer_Stack</a>,
-	face_count:        u32le,
+	<span class="comment">// stack of edge arrays</span>
+	face_count:        <span class="doc-builtin">u32le</span>,
+	<span class="comment">// number of polygons</span>
 	face_stack:        <a class="code-typename" href="/core/encoding/hxa/#Layer_Stack">Layer_Stack</a>,
 }</pre>
 </div>
@@ -463,9 +473,9 @@ Procedure Groups</summary>
 <div class="pkg-entity">
 <h3 id="Node_Image"><span><a class="doc-id-link" href="#Node_Image">Node_Image<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/hxa/hxa.odin#L89"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">Node_Image :: struct {
+<pre class="doc-code">Node_Image :: <span class="keyword-type">struct</span> {
 	type:        <a class="code-typename" href="/core/encoding/hxa/#Image_Type">Image_Type</a>,
-	resolution:  [3]u32le,
+	resolution:  [3]<span class="doc-builtin">u32le</span>,
 	image_stack: <a class="code-typename" href="/core/encoding/hxa/#Layer_Stack">Layer_Stack</a>,
 }</pre>
 </div>
@@ -473,13 +483,13 @@ Procedure Groups</summary>
 <div class="pkg-entity">
 <h3 id="Node_Index"><span><a class="doc-id-link" href="#Node_Index">Node_Index<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/hxa/hxa.odin#L95"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">Node_Index :: distinct u32le</pre>
+<pre class="doc-code">Node_Index :: distinct <span class="doc-builtin">u32le</span></pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="Node_Type"><span><a class="doc-id-link" href="#Node_Type">Node_Type<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/hxa/hxa.odin#L23"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">Node_Type :: enum u8 {
+<pre class="doc-code">Node_Type :: <span class="keyword-type">enum</span> <span class="doc-builtin">u8</span> {
 	Meta_Only = 0, 
 	Geometry  = 1, 
 	Image     = 2, 
@@ -489,7 +499,7 @@ Procedure Groups</summary>
 <div class="pkg-entity">
 <h3 id="Read_Error"><span><a class="doc-id-link" href="#Read_Error">Read_Error<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/hxa/read.odin#L7"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">Read_Error :: enum int {
+<pre class="doc-code">Read_Error :: <span class="keyword-type">enum</span> <span class="doc-builtin">int</span> {
 	None, 
 	Short_Read, 
 	Invalid_Data, 
@@ -500,7 +510,7 @@ Procedure Groups</summary>
 <div class="pkg-entity">
 <h3 id="Write_Error"><span><a class="doc-id-link" href="#Write_Error">Write_Error<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/hxa/write.odin#L6"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">Write_Error :: enum int {
+<pre class="doc-code">Write_Error :: <span class="keyword-type">enum</span> <span class="doc-builtin">int</span> {
 	None, 
 	Buffer_Too_Small, 
 	Failed_File_Write, 
@@ -525,7 +535,7 @@ Procedure Groups</summary>
 <div class="pkg-entity">
 <h3 id="CONVENTION_HARD_BASE_CORNER_LAYER_NAME"><span><a class="doc-id-link" href="#CONVENTION_HARD_BASE_CORNER_LAYER_NAME">CONVENTION_HARD_BASE_CORNER_LAYER_NAME<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/hxa/hxa.odin#L120"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">CONVENTION_HARD_BASE_CORNER_LAYER_NAME :: ""reference""</pre>
+<pre class="doc-code">CONVENTION_HARD_BASE_CORNER_LAYER_NAME :: "reference"</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -549,13 +559,13 @@ Procedure Groups</summary>
 <div class="pkg-entity">
 <h3 id="CONVENTION_HARD_BASE_VERTEX_LAYER_NAME"><span><a class="doc-id-link" href="#CONVENTION_HARD_BASE_VERTEX_LAYER_NAME">CONVENTION_HARD_BASE_VERTEX_LAYER_NAME<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/hxa/hxa.odin#L117"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">CONVENTION_HARD_BASE_VERTEX_LAYER_NAME :: ""vertex""</pre>
+<pre class="doc-code">CONVENTION_HARD_BASE_VERTEX_LAYER_NAME :: "vertex"</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="CONVENTION_HARD_EDGE_NEIGHBOUR_LAYER_NAME"><span><a class="doc-id-link" href="#CONVENTION_HARD_EDGE_NEIGHBOUR_LAYER_NAME">CONVENTION_HARD_EDGE_NEIGHBOUR_LAYER_NAME<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/hxa/hxa.odin#L124"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">CONVENTION_HARD_EDGE_NEIGHBOUR_LAYER_NAME :: ""neighbour""</pre>
+<pre class="doc-code">CONVENTION_HARD_EDGE_NEIGHBOUR_LAYER_NAME :: "neighbour"</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -567,121 +577,121 @@ Procedure Groups</summary>
 <div class="pkg-entity">
 <h3 id="CONVENTION_SOFT_ALBEDO"><span><a class="doc-id-link" href="#CONVENTION_SOFT_ALBEDO">CONVENTION_SOFT_ALBEDO<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/hxa/hxa.odin#L150"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">CONVENTION_SOFT_ALBEDO :: ""albedo""</pre>
+<pre class="doc-code">CONVENTION_SOFT_ALBEDO :: "albedo"</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="CONVENTION_SOFT_AMBIENT_OCCLUSION"><span><a class="doc-id-link" href="#CONVENTION_SOFT_AMBIENT_OCCLUSION">CONVENTION_SOFT_AMBIENT_OCCLUSION<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/hxa/hxa.odin#L154"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">CONVENTION_SOFT_AMBIENT_OCCLUSION :: ""ambient_occlusion""</pre>
+<pre class="doc-code">CONVENTION_SOFT_AMBIENT_OCCLUSION :: "ambient_occlusion"</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="CONVENTION_SOFT_DISPLACEMENT"><span><a class="doc-id-link" href="#CONVENTION_SOFT_DISPLACEMENT">CONVENTION_SOFT_DISPLACEMENT<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/hxa/hxa.odin#L152"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">CONVENTION_SOFT_DISPLACEMENT :: ""displacement""</pre>
+<pre class="doc-code">CONVENTION_SOFT_DISPLACEMENT :: "displacement"</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="CONVENTION_SOFT_DISTORTION"><span><a class="doc-id-link" href="#CONVENTION_SOFT_DISTORTION">CONVENTION_SOFT_DISTORTION<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/hxa/hxa.odin#L153"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">CONVENTION_SOFT_DISTORTION :: ""distortion""</pre>
+<pre class="doc-code">CONVENTION_SOFT_DISTORTION :: "distortion"</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="CONVENTION_SOFT_LAYER_ADD_BLENDSHAPE"><span><a class="doc-id-link" href="#CONVENTION_SOFT_LAYER_ADD_BLENDSHAPE">CONVENTION_SOFT_LAYER_ADD_BLENDSHAPE<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/hxa/hxa.odin#L145"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">CONVENTION_SOFT_LAYER_ADD_BLENDSHAPE :: ""addblendshape""</pre>
+<pre class="doc-code">CONVENTION_SOFT_LAYER_ADD_BLENDSHAPE :: "addblendshape"</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="CONVENTION_SOFT_LAYER_BINORMAL"><span><a class="doc-id-link" href="#CONVENTION_SOFT_LAYER_BINORMAL">CONVENTION_SOFT_LAYER_BINORMAL<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/hxa/hxa.odin#L137"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">CONVENTION_SOFT_LAYER_BINORMAL :: ""binormal""</pre>
+<pre class="doc-code">CONVENTION_SOFT_LAYER_BINORMAL :: "binormal"</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="CONVENTION_SOFT_LAYER_BLENDSHAPE"><span><a class="doc-id-link" href="#CONVENTION_SOFT_LAYER_BLENDSHAPE">CONVENTION_SOFT_LAYER_BLENDSHAPE<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/hxa/hxa.odin#L144"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">CONVENTION_SOFT_LAYER_BLENDSHAPE :: ""blendshape""</pre>
+<pre class="doc-code">CONVENTION_SOFT_LAYER_BLENDSHAPE :: "blendshape"</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="CONVENTION_SOFT_LAYER_COLOR"><span><a class="doc-id-link" href="#CONVENTION_SOFT_LAYER_COLOR">CONVENTION_SOFT_LAYER_COLOR<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/hxa/hxa.odin#L139"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">CONVENTION_SOFT_LAYER_COLOR :: ""color""</pre>
+<pre class="doc-code">CONVENTION_SOFT_LAYER_COLOR :: "color"</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="CONVENTION_SOFT_LAYER_CREASES"><span><a class="doc-id-link" href="#CONVENTION_SOFT_LAYER_CREASES">CONVENTION_SOFT_LAYER_CREASES<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/hxa/hxa.odin#L140"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">CONVENTION_SOFT_LAYER_CREASES :: ""creases""</pre>
+<pre class="doc-code">CONVENTION_SOFT_LAYER_CREASES :: "creases"</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="CONVENTION_SOFT_LAYER_MATERIAL_ID"><span><a class="doc-id-link" href="#CONVENTION_SOFT_LAYER_MATERIAL_ID">CONVENTION_SOFT_LAYER_MATERIAL_ID<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/hxa/hxa.odin#L146"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">CONVENTION_SOFT_LAYER_MATERIAL_ID :: ""material""</pre>
+<pre class="doc-code">CONVENTION_SOFT_LAYER_MATERIAL_ID :: "material"</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="CONVENTION_SOFT_LAYER_NAME_UV0"><span><a class="doc-id-link" href="#CONVENTION_SOFT_LAYER_NAME_UV0">CONVENTION_SOFT_LAYER_NAME_UV0<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/hxa/hxa.odin#L135"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">CONVENTION_SOFT_LAYER_NAME_UV0 :: ""uv""</pre>
+<pre class="doc-code">CONVENTION_SOFT_LAYER_NAME_UV0 :: "uv"</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="CONVENTION_SOFT_LAYER_NORMALS"><span><a class="doc-id-link" href="#CONVENTION_SOFT_LAYER_NORMALS">CONVENTION_SOFT_LAYER_NORMALS<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/hxa/hxa.odin#L136"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">CONVENTION_SOFT_LAYER_NORMALS :: ""normal""</pre>
+<pre class="doc-code">CONVENTION_SOFT_LAYER_NORMALS :: "normal"</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="CONVENTION_SOFT_LAYER_SELECTION"><span><a class="doc-id-link" href="#CONVENTION_SOFT_LAYER_SELECTION">CONVENTION_SOFT_LAYER_SELECTION<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/hxa/hxa.odin#L141"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">CONVENTION_SOFT_LAYER_SELECTION :: ""select""</pre>
+<pre class="doc-code">CONVENTION_SOFT_LAYER_SELECTION :: "select"</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="CONVENTION_SOFT_LAYER_SEQUENCE0"><span><a class="doc-id-link" href="#CONVENTION_SOFT_LAYER_SEQUENCE0">CONVENTION_SOFT_LAYER_SEQUENCE0<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/hxa/hxa.odin#L134"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">CONVENTION_SOFT_LAYER_SEQUENCE0 :: ""sequence""</pre>
+<pre class="doc-code">CONVENTION_SOFT_LAYER_SEQUENCE0 :: "sequence"</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="CONVENTION_SOFT_LAYER_SKIN_REFERENCE"><span><a class="doc-id-link" href="#CONVENTION_SOFT_LAYER_SKIN_REFERENCE">CONVENTION_SOFT_LAYER_SKIN_REFERENCE<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/hxa/hxa.odin#L143"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">CONVENTION_SOFT_LAYER_SKIN_REFERENCE :: ""skining_reference""</pre>
+<pre class="doc-code">CONVENTION_SOFT_LAYER_SKIN_REFERENCE :: "skining_reference"</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="CONVENTION_SOFT_LAYER_SKIN_WEIGHT"><span><a class="doc-id-link" href="#CONVENTION_SOFT_LAYER_SKIN_WEIGHT">CONVENTION_SOFT_LAYER_SKIN_WEIGHT<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/hxa/hxa.odin#L142"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">CONVENTION_SOFT_LAYER_SKIN_WEIGHT :: ""skining_weight""</pre>
+<pre class="doc-code">CONVENTION_SOFT_LAYER_SKIN_WEIGHT :: "skining_weight"</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="CONVENTION_SOFT_LAYER_TANGENT"><span><a class="doc-id-link" href="#CONVENTION_SOFT_LAYER_TANGENT">CONVENTION_SOFT_LAYER_TANGENT<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/hxa/hxa.odin#L138"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">CONVENTION_SOFT_LAYER_TANGENT :: ""tangent""</pre>
+<pre class="doc-code">CONVENTION_SOFT_LAYER_TANGENT :: "tangent"</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="CONVENTION_SOFT_LIGHT"><span><a class="doc-id-link" href="#CONVENTION_SOFT_LIGHT">CONVENTION_SOFT_LIGHT<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/hxa/hxa.odin#L151"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">CONVENTION_SOFT_LIGHT :: ""light""</pre>
+<pre class="doc-code">CONVENTION_SOFT_LIGHT :: "light"</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="CONVENTION_SOFT_NAME"><span><a class="doc-id-link" href="#CONVENTION_SOFT_NAME">CONVENTION_SOFT_NAME<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/hxa/hxa.odin#L158"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">CONVENTION_SOFT_NAME :: ""name""</pre>
+<pre class="doc-code">CONVENTION_SOFT_NAME :: "name"</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="CONVENTION_SOFT_TRANSFORM"><span><a class="doc-id-link" href="#CONVENTION_SOFT_TRANSFORM">CONVENTION_SOFT_TRANSFORM<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/hxa/hxa.odin#L159"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">CONVENTION_SOFT_TRANSFORM :: ""transform""</pre>
+<pre class="doc-code">CONVENTION_SOFT_TRANSFORM :: "transform"</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -693,13 +703,13 @@ Procedure Groups</summary>
 <div class="pkg-entity">
 <h3 id="MAGIC_NUMBER"><span><a class="doc-id-link" href="#MAGIC_NUMBER">MAGIC_NUMBER<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/hxa/hxa.odin#L8"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">MAGIC_NUMBER :: ''H'' << 0 | ''x'' << 8 | ''A'' << 16 | ''\x00'' << 24</pre>
+<pre class="doc-code">MAGIC_NUMBER :: 'H' << 0 | 'x' << 8 | 'A' << 16 | '\x00' << 24</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="VERSION_API"><span><a class="doc-id-link" href="#VERSION_API">VERSION_API<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/hxa/hxa.odin#L6"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">VERSION_API :: ""0.3""</pre>
+<pre class="doc-code">VERSION_API :: "0.3"</pre>
 </div>
 </div>
 </section>
@@ -712,49 +722,49 @@ Procedure Groups</summary>
 <div class="pkg-entity">
 <h3 id="file_destroy"><span><a class="doc-id-link" href="#file_destroy">file_destroy<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/hxa/hxa.odin#L190"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">file_destroy :: proc(file: <a class="code-typename" href="/core/encoding/hxa/#File">File</a>) {…}</pre>
+<pre class="doc-code">file_destroy :: <span class="keyword-type">proc</span>(file: <a class="code-typename" href="/core/encoding/hxa/#File">File</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="meta_destroy"><span><a class="doc-id-link" href="#meta_destroy">meta_destroy<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/hxa/hxa.odin#L163"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">meta_destroy :: proc(meta: <a class="code-typename" href="/core/encoding/hxa/#Meta">Meta</a>, allocator := <a href="/core/runtime/#Context">context.allocator</a>) {…}</pre>
+<pre class="doc-code">meta_destroy :: <span class="keyword-type">proc</span>(meta: <a class="code-typename" href="/core/encoding/hxa/#Meta">Meta</a>, allocator := <a href="/core/runtime/#Context">context.allocator</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="nodes_destroy"><span><a class="doc-id-link" href="#nodes_destroy">nodes_destroy<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/hxa/hxa.odin#L171"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">nodes_destroy :: proc(nodes: []<a class="code-typename" href="/core/encoding/hxa/#Node">Node</a>, allocator := <a href="/core/runtime/#Context">context.allocator</a>) {…}</pre>
+<pre class="doc-code">nodes_destroy :: <span class="keyword-type">proc</span>(nodes: []<a class="code-typename" href="/core/encoding/hxa/#Node">Node</a>, allocator := <a href="/core/runtime/#Context">context.allocator</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="read"><span><a class="doc-id-link" href="#read">read<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/hxa/read.odin#L31"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">read :: proc(data: []u8, filename: string = ""<input>"", print_error: bool = false, allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> (file: <a class="code-typename" href="/core/encoding/hxa/#File">File</a>, err: <a class="code-typename" href="/core/encoding/hxa/#Read_Error">Read_Error</a>) {…}</pre>
+<pre class="doc-code">read :: <span class="keyword-type">proc</span>(data: []<span class="doc-builtin">u8</span>, filename: <span class="doc-builtin">string</span> = "<input>", print_error: <span class="doc-builtin">bool</span> = false, allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> (file: <a class="code-typename" href="/core/encoding/hxa/#File">File</a>, err: <a class="code-typename" href="/core/encoding/hxa/#Read_Error">Read_Error</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="read_from_file"><span><a class="doc-id-link" href="#read_from_file">read_from_file<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/hxa/read.odin#L14"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">read_from_file :: proc(filename: string, print_error: bool = false, allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> (file: <a class="code-typename" href="/core/encoding/hxa/#File">File</a>, err: <a class="code-typename" href="/core/encoding/hxa/#Read_Error">Read_Error</a>) {…}</pre>
+<pre class="doc-code">read_from_file :: <span class="keyword-type">proc</span>(filename: <span class="doc-builtin">string</span>, print_error: <span class="doc-builtin">bool</span> = false, allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> (file: <a class="code-typename" href="/core/encoding/hxa/#File">File</a>, err: <a class="code-typename" href="/core/encoding/hxa/#Read_Error">Read_Error</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="required_write_size"><span><a class="doc-id-link" href="#required_write_size">required_write_size<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/hxa/write.odin#L38"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">required_write_size :: proc(file: <a class="code-typename" href="/core/encoding/hxa/#File">File</a>) -> (n: int) {…}</pre>
+<pre class="doc-code">required_write_size :: <span class="keyword-type">proc</span>(file: <a class="code-typename" href="/core/encoding/hxa/#File">File</a>) -> (n: <span class="doc-builtin">int</span>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="write"><span><a class="doc-id-link" href="#write">write<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/hxa/write.odin#L27"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">write :: proc(buf: []u8, file: <a class="code-typename" href="/core/encoding/hxa/#File">File</a>) -> (n: int, err: <a class="code-typename" href="/core/encoding/hxa/#Write_Error">Write_Error</a>) {…}</pre>
+<pre class="doc-code">write :: <span class="keyword-type">proc</span>(buf: []<span class="doc-builtin">u8</span>, file: <a class="code-typename" href="/core/encoding/hxa/#File">File</a>) -> (n: <span class="doc-builtin">int</span>, err: <a class="code-typename" href="/core/encoding/hxa/#Write_Error">Write_Error</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="write_to_file"><span><a class="doc-id-link" href="#write_to_file">write_to_file<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/hxa/write.odin#L12"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">write_to_file :: proc(filepath: string, file: <a class="code-typename" href="/core/encoding/hxa/#File">File</a>) -> (err: <a class="code-typename" href="/core/encoding/hxa/#Write_Error">Write_Error</a>) {…}</pre>
+<pre class="doc-code">write_to_file :: <span class="keyword-type">proc</span>(filepath: <span class="doc-builtin">string</span>, file: <a class="code-typename" href="/core/encoding/hxa/#File">File</a>) -> (err: <a class="code-typename" href="/core/encoding/hxa/#Write_Error">Write_Error</a>) {…}</pre>
 </div>
 </div>
 </section>
@@ -770,7 +780,7 @@ Procedure Groups</summary>
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/hxa/write.odin">write.odin</a></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2022-01 (vendor "odin") windows_amd64 @ 2022-01-23 21:07:27.595628500 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2022-01 (vendor "odin") windows_amd64 @ 2022-01-24 15:13:57.264661500 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">

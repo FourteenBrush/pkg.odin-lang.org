@@ -38,9 +38,10 @@
 	</nav>
 </header>
 <main>
-<div class="container"><div class="row odin-main">
-<nav id="pkg-sidebar" class="col-lg-2 odin-sidebar-border navbar-light">
-<div class="sticky-top odin-below-navbar py-3">
+<div class="container full-width">
+<div class="row odin-main" id="pkg">
+<nav id="pkg-sidebar" class="col-lg-2 odin-sidebar-border navbar-light sticky-top odin-below-navbar">
+<div class="py-3">
 <h4>Core Library</h4>
 <ul>
 <li class="nav-item"><a href="/core/bufio">bufio</a></li>
@@ -142,7 +143,7 @@
 </div>
 </nav>
 <article class="col-lg-8 p-4 documentation odin-article">
-<h1>package core:image</h1>
+<h1>package core:image<div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image"><em>Source</em></a></div></h1>
 <h2>Overview</h2>
 <div id="pkg-overview">
 <p>package image implements a general 2D image library to be used with other image related packages</p>
@@ -212,7 +213,7 @@ Procedure Groups</summary>
 <div class="pkg-entity">
 <h3 id="Channel"><span><a class="doc-id-link" href="#Channel">Channel<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L263"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">Channel :: enum u8 {
+<pre class="doc-code">Channel :: <span class="keyword-type">enum</span> <span class="doc-builtin">u8</span> {
 	R = 1, 
 	G = 2, 
 	B = 3, 
@@ -227,7 +228,7 @@ Procedure Groups</summary>
 <div class="pkg-entity">
 <h3 id="Error"><span><a class="doc-id-link" href="#Error">Error<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L121"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">Error :: union {
+<pre class="doc-code">Error :: <span class="keyword-type">union</span> {
 	<a class="code-typename" href="/core/image/#General_Image_Error">General_Image_Error</a>, 
 	<a class="code-typename" href="/core/image/#PNG_Error">PNG_Error</a>, 
 	compress.<a class="code-typename" href="/core/compress/#Error">Error</a>, 
@@ -241,7 +242,7 @@ Procedure Groups</summary>
 <div class="pkg-entity">
 <h3 id="General_Image_Error"><span><a class="doc-id-link" href="#General_Image_Error">General_Image_Error<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L132"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">General_Image_Error :: enum int {
+<pre class="doc-code">General_Image_Error :: <span class="keyword-type">enum</span> <span class="doc-builtin">int</span> {
 	None                          = 0, 
 	Invalid_Image_Dimensions, 
 	Image_Dimensions_Too_Large, 
@@ -252,18 +253,21 @@ Procedure Groups</summary>
 <div class="pkg-entity">
 <h3 id="Image_Metadata"><span><a class="doc-id-link" href="#Image_Metadata">Image_Metadata<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L34"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">Image_Metadata :: union {}</pre>
+<pre class="doc-code">Image_Metadata :: <span class="keyword-type">union</span> {}</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="Image"><span><a class="doc-id-link" href="#Image">Image<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L18"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">Image :: struct {
-	width:      int,
-	height:     int,
-	channels:   int,
-	depth:      int,
+<pre class="doc-code">Image :: <span class="keyword-type">struct</span> {
+	width:      <span class="doc-builtin">int</span>,
+	height:     <span class="doc-builtin">int</span>,
+	channels:   <span class="doc-builtin">int</span>,
+	depth:      <span class="doc-builtin">int</span>,
 	pixels:     bytes.<a class="code-typename" href="/core/bytes/#Buffer">Buffer</a>,
+	<span class="comment">// 		Some image loaders/writers can return/take an optional background color.</span>
+	<span class="comment">// 		For convenience, we return them as u16 so we don't need to switch on the type</span>
+	<span class="comment">// 		in our viewer, and can just test against nil.</span>
 	background: runtime.<a class="code-typename" href="/core/runtime/#Maybe">Maybe</a>([3]u16),
 	metadata:   <a class="code-typename" href="/core/image/#Image_Metadata">Image_Metadata</a>,
 }</pre>
@@ -272,7 +276,7 @@ Procedure Groups</summary>
 <div class="pkg-entity">
 <h3 id="Option"><span><a class="doc-id-link" href="#Option">Option<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L105"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">Option :: enum int {
+<pre class="doc-code">Option :: <span class="keyword-type">enum</span> <span class="doc-builtin">int</span> {
 	info                    = 0, 
 	do_not_decompress_image, 
 	return_header, 
@@ -290,24 +294,24 @@ Procedure Groups</summary>
 <div class="pkg-entity">
 <h3 id="Options"><span><a class="doc-id-link" href="#Options">Options<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L119"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">Options :: distinct bit_set[<a class="code-typename" href="/core/image/#Option">Option</a>]</pre>
+<pre class="doc-code">Options :: distinct <span class="keyword-type">bit_set</span>[<a class="code-typename" href="/core/image/#Option">Option</a>]</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="PNG_Chunk"><span><a class="doc-id-link" href="#PNG_Chunk">PNG_Chunk<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L173"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">PNG_Chunk :: struct #packed {
+<pre class="doc-code">PNG_Chunk :: <span class="keyword-type">struct</span> <span class="directive">#packed</span> {
 	header: <a class="code-typename" href="/core/image/#PNG_Chunk_Header">PNG_Chunk_Header</a>,
-	data:   []u8,
-	crc:    u32be,
+	data:   []<span class="doc-builtin">u8</span>,
+	crc:    <span class="doc-builtin">u32be</span>,
 }</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="PNG_Chunk_Header"><span><a class="doc-id-link" href="#PNG_Chunk_Header">PNG_Chunk_Header<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L168"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">PNG_Chunk_Header :: struct #packed {
-	length: u32be,
+<pre class="doc-code">PNG_Chunk_Header :: <span class="keyword-type">struct</span> <span class="directive">#packed</span> {
+	length: <span class="doc-builtin">u32be</span>,
 	type:   <a class="code-typename" href="/core/image/#PNG_Chunk_Type">PNG_Chunk_Type</a>,
 }</pre>
 </div>
@@ -315,7 +319,7 @@ Procedure Groups</summary>
 <div class="pkg-entity">
 <h3 id="PNG_Chunk_Type"><span><a class="doc-id-link" href="#PNG_Chunk_Type">PNG_Chunk_Type<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L179"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">PNG_Chunk_Type :: enum u32be {
+<pre class="doc-code">PNG_Chunk_Type :: <span class="keyword-type">enum</span> <span class="doc-builtin">u32be</span> {
 	IHDR = 1229472850, 
 	PLTE = 1347179589, 
 	bKGD = 1649100612, 
@@ -343,13 +347,13 @@ Procedure Groups</summary>
 <div class="pkg-entity">
 <h3 id="PNG_Color_Type"><span><a class="doc-id-link" href="#PNG_Color_Type">PNG_Color_Type<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L245"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">PNG_Color_Type :: distinct bit_set[<a class="code-typename" href="/core/image/#PNG_Color_Value">PNG_Color_Value</a>; u8]</pre>
+<pre class="doc-code">PNG_Color_Type :: distinct <span class="keyword-type">bit_set</span>[<a class="code-typename" href="/core/image/#PNG_Color_Value">PNG_Color_Value</a>; <span class="doc-builtin">u8</span>]</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="PNG_Color_Value"><span><a class="doc-id-link" href="#PNG_Color_Value">PNG_Color_Value<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L240"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">PNG_Color_Value :: enum u8 {
+<pre class="doc-code">PNG_Color_Value :: <span class="keyword-type">enum</span> <span class="doc-builtin">u8</span> {
 	Paletted = 0, 
 	Color    = 1, 
 	Alpha    = 2, 
@@ -359,7 +363,7 @@ Procedure Groups</summary>
 <div class="pkg-entity">
 <h3 id="PNG_Error"><span><a class="doc-id-link" href="#PNG_Error">PNG_Error<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L139"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">PNG_Error :: enum int {
+<pre class="doc-code">PNG_Error :: <span class="keyword-type">enum</span> <span class="doc-builtin">int</span> {
 	Invalid_PNG_Signature, 
 	IHDR_Not_First_Chunk, 
 	IHDR_Corrupt, 
@@ -384,13 +388,13 @@ Procedure Groups</summary>
 <div class="pkg-entity">
 <h3 id="PNG_IHDR"><span><a class="doc-id-link" href="#PNG_IHDR">PNG_IHDR<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L228"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">PNG_IHDR :: struct #packed {
-	width:              u32be,
-	height:             u32be,
-	bit_depth:          u8,
+<pre class="doc-code">PNG_IHDR :: <span class="keyword-type">struct</span> <span class="directive">#packed</span> {
+	width:              <span class="doc-builtin">u32be</span>,
+	height:             <span class="doc-builtin">u32be</span>,
+	bit_depth:          <span class="doc-builtin">u8</span>,
 	color_type:         <a class="code-typename" href="/core/image/#PNG_Color_Type">PNG_Color_Type</a>,
-	compression_method: u8,
-	filter_method:      u8,
+	compression_method: <span class="doc-builtin">u8</span>,
+	filter_method:      <span class="doc-builtin">u8</span>,
 	interlace_method:   <a class="code-typename" href="/core/image/#PNG_Interlace_Method">PNG_Interlace_Method</a>,
 }</pre>
 </div>
@@ -398,9 +402,9 @@ Procedure Groups</summary>
 <div class="pkg-entity">
 <h3 id="PNG_Info"><span><a class="doc-id-link" href="#PNG_Info">PNG_Info<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L163"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">PNG_Info :: struct {
+<pre class="doc-code">PNG_Info :: <span class="keyword-type">struct</span> {
 	header: <a class="code-typename" href="/core/image/#PNG_IHDR">PNG_IHDR</a>,
-	chunks: [dynamic]<a class="code-typename" href="/core/image/#PNG_Chunk">PNG_Chunk</a>,
+	chunks: [<span class="keyword">dynamic</span>]<a class="code-typename" href="/core/image/#PNG_Chunk">PNG_Chunk</a>,
 }</pre>
 </div>
 <details class="odin-doc-toggle" open>
@@ -411,7 +415,7 @@ Procedure Groups</summary>
 <div class="pkg-entity">
 <h3 id="PNG_Interlace_Method"><span><a class="doc-id-link" href="#PNG_Interlace_Method">PNG_Interlace_Method<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L247"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">PNG_Interlace_Method :: enum u8 {
+<pre class="doc-code">PNG_Interlace_Method :: <span class="keyword-type">enum</span> <span class="doc-builtin">u8</span> {
 	None  = 0, 
 	Adam7 = 1, 
 }</pre>
@@ -436,7 +440,7 @@ Procedure Groups</summary>
 <div class="pkg-entity">
 <h3 id="compute_buffer_size"><span><a class="doc-id-link" href="#compute_buffer_size">compute_buffer_size<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L255"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">compute_buffer_size :: proc(width, height, channels, depth: int, extra_row_bytes: int = int(0)) -> (size: int) {…}</pre>
+<pre class="doc-code">compute_buffer_size :: <span class="keyword-type">proc</span>(width, height, channels, depth: <span class="doc-builtin">int</span>, extra_row_bytes: <span class="doc-builtin">int</span> = int(0)) -> (size: <span class="doc-builtin">int</span>) {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -446,7 +450,7 @@ Procedure Groups</summary>
 <div class="pkg-entity">
 <h3 id="return_single_channel"><span><a class="doc-id-link" href="#return_single_channel">return_single_channel<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L270"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">return_single_channel :: proc(img: ^<a class="code-typename" href="/core/image/#Image">Image</a>, channel: <a class="code-typename" href="/core/image/#Channel">Channel</a>) -> (res: ^<a class="code-typename" href="/core/image/#Image">Image</a>, ok: bool) {…}</pre>
+<pre class="doc-code">return_single_channel :: <span class="keyword-type">proc</span>(img: ^<a class="code-typename" href="/core/image/#Image">Image</a>, channel: <a class="code-typename" href="/core/image/#Channel">Channel</a>) -> (res: ^<a class="code-typename" href="/core/image/#Image">Image</a>, ok: <span class="doc-builtin">bool</span>) {…}</pre>
 </div>
 </div>
 </section>
@@ -459,7 +463,7 @@ Procedure Groups</summary>
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin">common.odin</a></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2022-01 (vendor "odin") windows_amd64 @ 2022-01-23 21:07:27.603629400 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2022-01 (vendor "odin") windows_amd64 @ 2022-01-24 15:13:57.266664600 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">

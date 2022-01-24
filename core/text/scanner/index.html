@@ -38,9 +38,10 @@
 	</nav>
 </header>
 <main>
-<div class="container"><div class="row odin-main">
-<nav id="pkg-sidebar" class="col-lg-2 odin-sidebar-border navbar-light">
-<div class="sticky-top odin-below-navbar py-3">
+<div class="container full-width">
+<div class="row odin-main" id="pkg">
+<nav id="pkg-sidebar" class="col-lg-2 odin-sidebar-border navbar-light sticky-top odin-below-navbar">
+<div class="py-3">
 <h4>Core Library</h4>
 <ul>
 <li class="nav-item"><a href="/core/bufio">bufio</a></li>
@@ -142,7 +143,7 @@
 </div>
 </nav>
 <article class="col-lg-8 p-4 documentation odin-article">
-<h1>package core:text/scanner</h1>
+<h1>package core:text/scanner<div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/scanner"><em>Source</em></a></div></h1>
 <h2>Overview</h2>
 <div id="pkg-overview">
 <p>package text/scanner provides a scanner and tokenizer for UTF-8-encoded text.
@@ -228,11 +229,14 @@ Procedure Groups</summary>
 <div class="pkg-entity">
 <h3 id="Position"><span><a class="doc-id-link" href="#Position">Position<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/scanner/scanner.odin#L18"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">Position :: struct {
-	filename: string,
-	offset:   int,
-	line:     int,
-	column:   int,
+<pre class="doc-code">Position :: <span class="keyword-type">struct</span> {
+	filename: <span class="doc-builtin">string</span>,
+	<span class="comment">// filename, if present</span>
+	offset:   <span class="doc-builtin">int</span>,
+	<span class="comment">// byte offset, starting @ 0</span>
+	line:     <span class="doc-builtin">int</span>,
+	<span class="comment">// line number, starting @ 1</span>
+	column:   <span class="doc-builtin">int</span>,
 }</pre>
 </div>
 <details class="odin-doc-toggle" open>
@@ -244,7 +248,7 @@ A position is valid if line > 0</p>
 <div class="pkg-entity">
 <h3 id="Scan_Flag"><span><a class="doc-id-link" href="#Scan_Flag">Scan_Flag<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/scanner/scanner.odin#L53"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">Scan_Flag :: enum u32 {
+<pre class="doc-code">Scan_Flag :: <span class="keyword-type">enum</span> <span class="doc-builtin">u32</span> {
 	Scan_Idents, 
 	Scan_Ints, 
 	Scan_C_Int_Prefixes, 
@@ -260,28 +264,42 @@ A position is valid if line > 0</p>
 <div class="pkg-entity">
 <h3 id="Scan_Flags"><span><a class="doc-id-link" href="#Scan_Flags">Scan_Flags<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/scanner/scanner.odin#L64"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">Scan_Flags :: distinct bit_set[<a class="code-typename" href="/core/text/scanner/#Scan_Flag">Scan_Flag</a>; u32]</pre>
+<pre class="doc-code">Scan_Flags :: distinct <span class="keyword-type">bit_set</span>[<a class="code-typename" href="/core/text/scanner/#Scan_Flag">Scan_Flag</a>; <span class="doc-builtin">u32</span>]</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="Scanner"><span><a class="doc-id-link" href="#Scanner">Scanner<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/scanner/scanner.odin#L78"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">Scanner :: struct {
-	src:           string,
-	src_pos:       int,
-	src_end:       int,
-	tok_pos:       int,
-	tok_end:       int,
-	ch:            rune,
-	line:          int,
-	column:        int,
-	prev_line_len: int,
-	prev_char_len: int,
-	error:         proc(s: ^<a class="code-typename" href="/core/text/scanner/#Scanner">Scanner</a>, msg: string),
-	error_count:   int,
+<pre class="doc-code">Scanner :: <span class="keyword-type">struct</span> {
+	src:           <span class="doc-builtin">string</span>,
+	src_pos:       <span class="doc-builtin">int</span>,
+	src_end:       <span class="doc-builtin">int</span>,
+	tok_pos:       <span class="doc-builtin">int</span>,
+	tok_end:       <span class="doc-builtin">int</span>,
+	ch:            <span class="doc-builtin">rune</span>,
+	line:          <span class="doc-builtin">int</span>,
+	column:        <span class="doc-builtin">int</span>,
+	prev_line_len: <span class="doc-builtin">int</span>,
+	prev_char_len: <span class="doc-builtin">int</span>,
+	<span class="comment">// error is called for each error encountered</span>
+	<span class="comment">// If no error procedure is set, the error is reported to os.stderr</span>
+	error:         <span class="keyword-type">proc</span>(s: ^<a class="code-typename" href="/core/text/scanner/#Scanner">Scanner</a>, msg: <span class="doc-builtin">string</span>),
+	<span class="comment">// error_count is incremented by one for each error encountered</span>
+	error_count:   <span class="doc-builtin">int</span>,
+	<span class="comment">// flags controls which tokens are recognized</span>
+	<span class="comment">// e.g. to recognize integers, set the .Scan_Ints flag</span>
+	<span class="comment">// This field may be changed by the user at any time during scanning</span>
 	flags:         <a class="code-typename" href="/core/text/scanner/#Scan_Flags">Scan_Flags</a>,
+	<span class="comment">// The whitespace field controls which characters are recognized as white space</span>
+	<span class="comment">// This field may be changed by the user at any time during scanning</span>
 	whitespace:    <a class="code-typename" href="/core/text/scanner/#Whitespace">Whitespace</a>,
-	is_ident_rune: proc(ch: rune, i: int) -> bool,
+	<span class="comment">// is_ident_rune is a predicate controlling the characters accepted as the ith rune in an identifier</span>
+	<span class="comment">// The valid characters must not conflict with the set of white space characters</span>
+	<span class="comment">// If is_ident_rune is not set, regular Odin-like identifiers are accepted</span>
+	<span class="comment">// This field may be changed by the user at any time during scanning</span>
+	is_ident_rune: <span class="keyword-type">proc</span>(ch: <span class="doc-builtin">rune</span>, i: <span class="doc-builtin">int</span>) -> <span class="doc-builtin">bool</span>,
+	<span class="comment">// Start position of most recently scanned token (set by scan(s))</span>
+	<span class="comment">// Call init or next invalidates the position</span>
 	pos:           <a class="code-typename" href="/core/text/scanner/#Position">Position</a>,
 }</pre>
 </div>
@@ -293,7 +311,7 @@ A position is valid if line > 0</p>
 <div class="pkg-entity">
 <h3 id="Whitespace"><span><a class="doc-id-link" href="#Whitespace">Whitespace<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/scanner/scanner.odin#L70"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">Whitespace :: distinct bit_set[rune; u128]</pre>
+<pre class="doc-code">Whitespace :: distinct <span class="keyword-type">bit_set</span>[<span class="doc-builtin">rune</span>; <span class="doc-builtin">u128</span>]</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -312,7 +330,7 @@ A position is valid if line > 0</p>
 <div class="pkg-entity">
 <h3 id="C_Whitespace"><span><a class="doc-id-link" href="#C_Whitespace">C_Whitespace<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/scanner/scanner.odin#L74"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">C_Whitespace :: Whitespace{''\t'', ''\n'', ''\r'', ''\v'', ''\f'', '' ''}</pre>
+<pre class="doc-code">C_Whitespace :: Whitespace{'\t', '\n', '\r', '\v', '\f', ' '}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -360,7 +378,7 @@ A position is valid if line > 0</p>
 <div class="pkg-entity">
 <h3 id="Odin_Whitespace"><span><a class="doc-id-link" href="#Odin_Whitespace">Odin_Whitespace<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/scanner/scanner.odin#L73"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">Odin_Whitespace :: Whitespace{''\t'', ''\n'', ''\r'', '' ''}</pre>
+<pre class="doc-code">Odin_Whitespace :: Whitespace{'\t', '\n', '\r', ' '}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -389,19 +407,19 @@ A position is valid if line > 0</p>
 <div class="pkg-entity">
 <h3 id="error"><span><a class="doc-id-link" href="#error">error<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/scanner/scanner.odin#L225"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">error :: proc(s: ^<a class="code-typename" href="/core/text/scanner/#Scanner">Scanner</a>, msg: string) {…}</pre>
+<pre class="doc-code">error :: <span class="keyword-type">proc</span>(s: ^<a class="code-typename" href="/core/text/scanner/#Scanner">Scanner</a>, msg: <span class="doc-builtin">string</span>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="errorf"><span><a class="doc-id-link" href="#errorf">errorf<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/scanner/scanner.odin#L248"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">errorf :: proc(s: ^<a class="code-typename" href="/core/text/scanner/#Scanner">Scanner</a>, format: string, args: ..any) {…}</pre>
+<pre class="doc-code">errorf :: <span class="keyword-type">proc</span>(s: ^<a class="code-typename" href="/core/text/scanner/#Scanner">Scanner</a>, format: <span class="doc-builtin">string</span>, args: ..<span class="doc-builtin">any</span>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="init"><span><a class="doc-id-link" href="#init">init<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/scanner/scanner.odin#L123"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">init :: proc(s: ^<a class="code-typename" href="/core/text/scanner/#Scanner">Scanner</a>, src: string, filename: string = """") -> ^<a class="code-typename" href="/core/text/scanner/#Scanner">Scanner</a> {…}</pre>
+<pre class="doc-code">init :: <span class="keyword-type">proc</span>(s: ^<a class="code-typename" href="/core/text/scanner/#Scanner">Scanner</a>, src: <span class="doc-builtin">string</span>, filename: <span class="doc-builtin">string</span> = "") -> ^<a class="code-typename" href="/core/text/scanner/#Scanner">Scanner</a> {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -412,7 +430,7 @@ error_count is set to 0, flags is set to Odin_Like_Tokens, whitespace is set to 
 <div class="pkg-entity">
 <h3 id="next"><span><a class="doc-id-link" href="#next">next<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/scanner/scanner.odin#L180"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">next :: proc(s: ^<a class="code-typename" href="/core/text/scanner/#Scanner">Scanner</a>) -> rune {…}</pre>
+<pre class="doc-code">next :: <span class="keyword-type">proc</span>(s: ^<a class="code-typename" href="/core/text/scanner/#Scanner">Scanner</a>) -> <span class="doc-builtin">rune</span> {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -423,7 +441,7 @@ next does not update the Scanner's pos field. Use 'position(s)' to get the curre
 <div class="pkg-entity">
 <h3 id="peek"><span><a class="doc-id-link" href="#peek">peek<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/scanner/scanner.odin#L193"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">peek :: proc(s: ^<a class="code-typename" href="/core/text/scanner/#Scanner">Scanner</a>, n: int = 0) -> (ch: rune) {…}</pre>
+<pre class="doc-code">peek :: <span class="keyword-type">proc</span>(s: ^<a class="code-typename" href="/core/text/scanner/#Scanner">Scanner</a>, n: <span class="doc-builtin">int</span> = 0) -> (ch: <span class="doc-builtin">rune</span>) {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -435,7 +453,7 @@ if n > 0, it call next n times and return the nth Unicode character and then res
 <div class="pkg-entity">
 <h3 id="peek_token"><span><a class="doc-id-link" href="#peek_token">peek_token<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/scanner/scanner.odin#L214"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">peek_token :: proc(s: ^<a class="code-typename" href="/core/text/scanner/#Scanner">Scanner</a>, n: int = 0) -> (ch: rune) {…}</pre>
+<pre class="doc-code">peek_token :: <span class="keyword-type">proc</span>(s: ^<a class="code-typename" href="/core/text/scanner/#Scanner">Scanner</a>, n: <span class="doc-builtin">int</span> = 0) -> (ch: <span class="doc-builtin">rune</span>) {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -447,7 +465,7 @@ if n > 0, it call next n times and return the nth token and then restore the Sca
 <div class="pkg-entity">
 <h3 id="position"><span><a class="doc-id-link" href="#position">position<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/scanner/scanner.odin#L614"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">position :: proc(s: ^<a class="code-typename" href="/core/text/scanner/#Scanner">Scanner</a>) -> <a class="code-typename" href="/core/text/scanner/#Position">Position</a> {…}</pre>
+<pre class="doc-code">position :: <span class="keyword-type">proc</span>(s: ^<a class="code-typename" href="/core/text/scanner/#Scanner">Scanner</a>) -> <a class="code-typename" href="/core/text/scanner/#Position">Position</a> {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -458,7 +476,7 @@ Use the Scanner's position field for the most recently scanned token position</p
 <div class="pkg-entity">
 <h3 id="position_is_valid"><span><a class="doc-id-link" href="#position_is_valid">position_is_valid<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/scanner/scanner.odin#L26"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">position_is_valid :: proc(pos: <a class="code-typename" href="/core/text/scanner/#Position">Position</a>) -> bool {…}</pre>
+<pre class="doc-code">position_is_valid :: <span class="keyword-type">proc</span>(pos: <a class="code-typename" href="/core/text/scanner/#Position">Position</a>) -> <span class="doc-builtin">bool</span> {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -468,13 +486,13 @@ Use the Scanner's position field for the most recently scanned token position</p
 <div class="pkg-entity">
 <h3 id="position_to_string"><span><a class="doc-id-link" href="#position_to_string">position_to_string<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/scanner/scanner.odin#L30"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">position_to_string :: proc(pos: <a class="code-typename" href="/core/text/scanner/#Position">Position</a>, allocator := <a href="/core/runtime/#Context">context.temp_allocator</a>) -> string {…}</pre>
+<pre class="doc-code">position_to_string :: <span class="keyword-type">proc</span>(pos: <a class="code-typename" href="/core/text/scanner/#Position">Position</a>, allocator := <a href="/core/runtime/#Context">context.temp_allocator</a>) -> <span class="doc-builtin">string</span> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="scan"><span><a class="doc-id-link" href="#scan">scan<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/scanner/scanner.odin#L518"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">scan :: proc(s: ^<a class="code-typename" href="/core/text/scanner/#Scanner">Scanner</a>) -> rune {…}</pre>
+<pre class="doc-code">scan :: <span class="keyword-type">proc</span>(s: ^<a class="code-typename" href="/core/text/scanner/#Scanner">Scanner</a>) -> <span class="doc-builtin">rune</span> {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -487,7 +505,7 @@ It reports Scanner errors by calling s.error, if not nil; otherwise it will prin
 <div class="pkg-entity">
 <h3 id="token_string"><span><a class="doc-id-link" href="#token_string">token_string<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/scanner/scanner.odin#L642"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">token_string :: proc(tok: rune, allocator := <a href="/core/runtime/#Context">context.temp_allocator</a>) -> string {…}</pre>
+<pre class="doc-code">token_string :: <span class="keyword-type">proc</span>(tok: <span class="doc-builtin">rune</span>, allocator := <a href="/core/runtime/#Context">context.temp_allocator</a>) -> <span class="doc-builtin">string</span> {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -498,7 +516,7 @@ By default, it uses the context.temp_allocator to produce the string</p>
 <div class="pkg-entity">
 <h3 id="token_text"><span><a class="doc-id-link" href="#token_text">token_text<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/scanner/scanner.odin#L633"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">token_text :: proc(s: ^<a class="code-typename" href="/core/text/scanner/#Scanner">Scanner</a>) -> string {…}</pre>
+<pre class="doc-code">token_text :: <span class="keyword-type">proc</span>(s: ^<a class="code-typename" href="/core/text/scanner/#Scanner">Scanner</a>) -> <span class="doc-builtin">string</span> {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -515,7 +533,7 @@ By default, it uses the context.temp_allocator to produce the string</p>
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/text/scanner/scanner.odin">scanner.odin</a></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2022-01 (vendor "odin") windows_amd64 @ 2022-01-23 21:07:27.732629900 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2022-01 (vendor "odin") windows_amd64 @ 2022-01-24 15:13:57.372192600 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">

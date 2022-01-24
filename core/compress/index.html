@@ -38,9 +38,10 @@
 	</nav>
 </header>
 <main>
-<div class="container"><div class="row odin-main">
-<nav id="pkg-sidebar" class="col-lg-2 odin-sidebar-border navbar-light">
-<div class="sticky-top odin-below-navbar py-3">
+<div class="container full-width">
+<div class="row odin-main" id="pkg">
+<nav id="pkg-sidebar" class="col-lg-2 odin-sidebar-border navbar-light sticky-top odin-below-navbar">
+<div class="py-3">
 <h4>Core Library</h4>
 <ul>
 <li class="nav-item"><a href="/core/bufio">bufio</a></li>
@@ -142,7 +143,7 @@
 </div>
 </nav>
 <article class="col-lg-8 p-4 documentation odin-article">
-<h1>package core:compress</h1>
+<h1>package core:compress<div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/compress"><em>Source</em></a></div></h1>
 <h2>Overview</h2>
 <div id="pkg-overview">
 <p>package compress is a collection of utilities to aid with other compression packages</p>
@@ -240,14 +241,15 @@ Procedure Groups</summary>
 <div class="pkg-entity">
 <h3 id="Context_Memory_Input"><span><a class="doc-id-link" href="#Context_Memory_Input">Context_Memory_Input<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/compress/common.odin#L128"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">Context_Memory_Input :: struct #packed {
-	input_data:    []u8,
+<pre class="doc-code">Context_Memory_Input :: <span class="keyword-type">struct</span> <span class="directive">#packed</span> {
+	input_data:    []<span class="doc-builtin">u8</span>,
 	output:        ^bytes.<a class="code-typename" href="/core/bytes/#Buffer">Buffer</a>,
-	bytes_written: i64,
-	code_buffer:   u64,
-	num_bits:      u64,
-	size_packed:   i64,
-	size_unpacked: i64,
+	bytes_written: <span class="doc-builtin">i64</span>,
+	code_buffer:   <span class="doc-builtin">u64</span>,
+	num_bits:      <span class="doc-builtin">u64</span>,
+	<span class="comment">// 		If we know the data size, we can optimize the reads and writes.</span>
+	size_packed:   <span class="doc-builtin">i64</span>,
+	size_unpacked: <span class="doc-builtin">i64</span>,
 }</pre>
 </div>
 <details class="odin-doc-toggle" open>
@@ -258,24 +260,29 @@ Procedure Groups</summary>
 <div class="pkg-entity">
 <h3 id="Context_Stream_Input"><span><a class="doc-id-link" href="#Context_Stream_Input">Context_Stream_Input<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/compress/common.odin#L144"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">Context_Stream_Input :: struct #packed {
-	input_data:            []u8,
+<pre class="doc-code">Context_Stream_Input :: <span class="keyword-type">struct</span> <span class="directive">#packed</span> {
+	input_data:            []<span class="doc-builtin">u8</span>,
 	input:                 io.<a class="code-typename" href="/core/io/#Stream">Stream</a>,
 	output:                ^bytes.<a class="code-typename" href="/core/bytes/#Buffer">Buffer</a>,
-	bytes_written:         i64,
-	code_buffer:           u64,
-	num_bits:              u64,
-	size_packed:           i64,
-	size_unpacked:         i64,
-	input_fully_in_memory: b8,
-	padding:               [1]u8,
+	bytes_written:         <span class="doc-builtin">i64</span>,
+	code_buffer:           <span class="doc-builtin">u64</span>,
+	num_bits:              <span class="doc-builtin">u64</span>,
+	<span class="comment">// 		If we know the data size, we can optimize the reads and writes.</span>
+	size_packed:           <span class="doc-builtin">i64</span>,
+	size_unpacked:         <span class="doc-builtin">i64</span>,
+	<span class="comment">// 		Flags:</span>
+	<span class="comment">// 			`input_fully_in_memory`</span>
+	<span class="comment">// 				true  = This tells us we read input from `input_data` exclusively. [] = EOF.</span>
+	<span class="comment">// 				false = Try to refill `input_data` from the `input` stream.</span>
+	input_fully_in_memory: <span class="doc-builtin">b8</span>,
+	padding:               [1]<span class="doc-builtin">u8</span>,
 }</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="Deflate_Error"><span><a class="doc-id-link" href="#Deflate_Error">Deflate_Error<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/compress/common.odin#L116"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">Deflate_Error :: enum int {
+<pre class="doc-code">Deflate_Error :: <span class="keyword-type">enum</span> <span class="doc-builtin">int</span> {
 	Huffman_Bad_Sizes, 
 	Huffman_Bad_Code_Lengths, 
 	Inflate_Error, 
@@ -289,7 +296,7 @@ Procedure Groups</summary>
 <div class="pkg-entity">
 <h3 id="Error"><span><a class="doc-id-link" href="#Error">Error<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/compress/common.odin#L50"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">Error :: union {
+<pre class="doc-code">Error :: <span class="keyword-type">union</span> {
 	<a class="code-typename" href="/core/compress/#General_Error">General_Error</a>, 
 	<a class="code-typename" href="/core/compress/#Deflate_Error">Deflate_Error</a>, 
 	<a class="code-typename" href="/core/compress/#ZLIB_Error">ZLIB_Error</a>, 
@@ -302,7 +309,7 @@ Procedure Groups</summary>
 <div class="pkg-entity">
 <h3 id="GZIP_Error"><span><a class="doc-id-link" href="#GZIP_Error">GZIP_Error<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/compress/common.odin#L78"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">GZIP_Error :: enum int {
+<pre class="doc-code">GZIP_Error :: <span class="keyword-type">enum</span> <span class="doc-builtin">int</span> {
 	Invalid_GZIP_Signature, 
 	Reserved_Flag_Set, 
 	Invalid_Extra_Data, 
@@ -318,7 +325,7 @@ Procedure Groups</summary>
 <div class="pkg-entity">
 <h3 id="General_Error"><span><a class="doc-id-link" href="#General_Error">General_Error<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/compress/common.odin#L60"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">General_Error :: enum int {
+<pre class="doc-code">General_Error :: <span class="keyword-type">enum</span> <span class="doc-builtin">int</span> {
 	File_Not_Found, 
 	Cannot_Open_File, 
 	File_Too_Short, 
@@ -336,7 +343,7 @@ Procedure Groups</summary>
 <div class="pkg-entity">
 <h3 id="ZIP_Error"><span><a class="doc-id-link" href="#ZIP_Error">ZIP_Error<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/compress/common.odin#L102"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">ZIP_Error :: enum int {
+<pre class="doc-code">ZIP_Error :: <span class="keyword-type">enum</span> <span class="doc-builtin">int</span> {
 	Invalid_ZIP_File_Signature, 
 	Unexpected_Signature, 
 	Insert_Next_Disk, 
@@ -347,7 +354,7 @@ Procedure Groups</summary>
 <div class="pkg-entity">
 <h3 id="ZLIB_Error"><span><a class="doc-id-link" href="#ZLIB_Error">ZLIB_Error<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/compress/common.odin#L109"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">ZLIB_Error :: enum int {
+<pre class="doc-code">ZLIB_Error :: <span class="keyword-type">enum</span> <span class="doc-builtin">int</span> {
 	Unsupported_Window_Size, 
 	FDICT_Unsupported, 
 	Unsupported_Compression_Level, 
@@ -392,151 +399,151 @@ Procedure Groups</summary>
 <div class="pkg-entity">
 <h3 id="consume_bits_lsb_from_memory"><span><a class="doc-id-link" href="#consume_bits_lsb_from_memory">consume_bits_lsb_from_memory<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/compress/common.odin#L385"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">consume_bits_lsb_from_memory :: proc(z: ^<a class="code-typename" href="/core/compress/#Context_Memory_Input">Context_Memory_Input</a>, width: u8) {…}</pre>
+<pre class="doc-code">consume_bits_lsb_from_memory :: <span class="keyword-type">proc</span>(z: ^<a class="code-typename" href="/core/compress/#Context_Memory_Input">Context_Memory_Input</a>, width: <span class="doc-builtin">u8</span>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="consume_bits_lsb_from_stream"><span><a class="doc-id-link" href="#consume_bits_lsb_from_stream">consume_bits_lsb_from_stream<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/compress/common.odin#L391"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">consume_bits_lsb_from_stream :: proc(z: ^<a class="code-typename" href="/core/compress/#Context_Stream_Input">Context_Stream_Input</a>, width: u8) {…}</pre>
+<pre class="doc-code">consume_bits_lsb_from_stream :: <span class="keyword-type">proc</span>(z: ^<a class="code-typename" href="/core/compress/#Context_Stream_Input">Context_Stream_Input</a>, width: <span class="doc-builtin">u8</span>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="discard_to_next_byte_lsb_from_memory"><span><a class="doc-id-link" href="#discard_to_next_byte_lsb_from_memory">discard_to_next_byte_lsb_from_memory<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/compress/common.odin#L464"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">discard_to_next_byte_lsb_from_memory :: proc(z: ^<a class="code-typename" href="/core/compress/#Context_Memory_Input">Context_Memory_Input</a>) {…}</pre>
+<pre class="doc-code">discard_to_next_byte_lsb_from_memory :: <span class="keyword-type">proc</span>(z: ^<a class="code-typename" href="/core/compress/#Context_Memory_Input">Context_Memory_Input</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="discard_to_next_byte_lsb_from_stream"><span><a class="doc-id-link" href="#discard_to_next_byte_lsb_from_stream">discard_to_next_byte_lsb_from_stream<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/compress/common.odin#L471"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">discard_to_next_byte_lsb_from_stream :: proc(z: ^<a class="code-typename" href="/core/compress/#Context_Stream_Input">Context_Stream_Input</a>) {…}</pre>
+<pre class="doc-code">discard_to_next_byte_lsb_from_stream :: <span class="keyword-type">proc</span>(z: ^<a class="code-typename" href="/core/compress/#Context_Stream_Input">Context_Stream_Input</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="input_size_from_memory"><span><a class="doc-id-link" href="#input_size_from_memory">input_size_from_memory<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/compress/common.odin#L179"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">input_size_from_memory :: proc(z: ^<a class="code-typename" href="/core/compress/#Context_Memory_Input">Context_Memory_Input</a>) -> (res: i64, err: <a class="code-typename" href="/core/compress/#Error">Error</a>) {…}</pre>
+<pre class="doc-code">input_size_from_memory :: <span class="keyword-type">proc</span>(z: ^<a class="code-typename" href="/core/compress/#Context_Memory_Input">Context_Memory_Input</a>) -> (res: <span class="doc-builtin">i64</span>, err: <a class="code-typename" href="/core/compress/#Error">Error</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="input_size_from_stream"><span><a class="doc-id-link" href="#input_size_from_stream">input_size_from_stream<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/compress/common.odin#L183"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">input_size_from_stream :: proc(z: ^<a class="code-typename" href="/core/compress/#Context_Stream_Input">Context_Stream_Input</a>) -> (res: i64, err: <a class="code-typename" href="/core/compress/#Error">Error</a>) {…}</pre>
+<pre class="doc-code">input_size_from_stream :: <span class="keyword-type">proc</span>(z: ^<a class="code-typename" href="/core/compress/#Context_Stream_Input">Context_Stream_Input</a>) -> (res: <span class="doc-builtin">i64</span>, err: <a class="code-typename" href="/core/compress/#Error">Error</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="peek_back_byte"><span><a class="doc-id-link" href="#peek_back_byte">peek_back_byte<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/compress/common.odin#L323"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">peek_back_byte :: proc(z: ^$, offset: i64) -> (res: u8, err: io.<a class="code-typename" href="/core/io/#Error">Error</a>) {…}</pre>
+<pre class="doc-code">peek_back_byte :: <span class="keyword-type">proc</span>(z: ^$, offset: <span class="doc-builtin">i64</span>) -> (res: <span class="doc-builtin">u8</span>, err: io.<a class="code-typename" href="/core/io/#Error">Error</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="peek_bits_lsb_from_memory"><span><a class="doc-id-link" href="#peek_bits_lsb_from_memory">peek_bits_lsb_from_memory<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/compress/common.odin#L399"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">peek_bits_lsb_from_memory :: proc(z: ^<a class="code-typename" href="/core/compress/#Context_Memory_Input">Context_Memory_Input</a>, width: u8) -> u32 {…}</pre>
+<pre class="doc-code">peek_bits_lsb_from_memory :: <span class="keyword-type">proc</span>(z: ^<a class="code-typename" href="/core/compress/#Context_Memory_Input">Context_Memory_Input</a>, width: <span class="doc-builtin">u8</span>) -> <span class="doc-builtin">u32</span> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="peek_bits_lsb_from_stream"><span><a class="doc-id-link" href="#peek_bits_lsb_from_stream">peek_bits_lsb_from_stream<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/compress/common.odin#L407"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">peek_bits_lsb_from_stream :: proc(z: ^<a class="code-typename" href="/core/compress/#Context_Stream_Input">Context_Stream_Input</a>, width: u8) -> u32 {…}</pre>
+<pre class="doc-code">peek_bits_lsb_from_stream :: <span class="keyword-type">proc</span>(z: ^<a class="code-typename" href="/core/compress/#Context_Stream_Input">Context_Stream_Input</a>, width: <span class="doc-builtin">u8</span>) -> <span class="doc-builtin">u32</span> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="peek_bits_no_refill_lsb_from_memory"><span><a class="doc-id-link" href="#peek_bits_no_refill_lsb_from_memory">peek_bits_no_refill_lsb_from_memory<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/compress/common.odin#L417"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">peek_bits_no_refill_lsb_from_memory :: proc(z: ^<a class="code-typename" href="/core/compress/#Context_Memory_Input">Context_Memory_Input</a>, width: u8) -> u32 {…}</pre>
+<pre class="doc-code">peek_bits_no_refill_lsb_from_memory :: <span class="keyword-type">proc</span>(z: ^<a class="code-typename" href="/core/compress/#Context_Memory_Input">Context_Memory_Input</a>, width: <span class="doc-builtin">u8</span>) -> <span class="doc-builtin">u32</span> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="peek_bits_no_refill_lsb_from_stream"><span><a class="doc-id-link" href="#peek_bits_no_refill_lsb_from_stream">peek_bits_no_refill_lsb_from_stream<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/compress/common.odin#L423"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">peek_bits_no_refill_lsb_from_stream :: proc(z: ^<a class="code-typename" href="/core/compress/#Context_Stream_Input">Context_Stream_Input</a>, width: u8) -> u32 {…}</pre>
+<pre class="doc-code">peek_bits_no_refill_lsb_from_stream :: <span class="keyword-type">proc</span>(z: ^<a class="code-typename" href="/core/compress/#Context_Stream_Input">Context_Stream_Input</a>, width: <span class="doc-builtin">u8</span>) -> <span class="doc-builtin">u32</span> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="peek_data_from_memory"><span><a class="doc-id-link" href="#peek_data_from_memory">peek_data_from_memory<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/compress/common.odin#L273"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">peek_data_from_memory :: proc(z: ^<a class="code-typename" href="/core/compress/#Context_Memory_Input">Context_Memory_Input</a>, $T: typeid) -> (res: typeid, err: io.<a class="code-typename" href="/core/io/#Error">Error</a>) {…}</pre>
+<pre class="doc-code">peek_data_from_memory :: <span class="keyword-type">proc</span>(z: ^<a class="code-typename" href="/core/compress/#Context_Memory_Input">Context_Memory_Input</a>, $T: <span class="doc-builtin">typeid</span>) -> (res: <span class="doc-builtin">typeid</span>, err: io.<a class="code-typename" href="/core/io/#Error">Error</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="peek_data_from_stream"><span><a class="doc-id-link" href="#peek_data_from_stream">peek_data_from_stream<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/compress/common.odin#L291"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">peek_data_from_stream :: proc(z: ^<a class="code-typename" href="/core/compress/#Context_Stream_Input">Context_Stream_Input</a>, $T: typeid) -> (res: typeid, err: io.<a class="code-typename" href="/core/io/#Error">Error</a>) {…}</pre>
+<pre class="doc-code">peek_data_from_stream :: <span class="keyword-type">proc</span>(z: ^<a class="code-typename" href="/core/compress/#Context_Stream_Input">Context_Stream_Input</a>, $T: <span class="doc-builtin">typeid</span>) -> (res: <span class="doc-builtin">typeid</span>, err: io.<a class="code-typename" href="/core/io/#Error">Error</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="read_bits_lsb_from_memory"><span><a class="doc-id-link" href="#read_bits_lsb_from_memory">read_bits_lsb_from_memory<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/compress/common.odin#L431"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">read_bits_lsb_from_memory :: proc(z: ^<a class="code-typename" href="/core/compress/#Context_Memory_Input">Context_Memory_Input</a>, width: u8) -> u32 {…}</pre>
+<pre class="doc-code">read_bits_lsb_from_memory :: <span class="keyword-type">proc</span>(z: ^<a class="code-typename" href="/core/compress/#Context_Memory_Input">Context_Memory_Input</a>, width: <span class="doc-builtin">u8</span>) -> <span class="doc-builtin">u32</span> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="read_bits_lsb_from_stream"><span><a class="doc-id-link" href="#read_bits_lsb_from_stream">read_bits_lsb_from_stream<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/compress/common.odin#L438"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">read_bits_lsb_from_stream :: proc(z: ^<a class="code-typename" href="/core/compress/#Context_Stream_Input">Context_Stream_Input</a>, width: u8) -> u32 {…}</pre>
+<pre class="doc-code">read_bits_lsb_from_stream :: <span class="keyword-type">proc</span>(z: ^<a class="code-typename" href="/core/compress/#Context_Stream_Input">Context_Stream_Input</a>, width: <span class="doc-builtin">u8</span>) -> <span class="doc-builtin">u32</span> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="read_bits_no_refill_lsb_from_memory"><span><a class="doc-id-link" href="#read_bits_no_refill_lsb_from_memory">read_bits_no_refill_lsb_from_memory<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/compress/common.odin#L447"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">read_bits_no_refill_lsb_from_memory :: proc(z: ^<a class="code-typename" href="/core/compress/#Context_Memory_Input">Context_Memory_Input</a>, width: u8) -> u32 {…}</pre>
+<pre class="doc-code">read_bits_no_refill_lsb_from_memory :: <span class="keyword-type">proc</span>(z: ^<a class="code-typename" href="/core/compress/#Context_Memory_Input">Context_Memory_Input</a>, width: <span class="doc-builtin">u8</span>) -> <span class="doc-builtin">u32</span> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="read_bits_no_refill_lsb_from_stream"><span><a class="doc-id-link" href="#read_bits_no_refill_lsb_from_stream">read_bits_no_refill_lsb_from_stream<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/compress/common.odin#L454"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">read_bits_no_refill_lsb_from_stream :: proc(z: ^<a class="code-typename" href="/core/compress/#Context_Stream_Input">Context_Stream_Input</a>, width: u8) -> u32 {…}</pre>
+<pre class="doc-code">read_bits_no_refill_lsb_from_stream :: <span class="keyword-type">proc</span>(z: ^<a class="code-typename" href="/core/compress/#Context_Stream_Input">Context_Stream_Input</a>, width: <span class="doc-builtin">u8</span>) -> <span class="doc-builtin">u32</span> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="read_data"><span><a class="doc-id-link" href="#read_data">read_data<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/compress/common.odin#L220"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">read_data :: proc(z: ^$, $T: typeid) -> (res: typeid, err: io.<a class="code-typename" href="/core/io/#Error">Error</a>) {…}</pre>
+<pre class="doc-code">read_data :: <span class="keyword-type">proc</span>(z: ^$, $T: <span class="doc-builtin">typeid</span>) -> (res: <span class="doc-builtin">typeid</span>, err: io.<a class="code-typename" href="/core/io/#Error">Error</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="read_slice_from_memory"><span><a class="doc-id-link" href="#read_slice_from_memory">read_slice_from_memory<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/compress/common.odin#L190"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">read_slice_from_memory :: proc(z: ^<a class="code-typename" href="/core/compress/#Context_Memory_Input">Context_Memory_Input</a>, size: int) -> (res: []u8, err: io.<a class="code-typename" href="/core/io/#Error">Error</a>) {…}</pre>
+<pre class="doc-code">read_slice_from_memory :: <span class="keyword-type">proc</span>(z: ^<a class="code-typename" href="/core/compress/#Context_Memory_Input">Context_Memory_Input</a>, size: <span class="doc-builtin">int</span>) -> (res: []<span class="doc-builtin">u8</span>, err: io.<a class="code-typename" href="/core/io/#Error">Error</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="read_slice_from_stream"><span><a class="doc-id-link" href="#read_slice_from_stream">read_slice_from_stream<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/compress/common.odin#L207"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">read_slice_from_stream :: proc(z: ^<a class="code-typename" href="/core/compress/#Context_Stream_Input">Context_Stream_Input</a>, size: int) -> (res: []u8, err: io.<a class="code-typename" href="/core/io/#Error">Error</a>) {…}</pre>
+<pre class="doc-code">read_slice_from_stream :: <span class="keyword-type">proc</span>(z: ^<a class="code-typename" href="/core/compress/#Context_Stream_Input">Context_Stream_Input</a>, size: <span class="doc-builtin">int</span>) -> (res: []<span class="doc-builtin">u8</span>, err: io.<a class="code-typename" href="/core/io/#Error">Error</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="read_u8_from_memory"><span><a class="doc-id-link" href="#read_u8_from_memory">read_u8_from_memory<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/compress/common.odin#L230"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">read_u8_from_memory :: proc(z: ^<a class="code-typename" href="/core/compress/#Context_Memory_Input">Context_Memory_Input</a>) -> (res: u8, err: io.<a class="code-typename" href="/core/io/#Error">Error</a>) {…}</pre>
+<pre class="doc-code">read_u8_from_memory :: <span class="keyword-type">proc</span>(z: ^<a class="code-typename" href="/core/compress/#Context_Memory_Input">Context_Memory_Input</a>) -> (res: <span class="doc-builtin">u8</span>, err: io.<a class="code-typename" href="/core/io/#Error">Error</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="read_u8_from_stream"><span><a class="doc-id-link" href="#read_u8_from_stream">read_u8_from_stream<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/compress/common.odin#L242"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">read_u8_from_stream :: proc(z: ^<a class="code-typename" href="/core/compress/#Context_Stream_Input">Context_Stream_Input</a>) -> (res: u8, err: io.<a class="code-typename" href="/core/io/#Error">Error</a>) {…}</pre>
+<pre class="doc-code">read_u8_from_stream :: <span class="keyword-type">proc</span>(z: ^<a class="code-typename" href="/core/compress/#Context_Stream_Input">Context_Stream_Input</a>) -> (res: <span class="doc-builtin">u8</span>, err: io.<a class="code-typename" href="/core/io/#Error">Error</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="read_u8_prefer_code_buffer_lsb"><span><a class="doc-id-link" href="#read_u8_prefer_code_buffer_lsb">read_u8_prefer_code_buffer_lsb<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/compress/common.odin#L258"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">read_u8_prefer_code_buffer_lsb :: proc(z: ^$) -> (res: u8, err: io.<a class="code-typename" href="/core/io/#Error">Error</a>) {…}</pre>
+<pre class="doc-code">read_u8_prefer_code_buffer_lsb :: <span class="keyword-type">proc</span>(z: ^$) -> (res: <span class="doc-builtin">u8</span>, err: io.<a class="code-typename" href="/core/io/#Error">Error</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="refill_lsb_from_memory"><span><a class="doc-id-link" href="#refill_lsb_from_memory">refill_lsb_from_memory<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/compress/common.odin#L330"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">refill_lsb_from_memory :: proc(z: ^<a class="code-typename" href="/core/compress/#Context_Memory_Input">Context_Memory_Input</a>, width: i8 = i8(48)) {…}</pre>
+<pre class="doc-code">refill_lsb_from_memory :: <span class="keyword-type">proc</span>(z: ^<a class="code-typename" href="/core/compress/#Context_Memory_Input">Context_Memory_Input</a>, width: <span class="doc-builtin">i8</span> = i8(48)) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="refill_lsb_from_stream"><span><a class="doc-id-link" href="#refill_lsb_from_stream">refill_lsb_from_stream<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/compress/common.odin#L356"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">refill_lsb_from_stream :: proc(z: ^<a class="code-typename" href="/core/compress/#Context_Stream_Input">Context_Stream_Input</a>, width: i8 = i8(24)) {…}</pre>
+<pre class="doc-code">refill_lsb_from_stream :: <span class="keyword-type">proc</span>(z: ^<a class="code-typename" href="/core/compress/#Context_Stream_Input">Context_Stream_Input</a>, width: <span class="doc-builtin">i8</span> = i8(24)) {…}</pre>
 </div>
 </div>
 </section>
@@ -658,7 +665,7 @@ Procedure Groups</summary>
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/compress/common.odin">common.odin</a></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2022-01 (vendor "odin") windows_amd64 @ 2022-01-23 21:07:27.563628000 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2022-01 (vendor "odin") windows_amd64 @ 2022-01-24 15:13:57.248666200 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">

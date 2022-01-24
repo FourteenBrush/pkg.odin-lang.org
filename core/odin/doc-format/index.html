@@ -38,9 +38,10 @@
 	</nav>
 </header>
 <main>
-<div class="container"><div class="row odin-main">
-<nav id="pkg-sidebar" class="col-lg-2 odin-sidebar-border navbar-light">
-<div class="sticky-top odin-below-navbar py-3">
+<div class="container full-width">
+<div class="row odin-main" id="pkg">
+<nav id="pkg-sidebar" class="col-lg-2 odin-sidebar-border navbar-light sticky-top odin-below-navbar">
+<div class="py-3">
 <h4>Core Library</h4>
 <ul>
 <li class="nav-item"><a href="/core/bufio">bufio</a></li>
@@ -142,7 +143,7 @@
 </div>
 </nav>
 <article class="col-lg-8 p-4 documentation odin-article">
-<h1>package core:odin/doc-format</h1>
+<h1>package core:odin/doc-format<div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/doc-format"><em>Source</em></a></div></h1>
 <h2>Index</h2>
 <div id="pkg-index">
 <div>
@@ -230,13 +231,13 @@ Procedure Groups</summary>
 <div class="pkg-entity">
 <h3 id="Array"><span><a class="doc-id-link" href="#Array">Array<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/doc-format/doc_format.odin#L5"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">Array :: struct {}</pre>
+<pre class="doc-code">Array :: <span class="keyword-type">struct</span> {}</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="Attribute"><span><a class="doc-id-link" href="#Attribute">Attribute<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/doc-format/doc_format.odin#L149"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">Attribute :: struct {
+<pre class="doc-code">Attribute :: <span class="keyword-type">struct</span> {
 	name:  <a class="code-typename" href="/core/odin/doc-format/#String">String</a>,
 	value: <a class="code-typename" href="/core/odin/doc-format/#String">String</a>,
 }</pre>
@@ -245,28 +246,41 @@ Procedure Groups</summary>
 <div class="pkg-entity">
 <h3 id="Entity_Index"><span><a class="doc-id-link" href="#Entity_Index">Entity_Index<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/doc-format/doc_format.odin#L50"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">Entity_Index :: distinct u32le</pre>
+<pre class="doc-code">Entity_Index :: distinct <span class="doc-builtin">u32le</span></pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="Entity"><span><a class="doc-id-link" href="#Entity">Entity<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/doc-format/doc_format.odin#L116"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">Entity :: struct {
+<pre class="doc-code">Entity :: <span class="keyword-type">struct</span> {
 	kind:              <a class="code-typename" href="/core/odin/doc-format/#Entity_Kind">Entity_Kind</a>,
-	_:                 u32le,
+	_:                 <span class="doc-builtin">u32le</span>,
+	<span class="comment">// reserved</span>
 	flags:             <a class="code-typename" href="/core/odin/doc-format/#Entity_Flags">Entity_Flags</a>,
 	pos:               <a class="code-typename" href="/core/odin/doc-format/#Position">Position</a>,
 	name:              <a class="code-typename" href="/core/odin/doc-format/#String">String</a>,
 	type:              <a class="code-typename" href="/core/odin/doc-format/#Type_Index">Type_Index</a>,
 	init_string:       <a class="code-typename" href="/core/odin/doc-format/#String">String</a>,
-	_:                 u32le,
+	_:                 <span class="doc-builtin">u32le</span>,
+	<span class="comment">// reserved for init</span>
 	comment:           <a class="code-typename" href="/core/odin/doc-format/#String">String</a>,
 	docs:              <a class="code-typename" href="/core/odin/doc-format/#String">String</a>,
-	field_group_index: i32le,
+	<span class="comment">// May be used by (Struct fields and procedure fields):</span>
+	<span class="comment">// .Variable</span>
+	<span class="comment">// .Constant</span>
+	field_group_index: <span class="doc-builtin">i32le</span>,
+	<span class="comment">// May used by:</span>
+	<span class="comment">// .Variable</span>
+	<span class="comment">// .Procedure</span>
 	foreign_library:   <a class="code-typename" href="/core/odin/doc-format/#Entity_Index">Entity_Index</a>,
+	<span class="comment">// May used by:</span>
+	<span class="comment">// .Variable</span>
+	<span class="comment">// .Procedure</span>
 	link_name:         <a class="code-typename" href="/core/odin/doc-format/#String">String</a>,
 	attributes:        <a class="code-typename" href="/core/odin/doc-format/#Array">Array</a>(Attribute),
+	<span class="comment">// Used by: .Proc_Group</span>
 	grouped_entities:  <a class="code-typename" href="/core/odin/doc-format/#Array">Array</a>(Entity_Index),
+	<span class="comment">// May used by: .Procedure</span>
 	where_clauses:     <a class="code-typename" href="/core/odin/doc-format/#Array">Array</a>(String),
 }</pre>
 </div>
@@ -274,7 +288,7 @@ Procedure Groups</summary>
 <div class="pkg-entity">
 <h3 id="Entity_Flag"><span><a class="doc-id-link" href="#Entity_Flag">Entity_Flag<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/doc-format/doc_format.odin#L94"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">Entity_Flag :: enum u32le {
+<pre class="doc-code">Entity_Flag :: <span class="keyword-type">enum</span> <span class="doc-builtin">u32le</span> {
 	Foreign          = 0, 
 	Export           = 1, 
 	Param_Using      = 2, 
@@ -294,13 +308,13 @@ Procedure Groups</summary>
 <div class="pkg-entity">
 <h3 id="Entity_Flags"><span><a class="doc-id-link" href="#Entity_Flags">Entity_Flags<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/doc-format/doc_format.odin#L114"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">Entity_Flags :: distinct bit_set[<a class="code-typename" href="/core/odin/doc-format/#Entity_Flag">Entity_Flag</a>; u64le]</pre>
+<pre class="doc-code">Entity_Flags :: distinct <span class="keyword-type">bit_set</span>[<a class="code-typename" href="/core/odin/doc-format/#Entity_Flag">Entity_Flag</a>; <span class="doc-builtin">u64le</span>]</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="Entity_Kind"><span><a class="doc-id-link" href="#Entity_Kind">Entity_Kind<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/doc-format/doc_format.odin#L83"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">Entity_Kind :: enum u32le {
+<pre class="doc-code">Entity_Kind :: <span class="keyword-type">enum</span> <span class="doc-builtin">u32le</span> {
 	Invalid      = 0, 
 	Constant     = 1, 
 	Variable     = 2, 
@@ -315,13 +329,13 @@ Procedure Groups</summary>
 <div class="pkg-entity">
 <h3 id="File_Index"><span><a class="doc-id-link" href="#File_Index">File_Index<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/doc-format/doc_format.odin#L48"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">File_Index :: distinct u32le</pre>
+<pre class="doc-code">File_Index :: distinct <span class="doc-builtin">u32le</span></pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="File"><span><a class="doc-id-link" href="#File">File<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/doc-format/doc_format.odin#L61"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">File :: struct {
+<pre class="doc-code">File :: <span class="keyword-type">struct</span> {
 	pkg:  <a class="code-typename" href="/core/odin/doc-format/#Pkg_Index">Pkg_Index</a>,
 	name: <a class="code-typename" href="/core/odin/doc-format/#String">String</a>,
 }</pre>
@@ -330,8 +344,9 @@ Procedure Groups</summary>
 <div class="pkg-entity">
 <h3 id="Header"><span><a class="doc-id-link" href="#Header">Header<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/doc-format/doc_format.odin#L38"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">Header :: struct {
+<pre class="doc-code">Header :: <span class="keyword-type">struct</span> {
 	base:     <a class="code-typename" href="/core/odin/doc-format/#Header_Base">Header_Base</a>,
+	<span class="comment">// NOTE: These arrays reserve the zero element as a sentinel value</span>
 	files:    <a class="code-typename" href="/core/odin/doc-format/#Array">Array</a>(File),
 	pkgs:     <a class="code-typename" href="/core/odin/doc-format/#Array">Array</a>(Pkg),
 	entities: <a class="code-typename" href="/core/odin/doc-format/#Array">Array</a>(Entity),
@@ -342,20 +357,23 @@ Procedure Groups</summary>
 <div class="pkg-entity">
 <h3 id="Header_Base"><span><a class="doc-id-link" href="#Header_Base">Header_Base<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/doc-format/doc_format.odin#L29"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">Header_Base :: struct {
-	magic:       [8]u8,
-	_:           u32le,
+<pre class="doc-code">Header_Base :: <span class="keyword-type">struct</span> {
+	magic:       [8]<span class="doc-builtin">u8</span>,
+	_:           <span class="doc-builtin">u32le</span>,
+	<span class="comment">// padding</span>
 	version:     <a class="code-typename" href="/core/odin/doc-format/#Version_Type">Version_Type</a>,
-	total_size:  u32le,
-	header_size: u32le,
-	hash:        u32le,
+	total_size:  <span class="doc-builtin">u32le</span>,
+	<span class="comment">// in bytes</span>
+	header_size: <span class="doc-builtin">u32le</span>,
+	<span class="comment">// in bytes</span>
+	hash:        <span class="doc-builtin">u32le</span>,
 }</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="Pkg"><span><a class="doc-id-link" href="#Pkg">Pkg<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/doc-format/doc_format.odin#L74"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">Pkg :: struct {
+<pre class="doc-code">Pkg :: <span class="keyword-type">struct</span> {
 	fullpath: <a class="code-typename" href="/core/odin/doc-format/#String">String</a>,
 	name:     <a class="code-typename" href="/core/odin/doc-format/#String">String</a>,
 	flags:    <a class="code-typename" href="/core/odin/doc-format/#Pkg_Flags">Pkg_Flags</a>,
@@ -368,7 +386,7 @@ Procedure Groups</summary>
 <div class="pkg-entity">
 <h3 id="Pkg_Flag"><span><a class="doc-id-link" href="#Pkg_Flag">Pkg_Flag<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/doc-format/doc_format.odin#L66"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">Pkg_Flag :: enum u32le {
+<pre class="doc-code">Pkg_Flag :: <span class="keyword-type">enum</span> <span class="doc-builtin">u32le</span> {
 	Builtin = 0, 
 	Runtime = 1, 
 	Init    = 2, 
@@ -378,30 +396,30 @@ Procedure Groups</summary>
 <div class="pkg-entity">
 <h3 id="Pkg_Flags"><span><a class="doc-id-link" href="#Pkg_Flags">Pkg_Flags<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/doc-format/doc_format.odin#L72"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">Pkg_Flags :: distinct bit_set[<a class="code-typename" href="/core/odin/doc-format/#Pkg_Flag">Pkg_Flag</a>; u32le]</pre>
+<pre class="doc-code">Pkg_Flags :: distinct <span class="keyword-type">bit_set</span>[<a class="code-typename" href="/core/odin/doc-format/#Pkg_Flag">Pkg_Flag</a>; <span class="doc-builtin">u32le</span>]</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="Pkg_Index"><span><a class="doc-id-link" href="#Pkg_Index">Pkg_Index<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/doc-format/doc_format.odin#L49"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">Pkg_Index :: distinct u32le</pre>
+<pre class="doc-code">Pkg_Index :: distinct <span class="doc-builtin">u32le</span></pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="Position"><span><a class="doc-id-link" href="#Position">Position<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/doc-format/doc_format.odin#L54"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">Position :: struct {
+<pre class="doc-code">Position :: <span class="keyword-type">struct</span> {
 	file:   <a class="code-typename" href="/core/odin/doc-format/#File_Index">File_Index</a>,
-	line:   u32le,
-	column: u32le,
-	offset: u32le,
+	line:   <span class="doc-builtin">u32le</span>,
+	column: <span class="doc-builtin">u32le</span>,
+	offset: <span class="doc-builtin">u32le</span>,
 }</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="Reader_Error"><span><a class="doc-id-link" href="#Reader_Error">Reader_Error<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/doc-format/doc_format.odin#L304"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">Reader_Error :: enum int {
+<pre class="doc-code">Reader_Error :: <span class="keyword-type">enum</span> <span class="doc-builtin">int</span> {
 	None, 
 	Header_Too_Small, 
 	Invalid_Magic, 
@@ -413,27 +431,77 @@ Procedure Groups</summary>
 <div class="pkg-entity">
 <h3 id="String"><span><a class="doc-id-link" href="#String">String<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/doc-format/doc_format.odin#L10"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">String :: struct($T: u8) {
-	offset: u32le,
-	length: u32le,
+<pre class="doc-code">String :: <span class="keyword-type">struct</span>($T: <span class="doc-builtin">u8</span>) {
+	offset: <span class="doc-builtin">u32le</span>,
+	length: <span class="doc-builtin">u32le</span>,
 }</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="Type"><span><a class="doc-id-link" href="#Type">Type<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/doc-format/doc_format.odin#L183"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">Type :: struct {
+<pre class="doc-code">Type :: <span class="keyword-type">struct</span> {
 	kind:               <a class="code-typename" href="/core/odin/doc-format/#Type_Kind">Type_Kind</a>,
-	flags:              u32le,
+	<span class="comment">// Type_Kind specific used by some types</span>
+	<span class="comment">// Underlying flag types:</span>
+	<span class="comment">// .Basic   - Type_Flags_Basic</span>
+	<span class="comment">// .Struct  - Type_Flags_Struct</span>
+	<span class="comment">// .Union   - Type_Flags_Union</span>
+	<span class="comment">// .Proc    - Type_Flags_Proc</span>
+	<span class="comment">// .Bit_Set - Type_Flags_Bit_Set</span>
+	flags:              <span class="doc-builtin">u32le</span>,
+	<span class="comment">// Used by:</span>
+	<span class="comment">// .Basic</span>
+	<span class="comment">// .Named</span>
+	<span class="comment">// .Generic</span>
 	name:               <a class="code-typename" href="/core/odin/doc-format/#String">String</a>,
+	<span class="comment">// Used By: .Struct, .Union</span>
 	custom_align:       <a class="code-typename" href="/core/odin/doc-format/#String">String</a>,
-	elem_count_len:     u32le,
-	elem_counts:        [4]i64le,
+	<span class="comment">// Used by:</span>
+	<span class="comment">// .Array            - 1 count: 0=len</span>
+	<span class="comment">// .Enumerated_Array - 1 count: 0=len</span>
+	<span class="comment">// .SOA_Struct_Fixed - 1 count: 0=len</span>
+	<span class="comment">// .Bit_Set          - 2 count: 0=lower, 1=upper</span>
+	<span class="comment">// .Simd_Vector      - 1 count: 0=len</span>
+	<span class="comment">// .Matrix           - 2 count: 0=row_count, 1=column_count</span>
+	elem_count_len:     <span class="doc-builtin">u32le</span>,
+	elem_counts:        [4]<span class="doc-builtin">i64le</span>,
+	<span class="comment">// Used by: .Procedures</span>
+	<span class="comment">// blank implies the "odin" calling convention</span>
 	calling_convention: <a class="code-typename" href="/core/odin/doc-format/#String">String</a>,
+	<span class="comment">// Used by:</span>
+	<span class="comment">// .Named              - 1 type:    0=base type</span>
+	<span class="comment">// .Generic            - <1 type:   0=specialization</span>
+	<span class="comment">// .Pointer            - 1 type:    0=element</span>
+	<span class="comment">// .Array              - 1 type:    0=element</span>
+	<span class="comment">// .Enumerated_Array   - 2 types:   0=index and 1=element</span>
+	<span class="comment">// .Slice              - 1 type:    0=element</span>
+	<span class="comment">// .Dynamic_Array      - 1 type:    0=element</span>
+	<span class="comment">// .Map                - 2 types:   0=key, 1=value</span>
+	<span class="comment">// .SOA_Struct_Fixed   - 1 type:    underlying SOA struct element</span>
+	<span class="comment">// .SOA_Struct_Slice   - 1 type:    underlying SOA struct element</span>
+	<span class="comment">// .SOA_Struct_Dynamic - 1 type:    underlying SOA struct element</span>
+	<span class="comment">// .Union              - 0+ types:  variants</span>
+	<span class="comment">// .Enum               - <1 type:   0=base type</span>
+	<span class="comment">// .Proc               - 2 types:   0=parameters, 1=results</span>
+	<span class="comment">// .Bit_Set            - <=2 types: 0=element type, 1=underlying type (Underlying_Type flag will be set)</span>
+	<span class="comment">// .Simd_Vector        - 1 type:    0=element</span>
+	<span class="comment">// .Relative_Pointer   - 2 types:   0=pointer type, 1=base integer</span>
+	<span class="comment">// .Relative_Slice     - 2 types:   0=slice type, 1=base integer</span>
+	<span class="comment">// .Multi_Pointer      - 1 type:    0=element</span>
+	<span class="comment">// .Matrix             - 1 type:    0=element</span>
 	types:              <a class="code-typename" href="/core/odin/doc-format/#Array">Array</a>(Type_Index),
+	<span class="comment">// Used by:</span>
+	<span class="comment">// .Named  - 1 field for the definition</span>
+	<span class="comment">// .Struct - fields</span>
+	<span class="comment">// .Enum   - fields</span>
+	<span class="comment">// .Tuple  - parameters (procedures only)</span>
 	entities:           <a class="code-typename" href="/core/odin/doc-format/#Array">Array</a>(Entity_Index),
+	<span class="comment">// Used By: .Struct, .Union</span>
 	polymorphic_params: <a class="code-typename" href="/core/odin/doc-format/#Type_Index">Type_Index</a>,
+	<span class="comment">// Used By: .Struct, .Union</span>
 	where_clauses:      <a class="code-typename" href="/core/odin/doc-format/#Array">Array</a>(String),
+	<span class="comment">// Used By: .Struct</span>
 	tags:               <a class="code-typename" href="/core/odin/doc-format/#Array">Array</a>(String),
 }</pre>
 </div>
@@ -441,7 +509,7 @@ Procedure Groups</summary>
 <div class="pkg-entity">
 <h3 id="Type_Flag_Basic"><span><a class="doc-id-link" href="#Type_Flag_Basic">Type_Flag_Basic<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/doc-format/doc_format.odin#L256"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">Type_Flag_Basic :: enum u32le {
+<pre class="doc-code">Type_Flag_Basic :: <span class="keyword-type">enum</span> <span class="doc-builtin">u32le</span> {
 	Untyped = 1, 
 }</pre>
 </div>
@@ -449,7 +517,7 @@ Procedure Groups</summary>
 <div class="pkg-entity">
 <h3 id="Type_Flag_Bit_Set"><span><a class="doc-id-link" href="#Type_Flag_Bit_Set">Type_Flag_Bit_Set<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/doc-format/doc_format.odin#L284"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">Type_Flag_Bit_Set :: enum u32le {
+<pre class="doc-code">Type_Flag_Bit_Set :: <span class="keyword-type">enum</span> <span class="doc-builtin">u32le</span> {
 	Range           = 1, 
 	Op_Lt           = 2, 
 	Op_Lt_Eq        = 3, 
@@ -460,7 +528,7 @@ Procedure Groups</summary>
 <div class="pkg-entity">
 <h3 id="Type_Flag_Proc"><span><a class="doc-id-link" href="#Type_Flag_Proc">Type_Flag_Proc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/doc-format/doc_format.odin#L275"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">Type_Flag_Proc :: enum u32le {
+<pre class="doc-code">Type_Flag_Proc :: <span class="keyword-type">enum</span> <span class="doc-builtin">u32le</span> {
 	Polymorphic = 0, 
 	Diverging   = 1, 
 	Optional_Ok = 2, 
@@ -472,7 +540,7 @@ Procedure Groups</summary>
 <div class="pkg-entity">
 <h3 id="Type_Flag_Struct"><span><a class="doc-id-link" href="#Type_Flag_Struct">Type_Flag_Struct<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/doc-format/doc_format.odin#L261"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">Type_Flag_Struct :: enum u32le {
+<pre class="doc-code">Type_Flag_Struct :: <span class="keyword-type">enum</span> <span class="doc-builtin">u32le</span> {
 	Polymorphic = 0, 
 	Packed      = 1, 
 	Raw_Union   = 2, 
@@ -482,7 +550,7 @@ Procedure Groups</summary>
 <div class="pkg-entity">
 <h3 id="Type_Flag_Union"><span><a class="doc-id-link" href="#Type_Flag_Union">Type_Flag_Union<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/doc-format/doc_format.odin#L268"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">Type_Flag_Union :: enum u32le {
+<pre class="doc-code">Type_Flag_Union :: <span class="keyword-type">enum</span> <span class="doc-builtin">u32le</span> {
 	Polymorphic = 0, 
 	No_Nil      = 1, 
 	Maybe       = 2, 
@@ -492,43 +560,43 @@ Procedure Groups</summary>
 <div class="pkg-entity">
 <h3 id="Type_Flags_Basic"><span><a class="doc-id-link" href="#Type_Flags_Basic">Type_Flags_Basic<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/doc-format/doc_format.odin#L255"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">Type_Flags_Basic :: distinct bit_set[<a class="code-typename" href="/core/odin/doc-format/#Type_Flag_Basic">Type_Flag_Basic</a>; u32le]</pre>
+<pre class="doc-code">Type_Flags_Basic :: distinct <span class="keyword-type">bit_set</span>[<a class="code-typename" href="/core/odin/doc-format/#Type_Flag_Basic">Type_Flag_Basic</a>; <span class="doc-builtin">u32le</span>]</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="Type_Flags_Bit_Set"><span><a class="doc-id-link" href="#Type_Flags_Bit_Set">Type_Flags_Bit_Set<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/doc-format/doc_format.odin#L283"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">Type_Flags_Bit_Set :: distinct bit_set[<a class="code-typename" href="/core/odin/doc-format/#Type_Flag_Bit_Set">Type_Flag_Bit_Set</a>; u32le]</pre>
+<pre class="doc-code">Type_Flags_Bit_Set :: distinct <span class="keyword-type">bit_set</span>[<a class="code-typename" href="/core/odin/doc-format/#Type_Flag_Bit_Set">Type_Flag_Bit_Set</a>; <span class="doc-builtin">u32le</span>]</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="Type_Flags_Proc"><span><a class="doc-id-link" href="#Type_Flags_Proc">Type_Flags_Proc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/doc-format/doc_format.odin#L274"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">Type_Flags_Proc :: distinct bit_set[<a class="code-typename" href="/core/odin/doc-format/#Type_Flag_Proc">Type_Flag_Proc</a>; u32le]</pre>
+<pre class="doc-code">Type_Flags_Proc :: distinct <span class="keyword-type">bit_set</span>[<a class="code-typename" href="/core/odin/doc-format/#Type_Flag_Proc">Type_Flag_Proc</a>; <span class="doc-builtin">u32le</span>]</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="Type_Flags_Struct"><span><a class="doc-id-link" href="#Type_Flags_Struct">Type_Flags_Struct<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/doc-format/doc_format.odin#L260"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">Type_Flags_Struct :: distinct bit_set[<a class="code-typename" href="/core/odin/doc-format/#Type_Flag_Struct">Type_Flag_Struct</a>; u32le]</pre>
+<pre class="doc-code">Type_Flags_Struct :: distinct <span class="keyword-type">bit_set</span>[<a class="code-typename" href="/core/odin/doc-format/#Type_Flag_Struct">Type_Flag_Struct</a>; <span class="doc-builtin">u32le</span>]</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="Type_Flags_Union"><span><a class="doc-id-link" href="#Type_Flags_Union">Type_Flags_Union<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/doc-format/doc_format.odin#L267"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">Type_Flags_Union :: distinct bit_set[<a class="code-typename" href="/core/odin/doc-format/#Type_Flag_Union">Type_Flag_Union</a>; u32le]</pre>
+<pre class="doc-code">Type_Flags_Union :: distinct <span class="keyword-type">bit_set</span>[<a class="code-typename" href="/core/odin/doc-format/#Type_Flag_Union">Type_Flag_Union</a>; <span class="doc-builtin">u32le</span>]</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="Type_Index"><span><a class="doc-id-link" href="#Type_Index">Type_Index<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/doc-format/doc_format.odin#L51"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">Type_Index :: distinct u32le</pre>
+<pre class="doc-code">Type_Index :: distinct <span class="doc-builtin">u32le</span></pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="Type_Kind"><span><a class="doc-id-link" href="#Type_Kind">Type_Kind<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/doc-format/doc_format.odin#L154"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">Type_Kind :: enum u32le {
+<pre class="doc-code">Type_Kind :: <span class="keyword-type">enum</span> <span class="doc-builtin">u32le</span> {
 	Invalid            = 0, 
 	Basic              = 1, 
 	Named              = 2, 
@@ -559,11 +627,11 @@ Procedure Groups</summary>
 <div class="pkg-entity">
 <h3 id="Version_Type"><span><a class="doc-id-link" href="#Version_Type">Version_Type<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/doc-format/doc_format.odin#L16"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">Version_Type :: struct {
+<pre class="doc-code">Version_Type :: <span class="keyword-type">struct</span> {
 	major,
 	minor,
-	patch: u8,
-	_:     u8,
+	patch: <span class="doc-builtin">u8</span>,
+	_:     <span class="doc-builtin">u8</span>,
 }</pre>
 </div>
 </div>
@@ -573,7 +641,7 @@ Procedure Groups</summary>
 <div class="pkg-entity">
 <h3 id="Magic_String"><span><a class="doc-id-link" href="#Magic_String">Magic_String<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/doc-format/doc_format.odin#L27"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">Magic_String :: ""odindoc\x00""</pre>
+<pre class="doc-code">Magic_String :: "odindoc\x00"</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -616,19 +684,19 @@ Procedure Groups</summary>
 <div class="pkg-entity">
 <h3 id="from_array"><span><a class="doc-id-link" href="#from_array">from_array<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/doc-format/doc_format.odin#L291"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">from_array :: proc(base: ^<a class="code-typename" href="/core/odin/doc-format/#Header_Base">Header_Base</a>, a: $A/<a class="code-typename" href="/core/odin/doc-format/#Array">Array</a>($T)) -> []$ {…}</pre>
+<pre class="doc-code">from_array :: <span class="keyword-type">proc</span>(base: ^<a class="code-typename" href="/core/odin/doc-format/#Header_Base">Header_Base</a>, a: $A/<a class="code-typename" href="/core/odin/doc-format/#Array">Array</a>($T)) -> []$ {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="from_string"><span><a class="doc-id-link" href="#from_string">from_string<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/doc-format/doc_format.odin#L297"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">from_string :: proc(base: ^<a class="code-typename" href="/core/odin/doc-format/#Header_Base">Header_Base</a>, s: <a class="code-typename" href="/core/odin/doc-format/#String">String</a>) -> string {…}</pre>
+<pre class="doc-code">from_string :: <span class="keyword-type">proc</span>(base: ^<a class="code-typename" href="/core/odin/doc-format/#Header_Base">Header_Base</a>, s: <a class="code-typename" href="/core/odin/doc-format/#String">String</a>) -> <span class="doc-builtin">string</span> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="read_from_bytes"><span><a class="doc-id-link" href="#read_from_bytes">read_from_bytes<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/doc-format/doc_format.odin#L312"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">read_from_bytes :: proc(data: []u8) -> (h: ^<a class="code-typename" href="/core/odin/doc-format/#Header">Header</a>, err: <a class="code-typename" href="/core/odin/doc-format/#Reader_Error">Reader_Error</a>) {…}</pre>
+<pre class="doc-code">read_from_bytes :: <span class="keyword-type">proc</span>(data: []<span class="doc-builtin">u8</span>) -> (h: ^<a class="code-typename" href="/core/odin/doc-format/#Header">Header</a>, err: <a class="code-typename" href="/core/odin/doc-format/#Reader_Error">Reader_Error</a>) {…}</pre>
 </div>
 </div>
 </section>
@@ -641,7 +709,7 @@ Procedure Groups</summary>
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/doc-format/doc_format.odin">doc_format.odin</a></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2022-01 (vendor "odin") windows_amd64 @ 2022-01-23 21:07:27.691628400 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2022-01 (vendor "odin") windows_amd64 @ 2022-01-24 15:13:57.340191200 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
