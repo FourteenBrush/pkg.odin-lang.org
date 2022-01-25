@@ -3,10 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>package image - pkg.odin-lang.org</title>	<!-- REMEMBER TO REMOVE -->
-	<script type="text/javascript" src="https://livejs.com/live.js"></script>
-
-	<link rel="stylesheet" type="text/css" href="https://odin-lang.org/scss/custom.min.css">
+	<title>package image - pkg.odin-lang.org</title>	<link rel="stylesheet" type="text/css" href="https://odin-lang.org/scss/custom.min.css">
 	<link rel=stylesheet href="//odin-lang.org/lib/highlight/styles/github-dark.min.css">
 	<script src="//odin-lang.org/lib/highlight/highlight.min.js"></script>
 
@@ -288,6 +285,7 @@ Procedure Groups (0)</summary>
 	alpha_drop_if_present, 
 	alpha_premultiply, 
 	blend_background, 
+	<span class="comment">// Unimplemented</span>
 	do_not_expand_grayscale, 
 	do_not_expand_indexed, 
 	do_not_expand_channels, 
@@ -323,7 +321,9 @@ Procedure Groups (0)</summary>
 <h3 id="PNG_Chunk_Type"><span><a class="doc-id-link" href="#PNG_Chunk_Type">PNG_Chunk_Type<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L179"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">PNG_Chunk_Type :: <span class="keyword-type">enum</span> <span class="doc-builtin">u32be</span> {
+	<span class="comment">// IHDR must come first in a file</span>
 	IHDR = 1229472850, 
+	<span class="comment">// PLTE must precede the first IDAT chunk</span>
 	PLTE = 1347179589, 
 	bKGD = 1649100612, 
 	tRNS = 1951551059, 
@@ -340,8 +340,20 @@ Procedure Groups (0)</summary>
 	hIST = 1749635924, 
 	cHRM = 1665684045, 
 	sBIT = 1933723988, 
+	<span class="comment">// 		eXIf tags are not part of the core spec, but have been ratified</span>
+	<span class="comment">// 		in v1.5.0 of the PNG Ext register.</span>
+	<span class="comment">// </span>
+	<span class="comment">// 		We will provide unprocessed chunks to the caller if `.return_metadata` is set.</span>
+	<span class="comment">// 		Applications are free to implement an Exif decoder.</span>
 	eXIf = 1700284774, 
+	<span class="comment">// PNG files must end with IEND</span>
 	IEND = 1229278788, 
+	<span class="comment">// 		XCode sometimes produces "PNG" files that don't adhere to the PNG spec.</span>
+	<span class="comment">// 		We recognize them only in order to avoid doing further work on them.</span>
+	<span class="comment">// </span>
+	<span class="comment">// 		Some tools like PNG Defry may be able to repair them, but we're not</span>
+	<span class="comment">// 		going to reward Apple for producing proprietary broken files purporting</span>
+	<span class="comment">// 		to be PNGs by supporting them.</span>
 	iDOT = 1766084436, 
 	CbGI = 1130514505, 
 }</pre>
@@ -357,9 +369,9 @@ Procedure Groups (0)</summary>
 <h3 id="PNG_Color_Value"><span><a class="doc-id-link" href="#PNG_Color_Value">PNG_Color_Value<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L240"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">PNG_Color_Value :: <span class="keyword-type">enum</span> <span class="doc-builtin">u8</span> {
-	Paletted = 0, 
-	Color    = 1, 
-	Alpha    = 2, 
+	Paletted = 0, <span class="comment">// 1 << 0 = 1</span>
+	Color    = 1, <span class="comment">// 1 << 1 = 2</span>
+	Alpha    = 2, <span class="comment">// 1 << 2 = 4</span>
 }</pre>
 </div>
 </div>
@@ -466,7 +478,7 @@ Procedure Groups (0)</summary>
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin">common.odin</a></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2022-01 (vendor "odin") windows_amd64 @ 2022-01-24 21:10:14.674089500 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2022-01 (vendor "odin") windows_amd64 @ 2022-01-25 01:12:50.199127500 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">

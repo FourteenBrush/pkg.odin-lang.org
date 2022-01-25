@@ -3,10 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>package compress - pkg.odin-lang.org</title>	<!-- REMEMBER TO REMOVE -->
-	<script type="text/javascript" src="https://livejs.com/live.js"></script>
-
-	<link rel="stylesheet" type="text/css" href="https://odin-lang.org/scss/custom.min.css">
+	<title>package compress - pkg.odin-lang.org</title>	<link rel="stylesheet" type="text/css" href="https://odin-lang.org/scss/custom.min.css">
 	<link rel=stylesheet href="//odin-lang.org/lib/highlight/styles/github-dark.min.css">
 	<script src="//odin-lang.org/lib/highlight/highlight.min.js"></script>
 
@@ -320,7 +317,13 @@ Procedure Groups (11)</summary>
 	Comment_Too_Long, 
 	Payload_Length_Invalid, 
 	Payload_CRC_Invalid, 
+	<span class="comment">// 		GZIP's payload can be a maximum of max(u32le), or 4 GiB.</span>
+	<span class="comment">// 		If you tell it you expect it to contain more, that's obviously an error.</span>
 	Payload_Size_Exceeds_Max_Payload, 
+	<span class="comment">// 		For buffered instead of streamed output, the payload size can't exceed</span>
+	<span class="comment">// 		the max set by the `COMPRESS_OUTPUT_ALLOCATE_MAX` switch in compress/common.odin.</span>
+	<span class="comment">// </span>
+	<span class="comment">// 		You can tweak this setting using `-define:COMPRESS_OUTPUT_ALLOCATE_MAX=size_in_bytes`</span>
 	Output_Exceeds_COMPRESS_OUTPUT_ALLOCATE_MAX, 
 }</pre>
 </div>
@@ -338,6 +341,7 @@ Procedure Groups (11)</summary>
 	Checksum_Failed, 
 	Incompatible_Options, 
 	Unimplemented, 
+	<span class="comment">// 		Memory errors</span>
 	Allocation_Failed, 
 	Resize_Failed, 
 }</pre>
@@ -668,7 +672,7 @@ Procedure Groups (11)</summary>
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/compress/common.odin">common.odin</a></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2022-01 (vendor "odin") windows_amd64 @ 2022-01-24 21:10:14.653089000 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2022-01 (vendor "odin") windows_amd64 @ 2022-01-25 01:12:50.180127100 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
