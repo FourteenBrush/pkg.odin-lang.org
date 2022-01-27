@@ -179,6 +179,12 @@
 </div>
 </nav>
 <article class="col-lg-8 p-4 documentation odin-article">
+<nav class="pkg-breadcrumb" aria-label="breadcrumb">
+<ol class="breadcrumb">
+<li class="breadcrumb-item"><a href="/core">core</a></li>
+<li class="breadcrumb-item active" aria-current="page"><a href="/core/bufio">bufio</a></li>
+</ol>
+</nav>
 <h1>package core:bufio<div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/bufio"><em>Source</em></a></div></h1>
 <div class="input-group"><input type="text" id="pkg-fuzzy-search" class="form-control" placeholder="Search Docs...">
 </div>
@@ -192,9 +198,9 @@ Types (8)</summary>
 <li><a href="#Loadahead_Reader">Loadahead_Reader</a></li>
 <li><a href="#Read_Writer">Read_Writer</a></li>
 <li><a href="#Reader">Reader</a></li>
-<li><a href="#Scanner">Scanner</a></li>
 <li><a href="#Scanner_Error">Scanner_Error</a></li>
 <li><a href="#Scanner_Extra_Error">Scanner_Extra_Error</a></li>
+<li><a href="#Scanner">Scanner</a></li>
 <li><a href="#Split_Proc">Split_Proc</a></li>
 <li><a href="#Writer">Writer</a></li>
 </ul>
@@ -236,10 +242,10 @@ Procedures (51)</summary>
 <li><a href="#reader_init">reader_init</a></li>
 <li><a href="#reader_init_with_buf">reader_init_with_buf</a></li>
 <li><a href="#reader_peek">reader_peek</a></li>
-<li><a href="#reader_read">reader_read</a></li>
 <li><a href="#reader_read_byte">reader_read_byte</a></li>
 <li><a href="#reader_read_bytes">reader_read_bytes</a></li>
 <li><a href="#reader_read_rune">reader_read_rune</a></li>
+<li><a href="#reader_read">reader_read</a></li>
 <li><a href="#reader_read_slice">reader_read_slice</a></li>
 <li><a href="#reader_read_string">reader_read_string</a></li>
 <li><a href="#reader_reset">reader_reset</a></li>
@@ -342,25 +348,6 @@ This makes sure that the buffer will not be accidentally read beyond the expecte
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="Scanner"><span><a class="doc-id-link" href="#Scanner">Scanner<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/bufio/scanner.odin#L26"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">Scanner :: <span class="keyword-type">struct</span> {
-	r:                            io.<a class="code-typename" href="/core/io/#Reader">Reader</a>,
-	split:                        <a class="code-typename" href="/core/bufio/#Split_Proc">Split_Proc</a>,
-	buf:                          [<span class="keyword">dynamic</span>]<span class="doc-builtin">u8</span>,
-	max_token_size:               <span class="doc-builtin">int</span>,
-	start:                        <span class="doc-builtin">int</span>,
-	end:                          <span class="doc-builtin">int</span>,
-	token:                        []<span class="doc-builtin">u8</span>,
-	_err:                         <a class="code-typename" href="/core/bufio/#Scanner_Error">Scanner_Error</a>,
-	max_consecutive_empty_reads:  <span class="doc-builtin">int</span>,
-	successive_empty_token_count: <span class="doc-builtin">int</span>,
-	scan_called:                  <span class="doc-builtin">bool</span>,
-	done:                         <span class="doc-builtin">bool</span>,
-}</pre>
-</div>
-</div>
-<div class="pkg-entity">
 <h3 id="Scanner_Error"><span><a class="doc-id-link" href="#Scanner_Error">Scanner_Error<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/bufio/scanner.odin#L18"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Scanner_Error :: <span class="keyword-type">union</span> {
@@ -384,6 +371,25 @@ This makes sure that the buffer will not be accidentally read beyond the expecte
 <summary class="hideme"><span>&nbsp;</span></summary>
 <p>Extra errors returns by scanning procedures</p>
 </details>
+</div>
+<div class="pkg-entity">
+<h3 id="Scanner"><span><a class="doc-id-link" href="#Scanner">Scanner<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/bufio/scanner.odin#L26"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Scanner :: <span class="keyword-type">struct</span> {
+	r:                            io.<a class="code-typename" href="/core/io/#Reader">Reader</a>,
+	split:                        <a class="code-typename" href="/core/bufio/#Split_Proc">Split_Proc</a>,
+	buf:                          [<span class="keyword">dynamic</span>]<span class="doc-builtin">u8</span>,
+	max_token_size:               <span class="doc-builtin">int</span>,
+	start:                        <span class="doc-builtin">int</span>,
+	end:                          <span class="doc-builtin">int</span>,
+	token:                        []<span class="doc-builtin">u8</span>,
+	_err:                         <a class="code-typename" href="/core/bufio/#Scanner_Error">Scanner_Error</a>,
+	max_consecutive_empty_reads:  <span class="doc-builtin">int</span>,
+	successive_empty_token_count: <span class="doc-builtin">int</span>,
+	scan_called:                  <span class="doc-builtin">bool</span>,
+	done:                         <span class="doc-builtin">bool</span>,
+}</pre>
+</div>
 </div>
 <div class="pkg-entity">
 <h3 id="Split_Proc"><span><a class="doc-id-link" href="#Split_Proc">Split_Proc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/bufio/scanner.odin#L24"><em>Source</em></a></div></h3>
@@ -555,17 +561,6 @@ The error will be .Buffer_Full if n is larger than the internal buffer size</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="reader_read"><span><a class="doc-id-link" href="#reader_read">reader_read<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/bufio/reader.odin#L180"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">reader_read :: <span class="keyword-type">proc</span>(b: ^<a class="code-typename" href="/core/bufio/#Reader">Reader</a>, p: []<span class="doc-builtin">u8</span>) -> (n: <span class="doc-builtin">int</span>, err: io.<a class="code-typename" href="/core/io/#Error">Error</a>) {…}</pre>
-</div>
-<details class="odin-doc-toggle" open>
-<summary class="hideme"><span>&nbsp;</span></summary>
-<p>reader_read reads data into p
-The bytes are taken from at most one read on the underlying Reader, which means n may be less than len(p)</p>
-</details>
-</div>
-<div class="pkg-entity">
 <h3 id="reader_read_byte"><span><a class="doc-id-link" href="#reader_read_byte">reader_read_byte<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/bufio/reader.odin#L226"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">reader_read_byte :: <span class="keyword-type">proc</span>(b: ^<a class="code-typename" href="/core/bufio/#Reader">Reader</a>) -> (<span class="doc-builtin">u8</span>, io.<a class="code-typename" href="/core/io/#Error">Error</a>) {…}</pre>
@@ -597,6 +592,17 @@ It returns an allocated slice containing the data up to and including the delimi
 <p>reader_read_rune reads a single UTF-8 encoded unicode character
 and returns the rune and its size in bytes
 If the encoded rune is invalid, it consumes one byte and returns utf8.RUNE_ERROR (U+FFFD) with a size of 1</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="reader_read"><span><a class="doc-id-link" href="#reader_read">reader_read<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/bufio/reader.odin#L180"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">reader_read :: <span class="keyword-type">proc</span>(b: ^<a class="code-typename" href="/core/bufio/#Reader">Reader</a>, p: []<span class="doc-builtin">u8</span>) -> (n: <span class="doc-builtin">int</span>, err: io.<a class="code-typename" href="/core/io/#Error">Error</a>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>reader_read reads data into p
+The bytes are taken from at most one read on the underlying Reader, which means n may be less than len(p)</p>
 </details>
 </div>
 <div class="pkg-entity">
@@ -911,7 +917,7 @@ If n < len(p), it will return an error explaining why the write is short</p>
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/bufio/writer.odin">writer.odin</a></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2022-01 (vendor "odin") windows_amd64 @ 2022-01-26 22:35:14.004675500 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2022-01 (vendor "odin") windows_amd64 @ 2022-01-27 16:38:03.063915200 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
@@ -920,9 +926,9 @@ If n < len(p), it will return an error explaining why the write is short</p>
 <li><a href="#Loadahead_Reader">Loadahead_Reader</a></li>
 <li><a href="#Read_Writer">Read_Writer</a></li>
 <li><a href="#Reader">Reader</a></li>
-<li><a href="#Scanner">Scanner</a></li>
 <li><a href="#Scanner_Error">Scanner_Error</a></li>
 <li><a href="#Scanner_Extra_Error">Scanner_Extra_Error</a></li>
+<li><a href="#Scanner">Scanner</a></li>
 <li><a href="#Split_Proc">Split_Proc</a></li>
 <li><a href="#Writer">Writer</a></li>
 </ul>
@@ -947,10 +953,10 @@ If n < len(p), it will return an error explaining why the write is short</p>
 <li><a href="#reader_init">reader_init</a></li>
 <li><a href="#reader_init_with_buf">reader_init_with_buf</a></li>
 <li><a href="#reader_peek">reader_peek</a></li>
-<li><a href="#reader_read">reader_read</a></li>
 <li><a href="#reader_read_byte">reader_read_byte</a></li>
 <li><a href="#reader_read_bytes">reader_read_bytes</a></li>
 <li><a href="#reader_read_rune">reader_read_rune</a></li>
+<li><a href="#reader_read">reader_read</a></li>
 <li><a href="#reader_read_slice">reader_read_slice</a></li>
 <li><a href="#reader_read_string">reader_read_string</a></li>
 <li><a href="#reader_reset">reader_reset</a></li>

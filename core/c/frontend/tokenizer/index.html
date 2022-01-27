@@ -179,6 +179,14 @@
 </div>
 </nav>
 <article class="col-lg-8 p-4 documentation odin-article">
+<nav class="pkg-breadcrumb" aria-label="breadcrumb">
+<ol class="breadcrumb">
+<li class="breadcrumb-item"><a href="/core">core</a></li>
+<li class="breadcrumb-item"><a href="/core/c">c</a></li>
+<li class="breadcrumb-item">frontend</li>
+<li class="breadcrumb-item active" aria-current="page"><a href="/core/c/frontend/tokenizer">tokenizer</a></li>
+</ol>
+</nav>
 <h1>package core:c/frontend/tokenizer<div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/c/frontend/tokenizer"><em>Source</em></a></div></h1>
 <div class="input-group"><input type="text" id="pkg-fuzzy-search" class="form-control" placeholder="Search Docs...">
 </div>
@@ -194,10 +202,10 @@ Types (10)</summary>
 <li><a href="#Hide_Set">Hide_Set</a></li>
 <li><a href="#Is_Keyword_Proc">Is_Keyword_Proc</a></li>
 <li><a href="#Pos">Pos</a></li>
-<li><a href="#Token">Token</a></li>
-<li><a href="#Token_Kind">Token_Kind</a></li>
 <li><a href="#Token_Type_Hint">Token_Type_Hint</a></li>
 <li><a href="#Token_Value">Token_Value</a></li>
+<li><a href="#Token">Token</a></li>
+<li><a href="#Token_Kind">Token_Kind</a></li>
 <li><a href="#Tokenizer">Tokenizer</a></li>
 </ul>
 </details>
@@ -236,8 +244,8 @@ Procedures (41)</summary>
 <li><a href="#default_warn_handler">default_warn_handler</a></li>
 <li><a href="#digit_val">digit_val</a></li>
 <li><a href="#display_width">display_width</a></li>
-<li><a href="#error_offset">error_offset</a></li>
 <li><a href="#error">error</a></li>
+<li><a href="#error_offset">error_offset</a></li>
 <li><a href="#hide_set_contains">hide_set_contains</a></li>
 <li><a href="#hide_set_intersection">hide_set_intersection</a></li>
 <li><a href="#hide_set_union">hide_set_union</a></li>
@@ -249,16 +257,16 @@ Procedures (41)</summary>
 <li><a href="#is_ident1">is_ident1</a></li>
 <li><a href="#new_eof">new_eof</a></li>
 <li><a href="#new_hide_set">new_hide_set</a></li>
-<li><a href="#peek_str">peek_str</a></li>
 <li><a href="#peek">peek</a></li>
+<li><a href="#peek_str">peek_str</a></li>
 <li><a href="#scan_comment">scan_comment</a></li>
-<li><a href="#scan">scan</a></li>
 <li><a href="#scan_escape">scan_escape</a></li>
 <li><a href="#scan_identifier">scan_identifier</a></li>
 <li><a href="#scan_literal_prefix">scan_literal_prefix</a></li>
 <li><a href="#scan_number">scan_number</a></li>
 <li><a href="#scan_punct">scan_punct</a></li>
 <li><a href="#scan_rune">scan_rune</a></li>
+<li><a href="#scan">scan</a></li>
 <li><a href="#scan_string">scan_string</a></li>
 <li><a href="#skip_whitespace">skip_whitespace</a></li>
 <li><a href="#tokenize">tokenize</a></li>
@@ -323,6 +331,39 @@ Procedure Groups (0)</summary>
 </div>
 </div>
 <div class="pkg-entity">
+<h3 id="Token_Type_Hint"><span><a class="doc-id-link" href="#Token_Type_Hint">Token_Type_Hint<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/c/frontend/tokenizer/token.odin#L34"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Token_Type_Hint :: <span class="keyword-type">enum</span> <span class="doc-builtin">u8</span> {
+	None, 
+	Int, 
+	Long, 
+	Long_Long, 
+	Unsigned_Int, 
+	Unsigned_Long, 
+	Unsigned_Long_Long, 
+	Float, 
+	Double, 
+	Long_Double, 
+	UTF_8, 
+	UTF_16, 
+	UTF_32, 
+	UTF_Wide, 
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Token_Value"><span><a class="doc-id-link" href="#Token_Value">Token_Value<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/c/frontend/tokenizer/token.odin#L55"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Token_Value :: <span class="keyword-type">union</span> {
+	<span class="doc-builtin">i64</span>, 
+	<span class="doc-builtin">f64</span>, 
+	<span class="doc-builtin">string</span>, 
+	[]<span class="doc-builtin">u16</span>, 
+	[]<span class="doc-builtin">u32</span>, 
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
 <h3 id="Token"><span><a class="doc-id-link" href="#Token">Token<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/c/frontend/tokenizer/token.odin#L63"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Token :: <span class="keyword-type">struct</span> {
@@ -357,39 +398,6 @@ Procedure Groups (0)</summary>
 	PP_Number, 
 	Comment, 
 	EOF, 
-}</pre>
-</div>
-</div>
-<div class="pkg-entity">
-<h3 id="Token_Type_Hint"><span><a class="doc-id-link" href="#Token_Type_Hint">Token_Type_Hint<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/c/frontend/tokenizer/token.odin#L34"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">Token_Type_Hint :: <span class="keyword-type">enum</span> <span class="doc-builtin">u8</span> {
-	None, 
-	Int, 
-	Long, 
-	Long_Long, 
-	Unsigned_Int, 
-	Unsigned_Long, 
-	Unsigned_Long_Long, 
-	Float, 
-	Double, 
-	Long_Double, 
-	UTF_8, 
-	UTF_16, 
-	UTF_32, 
-	UTF_Wide, 
-}</pre>
-</div>
-</div>
-<div class="pkg-entity">
-<h3 id="Token_Value"><span><a class="doc-id-link" href="#Token_Value">Token_Value<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/c/frontend/tokenizer/token.odin#L55"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">Token_Value :: <span class="keyword-type">union</span> {
-	<span class="doc-builtin">i64</span>, 
-	<span class="doc-builtin">f64</span>, 
-	<span class="doc-builtin">string</span>, 
-	[]<span class="doc-builtin">u16</span>, 
-	[]<span class="doc-builtin">u32</span>, 
 }</pre>
 </div>
 </div>
@@ -472,7 +480,7 @@ Procedure Groups (0)</summary>
 <div class="pkg-entity">
 <h3 id="char_width"><span><a class="doc-id-link" href="#char_width">char_width<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/c/frontend/tokenizer/unicode.odin#L27"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">char_width :: <span class="keyword-type">proc</span>(c: <span class="doc-builtin">rune</span>) -> <span class="doc-builtin">int</span> {…}</pre>
+<pre class="doc-code">char_width :: <span class="keyword-type">proc</span>(r: <span class="doc-builtin">rune</span>) -> <span class="doc-builtin">int</span> {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -507,7 +515,7 @@ Based on https://www.cl.cam.ac.uk/~mgk25/ucs/wcwidth.c</p>
 <div class="pkg-entity">
 <h3 id="digit_val"><span><a class="doc-id-link" href="#digit_val">digit_val<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/c/frontend/tokenizer/tokenizer.odin#L225"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">digit_val :: <span class="keyword-type">proc</span>(c: <span class="doc-builtin">rune</span>) -> <span class="doc-builtin">int</span> {…}</pre>
+<pre class="doc-code">digit_val :: <span class="keyword-type">proc</span>(r: <span class="doc-builtin">rune</span>) -> <span class="doc-builtin">int</span> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -517,15 +525,15 @@ Based on https://www.cl.cam.ac.uk/~mgk25/ucs/wcwidth.c</p>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="error_offset"><span><a class="doc-id-link" href="#error_offset">error_offset<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/c/frontend/tokenizer/tokenizer.odin#L63"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">error_offset :: <span class="keyword-type">proc</span>(t: ^<a class="code-typename" href="/core/c/frontend/tokenizer/#Tokenizer">Tokenizer</a>, offset: <span class="doc-builtin">int</span>, msg: <span class="doc-builtin">string</span>, args: ..<span class="doc-builtin">any</span>) {…}</pre>
-</div>
-</div>
-<div class="pkg-entity">
 <h3 id="error"><span><a class="doc-id-link" href="#error">error<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/c/frontend/tokenizer/tokenizer.odin#L79"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">error :: <span class="keyword-type">proc</span>(t: ^<a class="code-typename" href="/core/c/frontend/tokenizer/#Tokenizer">Tokenizer</a>, tok: ^<a class="code-typename" href="/core/c/frontend/tokenizer/#Token">Token</a>, msg: <span class="doc-builtin">string</span>, args: ..<span class="doc-builtin">any</span>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="error_offset"><span><a class="doc-id-link" href="#error_offset">error_offset<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/c/frontend/tokenizer/tokenizer.odin#L63"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">error_offset :: <span class="keyword-type">proc</span>(t: ^<a class="code-typename" href="/core/c/frontend/tokenizer/#Tokenizer">Tokenizer</a>, offset: <span class="doc-builtin">int</span>, msg: <span class="doc-builtin">string</span>, args: ..<span class="doc-builtin">any</span>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -604,27 +612,21 @@ Based on https://www.cl.cam.ac.uk/~mgk25/ucs/wcwidth.c</p>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="peek_str"><span><a class="doc-id-link" href="#peek_str">peek_str<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/c/frontend/tokenizer/tokenizer.odin#L468"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">peek_str :: <span class="keyword-type">proc</span>(t: ^<a class="code-typename" href="/core/c/frontend/tokenizer/#Tokenizer">Tokenizer</a>, str: <span class="doc-builtin">string</span>) -> <span class="doc-builtin">bool</span> {…}</pre>
-</div>
-</div>
-<div class="pkg-entity">
 <h3 id="peek"><span><a class="doc-id-link" href="#peek">peek<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/c/frontend/tokenizer/tokenizer.odin#L462"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">peek :: <span class="keyword-type">proc</span>(t: ^<a class="code-typename" href="/core/c/frontend/tokenizer/#Tokenizer">Tokenizer</a>) -> <span class="doc-builtin">u8</span> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="scan_comment"><span><a class="doc-id-link" href="#scan_comment">scan_comment<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/c/frontend/tokenizer/tokenizer.odin#L151"><em>Source</em></a></div></h3>
+<h3 id="peek_str"><span><a class="doc-id-link" href="#peek_str">peek_str<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/c/frontend/tokenizer/tokenizer.odin#L468"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">scan_comment :: <span class="keyword-type">proc</span>(t: ^<a class="code-typename" href="/core/c/frontend/tokenizer/#Tokenizer">Tokenizer</a>) -> <span class="doc-builtin">string</span> {…}</pre>
+<pre class="doc-code">peek_str :: <span class="keyword-type">proc</span>(t: ^<a class="code-typename" href="/core/c/frontend/tokenizer/#Tokenizer">Tokenizer</a>, str: <span class="doc-builtin">string</span>) -> <span class="doc-builtin">bool</span> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="scan"><span><a class="doc-id-link" href="#scan">scan<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/c/frontend/tokenizer/tokenizer.odin#L500"><em>Source</em></a></div></h3>
+<h3 id="scan_comment"><span><a class="doc-id-link" href="#scan_comment">scan_comment<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/c/frontend/tokenizer/tokenizer.odin#L151"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">scan :: <span class="keyword-type">proc</span>(t: ^<a class="code-typename" href="/core/c/frontend/tokenizer/#Tokenizer">Tokenizer</a>, f: ^<a class="code-typename" href="/core/c/frontend/tokenizer/#File">File</a>) -> ^<a class="code-typename" href="/core/c/frontend/tokenizer/#Token">Token</a> {…}</pre>
+<pre class="doc-code">scan_comment :: <span class="keyword-type">proc</span>(t: ^<a class="code-typename" href="/core/c/frontend/tokenizer/#Tokenizer">Tokenizer</a>) -> <span class="doc-builtin">string</span> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -661,6 +663,12 @@ Based on https://www.cl.cam.ac.uk/~mgk25/ucs/wcwidth.c</p>
 <h3 id="scan_rune"><span><a class="doc-id-link" href="#scan_rune">scan_rune<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/c/frontend/tokenizer/tokenizer.odin#L301"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">scan_rune :: <span class="keyword-type">proc</span>(t: ^<a class="code-typename" href="/core/c/frontend/tokenizer/#Tokenizer">Tokenizer</a>) -> <span class="doc-builtin">string</span> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="scan"><span><a class="doc-id-link" href="#scan">scan<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/c/frontend/tokenizer/tokenizer.odin#L500"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">scan :: <span class="keyword-type">proc</span>(t: ^<a class="code-typename" href="/core/c/frontend/tokenizer/#Tokenizer">Tokenizer</a>, f: ^<a class="code-typename" href="/core/c/frontend/tokenizer/#File">File</a>) -> ^<a class="code-typename" href="/core/c/frontend/tokenizer/#Token">Token</a> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -713,7 +721,7 @@ Based on https://www.cl.cam.ac.uk/~mgk25/ucs/wcwidth.c</p>
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/c/frontend/tokenizer/unicode.odin">unicode.odin</a></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2022-01 (vendor "odin") windows_amd64 @ 2022-01-26 22:35:14.012676100 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2022-01 (vendor "odin") windows_amd64 @ 2022-01-27 16:38:03.075449200 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
@@ -724,10 +732,10 @@ Based on https://www.cl.cam.ac.uk/~mgk25/ucs/wcwidth.c</p>
 <li><a href="#Hide_Set">Hide_Set</a></li>
 <li><a href="#Is_Keyword_Proc">Is_Keyword_Proc</a></li>
 <li><a href="#Pos">Pos</a></li>
-<li><a href="#Token">Token</a></li>
-<li><a href="#Token_Kind">Token_Kind</a></li>
 <li><a href="#Token_Type_Hint">Token_Type_Hint</a></li>
 <li><a href="#Token_Value">Token_Value</a></li>
+<li><a href="#Token">Token</a></li>
+<li><a href="#Token_Kind">Token_Kind</a></li>
 <li><a href="#Tokenizer">Tokenizer</a></li>
 </ul>
 </li>
@@ -749,8 +757,8 @@ Based on https://www.cl.cam.ac.uk/~mgk25/ucs/wcwidth.c</p>
 <li><a href="#default_warn_handler">default_warn_handler</a></li>
 <li><a href="#digit_val">digit_val</a></li>
 <li><a href="#display_width">display_width</a></li>
-<li><a href="#error_offset">error_offset</a></li>
 <li><a href="#error">error</a></li>
+<li><a href="#error_offset">error_offset</a></li>
 <li><a href="#hide_set_contains">hide_set_contains</a></li>
 <li><a href="#hide_set_intersection">hide_set_intersection</a></li>
 <li><a href="#hide_set_union">hide_set_union</a></li>
@@ -762,16 +770,16 @@ Based on https://www.cl.cam.ac.uk/~mgk25/ucs/wcwidth.c</p>
 <li><a href="#is_ident1">is_ident1</a></li>
 <li><a href="#new_eof">new_eof</a></li>
 <li><a href="#new_hide_set">new_hide_set</a></li>
-<li><a href="#peek_str">peek_str</a></li>
 <li><a href="#peek">peek</a></li>
+<li><a href="#peek_str">peek_str</a></li>
 <li><a href="#scan_comment">scan_comment</a></li>
-<li><a href="#scan">scan</a></li>
 <li><a href="#scan_escape">scan_escape</a></li>
 <li><a href="#scan_identifier">scan_identifier</a></li>
 <li><a href="#scan_literal_prefix">scan_literal_prefix</a></li>
 <li><a href="#scan_number">scan_number</a></li>
 <li><a href="#scan_punct">scan_punct</a></li>
 <li><a href="#scan_rune">scan_rune</a></li>
+<li><a href="#scan">scan</a></li>
 <li><a href="#scan_string">scan_string</a></li>
 <li><a href="#skip_whitespace">skip_whitespace</a></li>
 <li><a href="#tokenize">tokenize</a></li>

@@ -179,6 +179,13 @@
 </div>
 </nav>
 <article class="col-lg-8 p-4 documentation odin-article">
+<nav class="pkg-breadcrumb" aria-label="breadcrumb">
+<ol class="breadcrumb">
+<li class="breadcrumb-item"><a href="/core">core</a></li>
+<li class="breadcrumb-item">odin</li>
+<li class="breadcrumb-item active" aria-current="page"><a href="/core/odin/parser">parser</a></li>
+</ol>
+</nav>
 <h1>package core:odin/parser<div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/parser"><em>Source</em></a></div></h1>
 <div class="input-group"><input type="text" id="pkg-fuzzy-search" class="form-control" placeholder="Search Docs...">
 </div>
@@ -197,8 +204,8 @@ Types (11)</summary>
 <li><a href="#Flags">Flags</a></li>
 <li><a href="#Import_Decl_Kind">Import_Decl_Kind</a></li>
 <li><a href="#Parser">Parser</a></li>
-<li><a href="#Stmt_Allow_Flag">Stmt_Allow_Flag</a></li>
 <li><a href="#Stmt_Allow_Flags">Stmt_Allow_Flags</a></li>
+<li><a href="#Stmt_Allow_Flag">Stmt_Allow_Flag</a></li>
 <li><a href="#Warning_Handler">Warning_Handler</a></li>
 </ul>
 </details>
@@ -229,8 +236,8 @@ Procedures (85)</summary>
 <li><a href="#check_field_flag_prefixes">check_field_flag_prefixes</a></li>
 <li><a href="#check_procedure_name_list">check_procedure_name_list</a></li>
 <li><a href="#collect_package">collect_package</a></li>
-<li><a href="#consume_comment_group">consume_comment_group</a></li>
 <li><a href="#consume_comment">consume_comment</a></li>
+<li><a href="#consume_comment_group">consume_comment_group</a></li>
 <li><a href="#consume_comment_groups">consume_comment_groups</a></li>
 <li><a href="#convert_stmt_to_body">convert_stmt_to_body</a></li>
 <li><a href="#convert_stmt_to_expr">convert_stmt_to_expr</a></li>
@@ -243,10 +250,10 @@ Procedures (85)</summary>
 <li><a href="#error">error</a></li>
 <li><a href="#expect_closing_brace_of_field_list">expect_closing_brace_of_field_list</a></li>
 <li><a href="#expect_operator">expect_operator</a></li>
-<li><a href="#expect_semicolon">expect_semicolon</a></li>
 <li><a href="#expect_semicolon_newline_error">expect_semicolon_newline_error</a></li>
-<li><a href="#expect_token">expect_token</a></li>
+<li><a href="#expect_semicolon">expect_semicolon</a></li>
 <li><a href="#expect_token_after">expect_token_after</a></li>
+<li><a href="#expect_token">expect_token</a></li>
 <li><a href="#fix_advance_to_next_stmt">fix_advance_to_next_stmt</a></li>
 <li><a href="#is_blank_ident_node">is_blank_ident_node</a></li>
 <li><a href="#is_blank_ident_string">is_blank_ident_string</a></li>
@@ -267,14 +274,14 @@ Procedures (85)</summary>
 <li><a href="#parse_case_clause">parse_case_clause</a></li>
 <li><a href="#parse_control_statement_semicolon_separator">parse_control_statement_semicolon_separator</a></li>
 <li><a href="#parse_elem_list">parse_elem_list</a></li>
-<li><a href="#parse_expr_list">parse_expr_list</a></li>
 <li><a href="#parse_expr">parse_expr</a></li>
+<li><a href="#parse_expr_list">parse_expr_list</a></li>
 <li><a href="#parse_field_list">parse_field_list</a></li>
 <li><a href="#parse_field_prefixes">parse_field_prefixes</a></li>
 <li><a href="#parse_file">parse_file</a></li>
 <li><a href="#parse_for_stmt">parse_for_stmt</a></li>
-<li><a href="#parse_foreign_block">parse_foreign_block</a></li>
 <li><a href="#parse_foreign_block_decl">parse_foreign_block_decl</a></li>
+<li><a href="#parse_foreign_block">parse_foreign_block</a></li>
 <li><a href="#parse_foreign_decl">parse_foreign_decl</a></li>
 <li><a href="#parse_ident">parse_ident</a></li>
 <li><a href="#parse_ident_list">parse_ident_list</a></li>
@@ -298,12 +305,12 @@ Procedures (85)</summary>
 <li><a href="#parse_type">parse_type</a></li>
 <li><a href="#parse_unary_expr">parse_unary_expr</a></li>
 <li><a href="#parse_unrolled_for_loop">parse_unrolled_for_loop</a></li>
-<li><a href="#parse_value_decl">parse_value_decl</a></li>
 <li><a href="#parse_value">parse_value</a></li>
+<li><a href="#parse_value_decl">parse_value_decl</a></li>
 <li><a href="#parse_var_type">parse_var_type</a></li>
 <li><a href="#parse_when_stmt">parse_when_stmt</a></li>
-<li><a href="#peek_token_kind">peek_token_kind</a></li>
 <li><a href="#peek_token">peek_token</a></li>
+<li><a href="#peek_token_kind">peek_token_kind</a></li>
 <li><a href="#skip_possible_newline">skip_possible_newline</a></li>
 <li><a href="#skip_possible_newline_for_literal">skip_possible_newline_for_literal</a></li>
 <li><a href="#string_to_calling_convention">string_to_calling_convention</a></li>
@@ -327,7 +334,7 @@ Procedure Groups (1)</summary>
 <div class="pkg-entity">
 <h3 id="Error_Handler"><span><a class="doc-id-link" href="#Error_Handler">Error_Handler<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/parser/parser.odin#L9"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">Error_Handler :: <span class="keyword-type">proc</span>(pos: odin_tokenizer.<a class="code-typename" href="/core/odin/tokenizer/#Pos">Pos</a>, msg: <span class="doc-builtin">string</span>, args: ..<span class="doc-builtin">any</span>)</pre>
+<pre class="doc-code">Error_Handler :: <span class="keyword-type">proc</span>(pos: odin_tokenizer.<a class="code-typename" href="/core/odin/tokenizer/#Pos">Pos</a>, fmt: <span class="doc-builtin">string</span>, args: ..<span class="doc-builtin">any</span>)</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -416,6 +423,12 @@ Procedure Groups (1)</summary>
 </div>
 </div>
 <div class="pkg-entity">
+<h3 id="Stmt_Allow_Flags"><span><a class="doc-id-link" href="#Stmt_Allow_Flags">Stmt_Allow_Flags<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/parser/parser.odin#L60"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Stmt_Allow_Flags :: distinct <span class="keyword-type">bit_set</span>[<a class="code-typename" href="/core/odin/parser/#Stmt_Allow_Flag">Stmt_Allow_Flag</a>]</pre>
+</div>
+</div>
+<div class="pkg-entity">
 <h3 id="Stmt_Allow_Flag"><span><a class="doc-id-link" href="#Stmt_Allow_Flag">Stmt_Allow_Flag<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/parser/parser.odin#L56"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Stmt_Allow_Flag :: <span class="keyword-type">enum</span> <span class="doc-builtin">int</span> {
@@ -425,15 +438,9 @@ Procedure Groups (1)</summary>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="Stmt_Allow_Flags"><span><a class="doc-id-link" href="#Stmt_Allow_Flags">Stmt_Allow_Flags<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/parser/parser.odin#L60"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">Stmt_Allow_Flags :: distinct <span class="keyword-type">bit_set</span>[<a class="code-typename" href="/core/odin/parser/#Stmt_Allow_Flag">Stmt_Allow_Flag</a>]</pre>
-</div>
-</div>
-<div class="pkg-entity">
 <h3 id="Warning_Handler"><span><a class="doc-id-link" href="#Warning_Handler">Warning_Handler<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/parser/parser.odin#L8"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">Warning_Handler :: <span class="keyword-type">proc</span>(pos: odin_tokenizer.<a class="code-typename" href="/core/odin/tokenizer/#Pos">Pos</a>, msg: <span class="doc-builtin">string</span>, args: ..<span class="doc-builtin">any</span>)</pre>
+<pre class="doc-code">Warning_Handler :: <span class="keyword-type">proc</span>(pos: odin_tokenizer.<a class="code-typename" href="/core/odin/tokenizer/#Pos">Pos</a>, fmt: <span class="doc-builtin">string</span>, args: ..<span class="doc-builtin">any</span>)</pre>
 </div>
 </div>
 </section>
@@ -483,15 +490,15 @@ Procedure Groups (1)</summary>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="consume_comment_group"><span><a class="doc-id-link" href="#consume_comment_group">consume_comment_group<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/parser/parser.odin#L310"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">consume_comment_group :: <span class="keyword-type">proc</span>(p: ^<a class="code-typename" href="/core/odin/parser/#Parser">Parser</a>, n: <span class="doc-builtin">int</span>) -> (comments: ^odin_ast.<a class="code-typename" href="/core/odin/ast/#Comment_Group">Comment_Group</a>, end_line: <span class="doc-builtin">int</span>) {…}</pre>
-</div>
-</div>
-<div class="pkg-entity">
 <h3 id="consume_comment"><span><a class="doc-id-link" href="#consume_comment">consume_comment<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/parser/parser.odin#L289"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">consume_comment :: <span class="keyword-type">proc</span>(p: ^<a class="code-typename" href="/core/odin/parser/#Parser">Parser</a>) -> (tok: odin_tokenizer.<a class="code-typename" href="/core/odin/tokenizer/#Token">Token</a>, end_line: <span class="doc-builtin">int</span>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="consume_comment_group"><span><a class="doc-id-link" href="#consume_comment_group">consume_comment_group<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/parser/parser.odin#L310"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">consume_comment_group :: <span class="keyword-type">proc</span>(p: ^<a class="code-typename" href="/core/odin/parser/#Parser">Parser</a>, n: <span class="doc-builtin">int</span>) -> (comments: ^odin_ast.<a class="code-typename" href="/core/odin/ast/#Comment_Group">Comment_Group</a>, end_line: <span class="doc-builtin">int</span>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -521,7 +528,7 @@ Procedure Groups (1)</summary>
 <div class="pkg-entity">
 <h3 id="default_error_handler"><span><a class="doc-id-link" href="#default_error_handler">default_error_handler<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/parser/parser.odin#L75"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">default_error_handler :: <span class="keyword-type">proc</span>(pos: odin_tokenizer.<a class="code-typename" href="/core/odin/tokenizer/#Pos">Pos</a>, msg: <span class="doc-builtin">string</span>, args: ..<span class="doc-builtin">any</span>) {…}</pre>
+<pre class="doc-code">default_error_handler :: <span class="keyword-type">proc</span>(pos: odin_tokenizer.<a class="code-typename" href="/core/odin/tokenizer/#Pos">Pos</a>, fmt: <span class="doc-builtin">string</span>, args: ..<span class="doc-builtin">any</span>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -533,7 +540,7 @@ Procedure Groups (1)</summary>
 <div class="pkg-entity">
 <h3 id="default_warning_handler"><span><a class="doc-id-link" href="#default_warning_handler">default_warning_handler<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/parser/parser.odin#L70"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">default_warning_handler :: <span class="keyword-type">proc</span>(pos: odin_tokenizer.<a class="code-typename" href="/core/odin/tokenizer/#Pos">Pos</a>, msg: <span class="doc-builtin">string</span>, args: ..<span class="doc-builtin">any</span>) {…}</pre>
+<pre class="doc-code">default_warning_handler :: <span class="keyword-type">proc</span>(pos: odin_tokenizer.<a class="code-typename" href="/core/odin/tokenizer/#Pos">Pos</a>, fmt: <span class="doc-builtin">string</span>, args: ..<span class="doc-builtin">any</span>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -567,27 +574,27 @@ Procedure Groups (1)</summary>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="expect_semicolon"><span><a class="doc-id-link" href="#expect_semicolon">expect_semicolon<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/parser/parser.odin#L551"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">expect_semicolon :: <span class="keyword-type">proc</span>(p: ^<a class="code-typename" href="/core/odin/parser/#Parser">Parser</a>, node: ^odin_ast.<a class="code-typename" href="/core/odin/ast/#Node">Node</a>) -> <span class="doc-builtin">bool</span> {…}</pre>
-</div>
-</div>
-<div class="pkg-entity">
 <h3 id="expect_semicolon_newline_error"><span><a class="doc-id-link" href="#expect_semicolon_newline_error">expect_semicolon_newline_error<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/parser/parser.odin#L532"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">expect_semicolon_newline_error :: <span class="keyword-type">proc</span>(p: ^<a class="code-typename" href="/core/odin/parser/#Parser">Parser</a>, token: odin_tokenizer.<a class="code-typename" href="/core/odin/tokenizer/#Token">Token</a>, s: ^odin_ast.<a class="code-typename" href="/core/odin/ast/#Node">Node</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="expect_token"><span><a class="doc-id-link" href="#expect_token">expect_token<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/parser/parser.odin#L365"><em>Source</em></a></div></h3>
+<h3 id="expect_semicolon"><span><a class="doc-id-link" href="#expect_semicolon">expect_semicolon<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/parser/parser.odin#L551"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">expect_token :: <span class="keyword-type">proc</span>(p: ^<a class="code-typename" href="/core/odin/parser/#Parser">Parser</a>, kind: odin_tokenizer.<a class="code-typename" href="/core/odin/tokenizer/#Token_Kind">Token_Kind</a>) -> odin_tokenizer.<a class="code-typename" href="/core/odin/tokenizer/#Token">Token</a> {…}</pre>
+<pre class="doc-code">expect_semicolon :: <span class="keyword-type">proc</span>(p: ^<a class="code-typename" href="/core/odin/parser/#Parser">Parser</a>, node: ^odin_ast.<a class="code-typename" href="/core/odin/ast/#Node">Node</a>) -> <span class="doc-builtin">bool</span> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="expect_token_after"><span><a class="doc-id-link" href="#expect_token_after">expect_token_after<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/parser/parser.odin#L376"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">expect_token_after :: <span class="keyword-type">proc</span>(p: ^<a class="code-typename" href="/core/odin/parser/#Parser">Parser</a>, kind: odin_tokenizer.<a class="code-typename" href="/core/odin/tokenizer/#Token_Kind">Token_Kind</a>, msg: <span class="doc-builtin">string</span>) -> odin_tokenizer.<a class="code-typename" href="/core/odin/tokenizer/#Token">Token</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="expect_token"><span><a class="doc-id-link" href="#expect_token">expect_token<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/parser/parser.odin#L365"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">expect_token :: <span class="keyword-type">proc</span>(p: ^<a class="code-typename" href="/core/odin/parser/#Parser">Parser</a>, kind: odin_tokenizer.<a class="code-typename" href="/core/odin/tokenizer/#Token_Kind">Token_Kind</a>) -> odin_tokenizer.<a class="code-typename" href="/core/odin/tokenizer/#Token">Token</a> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -711,15 +718,15 @@ Procedure Groups (1)</summary>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="parse_expr_list"><span><a class="doc-id-link" href="#parse_expr_list">parse_expr_list<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/parser/parser.odin#L3331"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">parse_expr_list :: <span class="keyword-type">proc</span>(p: ^<a class="code-typename" href="/core/odin/parser/#Parser">Parser</a>, lhs: <span class="doc-builtin">bool</span>) -> []^odin_ast.<a class="code-typename" href="/core/odin/ast/#Expr">Expr</a> {…}</pre>
-</div>
-</div>
-<div class="pkg-entity">
 <h3 id="parse_expr"><span><a class="doc-id-link" href="#parse_expr">parse_expr<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/parser/parser.odin#L3175"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">parse_expr :: <span class="keyword-type">proc</span>(p: ^<a class="code-typename" href="/core/odin/parser/#Parser">Parser</a>, lhs: <span class="doc-builtin">bool</span>) -> ^odin_ast.<a class="code-typename" href="/core/odin/ast/#Expr">Expr</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="parse_expr_list"><span><a class="doc-id-link" href="#parse_expr_list">parse_expr_list<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/parser/parser.odin#L3331"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">parse_expr_list :: <span class="keyword-type">proc</span>(p: ^<a class="code-typename" href="/core/odin/parser/#Parser">Parser</a>, allow_poly_names: <span class="doc-builtin">bool</span>) -> []^odin_ast.<a class="code-typename" href="/core/odin/ast/#Expr">Expr</a> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -747,15 +754,15 @@ Procedure Groups (1)</summary>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="parse_foreign_block"><span><a class="doc-id-link" href="#parse_foreign_block">parse_foreign_block<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/parser/parser.odin#L1100"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">parse_foreign_block :: <span class="keyword-type">proc</span>(p: ^<a class="code-typename" href="/core/odin/parser/#Parser">Parser</a>, tok: odin_tokenizer.<a class="code-typename" href="/core/odin/tokenizer/#Token">Token</a>) -> ^odin_ast.<a class="code-typename" href="/core/odin/ast/#Foreign_Block_Decl">Foreign_Block_Decl</a> {…}</pre>
-</div>
-</div>
-<div class="pkg-entity">
 <h3 id="parse_foreign_block_decl"><span><a class="doc-id-link" href="#parse_foreign_block_decl">parse_foreign_block_decl<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/parser/parser.odin#L1084"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">parse_foreign_block_decl :: <span class="keyword-type">proc</span>(p: ^<a class="code-typename" href="/core/odin/parser/#Parser">Parser</a>) -> ^odin_ast.<a class="code-typename" href="/core/odin/ast/#Stmt">Stmt</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="parse_foreign_block"><span><a class="doc-id-link" href="#parse_foreign_block">parse_foreign_block<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/parser/parser.odin#L1100"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">parse_foreign_block :: <span class="keyword-type">proc</span>(p: ^<a class="code-typename" href="/core/odin/parser/#Parser">Parser</a>, tok: odin_tokenizer.<a class="code-typename" href="/core/odin/tokenizer/#Token">Token</a>) -> ^odin_ast.<a class="code-typename" href="/core/odin/ast/#Foreign_Block_Decl">Foreign_Block_Decl</a> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -773,7 +780,7 @@ Procedure Groups (1)</summary>
 <div class="pkg-entity">
 <h3 id="parse_ident_list"><span><a class="doc-id-link" href="#parse_ident_list">parse_ident_list<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/parser/parser.odin#L1824"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">parse_ident_list :: <span class="keyword-type">proc</span>(p: ^<a class="code-typename" href="/core/odin/parser/#Parser">Parser</a>, lhs: <span class="doc-builtin">bool</span>) -> []^odin_ast.<a class="code-typename" href="/core/odin/ast/#Expr">Expr</a> {…}</pre>
+<pre class="doc-code">parse_ident_list :: <span class="keyword-type">proc</span>(p: ^<a class="code-typename" href="/core/odin/parser/#Parser">Parser</a>, allow_poly_names: <span class="doc-builtin">bool</span>) -> []^odin_ast.<a class="code-typename" href="/core/odin/ast/#Expr">Expr</a> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -897,15 +904,15 @@ Procedure Groups (1)</summary>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="parse_value_decl"><span><a class="doc-id-link" href="#parse_value_decl">parse_value_decl<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/parser/parser.odin#L3433"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">parse_value_decl :: <span class="keyword-type">proc</span>(p: ^<a class="code-typename" href="/core/odin/parser/#Parser">Parser</a>, names: []^odin_ast.<a class="code-typename" href="/core/odin/ast/#Expr">Expr</a>, docs: ^odin_ast.<a class="code-typename" href="/core/odin/ast/#Comment_Group">Comment_Group</a>) -> ^odin_ast.<a class="code-typename" href="/core/odin/ast/#Decl">Decl</a> {…}</pre>
-</div>
-</div>
-<div class="pkg-entity">
 <h3 id="parse_value"><span><a class="doc-id-link" href="#parse_value">parse_value<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/parser/parser.odin#L2855"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">parse_value :: <span class="keyword-type">proc</span>(p: ^<a class="code-typename" href="/core/odin/parser/#Parser">Parser</a>) -> ^odin_ast.<a class="code-typename" href="/core/odin/ast/#Expr">Expr</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="parse_value_decl"><span><a class="doc-id-link" href="#parse_value_decl">parse_value_decl<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/parser/parser.odin#L3433"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">parse_value_decl :: <span class="keyword-type">proc</span>(p: ^<a class="code-typename" href="/core/odin/parser/#Parser">Parser</a>, names: []^odin_ast.<a class="code-typename" href="/core/odin/ast/#Expr">Expr</a>, docs: ^odin_ast.<a class="code-typename" href="/core/odin/ast/#Comment_Group">Comment_Group</a>) -> ^odin_ast.<a class="code-typename" href="/core/odin/ast/#Decl">Decl</a> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -921,15 +928,15 @@ Procedure Groups (1)</summary>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="peek_token_kind"><span><a class="doc-id-link" href="#peek_token_kind">peek_token_kind<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/parser/parser.odin#L212"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">peek_token_kind :: <span class="keyword-type">proc</span>(p: ^<a class="code-typename" href="/core/odin/parser/#Parser">Parser</a>, kind: odin_tokenizer.<a class="code-typename" href="/core/odin/tokenizer/#Token_Kind">Token_Kind</a>, lookahead: <span class="doc-builtin">int</span> = 0) -> (ok: <span class="doc-builtin">bool</span>) {…}</pre>
-</div>
-</div>
-<div class="pkg-entity">
 <h3 id="peek_token"><span><a class="doc-id-link" href="#peek_token">peek_token<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/parser/parser.odin#L230"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">peek_token :: <span class="keyword-type">proc</span>(p: ^<a class="code-typename" href="/core/odin/parser/#Parser">Parser</a>, lookahead: <span class="doc-builtin">int</span> = 0) -> (tok: odin_tokenizer.<a class="code-typename" href="/core/odin/tokenizer/#Token">Token</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="peek_token_kind"><span><a class="doc-id-link" href="#peek_token_kind">peek_token_kind<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/parser/parser.odin#L212"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">peek_token_kind :: <span class="keyword-type">proc</span>(p: ^<a class="code-typename" href="/core/odin/parser/#Parser">Parser</a>, kind: odin_tokenizer.<a class="code-typename" href="/core/odin/tokenizer/#Token_Kind">Token_Kind</a>, lookahead: <span class="doc-builtin">int</span> = 0) -> (ok: <span class="doc-builtin">bool</span>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -983,7 +990,7 @@ Procedure Groups (1)</summary>
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/parser/parser.odin">parser.odin</a></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2022-01 (vendor "odin") windows_amd64 @ 2022-01-26 22:35:14.114678100 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2022-01 (vendor "odin") windows_amd64 @ 2022-01-27 16:38:03.244455600 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
@@ -997,8 +1004,8 @@ Procedure Groups (1)</summary>
 <li><a href="#Flags">Flags</a></li>
 <li><a href="#Import_Decl_Kind">Import_Decl_Kind</a></li>
 <li><a href="#Parser">Parser</a></li>
-<li><a href="#Stmt_Allow_Flag">Stmt_Allow_Flag</a></li>
 <li><a href="#Stmt_Allow_Flags">Stmt_Allow_Flags</a></li>
+<li><a href="#Stmt_Allow_Flag">Stmt_Allow_Flag</a></li>
 <li><a href="#Warning_Handler">Warning_Handler</a></li>
 </ul>
 </li>
@@ -1012,8 +1019,8 @@ Procedure Groups (1)</summary>
 <li><a href="#check_field_flag_prefixes">check_field_flag_prefixes</a></li>
 <li><a href="#check_procedure_name_list">check_procedure_name_list</a></li>
 <li><a href="#collect_package">collect_package</a></li>
-<li><a href="#consume_comment_group">consume_comment_group</a></li>
 <li><a href="#consume_comment">consume_comment</a></li>
+<li><a href="#consume_comment_group">consume_comment_group</a></li>
 <li><a href="#consume_comment_groups">consume_comment_groups</a></li>
 <li><a href="#convert_stmt_to_body">convert_stmt_to_body</a></li>
 <li><a href="#convert_stmt_to_expr">convert_stmt_to_expr</a></li>
@@ -1026,10 +1033,10 @@ Procedure Groups (1)</summary>
 <li><a href="#error">error</a></li>
 <li><a href="#expect_closing_brace_of_field_list">expect_closing_brace_of_field_list</a></li>
 <li><a href="#expect_operator">expect_operator</a></li>
-<li><a href="#expect_semicolon">expect_semicolon</a></li>
 <li><a href="#expect_semicolon_newline_error">expect_semicolon_newline_error</a></li>
-<li><a href="#expect_token">expect_token</a></li>
+<li><a href="#expect_semicolon">expect_semicolon</a></li>
 <li><a href="#expect_token_after">expect_token_after</a></li>
+<li><a href="#expect_token">expect_token</a></li>
 <li><a href="#fix_advance_to_next_stmt">fix_advance_to_next_stmt</a></li>
 <li><a href="#is_blank_ident_node">is_blank_ident_node</a></li>
 <li><a href="#is_blank_ident_string">is_blank_ident_string</a></li>
@@ -1050,14 +1057,14 @@ Procedure Groups (1)</summary>
 <li><a href="#parse_case_clause">parse_case_clause</a></li>
 <li><a href="#parse_control_statement_semicolon_separator">parse_control_statement_semicolon_separator</a></li>
 <li><a href="#parse_elem_list">parse_elem_list</a></li>
-<li><a href="#parse_expr_list">parse_expr_list</a></li>
 <li><a href="#parse_expr">parse_expr</a></li>
+<li><a href="#parse_expr_list">parse_expr_list</a></li>
 <li><a href="#parse_field_list">parse_field_list</a></li>
 <li><a href="#parse_field_prefixes">parse_field_prefixes</a></li>
 <li><a href="#parse_file">parse_file</a></li>
 <li><a href="#parse_for_stmt">parse_for_stmt</a></li>
-<li><a href="#parse_foreign_block">parse_foreign_block</a></li>
 <li><a href="#parse_foreign_block_decl">parse_foreign_block_decl</a></li>
+<li><a href="#parse_foreign_block">parse_foreign_block</a></li>
 <li><a href="#parse_foreign_decl">parse_foreign_decl</a></li>
 <li><a href="#parse_ident">parse_ident</a></li>
 <li><a href="#parse_ident_list">parse_ident_list</a></li>
@@ -1081,12 +1088,12 @@ Procedure Groups (1)</summary>
 <li><a href="#parse_type">parse_type</a></li>
 <li><a href="#parse_unary_expr">parse_unary_expr</a></li>
 <li><a href="#parse_unrolled_for_loop">parse_unrolled_for_loop</a></li>
-<li><a href="#parse_value_decl">parse_value_decl</a></li>
 <li><a href="#parse_value">parse_value</a></li>
+<li><a href="#parse_value_decl">parse_value_decl</a></li>
 <li><a href="#parse_var_type">parse_var_type</a></li>
 <li><a href="#parse_when_stmt">parse_when_stmt</a></li>
-<li><a href="#peek_token_kind">peek_token_kind</a></li>
 <li><a href="#peek_token">peek_token</a></li>
+<li><a href="#peek_token_kind">peek_token_kind</a></li>
 <li><a href="#skip_possible_newline">skip_possible_newline</a></li>
 <li><a href="#skip_possible_newline_for_literal">skip_possible_newline_for_literal</a></li>
 <li><a href="#string_to_calling_convention">string_to_calling_convention</a></li>

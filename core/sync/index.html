@@ -179,6 +179,12 @@
 </div>
 </nav>
 <article class="col-lg-8 p-4 documentation odin-article">
+<nav class="pkg-breadcrumb" aria-label="breadcrumb">
+<ol class="breadcrumb">
+<li class="breadcrumb-item"><a href="/core">core</a></li>
+<li class="breadcrumb-item active" aria-current="page"><a href="/core/sync">sync</a></li>
+</ol>
+</nav>
 <h1>package core:sync<div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync"><em>Source</em></a></div></h1>
 <div class="input-group"><input type="text" id="pkg-fuzzy-search" class="form-control" placeholder="Search Docs...">
 </div>
@@ -192,8 +198,8 @@ Types (18)</summary>
 <li><a href="#Barrier">Barrier</a></li>
 <li><a href="#Benaphore">Benaphore</a></li>
 <li><a href="#Blocking_Mutex">Blocking_Mutex</a></li>
-<li><a href="#Channel">Channel</a></li>
 <li><a href="#Channel_Direction">Channel_Direction</a></li>
+<li><a href="#Channel">Channel</a></li>
 <li><a href="#Condition">Condition</a></li>
 <li><a href="#Condition_Mutex_Ptr">Condition_Mutex_Ptr</a></li>
 <li><a href="#Mutex">Mutex</a></li>
@@ -236,8 +242,8 @@ Procedures (114)</summary>
 <ul>
 <li><a href="#atomic_add">atomic_add</a></li>
 <li><a href="#atomic_and">atomic_and</a></li>
-<li><a href="#atomic_compare_exchange">atomic_compare_exchange</a></li>
 <li><a href="#atomic_compare_exchange_weak">atomic_compare_exchange_weak</a></li>
+<li><a href="#atomic_compare_exchange">atomic_compare_exchange</a></li>
 <li><a href="#atomic_load">atomic_load</a></li>
 <li><a href="#atomic_nand">atomic_nand</a></li>
 <li><a href="#atomic_or">atomic_or</a></li>
@@ -272,23 +278,23 @@ Procedures (114)</summary>
 <li><a href="#channel_is_open">channel_is_open</a></li>
 <li><a href="#channel_iterator">channel_iterator</a></li>
 <li><a href="#channel_len">channel_len</a></li>
-<li><a href="#channel_make">channel_make</a></li>
 <li><a href="#channel_make_recv">channel_make_recv</a></li>
 <li><a href="#channel_make_send">channel_make_send</a></li>
+<li><a href="#channel_make">channel_make</a></li>
 <li><a href="#channel_move">channel_move</a></li>
 <li><a href="#channel_ne">channel_ne</a></li>
 <li><a href="#channel_peek">channel_peek</a></li>
 <li><a href="#channel_recv">channel_recv</a></li>
 <li><a href="#channel_send">channel_send</a></li>
-<li><a href="#channel_try_recv">channel_try_recv</a></li>
 <li><a href="#channel_try_recv_ptr">channel_try_recv_ptr</a></li>
+<li><a href="#channel_try_recv">channel_try_recv</a></li>
 <li><a href="#channel_try_send">channel_try_send</a></li>
 <li><a href="#condition_broadcast">condition_broadcast</a></li>
 <li><a href="#condition_destroy">condition_destroy</a></li>
 <li><a href="#condition_init">condition_init</a></li>
 <li><a href="#condition_signal">condition_signal</a></li>
-<li><a href="#condition_wait_for">condition_wait_for</a></li>
 <li><a href="#condition_wait_for_timeout">condition_wait_for_timeout</a></li>
+<li><a href="#condition_wait_for">condition_wait_for</a></li>
 <li><a href="#cpu_relax">cpu_relax</a></li>
 <li><a href="#current_thread_id">current_thread_id</a></li>
 <li><a href="#fence">fence</a></li>
@@ -321,19 +327,19 @@ Procedures (114)</summary>
 <li><a href="#rw_lock_read_unlock">rw_lock_read_unlock</a></li>
 <li><a href="#rw_lock_try_read">rw_lock_try_read</a></li>
 <li><a href="#rw_lock_try_write">rw_lock_try_write</a></li>
-<li><a href="#rw_lock_write">rw_lock_write</a></li>
 <li><a href="#rw_lock_write_unlock">rw_lock_write_unlock</a></li>
+<li><a href="#rw_lock_write">rw_lock_write</a></li>
+<li><a href="#select_recv_msg">select_recv_msg</a></li>
 <li><a href="#select">select</a></li>
 <li><a href="#select_recv">select_recv</a></li>
-<li><a href="#select_recv_msg">select_recv_msg</a></li>
-<li><a href="#select_send">select_send</a></li>
 <li><a href="#select_send_msg">select_send_msg</a></li>
+<li><a href="#select_send">select_send</a></li>
 <li><a href="#select_timeout">select_timeout</a></li>
 <li><a href="#select_try">select_try</a></li>
 <li><a href="#select_try_recv">select_try_recv</a></li>
 <li><a href="#select_try_recv_msg">select_try_recv_msg</a></li>
-<li><a href="#select_try_send">select_try_send</a></li>
 <li><a href="#select_try_send_msg">select_try_send_msg</a></li>
+<li><a href="#select_try_send">select_try_send</a></li>
 <li><a href="#semaphore_destroy">semaphore_destroy</a></li>
 <li><a href="#semaphore_init">semaphore_init</a></li>
 <li><a href="#semaphore_post">semaphore_post</a></li>
@@ -429,12 +435,6 @@ main :: proc() {
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="Channel"><span><a class="doc-id-link" href="#Channel">Channel<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/channel.odin#L16"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">Channel :: <span class="keyword-type">struct</span>($T: typeid) {}</pre>
-</div>
-</div>
-<div class="pkg-entity">
 <h3 id="Channel_Direction"><span><a class="doc-id-link" href="#Channel_Direction">Channel_Direction<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/channel.odin#L10"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Channel_Direction :: <span class="keyword-type">enum</span> <span class="doc-builtin">i8</span> {
@@ -442,6 +442,12 @@ main :: proc() {
 	Send = 1, 
 	Recv = -1, 
 }</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Channel"><span><a class="doc-id-link" href="#Channel">Channel<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/channel.odin#L16"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Channel :: <span class="keyword-type">struct</span>($T: typeid) {}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -627,15 +633,15 @@ Posting to the semaphore increases the count by one, or the provided amount.</p>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="atomic_compare_exchange"><span><a class="doc-id-link" href="#atomic_compare_exchange">atomic_compare_exchange<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/atomic.odin#L62"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">atomic_compare_exchange :: <span class="keyword-type">proc</span>(dst: ^$, old, new: $, $success, $failure: <a class="code-typename" href="/core/sync/#Ordering">Ordering</a> = ) -> (val: $, ok: <span class="doc-builtin">bool</span>) {…}</pre>
-</div>
-</div>
-<div class="pkg-entity">
 <h3 id="atomic_compare_exchange_weak"><span><a class="doc-id-link" href="#atomic_compare_exchange_weak">atomic_compare_exchange_weak<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/atomic.odin#L88"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">atomic_compare_exchange_weak :: <span class="keyword-type">proc</span>(dst: ^$, old, new: $, $success, $failure: <a class="code-typename" href="/core/sync/#Ordering">Ordering</a> = ) -> (val: $, ok: <span class="doc-builtin">bool</span>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="atomic_compare_exchange"><span><a class="doc-id-link" href="#atomic_compare_exchange">atomic_compare_exchange<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/atomic.odin#L62"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">atomic_compare_exchange :: <span class="keyword-type">proc</span>(dst: ^$, old, new: $, $success, $failure: <a class="code-typename" href="/core/sync/#Ordering">Ordering</a> = ) -> (val: $, ok: <span class="doc-builtin">bool</span>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -848,12 +854,6 @@ Barrier can be reused after all threads rendezvoused once, and can be used conti
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="channel_make"><span><a class="doc-id-link" href="#channel_make">channel_make<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/channel.odin#L26"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">channel_make :: <span class="keyword-type">proc</span>($T: <span class="doc-builtin">typeid</span>, cap: <span class="doc-builtin">int</span> = 0, allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> (ch: <a class="code-typename" href="/core/sync/#Channel">Channel</a>(T, .Both)) {…}</pre>
-</div>
-</div>
-<div class="pkg-entity">
 <h3 id="channel_make_recv"><span><a class="doc-id-link" href="#channel_make_recv">channel_make_recv<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/channel.odin#L37"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">channel_make_recv :: <span class="keyword-type">proc</span>($T: <span class="doc-builtin">typeid</span>, cap: <span class="doc-builtin">int</span> = 0, allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> (ch: <a class="code-typename" href="/core/sync/#Channel">Channel</a>(T, .Recv)) {…}</pre>
@@ -863,6 +863,12 @@ Barrier can be reused after all threads rendezvoused once, and can be used conti
 <h3 id="channel_make_send"><span><a class="doc-id-link" href="#channel_make_send">channel_make_send<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/channel.odin#L32"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">channel_make_send :: <span class="keyword-type">proc</span>($T: <span class="doc-builtin">typeid</span>, cap: <span class="doc-builtin">int</span> = 0, allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> (ch: <a class="code-typename" href="/core/sync/#Channel">Channel</a>(T, .Send)) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="channel_make"><span><a class="doc-id-link" href="#channel_make">channel_make<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/channel.odin#L26"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">channel_make :: <span class="keyword-type">proc</span>($T: <span class="doc-builtin">typeid</span>, cap: <span class="doc-builtin">int</span> = 0, allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> (ch: <a class="code-typename" href="/core/sync/#Channel">Channel</a>(T, .Both)) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -896,15 +902,15 @@ Barrier can be reused after all threads rendezvoused once, and can be used conti
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="channel_try_recv"><span><a class="doc-id-link" href="#channel_try_recv">channel_try_recv<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/channel.odin#L85"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">channel_try_recv :: <span class="keyword-type">proc</span>(ch: $C/<a class="code-typename" href="/core/sync/#Channel">Channel</a>($T, $D), loc := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>) -> (msg: $, ok: <span class="doc-builtin">bool</span>) {…}</pre>
-</div>
-</div>
-<div class="pkg-entity">
 <h3 id="channel_try_recv_ptr"><span><a class="doc-id-link" href="#channel_try_recv_ptr">channel_try_recv_ptr<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/channel.odin#L96"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">channel_try_recv_ptr :: <span class="keyword-type">proc</span>(ch: $C/<a class="code-typename" href="/core/sync/#Channel">Channel</a>($T, $D), msg: ^$, loc := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>) -> (ok: <span class="doc-builtin">bool</span>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="channel_try_recv"><span><a class="doc-id-link" href="#channel_try_recv">channel_try_recv<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/channel.odin#L85"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">channel_try_recv :: <span class="keyword-type">proc</span>(ch: $C/<a class="code-typename" href="/core/sync/#Channel">Channel</a>($T, $D), loc := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>) -> (msg: $, ok: <span class="doc-builtin">bool</span>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -938,15 +944,15 @@ Barrier can be reused after all threads rendezvoused once, and can be used conti
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="condition_wait_for"><span><a class="doc-id-link" href="#condition_wait_for">condition_wait_for<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync_windows.odin#L124"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">condition_wait_for :: <span class="keyword-type">proc</span>(c: ^<a class="code-typename" href="/core/sync/#Condition">Condition</a>) -> <span class="doc-builtin">bool</span> {…}</pre>
-</div>
-</div>
-<div class="pkg-entity">
 <h3 id="condition_wait_for_timeout"><span><a class="doc-id-link" href="#condition_wait_for_timeout">condition_wait_for_timeout<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync_windows.odin#L133"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">condition_wait_for_timeout :: <span class="keyword-type">proc</span>(c: ^<a class="code-typename" href="/core/sync/#Condition">Condition</a>, duration: time.<a class="code-typename" href="/core/time/#Duration">Duration</a>) -> <span class="doc-builtin">bool</span> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="condition_wait_for"><span><a class="doc-id-link" href="#condition_wait_for">condition_wait_for<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync_windows.odin#L124"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">condition_wait_for :: <span class="keyword-type">proc</span>(c: ^<a class="code-typename" href="/core/sync/#Condition">Condition</a>) -> <span class="doc-builtin">bool</span> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -1142,15 +1148,21 @@ Barrier can be reused after all threads rendezvoused once, and can be used conti
 </div>
 </div>
 <div class="pkg-entity">
+<h3 id="rw_lock_write_unlock"><span><a class="doc-id-link" href="#rw_lock_write_unlock">rw_lock_write_unlock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync_windows.odin#L172"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">rw_lock_write_unlock :: <span class="keyword-type">proc</span>(l: ^<a class="code-typename" href="/core/sync/#RW_Lock">RW_Lock</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
 <h3 id="rw_lock_write"><span><a class="doc-id-link" href="#rw_lock_write">rw_lock_write<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync_windows.odin#L163"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">rw_lock_write :: <span class="keyword-type">proc</span>(l: ^<a class="code-typename" href="/core/sync/#RW_Lock">RW_Lock</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="rw_lock_write_unlock"><span><a class="doc-id-link" href="#rw_lock_write_unlock">rw_lock_write_unlock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync_windows.odin#L172"><em>Source</em></a></div></h3>
+<h3 id="select_recv_msg"><span><a class="doc-id-link" href="#select_recv_msg">select_recv_msg<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/channel.odin#L542"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">rw_lock_write_unlock :: <span class="keyword-type">proc</span>(l: ^<a class="code-typename" href="/core/sync/#RW_Lock">RW_Lock</a>) {…}</pre>
+<pre class="doc-code">select_recv_msg :: <span class="keyword-type">proc</span>(channels: ..$C/<a class="code-typename" href="/core/sync/#Channel">Channel</a>($T, $D)) -> (msg: $, index: <span class="doc-builtin">int</span>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -1166,21 +1178,15 @@ Barrier can be reused after all threads rendezvoused once, and can be used conti
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="select_recv_msg"><span><a class="doc-id-link" href="#select_recv_msg">select_recv_msg<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/channel.odin#L542"><em>Source</em></a></div></h3>
+<h3 id="select_send_msg"><span><a class="doc-id-link" href="#select_send_msg">select_send_msg<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/channel.odin#L593"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">select_recv_msg :: <span class="keyword-type">proc</span>(channels: ..$C/<a class="code-typename" href="/core/sync/#Channel">Channel</a>($T, $D)) -> (msg: $, index: <span class="doc-builtin">int</span>) {…}</pre>
+<pre class="doc-code">select_send_msg :: <span class="keyword-type">proc</span>(msg: $, channels: ..$C/<a class="code-typename" href="/core/sync/#Channel">Channel</a>(T, $D)) -> (index: <span class="doc-builtin">int</span>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="select_send"><span><a class="doc-id-link" href="#select_send">select_send<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/channel.odin#L650"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">select_send :: <span class="keyword-type">proc</span>(channels: ..^<a class="code-typename" href="/core/sync/#Raw_Channel">Raw_Channel</a>) -> (index: <span class="doc-builtin">int</span>) {…}</pre>
-</div>
-</div>
-<div class="pkg-entity">
-<h3 id="select_send_msg"><span><a class="doc-id-link" href="#select_send_msg">select_send_msg<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/channel.odin#L593"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">select_send_msg :: <span class="keyword-type">proc</span>(msg: $, channels: ..$C/<a class="code-typename" href="/core/sync/#Channel">Channel</a>(T, $D)) -> (index: <span class="doc-builtin">int</span>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -1208,15 +1214,15 @@ Barrier can be reused after all threads rendezvoused once, and can be used conti
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="select_try_send"><span><a class="doc-id-link" href="#select_try_send">select_try_send<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/channel.odin#L779"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">select_try_send :: <span class="keyword-type">proc</span>(channels: ..^<a class="code-typename" href="/core/sync/#Raw_Channel">Raw_Channel</a>) -> (index: <span class="doc-builtin">int</span>) {…}</pre>
-</div>
-</div>
-<div class="pkg-entity">
 <h3 id="select_try_send_msg"><span><a class="doc-id-link" href="#select_try_send_msg">select_try_send_msg<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/channel.odin#L852"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">select_try_send_msg :: <span class="keyword-type">proc</span>(msg: $, channels: ..$C/<a class="code-typename" href="/core/sync/#Channel">Channel</a>(T, $D)) -> (index: <span class="doc-builtin">int</span>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="select_try_send"><span><a class="doc-id-link" href="#select_try_send">select_try_send<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/channel.odin#L779"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">select_try_send :: <span class="keyword-type">proc</span>(channels: ..^<a class="code-typename" href="/core/sync/#Raw_Channel">Raw_Channel</a>) -> (index: <span class="doc-builtin">int</span>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -1318,7 +1324,7 @@ Barrier can be reused after all threads rendezvoused once, and can be used conti
 <li><em>(hidden platform specific files)</em></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2022-01 (vendor "odin") windows_amd64 @ 2022-01-26 22:35:14.143676900 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2022-01 (vendor "odin") windows_amd64 @ 2022-01-27 16:38:03.286460200 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
@@ -1327,8 +1333,8 @@ Barrier can be reused after all threads rendezvoused once, and can be used conti
 <li><a href="#Barrier">Barrier</a></li>
 <li><a href="#Benaphore">Benaphore</a></li>
 <li><a href="#Blocking_Mutex">Blocking_Mutex</a></li>
-<li><a href="#Channel">Channel</a></li>
 <li><a href="#Channel_Direction">Channel_Direction</a></li>
+<li><a href="#Channel">Channel</a></li>
 <li><a href="#Condition">Condition</a></li>
 <li><a href="#Condition_Mutex_Ptr">Condition_Mutex_Ptr</a></li>
 <li><a href="#Mutex">Mutex</a></li>
@@ -1356,8 +1362,8 @@ Barrier can be reused after all threads rendezvoused once, and can be used conti
 <li><a href="#pkg-Procedures">Procedures</a><ul>
 <li><a href="#atomic_add">atomic_add</a></li>
 <li><a href="#atomic_and">atomic_and</a></li>
-<li><a href="#atomic_compare_exchange">atomic_compare_exchange</a></li>
 <li><a href="#atomic_compare_exchange_weak">atomic_compare_exchange_weak</a></li>
+<li><a href="#atomic_compare_exchange">atomic_compare_exchange</a></li>
 <li><a href="#atomic_load">atomic_load</a></li>
 <li><a href="#atomic_nand">atomic_nand</a></li>
 <li><a href="#atomic_or">atomic_or</a></li>
@@ -1392,23 +1398,23 @@ Barrier can be reused after all threads rendezvoused once, and can be used conti
 <li><a href="#channel_is_open">channel_is_open</a></li>
 <li><a href="#channel_iterator">channel_iterator</a></li>
 <li><a href="#channel_len">channel_len</a></li>
-<li><a href="#channel_make">channel_make</a></li>
 <li><a href="#channel_make_recv">channel_make_recv</a></li>
 <li><a href="#channel_make_send">channel_make_send</a></li>
+<li><a href="#channel_make">channel_make</a></li>
 <li><a href="#channel_move">channel_move</a></li>
 <li><a href="#channel_ne">channel_ne</a></li>
 <li><a href="#channel_peek">channel_peek</a></li>
 <li><a href="#channel_recv">channel_recv</a></li>
 <li><a href="#channel_send">channel_send</a></li>
-<li><a href="#channel_try_recv">channel_try_recv</a></li>
 <li><a href="#channel_try_recv_ptr">channel_try_recv_ptr</a></li>
+<li><a href="#channel_try_recv">channel_try_recv</a></li>
 <li><a href="#channel_try_send">channel_try_send</a></li>
 <li><a href="#condition_broadcast">condition_broadcast</a></li>
 <li><a href="#condition_destroy">condition_destroy</a></li>
 <li><a href="#condition_init">condition_init</a></li>
 <li><a href="#condition_signal">condition_signal</a></li>
-<li><a href="#condition_wait_for">condition_wait_for</a></li>
 <li><a href="#condition_wait_for_timeout">condition_wait_for_timeout</a></li>
+<li><a href="#condition_wait_for">condition_wait_for</a></li>
 <li><a href="#cpu_relax">cpu_relax</a></li>
 <li><a href="#current_thread_id">current_thread_id</a></li>
 <li><a href="#fence">fence</a></li>
@@ -1441,19 +1447,19 @@ Barrier can be reused after all threads rendezvoused once, and can be used conti
 <li><a href="#rw_lock_read_unlock">rw_lock_read_unlock</a></li>
 <li><a href="#rw_lock_try_read">rw_lock_try_read</a></li>
 <li><a href="#rw_lock_try_write">rw_lock_try_write</a></li>
-<li><a href="#rw_lock_write">rw_lock_write</a></li>
 <li><a href="#rw_lock_write_unlock">rw_lock_write_unlock</a></li>
+<li><a href="#rw_lock_write">rw_lock_write</a></li>
+<li><a href="#select_recv_msg">select_recv_msg</a></li>
 <li><a href="#select">select</a></li>
 <li><a href="#select_recv">select_recv</a></li>
-<li><a href="#select_recv_msg">select_recv_msg</a></li>
-<li><a href="#select_send">select_send</a></li>
 <li><a href="#select_send_msg">select_send_msg</a></li>
+<li><a href="#select_send">select_send</a></li>
 <li><a href="#select_timeout">select_timeout</a></li>
 <li><a href="#select_try">select_try</a></li>
 <li><a href="#select_try_recv">select_try_recv</a></li>
 <li><a href="#select_try_recv_msg">select_try_recv_msg</a></li>
-<li><a href="#select_try_send">select_try_send</a></li>
 <li><a href="#select_try_send_msg">select_try_send_msg</a></li>
+<li><a href="#select_try_send">select_try_send</a></li>
 <li><a href="#semaphore_destroy">semaphore_destroy</a></li>
 <li><a href="#semaphore_init">semaphore_init</a></li>
 <li><a href="#semaphore_post">semaphore_post</a></li>

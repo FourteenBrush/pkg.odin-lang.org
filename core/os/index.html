@@ -179,6 +179,12 @@
 </div>
 </nav>
 <article class="col-lg-8 p-4 documentation odin-article">
+<nav class="pkg-breadcrumb" aria-label="breadcrumb">
+<ol class="breadcrumb">
+<li class="breadcrumb-item"><a href="/core">core</a></li>
+<li class="breadcrumb-item active" aria-current="page"><a href="/core/os">os</a></li>
+</ol>
+</nav>
 <h1>package core:os<div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/os"><em>Source</em></a></div></h1>
 <div class="input-group"><input type="text" id="pkg-fuzzy-search" class="form-control" placeholder="Search Docs...">
 </div>
@@ -292,8 +298,8 @@ Procedures (69)</summary>
 <li><a href="#get_page_size">get_page_size</a></li>
 <li><a href="#get_std_handle">get_std_handle</a></li>
 <li><a href="#get_windows_version_w">get_windows_version_w</a></li>
-<li><a href="#heap_allocator">heap_allocator</a></li>
 <li><a href="#heap_allocator_proc">heap_allocator_proc</a></li>
+<li><a href="#heap_allocator">heap_allocator</a></li>
 <li><a href="#heap_alloc">heap_alloc</a></li>
 <li><a href="#heap_free">heap_free</a></li>
 <li><a href="#heap_resize">heap_resize</a></li>
@@ -303,20 +309,20 @@ Procedures (69)</summary>
 <li><a href="#is_windows_10">is_windows_10</a></li>
 <li><a href="#is_windows_11">is_windows_11</a></li>
 <li><a href="#is_windows_7">is_windows_7</a></li>
-<li><a href="#is_windows_8_1">is_windows_8_1</a></li>
 <li><a href="#is_windows_8">is_windows_8</a></li>
+<li><a href="#is_windows_8_1">is_windows_8_1</a></li>
 <li><a href="#is_windows_vista">is_windows_vista</a></li>
 <li><a href="#is_windows_xp">is_windows_xp</a></li>
-<li><a href="#last_write_time">last_write_time</a></li>
 <li><a href="#last_write_time_by_name">last_write_time_by_name</a></li>
+<li><a href="#last_write_time">last_write_time</a></li>
 <li><a href="#link">link</a></li>
 <li><a href="#lookup_env">lookup_env</a></li>
 <li><a href="#lstat">lstat</a></li>
 <li><a href="#make_directory">make_directory</a></li>
 <li><a href="#open">open</a></li>
 <li><a href="#pipe">pipe</a></li>
-<li><a href="#read">read</a></li>
 <li><a href="#read_at">read_at</a></li>
+<li><a href="#read">read</a></li>
 <li><a href="#read_at_least">read_at_least</a></li>
 <li><a href="#read_dir">read_dir</a></li>
 <li><a href="#read_entire_file_from_filename">read_entire_file_from_filename</a></li>
@@ -335,13 +341,13 @@ Procedures (69)</summary>
 <li><a href="#unlink">unlink</a></li>
 <li><a href="#unset_env">unset_env</a></li>
 <li><a href="#write_at">write_at</a></li>
-<li><a href="#write_byte">write_byte</a></li>
 <li><a href="#write_encoded_rune">write_encoded_rune</a></li>
 <li><a href="#write_entire_file">write_entire_file</a></li>
 <li><a href="#write_ptr">write_ptr</a></li>
+<li><a href="#write">write</a></li>
+<li><a href="#write_byte">write_byte</a></li>
 <li><a href="#write_rune">write_rune</a></li>
 <li><a href="#write_string">write_string</a></li>
-<li><a href="#write">write</a></li>
 </ul>
 </details>
 </div>
@@ -762,7 +768,7 @@ TODO: Narrow down this range once Win 11 is published and the last Win 10 builds
 <div class="pkg-entity">
 <h3 id="change_directory"><span><a class="doc-id-link" href="#change_directory">change_directory<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/os/file_windows.odin#L379"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">change_directory :: <span class="keyword-type">proc</span>(path: <span class="doc-builtin">string</span>) -> <a class="code-typename" href="/core/os/#Errno">Errno</a> {…}</pre>
+<pre class="doc-code">change_directory :: <span class="keyword-type">proc</span>(key: <span class="doc-builtin">string</span>) -> <a class="code-typename" href="/core/os/#Errno">Errno</a> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -890,12 +896,6 @@ NOTE: the value will be allocated with the supplied allocator</p>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="heap_allocator"><span><a class="doc-id-link" href="#heap_allocator">heap_allocator<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/os/os.odin#L246"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">heap_allocator :: <span class="keyword-type">proc</span>() -> runtime.<a class="code-typename" href="/core/runtime/#Allocator">Allocator</a> {…}</pre>
-</div>
-</div>
-<div class="pkg-entity">
 <h3 id="heap_allocator_proc"><span><a class="doc-id-link" href="#heap_allocator_proc">heap_allocator_proc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/os/os.odin#L167"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">heap_allocator_proc :: <span class="keyword-type">proc</span>(
@@ -905,6 +905,12 @@ NOTE: the value will be allocated with the supplied allocator</p>
 	old_memory:      <span class="doc-builtin">rawptr</span>, 
 	old_size:        <span class="doc-builtin">int</span>, 
 ) -> ([]<span class="doc-builtin">u8</span>, runtime.<a class="code-typename" href="/core/runtime/#Allocator_Error">Allocator_Error</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="heap_allocator"><span><a class="doc-id-link" href="#heap_allocator">heap_allocator<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/os/os.odin#L246"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">heap_allocator :: <span class="keyword-type">proc</span>() -> runtime.<a class="code-typename" href="/core/runtime/#Allocator">Allocator</a> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -962,15 +968,15 @@ NOTE: the value will be allocated with the supplied allocator</p>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="is_windows_8_1"><span><a class="doc-id-link" href="#is_windows_8_1">is_windows_8_1<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/os/os_windows.odin#L202"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">is_windows_8_1 :: <span class="keyword-type">proc</span>() -> <span class="doc-builtin">bool</span> {…}</pre>
-</div>
-</div>
-<div class="pkg-entity">
 <h3 id="is_windows_8"><span><a class="doc-id-link" href="#is_windows_8">is_windows_8<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/os/os_windows.odin#L197"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">is_windows_8 :: <span class="keyword-type">proc</span>() -> <span class="doc-builtin">bool</span> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="is_windows_8_1"><span><a class="doc-id-link" href="#is_windows_8_1">is_windows_8_1<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/os/os_windows.odin#L202"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">is_windows_8_1 :: <span class="keyword-type">proc</span>() -> <span class="doc-builtin">bool</span> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -986,27 +992,27 @@ NOTE: the value will be allocated with the supplied allocator</p>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="last_write_time"><span><a class="doc-id-link" href="#last_write_time">last_write_time<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/os/os_windows.odin#L68"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">last_write_time :: <span class="keyword-type">proc</span>(fd: <a class="code-typename" href="/core/os/#Handle">Handle</a>) -> (<a class="code-typename" href="/core/os/#File_Time">File_Time</a>, <a class="code-typename" href="/core/os/#Errno">Errno</a>) {…}</pre>
-</div>
-</div>
-<div class="pkg-entity">
 <h3 id="last_write_time_by_name"><span><a class="doc-id-link" href="#last_write_time_by_name">last_write_time_by_name<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/os/os_windows.odin#L78"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">last_write_time_by_name :: <span class="keyword-type">proc</span>(name: <span class="doc-builtin">string</span>) -> (<a class="code-typename" href="/core/os/#File_Time">File_Time</a>, <a class="code-typename" href="/core/os/#Errno">Errno</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
+<h3 id="last_write_time"><span><a class="doc-id-link" href="#last_write_time">last_write_time<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/os/os_windows.odin#L68"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">last_write_time :: <span class="keyword-type">proc</span>(fd: <a class="code-typename" href="/core/os/#Handle">Handle</a>) -> (<a class="code-typename" href="/core/os/#File_Time">File_Time</a>, <a class="code-typename" href="/core/os/#Errno">Errno</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
 <h3 id="link"><span><a class="doc-id-link" href="#link">link<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/os/file_windows.odin#L458"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">link :: <span class="keyword-type">proc</span>(old_name, new_name: <span class="doc-builtin">string</span>) -> <a class="code-typename" href="/core/os/#Errno">Errno</a> {…}</pre>
+<pre class="doc-code">link :: <span class="keyword-type">proc</span>(key, value: <span class="doc-builtin">string</span>) -> <a class="code-typename" href="/core/os/#Errno">Errno</a> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="lookup_env"><span><a class="doc-id-link" href="#lookup_env">lookup_env<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/os/env_windows.odin#L9"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">lookup_env :: <span class="keyword-type">proc</span>(path: <span class="doc-builtin">string</span>, allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> (<span class="doc-builtin">string</span>, <span class="doc-builtin">bool</span>) {…}</pre>
+<pre class="doc-code">lookup_env :: <span class="keyword-type">proc</span>(path: <span class="doc-builtin">string</span>, allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> (new_path: <span class="doc-builtin">string</span>, new_allocation: <span class="doc-builtin">bool</span>) {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -1041,15 +1047,15 @@ NOTE: the value will be allocated with the supplied allocator</p>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="read"><span><a class="doc-id-link" href="#read">read<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/os/file_windows.odin#L140"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">read :: <span class="keyword-type">proc</span>(fd: <a class="code-typename" href="/core/os/#Handle">Handle</a>, data: []<span class="doc-builtin">u8</span>) -> (<span class="doc-builtin">int</span>, <a class="code-typename" href="/core/os/#Errno">Errno</a>) {…}</pre>
-</div>
-</div>
-<div class="pkg-entity">
 <h3 id="read_at"><span><a class="doc-id-link" href="#read_at">read_at<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/os/file_windows.odin#L265"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">read_at :: <span class="keyword-type">proc</span>(fd: <a class="code-typename" href="/core/os/#Handle">Handle</a>, data: []<span class="doc-builtin">u8</span>, offset: <span class="doc-builtin">i64</span>) -> (n: <span class="doc-builtin">int</span>, err: <a class="code-typename" href="/core/os/#Errno">Errno</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="read"><span><a class="doc-id-link" href="#read">read<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/os/file_windows.odin#L140"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">read :: <span class="keyword-type">proc</span>(fd: <a class="code-typename" href="/core/os/#Handle">Handle</a>, data: []<span class="doc-builtin">u8</span>) -> (<span class="doc-builtin">int</span>, <a class="code-typename" href="/core/os/#Errno">Errno</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -1091,19 +1097,19 @@ NOTE: the value will be allocated with the supplied allocator</p>
 <div class="pkg-entity">
 <h3 id="remove_directory"><span><a class="doc-id-link" href="#remove_directory">remove_directory<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/os/file_windows.odin#L390"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">remove_directory :: <span class="keyword-type">proc</span>(path: <span class="doc-builtin">string</span>) -> <a class="code-typename" href="/core/os/#Errno">Errno</a> {…}</pre>
+<pre class="doc-code">remove_directory :: <span class="keyword-type">proc</span>(key: <span class="doc-builtin">string</span>) -> <a class="code-typename" href="/core/os/#Errno">Errno</a> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="remove"><span><a class="doc-id-link" href="#remove">remove<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/os/file_windows.odin#L507"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">remove :: <span class="keyword-type">proc</span>(path: <span class="doc-builtin">string</span>) -> <a class="code-typename" href="/core/os/#Errno">Errno</a> {…}</pre>
+<pre class="doc-code">remove :: <span class="keyword-type">proc</span>(key: <span class="doc-builtin">string</span>) -> <a class="code-typename" href="/core/os/#Errno">Errno</a> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="rename"><span><a class="doc-id-link" href="#rename">rename<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/os/file_windows.odin#L471"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">rename :: <span class="keyword-type">proc</span>(old_name, new_name: <span class="doc-builtin">string</span>) -> <a class="code-typename" href="/core/os/#Errno">Errno</a> {…}</pre>
+<pre class="doc-code">rename :: <span class="keyword-type">proc</span>(key, value: <span class="doc-builtin">string</span>) -> <a class="code-typename" href="/core/os/#Errno">Errno</a> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -1115,13 +1121,13 @@ NOTE: the value will be allocated with the supplied allocator</p>
 <div class="pkg-entity">
 <h3 id="set_current_directory"><span><a class="doc-id-link" href="#set_current_directory">set_current_directory<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/os/file_windows.odin#L363"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">set_current_directory :: <span class="keyword-type">proc</span>(path: <span class="doc-builtin">string</span>) -> <a class="code-typename" href="/core/os/#Errno">Errno</a> {…}</pre>
+<pre class="doc-code">set_current_directory :: <span class="keyword-type">proc</span>(key: <span class="doc-builtin">string</span>) -> <a class="code-typename" href="/core/os/#Errno">Errno</a> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="set_env"><span><a class="doc-id-link" href="#set_env">set_env<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/os/env_windows.odin#L45"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">set_env :: <span class="keyword-type">proc</span>(old_name, new_name: <span class="doc-builtin">string</span>) -> <a class="code-typename" href="/core/os/#Errno">Errno</a> {…}</pre>
+<pre class="doc-code">set_env :: <span class="keyword-type">proc</span>(key, value: <span class="doc-builtin">string</span>) -> <a class="code-typename" href="/core/os/#Errno">Errno</a> {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -1149,13 +1155,13 @@ NOTE: the value will be allocated with the supplied allocator</p>
 <div class="pkg-entity">
 <h3 id="unlink"><span><a class="doc-id-link" href="#unlink">unlink<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/os/file_windows.odin#L464"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">unlink :: <span class="keyword-type">proc</span>(path: <span class="doc-builtin">string</span>) -> <a class="code-typename" href="/core/os/#Errno">Errno</a> {…}</pre>
+<pre class="doc-code">unlink :: <span class="keyword-type">proc</span>(key: <span class="doc-builtin">string</span>) -> <a class="code-typename" href="/core/os/#Errno">Errno</a> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="unset_env"><span><a class="doc-id-link" href="#unset_env">unset_env<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/os/env_windows.odin#L56"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">unset_env :: <span class="keyword-type">proc</span>(path: <span class="doc-builtin">string</span>) -> <a class="code-typename" href="/core/os/#Errno">Errno</a> {…}</pre>
+<pre class="doc-code">unset_env :: <span class="keyword-type">proc</span>(key: <span class="doc-builtin">string</span>) -> <a class="code-typename" href="/core/os/#Errno">Errno</a> {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -1166,12 +1172,6 @@ NOTE: the value will be allocated with the supplied allocator</p>
 <h3 id="write_at"><span><a class="doc-id-link" href="#write_at">write_at<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/os/file_windows.odin#L283"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">write_at :: <span class="keyword-type">proc</span>(fd: <a class="code-typename" href="/core/os/#Handle">Handle</a>, data: []<span class="doc-builtin">u8</span>, offset: <span class="doc-builtin">i64</span>) -> (n: <span class="doc-builtin">int</span>, err: <a class="code-typename" href="/core/os/#Errno">Errno</a>) {…}</pre>
-</div>
-</div>
-<div class="pkg-entity">
-<h3 id="write_byte"><span><a class="doc-id-link" href="#write_byte">write_byte<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/os/os.odin#L16"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">write_byte :: <span class="keyword-type">proc</span>(fd: <a class="code-typename" href="/core/os/#Handle">Handle</a>, b: <span class="doc-builtin">u8</span>) -> (<span class="doc-builtin">int</span>, <a class="code-typename" href="/core/os/#Errno">Errno</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -1193,6 +1193,18 @@ NOTE: the value will be allocated with the supplied allocator</p>
 </div>
 </div>
 <div class="pkg-entity">
+<h3 id="write"><span><a class="doc-id-link" href="#write">write<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/os/file_windows.odin#L77"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">write :: <span class="keyword-type">proc</span>(fd: <a class="code-typename" href="/core/os/#Handle">Handle</a>, data: []<span class="doc-builtin">u8</span>) -> (<span class="doc-builtin">int</span>, <a class="code-typename" href="/core/os/#Errno">Errno</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="write_byte"><span><a class="doc-id-link" href="#write_byte">write_byte<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/os/os.odin#L16"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">write_byte :: <span class="keyword-type">proc</span>(fd: <a class="code-typename" href="/core/os/#Handle">Handle</a>, b: <span class="doc-builtin">u8</span>) -> (<span class="doc-builtin">int</span>, <a class="code-typename" href="/core/os/#Errno">Errno</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
 <h3 id="write_rune"><span><a class="doc-id-link" href="#write_rune">write_rune<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/os/os.odin#L20"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">write_rune :: <span class="keyword-type">proc</span>(fd: <a class="code-typename" href="/core/os/#Handle">Handle</a>, r: <span class="doc-builtin">rune</span>) -> (<span class="doc-builtin">int</span>, <a class="code-typename" href="/core/os/#Errno">Errno</a>) {…}</pre>
@@ -1202,12 +1214,6 @@ NOTE: the value will be allocated with the supplied allocator</p>
 <h3 id="write_string"><span><a class="doc-id-link" href="#write_string">write_string<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/os/os.odin#L12"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">write_string :: <span class="keyword-type">proc</span>(fd: <a class="code-typename" href="/core/os/#Handle">Handle</a>, str: <span class="doc-builtin">string</span>) -> (<span class="doc-builtin">int</span>, <a class="code-typename" href="/core/os/#Errno">Errno</a>) {…}</pre>
-</div>
-</div>
-<div class="pkg-entity">
-<h3 id="write"><span><a class="doc-id-link" href="#write">write<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/os/file_windows.odin#L77"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">write :: <span class="keyword-type">proc</span>(fd: <a class="code-typename" href="/core/os/#Handle">Handle</a>, data: []<span class="doc-builtin">u8</span>) -> (<span class="doc-builtin">int</span>, <a class="code-typename" href="/core/os/#Errno">Errno</a>) {…}</pre>
 </div>
 </div>
 </section>
@@ -1232,7 +1238,7 @@ NOTE: the value will be allocated with the supplied allocator</p>
 <li><em>(hidden platform specific files)</em></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2022-01 (vendor "odin") windows_amd64 @ 2022-01-26 22:35:14.118678300 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2022-01 (vendor "odin") windows_amd64 @ 2022-01-27 16:38:03.250455800 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
@@ -1326,8 +1332,8 @@ NOTE: the value will be allocated with the supplied allocator</p>
 <li><a href="#get_page_size">get_page_size</a></li>
 <li><a href="#get_std_handle">get_std_handle</a></li>
 <li><a href="#get_windows_version_w">get_windows_version_w</a></li>
-<li><a href="#heap_allocator">heap_allocator</a></li>
 <li><a href="#heap_allocator_proc">heap_allocator_proc</a></li>
+<li><a href="#heap_allocator">heap_allocator</a></li>
 <li><a href="#heap_alloc">heap_alloc</a></li>
 <li><a href="#heap_free">heap_free</a></li>
 <li><a href="#heap_resize">heap_resize</a></li>
@@ -1337,20 +1343,20 @@ NOTE: the value will be allocated with the supplied allocator</p>
 <li><a href="#is_windows_10">is_windows_10</a></li>
 <li><a href="#is_windows_11">is_windows_11</a></li>
 <li><a href="#is_windows_7">is_windows_7</a></li>
-<li><a href="#is_windows_8_1">is_windows_8_1</a></li>
 <li><a href="#is_windows_8">is_windows_8</a></li>
+<li><a href="#is_windows_8_1">is_windows_8_1</a></li>
 <li><a href="#is_windows_vista">is_windows_vista</a></li>
 <li><a href="#is_windows_xp">is_windows_xp</a></li>
-<li><a href="#last_write_time">last_write_time</a></li>
 <li><a href="#last_write_time_by_name">last_write_time_by_name</a></li>
+<li><a href="#last_write_time">last_write_time</a></li>
 <li><a href="#link">link</a></li>
 <li><a href="#lookup_env">lookup_env</a></li>
 <li><a href="#lstat">lstat</a></li>
 <li><a href="#make_directory">make_directory</a></li>
 <li><a href="#open">open</a></li>
 <li><a href="#pipe">pipe</a></li>
-<li><a href="#read">read</a></li>
 <li><a href="#read_at">read_at</a></li>
+<li><a href="#read">read</a></li>
 <li><a href="#read_at_least">read_at_least</a></li>
 <li><a href="#read_dir">read_dir</a></li>
 <li><a href="#read_entire_file_from_filename">read_entire_file_from_filename</a></li>
@@ -1369,13 +1375,13 @@ NOTE: the value will be allocated with the supplied allocator</p>
 <li><a href="#unlink">unlink</a></li>
 <li><a href="#unset_env">unset_env</a></li>
 <li><a href="#write_at">write_at</a></li>
-<li><a href="#write_byte">write_byte</a></li>
 <li><a href="#write_encoded_rune">write_encoded_rune</a></li>
 <li><a href="#write_entire_file">write_entire_file</a></li>
 <li><a href="#write_ptr">write_ptr</a></li>
+<li><a href="#write">write</a></li>
+<li><a href="#write_byte">write_byte</a></li>
 <li><a href="#write_rune">write_rune</a></li>
 <li><a href="#write_string">write_string</a></li>
-<li><a href="#write">write</a></li>
 </ul>
 </li>
 <li><a href="#pkg-Procedure Groups">Procedure Groups</a><ul>

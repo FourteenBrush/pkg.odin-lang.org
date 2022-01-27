@@ -179,6 +179,12 @@
 </div>
 </nav>
 <article class="col-lg-8 p-4 documentation odin-article">
+<nav class="pkg-breadcrumb" aria-label="breadcrumb">
+<ol class="breadcrumb">
+<li class="breadcrumb-item"><a href="/core">core</a></li>
+<li class="breadcrumb-item active" aria-current="page"><a href="/core/strconv">strconv</a></li>
+</ol>
+</nav>
 <h1>package core:strconv<div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strconv"><em>Source</em></a></div></h1>
 <div class="input-group"><input type="text" id="pkg-fuzzy-search" class="form-control" placeholder="Search Docs...">
 </div>
@@ -219,16 +225,16 @@ Variables (1)</summary>
 <summary id="#doc-index-Procedures-header">
 Procedures (32)</summary>
 <ul>
-<li><a href="#append_bits">append_bits</a></li>
 <li><a href="#append_bits_128">append_bits_128</a></li>
+<li><a href="#append_bits">append_bits</a></li>
 <li><a href="#append_bool">append_bool</a></li>
-<li><a href="#append_float">append_float</a></li>
 <li><a href="#append_float">append_float</a></li>
 <li><a href="#append_int">append_int</a></li>
 <li><a href="#append_uint">append_uint</a></li>
 <li><a href="#atof">atof</a></li>
 <li><a href="#atoi">atoi</a></li>
 <li><a href="#format_digits">format_digits</a></li>
+<li><a href="#ftoa">ftoa</a></li>
 <li><a href="#generic_ftoa">generic_ftoa</a></li>
 <li><a href="#is_integer_negative">is_integer_negative</a></li>
 <li><a href="#is_integer_negative_128">is_integer_negative_128</a></li>
@@ -328,19 +334,6 @@ Procedure Groups (4)</summary>
 <h2 id="pkg-Procedures" class="pkg-header">Procedures</h2>
 <section class="documentation">
 <div class="pkg-entity">
-<h3 id="append_bits"><span><a class="doc-id-link" href="#append_bits">append_bits<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strconv/integers.odin#L41"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">append_bits :: <span class="keyword-type">proc</span>(
-	buf:       []<span class="doc-builtin">u8</span>, 
-	x:         <span class="doc-builtin">u64</span>, 
-	base:      <span class="doc-builtin">int</span>, 
-	is_signed: <span class="doc-builtin">bool</span>, 
-	bit_size:  <span class="doc-builtin">int</span>, 
-	digits:    <span class="doc-builtin">string</span>, 
-) -> <span class="doc-builtin">string</span> {…}</pre>
-</div>
-</div>
-<div class="pkg-entity">
 <h3 id="append_bits_128"><span><a class="doc-id-link" href="#append_bits_128">append_bits_128<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strconv/integers.odin#L118"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">append_bits_128 :: <span class="keyword-type">proc</span>(
@@ -354,15 +347,22 @@ Procedure Groups (4)</summary>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="append_bool"><span><a class="doc-id-link" href="#append_bool">append_bool<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strconv/strconv.odin#L648"><em>Source</em></a></div></h3>
+<h3 id="append_bits"><span><a class="doc-id-link" href="#append_bits">append_bits<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strconv/integers.odin#L41"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">append_bool :: <span class="keyword-type">proc</span>(buf: []<span class="doc-builtin">u8</span>, b: <span class="doc-builtin">bool</span>) -> <span class="doc-builtin">string</span> {…}</pre>
+<pre class="doc-code">append_bits :: <span class="keyword-type">proc</span>(
+	buf:       []<span class="doc-builtin">u8</span>, 
+	x:         <span class="doc-builtin">u64</span>, 
+	base:      <span class="doc-builtin">int</span>, 
+	is_signed: <span class="doc-builtin">bool</span>, 
+	bit_size:  <span class="doc-builtin">int</span>, 
+	digits:    <span class="doc-builtin">string</span>, 
+) -> <span class="doc-builtin">string</span> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="append_float"><span><a class="doc-id-link" href="#append_float">append_float<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strconv/strconv.odin#L678"><em>Source</em></a></div></h3>
+<h3 id="append_bool"><span><a class="doc-id-link" href="#append_bool">append_bool<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strconv/strconv.odin#L648"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">append_float :: <span class="keyword-type">proc</span>(buf: []<span class="doc-builtin">u8</span>, f: <span class="doc-builtin">f64</span>, fmt: <span class="doc-builtin">u8</span>, prec, bit_size: <span class="doc-builtin">int</span>) -> <span class="doc-builtin">string</span> {…}</pre>
+<pre class="doc-code">append_bool :: <span class="keyword-type">proc</span>(buf: []<span class="doc-builtin">u8</span>, b: <span class="doc-builtin">bool</span>) -> <span class="doc-builtin">string</span> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -405,6 +405,12 @@ Procedure Groups (4)</summary>
 	digs:      <a class="code-typename" href="/core/strconv/#Decimal_Slice">Decimal_Slice</a>, 
 	precision: <span class="doc-builtin">int</span>, 
 ) -> []<span class="doc-builtin">u8</span> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="ftoa"><span><a class="doc-id-link" href="#ftoa">ftoa<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strconv/strconv.odin#L678"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">ftoa :: <a class="code-procedure" href="/core/strconv/#append_float">append_float</a></pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -742,7 +748,7 @@ assert(n == 0xffff && ok);
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/strconv/strconv.odin">strconv.odin</a></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2022-01 (vendor "odin") windows_amd64 @ 2022-01-26 22:35:14.138679600 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2022-01 (vendor "odin") windows_amd64 @ 2022-01-27 16:38:03.278459300 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
@@ -763,16 +769,16 @@ assert(n == 0xffff && ok);
 </ul>
 </li>
 <li><a href="#pkg-Procedures">Procedures</a><ul>
-<li><a href="#append_bits">append_bits</a></li>
 <li><a href="#append_bits_128">append_bits_128</a></li>
+<li><a href="#append_bits">append_bits</a></li>
 <li><a href="#append_bool">append_bool</a></li>
-<li><a href="#append_float">append_float</a></li>
 <li><a href="#append_float">append_float</a></li>
 <li><a href="#append_int">append_int</a></li>
 <li><a href="#append_uint">append_uint</a></li>
 <li><a href="#atof">atof</a></li>
 <li><a href="#atoi">atoi</a></li>
 <li><a href="#format_digits">format_digits</a></li>
+<li><a href="#ftoa">ftoa</a></li>
 <li><a href="#generic_ftoa">generic_ftoa</a></li>
 <li><a href="#is_integer_negative">is_integer_negative</a></li>
 <li><a href="#is_integer_negative_128">is_integer_negative_128</a></li>
