@@ -68,11 +68,11 @@
 
 </li>
 <li class="nav-item"><a href="/core/crypto">crypto</a><ul>
+<li><a href="/core/crypto/blake">blake</a></li>
 <li><a href="/core/crypto/blake2b">blake2b</a></li>
 <li><a href="/core/crypto/blake2s">blake2s</a></li>
-<li><a href="/core/crypto/blake">blake</a></li>
-<li><a href="/core/crypto/chacha20poly1305">chacha20poly1305</a></li>
 <li><a href="/core/crypto/chacha20">chacha20</a></li>
+<li><a href="/core/crypto/chacha20poly1305">chacha20poly1305</a></li>
 <li><a href="/core/crypto/gost">gost</a></li>
 <li><a href="/core/crypto/groestl">groestl</a></li>
 <li><a href="/core/crypto/haval">haval</a></li>
@@ -190,6 +190,32 @@
 </nav>
 <h1>package core:mem<div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem"><em>Source</em></a></div></h1>
 <div class="input-group"><input type="text" id="pkg-fuzzy-search" class="form-control" placeholder="Search Docs...">
+</div>
+<h2>Overview</h2>
+<div id="pkg-overview">
+<p>package mem implements various types of allocators.</p>
+<p>An example of how to use the <code>Tracking_Allocator</code> to track subsequent allocations
+in your program and report leaks and bad frees:</p>
+<p>```odin
+package foo</p>
+<p>import "core:mem"
+import "core:fmt"</p>
+<p>_main :: proc() {
+   do stuff
+}</p>
+<p>main :: proc() {
+    track: mem.Tracking_Allocator
+    mem.tracking_allocator_init(&track, context.allocator)
+    context.allocator = mem.tracking_allocator(&track)</p>
+<p>    _main()</p>
+<p>    for _, v in track.allocation_map {
+        fmt.printf("%v leaked %v bytes", v.location, v.size)
+    }
+    for bf in track.bad_free_array {
+        fmt.printf("%v allocation %p was freed badly", bf.location, bf.memory)
+    }
+}
+```</p>
 </div>
 <div id="pkg-index">
 <h2>Index</h2>
@@ -1437,16 +1463,17 @@ Mode_Not_Implemented = 4,
 <ul>
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/alloc.odin">alloc.odin</a></li>
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/allocators.odin">allocators.odin</a></li>
+<li><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/doc.odin">doc.odin</a></li>
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/mem.odin">mem.odin</a></li>
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/raw.odin">raw.odin</a></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2022-02 (vendor "odin") windows_amd64 @ 2022-02-04 21:08:57.466025300 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2022-02 (vendor "odin") Windows_amd64 @ 2022-02-16 00:32:01.177363700 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
 <ul>
-<li><a href="#pkg-Types">Types</a><ul>
+<li><a href="#pkg-overview">Overview</a><li><a href="#pkg-Types">Types</a><ul>
 <li><a href="#Allocator_Error">Allocator_Error</a></li>
 <li><a href="#Allocator_Mode_Set">Allocator_Mode_Set</a></li>
 <li><a href="#Allocator_Mode">Allocator_Mode</a></li>
