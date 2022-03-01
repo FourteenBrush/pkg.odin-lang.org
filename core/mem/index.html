@@ -200,21 +200,25 @@ in your program and report leaks and bad frees:</p>
 package foo</p>
 <p>import "core:mem"
 import "core:fmt"</p>
-<p>_main :: proc() {
-   do stuff
-}</p>
-<p>main :: proc() {
-    track: mem.Tracking_Allocator
-    mem.tracking_allocator_init(&track, context.allocator)
-    context.allocator = mem.tracking_allocator(&track)</p>
-<p>    _main()</p>
-<p>    for _, v in track.allocation_map {
-        fmt.printf("%v leaked %v bytes", v.location, v.size)
-    }
-    for bf in track.bad_free_array {
-        fmt.printf("%v allocation %p was freed badly", bf.location, bf.memory)
-    }
+<p>_main :: proc() {</p>
+<pre>do stuff
+</pre>
+<p>}</p>
+<p>main :: proc() {</p>
+<pre>track: mem.Tracking_Allocator
+mem.tracking_allocator_init(&track, context.allocator)
+context.allocator = mem.tracking_allocator(&track)
+
+_main()
+
+for _, leak in track.allocation_map {
+	fmt.printf("%v leaked %v bytes\n", leak.location, leak.size)
 }
+for bad_free in track.bad_free_array {
+	fmt.printf("%v allocation %p was freed badly\n", bad_free.location, bad_free.memory)
+}
+</pre>
+<p>}
 ```</p>
 </div>
 <div id="pkg-index">
@@ -1468,7 +1472,7 @@ Mode_Not_Implemented = 4,
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/raw.odin">raw.odin</a></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2022-02 (vendor "odin") Windows_amd64 @ 2022-02-28 21:08:45.318895900 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2022-03 (vendor "odin") Windows_amd64 @ 2022-03-01 21:08:57.347252900 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
