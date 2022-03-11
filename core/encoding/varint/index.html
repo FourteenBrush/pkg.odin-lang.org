@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>package crypto - pkg.odin-lang.org</title>	<link rel="stylesheet" type="text/css" href="https://odin-lang.org/scss/custom.min.css">
+	<title>package encoding/varint - pkg.odin-lang.org</title>	<link rel="stylesheet" type="text/css" href="https://odin-lang.org/scss/custom.min.css">
 	<link rel=stylesheet href="//odin-lang.org/lib/highlight/styles/github-dark.min.css">
 	<script src="//odin-lang.org/lib/highlight/highlight.min.js"></script>
 
@@ -67,7 +67,7 @@
 </ul>
 
 </li>
-<li class="nav-item"><a class="active" href="/core/crypto">crypto</a><ul>
+<li class="nav-item"><a href="/core/crypto">crypto</a><ul>
 <li><a href="/core/crypto/blake">blake</a></li>
 <li><a href="/core/crypto/blake2b">blake2b</a></li>
 <li><a href="/core/crypto/blake2s">blake2s</a></li>
@@ -104,7 +104,7 @@
 <li><a href="/core/encoding/csv">csv</a></li>
 <li><a href="/core/encoding/hxa">hxa</a></li>
 <li><a href="/core/encoding/json">json</a></li>
-<li><a href="/core/encoding/varint">varint</a></li>
+<li><a class="active" href="/core/encoding/varint">varint</a></li>
 </ul>
 
 </li>
@@ -186,26 +186,61 @@
 <nav class="pkg-breadcrumb" aria-label="breadcrumb">
 <ol class="breadcrumb">
 <li class="breadcrumb-item"><a href="/core">core</a></li>
-<li class="breadcrumb-item active" aria-current="page"><a href="/core/crypto">crypto</a></li>
+<li class="breadcrumb-item">encoding</li>
+<li class="breadcrumb-item active" aria-current="page"><a href="/core/encoding/varint">varint</a></li>
 </ol>
 </nav>
-<h1>package core:crypto<div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto"><em>Source</em></a></div></h1>
+<h1>package core:encoding/varint<div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/varint"><em>Source</em></a></div></h1>
 <div class="input-group"><input type="text" id="pkg-fuzzy-search" class="form-control" placeholder="Search Docs...">
+</div>
+<h2>Overview</h2>
+<div id="pkg-overview">
+<p>Implementation of the LEB128 variable integer encoding as used by DWARF encoding and DEX files, among others.</p>
+<pre>Author of this Odin package: Jeroen van Rijn
+
+Example:
+	```odin
+	import "core:encoding/varint"
+	import "core:fmt"
+
+	main :: proc() {
+		buf: [varint.LEB128_MAX_BYTES]u8
+
+		value := u128(42)
+
+		encode_size, encode_err := varint.encode_uleb128(buf[:], value)
+		assert(encode_size == 1 && encode_err == .None)
+
+		fmt.println(buf[:encode_size])
+
+		decoded_val, decode_size, decode_err := varint.decode_uleb128(buf[:encode_size])
+		assert(decoded_val == value && decode_size == encode_size && decode_err == .None)
+	}
+	```
+
+
+</pre>
+<p>package varint implements variable length integer encoding and decoding using
+the LEB128 format as used by DWARF debug info, Android .dex and other file formats.</p>
 </div>
 <div id="pkg-index">
 <h2>Index</h2>
 <div>
 <details class="doc-index" id="doc-index-Types" aria-labelledby="#doc-index-Types-header">
 <summary id="#doc-index-Types-header">
-Types (0)</summary>
-<p>This section is empty.</p>
+Types (1)</summary>
+<ul>
+<li><a href="#Error">Error</a></li>
+</ul>
 </details>
 </div>
 <div>
 <details class="doc-index" id="doc-index-Constants" aria-labelledby="#doc-index-Constants-header">
 <summary id="#doc-index-Constants-header">
-Constants (0)</summary>
-<p>This section is empty.</p>
+Constants (1)</summary>
+<ul>
+<li><a href="#LEB128_MAX_BYTES">LEB128_MAX_BYTES</a></li>
+</ul>
 </details>
 </div>
 <div>
@@ -218,11 +253,12 @@ Variables (0)</summary>
 <div>
 <details class="doc-index" id="doc-index-Procedures" aria-labelledby="#doc-index-Procedures-header">
 <summary id="#doc-index-Procedures-header">
-Procedures (3)</summary>
+Procedures (4)</summary>
 <ul>
-<li><a href="#compare_byte_ptrs_constant_time">compare_byte_ptrs_constant_time</a></li>
-<li><a href="#compare_constant_time">compare_constant_time</a></li>
-<li><a href="#rand_bytes">rand_bytes</a></li>
+<li><a href="#decode_ileb128">decode_ileb128</a></li>
+<li><a href="#decode_uleb128">decode_uleb128</a></li>
+<li><a href="#encode_ileb128">encode_ileb128</a></li>
+<li><a href="#encode_uleb128">encode_uleb128</a></li>
 </ul>
 </details>
 </div>
@@ -236,11 +272,31 @@ Procedure Groups (0)</summary>
 </div>
 <h2 id="pkg-Types" class="pkg-header">Types</h2>
 <section class="documentation">
-<p>This section is empty.</p>
+<div class="pkg-entity">
+<h3 id="Error"><span><a class="doc-id-link" href="#Error">Error<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/varint/leb128.odin#L20"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Error :: <span class="keyword-type">enum</span> <span class="doc-builtin">int</span> {
+	None             = 0, 
+	Buffer_Too_Small = 1, 
+	Value_Too_Large  = 2, 
+}</pre>
+</div>
+</div>
 </section>
 <h2 id="pkg-Constants" class="pkg-header">Constants</h2>
 <section class="documentation">
-<p>This section is empty.</p>
+<div class="pkg-entity">
+<h3 id="LEB128_MAX_BYTES"><span><a class="doc-id-link" href="#LEB128_MAX_BYTES">LEB128_MAX_BYTES<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/varint/leb128.odin#L18"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">LEB128_MAX_BYTES :: 19</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>In theory we should use the bigint package. In practice, varints bigger than this indicate a corrupted file.
+Instead we'll set limits on the values we'll encode/decode
+18 * 7 bits = 126, which means that a possible 19th byte may at most be <code>0b0000_0011</code>.</p>
+</details>
+</div>
 </section>
 <h2 id="pkg-Variables" class="pkg-header">Variables</h2>
 <section class="documentation">
@@ -249,42 +305,47 @@ Procedure Groups (0)</summary>
 <h2 id="pkg-Procedures" class="pkg-header">Procedures</h2>
 <section class="documentation">
 <div class="pkg-entity">
-<h3 id="compare_byte_ptrs_constant_time"><span><a class="doc-id-link" href="#compare_byte_ptrs_constant_time">compare_byte_ptrs_constant_time<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/crypto.odin#L29"><em>Source</em></a></div></h3>
+<h3 id="decode_ileb128"><span><a class="doc-id-link" href="#decode_ileb128">decode_ileb128<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/varint/leb128.odin#L56"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">compare_byte_ptrs_constant_time :: <span class="keyword-type">proc</span> "contextless" (a, b: ^<span class="doc-builtin">u8</span>, n: <span class="doc-builtin">int</span>) -> <span class="doc-builtin">int</span> {…}</pre>
+<pre class="doc-code">decode_ileb128 :: <span class="keyword-type">proc</span> "odin" (buf: []<span class="doc-builtin">u8</span>) -> (val: <span class="doc-builtin">i128</span>, size: <span class="doc-builtin">int</span>, err: <a class="code-typename" href="/core/encoding/varint/#Error">Error</a>) {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>compare_byte_ptrs_constant_time returns 1 iff the bytes pointed to by
-a and b are equal, 0 otherwise.</p>
-<p>The execution time of this routine is constant regardless of the
-contents of the memory being compared.</p>
+<p>Decode a slice of bytes encoding a signed LEB128 integer into value and number of bytes used.
+Returns <code>size</code> == 0 for an invalid value, empty slice, or a varint > 18 bytes.</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="compare_constant_time"><span><a class="doc-id-link" href="#compare_constant_time">compare_constant_time<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/crypto.odin#L10"><em>Source</em></a></div></h3>
+<h3 id="decode_uleb128"><span><a class="doc-id-link" href="#decode_uleb128">decode_uleb128<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/varint/leb128.odin#L28"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">compare_constant_time :: <span class="keyword-type">proc</span> "contextless" (a, b: []<span class="doc-builtin">u8</span>) -> <span class="doc-builtin">int</span> {…}</pre>
+<pre class="doc-code">decode_uleb128 :: <span class="keyword-type">proc</span> "odin" (buf: []<span class="doc-builtin">u8</span>) -> (val: <span class="doc-builtin">u128</span>, size: <span class="doc-builtin">int</span>, err: <a class="code-typename" href="/core/encoding/varint/#Error">Error</a>) {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>compare_constant_time returns 1 iff a and b are equal, 0 otherwise.</p>
-<p>The execution time of this routine is constant regardless of the contents
-of the slices being compared, as long as the length of the slices is equal.
-If the length of the two slices is different, it will early-return 0.</p>
+<p>Decode a slice of bytes encoding an unsigned LEB128 integer into value and number of bytes used.
+Returns <code>size</code> == 0 for an invalid value, empty slice, or a varint > 18 bytes.</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="rand_bytes"><span><a class="doc-id-link" href="#rand_bytes">rand_bytes<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/crypto.odin#L47"><em>Source</em></a></div></h3>
+<h3 id="encode_ileb128"><span><a class="doc-id-link" href="#encode_ileb128">encode_ileb128<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/varint/leb128.odin#L114"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">rand_bytes :: <span class="keyword-type">proc</span> "odin" (dst: []<span class="doc-builtin">u8</span>) {…}</pre>
+<pre class="doc-code">encode_ileb128 :: <span class="keyword-type">proc</span> "odin" (buf: []<span class="doc-builtin">u8</span>, val: <span class="doc-builtin">i128</span>) -> (size: <span class="doc-builtin">int</span>, err: <a class="code-typename" href="/core/encoding/varint/#Error">Error</a>) {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>rand_bytes fills the dst buffer with cryptographic entropy taken from
-the system entropy source.  This routine will block if the system entropy
-source is not ready yet.  All system entropy source failures are treated
-as catastrophic, resulting in a panic.</p>
+<p>Encode <code>val</code> into <code>buf</code> as a signed LEB128 encoded series of bytes.
+<code>buf</code> must be appropriately sized.</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="encode_uleb128"><span><a class="doc-id-link" href="#encode_uleb128">encode_uleb128<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/varint/leb128.odin#L85"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">encode_uleb128 :: <span class="keyword-type">proc</span> "odin" (buf: []<span class="doc-builtin">u8</span>, val: <span class="doc-builtin">u128</span>) -> (size: <span class="doc-builtin">int</span>, err: <a class="code-typename" href="/core/encoding/varint/#Error">Error</a>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Encode <code>val</code> into <code>buf</code> as an unsigned LEB128 encoded series of bytes.
+<code>buf</code> must be appropriately sized.</p>
 </details>
 </div>
 </section>
@@ -294,20 +355,28 @@ as catastrophic, resulting in a panic.</p>
 </section>
 <h2 id="pkg-source-files">Source Files</h2>
 <ul>
-<li><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/crypto.odin">crypto.odin</a></li>
-<li><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/rand_generic.odin">rand_generic.odin</a></li>
-<li><em>(hidden platform specific files)</em></li>
+<li><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/varint/doc.odin">doc.odin</a></li>
+<li><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/varint/leb128.odin">leb128.odin</a></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2022-03 (vendor "odin") Windows_amd64 @ 2022-03-11 21:08:19.842650300 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2022-03 (vendor "odin") Windows_amd64 @ 2022-03-11 21:08:20.059658300 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
 <ul>
+<li><a href="#pkg-overview">Overview</a><li><a href="#pkg-Types">Types</a><ul>
+<li><a href="#Error">Error</a></li>
+</ul>
+</li>
+<li><a href="#pkg-Constants">Constants</a><ul>
+<li><a href="#LEB128_MAX_BYTES">LEB128_MAX_BYTES</a></li>
+</ul>
+</li>
 <li><a href="#pkg-Procedures">Procedures</a><ul>
-<li><a href="#compare_byte_ptrs_constant_time">compare_byte_ptrs_constant_time</a></li>
-<li><a href="#compare_constant_time">compare_constant_time</a></li>
-<li><a href="#rand_bytes">rand_bytes</a></li>
+<li><a href="#decode_ileb128">decode_ileb128</a></li>
+<li><a href="#decode_uleb128">decode_uleb128</a></li>
+<li><a href="#encode_ileb128">encode_ileb128</a></li>
+<li><a href="#encode_uleb128">encode_uleb128</a></li>
 </ul>
 </li>
 <li><a href="#pkg-source-files">Source Files</a></ul>
