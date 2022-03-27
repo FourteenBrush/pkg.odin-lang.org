@@ -68,11 +68,11 @@
 
 </li>
 <li class="nav-item"><a href="/core/crypto">crypto</a><ul>
+<li><a href="/core/crypto/blake">blake</a></li>
 <li><a href="/core/crypto/blake2b">blake2b</a></li>
 <li><a href="/core/crypto/blake2s">blake2s</a></li>
-<li><a href="/core/crypto/blake">blake</a></li>
-<li><a href="/core/crypto/chacha20poly1305">chacha20poly1305</a></li>
 <li><a href="/core/crypto/chacha20">chacha20</a></li>
+<li><a href="/core/crypto/chacha20poly1305">chacha20poly1305</a></li>
 <li><a href="/core/crypto/gost">gost</a></li>
 <li><a href="/core/crypto/groestl">groestl</a></li>
 <li><a href="/core/crypto/haval">haval</a></li>
@@ -193,18 +193,23 @@
 <h1>package core:strings<div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings"><em>Source</em></a></div></h1>
 <div class="input-group"><input type="text" id="pkg-fuzzy-search" class="form-control" placeholder="Search Docs...">
 </div>
+<h2>Overview</h2>
+<div id="pkg-overview">
+<p>simple procedures to manipulate UTF-8 encoded strings</p>
+</div>
 <div id="pkg-index">
 <h2>Index</h2>
 <div>
 <details class="doc-index" id="doc-index-Types" aria-labelledby="#doc-index-Types-header">
 <summary id="#doc-index-Types-header">
-Types (5)</summary>
+Types (6)</summary>
 <ul>
 <li><a href="#Builder_Flush_Proc">Builder_Flush_Proc</a></li>
 <li><a href="#Builder">Builder</a></li>
 <li><a href="#Intern_Entry">Intern_Entry</a></li>
 <li><a href="#Intern">Intern</a></li>
 <li><a href="#Reader">Reader</a></li>
+<li><a href="#Split_Multi">Split_Multi</a></li>
 </ul>
 </details>
 </div>
@@ -225,7 +230,7 @@ Variables (0)</summary>
 <div>
 <details class="doc-index" id="doc-index-Procedures" aria-labelledby="#doc-index-Procedures-header">
 <summary id="#doc-index-Procedures-header">
-Procedures (157)</summary>
+Procedures (158)</summary>
 <ul>
 <li><a href="#builder_cap">builder_cap</a></li>
 <li><a href="#builder_from_slice">builder_from_slice</a></li>
@@ -250,16 +255,16 @@ Procedures (157)</summary>
 <li><a href="#equal_fold">equal_fold</a></li>
 <li><a href="#expand_tabs">expand_tabs</a></li>
 <li><a href="#fields_iterator">fields_iterator</a></li>
-<li><a href="#fields">fields</a></li>
 <li><a href="#fields_proc">fields_proc</a></li>
+<li><a href="#fields">fields</a></li>
 <li><a href="#grow_builder">grow_builder</a></li>
 <li><a href="#has_prefix">has_prefix</a></li>
 <li><a href="#has_suffix">has_suffix</a></li>
-<li><a href="#index_proc_with_state">index_proc_with_state</a></li>
-<li><a href="#index">index</a></li>
 <li><a href="#index_any">index_any</a></li>
 <li><a href="#index_byte">index_byte</a></li>
 <li><a href="#index_proc">index_proc</a></li>
+<li><a href="#index">index</a></li>
+<li><a href="#index_proc_with_state">index_proc_with_state</a></li>
 <li><a href="#index_rune">index_rune</a></li>
 <li><a href="#init_builder_len_cap">init_builder_len_cap</a></li>
 <li><a href="#init_builder_len">init_builder_len</a></li>
@@ -278,8 +283,8 @@ Procedures (157)</summary>
 <li><a href="#last_index">last_index</a></li>
 <li><a href="#last_index_any">last_index_any</a></li>
 <li><a href="#last_index_byte">last_index_byte</a></li>
-<li><a href="#last_index_proc">last_index_proc</a></li>
 <li><a href="#last_index_proc_with_state">last_index_proc_with_state</a></li>
+<li><a href="#last_index_proc">last_index_proc</a></li>
 <li><a href="#left_justify">left_justify</a></li>
 <li><a href="#make_builder_len_cap">make_builder_len_cap</a></li>
 <li><a href="#make_builder_len">make_builder_len</a></li>
@@ -290,9 +295,9 @@ Procedures (157)</summary>
 <li><a href="#ptr_from_string">ptr_from_string</a></li>
 <li><a href="#reader_init">reader_init</a></li>
 <li><a href="#reader_length">reader_length</a></li>
+<li><a href="#reader_read_byte">reader_read_byte</a></li>
 <li><a href="#reader_read">reader_read</a></li>
 <li><a href="#reader_read_at">reader_read_at</a></li>
-<li><a href="#reader_read_byte">reader_read_byte</a></li>
 <li><a href="#reader_read_rune">reader_read_rune</a></li>
 <li><a href="#reader_seek">reader_seek</a></li>
 <li><a href="#reader_size">reader_size</a></li>
@@ -310,10 +315,10 @@ Procedures (157)</summary>
 <li><a href="#right_justify">right_justify</a></li>
 <li><a href="#rune_count">rune_count</a></li>
 <li><a href="#scrub">scrub</a></li>
-<li><a href="#split_after">split_after</a></li>
-<li><a href="#split">split</a></li>
-<li><a href="#split_after_iterator">split_after_iterator</a></li>
 <li><a href="#split_after_n">split_after_n</a></li>
+<li><a href="#split">split</a></li>
+<li><a href="#split_after">split_after</a></li>
+<li><a href="#split_after_iterator">split_after_iterator</a></li>
 <li><a href="#split_by_byte_iterator">split_by_byte_iterator</a></li>
 <li><a href="#split_iterator">split_iterator</a></li>
 <li><a href="#split_lines">split_lines</a></li>
@@ -323,7 +328,8 @@ Procedures (157)</summary>
 <li><a href="#split_lines_iterator">split_lines_iterator</a></li>
 <li><a href="#split_lines_n">split_lines_n</a></li>
 <li><a href="#split_multi">split_multi</a></li>
-<li><a href="#split_multi_iterator">split_multi_iterator</a></li>
+<li><a href="#split_multi_init">split_multi_init</a></li>
+<li><a href="#split_multi_iterate">split_multi_iterate</a></li>
 <li><a href="#split_n">split_n</a></li>
 <li><a href="#string_case_iterator">string_case_iterator</a></li>
 <li><a href="#string_from_nul_terminated_ptr">string_from_nul_terminated_ptr</a></li>
@@ -336,8 +342,8 @@ Procedures (157)</summary>
 <li><a href="#to_lower_camel_case">to_lower_camel_case</a></li>
 <li><a href="#to_lower">to_lower</a></li>
 <li><a href="#to_pascal_case">to_pascal_case</a></li>
-<li><a href="#to_reader">to_reader</a></li>
 <li><a href="#to_reader_at">to_reader_at</a></li>
+<li><a href="#to_reader">to_reader</a></li>
 <li><a href="#to_rune_reader">to_rune_reader</a></li>
 <li><a href="#to_screaming_snake_case">to_screaming_snake_case</a></li>
 <li><a href="#to_snake_case">to_snake_case</a></li>
@@ -354,15 +360,15 @@ Procedures (157)</summary>
 <li><a href="#trim_left">trim_left</a></li>
 <li><a href="#trim_right_proc">trim_right_proc</a></li>
 <li><a href="#trim_right_proc_with_state">trim_right_proc_with_state</a></li>
-<li><a href="#trim_right_space">trim_right_space</a></li>
 <li><a href="#trim_right">trim_right</a></li>
+<li><a href="#trim_space">trim_space</a></li>
 <li><a href="#trim">trim</a></li>
 <li><a href="#trim_left_null">trim_left_null</a></li>
 <li><a href="#trim_left_space">trim_left_space</a></li>
 <li><a href="#trim_null">trim_null</a></li>
 <li><a href="#trim_prefix">trim_prefix</a></li>
 <li><a href="#trim_right_null">trim_right_null</a></li>
-<li><a href="#trim_space">trim_space</a></li>
+<li><a href="#trim_right_space">trim_right_space</a></li>
 <li><a href="#trim_suffix">trim_suffix</a></li>
 <li><a href="#truncate_to_byte">truncate_to_byte</a></li>
 <li><a href="#truncate_to_rune">truncate_to_rune</a></li>
@@ -375,8 +381,8 @@ Procedures (157)</summary>
 <li><a href="#write_escaped_rune_writer">write_escaped_rune_writer</a></li>
 <li><a href="#write_i64">write_i64</a></li>
 <li><a href="#write_int">write_int</a></li>
-<li><a href="#write_quoted_rune">write_quoted_rune</a></li>
 <li><a href="#write_quoted_rune_builder">write_quoted_rune_builder</a></li>
+<li><a href="#write_quoted_rune">write_quoted_rune</a></li>
 <li><a href="#write_quoted_string_builder">write_quoted_string_builder</a></li>
 <li><a href="#write_quoted_string_writer">write_quoted_string_writer</a></li>
 <li><a href="#write_rune_builder">write_rune_builder</a></li>
@@ -449,6 +455,20 @@ Procedure Groups (7)</summary>
 }</pre>
 </div>
 </div>
+<div class="pkg-entity">
+<h3 id="Split_Multi"><span><a class="doc-id-link" href="#Split_Multi">Split_Multi<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L1415"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Split_Multi :: <span class="keyword-type">struct</span> {
+	temp:     <span class="doc-builtin">string</span>,
+	temp_old: <span class="doc-builtin">string</span>,
+	substrs:  []<span class="doc-builtin">string</span>,
+}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>state for the split multi iterator</p>
+</details>
+</div>
 </section>
 <h2 id="pkg-Constants" class="pkg-header">Constants</h2>
 <section class="documentation">
@@ -485,7 +505,7 @@ Procedure Groups (7)</summary>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="center_justify"><span><a class="doc-id-link" href="#center_justify">center_justify<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L1196"><em>Source</em></a></div></h3>
+<h3 id="center_justify"><span><a class="doc-id-link" href="#center_justify">center_justify<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L1608"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">center_justify :: <a class="code-procedure" href="/core/strings/#centre_justify">centre_justify</a></pre>
 </div>
@@ -495,7 +515,7 @@ Procedure Groups (7)</summary>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="centre_justify"><span><a class="doc-id-link" href="#centre_justify">centre_justify<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L1196"><em>Source</em></a></div></h3>
+<h3 id="centre_justify"><span><a class="doc-id-link" href="#centre_justify">centre_justify<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L1608"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">centre_justify :: <span class="keyword-type">proc</span> "odin" (str: <span class="doc-builtin">string</span>, length: <span class="doc-builtin">int</span>, pad: <span class="doc-builtin">string</span>, allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> <span class="doc-builtin">string</span> {…}</pre>
 </div>
@@ -505,91 +525,166 @@ Procedure Groups (7)</summary>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="clone"><span><a class="doc-id-link" href="#clone">clone<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L8"><em>Source</em></a></div></h3>
+<h3 id="clone"><span><a class="doc-id-link" href="#clone">clone<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L11"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">clone :: <span class="keyword-type">proc</span> "odin" (s: <span class="doc-builtin">string</span>, allocator := <a href="/core/runtime/#Context">context.allocator</a>, loc := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>) -> <span class="doc-builtin">string</span> {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>returns a clone of the string <code>s</code> allocated using the <code>allocator</code></p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="clone_from_bytes"><span><a class="doc-id-link" href="#clone_from_bytes">clone_from_bytes<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L57"><em>Source</em></a></div></h3>
+<h3 id="clone_from_bytes"><span><a class="doc-id-link" href="#clone_from_bytes">clone_from_bytes<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L75"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">clone_from_bytes :: <span class="keyword-type">proc</span> "odin" (s: []<span class="doc-builtin">u8</span>, allocator := <a href="/core/runtime/#Context">context.allocator</a>, loc := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>) -> <span class="doc-builtin">string</span> {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>returns a cloned string of the byte array <code>s</code> using the <code>allocator</code>
+appends a leading nul byte</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="clone_from_cstring"><span><a class="doc-id-link" href="#clone_from_cstring">clone_from_cstring<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L63"><em>Source</em></a></div></h3>
+<h3 id="clone_from_cstring"><span><a class="doc-id-link" href="#clone_from_cstring">clone_from_cstring<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L83"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">clone_from_cstring :: <span class="keyword-type">proc</span> "odin" (s: <span class="doc-builtin">cstring</span>, allocator := <a href="/core/runtime/#Context">context.allocator</a>, loc := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>) -> <span class="doc-builtin">string</span> {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>returns a clone of the cstring <code>s</code> using the <code>allocator</code> as a string</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="clone_from_cstring_bounded"><span><a class="doc-id-link" href="#clone_from_cstring_bounded">clone_from_cstring_bounded<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L78"><em>Source</em></a></div></h3>
+<h3 id="clone_from_cstring_bounded"><span><a class="doc-id-link" href="#clone_from_cstring_bounded">clone_from_cstring_bounded<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L104"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">clone_from_cstring_bounded :: <span class="keyword-type">proc</span> "odin" (ptr: <span class="doc-builtin">cstring</span>, len: <span class="doc-builtin">int</span>, allocator := <a href="/core/runtime/#Context">context.allocator</a>, loc := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>) -> <span class="doc-builtin">string</span> {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>returns a cloned string from the cstring <code>ptr</code> and a byte length <code>len</code> using the <code>allocator</code>
+truncates till the first nul byte it finds or the byte len</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="clone_from_ptr"><span><a class="doc-id-link" href="#clone_from_ptr">clone_from_ptr<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L66"><em>Source</em></a></div></h3>
+<h3 id="clone_from_ptr"><span><a class="doc-id-link" href="#clone_from_ptr">clone_from_ptr<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L89"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">clone_from_ptr :: <span class="keyword-type">proc</span> "odin" (ptr: ^<span class="doc-builtin">u8</span>, len: <span class="doc-builtin">int</span>, allocator := <a href="/core/runtime/#Context">context.allocator</a>, loc := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>) -> <span class="doc-builtin">string</span> {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>returns a cloned string from the pointer <code>ptr</code> and a byte length <code>len</code> using the <code>allocator</code>
+same to <code>string_from_ptr</code> but allocates</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="clone_to_cstring"><span><a class="doc-id-link" href="#clone_to_cstring">clone_to_cstring<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L14"><em>Source</em></a></div></h3>
+<h3 id="clone_to_cstring"><span><a class="doc-id-link" href="#clone_to_cstring">clone_to_cstring<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L19"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">clone_to_cstring :: <span class="keyword-type">proc</span> "odin" (s: <span class="doc-builtin">string</span>, allocator := <a href="/core/runtime/#Context">context.allocator</a>, loc := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>) -> <span class="doc-builtin">cstring</span> {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>returns a clone of the string <code>s</code> allocated using the <code>allocator</code> as a cstring
+a nul byte is appended to the clone, to make the cstring safe</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="compare"><span><a class="doc-id-link" href="#compare">compare<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L86"><em>Source</em></a></div></h3>
+<h3 id="compare"><span><a class="doc-id-link" href="#compare">compare<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L112"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">compare :: <span class="keyword-type">proc</span> "odin" (a, b: <span class="doc-builtin">string</span>) -> <span class="doc-builtin">int</span> {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
 <p>Compares two strings, returning a value representing which one comes first lexiographically.
--1 for <code>a</code>; 1 for <code>b</code>, or 0 if they are equal.</p>
+-1 for <code>lhs</code>; 1 for <code>rhs</code>, or 0 if they are equal.</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="concatenate"><span><a class="doc-id-link" href="#concatenate">concatenate<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L184"><em>Source</em></a></div></h3>
+<h3 id="concatenate"><span><a class="doc-id-link" href="#concatenate">concatenate<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L271"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">concatenate :: <span class="keyword-type">proc</span> "odin" (elems: ..<span class="doc-builtin">string</span>, allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> <span class="doc-builtin">string</span> {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>returns a combined string from the slice of strings <code>a</code> without a seperator</p>
+<pre>allocates the string using the `allocator`
+
+
+a := [?]string { "a", "b", "c" }
+b := strings.concatenate(a[:]) -> "abc"
+</pre>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="contains_any"><span><a class="doc-id-link" href="#contains_any">contains_any<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L103"><em>Source</em></a></div></h3>
+<h3 id="contains_any"><span><a class="doc-id-link" href="#contains_any">contains_any<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L145"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">contains_any :: <span class="keyword-type">proc</span> "odin" (s, substr: <span class="doc-builtin">string</span>) -> <span class="doc-builtin">bool</span> {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>returns true when the string <code>s</code> contains any of the characters inside the string <code>chars</code></p>
+<pre>strings.contains_any("test", "test") -> true
+strings.contains_any("test", "ts") -> true
+strings.contains_any("test", "et") -> true
+strings.contains_any("test", "a") -> false
+</pre>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="contains"><span><a class="doc-id-link" href="#contains">contains<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L99"><em>Source</em></a></div></h3>
+<h3 id="contains"><span><a class="doc-id-link" href="#contains">contains<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L133"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">contains :: <span class="keyword-type">proc</span> "odin" (s, substr: <span class="doc-builtin">string</span>) -> <span class="doc-builtin">bool</span> {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>returns true when the string <code>substr</code> is contained inside the string <code>s</code></p>
+<pre>strings.contains("testing", "test") -> true
+strings.contains("testing", "ing") -> true
+strings.contains("testing", "text") -> false
+</pre>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="contains_rune"><span><a class="doc-id-link" href="#contains_rune">contains_rune<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L90"><em>Source</em></a></div></h3>
+<h3 id="contains_rune"><span><a class="doc-id-link" href="#contains_rune">contains_rune<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L117"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">contains_rune :: <span class="keyword-type">proc</span> "odin" (s: <span class="doc-builtin">string</span>, r: <span class="doc-builtin">rune</span>) -> <span class="doc-builtin">int</span> {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>returns the byte offset of the rune <code>r</code> in the string <code>s</code>, -1 when not found</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="count"><span><a class="doc-id-link" href="#count">count<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L636"><em>Source</em></a></div></h3>
+<h3 id="count"><span><a class="doc-id-link" href="#count">count<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L933"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">count :: <span class="keyword-type">proc</span> "odin" (a, b: <span class="doc-builtin">string</span>) -> <span class="doc-builtin">int</span> {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>returns the count of the string <code>substr</code> found in the string <code>s</code></p>
+<pre>returns the rune_count + 1 of the string `s` on empty `substr`
+
+strings.count("abbccc", "a") -> 1
+strings.count("abbccc", "b") -> 2
+strings.count("abbccc", "c") -> 3
+strings.count("abbccc", "ab") -> 1
+strings.count("abbccc", " ") -> 0
+</pre>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="cut"><span><a class="doc-id-link" href="#cut">cut<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L205"><em>Source</em></a></div></h3>
+<h3 id="cut"><span><a class="doc-id-link" href="#cut">cut<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L296"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">cut :: <span class="keyword-type">proc</span> "odin" (s: <span class="doc-builtin">string</span>, rune_offset: <span class="doc-builtin">int</span> = int(0), rune_length: <span class="doc-builtin">int</span> = int(0), allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> (res: <span class="doc-builtin">string</span>) {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
 <p><code>rune_offset</code> and <code>rune_length</code> are in runes, not bytes.</p>
-<pre>If `rune_length` <= 0, then it'll return the remainder of the string starting with `rune_offset`.
+<pre>If `rune_length` <= 0, then it'll return the remainder of the string starting at `rune_offset`.
+
+strings.cut("some example text", 0, 4) -> "some"
+strings.cut("some example text", 2, 2) -> "me"
+strings.cut("some example text", 5, 7) -> "example"
 </pre>
 </details>
 </div>
@@ -600,19 +695,40 @@ Procedure Groups (7)</summary>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="equal_fold"><span><a class="doc-id-link" href="#equal_fold">equal_fold<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L113"><em>Source</em></a></div></h3>
+<h3 id="equal_fold"><span><a class="doc-id-link" href="#equal_fold">equal_fold<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L168"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">equal_fold :: <span class="keyword-type">proc</span> "odin" (s, substr: <span class="doc-builtin">string</span>) -> <span class="doc-builtin">bool</span> {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>returns wether the strings <code>u</code> and <code>v</code> are the same alpha characters</p>
+<pre>works with utf8 string content and ignores different casings
+
+strings.equal_fold("test", "test") -> true
+strings.equal_fold("Test", "test") -> true
+strings.equal_fold("Test", "tEsT") -> true
+strings.equal_fold("test", "tes") -> false
+</pre>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="expand_tabs"><span><a class="doc-id-link" href="#expand_tabs">expand_tabs<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L1136"><em>Source</em></a></div></h3>
+<h3 id="expand_tabs"><span><a class="doc-id-link" href="#expand_tabs">expand_tabs<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L1540"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">expand_tabs :: <span class="keyword-type">proc</span> "odin" (s: <span class="doc-builtin">string</span>, count: <span class="doc-builtin">int</span>, allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> <span class="doc-builtin">string</span> {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>expands the string to a grid spaced by <code>tab_size</code> whenever a <code>\t</code> character appears</p>
+<pre>returns the tabbed string, panics on tab_size <= 0
+
+strings.expand_tabs("abc1\tabc2\tabc3", 4) -> abc1    abc2    abc3
+strings.expand_tabs("abc1\tabc2\tabc3", 5) -> abc1 abc2 abc3
+strings.expand_tabs("abc1\tabc2\tabc3", 6) -> abc1  abc2  abc3
+</pre>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="fields_iterator"><span><a class="doc-id-link" href="#fields_iterator">fields_iterator<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L1372"><em>Source</em></a></div></h3>
+<h3 id="fields_iterator"><span><a class="doc-id-link" href="#fields_iterator">fields_iterator<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L1784"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">fields_iterator :: <span class="keyword-type">proc</span> "odin" (s: ^<span class="doc-builtin">string</span>) -> (line: <span class="doc-builtin">string</span>, ok: <span class="doc-builtin">bool</span>) {…}</pre>
 </div>
@@ -623,18 +739,7 @@ Procedure Groups (7)</summary>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="fields"><span><a class="doc-id-link" href="#fields">fields<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L1286"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">fields :: <span class="keyword-type">proc</span> "odin" (path: <span class="doc-builtin">string</span>, allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> []<span class="doc-builtin">string</span> {…}</pre>
-</div>
-<details class="odin-doc-toggle" open>
-<summary class="hideme"><span>&nbsp;</span></summary>
-<p>fields splits the string s around each instance of one or more consecutive white space character, defined by unicode.is_space
-returning a slice of substrings of s or an empty slice if s only contains white space</p>
-</details>
-</div>
-<div class="pkg-entity">
-<h3 id="fields_proc"><span><a class="doc-id-link" href="#fields_proc">fields_proc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L1342"><em>Source</em></a></div></h3>
+<h3 id="fields_proc"><span><a class="doc-id-link" href="#fields_proc">fields_proc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L1754"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">fields_proc :: <span class="keyword-type">proc</span> "odin" (s: <span class="doc-builtin">string</span>, f: <span class="keyword-type">proc</span> "odin" (r: <span class="doc-builtin">rune</span>) -> <span class="doc-builtin">bool</span>, allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> []<span class="doc-builtin">string</span> {…}</pre>
 </div>
@@ -648,62 +753,152 @@ it assumes that <code>f</code> always returns the same value for a given ch</p>
 </details>
 </div>
 <div class="pkg-entity">
+<h3 id="fields"><span><a class="doc-id-link" href="#fields">fields<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L1698"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">fields :: <span class="keyword-type">proc</span> "odin" (path: <span class="doc-builtin">string</span>, allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> []<span class="doc-builtin">string</span> {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>fields splits the string s around each instance of one or more consecutive white space character, defined by unicode.is_space
+returning a slice of substrings of s or an empty slice if s only contains white space</p>
+</details>
+</div>
+<div class="pkg-entity">
 <h3 id="grow_builder"><span><a class="doc-id-link" href="#grow_builder">grow_builder<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/builder.odin#L94"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">grow_builder :: <span class="keyword-type">proc</span> "odin" (b: ^<a class="code-typename" href="/core/strings/#Builder">Builder</a>, cap: <span class="doc-builtin">int</span>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="has_prefix"><span><a class="doc-id-link" href="#has_prefix">has_prefix<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L156"><em>Source</em></a></div></h3>
+<h3 id="has_prefix"><span><a class="doc-id-link" href="#has_prefix">has_prefix<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L219"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">has_prefix :: <span class="keyword-type">proc</span> "odin" (s, substr: <span class="doc-builtin">string</span>) -> <span class="doc-builtin">bool</span> {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>return true when the string <code>prefix</code> is contained at the start of the string <code>s</code></p>
+<pre>strings.has_prefix("testing", "test") -> true
+strings.has_prefix("testing", "te") -> true
+strings.has_prefix("telephone", "te") -> true
+strings.has_prefix("testing", "est") -> false
+</pre>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="has_suffix"><span><a class="doc-id-link" href="#has_suffix">has_suffix<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L160"><em>Source</em></a></div></h3>
+<h3 id="has_suffix"><span><a class="doc-id-link" href="#has_suffix">has_suffix<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L231"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">has_suffix :: <span class="keyword-type">proc</span> "odin" (s, substr: <span class="doc-builtin">string</span>) -> <span class="doc-builtin">bool</span> {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>returns true when the string <code>suffix</code> is contained at the end of the string <code>s</code></p>
+<pre>good example to use this is for file extensions
+
+strings.has_suffix("todo.txt", ".txt") -> true
+strings.has_suffix("todo.doc", ".txt") -> false
+strings.has_suffix("todo.doc.txt", ".txt") -> true
+</pre>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="index_proc_with_state"><span><a class="doc-id-link" href="#index_proc_with_state">index_proc_with_state<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L782"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">index_proc_with_state :: <span class="keyword-type">proc</span> "odin" (s: <span class="doc-builtin">string</span>, p: <span class="keyword-type">proc</span> "odin" (state: <span class="doc-builtin">rawptr</span>, r: <span class="doc-builtin">rune</span>) -> <span class="doc-builtin">bool</span>, state: <span class="doc-builtin">rawptr</span>, truth: <span class="doc-builtin">bool</span> = true) -> <span class="doc-builtin">int</span> {…}</pre>
-</div>
-</div>
-<div class="pkg-entity">
-<h3 id="index"><span><a class="doc-id-link" href="#index">index<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L456"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">index :: <span class="keyword-type">proc</span> "odin" (a, b: <span class="doc-builtin">string</span>) -> <span class="doc-builtin">int</span> {…}</pre>
-</div>
-</div>
-<div class="pkg-entity">
-<h3 id="index_any"><span><a class="doc-id-link" href="#index_any">index_any<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L555"><em>Source</em></a></div></h3>
+<h3 id="index_any"><span><a class="doc-id-link" href="#index_any">index_any<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L832"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">index_any :: <span class="keyword-type">proc</span> "odin" (a, b: <span class="doc-builtin">string</span>) -> <span class="doc-builtin">int</span> {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>index_any returns the index of the first char of <code>chars</code> found in <code>s</code>. -1 if not found.</p>
+<p>returns the index of any first char of <code>chars</code> found in <code>s</code>, -1 if not found</p>
+<pre>strings.index_any("test", "s") -> 2
+strings.index_any("test", "se") -> 1
+strings.index_any("test", "et") -> 0
+strings.index_any("test", "set") -> 0
+strings.index_any("test", "x") -> -1
+</pre>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="index_byte"><span><a class="doc-id-link" href="#index_byte">index_byte<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L433"><em>Source</em></a></div></h3>
+<h3 id="index_byte"><span><a class="doc-id-link" href="#index_byte">index_byte<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L645"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">index_byte :: <span class="keyword-type">proc</span> "odin" (s: <span class="doc-builtin">string</span>, c: <span class="doc-builtin">u8</span>) -> <span class="doc-builtin">int</span> {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>returns the byte offset of the first byte <code>c</code> in the string <code>s</code> it finds, -1 when not found</p>
+<pre>can't find utf8 based runes
+
+strings.index_byte("test", 't') -> 0
+strings.index_byte("test", 'e') -> 1
+strings.index_byte("test", 'x') -> -1
+strings.index_byte("teäst", 'ä') -> -1
+</pre>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="index_proc"><span><a class="doc-id-link" href="#index_proc">index_proc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L773"><em>Source</em></a></div></h3>
+<h3 id="index_proc"><span><a class="doc-id-link" href="#index_proc">index_proc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L1125"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">index_proc :: <span class="keyword-type">proc</span> "odin" (s: <span class="doc-builtin">string</span>, p: <span class="keyword-type">proc</span> "odin" (r: <span class="doc-builtin">rune</span>) -> <span class="doc-builtin">bool</span>, truth: <span class="doc-builtin">bool</span> = true) -> <span class="doc-builtin">int</span> {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>runs trough the <code>s</code> string linearly and watches wether the <code>p</code> procedure matches the <code>truth</code> bool</p>
+<pre>returns the rune offset or -1 when no match was found
+
+call :: proc(r: rune) -> bool {
+	return r == 'a'
+}
+strings.index_proc("abcabc", call) -> 0
+strings.index_proc("cbacba", call) -> 2
+strings.index_proc("cbacba", call, false) -> 0
+strings.index_proc("abcabc", call, false) -> 1
+strings.index_proc("xyz", call) -> -1
+</pre>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="index_rune"><span><a class="doc-id-link" href="#index_rune">index_rune<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L824"><em>Source</em></a></div></h3>
+<h3 id="index"><span><a class="doc-id-link" href="#index">index<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L717"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">index :: <span class="keyword-type">proc</span> "odin" (a, b: <span class="doc-builtin">string</span>) -> <span class="doc-builtin">int</span> {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>returns the byte offset of the string <code>substr</code> in the string <code>s</code>, -1 when not found</p>
+<pre>strings.index("test", "t") -> 0
+strings.index("test", "te") -> 0
+strings.index("test", "st") -> 2
+strings.index("test", "tt") -> -1
+</pre>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="index_proc_with_state"><span><a class="doc-id-link" href="#index_proc_with_state">index_proc_with_state<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L1135"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">index_proc_with_state :: <span class="keyword-type">proc</span> "odin" (s: <span class="doc-builtin">string</span>, p: <span class="keyword-type">proc</span> "odin" (state: <span class="doc-builtin">rawptr</span>, r: <span class="doc-builtin">rune</span>) -> <span class="doc-builtin">bool</span>, state: <span class="doc-builtin">rawptr</span>, truth: <span class="doc-builtin">bool</span> = true) -> <span class="doc-builtin">int</span> {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>same as <code>index_proc</code> but with a <code>p</code> procedure taking a rawptr for state</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="index_rune"><span><a class="doc-id-link" href="#index_rune">index_rune<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L686"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">index_rune :: <span class="keyword-type">proc</span> "odin" (s: <span class="doc-builtin">string</span>, r: <span class="doc-builtin">rune</span>) -> <span class="doc-builtin">int</span> {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>returns the byte offset of the first rune <code>r</code> in the string <code>s</code> it finds, -1 when not found</p>
+<pre>avoids invalid runes
+
+strings.index_rune("abcädef", 'x') -> -1
+strings.index_rune("abcädef", 'a') -> 0
+strings.index_rune("abcädef", 'b') -> 1
+strings.index_rune("abcädef", 'c') -> 2
+strings.index_rune("abcädef", 'ä') -> 3
+strings.index_rune("abcädef", 'd') -> 5
+strings.index_rune("abcädef", 'e') -> 6
+strings.index_rune("abcädef", 'f') -> 7
+</pre>
+</details>
 </div>
 <div class="pkg-entity">
 <h3 id="init_builder_len_cap"><span><a class="doc-id-link" href="#init_builder_len_cap">init_builder_len_cap<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/builder.odin#L40"><em>Source</em></a></div></h3>
@@ -748,10 +943,14 @@ it assumes that <code>f</code> always returns the same value for a given ch</p>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="is_ascii_space"><span><a class="doc-id-link" href="#is_ascii_space">is_ascii_space<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L744"><em>Source</em></a></div></h3>
+<h3 id="is_ascii_space"><span><a class="doc-id-link" href="#is_ascii_space">is_ascii_space<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L1081"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">is_ascii_space :: <span class="keyword-type">proc</span> "odin" (r: <span class="doc-builtin">rune</span>) -> <span class="doc-builtin">bool</span> {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>return true when the <code>r</code> rune is '\t', '\n', '\v', '\f', '\r' or ' '</p>
+</details>
 </div>
 <div class="pkg-entity">
 <h3 id="is_delimiter"><span><a class="doc-id-link" href="#is_delimiter">is_delimiter<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/conversion.odin#L81"><em>Source</em></a></div></h3>
@@ -760,16 +959,24 @@ it assumes that <code>f</code> always returns the same value for a given ch</p>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="is_in_cutset"><span><a class="doc-id-link" href="#is_in_cutset">is_in_cutset<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L877"><em>Source</em></a></div></h3>
+<h3 id="is_in_cutset"><span><a class="doc-id-link" href="#is_in_cutset">is_in_cutset<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L1237"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">is_in_cutset :: <span class="keyword-type">proc</span> "odin" (state: <span class="doc-builtin">rawptr</span>, r: <span class="doc-builtin">rune</span>) -> <span class="doc-builtin">bool</span> {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>procedure for <code>trim_*_proc</code> variants, which has a string rawptr cast + rune comparison</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="is_null"><span><a class="doc-id-link" href="#is_null">is_null<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L769"><em>Source</em></a></div></h3>
+<h3 id="is_null"><span><a class="doc-id-link" href="#is_null">is_null<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L1108"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">is_null :: <span class="keyword-type">proc</span> "odin" (r: <span class="doc-builtin">rune</span>) -> <span class="doc-builtin">bool</span> {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>returns true when the <code>r</code> rune is a nul byte</p>
+</details>
 </div>
 <div class="pkg-entity">
 <h3 id="is_separator"><span><a class="doc-id-link" href="#is_separator">is_separator<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/conversion.odin#L85"><em>Source</em></a></div></h3>
@@ -778,53 +985,104 @@ it assumes that <code>f</code> always returns the same value for a given ch</p>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="is_space"><span><a class="doc-id-link" href="#is_space">is_space<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L751"><em>Source</em></a></div></h3>
+<h3 id="is_space"><span><a class="doc-id-link" href="#is_space">is_space<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L1089"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">is_space :: <span class="keyword-type">proc</span> "odin" (r: <span class="doc-builtin">rune</span>) -> <span class="doc-builtin">bool</span> {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>returns true when the <code>r</code> rune is any asci or utf8 based whitespace</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="join"><span><a class="doc-id-link" href="#join">join<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L165"><em>Source</em></a></div></h3>
+<h3 id="join"><span><a class="doc-id-link" href="#join">join<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L244"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">join :: <span class="keyword-type">proc</span> "odin" (a: []<span class="doc-builtin">string</span>, sep: <span class="doc-builtin">string</span>, allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> <span class="doc-builtin">string</span> {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>returns a combined string from the slice of strings <code>a</code> seperated with the <code>sep</code> string</p>
+<pre>allocates the string using the `allocator`
+
+a := [?]string { "a", "b", "c" }
+b := strings.join(a[:], " ") -> "a b c"
+c := strings.join(a[:], "-") -> "a-b-c"
+d := strings.join(a[:], "...") -> "a...b...c"
+</pre>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="last_index"><span><a class="doc-id-link" href="#last_index">last_index<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L506"><em>Source</em></a></div></h3>
+<h3 id="last_index"><span><a class="doc-id-link" href="#last_index">last_index<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L775"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">last_index :: <span class="keyword-type">proc</span> "odin" (a, b: <span class="doc-builtin">string</span>) -> <span class="doc-builtin">int</span> {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>returns the last byte offset of the string <code>substr</code> in the string <code>s</code>, -1 when not found</p>
+<pre>strings.index("test", "t") -> 3
+strings.index("test", "te") -> 0
+strings.index("test", "st") -> 2
+strings.index("test", "tt") -> -1
+</pre>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="last_index_any"><span><a class="doc-id-link" href="#last_index_any">last_index_any<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L587"><em>Source</em></a></div></h3>
+<h3 id="last_index_any"><span><a class="doc-id-link" href="#last_index_any">last_index_any<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L874"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">last_index_any :: <span class="keyword-type">proc</span> "odin" (a, b: <span class="doc-builtin">string</span>) -> <span class="doc-builtin">int</span> {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>returns the index of any first char of <code>chars</code> found in <code>s</code>, -1 if not found</p>
+<pre>iterates the string in reverse
+
+strings.index_any("test", "s") -> 2
+strings.index_any("test", "se") -> 2
+strings.index_any("test", "et") -> 1
+strings.index_any("test", "set") -> 3
+strings.index_any("test", "x") -> -1
+</pre>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="last_index_byte"><span><a class="doc-id-link" href="#last_index_byte">last_index_byte<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L443"><em>Source</em></a></div></h3>
+<h3 id="last_index_byte"><span><a class="doc-id-link" href="#last_index_byte">last_index_byte<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L663"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">last_index_byte :: <span class="keyword-type">proc</span> "odin" (s: <span class="doc-builtin">string</span>, c: <span class="doc-builtin">u8</span>) -> <span class="doc-builtin">int</span> {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>Returns -1 if c is not present</p>
+<p>returns the byte offset of the last byte <code>c</code> in the string <code>s</code> it finds, -1 when not found</p>
+<pre>can't find utf8 based runes
+
+strings.index_byte("test", 't') -> 3
+strings.index_byte("test", 'e') -> 1
+strings.index_byte("test", 'x') -> -1
+strings.index_byte("teäst", 'ä') -> -1
+</pre>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="last_index_proc"><span><a class="doc-id-link" href="#last_index_proc">last_index_proc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L791"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">last_index_proc :: <span class="keyword-type">proc</span> "odin" (s: <span class="doc-builtin">string</span>, p: <span class="keyword-type">proc</span> "odin" (r: <span class="doc-builtin">rune</span>) -> <span class="doc-builtin">bool</span>, truth: <span class="doc-builtin">bool</span> = true) -> <span class="doc-builtin">int</span> {…}</pre>
-</div>
-</div>
-<div class="pkg-entity">
-<h3 id="last_index_proc_with_state"><span><a class="doc-id-link" href="#last_index_proc_with_state">last_index_proc_with_state<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L803"><em>Source</em></a></div></h3>
+<h3 id="last_index_proc_with_state"><span><a class="doc-id-link" href="#last_index_proc_with_state">last_index_proc_with_state<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L1158"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">last_index_proc_with_state :: <span class="keyword-type">proc</span> "odin" (s: <span class="doc-builtin">string</span>, p: <span class="keyword-type">proc</span> "odin" (state: <span class="doc-builtin">rawptr</span>, r: <span class="doc-builtin">rune</span>) -> <span class="doc-builtin">bool</span>, state: <span class="doc-builtin">rawptr</span>, truth: <span class="doc-builtin">bool</span> = true) -> <span class="doc-builtin">int</span> {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>same as <code>index_proc_with_state</code> but runs through the string in reverse</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="left_justify"><span><a class="doc-id-link" href="#left_justify">left_justify<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L1219"><em>Source</em></a></div></h3>
+<h3 id="last_index_proc"><span><a class="doc-id-link" href="#last_index_proc">last_index_proc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L1145"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">last_index_proc :: <span class="keyword-type">proc</span> "odin" (s: <span class="doc-builtin">string</span>, p: <span class="keyword-type">proc</span> "odin" (r: <span class="doc-builtin">rune</span>) -> <span class="doc-builtin">bool</span>, truth: <span class="doc-builtin">bool</span> = true) -> <span class="doc-builtin">int</span> {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>same as <code>index_proc</code> but runs through the string in reverse</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="left_justify"><span><a class="doc-id-link" href="#left_justify">left_justify<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L1631"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">left_justify :: <span class="keyword-type">proc</span> "odin" (str: <span class="doc-builtin">string</span>, length: <span class="doc-builtin">int</span>, pad: <span class="doc-builtin">string</span>, allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> <span class="doc-builtin">string</span> {…}</pre>
 </div>
@@ -852,10 +1110,22 @@ it assumes that <code>f</code> always returns the same value for a given ch</p>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="partition"><span><a class="doc-id-link" href="#partition">partition<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L1180"><em>Source</em></a></div></h3>
+<h3 id="partition"><span><a class="doc-id-link" href="#partition">partition<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L1592"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">partition :: <span class="keyword-type">proc</span> "odin" (str, sep: <span class="doc-builtin">string</span>) -> (head, match, tail: <span class="doc-builtin">string</span>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>splits the <code>str</code> string by the seperator <code>sep</code> string and returns 3 parts</p>
+<pre>`head`: before the split, `match`: the seperator, `tail`: the end of the split
+returns the input string when the `sep` was not found
+
+text := "testing this out"
+strings.partition(text, " this ") -> head: "testing", match: " this ", tail: "out"
+strings.partition(text, "hi") -> head: "testing t", match: "hi", tail: "s out"
+strings.partition(text, "xyz") -> head: "testing this out", match: "", tail: ""
+</pre>
+</details>
 </div>
 <div class="pkg-entity">
 <h3 id="pop_byte"><span><a class="doc-id-link" href="#pop_byte">pop_byte<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/builder.odin#L194"><em>Source</em></a></div></h3>
@@ -870,10 +1140,14 @@ it assumes that <code>f</code> always returns the same value for a given ch</p>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="ptr_from_string"><span><a class="doc-id-link" href="#ptr_from_string">ptr_from_string<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L32"><em>Source</em></a></div></h3>
+<h3 id="ptr_from_string"><span><a class="doc-id-link" href="#ptr_from_string">ptr_from_string<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L41"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">ptr_from_string :: <span class="keyword-type">proc</span> "odin" (str: <span class="doc-builtin">string</span>) -> ^<span class="doc-builtin">u8</span> {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>returns the raw ^byte start of the string <code>str</code></p>
+</details>
 </div>
 <div class="pkg-entity">
 <h3 id="reader_init"><span><a class="doc-id-link" href="#reader_init">reader_init<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/reader.odin#L12"><em>Source</em></a></div></h3>
@@ -888,6 +1162,12 @@ it assumes that <code>f</code> always returns the same value for a given ch</p>
 </div>
 </div>
 <div class="pkg-entity">
+<h3 id="reader_read_byte"><span><a class="doc-id-link" href="#reader_read_byte">reader_read_byte<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/reader.odin#L79"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">reader_read_byte :: <span class="keyword-type">proc</span> "odin" (r: ^<a class="code-typename" href="/core/strings/#Reader">Reader</a>) -> (<span class="doc-builtin">u8</span>, io.<a class="code-typename" href="/core/io/#Error">Error</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
 <h3 id="reader_read"><span><a class="doc-id-link" href="#reader_read">reader_read<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/reader.odin#L57"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">reader_read :: <span class="keyword-type">proc</span> "odin" (r: ^<a class="code-typename" href="/core/strings/#Reader">Reader</a>, p: []<span class="doc-builtin">u8</span>) -> (n: <span class="doc-builtin">int</span>, err: io.<a class="code-typename" href="/core/io/#Error">Error</a>) {…}</pre>
@@ -897,12 +1177,6 @@ it assumes that <code>f</code> always returns the same value for a given ch</p>
 <h3 id="reader_read_at"><span><a class="doc-id-link" href="#reader_read_at">reader_read_at<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/reader.odin#L66"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">reader_read_at :: <span class="keyword-type">proc</span> "odin" (r: ^<a class="code-typename" href="/core/strings/#Reader">Reader</a>, p: []<span class="doc-builtin">u8</span>, off: <span class="doc-builtin">i64</span>) -> (n: <span class="doc-builtin">int</span>, err: io.<a class="code-typename" href="/core/io/#Error">Error</a>) {…}</pre>
-</div>
-</div>
-<div class="pkg-entity">
-<h3 id="reader_read_byte"><span><a class="doc-id-link" href="#reader_read_byte">reader_read_byte<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/reader.odin#L79"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">reader_read_byte :: <span class="keyword-type">proc</span> "odin" (r: ^<a class="code-typename" href="/core/strings/#Reader">Reader</a>) -> (<span class="doc-builtin">u8</span>, io.<a class="code-typename" href="/core/io/#Error">Error</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -948,37 +1222,85 @@ it assumes that <code>f</code> always returns the same value for a given ch</p>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="remove_all"><span><a class="doc-id-link" href="#remove_all">remove_all<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L737"><em>Source</em></a></div></h3>
+<h3 id="remove_all"><span><a class="doc-id-link" href="#remove_all">remove_all<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L1074"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">remove_all :: <span class="keyword-type">proc</span> "odin" (s, key: <span class="doc-builtin">string</span>, allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> (output: <span class="doc-builtin">string</span>, was_allocation: <span class="doc-builtin">bool</span>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>removes all the <code>key</code> string instanes from the <code>s</code> string</p>
+<pre>returns the `output` string and true when an a allocation through a remove happened
+
+strings.remove("abcabc", "abc") -> "", true
+strings.remove("abcabc", "a") -> "bcbc", true
+strings.remove("abcabc", "x") -> "abcabc", false
+</pre>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="remove"><span><a class="doc-id-link" href="#remove">remove<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L733"><em>Source</em></a></div></h3>
+<h3 id="remove"><span><a class="doc-id-link" href="#remove">remove<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L1062"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">remove :: <span class="keyword-type">proc</span> "odin" (s, key: <span class="doc-builtin">string</span>, n: <span class="doc-builtin">int</span>, allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> (output: <span class="doc-builtin">string</span>, was_allocation: <span class="doc-builtin">bool</span>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>removes the <code>key</code> string <code>n</code> times from the <code>s</code> string</p>
+<pre>if n < 0, no limit on the number of removes
+returns the `output` string and true when an a allocation through a remove happened
+
+strings.remove("abcabc", "abc", 1) -> "abc", true
+strings.remove("abcabc", "abc", -1) -> "", true
+strings.remove("abcabc", "a", -1) -> "bcbc", true
+strings.remove("abcabc", "x", -1) -> "abcabc", false
+</pre>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="repeat"><span><a class="doc-id-link" href="#repeat">repeat<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L672"><em>Source</em></a></div></h3>
+<h3 id="repeat"><span><a class="doc-id-link" href="#repeat">repeat<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L974"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">repeat :: <span class="keyword-type">proc</span> "odin" (s: <span class="doc-builtin">string</span>, count: <span class="doc-builtin">int</span>, allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> <span class="doc-builtin">string</span> {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>repeats the string <code>s</code> multiple <code>count</code> times and returns the allocated string</p>
+<pre>panics when `count` is below 0
+
+strings.repeat("abc", 2) -> "abcabc"
+</pre>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="replace_all"><span><a class="doc-id-link" href="#replace_all">replace_all<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L688"><em>Source</em></a></div></h3>
+<h3 id="replace_all"><span><a class="doc-id-link" href="#replace_all">replace_all<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L998"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">replace_all :: <span class="keyword-type">proc</span> "odin" (s, old, new: <span class="doc-builtin">string</span>, allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> (output: <span class="doc-builtin">string</span>, was_allocation: <span class="doc-builtin">bool</span>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>replaces all instances of <code>old</code> in the string <code>s</code>	with the <code>new</code> string</p>
+<pre>returns the `output` string and true when an a allocation through a replace happened
+
+strings.replace_all("xyzxyz", "xyz", "abc") -> "abcabc", true
+strings.replace_all("xyzxyz", "abc", "xyz") -> "xyzxyz", false
+strings.replace_all("xyzxyz", "xy", "z") -> "zzzz", true
+</pre>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="replace"><span><a class="doc-id-link" href="#replace">replace<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L693"><em>Source</em></a></div></h3>
+<h3 id="replace"><span><a class="doc-id-link" href="#replace">replace<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L1012"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">replace :: <span class="keyword-type">proc</span> "odin" (s, old, new: <span class="doc-builtin">string</span>, n: <span class="doc-builtin">int</span>, allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> (output: <span class="doc-builtin">string</span>, was_allocation: <span class="doc-builtin">bool</span>) {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>if n < 0, no limit on the number of replacements</p>
+<p>replaces <code>n</code> instances of <code>old</code> in the string <code>s</code>	with the <code>new</code> string</p>
+<pre>if n < 0, no limit on the number of replacements
+returns the `output` string and true when an a allocation through a replace happened
+
+strings.replace("xyzxyz", "xyz", "abc", 2) -> "abcabc", true
+strings.replace("xyzxyz", "xyz", "abc", 1) -> "abcxyz", true
+strings.replace("xyzxyz", "abc", "xyz", -1) -> "xyzxyz", false
+strings.replace("xyzxyz", "xy", "z", -1) -> "zzzz", true
+</pre>
 </details>
 </div>
 <div class="pkg-entity">
@@ -988,13 +1310,21 @@ it assumes that <code>f</code> always returns the same value for a given ch</p>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="reverse"><span><a class="doc-id-link" href="#reverse">reverse<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L1121"><em>Source</em></a></div></h3>
+<h3 id="reverse"><span><a class="doc-id-link" href="#reverse">reverse<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L1517"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">reverse :: <span class="keyword-type">proc</span> "odin" (path: <span class="doc-builtin">string</span>, allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> <span class="doc-builtin">string</span> {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>returns a reversed version of the <code>s</code> string</p>
+<pre>a := "abcxyz"
+b := strings.reverse(a)
+fmt.eprintln(a, b) // abcxyz zyxcba
+</pre>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="right_justify"><span><a class="doc-id-link" href="#right_justify">right_justify<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L1241"><em>Source</em></a></div></h3>
+<h3 id="right_justify"><span><a class="doc-id-link" href="#right_justify">right_justify<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L1653"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">right_justify :: <span class="keyword-type">proc</span> "odin" (str: <span class="doc-builtin">string</span>, length: <span class="doc-builtin">int</span>, pad: <span class="doc-builtin">string</span>, allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> <span class="doc-builtin">string</span> {…}</pre>
 </div>
@@ -1004,13 +1334,20 @@ it assumes that <code>f</code> always returns the same value for a given ch</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="rune_count"><span><a class="doc-id-link" href="#rune_count">rune_count<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L108"><em>Source</em></a></div></h3>
+<h3 id="rune_count"><span><a class="doc-id-link" href="#rune_count">rune_count<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L155"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">rune_count :: <span class="keyword-type">proc</span> "odin" (path: <span class="doc-builtin">string</span>) -> <span class="doc-builtin">int</span> {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>returns the utf8 rune count of the string <code>s</code></p>
+<pre>strings.rune_count("test") -> 4
+strings.rune_count("testö") -> 5, where len("testö") -> 6
+</pre>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="scrub"><span><a class="doc-id-link" href="#scrub">scrub<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L1088"><em>Source</em></a></div></h3>
+<h3 id="scrub"><span><a class="doc-id-link" href="#scrub">scrub<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L1478"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">scrub :: <span class="keyword-type">proc</span> "odin" (s, replacement: <span class="doc-builtin">string</span>, allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> <span class="doc-builtin">string</span> {…}</pre>
 </div>
@@ -1021,13 +1358,23 @@ Adjacent invalid bytes are only replaced once</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="split_after"><span><a class="doc-id-link" href="#split_after">split_after<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L310"><em>Source</em></a></div></h3>
+<h3 id="split_after_n"><span><a class="doc-id-link" href="#split_after_n">split_after_n<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L443"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">split_after :: <span class="keyword-type">proc</span> "odin" (s, sep: <span class="doc-builtin">string</span>, allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> []<span class="doc-builtin">string</span> {…}</pre>
+<pre class="doc-code">split_after_n :: <span class="keyword-type">proc</span> "odin" (s, sep: <span class="doc-builtin">string</span>, n: <span class="doc-builtin">int</span>, allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> []<span class="doc-builtin">string</span> {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>splits the string <code>s</code> after the seperator string <code>sep</code> appears into a total of <code>n</code> parts</p>
+<pre>returns the slice of split strings allocated using `allocator`
+
+a := "aaa.bbb.ccc.ddd.eee"
+aa := strings.split_after(a, ".")
+fmt.eprintln(aa) // [aaa., bbb., ccc., ddd., eee]
+</pre>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="split"><span><a class="doc-id-link" href="#split">split<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L292"><em>Source</em></a></div></h3>
+<h3 id="split"><span><a class="doc-id-link" href="#split">split<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L405"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">split :: <span class="keyword-type">proc</span> "odin" (s, sep: <span class="doc-builtin">string</span>, allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> []<span class="doc-builtin">string</span> {…}</pre>
 </div>
@@ -1044,79 +1391,217 @@ fmt.println(ss)            // [aaa, bbb, ccc, ddd, eee]
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="split_after_iterator"><span><a class="doc-id-link" href="#split_after_iterator">split_after_iterator<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L366"><em>Source</em></a></div></h3>
+<h3 id="split_after"><span><a class="doc-id-link" href="#split_after">split_after<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L431"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">split_after :: <span class="keyword-type">proc</span> "odin" (s, sep: <span class="doc-builtin">string</span>, allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> []<span class="doc-builtin">string</span> {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>splits the string <code>s</code> after the seperator string <code>sep</code> appears</p>
+<pre>returns the slice of split strings allocated using `allocator`
+
+a := "aaa.bbb.ccc.ddd.eee"
+aa := strings.split_after(a, ".")
+fmt.eprintln(aa) // [aaa., bbb., ccc., ddd., eee]
+</pre>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="split_after_iterator"><span><a class="doc-id-link" href="#split_after_iterator">split_after_iterator<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L521"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">split_after_iterator :: <span class="keyword-type">proc</span> "odin" (s: ^<span class="doc-builtin">string</span>, sep: <span class="doc-builtin">string</span>) -> (<span class="doc-builtin">string</span>, <span class="doc-builtin">bool</span>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>split the ^string <code>s</code> after every seperator string <code>sep</code> in an iterator fashion</p>
+<pre>consumes the original string till the end
+
+text := "a.b.c.d.e"
+for str in strings.split_after_iterator(&text, ".") {
+	fmt.eprintln(str) // every loop -> a. b. c. d. e
+}
+</pre>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="split_after_n"><span><a class="doc-id-link" href="#split_after_n">split_after_n<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L314"><em>Source</em></a></div></h3>
+<h3 id="split_by_byte_iterator"><span><a class="doc-id-link" href="#split_by_byte_iterator">split_by_byte_iterator<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L484"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">split_after_n :: <span class="keyword-type">proc</span> "odin" (s, sep: <span class="doc-builtin">string</span>, n: <span class="doc-builtin">int</span>, allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> []<span class="doc-builtin">string</span> {…}</pre>
+<pre class="doc-code">split_by_byte_iterator :: <span class="keyword-type">proc</span> "odin" (s: ^<span class="doc-builtin">string</span>, sep: <span class="doc-builtin">u8</span>) -> (res: <span class="doc-builtin">string</span>, ok: <span class="doc-builtin">bool</span>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>split the ^string <code>s</code> by the byte seperator <code>sep</code> in an iterator fashion</p>
+<pre>consumes the original string till the end, leaving the string `s` with len == 0
+
+text := "a.b.c.d.e"
+for str in strings.split_by_byte_iterator(&text, '.') {
+	fmt.eprintln(str) // every loop -> a b c d e
+}
+</pre>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="split_by_byte_iterator"><span><a class="doc-id-link" href="#split_by_byte_iterator">split_by_byte_iterator<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L358"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">split_by_byte_iterator :: <span class="keyword-type">proc</span> "odin" (s: ^<span class="doc-builtin">string</span>, sep: <span class="doc-builtin">u8</span>) -> (<span class="doc-builtin">string</span>, <span class="doc-builtin">bool</span>) {…}</pre>
-</div>
-</div>
-<div class="pkg-entity">
-<h3 id="split_iterator"><span><a class="doc-id-link" href="#split_iterator">split_iterator<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L362"><em>Source</em></a></div></h3>
+<h3 id="split_iterator"><span><a class="doc-id-link" href="#split_iterator">split_iterator<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L508"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">split_iterator :: <span class="keyword-type">proc</span> "odin" (s: ^<span class="doc-builtin">string</span>, sep: <span class="doc-builtin">string</span>) -> (<span class="doc-builtin">string</span>, <span class="doc-builtin">bool</span>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>split the ^string <code>s</code> by the seperator string <code>sep</code> in an iterator fashion</p>
+<pre>consumes the original string till the end
+
+text := "a.b.c.d.e"
+for str in strings.split_iterator(&text, ".") {
+	fmt.eprintln(str) // every loop -> a b c d e
+}
+</pre>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="split_lines"><span><a class="doc-id-link" href="#split_lines">split_lines<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L382"><em>Source</em></a></div></h3>
+<h3 id="split_lines"><span><a class="doc-id-link" href="#split_lines">split_lines<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L545"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">split_lines :: <span class="keyword-type">proc</span> "odin" (path: <span class="doc-builtin">string</span>, allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> []<span class="doc-builtin">string</span> {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>split the string <code>s</code> at every line break '\n'</p>
+<pre>return an allocated slice of strings
+
+a := "a\nb\nc\nd\ne"
+b := strings.split_lines(a)
+fmt.eprintln(b) // [a, b, c, d, e]
+</pre>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="split_lines_after"><span><a class="doc-id-link" href="#split_lines_after">split_lines_after<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L400"><em>Source</em></a></div></h3>
+<h3 id="split_lines_after"><span><a class="doc-id-link" href="#split_lines_after">split_lines_after<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L579"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">split_lines_after :: <span class="keyword-type">proc</span> "odin" (path: <span class="doc-builtin">string</span>, allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> []<span class="doc-builtin">string</span> {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>split the string <code>s</code> at every line break '\n' leaving the '\n' in the resulting strings</p>
+<pre>return an allocated slice of strings
+
+a := "a\nb\nc\nd\ne"
+b := strings.split_lines_after(a)
+fmt.eprintln(b) // [a\n, b\n, c\n, d\n, e\n]
+</pre>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="split_lines_after_iterator"><span><a class="doc-id-link" href="#split_lines_after_iterator">split_lines_after_iterator<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L424"><em>Source</em></a></div></h3>
+<h3 id="split_lines_after_iterator"><span><a class="doc-id-link" href="#split_lines_after_iterator">split_lines_after_iterator<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L630"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">split_lines_after_iterator :: <span class="keyword-type">proc</span> "odin" (s: ^<span class="doc-builtin">string</span>) -> (line: <span class="doc-builtin">string</span>, ok: <span class="doc-builtin">bool</span>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>split the string <code>s</code> at every line break '\n'</p>
+<pre>returns the current split string every iteration till the string is consumed
+
+text := "a\nb\nc\nd\ne"
+for str in strings.split_lines_after_iterator(&text) {
+	fmt.eprintln(text) // every loop -> a\n b\n c\n d\n e\n
+}
+</pre>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="split_lines_after_n"><span><a class="doc-id-link" href="#split_lines_after_n">split_lines_after_n<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L409"><em>Source</em></a></div></h3>
+<h3 id="split_lines_after_n"><span><a class="doc-id-link" href="#split_lines_after_n">split_lines_after_n<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L597"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">split_lines_after_n :: <span class="keyword-type">proc</span> "odin" (s: <span class="doc-builtin">string</span>, n: <span class="doc-builtin">int</span>, allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> []<span class="doc-builtin">string</span> {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>split the string <code>s</code> at every line break '\n' leaving the '\n' in the resulting strings</p>
+<pre>only runs for `n` parts
+return an allocated slice of strings
+
+a := "a\nb\nc\nd\ne"
+b := strings.split_lines_after_n(a, 3)
+fmt.eprintln(b) // [a\n, b\n, c\n, d\ne\n]
+</pre>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="split_lines_iterator"><span><a class="doc-id-link" href="#split_lines_iterator">split_lines_iterator<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L418"><em>Source</em></a></div></h3>
+<h3 id="split_lines_iterator"><span><a class="doc-id-link" href="#split_lines_iterator">split_lines_iterator<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L615"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">split_lines_iterator :: <span class="keyword-type">proc</span> "odin" (s: ^<span class="doc-builtin">string</span>) -> (line: <span class="doc-builtin">string</span>, ok: <span class="doc-builtin">bool</span>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>split the string <code>s</code> at every line break '\n'</p>
+<pre>returns the current split string every iteration till the string is consumed
+
+text := "a\nb\nc\nd\ne"
+for str in strings.split_lines_iterator(&text) {
+	fmt.eprintln(text) // every loop -> a b c d e
+}
+</pre>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="split_lines_n"><span><a class="doc-id-link" href="#split_lines_n">split_lines_n<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L391"><em>Source</em></a></div></h3>
+<h3 id="split_lines_n"><span><a class="doc-id-link" href="#split_lines_n">split_lines_n<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L562"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">split_lines_n :: <span class="keyword-type">proc</span> "odin" (s: <span class="doc-builtin">string</span>, n: <span class="doc-builtin">int</span>, allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> []<span class="doc-builtin">string</span> {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>split the string <code>s</code> at every line break '\n' for <code>n</code> parts</p>
+<pre>return an allocated slice of strings
+
+a := "a\nb\nc\nd\ne"
+b := strings.split_lines_n(a, 3)
+fmt.eprintln(b) // [a, b, c, d\ne\n]
+</pre>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="split_multi"><span><a class="doc-id-link" href="#split_multi">split_multi<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L950"><em>Source</em></a></div></h3>
+<h3 id="split_multi"><span><a class="doc-id-link" href="#split_multi">split_multi<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L1339"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">split_multi :: <span class="keyword-type">proc</span> "odin" (s: <span class="doc-builtin">string</span>, substrs: []<span class="doc-builtin">string</span>, skip_empty: <span class="doc-builtin">bool</span> = false, allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> []<span class="doc-builtin">string</span> {…}</pre>
+<pre class="doc-code">split_multi :: <span class="keyword-type">proc</span> "odin" (s: <span class="doc-builtin">string</span>, substrs: []<span class="doc-builtin">string</span>, allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> (buf: []<span class="doc-builtin">string</span>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>splits the input string <code>s</code> by all possible <code>substrs</code> []string</p>
+<pre>returns the allocated []string, nil on any empty substring or no matches
+
+splits := [?]string { "---", "~~~", ".", "_", "," }
+res := strings.split_multi("testing,this.out_nice---done~~~last", splits[:])
+fmt.eprintln(res) // -> [testing, this, out, nice, done, last]
+</pre>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="split_multi_iterator"><span><a class="doc-id-link" href="#split_multi_iterator">split_multi_iterator<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L1032"><em>Source</em></a></div></h3>
+<h3 id="split_multi_init"><span><a class="doc-id-link" href="#split_multi_init">split_multi_init<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L1422"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">split_multi_iterator :: <span class="keyword-type">proc</span> "odin" (s: ^<span class="doc-builtin">string</span>, substrs: []<span class="doc-builtin">string</span>, skip_empty: <span class="doc-builtin">bool</span> = false) -> (<span class="doc-builtin">string</span>, <span class="doc-builtin">bool</span>) {…}</pre>
+<pre class="doc-code">split_multi_init :: <span class="keyword-type">proc</span> "odin" (s: <span class="doc-builtin">string</span>, substrs: []<span class="doc-builtin">string</span>) -> <a class="code-typename" href="/core/strings/#Split_Multi">Split_Multi</a> {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>returns split multi state with sorted <code>substrs</code></p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="split_n"><span><a class="doc-id-link" href="#split_n">split_n<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L306"><em>Source</em></a></div></h3>
+<h3 id="split_multi_iterate"><span><a class="doc-id-link" href="#split_multi_iterate">split_multi_iterate<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L1446"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">split_multi_iterate :: <span class="keyword-type">proc</span> "odin" (using sm: ^<a class="code-typename" href="/core/strings/#Split_Multi">Split_Multi</a>) -> (res: <span class="doc-builtin">string</span>, ok: <span class="doc-builtin">bool</span>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>splits the input string <code>s</code> by all possible <code>substrs</code> []string in an iterator fashion</p>
+<pre>returns the split string every iteration, the full string on no match
+
+splits := [?]string { "---", "~~~", ".", "_", "," }
+state := strings.split_multi_init("testing,this.out_nice---done~~~last", splits[:])
+for str in strings.split_multi_iterate(&state) {
+	fmt.eprintln(str) // every iteration -> [testing, this, out, nice, done, last]
+}
+</pre>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="split_n"><span><a class="doc-id-link" href="#split_n">split_n<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L419"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">split_n :: <span class="keyword-type">proc</span> "odin" (s, sep: <span class="doc-builtin">string</span>, n: <span class="doc-builtin">int</span>, allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> []<span class="doc-builtin">string</span> {…}</pre>
 </div>
@@ -1140,16 +1625,26 @@ fmt.println(ss)            // [aaa, bbb, ccc.ddd.eee]
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="string_from_nul_terminated_ptr"><span><a class="doc-id-link" href="#string_from_nul_terminated_ptr">string_from_nul_terminated_ptr<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L25"><em>Source</em></a></div></h3>
+<h3 id="string_from_nul_terminated_ptr"><span><a class="doc-id-link" href="#string_from_nul_terminated_ptr">string_from_nul_terminated_ptr<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L34"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">string_from_nul_terminated_ptr :: <span class="keyword-type">proc</span> "odin" (ptr: ^<span class="doc-builtin">u8</span>, len: <span class="doc-builtin">int</span>) -> <span class="doc-builtin">string</span> {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>returns a string from a byte pointer `ptr and byte length `len`
+searches for a nul byte from 0..<len, otherwhise <code>len</code> will be the end size</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="string_from_ptr"><span><a class="doc-id-link" href="#string_from_ptr">string_from_ptr<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L21"><em>Source</em></a></div></h3>
+<h3 id="string_from_ptr"><span><a class="doc-id-link" href="#string_from_ptr">string_from_ptr<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L28"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">string_from_ptr :: <span class="keyword-type">proc</span> "odin" (ptr: ^<span class="doc-builtin">u8</span>, len: <span class="doc-builtin">int</span>) -> <span class="doc-builtin">string</span> {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>returns a string from a byte pointer <code>ptr</code> and byte length <code>len</code>
+the string is valid as long as the parameters stay alive</p>
+</details>
 </div>
 <div class="pkg-entity">
 <h3 id="to_ada_case"><span><a class="doc-id-link" href="#to_ada_case">to_ada_case<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/conversion.odin#L229"><em>Source</em></a></div></h3>
@@ -1200,15 +1695,15 @@ fmt.println(ss)            // [aaa, bbb, ccc.ddd.eee]
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="to_reader"><span><a class="doc-id-link" href="#to_reader">to_reader<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/reader.odin#L24"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">to_reader :: <span class="keyword-type">proc</span> "odin" (r: ^<a class="code-typename" href="/core/strings/#Reader">Reader</a>, s: <span class="doc-builtin">string</span>) -> io.<a class="code-typename" href="/core/io/#Reader">Reader</a> {…}</pre>
-</div>
-</div>
-<div class="pkg-entity">
 <h3 id="to_reader_at"><span><a class="doc-id-link" href="#to_reader_at">to_reader_at<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/reader.odin#L29"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">to_reader_at :: <span class="keyword-type">proc</span> "odin" (r: ^<a class="code-typename" href="/core/strings/#Reader">Reader</a>, s: <span class="doc-builtin">string</span>) -> io.<a class="code-typename" href="/core/io/#Reader_At">Reader_At</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="to_reader"><span><a class="doc-id-link" href="#to_reader">to_reader<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/reader.odin#L24"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">to_reader :: <span class="keyword-type">proc</span> "odin" (r: ^<a class="code-typename" href="/core/strings/#Reader">Reader</a>, s: <span class="doc-builtin">string</span>) -> io.<a class="code-typename" href="/core/io/#Reader">Reader</a> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -1278,112 +1773,217 @@ fmt.println(ss)            // [aaa, bbb, ccc.ddd.eee]
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="trim_left_proc"><span><a class="doc-id-link" href="#trim_left_proc">trim_left_proc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L815"><em>Source</em></a></div></h3>
+<h3 id="trim_left_proc"><span><a class="doc-id-link" href="#trim_left_proc">trim_left_proc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L1180"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">trim_left_proc :: <span class="keyword-type">proc</span> "odin" (s: <span class="doc-builtin">string</span>, p: <span class="keyword-type">proc</span> "odin" (r: <span class="doc-builtin">rune</span>) -> <span class="doc-builtin">bool</span>) -> <span class="doc-builtin">string</span> {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>trims the input string <code>s</code> until the procedure <code>p</code> returns false</p>
+<pre>does not allocate - only returns a cut variant of the input string
+returns an empty string when no match was found at all
+
+find :: proc(r: rune) -> bool {
+	return r != 'i'
+}
+strings.trim_left_proc("testing", find) -> "ing"
+</pre>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="trim_left_proc_with_state"><span><a class="doc-id-link" href="#trim_left_proc_with_state">trim_left_proc_with_state<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L846"><em>Source</em></a></div></h3>
+<h3 id="trim_left_proc_with_state"><span><a class="doc-id-link" href="#trim_left_proc_with_state">trim_left_proc_with_state<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L1192"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">trim_left_proc_with_state :: <span class="keyword-type">proc</span> "odin" (s: <span class="doc-builtin">string</span>, p: <span class="keyword-type">proc</span> "odin" (state: <span class="doc-builtin">rawptr</span>, r: <span class="doc-builtin">rune</span>) -> <span class="doc-builtin">bool</span>, state: <span class="doc-builtin">rawptr</span>) -> <span class="doc-builtin">string</span> {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>trims the input string <code>s</code> until the procedure <code>p</code> with state returns false</p>
+<pre>returns an empty string when no match was found at all
+</pre>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="trim_left"><span><a class="doc-id-link" href="#trim_left">trim_left<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L891"><em>Source</em></a></div></h3>
+<h3 id="trim_left"><span><a class="doc-id-link" href="#trim_left">trim_left<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L1251"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">trim_left :: <span class="keyword-type">proc</span> "odin" (s: <span class="doc-builtin">string</span>, cutset: <span class="doc-builtin">string</span>) -> <span class="doc-builtin">string</span> {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>trims the <code>cutset</code> string from the <code>s</code> string</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="trim_right_proc"><span><a class="doc-id-link" href="#trim_right_proc">trim_right_proc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L854"><em>Source</em></a></div></h3>
+<h3 id="trim_right_proc"><span><a class="doc-id-link" href="#trim_right_proc">trim_right_proc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L1210"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">trim_right_proc :: <span class="keyword-type">proc</span> "odin" (s: <span class="doc-builtin">string</span>, p: <span class="keyword-type">proc</span> "odin" (r: <span class="doc-builtin">rune</span>) -> <span class="doc-builtin">bool</span>) -> <span class="doc-builtin">string</span> {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>trims the input string <code>s</code> from the right until the procedure <code>p</code> returns false</p>
+<pre>does not allocate - only returns a cut variant of the input string
+returns an empty string when no match was found at all
+
+find :: proc(r: rune) -> bool {
+	return r != 't'
+}
+strings.trim_left_proc("testing", find) -> "test"
+</pre>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="trim_right_proc_with_state"><span><a class="doc-id-link" href="#trim_right_proc_with_state">trim_right_proc_with_state<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L865"><em>Source</em></a></div></h3>
+<h3 id="trim_right_proc_with_state"><span><a class="doc-id-link" href="#trim_right_proc_with_state">trim_right_proc_with_state<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L1225"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">trim_right_proc_with_state :: <span class="keyword-type">proc</span> "odin" (s: <span class="doc-builtin">string</span>, p: <span class="keyword-type">proc</span> "odin" (state: <span class="doc-builtin">rawptr</span>, r: <span class="doc-builtin">rune</span>) -> <span class="doc-builtin">bool</span>, state: <span class="doc-builtin">rawptr</span>) -> <span class="doc-builtin">string</span> {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>trims the input string <code>s</code> from the right until the procedure <code>p</code> with state returns false</p>
+<pre>returns an empty string when no match was found at all
+</pre>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="trim_right_space"><span><a class="doc-id-link" href="#trim_right_space">trim_right_space<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L915"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">trim_right_space :: <span class="keyword-type">proc</span> "odin" (path: <span class="doc-builtin">string</span>) -> <span class="doc-builtin">string</span> {…}</pre>
-</div>
-</div>
-<div class="pkg-entity">
-<h3 id="trim_right"><span><a class="doc-id-link" href="#trim_right">trim_right<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L899"><em>Source</em></a></div></h3>
+<h3 id="trim_right"><span><a class="doc-id-link" href="#trim_right">trim_right<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L1260"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">trim_right :: <span class="keyword-type">proc</span> "odin" (s: <span class="doc-builtin">string</span>, cutset: <span class="doc-builtin">string</span>) -> <span class="doc-builtin">string</span> {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>trims the <code>cutset</code> string from the <code>s</code> string from the right</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="trim"><span><a class="doc-id-link" href="#trim">trim<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L907"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">trim :: <span class="keyword-type">proc</span> "odin" (s: <span class="doc-builtin">string</span>, cutset: <span class="doc-builtin">string</span>) -> <span class="doc-builtin">string</span> {…}</pre>
-</div>
-</div>
-<div class="pkg-entity">
-<h3 id="trim_left_null"><span><a class="doc-id-link" href="#trim_left_null">trim_left_null<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L924"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">trim_left_null :: <span class="keyword-type">proc</span> "odin" (path: <span class="doc-builtin">string</span>) -> <span class="doc-builtin">string</span> {…}</pre>
-</div>
-</div>
-<div class="pkg-entity">
-<h3 id="trim_left_space"><span><a class="doc-id-link" href="#trim_left_space">trim_left_space<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L911"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">trim_left_space :: <span class="keyword-type">proc</span> "odin" (path: <span class="doc-builtin">string</span>) -> <span class="doc-builtin">string</span> {…}</pre>
-</div>
-</div>
-<div class="pkg-entity">
-<h3 id="trim_null"><span><a class="doc-id-link" href="#trim_null">trim_null<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L932"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">trim_null :: <span class="keyword-type">proc</span> "odin" (path: <span class="doc-builtin">string</span>) -> <span class="doc-builtin">string</span> {…}</pre>
-</div>
-</div>
-<div class="pkg-entity">
-<h3 id="trim_prefix"><span><a class="doc-id-link" href="#trim_prefix">trim_prefix<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L936"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">trim_prefix :: <span class="keyword-type">proc</span> "odin" (s: <span class="doc-builtin">string</span>, cutset: <span class="doc-builtin">string</span>) -> <span class="doc-builtin">string</span> {…}</pre>
-</div>
-</div>
-<div class="pkg-entity">
-<h3 id="trim_right_null"><span><a class="doc-id-link" href="#trim_right_null">trim_right_null<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L928"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">trim_right_null :: <span class="keyword-type">proc</span> "odin" (path: <span class="doc-builtin">string</span>) -> <span class="doc-builtin">string</span> {…}</pre>
-</div>
-</div>
-<div class="pkg-entity">
-<h3 id="trim_space"><span><a class="doc-id-link" href="#trim_space">trim_space<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L919"><em>Source</em></a></div></h3>
+<h3 id="trim_space"><span><a class="doc-id-link" href="#trim_space">trim_space<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L1284"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">trim_space :: <span class="keyword-type">proc</span> "odin" (path: <span class="doc-builtin">string</span>) -> <span class="doc-builtin">string</span> {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>trims from both sides until a valid non space rune: "\t\txyz\t\t" -> "xyz"</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="trim_suffix"><span><a class="doc-id-link" href="#trim_suffix">trim_suffix<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L943"><em>Source</em></a></div></h3>
+<h3 id="trim"><span><a class="doc-id-link" href="#trim">trim<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L1269"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">trim :: <span class="keyword-type">proc</span> "odin" (s: <span class="doc-builtin">string</span>, cutset: <span class="doc-builtin">string</span>) -> <span class="doc-builtin">string</span> {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>trims the <code>cutset</code> string from the <code>s</code> string, both from left and right</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="trim_left_null"><span><a class="doc-id-link" href="#trim_left_null">trim_left_null<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L1289"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">trim_left_null :: <span class="keyword-type">proc</span> "odin" (path: <span class="doc-builtin">string</span>) -> <span class="doc-builtin">string</span> {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>trims nul runes from the left: "\x00\x00testing\x00\x00" -> "testing\x00\x00"</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="trim_left_space"><span><a class="doc-id-link" href="#trim_left_space">trim_left_space<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L1274"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">trim_left_space :: <span class="keyword-type">proc</span> "odin" (path: <span class="doc-builtin">string</span>) -> <span class="doc-builtin">string</span> {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>trims until a valid non space rune: "\t\txyz\t\t" -> "xyz\t\t"</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="trim_null"><span><a class="doc-id-link" href="#trim_null">trim_null<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L1299"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">trim_null :: <span class="keyword-type">proc</span> "odin" (path: <span class="doc-builtin">string</span>) -> <span class="doc-builtin">string</span> {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>trims nul runes from both sides: "\x00\x00testing\x00\x00" -> "testing"</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="trim_prefix"><span><a class="doc-id-link" href="#trim_prefix">trim_prefix<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L1310"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">trim_prefix :: <span class="keyword-type">proc</span> "odin" (s: <span class="doc-builtin">string</span>, cutset: <span class="doc-builtin">string</span>) -> <span class="doc-builtin">string</span> {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>trims a <code>prefix</code> string from the start of the <code>s</code> string and returns the trimmed string</p>
+<pre>returns the input string `s` when no prefix was found
+
+strings.trim_prefix("testing", "test") -> "ing"
+strings.trim_prefix("testing", "abc") -> "testing"
+</pre>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="trim_right_null"><span><a class="doc-id-link" href="#trim_right_null">trim_right_null<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L1294"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">trim_right_null :: <span class="keyword-type">proc</span> "odin" (path: <span class="doc-builtin">string</span>) -> <span class="doc-builtin">string</span> {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>trims nul runes from the right: "\x00\x00testing\x00\x00" -> "\x00\x00testing"</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="trim_right_space"><span><a class="doc-id-link" href="#trim_right_space">trim_right_space<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L1279"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">trim_right_space :: <span class="keyword-type">proc</span> "odin" (path: <span class="doc-builtin">string</span>) -> <span class="doc-builtin">string</span> {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>trims from the right until a valid non space rune: "\t\txyz\t\t" -> "\t\txyz"</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="trim_suffix"><span><a class="doc-id-link" href="#trim_suffix">trim_suffix<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L1324"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">trim_suffix :: <span class="keyword-type">proc</span> "odin" (s: <span class="doc-builtin">string</span>, cutset: <span class="doc-builtin">string</span>) -> <span class="doc-builtin">string</span> {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>trims a <code>suffix</code> string from the end of the <code>s</code> string and returns the trimmed string</p>
+<pre>returns the input string `s` when no suffix was found
+
+strings.trim_suffix("todo.txt", ".txt") -> "todo"
+strings.trim_suffix("todo.doc", ".txt") -> "todo.doc"
+</pre>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="truncate_to_byte"><span><a class="doc-id-link" href="#truncate_to_byte">truncate_to_byte<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L42"><em>Source</em></a></div></h3>
+<h3 id="truncate_to_byte"><span><a class="doc-id-link" href="#truncate_to_byte">truncate_to_byte<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L55"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">truncate_to_byte :: <span class="keyword-type">proc</span> "odin" (str: <span class="doc-builtin">string</span>, b: <span class="doc-builtin">u8</span>) -> <span class="doc-builtin">string</span> {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>returns a string truncated to the first time it finds the byte <code>b</code>
+uses the <code>len</code> of the string <code>str</code> when it couldn't find the input</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="truncate_to_rune"><span><a class="doc-id-link" href="#truncate_to_rune">truncate_to_rune<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L49"><em>Source</em></a></div></h3>
+<h3 id="truncate_to_rune"><span><a class="doc-id-link" href="#truncate_to_rune">truncate_to_rune<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L65"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">truncate_to_rune :: <span class="keyword-type">proc</span> "odin" (str: <span class="doc-builtin">string</span>, r: <span class="doc-builtin">rune</span>) -> <span class="doc-builtin">string</span> {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>returns a string truncated to the first time it finds the rune <code>r</code>
+uses the <code>len</code> of the string <code>str</code> when it couldn't find the input</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="unsafe_string_to_cstring"><span><a class="doc-id-link" href="#unsafe_string_to_cstring">unsafe_string_to_cstring<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L37"><em>Source</em></a></div></h3>
+<h3 id="unsafe_string_to_cstring"><span><a class="doc-id-link" href="#unsafe_string_to_cstring">unsafe_string_to_cstring<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L48"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">unsafe_string_to_cstring :: <span class="keyword-type">proc</span> "odin" (str: <span class="doc-builtin">string</span>) -> <span class="doc-builtin">cstring</span> {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>returns the transmute of string <code>str</code> to a cstring
+not safe since the origin string may not contain a nul byte</p>
+</details>
 </div>
 <div class="pkg-entity">
 <h3 id="write_bytes"><span><a class="doc-id-link" href="#write_bytes">write_bytes<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/builder.odin#L136"><em>Source</em></a></div></h3>
@@ -1434,15 +2034,15 @@ fmt.println(ss)            // [aaa, bbb, ccc.ddd.eee]
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="write_quoted_rune"><span><a class="doc-id-link" href="#write_quoted_rune">write_quoted_rune<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/builder.odin#L159"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">write_quoted_rune :: <span class="keyword-type">proc</span> "odin" (w: io.<a class="code-typename" href="/core/io/#Writer">Writer</a>, r: <span class="doc-builtin">rune</span>) -> (n: <span class="doc-builtin">int</span>) {…}</pre>
-</div>
-</div>
-<div class="pkg-entity">
 <h3 id="write_quoted_rune_builder"><span><a class="doc-id-link" href="#write_quoted_rune_builder">write_quoted_rune_builder<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/builder.odin#L148"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">write_quoted_rune_builder :: <span class="keyword-type">proc</span> "odin" (b: ^<a class="code-typename" href="/core/strings/#Builder">Builder</a>, r: <span class="doc-builtin">rune</span>) -> (n: <span class="doc-builtin">int</span>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="write_quoted_rune"><span><a class="doc-id-link" href="#write_quoted_rune">write_quoted_rune<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/builder.odin#L159"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">write_quoted_rune :: <span class="keyword-type">proc</span> "odin" (w: io.<a class="code-typename" href="/core/io/#Writer">Writer</a>, r: <span class="doc-builtin">rune</span>) -> (n: <span class="doc-builtin">int</span>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -1491,7 +2091,7 @@ fmt.println(ss)            // [aaa, bbb, ccc.ddd.eee]
 <h2 id="pkg-Procedure Groups" class="pkg-header">Procedure Groups</h2>
 <section class="documentation">
 <div class="pkg-entity">
-<h3 id="clone_from"><span><a class="doc-id-link" href="#clone_from">clone_from<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L71"><em>Source</em></a></div></h3>
+<h3 id="clone_from"><span><a class="doc-id-link" href="#clone_from">clone_from<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin#L95"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">clone_from :: proc{
 	<a class="code-procedure" href="/core/strings/#clone">clone</a>,
@@ -1501,6 +2101,10 @@ fmt.println(ss)            // [aaa, bbb, ccc.ddd.eee]
 }
 </pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>overload to clone from a <code>string</code>, <code>[]byte</code>, <code>cstring</code> or a <code>^byte + length</code> to a string</p>
+</details>
 </div>
 <div class="pkg-entity">
 <h3 id="init_builder"><span><a class="doc-id-link" href="#init_builder">init_builder<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/builder.odin#L44"><em>Source</em></a></div></h3>
@@ -1575,17 +2179,18 @@ fmt.println(ss)            // [aaa, bbb, ccc.ddd.eee]
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin">strings.odin</a></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2022-03 (vendor "odin") Windows_amd64 @ 2022-03-26 21:09:22.843735300 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2022-03 (vendor "odin") Windows_amd64 @ 2022-03-27 21:08:41.293222400 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
 <ul>
-<li><a href="#pkg-Types">Types</a><ul>
+<li><a href="#pkg-overview">Overview</a><li><a href="#pkg-Types">Types</a><ul>
 <li><a href="#Builder_Flush_Proc">Builder_Flush_Proc</a></li>
 <li><a href="#Builder">Builder</a></li>
 <li><a href="#Intern_Entry">Intern_Entry</a></li>
 <li><a href="#Intern">Intern</a></li>
 <li><a href="#Reader">Reader</a></li>
+<li><a href="#Split_Multi">Split_Multi</a></li>
 </ul>
 </li>
 <li><a href="#pkg-Procedures">Procedures</a><ul>
@@ -1612,16 +2217,16 @@ fmt.println(ss)            // [aaa, bbb, ccc.ddd.eee]
 <li><a href="#equal_fold">equal_fold</a></li>
 <li><a href="#expand_tabs">expand_tabs</a></li>
 <li><a href="#fields_iterator">fields_iterator</a></li>
-<li><a href="#fields">fields</a></li>
 <li><a href="#fields_proc">fields_proc</a></li>
+<li><a href="#fields">fields</a></li>
 <li><a href="#grow_builder">grow_builder</a></li>
 <li><a href="#has_prefix">has_prefix</a></li>
 <li><a href="#has_suffix">has_suffix</a></li>
-<li><a href="#index_proc_with_state">index_proc_with_state</a></li>
-<li><a href="#index">index</a></li>
 <li><a href="#index_any">index_any</a></li>
 <li><a href="#index_byte">index_byte</a></li>
 <li><a href="#index_proc">index_proc</a></li>
+<li><a href="#index">index</a></li>
+<li><a href="#index_proc_with_state">index_proc_with_state</a></li>
 <li><a href="#index_rune">index_rune</a></li>
 <li><a href="#init_builder_len_cap">init_builder_len_cap</a></li>
 <li><a href="#init_builder_len">init_builder_len</a></li>
@@ -1640,8 +2245,8 @@ fmt.println(ss)            // [aaa, bbb, ccc.ddd.eee]
 <li><a href="#last_index">last_index</a></li>
 <li><a href="#last_index_any">last_index_any</a></li>
 <li><a href="#last_index_byte">last_index_byte</a></li>
-<li><a href="#last_index_proc">last_index_proc</a></li>
 <li><a href="#last_index_proc_with_state">last_index_proc_with_state</a></li>
+<li><a href="#last_index_proc">last_index_proc</a></li>
 <li><a href="#left_justify">left_justify</a></li>
 <li><a href="#make_builder_len_cap">make_builder_len_cap</a></li>
 <li><a href="#make_builder_len">make_builder_len</a></li>
@@ -1652,9 +2257,9 @@ fmt.println(ss)            // [aaa, bbb, ccc.ddd.eee]
 <li><a href="#ptr_from_string">ptr_from_string</a></li>
 <li><a href="#reader_init">reader_init</a></li>
 <li><a href="#reader_length">reader_length</a></li>
+<li><a href="#reader_read_byte">reader_read_byte</a></li>
 <li><a href="#reader_read">reader_read</a></li>
 <li><a href="#reader_read_at">reader_read_at</a></li>
-<li><a href="#reader_read_byte">reader_read_byte</a></li>
 <li><a href="#reader_read_rune">reader_read_rune</a></li>
 <li><a href="#reader_seek">reader_seek</a></li>
 <li><a href="#reader_size">reader_size</a></li>
@@ -1672,10 +2277,10 @@ fmt.println(ss)            // [aaa, bbb, ccc.ddd.eee]
 <li><a href="#right_justify">right_justify</a></li>
 <li><a href="#rune_count">rune_count</a></li>
 <li><a href="#scrub">scrub</a></li>
-<li><a href="#split_after">split_after</a></li>
-<li><a href="#split">split</a></li>
-<li><a href="#split_after_iterator">split_after_iterator</a></li>
 <li><a href="#split_after_n">split_after_n</a></li>
+<li><a href="#split">split</a></li>
+<li><a href="#split_after">split_after</a></li>
+<li><a href="#split_after_iterator">split_after_iterator</a></li>
 <li><a href="#split_by_byte_iterator">split_by_byte_iterator</a></li>
 <li><a href="#split_iterator">split_iterator</a></li>
 <li><a href="#split_lines">split_lines</a></li>
@@ -1685,7 +2290,8 @@ fmt.println(ss)            // [aaa, bbb, ccc.ddd.eee]
 <li><a href="#split_lines_iterator">split_lines_iterator</a></li>
 <li><a href="#split_lines_n">split_lines_n</a></li>
 <li><a href="#split_multi">split_multi</a></li>
-<li><a href="#split_multi_iterator">split_multi_iterator</a></li>
+<li><a href="#split_multi_init">split_multi_init</a></li>
+<li><a href="#split_multi_iterate">split_multi_iterate</a></li>
 <li><a href="#split_n">split_n</a></li>
 <li><a href="#string_case_iterator">string_case_iterator</a></li>
 <li><a href="#string_from_nul_terminated_ptr">string_from_nul_terminated_ptr</a></li>
@@ -1698,8 +2304,8 @@ fmt.println(ss)            // [aaa, bbb, ccc.ddd.eee]
 <li><a href="#to_lower_camel_case">to_lower_camel_case</a></li>
 <li><a href="#to_lower">to_lower</a></li>
 <li><a href="#to_pascal_case">to_pascal_case</a></li>
-<li><a href="#to_reader">to_reader</a></li>
 <li><a href="#to_reader_at">to_reader_at</a></li>
+<li><a href="#to_reader">to_reader</a></li>
 <li><a href="#to_rune_reader">to_rune_reader</a></li>
 <li><a href="#to_screaming_snake_case">to_screaming_snake_case</a></li>
 <li><a href="#to_snake_case">to_snake_case</a></li>
@@ -1716,15 +2322,15 @@ fmt.println(ss)            // [aaa, bbb, ccc.ddd.eee]
 <li><a href="#trim_left">trim_left</a></li>
 <li><a href="#trim_right_proc">trim_right_proc</a></li>
 <li><a href="#trim_right_proc_with_state">trim_right_proc_with_state</a></li>
-<li><a href="#trim_right_space">trim_right_space</a></li>
 <li><a href="#trim_right">trim_right</a></li>
+<li><a href="#trim_space">trim_space</a></li>
 <li><a href="#trim">trim</a></li>
 <li><a href="#trim_left_null">trim_left_null</a></li>
 <li><a href="#trim_left_space">trim_left_space</a></li>
 <li><a href="#trim_null">trim_null</a></li>
 <li><a href="#trim_prefix">trim_prefix</a></li>
 <li><a href="#trim_right_null">trim_right_null</a></li>
-<li><a href="#trim_space">trim_space</a></li>
+<li><a href="#trim_right_space">trim_right_space</a></li>
 <li><a href="#trim_suffix">trim_suffix</a></li>
 <li><a href="#truncate_to_byte">truncate_to_byte</a></li>
 <li><a href="#truncate_to_rune">truncate_to_rune</a></li>
@@ -1737,8 +2343,8 @@ fmt.println(ss)            // [aaa, bbb, ccc.ddd.eee]
 <li><a href="#write_escaped_rune_writer">write_escaped_rune_writer</a></li>
 <li><a href="#write_i64">write_i64</a></li>
 <li><a href="#write_int">write_int</a></li>
-<li><a href="#write_quoted_rune">write_quoted_rune</a></li>
 <li><a href="#write_quoted_rune_builder">write_quoted_rune_builder</a></li>
+<li><a href="#write_quoted_rune">write_quoted_rune</a></li>
 <li><a href="#write_quoted_string_builder">write_quoted_string_builder</a></li>
 <li><a href="#write_quoted_string_writer">write_quoted_string_writer</a></li>
 <li><a href="#write_rune_builder">write_rune_builder</a></li>
