@@ -68,9 +68,9 @@
 
 </li>
 <li class="nav-item"><a href="/core/crypto">crypto</a><ul>
-<li><a href="/core/crypto/blake">blake</a></li>
 <li><a href="/core/crypto/blake2b">blake2b</a></li>
 <li><a href="/core/crypto/blake2s">blake2s</a></li>
+<li><a href="/core/crypto/blake">blake</a></li>
 <li><a href="/core/crypto/chacha20">chacha20</a></li>
 <li><a href="/core/crypto/chacha20poly1305">chacha20poly1305</a></li>
 <li><a href="/core/crypto/gost">gost</a></li>
@@ -160,11 +160,7 @@
 
 </li>
 <li class="nav-item"><a href="/core/strings">strings</a></li>
-<li class="nav-item"><a href="/core/sync">sync</a><ul>
-<li><a href="/core/sync/sync2">sync2</a></li>
-</ul>
-
-</li>
+<li class="nav-item"><a href="/core/sync">sync</a></li>
 <li class="nav-item"><a href="/core/testing">testing</a></li>
 <li class="nav-item">text<ul>
 <li><a href="/core/text/scanner">scanner</a></li>
@@ -198,25 +194,22 @@
 <div>
 <details class="doc-index" id="doc-index-Types" aria-labelledby="#doc-index-Types-header">
 <summary id="#doc-index-Types-header">
-Types (8)</summary>
+Types (6)</summary>
 <ul>
 <li><a href="#Pool">Pool</a></li>
-<li><a href="#Task_Id">Task_Id</a></li>
 <li><a href="#Task_Proc">Task_Proc</a></li>
-<li><a href="#Task_Status">Task_Status</a></li>
 <li><a href="#Task">Task</a></li>
-<li><a href="#Thread_Priority">Thread_Priority</a></li>
 <li><a href="#Thread_Proc">Thread_Proc</a></li>
 <li><a href="#Thread">Thread</a></li>
+<li><a href="#Thread_Priority">Thread_Priority</a></li>
 </ul>
 </details>
 </div>
 <div>
 <details class="doc-index" id="doc-index-Constants" aria-labelledby="#doc-index-Constants-header">
 <summary id="#doc-index-Constants-header">
-Constants (2)</summary>
+Constants (1)</summary>
 <ul>
-<li><a href="#INVALID_TASK_ID">INVALID_TASK_ID</a></li>
 <li><a href="#MAX_USER_ARGUMENTS">MAX_USER_ARGUMENTS</a></li>
 </ul>
 </details>
@@ -231,7 +224,7 @@ Variables (0)</summary>
 <div>
 <details class="doc-index" id="doc-index-Procedures" aria-labelledby="#doc-index-Procedures-header">
 <summary id="#doc-index-Procedures-header">
-Procedures (28)</summary>
+Procedures (34)</summary>
 <ul>
 <li><a href="#create_and_start">create_and_start</a></li>
 <li><a href="#create_and_start_with_data">create_and_start_with_data</a></li>
@@ -247,11 +240,17 @@ Procedures (28)</summary>
 <li><a href="#pool_add_task">pool_add_task</a></li>
 <li><a href="#pool_destroy">pool_destroy</a></li>
 <li><a href="#pool_do_work">pool_do_work</a></li>
+<li><a href="#pool_finish">pool_finish</a></li>
 <li><a href="#pool_init">pool_init</a></li>
+<li><a href="#pool_is_empty">pool_is_empty</a></li>
 <li><a href="#pool_join">pool_join</a></li>
+<li><a href="#pool_num_done">pool_num_done</a></li>
+<li><a href="#pool_num_in_processing">pool_num_in_processing</a></li>
+<li><a href="#pool_num_outstanding">pool_num_outstanding</a></li>
+<li><a href="#pool_num_waiting">pool_num_waiting</a></li>
+<li><a href="#pool_pop_done">pool_pop_done</a></li>
+<li><a href="#pool_pop_waiting">pool_pop_waiting</a></li>
 <li><a href="#pool_start">pool_start</a></li>
-<li><a href="#pool_try_and_pop_task">pool_try_and_pop_task</a></li>
-<li><a href="#pool_wait_and_process">pool_wait_and_process</a></li>
 <li><a href="#run_with_poly_data4">run_with_poly_data4</a></li>
 <li><a href="#run">run</a></li>
 <li><a href="#run_with_data">run_with_data</a></li>
@@ -278,57 +277,43 @@ Procedure Groups (0)</summary>
 <h3 id="Pool"><span><a class="doc-id-link" href="#Pool">Pool<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread_pool.odin#L26"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Pool :: <span class="keyword-type">struct</span> {
-	allocator:             runtime.<a class="code-typename" href="/core/runtime/#Allocator">Allocator</a>,
-	mutex:                 sync.<a class="code-typename" href="/core/sync/#Mutex">Mutex</a>,
-	sem_available:         sync.<a class="code-typename" href="/core/sync/#Semaphore">Semaphore</a>,
-	processing_task_count: <span class="doc-builtin">int</span>,
-	<span class="comment">// atomic</span>
-	is_running:            <span class="doc-builtin">bool</span>,
-	threads:               []^<a class="code-typename" href="/core/thread/#Thread">Thread</a>,
-	tasks:                 [<span class="keyword">dynamic</span>]<a class="code-typename" href="/core/thread/#Task">Task</a>,
+	allocator:         runtime.<a class="code-typename" href="/core/runtime/#Allocator">Allocator</a>,
+	mutex:             sync.<a class="code-typename" href="/core/sync/#Mutex">Mutex</a>,
+	sem_available:     sync.<a class="code-typename" href="/core/sync/#Sema">Sema</a>,
+	<span class="comment">// the following values are atomic</span>
+	num_waiting:       <span class="doc-builtin">int</span>,
+	num_in_processing: <span class="doc-builtin">int</span>,
+	num_outstanding:   <span class="doc-builtin">int</span>,
+	<span class="comment">// num_waiting + num_in_processing</span>
+	num_done:          <span class="doc-builtin">int</span>,
+	is_running:        <span class="doc-builtin">bool</span>,
+	threads:           []^<a class="code-typename" href="/core/thread/#Thread">Thread</a>,
+	tasks:             [<span class="keyword">dynamic</span>]<a class="code-typename" href="/core/thread/#Task">Task</a>,
+	tasks_done:        [<span class="keyword">dynamic</span>]<a class="code-typename" href="/core/thread/#Task">Task</a>,
 }</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Do not access the pool's members directly while the pool threads are running,
+since they use different kinds of locking and mutual exclusion devices.
+Careless access can and will lead to nasty bugs. Once initialized, the
+pool's memory address is not allowed to change until it is destroyed.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="Task_Id"><span><a class="doc-id-link" href="#Task_Id">Task_Id<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread_pool.odin#L22"><em>Source</em></a></div></h3>
+<h3 id="Task_Proc"><span><a class="doc-id-link" href="#Task_Proc">Task_Proc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread_pool.odin#L13"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">Task_Id :: distinct <span class="doc-builtin">i32</span></pre>
+<pre class="doc-code">Task_Proc :: <span class="keyword-type">proc</span> "odin" (task: <a class="code-typename" href="/core/thread/#Task">Task</a>)</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="Task_Proc"><span><a class="doc-id-link" href="#Task_Proc">Task_Proc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread_pool.odin#L14"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">Task_Proc :: <span class="keyword-type">proc</span> "odin" (task: ^<a class="code-typename" href="/core/thread/#Task">Task</a>)</pre>
-</div>
-</div>
-<div class="pkg-entity">
-<h3 id="Task_Status"><span><a class="doc-id-link" href="#Task_Status">Task_Status<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread_pool.odin#L7"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">Task_Status :: <span class="keyword-type">enum</span> <span class="doc-builtin">i32</span> {
-	Ready, 
-	Busy, 
-	Waiting, 
-	Term, 
-}</pre>
-</div>
-</div>
-<div class="pkg-entity">
-<h3 id="Task"><span><a class="doc-id-link" href="#Task">Task<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread_pool.odin#L16"><em>Source</em></a></div></h3>
+<h3 id="Task"><span><a class="doc-id-link" href="#Task">Task<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread_pool.odin#L15"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Task :: <span class="keyword-type">struct</span> {
 	procedure:  <a class="code-typename" href="/core/thread/#Task_Proc">Task_Proc</a>,
 	data:       <span class="doc-builtin">rawptr</span>,
 	user_index: <span class="doc-builtin">int</span>,
-}</pre>
-</div>
-</div>
-<div class="pkg-entity">
-<h3 id="Thread_Priority"><span><a class="doc-id-link" href="#Thread_Priority">Thread_Priority<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L29"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">Thread_Priority :: <span class="keyword-type">enum</span> <span class="doc-builtin">int</span> {
-	Normal, 
-	Low, 
-	High, 
+	allocator:  runtime.<a class="code-typename" href="/core/runtime/#Allocator">Allocator</a>,
 }</pre>
 </div>
 </div>
@@ -353,15 +338,19 @@ Procedure Groups (0)</summary>
 }</pre>
 </div>
 </div>
+<div class="pkg-entity">
+<h3 id="Thread_Priority"><span><a class="doc-id-link" href="#Thread_Priority">Thread_Priority<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L29"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Thread_Priority :: <span class="keyword-type">enum</span> <span class="doc-builtin">int</span> {
+	Normal, 
+	Low, 
+	High, 
+}</pre>
+</div>
+</div>
 </section>
 <h2 id="pkg-Constants" class="pkg-header">Constants</h2>
 <section class="documentation">
-<div class="pkg-entity">
-<h3 id="INVALID_TASK_ID"><span><a class="doc-id-link" href="#INVALID_TASK_ID">INVALID_TASK_ID<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread_pool.odin#L23"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">INVALID_TASK_ID :: Task_Id(-1)</pre>
-</div>
-</div>
 <div class="pkg-entity">
 <h3 id="MAX_USER_ARGUMENTS"><span><a class="doc-id-link" href="#MAX_USER_ARGUMENTS">MAX_USER_ARGUMENTS<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L11"><em>Source</em></a></div></h3>
 <div>
@@ -455,51 +444,157 @@ Procedure Groups (0)</summary>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="pool_add_task"><span><a class="doc-id-link" href="#pool_add_task">pool_add_task<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread_pool.odin#L102"><em>Source</em></a></div></h3>
+<h3 id="pool_add_task"><span><a class="doc-id-link" href="#pool_add_task">pool_add_task<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread_pool.odin#L118"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">pool_add_task :: <span class="keyword-type">proc</span> "odin" (pool: ^<a class="code-typename" href="/core/thread/#Pool">Pool</a>, procedure: <a class="code-typename" href="/core/thread/#Task_Proc">Task_Proc</a>, data: <span class="doc-builtin">rawptr</span>, user_index: <span class="doc-builtin">int</span> = 0) {…}</pre>
+<pre class="doc-code">pool_add_task :: <span class="keyword-type">proc</span> "odin" (pool: ^<a class="code-typename" href="/core/thread/#Pool">Pool</a>, procedure: <a class="code-typename" href="/core/thread/#Task_Proc">Task_Proc</a>, data: <span class="doc-builtin">rawptr</span>, user_index: <span class="doc-builtin">int</span> = 0, allocator := <a href="/core/runtime/#Context">context.allocator</a>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Add a task to the thread pool.</p>
+<p>Tasks can be added from any thread, not just the thread that created
+the thread pool. You can even add tasks from inside other tasks.</p>
+<p>Each task also needs an allocator which it either owns, or which is thread
+safe. By default, allocations in the task are disabled by use of the
+nil_allocator.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="pool_destroy"><span><a class="doc-id-link" href="#pool_destroy">pool_destroy<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread_pool.odin#L71"><em>Source</em></a></div></h3>
+<h3 id="pool_destroy"><span><a class="doc-id-link" href="#pool_destroy">pool_destroy<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread_pool.odin#L79"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">pool_destroy :: <span class="keyword-type">proc</span> "odin" (pool: ^<a class="code-typename" href="/core/thread/#Pool">Pool</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="pool_do_work"><span><a class="doc-id-link" href="#pool_do_work">pool_do_work<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread_pool.odin#L128"><em>Source</em></a></div></h3>
+<h3 id="pool_do_work"><span><a class="doc-id-link" href="#pool_do_work">pool_do_work<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread_pool.odin#L197"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">pool_do_work :: <span class="keyword-type">proc</span> "odin" (pool: ^<a class="code-typename" href="/core/thread/#Pool">Pool</a>, task: ^<a class="code-typename" href="/core/thread/#Task">Task</a>) {…}</pre>
+<pre class="doc-code">pool_do_work :: <span class="keyword-type">proc</span> "odin" (pool: ^<a class="code-typename" href="/core/thread/#Pool">Pool</a>, task: <a class="code-typename" href="/core/thread/#Task">Task</a>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Mostly for internal use.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="pool_init"><span><a class="doc-id-link" href="#pool_init">pool_init<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread_pool.odin#L38"><em>Source</em></a></div></h3>
+<h3 id="pool_finish"><span><a class="doc-id-link" href="#pool_finish">pool_finish<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread_pool.odin#L213"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">pool_init :: <span class="keyword-type">proc</span> "odin" (pool: ^<a class="code-typename" href="/core/thread/#Pool">Pool</a>, thread_count: <span class="doc-builtin">int</span>, allocator := <a href="/core/runtime/#Context">context.allocator</a>) {…}</pre>
+<pre class="doc-code">pool_finish :: <span class="keyword-type">proc</span> "odin" (pool: ^<a class="code-typename" href="/core/thread/#Pool">Pool</a>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Process the rest of the tasks, also use this thread for processing, then join
+all the pool threads.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="pool_join"><span><a class="doc-id-link" href="#pool_join">pool_join<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread_pool.odin#L90"><em>Source</em></a></div></h3>
+<h3 id="pool_init"><span><a class="doc-id-link" href="#pool_init">pool_init<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread_pool.odin#L50"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">pool_init :: <span class="keyword-type">proc</span> "odin" (pool: ^<a class="code-typename" href="/core/thread/#Pool">Pool</a>, thread_count: <span class="doc-builtin">int</span>, allocator: runtime.<a class="code-typename" href="/core/runtime/#Allocator">Allocator</a>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Once initialized, the pool's memory address is not allowed to change until
+it is destroyed. If thread_count < 1, thread count 1 will be used.</p>
+<p>The thread pool requires an allocator which it either owns, or which is thread safe.</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="pool_is_empty"><span><a class="doc-id-link" href="#pool_is_empty">pool_is_empty<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread_pool.odin#L165"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">pool_is_empty :: <span class="keyword-type">proc</span> "odin" (pool: ^<a class="code-typename" href="/core/thread/#Pool">Pool</a>) -> <span class="doc-builtin">bool</span> {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>If tasks are only being added from one thread, and this procedure is being
+called from that same thread, it will reliably tell if the thread pool is
+empty or not. Empty in this case means there are no tasks waiting, being
+processed, or _done_.</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="pool_join"><span><a class="doc-id-link" href="#pool_join">pool_join<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread_pool.odin#L99"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">pool_join :: <span class="keyword-type">proc</span> "odin" (pool: ^<a class="code-typename" href="/core/thread/#Pool">Pool</a>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Finish tasks that have already started processing, then shut down all pool
+threads. Might leave over waiting tasks, any memory allocated for the
+user data of those tasks will not be freed.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="pool_start"><span><a class="doc-id-link" href="#pool_start">pool_start<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread_pool.odin#L84"><em>Source</em></a></div></h3>
+<h3 id="pool_num_done"><span><a class="doc-id-link" href="#pool_num_done">pool_num_done<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread_pool.odin#L157"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">pool_num_done :: <span class="keyword-type">proc</span> "odin" (pool: ^<a class="code-typename" href="/core/thread/#Pool">Pool</a>) -> <span class="doc-builtin">int</span> {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Number of tasks which are done processing. Only informational, mostly for
+debugging. Don't rely on this value being consistent with other num_*
+values.</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="pool_num_in_processing"><span><a class="doc-id-link" href="#pool_num_in_processing">pool_num_in_processing<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread_pool.odin#L142"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">pool_num_in_processing :: <span class="keyword-type">proc</span> "odin" (pool: ^<a class="code-typename" href="/core/thread/#Pool">Pool</a>) -> <span class="doc-builtin">int</span> {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Number of tasks currently being processed. Only informational, mostly for
+debugging. Don't rely on this value being consistent with other num_*
+values.</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="pool_num_outstanding"><span><a class="doc-id-link" href="#pool_num_outstanding">pool_num_outstanding<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread_pool.odin#L150"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">pool_num_outstanding :: <span class="keyword-type">proc</span> "odin" (pool: ^<a class="code-typename" href="/core/thread/#Pool">Pool</a>) -> <span class="doc-builtin">int</span> {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Outstanding tasks are all tasks that are not done, that is, tasks that are
+waiting, as well as tasks that are currently being processed. Only
+informational, mostly for debugging. Don't rely on this value being
+consistent with other num_* values.</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="pool_num_waiting"><span><a class="doc-id-link" href="#pool_num_waiting">pool_num_waiting<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread_pool.odin#L135"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">pool_num_waiting :: <span class="keyword-type">proc</span> "odin" (pool: ^<a class="code-typename" href="/core/thread/#Pool">Pool</a>) -> <span class="doc-builtin">int</span> {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Number of tasks waiting to be processed. Only informational, mostly for
+debugging. Don't rely on this value being consistent with other num_*
+values.</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="pool_pop_done"><span><a class="doc-id-link" href="#pool_pop_done">pool_pop_done<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread_pool.odin#L184"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">pool_pop_done :: <span class="keyword-type">proc</span> "odin" (pool: ^<a class="code-typename" href="/core/thread/#Pool">Pool</a>) -> (task: <a class="code-typename" href="/core/thread/#Task">Task</a>, got_task: <span class="doc-builtin">bool</span>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Use this to take out finished tasks.</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="pool_pop_waiting"><span><a class="doc-id-link" href="#pool_pop_waiting">pool_pop_waiting<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread_pool.odin#L170"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">pool_pop_waiting :: <span class="keyword-type">proc</span> "odin" (pool: ^<a class="code-typename" href="/core/thread/#Pool">Pool</a>) -> (task: <a class="code-typename" href="/core/thread/#Task">Task</a>, got_task: <span class="doc-builtin">bool</span>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Mostly for internal use.</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="pool_start"><span><a class="doc-id-link" href="#pool_start">pool_start<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread_pool.odin#L90"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">pool_start :: <span class="keyword-type">proc</span> "odin" (pool: ^<a class="code-typename" href="/core/thread/#Pool">Pool</a>) {…}</pre>
-</div>
-</div>
-<div class="pkg-entity">
-<h3 id="pool_try_and_pop_task"><span><a class="doc-id-link" href="#pool_try_and_pop_task">pool_try_and_pop_task<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread_pool.odin#L115"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">pool_try_and_pop_task :: <span class="keyword-type">proc</span> "odin" (pool: ^<a class="code-typename" href="/core/thread/#Pool">Pool</a>) -> (task: <a class="code-typename" href="/core/thread/#Task">Task</a>, got_task: <span class="doc-builtin">bool</span> = false) {…}</pre>
-</div>
-</div>
-<div class="pkg-entity">
-<h3 id="pool_wait_and_process"><span><a class="doc-id-link" href="#pool_wait_and_process">pool_wait_and_process<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread_pool.odin#L134"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">pool_wait_and_process :: <span class="keyword-type">proc</span> "odin" (pool: ^<a class="code-typename" href="/core/thread/#Pool">Pool</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -581,24 +676,21 @@ Procedure Groups (0)</summary>
 <li><em>(hidden platform specific files)</em></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2022-03 (vendor "odin") Windows_amd64 @ 2022-03-30 21:09:03.966903100 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2022-03 (vendor "odin") Windows_amd64 @ 2022-03-31 21:08:58.117356400 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
 <ul>
 <li><a href="#pkg-Types">Types</a><ul>
 <li><a href="#Pool">Pool</a></li>
-<li><a href="#Task_Id">Task_Id</a></li>
 <li><a href="#Task_Proc">Task_Proc</a></li>
-<li><a href="#Task_Status">Task_Status</a></li>
 <li><a href="#Task">Task</a></li>
-<li><a href="#Thread_Priority">Thread_Priority</a></li>
 <li><a href="#Thread_Proc">Thread_Proc</a></li>
 <li><a href="#Thread">Thread</a></li>
+<li><a href="#Thread_Priority">Thread_Priority</a></li>
 </ul>
 </li>
 <li><a href="#pkg-Constants">Constants</a><ul>
-<li><a href="#INVALID_TASK_ID">INVALID_TASK_ID</a></li>
 <li><a href="#MAX_USER_ARGUMENTS">MAX_USER_ARGUMENTS</a></li>
 </ul>
 </li>
@@ -617,11 +709,17 @@ Procedure Groups (0)</summary>
 <li><a href="#pool_add_task">pool_add_task</a></li>
 <li><a href="#pool_destroy">pool_destroy</a></li>
 <li><a href="#pool_do_work">pool_do_work</a></li>
+<li><a href="#pool_finish">pool_finish</a></li>
 <li><a href="#pool_init">pool_init</a></li>
+<li><a href="#pool_is_empty">pool_is_empty</a></li>
 <li><a href="#pool_join">pool_join</a></li>
+<li><a href="#pool_num_done">pool_num_done</a></li>
+<li><a href="#pool_num_in_processing">pool_num_in_processing</a></li>
+<li><a href="#pool_num_outstanding">pool_num_outstanding</a></li>
+<li><a href="#pool_num_waiting">pool_num_waiting</a></li>
+<li><a href="#pool_pop_done">pool_pop_done</a></li>
+<li><a href="#pool_pop_waiting">pool_pop_waiting</a></li>
 <li><a href="#pool_start">pool_start</a></li>
-<li><a href="#pool_try_and_pop_task">pool_try_and_pop_task</a></li>
-<li><a href="#pool_wait_and_process">pool_wait_and_process</a></li>
 <li><a href="#run_with_poly_data4">run_with_poly_data4</a></li>
 <li><a href="#run">run</a></li>
 <li><a href="#run_with_data">run_with_data</a></li>
