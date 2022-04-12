@@ -69,9 +69,9 @@
 
 </li>
 <li class="nav-item"><a href="/core/crypto">crypto</a><ul>
+<li><a href="/core/crypto/blake">blake</a></li>
 <li><a href="/core/crypto/blake2b">blake2b</a></li>
 <li><a href="/core/crypto/blake2s">blake2s</a></li>
-<li><a href="/core/crypto/blake">blake</a></li>
 <li><a href="/core/crypto/chacha20">chacha20</a></li>
 <li><a href="/core/crypto/chacha20poly1305">chacha20poly1305</a></li>
 <li><a href="/core/crypto/gost">gost</a></li>
@@ -188,7 +188,7 @@
 </ol>
 </nav>
 <h1>package core:reflect<div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/reflect"><em>Source</em></a></div></h1>
-<div id="algolia-search"></div>
+<div id="algolia-search" data-path="core/reflect"></div>
 <div id="pkg-index">
 <h2>Index</h2>
 <div>
@@ -1235,7 +1235,7 @@ Each key is a non-empty string which contains no control characters other than s
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/reflect/types.odin">types.odin</a></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2022-04 (vendor "odin") Windows_amd64 @ 2022-04-12 12:11:25.694763900 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2022-04 (vendor "odin") Windows_amd64 @ 2022-04-12 21:09:39.866816500 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
@@ -1434,13 +1434,36 @@ Each key is a non-empty string which contains no control characters other than s
 <script src="https://cdn.jsdelivr.net/npm/@docsearch/js@3"></script>
 <script src="https://odin-lang.org/js/script.js"></script>
 <script type="text/javascript">
-	docsearch({
+	let docsearch_data = {
 		appId:     "H6XRVBSW5C",
 		apiKey:    "43bb20431f8b3e7576dbb757cbab9047",
 		indexName: "odin-lang",
 		container: "#algolia-search",
-		debug:     false // Set debug to true if you want to inspect the modal
-	});
+		debug:     false,
+		hint:      true,
+		autocompleteOptions: {
+			minLength: 1,
+		},
+		algoliaOptions: {
+			hitsPerPage: 10,
+			ignorePlural: true,
+		},
+	};
+
+	let search_elem = document.getElementById("algolia-search");
+	if (search_elem.hasAttribute("data-path")) {
+		let data_path = search_elem.getAttribute("data-path");
+		docsearch_data.transformItems = function(items) {
+			return items.filter(function(item) {
+				if (item.url.indexOf(data_path) < 0) {
+					return false;
+				}
+				return true;
+			});
+		};
+	}
+
+	docsearch(docsearch_data);
 
 </script>
 </body>

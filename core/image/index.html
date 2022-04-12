@@ -69,9 +69,9 @@
 
 </li>
 <li class="nav-item"><a href="/core/crypto">crypto</a><ul>
+<li><a href="/core/crypto/blake">blake</a></li>
 <li><a href="/core/crypto/blake2b">blake2b</a></li>
 <li><a href="/core/crypto/blake2s">blake2s</a></li>
-<li><a href="/core/crypto/blake">blake</a></li>
 <li><a href="/core/crypto/chacha20">chacha20</a></li>
 <li><a href="/core/crypto/chacha20poly1305">chacha20poly1305</a></li>
 <li><a href="/core/crypto/gost">gost</a></li>
@@ -188,7 +188,7 @@
 </ol>
 </nav>
 <h1>package core:image<div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image"><em>Source</em></a></div></h1>
-<div id="algolia-search"></div>
+<div id="algolia-search" data-path="core/image"></div>
 <h2>Overview</h2>
 <div id="pkg-overview">
 <p>package image implements a general 2D image library to be used with other image related packages</p>
@@ -198,33 +198,48 @@
 <div>
 <details class="doc-index" id="doc-index-Types" aria-labelledby="#doc-index-Types-header">
 <summary id="#doc-index-Types-header">
-Types (16)</summary>
+Types (29)</summary>
 <ul>
+<li><a href="#Alpha_Key">Alpha_Key</a></li>
 <li><a href="#Channel">Channel</a></li>
 <li><a href="#Error">Error</a></li>
+<li><a href="#GA_Pixel">GA_Pixel</a></li>
+<li><a href="#GA_Pixel_16">GA_Pixel_16</a></li>
+<li><a href="#G_Pixel_16">G_Pixel_16</a></li>
+<li><a href="#G_Pixel">G_Pixel</a></li>
 <li><a href="#General_Image_Error">General_Image_Error</a></li>
-<li><a href="#Image_Metadata">Image_Metadata</a></li>
 <li><a href="#Image">Image</a></li>
-<li><a href="#Options">Options</a></li>
+<li><a href="#Image_Metadata">Image_Metadata</a></li>
 <li><a href="#Option">Option</a></li>
+<li><a href="#Options">Options</a></li>
+<li><a href="#PNG_Chunk_Type">PNG_Chunk_Type</a></li>
 <li><a href="#PNG_Chunk">PNG_Chunk</a></li>
 <li><a href="#PNG_Chunk_Header">PNG_Chunk_Header</a></li>
-<li><a href="#PNG_Chunk_Type">PNG_Chunk_Type</a></li>
 <li><a href="#PNG_Color_Type">PNG_Color_Type</a></li>
 <li><a href="#PNG_Color_Value">PNG_Color_Value</a></li>
 <li><a href="#PNG_Error">PNG_Error</a></li>
 <li><a href="#PNG_IHDR">PNG_IHDR</a></li>
 <li><a href="#PNG_Info">PNG_Info</a></li>
 <li><a href="#PNG_Interlace_Method">PNG_Interlace_Method</a></li>
+<li><a href="#QOI_Color_Space">QOI_Color_Space</a></li>
+<li><a href="#QOI_Error">QOI_Error</a></li>
+<li><a href="#QOI_Header">QOI_Header</a></li>
+<li><a href="#QOI_Info">QOI_Info</a></li>
+<li><a href="#RGBA_Pixel">RGBA_Pixel</a></li>
+<li><a href="#RGBA_Pixel_16">RGBA_Pixel_16</a></li>
+<li><a href="#RGB_Pixel_16">RGB_Pixel_16</a></li>
+<li><a href="#RGB_Pixel">RGB_Pixel</a></li>
 </ul>
 </details>
 </div>
 <div>
 <details class="doc-index" id="doc-index-Constants" aria-labelledby="#doc-index-Constants-header">
 <summary id="#doc-index-Constants-header">
-Constants (1)</summary>
+Constants (3)</summary>
 <ul>
+<li><a href="#MAX_DIMENSIONS">MAX_DIMENSIONS</a></li>
 <li><a href="#PNG_IHDR_SIZE">PNG_IHDR_SIZE</a></li>
+<li><a href="#QOI_Magic">QOI_Magic</a></li>
 </ul>
 </details>
 </div>
@@ -238,25 +253,50 @@ Variables (0)</summary>
 <div>
 <details class="doc-index" id="doc-index-Procedures" aria-labelledby="#doc-index-Procedures-header">
 <summary id="#doc-index-Procedures-header">
-Procedures (2)</summary>
+Procedures (14)</summary>
 <ul>
+<li><a href="#alpha_add_if_missing">alpha_add_if_missing</a></li>
+<li><a href="#alpha_apply_keyed_alpha">alpha_apply_keyed_alpha</a></li>
+<li><a href="#alpha_drop_if_present">alpha_drop_if_present</a></li>
+<li><a href="#apply_palette_rgba">apply_palette_rgba</a></li>
+<li><a href="#apply_palette_rgb">apply_palette_rgb</a></li>
 <li><a href="#compute_buffer_size">compute_buffer_size</a></li>
+<li><a href="#expand_grayscale">expand_grayscale</a></li>
+<li><a href="#is_valid_color_image">is_valid_color_image</a></li>
+<li><a href="#is_valid_grayscale_image">is_valid_grayscale_image</a></li>
+<li><a href="#is_valid_image">is_valid_image</a></li>
+<li><a href="#read_data">read_data</a></li>
+<li><a href="#read_u8">read_u8</a></li>
 <li><a href="#return_single_channel">return_single_channel</a></li>
+<li><a href="#write_bytes">write_bytes</a></li>
 </ul>
 </details>
 </div>
 <div>
 <details class="doc-index" id="doc-index-Procedure Groups" aria-labelledby="#doc-index-Procedure Groups-header">
 <summary id="#doc-index-Procedure Groups-header">
-Procedure Groups (0)</summary>
-<p>This section is empty.</p>
+Procedure Groups (1)</summary>
+<ul>
+<li><a href="#apply_palette">apply_palette</a></li>
+</ul>
 </details>
 </div>
 </div>
 <h2 id="pkg-Types" class="pkg-header">Types</h2>
 <section class="documentation">
 <div class="pkg-entity">
-<h3 id="Channel"><span><a class="doc-id-link" href="#Channel">Channel<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L264"><em>Source</em></a></div></h3>
+<h3 id="Alpha_Key"><span><a class="doc-id-link" href="#Alpha_Key">Alpha_Key<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L470"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Alpha_Key :: <span class="keyword-type">union</span> {
+	[2]<span class="doc-builtin">u8</span>, 
+	[4]<span class="doc-builtin">u8</span>, 
+	[2]<span class="doc-builtin">u16</span>, 
+	[4]<span class="doc-builtin">u16</span>, 
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Channel"><span><a class="doc-id-link" href="#Channel">Channel<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L329"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Channel :: <span class="keyword-type">enum</span> <span class="doc-builtin">u8</span> {
 	R = 1, 
@@ -265,17 +305,14 @@ Procedure Groups (0)</summary>
 	A = 4, 
 }</pre>
 </div>
-<details class="odin-doc-toggle" open>
-<summary class="hideme"><span>&nbsp;</span></summary>
-<p>For when you have an RGB(A) image, but want a particular channel.</p>
-</details>
 </div>
 <div class="pkg-entity">
-<h3 id="Error"><span><a class="doc-id-link" href="#Error">Error<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L121"><em>Source</em></a></div></h3>
+<h3 id="Error"><span><a class="doc-id-link" href="#Error">Error<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L153"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Error :: <span class="keyword-type">union</span> {
 	<a class="code-typename" href="/core/image/#General_Image_Error">General_Image_Error</a>, 
 	<a class="code-typename" href="/core/image/#PNG_Error">PNG_Error</a>, 
+	<a class="code-typename" href="/core/image/#QOI_Error">QOI_Error</a>, 
 	compress.<a class="code-typename" href="/core/compress/#Error">Error</a>, 
 	compress.<a class="code-typename" href="/core/compress/#General_Error">General_Error</a>, 
 	compress.<a class="code-typename" href="/core/compress/#Deflate_Error">Deflate_Error</a>, 
@@ -285,24 +322,48 @@ Procedure Groups (0)</summary>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="General_Image_Error"><span><a class="doc-id-link" href="#General_Image_Error">General_Image_Error<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L132"><em>Source</em></a></div></h3>
+<h3 id="GA_Pixel"><span><a class="doc-id-link" href="#GA_Pixel">GA_Pixel<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L40"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">GA_Pixel :: [2]<span class="doc-builtin">u8</span></pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="GA_Pixel_16"><span><a class="doc-id-link" href="#GA_Pixel_16">GA_Pixel_16<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L42"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">GA_Pixel_16 :: [2]<span class="doc-builtin">u16</span></pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="G_Pixel_16"><span><a class="doc-id-link" href="#G_Pixel_16">G_Pixel_16<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L41"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">G_Pixel_16 :: [1]<span class="doc-builtin">u16</span></pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="G_Pixel"><span><a class="doc-id-link" href="#G_Pixel">G_Pixel<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L39"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">G_Pixel :: [1]<span class="doc-builtin">u8</span></pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Grayscale</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="General_Image_Error"><span><a class="doc-id-link" href="#General_Image_Error">General_Image_Error<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L165"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">General_Image_Error :: <span class="keyword-type">enum</span> <span class="doc-builtin">int</span> {
 	None                          = 0, 
 	Invalid_Image_Dimensions, 
 	Image_Dimensions_Too_Large, 
 	Image_Does_Not_Adhere_to_Spec, 
+	Invalid_Input_Image, 
+	Invalid_Output, 
 }</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="Image_Metadata"><span><a class="doc-id-link" href="#Image_Metadata">Image_Metadata<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L34"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">Image_Metadata :: <span class="keyword-type">union</span> {}</pre>
-</div>
-</div>
-<div class="pkg-entity">
-<h3 id="Image"><span><a class="doc-id-link" href="#Image">Image<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L18"><em>Source</em></a></div></h3>
+<h3 id="Image"><span><a class="doc-id-link" href="#Image">Image<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L44"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Image :: <span class="keyword-type">struct</span> {
 	width:      <span class="doc-builtin">int</span>,
@@ -313,57 +374,50 @@ Procedure Groups (0)</summary>
 	<span class="comment">// 		Some image loaders/writers can return/take an optional background color.</span>
 	<span class="comment">// 		For convenience, we return them as u16 so we don't need to switch on the type</span>
 	<span class="comment">// 		in our viewer, and can just test against nil.</span>
-	background: runtime.<a class="code-typename" href="/core/runtime/#Maybe">Maybe</a>([3]u16),
+	background: runtime.<a class="code-typename" href="/core/runtime/#Maybe">Maybe</a>(RGB_Pixel_16),
 	metadata:   <a class="code-typename" href="/core/image/#Image_Metadata">Image_Metadata</a>,
 }</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="Options"><span><a class="doc-id-link" href="#Options">Options<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L119"><em>Source</em></a></div></h3>
+<h3 id="Image_Metadata"><span><a class="doc-id-link" href="#Image_Metadata">Image_Metadata<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L59"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Image_Metadata :: <span class="keyword-type">union</span> {
+	^<a class="code-typename" href="/core/image/#PNG_Info">PNG_Info</a>, 
+	^<a class="code-typename" href="/core/image/#QOI_Info">QOI_Info</a>, 
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Option"><span><a class="doc-id-link" href="#Option">Option<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L133"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Option :: <span class="keyword-type">enum</span> <span class="doc-builtin">int</span> {
+	<span class="comment">// LOAD OPTIONS</span>
+	info                    = 0, 
+	do_not_decompress_image, 
+	return_header, 
+	return_metadata, 
+	alpha_add_if_missing,        <span class="comment">// Ignored for QOI. Always returns RGBA8.</span>
+	alpha_drop_if_present,       <span class="comment">// Unimplemented for QOI. Returns error.</span>
+	alpha_premultiply,           <span class="comment">// Unimplemented for QOI. Returns error.</span>
+	blend_background,            <span class="comment">// Ignored for non-PNG formats</span>
+	<span class="comment">// Unimplemented</span>
+	do_not_expand_grayscale, 
+	do_not_expand_indexed, 
+	do_not_expand_channels, 
+	<span class="comment">// SAVE OPTIONS</span>
+	qoi_all_channels_linear,     <span class="comment">// QOI, informative info. If not set, defaults to sRGB with linear alpha.</span>
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Options"><span><a class="doc-id-link" href="#Options">Options<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L151"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Options :: distinct <span class="keyword-type">bit_set</span>[<a class="code-typename" href="/core/image/#Option">Option</a>]</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="Option"><span><a class="doc-id-link" href="#Option">Option<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L105"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">Option :: <span class="keyword-type">enum</span> <span class="doc-builtin">int</span> {
-	info                    = 0, 
-	do_not_decompress_image, 
-	return_header, 
-	return_metadata, 
-	alpha_add_if_missing, 
-	alpha_drop_if_present, 
-	alpha_premultiply, 
-	blend_background, 
-	<span class="comment">// Unimplemented</span>
-	do_not_expand_grayscale, 
-	do_not_expand_indexed, 
-	do_not_expand_channels, 
-}</pre>
-</div>
-</div>
-<div class="pkg-entity">
-<h3 id="PNG_Chunk"><span><a class="doc-id-link" href="#PNG_Chunk">PNG_Chunk<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L174"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">PNG_Chunk :: <span class="keyword-type">struct</span> <span class="directive">#packed</span> {
-	header: <a class="code-typename" href="/core/image/#PNG_Chunk_Header">PNG_Chunk_Header</a>,
-	data:   []<span class="doc-builtin">u8</span>,
-	crc:    <span class="doc-builtin">u32be</span>,
-}</pre>
-</div>
-</div>
-<div class="pkg-entity">
-<h3 id="PNG_Chunk_Header"><span><a class="doc-id-link" href="#PNG_Chunk_Header">PNG_Chunk_Header<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L169"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">PNG_Chunk_Header :: <span class="keyword-type">struct</span> <span class="directive">#packed</span> {
-	length: <span class="doc-builtin">u32be</span>,
-	type:   <a class="code-typename" href="/core/image/#PNG_Chunk_Type">PNG_Chunk_Type</a>,
-}</pre>
-</div>
-</div>
-<div class="pkg-entity">
-<h3 id="PNG_Chunk_Type"><span><a class="doc-id-link" href="#PNG_Chunk_Type">PNG_Chunk_Type<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L180"><em>Source</em></a></div></h3>
+<h3 id="PNG_Chunk_Type"><span><a class="doc-id-link" href="#PNG_Chunk_Type">PNG_Chunk_Type<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L217"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">PNG_Chunk_Type :: <span class="keyword-type">enum</span> <span class="doc-builtin">u32be</span> {
 	<span class="comment">// IHDR must come first in a file</span>
@@ -400,18 +454,37 @@ Procedure Groups (0)</summary>
 	<span class="comment">// 		going to reward Apple for producing proprietary broken files purporting</span>
 	<span class="comment">// 		to be PNGs by supporting them.</span>
 	iDOT = 1766084436, 
-	CbGI = 1130514505, 
+	CgBI = 1130840649, 
 }</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="PNG_Color_Type"><span><a class="doc-id-link" href="#PNG_Color_Type">PNG_Color_Type<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L246"><em>Source</em></a></div></h3>
+<h3 id="PNG_Chunk"><span><a class="doc-id-link" href="#PNG_Chunk">PNG_Chunk<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L211"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">PNG_Chunk :: <span class="keyword-type">struct</span> <span class="directive">#packed</span> {
+	header: <a class="code-typename" href="/core/image/#PNG_Chunk_Header">PNG_Chunk_Header</a>,
+	data:   []<span class="doc-builtin">u8</span>,
+	crc:    <span class="doc-builtin">u32be</span>,
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="PNG_Chunk_Header"><span><a class="doc-id-link" href="#PNG_Chunk_Header">PNG_Chunk_Header<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L206"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">PNG_Chunk_Header :: <span class="keyword-type">struct</span> <span class="directive">#packed</span> {
+	length: <span class="doc-builtin">u32be</span>,
+	type:   <a class="code-typename" href="/core/image/#PNG_Chunk_Type">PNG_Chunk_Type</a>,
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="PNG_Color_Type"><span><a class="doc-id-link" href="#PNG_Color_Type">PNG_Color_Type<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L283"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">PNG_Color_Type :: distinct <span class="keyword-type">bit_set</span>[<a class="code-typename" href="/core/image/#PNG_Color_Value">PNG_Color_Value</a>; <span class="doc-builtin">u8</span>]</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="PNG_Color_Value"><span><a class="doc-id-link" href="#PNG_Color_Value">PNG_Color_Value<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L241"><em>Source</em></a></div></h3>
+<h3 id="PNG_Color_Value"><span><a class="doc-id-link" href="#PNG_Color_Value">PNG_Color_Value<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L278"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">PNG_Color_Value :: <span class="keyword-type">enum</span> <span class="doc-builtin">u8</span> {
 	Paletted = 0, <span class="comment">// 1 << 0 = 1</span>
@@ -421,7 +494,7 @@ Procedure Groups (0)</summary>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="PNG_Error"><span><a class="doc-id-link" href="#PNG_Error">PNG_Error<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L139"><em>Source</em></a></div></h3>
+<h3 id="PNG_Error"><span><a class="doc-id-link" href="#PNG_Error">PNG_Error<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L177"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">PNG_Error :: <span class="keyword-type">enum</span> <span class="doc-builtin">int</span> {
 	None                          = 0, 
@@ -434,7 +507,9 @@ Procedure Groups (0)</summary>
 	IDAT_Size_Too_Large, 
 	PLTE_Encountered_Unexpectedly, 
 	PLTE_Invalid_Length, 
+	PLTE_Missing, 
 	TRNS_Encountered_Unexpectedly, 
+	TNRS_Invalid_Length, 
 	BKGD_Invalid_Length, 
 	Unknown_Color_Type, 
 	Invalid_Color_Bit_Depth_Combo, 
@@ -445,9 +520,13 @@ Procedure Groups (0)</summary>
 	Invalid_Chunk_Length, 
 }</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>PNG-specific definitions</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="PNG_IHDR"><span><a class="doc-id-link" href="#PNG_IHDR">PNG_IHDR<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L229"><em>Source</em></a></div></h3>
+<h3 id="PNG_IHDR"><span><a class="doc-id-link" href="#PNG_IHDR">PNG_IHDR<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L266"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">PNG_IHDR :: <span class="keyword-type">struct</span> <span class="directive">#packed</span> {
 	width:              <span class="doc-builtin">u32be</span>,
@@ -461,20 +540,16 @@ Procedure Groups (0)</summary>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="PNG_Info"><span><a class="doc-id-link" href="#PNG_Info">PNG_Info<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L164"><em>Source</em></a></div></h3>
+<h3 id="PNG_Info"><span><a class="doc-id-link" href="#PNG_Info">PNG_Info<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L201"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">PNG_Info :: <span class="keyword-type">struct</span> {
 	header: <a class="code-typename" href="/core/image/#PNG_IHDR">PNG_IHDR</a>,
 	chunks: [<span class="keyword">dynamic</span>]<a class="code-typename" href="/core/image/#PNG_Chunk">PNG_Chunk</a>,
 }</pre>
 </div>
-<details class="odin-doc-toggle" open>
-<summary class="hideme"><span>&nbsp;</span></summary>
-<p>PNG-specific structs</p>
-</details>
 </div>
 <div class="pkg-entity">
-<h3 id="PNG_Interlace_Method"><span><a class="doc-id-link" href="#PNG_Interlace_Method">PNG_Interlace_Method<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L248"><em>Source</em></a></div></h3>
+<h3 id="PNG_Interlace_Method"><span><a class="doc-id-link" href="#PNG_Interlace_Method">PNG_Interlace_Method<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L285"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">PNG_Interlace_Method :: <span class="keyword-type">enum</span> <span class="doc-builtin">u8</span> {
 	None  = 0, 
@@ -482,13 +557,113 @@ Procedure Groups (0)</summary>
 }</pre>
 </div>
 </div>
+<div class="pkg-entity">
+<h3 id="QOI_Color_Space"><span><a class="doc-id-link" href="#QOI_Color_Space">QOI_Color_Space<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L305"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">QOI_Color_Space :: <span class="keyword-type">enum</span> <span class="doc-builtin">u8</span> {
+	sRGB   = 0, 
+	Linear = 1, 
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="QOI_Error"><span><a class="doc-id-link" href="#QOI_Error">QOI_Error<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L293"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">QOI_Error :: <span class="keyword-type">enum</span> <span class="doc-builtin">int</span> {
+	None                       = 0, 
+	Invalid_QOI_Signature, 
+	Invalid_Number_Of_Channels,     <span class="comment">// QOI allows 3 or 4 channel data.</span>
+	Invalid_Bit_Depth,              <span class="comment">// QOI supports only 8-bit images, error only returned from writer.</span>
+	Invalid_Color_Space,            <span class="comment">// QOI allows 0 = sRGB or 1 = linear.</span>
+	Corrupt,                        <span class="comment">// More data than pixels to decode into, for example.</span>
+	Missing_Or_Corrupt_Trailer,     <span class="comment">// Image seemed to have decoded okay, but trailer is missing or corrupt.</span>
+}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>QOI-specific definitions</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="QOI_Header"><span><a class="doc-id-link" href="#QOI_Header">QOI_Header<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L310"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">QOI_Header :: <span class="keyword-type">struct</span> <span class="directive">#packed</span> {
+	magic:       <span class="doc-builtin">u32be</span>,
+	width:       <span class="doc-builtin">u32be</span>,
+	height:      <span class="doc-builtin">u32be</span>,
+	channels:    <span class="doc-builtin">u8</span>,
+	color_space: <a class="code-typename" href="/core/image/#QOI_Color_Space">QOI_Color_Space</a>,
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="QOI_Info"><span><a class="doc-id-link" href="#QOI_Info">QOI_Info<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L319"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">QOI_Info :: <span class="keyword-type">struct</span> {
+	header: <a class="code-typename" href="/core/image/#QOI_Header">QOI_Header</a>,
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="RGBA_Pixel"><span><a class="doc-id-link" href="#RGBA_Pixel">RGBA_Pixel<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L35"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">RGBA_Pixel :: [4]<span class="doc-builtin">u8</span></pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="RGBA_Pixel_16"><span><a class="doc-id-link" href="#RGBA_Pixel_16">RGBA_Pixel_16<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L37"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">RGBA_Pixel_16 :: [4]<span class="doc-builtin">u16</span></pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="RGB_Pixel_16"><span><a class="doc-id-link" href="#RGB_Pixel_16">RGB_Pixel_16<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L36"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">RGB_Pixel_16 :: [3]<span class="doc-builtin">u16</span></pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="RGB_Pixel"><span><a class="doc-id-link" href="#RGB_Pixel">RGB_Pixel<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L34"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">RGB_Pixel :: [3]<span class="doc-builtin">u8</span></pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Color</p>
+</details>
+</div>
 </section>
 <h2 id="pkg-Constants" class="pkg-header">Constants</h2>
 <section class="documentation">
 <div class="pkg-entity">
-<h3 id="PNG_IHDR_SIZE"><span><a class="doc-id-link" href="#PNG_IHDR_SIZE">PNG_IHDR_SIZE<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L238"><em>Source</em></a></div></h3>
+<h3 id="MAX_DIMENSIONS"><span><a class="doc-id-link" href="#MAX_DIMENSIONS">MAX_DIMENSIONS<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L31"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">MAX_DIMENSIONS :: min(#config(MAX_DIMENSIONS, 8192 * 8192), 65535 * 65535)</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>67_108_864 pixels max by default.</p>
+<pre>For QOI, the Worst case scenario means all pixels will be encoded as RGBA literals, costing 5 bytes each.
+This caps memory usage at 320 MiB.
+
+The tunable is limited to 4_294_836_225 pixels maximum, or 4 GiB per 8-bit channel.
+It is not advised to tune it this large.
+
+The 64 Megapixel default is considered to be a decent upper bound you won't run into in practice,
+except in very specific circumstances.
+</pre>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="PNG_IHDR_SIZE"><span><a class="doc-id-link" href="#PNG_IHDR_SIZE">PNG_IHDR_SIZE<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L275"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">PNG_IHDR_SIZE :: size_of(PNG_IHDR)</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="QOI_Magic"><span><a class="doc-id-link" href="#QOI_Magic">QOI_Magic<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L303"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">QOI_Magic :: u32be(0x716f6966)</pre>
 </div>
 </div>
 </section>
@@ -499,62 +674,257 @@ Procedure Groups (0)</summary>
 <h2 id="pkg-Procedures" class="pkg-header">Procedures</h2>
 <section class="documentation">
 <div class="pkg-entity">
-<h3 id="compute_buffer_size"><span><a class="doc-id-link" href="#compute_buffer_size">compute_buffer_size<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L256"><em>Source</em></a></div></h3>
+<h3 id="alpha_add_if_missing"><span><a class="doc-id-link" href="#alpha_add_if_missing">alpha_add_if_missing<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L490"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">alpha_add_if_missing :: <span class="keyword-type">proc</span> "odin" (img: ^<a class="code-typename" href="/core/image/#Image">Image</a>, alpha_key: <a class="code-typename" href="/core/image/#Alpha_Key">Alpha_Key</a> = Alpha_Key{}, allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> (ok: <span class="doc-builtin">bool</span>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Add alpha channel if missing, in-place.</p>
+<pre>Expects 1..4 channels (Gray, Gray + Alpha, RGB, RGBA).
+Any other number of channels will be considered an error, returning `false` without modifying the image.
+If the input image already has an alpha channel, it'll return `true` early (without considering optional keyed alpha).
+
+If an image doesn't already have an alpha channel:
+If the optional `alpha_key` is provided, it will be resolved as follows:
+	- For RGB,  if pix = key.rgb -> pix = {0, 0, 0, key.a}
+	- For Gray, if pix = key.r  -> pix = {0, key.g}
+Otherwise, an opaque alpha channel will be added.
+</pre>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="alpha_apply_keyed_alpha"><span><a class="doc-id-link" href="#alpha_apply_keyed_alpha">alpha_apply_keyed_alpha<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L490"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">alpha_apply_keyed_alpha :: <a class="code-procedure" href="/core/image/#alpha_add_if_missing">alpha_add_if_missing</a></pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Add alpha channel if missing, in-place.</p>
+<pre>Expects 1..4 channels (Gray, Gray + Alpha, RGB, RGBA).
+Any other number of channels will be considered an error, returning `false` without modifying the image.
+If the input image already has an alpha channel, it'll return `true` early (without considering optional keyed alpha).
+
+If an image doesn't already have an alpha channel:
+If the optional `alpha_key` is provided, it will be resolved as follows:
+	- For RGB,  if pix = key.rgb -> pix = {0, 0, 0, key.a}
+	- For Gray, if pix = key.r  -> pix = {0, key.g}
+Otherwise, an opaque alpha channel will be added.
+</pre>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="alpha_drop_if_present"><span><a class="doc-id-link" href="#alpha_drop_if_present">alpha_drop_if_present<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L664"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">alpha_drop_if_present :: <span class="keyword-type">proc</span> "odin" (img: ^<a class="code-typename" href="/core/image/#Image">Image</a>, options: <a class="code-typename" href="/core/image/#Options">Options</a> = Options{}, alpha_key: <a class="code-typename" href="/core/image/#Alpha_Key">Alpha_Key</a> = Alpha_Key{}, allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> (ok: <span class="doc-builtin">bool</span>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Drop alpha channel if present, in-place.</p>
+<pre>Expects 1..4 channels (Gray, Gray + Alpha, RGB, RGBA).
+Any other number of channels will be considered an error, returning `false` without modifying the image.
+
+Of the `options`, the following are considered:
+`.alpha_premultiply`
+	If the image has an alpha channel, returns image data as follows:
+		RGB *= A, Gray = Gray *= A
+
+`.blend_background`
+	If `img.background` is set, it'll be blended in like this:
+		RGB = (1 - A) * Background + A * RGB
+
+If an image has 1 (Gray) or 3 (RGB) channels, it'll return early without modifying the image,
+with one exception: `alpha_key` and `img.background` are present, and `.blend_background` is set.
+
+In this case a keyed alpha pixel will be replaced with the background color.
+</pre>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="apply_palette_rgba"><span><a class="doc-id-link" href="#apply_palette_rgba">apply_palette_rgba<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L972"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">apply_palette_rgba :: <span class="keyword-type">proc</span> "odin" (img: ^<a class="code-typename" href="/core/image/#Image">Image</a>, palette: [256][4]<span class="doc-builtin">u8</span>, allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> (ok: <span class="doc-builtin">bool</span>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Apply palette to 8-bit single-channel image and return an 8-bit RGBA image, in-place.
+If the image given is not a valid 8-bit single channel image, the procedure will return <code>false</code> early.</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="apply_palette_rgb"><span><a class="doc-id-link" href="#apply_palette_rgb">apply_palette_rgb<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L935"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">apply_palette_rgb :: <span class="keyword-type">proc</span> "odin" (img: ^<a class="code-typename" href="/core/image/#Image">Image</a>, palette: [256][3]<span class="doc-builtin">u8</span>, allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> (ok: <span class="doc-builtin">bool</span>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Apply palette to 8-bit single-channel image and return an 8-bit RGB image, in-place.
+If the image given is not a valid 8-bit single channel image, the procedure will return <code>false</code> early.</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="compute_buffer_size"><span><a class="doc-id-link" href="#compute_buffer_size">compute_buffer_size<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L324"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">compute_buffer_size :: <span class="keyword-type">proc</span> "odin" (width, height, channels, depth: <span class="doc-builtin">int</span>, extra_row_bytes: <span class="doc-builtin">int</span> = int(0)) -> (size: <span class="doc-builtin">int</span>) {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>Functions to help with image buffer calculations</p>
+<p>Function to help with image buffer calculations</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="return_single_channel"><span><a class="doc-id-link" href="#return_single_channel">return_single_channel<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L271"><em>Source</em></a></div></h3>
+<h3 id="expand_grayscale"><span><a class="doc-id-link" href="#expand_grayscale">expand_grayscale<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L1011"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">expand_grayscale :: <span class="keyword-type">proc</span> "odin" (img: ^<a class="code-typename" href="/core/image/#Image">Image</a>, allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> (ok: <span class="doc-builtin">bool</span>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Replicates grayscale values into RGB(A) 8- or 16-bit images as appropriate.
+Returns early with <code>false</code> if already an RGB(A) image.</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="is_valid_color_image"><span><a class="doc-id-link" href="#is_valid_color_image">is_valid_color_image<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L432"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">is_valid_color_image :: <span class="keyword-type">proc</span> "odin" (img: ^<a class="code-typename" href="/core/image/#Image">Image</a>) -> (ok: <span class="doc-builtin">bool</span>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Does the image have 3 or 4 channels, a valid bit depth (8 or 16),
+Is the pointer valid, are the dimenions valid?</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="is_valid_grayscale_image"><span><a class="doc-id-link" href="#is_valid_grayscale_image">is_valid_grayscale_image<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L403"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">is_valid_grayscale_image :: <span class="keyword-type">proc</span> "odin" (img: ^<a class="code-typename" href="/core/image/#Image">Image</a>) -> (ok: <span class="doc-builtin">bool</span>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Does the image have 1 or 2 channels, a valid bit depth (8 or 16),
+Is the pointer valid, are the dimenions valid?</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="is_valid_image"><span><a class="doc-id-link" href="#is_valid_image">is_valid_image<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L461"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">is_valid_image :: <span class="keyword-type">proc</span> "odin" (img: ^<a class="code-typename" href="/core/image/#Image">Image</a>) -> (ok: <span class="doc-builtin">bool</span>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Does the image have 1..4 channels, a valid bit depth (8 or 16),
+Is the pointer valid, are the dimenions valid?</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="read_data"><span><a class="doc-id-link" href="#read_data">read_data<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L1092"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">read_data :: <span class="keyword-type">proc</span> "odin" (z: $, $T: <span class="doc-builtin">typeid</span>) -> (res: <span class="doc-builtin">typeid</span>, err: compress.<a class="code-typename" href="/core/compress/#General_Error">General_Error</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="read_u8"><span><a class="doc-id-link" href="#read_u8">read_u8<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L1101"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">read_u8 :: <span class="keyword-type">proc</span> "odin" (z: $) -> (res: <span class="doc-builtin">u8</span>, err: compress.<a class="code-typename" href="/core/compress/#General_Error">General_Error</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="return_single_channel"><span><a class="doc-id-link" href="#return_single_channel">return_single_channel<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L337"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">return_single_channel :: <span class="keyword-type">proc</span> "odin" (img: ^<a class="code-typename" href="/core/image/#Image">Image</a>, channel: <a class="code-typename" href="/core/image/#Channel">Channel</a>) -> (res: ^<a class="code-typename" href="/core/image/#Image">Image</a>, ok: <span class="doc-builtin">bool</span>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>When you have an RGB(A) image, but want a particular channel.</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="write_bytes"><span><a class="doc-id-link" href="#write_bytes">write_bytes<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L1109"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">write_bytes :: <span class="keyword-type">proc</span> "odin" (buf: ^bytes.<a class="code-typename" href="/core/bytes/#Buffer">Buffer</a>, data: []<span class="doc-builtin">u8</span>) -> (err: compress.<a class="code-typename" href="/core/compress/#General_Error">General_Error</a>) {…}</pre>
 </div>
 </div>
 </section>
 <h2 id="pkg-Procedure Groups" class="pkg-header">Procedure Groups</h2>
 <section class="documentation">
-<p>This section is empty.</p>
+<div class="pkg-entity">
+<h3 id="apply_palette"><span><a class="doc-id-link" href="#apply_palette">apply_palette<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L1006"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">apply_palette :: proc{
+	<a class="code-procedure" href="/core/image/#apply_palette_rgb">apply_palette_rgb</a>,
+	<a class="code-procedure" href="/core/image/#apply_palette_rgba">apply_palette_rgba</a>,
+}
+</pre>
+</div>
+</div>
 </section>
 <h2 id="pkg-source-files">Source Files</h2>
 <ul>
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin">common.odin</a></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2022-04 (vendor "odin") Windows_amd64 @ 2022-04-12 12:11:25.524754900 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2022-04 (vendor "odin") Windows_amd64 @ 2022-04-12 21:09:39.710767200 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
 <ul>
 <li><a href="#pkg-overview">Overview</a><li><a href="#pkg-Types">Types</a><ul>
+<li><a href="#Alpha_Key">Alpha_Key</a></li>
 <li><a href="#Channel">Channel</a></li>
 <li><a href="#Error">Error</a></li>
+<li><a href="#GA_Pixel">GA_Pixel</a></li>
+<li><a href="#GA_Pixel_16">GA_Pixel_16</a></li>
+<li><a href="#G_Pixel_16">G_Pixel_16</a></li>
+<li><a href="#G_Pixel">G_Pixel</a></li>
 <li><a href="#General_Image_Error">General_Image_Error</a></li>
-<li><a href="#Image_Metadata">Image_Metadata</a></li>
 <li><a href="#Image">Image</a></li>
-<li><a href="#Options">Options</a></li>
+<li><a href="#Image_Metadata">Image_Metadata</a></li>
 <li><a href="#Option">Option</a></li>
+<li><a href="#Options">Options</a></li>
+<li><a href="#PNG_Chunk_Type">PNG_Chunk_Type</a></li>
 <li><a href="#PNG_Chunk">PNG_Chunk</a></li>
 <li><a href="#PNG_Chunk_Header">PNG_Chunk_Header</a></li>
-<li><a href="#PNG_Chunk_Type">PNG_Chunk_Type</a></li>
 <li><a href="#PNG_Color_Type">PNG_Color_Type</a></li>
 <li><a href="#PNG_Color_Value">PNG_Color_Value</a></li>
 <li><a href="#PNG_Error">PNG_Error</a></li>
 <li><a href="#PNG_IHDR">PNG_IHDR</a></li>
 <li><a href="#PNG_Info">PNG_Info</a></li>
 <li><a href="#PNG_Interlace_Method">PNG_Interlace_Method</a></li>
+<li><a href="#QOI_Color_Space">QOI_Color_Space</a></li>
+<li><a href="#QOI_Error">QOI_Error</a></li>
+<li><a href="#QOI_Header">QOI_Header</a></li>
+<li><a href="#QOI_Info">QOI_Info</a></li>
+<li><a href="#RGBA_Pixel">RGBA_Pixel</a></li>
+<li><a href="#RGBA_Pixel_16">RGBA_Pixel_16</a></li>
+<li><a href="#RGB_Pixel_16">RGB_Pixel_16</a></li>
+<li><a href="#RGB_Pixel">RGB_Pixel</a></li>
 </ul>
 </li>
 <li><a href="#pkg-Constants">Constants</a><ul>
+<li><a href="#MAX_DIMENSIONS">MAX_DIMENSIONS</a></li>
 <li><a href="#PNG_IHDR_SIZE">PNG_IHDR_SIZE</a></li>
+<li><a href="#QOI_Magic">QOI_Magic</a></li>
 </ul>
 </li>
 <li><a href="#pkg-Procedures">Procedures</a><ul>
+<li><a href="#alpha_add_if_missing">alpha_add_if_missing</a></li>
+<li><a href="#alpha_apply_keyed_alpha">alpha_apply_keyed_alpha</a></li>
+<li><a href="#alpha_drop_if_present">alpha_drop_if_present</a></li>
+<li><a href="#apply_palette_rgba">apply_palette_rgba</a></li>
+<li><a href="#apply_palette_rgb">apply_palette_rgb</a></li>
 <li><a href="#compute_buffer_size">compute_buffer_size</a></li>
+<li><a href="#expand_grayscale">expand_grayscale</a></li>
+<li><a href="#is_valid_color_image">is_valid_color_image</a></li>
+<li><a href="#is_valid_grayscale_image">is_valid_grayscale_image</a></li>
+<li><a href="#is_valid_image">is_valid_image</a></li>
+<li><a href="#read_data">read_data</a></li>
+<li><a href="#read_u8">read_u8</a></li>
 <li><a href="#return_single_channel">return_single_channel</a></li>
+<li><a href="#write_bytes">write_bytes</a></li>
+</ul>
+</li>
+<li><a href="#pkg-Procedure Groups">Procedure Groups</a><ul>
+<li><a href="#apply_palette">apply_palette</a></li>
 </ul>
 </li>
 <li><a href="#pkg-source-files">Source Files</a></ul>
@@ -608,13 +978,36 @@ Procedure Groups (0)</summary>
 <script src="https://cdn.jsdelivr.net/npm/@docsearch/js@3"></script>
 <script src="https://odin-lang.org/js/script.js"></script>
 <script type="text/javascript">
-	docsearch({
+	let docsearch_data = {
 		appId:     "H6XRVBSW5C",
 		apiKey:    "43bb20431f8b3e7576dbb757cbab9047",
 		indexName: "odin-lang",
 		container: "#algolia-search",
-		debug:     false // Set debug to true if you want to inspect the modal
-	});
+		debug:     false,
+		hint:      true,
+		autocompleteOptions: {
+			minLength: 1,
+		},
+		algoliaOptions: {
+			hitsPerPage: 10,
+			ignorePlural: true,
+		},
+	};
+
+	let search_elem = document.getElementById("algolia-search");
+	if (search_elem.hasAttribute("data-path")) {
+		let data_path = search_elem.getAttribute("data-path");
+		docsearch_data.transformItems = function(items) {
+			return items.filter(function(item) {
+				if (item.url.indexOf(data_path) < 0) {
+					return false;
+				}
+				return true;
+			});
+		};
+	}
+
+	docsearch(docsearch_data);
 
 </script>
 </body>
