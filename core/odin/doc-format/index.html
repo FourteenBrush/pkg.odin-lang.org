@@ -206,20 +206,16 @@ Types (33)</summary>
 <li><a href="#Entity_Kind">Entity_Kind</a></li>
 <li><a href="#File_Index">File_Index</a></li>
 <li><a href="#File">File</a></li>
-<li><a href="#Header_Base">Header_Base</a></li>
 <li><a href="#Header">Header</a></li>
+<li><a href="#Header_Base">Header_Base</a></li>
 <li><a href="#Pkg_Flags">Pkg_Flags</a></li>
+<li><a href="#Pkg_Flag">Pkg_Flag</a></li>
 <li><a href="#Pkg_Index">Pkg_Index</a></li>
 <li><a href="#Pkg">Pkg</a></li>
-<li><a href="#Pkg_Flag">Pkg_Flag</a></li>
 <li><a href="#Position">Position</a></li>
 <li><a href="#Reader_Error">Reader_Error</a></li>
 <li><a href="#Scope_Entry">Scope_Entry</a></li>
 <li><a href="#String">String</a></li>
-<li><a href="#Type_Flags_Struct">Type_Flags_Struct</a></li>
-<li><a href="#Type_Flags_Union">Type_Flags_Union</a></li>
-<li><a href="#Type_Index">Type_Index</a></li>
-<li><a href="#Type">Type</a></li>
 <li><a href="#Type_Flag_Basic">Type_Flag_Basic</a></li>
 <li><a href="#Type_Flag_Bit_Set">Type_Flag_Bit_Set</a></li>
 <li><a href="#Type_Flag_Proc">Type_Flag_Proc</a></li>
@@ -228,6 +224,10 @@ Types (33)</summary>
 <li><a href="#Type_Flags_Basic">Type_Flags_Basic</a></li>
 <li><a href="#Type_Flags_Bit_Set">Type_Flags_Bit_Set</a></li>
 <li><a href="#Type_Flags_Proc">Type_Flags_Proc</a></li>
+<li><a href="#Type_Flags_Struct">Type_Flags_Struct</a></li>
+<li><a href="#Type_Flags_Union">Type_Flags_Union</a></li>
+<li><a href="#Type">Type</a></li>
+<li><a href="#Type_Index">Type_Index</a></li>
 <li><a href="#Type_Kind">Type_Kind</a></li>
 <li><a href="#Version_Type">Version_Type</a></li>
 </ul>
@@ -392,6 +392,19 @@ Procedure Groups (0)</summary>
 </div>
 </div>
 <div class="pkg-entity">
+<h3 id="Header"><span><a class="doc-id-link" href="#Header">Header<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/doc-format/doc_format.odin#L38"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Header :: <span class="keyword-type">struct</span> {
+	base:     <a class="code-typename" href="/core/odin/doc-format/#Header_Base">Header_Base</a>,
+	<span class="comment">// NOTE: These arrays reserve the zero element as a sentinel value</span>
+	files:    <a class="code-typename" href="/core/odin/doc-format/#Array">Array</a>(File),
+	pkgs:     <a class="code-typename" href="/core/odin/doc-format/#Array">Array</a>(Pkg),
+	entities: <a class="code-typename" href="/core/odin/doc-format/#Array">Array</a>(Entity),
+	types:    <a class="code-typename" href="/core/odin/doc-format/#Array">Array</a>(Type),
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
 <h3 id="Header_Base"><span><a class="doc-id-link" href="#Header_Base">Header_Base<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/doc-format/doc_format.odin#L29"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Header_Base :: <span class="keyword-type">struct</span> {
@@ -408,22 +421,19 @@ Procedure Groups (0)</summary>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="Header"><span><a class="doc-id-link" href="#Header">Header<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/doc-format/doc_format.odin#L38"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">Header :: <span class="keyword-type">struct</span> {
-	base:     <a class="code-typename" href="/core/odin/doc-format/#Header_Base">Header_Base</a>,
-	<span class="comment">// NOTE: These arrays reserve the zero element as a sentinel value</span>
-	files:    <a class="code-typename" href="/core/odin/doc-format/#Array">Array</a>(File),
-	pkgs:     <a class="code-typename" href="/core/odin/doc-format/#Array">Array</a>(Pkg),
-	entities: <a class="code-typename" href="/core/odin/doc-format/#Array">Array</a>(Entity),
-	types:    <a class="code-typename" href="/core/odin/doc-format/#Array">Array</a>(Type),
-}</pre>
-</div>
-</div>
-<div class="pkg-entity">
 <h3 id="Pkg_Flags"><span><a class="doc-id-link" href="#Pkg_Flags">Pkg_Flags<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/doc-format/doc_format.odin#L72"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Pkg_Flags :: distinct <span class="keyword-type">bit_set</span>[<a class="code-typename" href="/core/odin/doc-format/#Pkg_Flag">Pkg_Flag</a>; <span class="doc-builtin">u32le</span>]</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Pkg_Flag"><span><a class="doc-id-link" href="#Pkg_Flag">Pkg_Flag<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/doc-format/doc_format.odin#L66"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Pkg_Flag :: <span class="keyword-type">enum</span> <span class="doc-builtin">u32le</span> {
+	Builtin = 0, 
+	Runtime = 1, 
+	Init    = 2, 
+}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -442,16 +452,6 @@ Procedure Groups (0)</summary>
 	docs:     <a class="code-typename" href="/core/odin/doc-format/#String">String</a>,
 	files:    <a class="code-typename" href="/core/odin/doc-format/#Array">Array</a>(File_Index),
 	entries:  <a class="code-typename" href="/core/odin/doc-format/#Array">Array</a>(Scope_Entry),
-}</pre>
-</div>
-</div>
-<div class="pkg-entity">
-<h3 id="Pkg_Flag"><span><a class="doc-id-link" href="#Pkg_Flag">Pkg_Flag<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/doc-format/doc_format.odin#L66"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">Pkg_Flag :: <span class="keyword-type">enum</span> <span class="doc-builtin">u32le</span> {
-	Builtin = 0, 
-	Runtime = 1, 
-	Init    = 2, 
 }</pre>
 </div>
 </div>
@@ -497,6 +497,75 @@ Procedure Groups (0)</summary>
 </div>
 </div>
 <div class="pkg-entity">
+<h3 id="Type_Flag_Basic"><span><a class="doc-id-link" href="#Type_Flag_Basic">Type_Flag_Basic<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/doc-format/doc_format.odin#L266"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Type_Flag_Basic :: <span class="keyword-type">enum</span> <span class="doc-builtin">u32le</span> {
+	Untyped = 1, 
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Type_Flag_Bit_Set"><span><a class="doc-id-link" href="#Type_Flag_Bit_Set">Type_Flag_Bit_Set<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/doc-format/doc_format.odin#L294"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Type_Flag_Bit_Set :: <span class="keyword-type">enum</span> <span class="doc-builtin">u32le</span> {
+	Range           = 1, 
+	Op_Lt           = 2, 
+	Op_Lt_Eq        = 3, 
+	Underlying_Type = 4, 
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Type_Flag_Proc"><span><a class="doc-id-link" href="#Type_Flag_Proc">Type_Flag_Proc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/doc-format/doc_format.odin#L285"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Type_Flag_Proc :: <span class="keyword-type">enum</span> <span class="doc-builtin">u32le</span> {
+	Polymorphic = 0, 
+	Diverging   = 1, 
+	Optional_Ok = 2, 
+	Variadic    = 3, 
+	C_Vararg    = 4, 
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Type_Flag_Struct"><span><a class="doc-id-link" href="#Type_Flag_Struct">Type_Flag_Struct<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/doc-format/doc_format.odin#L271"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Type_Flag_Struct :: <span class="keyword-type">enum</span> <span class="doc-builtin">u32le</span> {
+	Polymorphic = 0, 
+	Packed      = 1, 
+	Raw_Union   = 2, 
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Type_Flag_Union"><span><a class="doc-id-link" href="#Type_Flag_Union">Type_Flag_Union<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/doc-format/doc_format.odin#L278"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Type_Flag_Union :: <span class="keyword-type">enum</span> <span class="doc-builtin">u32le</span> {
+	Polymorphic = 0, 
+	No_Nil      = 1, 
+	Maybe       = 2, 
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Type_Flags_Basic"><span><a class="doc-id-link" href="#Type_Flags_Basic">Type_Flags_Basic<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/doc-format/doc_format.odin#L265"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Type_Flags_Basic :: distinct <span class="keyword-type">bit_set</span>[<a class="code-typename" href="/core/odin/doc-format/#Type_Flag_Basic">Type_Flag_Basic</a>; <span class="doc-builtin">u32le</span>]</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Type_Flags_Bit_Set"><span><a class="doc-id-link" href="#Type_Flags_Bit_Set">Type_Flags_Bit_Set<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/doc-format/doc_format.odin#L293"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Type_Flags_Bit_Set :: distinct <span class="keyword-type">bit_set</span>[<a class="code-typename" href="/core/odin/doc-format/#Type_Flag_Bit_Set">Type_Flag_Bit_Set</a>; <span class="doc-builtin">u32le</span>]</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Type_Flags_Proc"><span><a class="doc-id-link" href="#Type_Flags_Proc">Type_Flags_Proc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/doc-format/doc_format.odin#L284"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Type_Flags_Proc :: distinct <span class="keyword-type">bit_set</span>[<a class="code-typename" href="/core/odin/doc-format/#Type_Flag_Proc">Type_Flag_Proc</a>; <span class="doc-builtin">u32le</span>]</pre>
+</div>
+</div>
+<div class="pkg-entity">
 <h3 id="Type_Flags_Struct"><span><a class="doc-id-link" href="#Type_Flags_Struct">Type_Flags_Struct<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/doc-format/doc_format.odin#L270"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Type_Flags_Struct :: distinct <span class="keyword-type">bit_set</span>[<a class="code-typename" href="/core/odin/doc-format/#Type_Flag_Struct">Type_Flag_Struct</a>; <span class="doc-builtin">u32le</span>]</pre>
@@ -506,12 +575,6 @@ Procedure Groups (0)</summary>
 <h3 id="Type_Flags_Union"><span><a class="doc-id-link" href="#Type_Flags_Union">Type_Flags_Union<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/doc-format/doc_format.odin#L277"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Type_Flags_Union :: distinct <span class="keyword-type">bit_set</span>[<a class="code-typename" href="/core/odin/doc-format/#Type_Flag_Union">Type_Flag_Union</a>; <span class="doc-builtin">u32le</span>]</pre>
-</div>
-</div>
-<div class="pkg-entity">
-<h3 id="Type_Index"><span><a class="doc-id-link" href="#Type_Index">Type_Index<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/doc-format/doc_format.odin#L51"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">Type_Index :: distinct <span class="doc-builtin">u32le</span></pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -584,72 +647,9 @@ Procedure Groups (0)</summary>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="Type_Flag_Basic"><span><a class="doc-id-link" href="#Type_Flag_Basic">Type_Flag_Basic<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/doc-format/doc_format.odin#L266"><em>Source</em></a></div></h3>
+<h3 id="Type_Index"><span><a class="doc-id-link" href="#Type_Index">Type_Index<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/doc-format/doc_format.odin#L51"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">Type_Flag_Basic :: <span class="keyword-type">enum</span> <span class="doc-builtin">u32le</span> {
-	Untyped = 1, 
-}</pre>
-</div>
-</div>
-<div class="pkg-entity">
-<h3 id="Type_Flag_Bit_Set"><span><a class="doc-id-link" href="#Type_Flag_Bit_Set">Type_Flag_Bit_Set<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/doc-format/doc_format.odin#L294"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">Type_Flag_Bit_Set :: <span class="keyword-type">enum</span> <span class="doc-builtin">u32le</span> {
-	Range           = 1, 
-	Op_Lt           = 2, 
-	Op_Lt_Eq        = 3, 
-	Underlying_Type = 4, 
-}</pre>
-</div>
-</div>
-<div class="pkg-entity">
-<h3 id="Type_Flag_Proc"><span><a class="doc-id-link" href="#Type_Flag_Proc">Type_Flag_Proc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/doc-format/doc_format.odin#L285"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">Type_Flag_Proc :: <span class="keyword-type">enum</span> <span class="doc-builtin">u32le</span> {
-	Polymorphic = 0, 
-	Diverging   = 1, 
-	Optional_Ok = 2, 
-	Variadic    = 3, 
-	C_Vararg    = 4, 
-}</pre>
-</div>
-</div>
-<div class="pkg-entity">
-<h3 id="Type_Flag_Struct"><span><a class="doc-id-link" href="#Type_Flag_Struct">Type_Flag_Struct<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/doc-format/doc_format.odin#L271"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">Type_Flag_Struct :: <span class="keyword-type">enum</span> <span class="doc-builtin">u32le</span> {
-	Polymorphic = 0, 
-	Packed      = 1, 
-	Raw_Union   = 2, 
-}</pre>
-</div>
-</div>
-<div class="pkg-entity">
-<h3 id="Type_Flag_Union"><span><a class="doc-id-link" href="#Type_Flag_Union">Type_Flag_Union<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/doc-format/doc_format.odin#L278"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">Type_Flag_Union :: <span class="keyword-type">enum</span> <span class="doc-builtin">u32le</span> {
-	Polymorphic = 0, 
-	No_Nil      = 1, 
-	Maybe       = 2, 
-}</pre>
-</div>
-</div>
-<div class="pkg-entity">
-<h3 id="Type_Flags_Basic"><span><a class="doc-id-link" href="#Type_Flags_Basic">Type_Flags_Basic<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/doc-format/doc_format.odin#L265"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">Type_Flags_Basic :: distinct <span class="keyword-type">bit_set</span>[<a class="code-typename" href="/core/odin/doc-format/#Type_Flag_Basic">Type_Flag_Basic</a>; <span class="doc-builtin">u32le</span>]</pre>
-</div>
-</div>
-<div class="pkg-entity">
-<h3 id="Type_Flags_Bit_Set"><span><a class="doc-id-link" href="#Type_Flags_Bit_Set">Type_Flags_Bit_Set<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/doc-format/doc_format.odin#L293"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">Type_Flags_Bit_Set :: distinct <span class="keyword-type">bit_set</span>[<a class="code-typename" href="/core/odin/doc-format/#Type_Flag_Bit_Set">Type_Flag_Bit_Set</a>; <span class="doc-builtin">u32le</span>]</pre>
-</div>
-</div>
-<div class="pkg-entity">
-<h3 id="Type_Flags_Proc"><span><a class="doc-id-link" href="#Type_Flags_Proc">Type_Flags_Proc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/doc-format/doc_format.odin#L284"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">Type_Flags_Proc :: distinct <span class="keyword-type">bit_set</span>[<a class="code-typename" href="/core/odin/doc-format/#Type_Flag_Proc">Type_Flag_Proc</a>; <span class="doc-builtin">u32le</span>]</pre>
+<pre class="doc-code">Type_Index :: distinct <span class="doc-builtin">u32le</span></pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -768,7 +768,7 @@ Procedure Groups (0)</summary>
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/doc-format/doc_format.odin">doc_format.odin</a></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2022-04 (vendor "odin") Windows_amd64 @ 2022-04-12 21:09:39.851815900 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2022-04 (vendor "odin") Windows_amd64 @ 2022-04-13 21:09:07.176655500 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
@@ -783,20 +783,16 @@ Procedure Groups (0)</summary>
 <li><a href="#Entity_Kind">Entity_Kind</a></li>
 <li><a href="#File_Index">File_Index</a></li>
 <li><a href="#File">File</a></li>
-<li><a href="#Header_Base">Header_Base</a></li>
 <li><a href="#Header">Header</a></li>
+<li><a href="#Header_Base">Header_Base</a></li>
 <li><a href="#Pkg_Flags">Pkg_Flags</a></li>
+<li><a href="#Pkg_Flag">Pkg_Flag</a></li>
 <li><a href="#Pkg_Index">Pkg_Index</a></li>
 <li><a href="#Pkg">Pkg</a></li>
-<li><a href="#Pkg_Flag">Pkg_Flag</a></li>
 <li><a href="#Position">Position</a></li>
 <li><a href="#Reader_Error">Reader_Error</a></li>
 <li><a href="#Scope_Entry">Scope_Entry</a></li>
 <li><a href="#String">String</a></li>
-<li><a href="#Type_Flags_Struct">Type_Flags_Struct</a></li>
-<li><a href="#Type_Flags_Union">Type_Flags_Union</a></li>
-<li><a href="#Type_Index">Type_Index</a></li>
-<li><a href="#Type">Type</a></li>
 <li><a href="#Type_Flag_Basic">Type_Flag_Basic</a></li>
 <li><a href="#Type_Flag_Bit_Set">Type_Flag_Bit_Set</a></li>
 <li><a href="#Type_Flag_Proc">Type_Flag_Proc</a></li>
@@ -805,6 +801,10 @@ Procedure Groups (0)</summary>
 <li><a href="#Type_Flags_Basic">Type_Flags_Basic</a></li>
 <li><a href="#Type_Flags_Bit_Set">Type_Flags_Bit_Set</a></li>
 <li><a href="#Type_Flags_Proc">Type_Flags_Proc</a></li>
+<li><a href="#Type_Flags_Struct">Type_Flags_Struct</a></li>
+<li><a href="#Type_Flags_Union">Type_Flags_Union</a></li>
+<li><a href="#Type">Type</a></li>
+<li><a href="#Type_Index">Type_Index</a></li>
 <li><a href="#Type_Kind">Type_Kind</a></li>
 <li><a href="#Version_Type">Version_Type</a></li>
 </ul>

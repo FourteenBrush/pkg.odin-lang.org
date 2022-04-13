@@ -289,8 +289,8 @@ Procedures (69)</summary>
 <li><a href="#exit">exit</a></li>
 <li><a href="#file_info_delete">file_info_delete</a></li>
 <li><a href="#file_info_slice_delete">file_info_slice_delete</a></li>
-<li><a href="#file_size">file_size</a></li>
 <li><a href="#file_size_from_path">file_size_from_path</a></li>
+<li><a href="#file_size">file_size</a></li>
 <li><a href="#flush">flush</a></li>
 <li><a href="#fstat">fstat</a></li>
 <li><a href="#ftruncate">ftruncate</a></li>
@@ -299,9 +299,9 @@ Procedures (69)</summary>
 <li><a href="#get_page_size">get_page_size</a></li>
 <li><a href="#get_std_handle">get_std_handle</a></li>
 <li><a href="#get_windows_version_w">get_windows_version_w</a></li>
+<li><a href="#heap_alloc">heap_alloc</a></li>
 <li><a href="#heap_allocator_proc">heap_allocator_proc</a></li>
 <li><a href="#heap_allocator">heap_allocator</a></li>
-<li><a href="#heap_alloc">heap_alloc</a></li>
 <li><a href="#heap_free">heap_free</a></li>
 <li><a href="#heap_resize">heap_resize</a></li>
 <li><a href="#is_dir">is_dir</a></li>
@@ -322,9 +322,9 @@ Procedures (69)</summary>
 <li><a href="#make_directory">make_directory</a></li>
 <li><a href="#open">open</a></li>
 <li><a href="#pipe">pipe</a></li>
+<li><a href="#read_at_least">read_at_least</a></li>
 <li><a href="#read_at">read_at</a></li>
 <li><a href="#read">read</a></li>
-<li><a href="#read_at_least">read_at_least</a></li>
 <li><a href="#read_dir">read_dir</a></li>
 <li><a href="#read_entire_file_from_filename">read_entire_file_from_filename</a></li>
 <li><a href="#read_entire_file_from_handle">read_entire_file_from_handle</a></li>
@@ -830,15 +830,15 @@ NOTE: the slice of strings and the strings with be allocated using the supplied 
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="file_size"><span><a class="doc-id-link" href="#file_size">file_size<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/os/file_windows.odin#L208"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">file_size :: <span class="keyword-type">proc</span> "odin" (fd: <a class="code-typename" href="/core/os/#Handle">Handle</a>) -> (<span class="doc-builtin">i64</span>, <a class="code-typename" href="/core/os/#Errno">Errno</a>) {…}</pre>
-</div>
-</div>
-<div class="pkg-entity">
 <h3 id="file_size_from_path"><span><a class="doc-id-link" href="#file_size_from_path">file_size_from_path<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/os/os.odin#L78"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">file_size_from_path :: <span class="keyword-type">proc</span> "odin" (path: <span class="doc-builtin">string</span>) -> <span class="doc-builtin">i64</span> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="file_size"><span><a class="doc-id-link" href="#file_size">file_size<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/os/file_windows.odin#L208"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">file_size :: <span class="keyword-type">proc</span> "odin" (fd: <a class="code-typename" href="/core/os/#Handle">Handle</a>) -> (<span class="doc-builtin">i64</span>, <a class="code-typename" href="/core/os/#Errno">Errno</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -897,6 +897,12 @@ NOTE: the value will be allocated with the supplied allocator</p>
 </div>
 </div>
 <div class="pkg-entity">
+<h3 id="heap_alloc"><span><a class="doc-id-link" href="#heap_alloc">heap_alloc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/os/os_windows.odin#L94"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">heap_alloc :: <span class="keyword-type">proc</span> "odin" (size: <span class="doc-builtin">int</span>) -> <span class="doc-builtin">rawptr</span> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
 <h3 id="heap_allocator_proc"><span><a class="doc-id-link" href="#heap_allocator_proc">heap_allocator_proc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/os/os.odin#L167"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">heap_allocator_proc :: <span class="keyword-type">proc</span> "odin" (
@@ -912,12 +918,6 @@ NOTE: the value will be allocated with the supplied allocator</p>
 <h3 id="heap_allocator"><span><a class="doc-id-link" href="#heap_allocator">heap_allocator<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/os/os.odin#L254"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">heap_allocator :: <span class="keyword-type">proc</span> "odin" () -> runtime.<a class="code-typename" href="/core/runtime/#Allocator">Allocator</a> {…}</pre>
-</div>
-</div>
-<div class="pkg-entity">
-<h3 id="heap_alloc"><span><a class="doc-id-link" href="#heap_alloc">heap_alloc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/os/os_windows.odin#L94"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">heap_alloc :: <span class="keyword-type">proc</span> "odin" (size: <span class="doc-builtin">int</span>) -> <span class="doc-builtin">rawptr</span> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -1048,6 +1048,12 @@ NOTE: the value will be allocated with the supplied allocator</p>
 </div>
 </div>
 <div class="pkg-entity">
+<h3 id="read_at_least"><span><a class="doc-id-link" href="#read_at_least">read_at_least<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/os/os.odin#L58"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">read_at_least :: <span class="keyword-type">proc</span> "odin" (fd: <a class="code-typename" href="/core/os/#Handle">Handle</a>, buf: []<span class="doc-builtin">u8</span>, min: <span class="doc-builtin">int</span>) -> (n: <span class="doc-builtin">int</span>, err: <a class="code-typename" href="/core/os/#Errno">Errno</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
 <h3 id="read_at"><span><a class="doc-id-link" href="#read_at">read_at<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/os/file_windows.odin#L276"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">read_at :: <span class="keyword-type">proc</span> "odin" (fd: <a class="code-typename" href="/core/os/#Handle">Handle</a>, data: []<span class="doc-builtin">u8</span>, offset: <span class="doc-builtin">i64</span>) -> (n: <span class="doc-builtin">int</span>, err: <a class="code-typename" href="/core/os/#Errno">Errno</a>) {…}</pre>
@@ -1057,12 +1063,6 @@ NOTE: the value will be allocated with the supplied allocator</p>
 <h3 id="read"><span><a class="doc-id-link" href="#read">read<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/os/file_windows.odin#L151"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">read :: <span class="keyword-type">proc</span> "odin" (fd: <a class="code-typename" href="/core/os/#Handle">Handle</a>, data: []<span class="doc-builtin">u8</span>) -> (<span class="doc-builtin">int</span>, <a class="code-typename" href="/core/os/#Errno">Errno</a>) {…}</pre>
-</div>
-</div>
-<div class="pkg-entity">
-<h3 id="read_at_least"><span><a class="doc-id-link" href="#read_at_least">read_at_least<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/os/os.odin#L58"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">read_at_least :: <span class="keyword-type">proc</span> "odin" (fd: <a class="code-typename" href="/core/os/#Handle">Handle</a>, buf: []<span class="doc-builtin">u8</span>, min: <span class="doc-builtin">int</span>) -> (n: <span class="doc-builtin">int</span>, err: <a class="code-typename" href="/core/os/#Errno">Errno</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -1239,7 +1239,7 @@ NOTE: the value will be allocated with the supplied allocator</p>
 <li><em>(hidden platform specific files)</em></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2022-04 (vendor "odin") Windows_amd64 @ 2022-04-12 21:09:39.861815700 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2022-04 (vendor "odin") Windows_amd64 @ 2022-04-13 21:09:07.186656200 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
@@ -1323,8 +1323,8 @@ NOTE: the value will be allocated with the supplied allocator</p>
 <li><a href="#exit">exit</a></li>
 <li><a href="#file_info_delete">file_info_delete</a></li>
 <li><a href="#file_info_slice_delete">file_info_slice_delete</a></li>
-<li><a href="#file_size">file_size</a></li>
 <li><a href="#file_size_from_path">file_size_from_path</a></li>
+<li><a href="#file_size">file_size</a></li>
 <li><a href="#flush">flush</a></li>
 <li><a href="#fstat">fstat</a></li>
 <li><a href="#ftruncate">ftruncate</a></li>
@@ -1333,9 +1333,9 @@ NOTE: the value will be allocated with the supplied allocator</p>
 <li><a href="#get_page_size">get_page_size</a></li>
 <li><a href="#get_std_handle">get_std_handle</a></li>
 <li><a href="#get_windows_version_w">get_windows_version_w</a></li>
+<li><a href="#heap_alloc">heap_alloc</a></li>
 <li><a href="#heap_allocator_proc">heap_allocator_proc</a></li>
 <li><a href="#heap_allocator">heap_allocator</a></li>
-<li><a href="#heap_alloc">heap_alloc</a></li>
 <li><a href="#heap_free">heap_free</a></li>
 <li><a href="#heap_resize">heap_resize</a></li>
 <li><a href="#is_dir">is_dir</a></li>
@@ -1356,9 +1356,9 @@ NOTE: the value will be allocated with the supplied allocator</p>
 <li><a href="#make_directory">make_directory</a></li>
 <li><a href="#open">open</a></li>
 <li><a href="#pipe">pipe</a></li>
+<li><a href="#read_at_least">read_at_least</a></li>
 <li><a href="#read_at">read_at</a></li>
 <li><a href="#read">read</a></li>
-<li><a href="#read_at_least">read_at_least</a></li>
 <li><a href="#read_dir">read_dir</a></li>
 <li><a href="#read_entire_file_from_filename">read_entire_file_from_filename</a></li>
 <li><a href="#read_entire_file_from_handle">read_entire_file_from_handle</a></li>

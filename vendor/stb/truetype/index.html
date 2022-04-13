@@ -199,10 +199,10 @@ Procedures (60)</summary>
 <li><a href="#FreeSDF">FreeSDF</a></li>
 <li><a href="#FreeShape">FreeShape</a></li>
 <li><a href="#GetBakedQuad">GetBakedQuad</a></li>
-<li><a href="#GetCodepointBitmapBoxSubpixel">GetCodepointBitmapBoxSubpixel</a></li>
-<li><a href="#GetCodepointBitmap">GetCodepointBitmap</a></li>
 <li><a href="#GetCodepointBitmapBox">GetCodepointBitmapBox</a></li>
+<li><a href="#GetCodepointBitmapBoxSubpixel">GetCodepointBitmapBoxSubpixel</a></li>
 <li><a href="#GetCodepointBitmapSubpixel">GetCodepointBitmapSubpixel</a></li>
+<li><a href="#GetCodepointBitmap">GetCodepointBitmap</a></li>
 <li><a href="#GetCodepointBox">GetCodepointBox</a></li>
 <li><a href="#GetCodepointHMetrics">GetCodepointHMetrics</a></li>
 <li><a href="#GetCodepointKernAdvance">GetCodepointKernAdvance</a></li>
@@ -212,8 +212,8 @@ Procedures (60)</summary>
 <li><a href="#GetFontBoundingBox">GetFontBoundingBox</a></li>
 <li><a href="#GetFontNameString">GetFontNameString</a></li>
 <li><a href="#GetFontOffsetForIndex">GetFontOffsetForIndex</a></li>
-<li><a href="#GetFontVMetricsOS2">GetFontVMetricsOS2</a></li>
 <li><a href="#GetFontVMetrics">GetFontVMetrics</a></li>
+<li><a href="#GetFontVMetricsOS2">GetFontVMetricsOS2</a></li>
 <li><a href="#GetGlyphBitmap">GetGlyphBitmap</a></li>
 <li><a href="#GetGlyphBitmapBox">GetGlyphBitmapBox</a></li>
 <li><a href="#GetGlyphBitmapBoxSubpixel">GetGlyphBitmapBoxSubpixel</a></li>
@@ -235,16 +235,16 @@ Procedures (60)</summary>
 <li><a href="#MakeCodepointBitmapSubpixel">MakeCodepointBitmapSubpixel</a></li>
 <li><a href="#MakeCodepointBitmapSubpixelPrefilter">MakeCodepointBitmapSubpixelPrefilter</a></li>
 <li><a href="#MakeGlyphBitmapSubpixelPrefilter">MakeGlyphBitmapSubpixelPrefilter</a></li>
-<li><a href="#MakeGlyphBitmap">MakeGlyphBitmap</a></li>
 <li><a href="#MakeGlyphBitmapSubpixel">MakeGlyphBitmapSubpixel</a></li>
+<li><a href="#MakeGlyphBitmap">MakeGlyphBitmap</a></li>
 <li><a href="#POINT_SIZE">POINT_SIZE</a></li>
 <li><a href="#PackBegin">PackBegin</a></li>
 <li><a href="#PackEnd">PackEnd</a></li>
+<li><a href="#PackFontRangesPackRects">PackFontRangesPackRects</a></li>
+<li><a href="#PackFontRangesRenderIntoRects">PackFontRangesRenderIntoRects</a></li>
+<li><a href="#PackFontRange">PackFontRange</a></li>
 <li><a href="#PackFontRanges">PackFontRanges</a></li>
 <li><a href="#PackFontRangesGatherRects">PackFontRangesGatherRects</a></li>
-<li><a href="#PackFontRangesPackRects">PackFontRangesPackRects</a></li>
-<li><a href="#PackFontRange">PackFontRange</a></li>
-<li><a href="#PackFontRangesRenderIntoRects">PackFontRangesRenderIntoRects</a></li>
 <li><a href="#PackSetOversampling">PackSetOversampling</a></li>
 <li><a href="#PackSetSkipMissingCodepoints">PackSetSkipMissingCodepoints</a></li>
 <li><a href="#Rasterize">Rasterize</a></li>
@@ -876,6 +876,25 @@ see discussion of "BASELINE" above.</p>
 </details>
 </div>
 <div class="pkg-entity">
+<h3 id="GetCodepointBitmapBox"><span><a class="doc-id-link" href="#GetCodepointBitmapBox">GetCodepointBitmapBox<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/stb/truetype/stb_truetype.odin#L418"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">GetCodepointBitmapBox :: <span class="keyword-type">proc</span> "cdecl" (
+	font:             ^<a class="code-typename" href="/vendor/stb/truetype/#fontinfo">fontinfo</a>, 
+	codepoint:        <span class="doc-builtin">rune</span>, 
+	scale_x, scale_y: <span class="doc-builtin">f32</span>, 
+	ix0, iy0, ix1, 
+) ---</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>get the bbox of the bitmap centered around the glyph origin; so the
+bitmap width is ix1-ix0, height is iy1-iy0, and location to place
+the bitmap top left is (leftSideBearing*scale,iy0).
+(Note that the bitmap uses y-increases-down, but the shape uses
+y-increases-up, so CodepointBitmapBox and CodepointBox are inverted.)</p>
+</details>
+</div>
+<div class="pkg-entity">
 <h3 id="GetCodepointBitmapBoxSubpixel"><span><a class="doc-id-link" href="#GetCodepointBitmapBoxSubpixel">GetCodepointBitmapBoxSubpixel<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/stb/truetype/stb_truetype.odin#L422"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">GetCodepointBitmapBoxSubpixel :: <span class="keyword-type">proc</span> "cdecl" (
@@ -888,6 +907,22 @@ see discussion of "BASELINE" above.</p>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
 <p>same as stbtt_GetCodepointBitmapBox, but you can specify a subpixel
+shift for the character</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="GetCodepointBitmapSubpixel"><span><a class="doc-id-link" href="#GetCodepointBitmapSubpixel">GetCodepointBitmapSubpixel<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/stb/truetype/stb_truetype.odin#L397"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">GetCodepointBitmapSubpixel :: <span class="keyword-type">proc</span> "cdecl" (
+	info:                               ^<a class="code-typename" href="/vendor/stb/truetype/#fontinfo">fontinfo</a>, 
+	scale_x, scale_y, shift_x, shift_y: <span class="doc-builtin">f32</span>, 
+	codepoint:                          <span class="doc-builtin">rune</span>, 
+	width, height, xoff, 
+) -> [^]<span class="doc-builtin">u8</span> ---</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>the same as stbtt_GetCodepoitnBitmap, but you can specify a subpixel
 shift for the character</p>
 </details>
 </div>
@@ -909,41 +944,6 @@ antialiasing. 0 is no coverage (transparent), 255 is fully covered (opaque).
 *width & *height are filled out with the width & height of the bitmap,
 which is stored left-to-right, top-to-bottom.</p>
 <p>xoff/yoff are the offset it pixel space from the glyph origin to the top-left of the bitmap</p>
-</details>
-</div>
-<div class="pkg-entity">
-<h3 id="GetCodepointBitmapBox"><span><a class="doc-id-link" href="#GetCodepointBitmapBox">GetCodepointBitmapBox<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/stb/truetype/stb_truetype.odin#L418"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">GetCodepointBitmapBox :: <span class="keyword-type">proc</span> "cdecl" (
-	font:             ^<a class="code-typename" href="/vendor/stb/truetype/#fontinfo">fontinfo</a>, 
-	codepoint:        <span class="doc-builtin">rune</span>, 
-	scale_x, scale_y: <span class="doc-builtin">f32</span>, 
-	ix0, iy0, ix1, 
-) ---</pre>
-</div>
-<details class="odin-doc-toggle" open>
-<summary class="hideme"><span>&nbsp;</span></summary>
-<p>get the bbox of the bitmap centered around the glyph origin; so the
-bitmap width is ix1-ix0, height is iy1-iy0, and location to place
-the bitmap top left is (leftSideBearing*scale,iy0).
-(Note that the bitmap uses y-increases-down, but the shape uses
-y-increases-up, so CodepointBitmapBox and CodepointBox are inverted.)</p>
-</details>
-</div>
-<div class="pkg-entity">
-<h3 id="GetCodepointBitmapSubpixel"><span><a class="doc-id-link" href="#GetCodepointBitmapSubpixel">GetCodepointBitmapSubpixel<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/stb/truetype/stb_truetype.odin#L397"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">GetCodepointBitmapSubpixel :: <span class="keyword-type">proc</span> "cdecl" (
-	info:                               ^<a class="code-typename" href="/vendor/stb/truetype/#fontinfo">fontinfo</a>, 
-	scale_x, scale_y, shift_x, shift_y: <span class="doc-builtin">f32</span>, 
-	codepoint:                          <span class="doc-builtin">rune</span>, 
-	width, height, xoff, 
-) -> [^]<span class="doc-builtin">u8</span> ---</pre>
-</div>
-<details class="odin-doc-toggle" open>
-<summary class="hideme"><span>&nbsp;</span></summary>
-<p>the same as stbtt_GetCodepoitnBitmap, but you can specify a subpixel
-shift for the character</p>
 </details>
 </div>
 <div class="pkg-entity">
@@ -1062,18 +1062,6 @@ return '0' for index 0, and -1 for all other indices.</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="GetFontVMetricsOS2"><span><a class="doc-id-link" href="#GetFontVMetricsOS2">GetFontVMetricsOS2<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/stb/truetype/stb_truetype.odin#L285"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">GetFontVMetricsOS2 :: <span class="keyword-type">proc</span> "cdecl" (info: ^<a class="code-typename" href="/vendor/stb/truetype/#fontinfo">fontinfo</a>, typoAscent, typoDescent, typoLineGap: ^<span class="doc-builtin">i32</span>) -> <span class="doc-builtin">b32</span> ---</pre>
-</div>
-<details class="odin-doc-toggle" open>
-<summary class="hideme"><span>&nbsp;</span></summary>
-<p>analogous to GetFontVMetrics, but returns the "typographic" values from the OS/2
-table (specific to MS/Windows TTF files).</p>
-<p>Returns 1 on success (table present), 0 on failure.</p>
-</details>
-</div>
-<div class="pkg-entity">
 <h3 id="GetFontVMetrics"><span><a class="doc-id-link" href="#GetFontVMetrics">GetFontVMetrics<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/stb/truetype/stb_truetype.odin#L279"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">GetFontVMetrics :: <span class="keyword-type">proc</span> "cdecl" (info: ^<a class="code-typename" href="/vendor/stb/truetype/#fontinfo">fontinfo</a>, ascent, descent, lineGap: ^<span class="doc-builtin">i32</span>) ---</pre>
@@ -1086,6 +1074,18 @@ lineGap is the spacing between one row's descent and the next row's ascent...
 so you should advance the vertical position by "*ascent - *descent + *lineGap"
   these are expressed in unscaled coordinates, so you must multiply by
   the scale factor for a given size</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="GetFontVMetricsOS2"><span><a class="doc-id-link" href="#GetFontVMetricsOS2">GetFontVMetricsOS2<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/stb/truetype/stb_truetype.odin#L285"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">GetFontVMetricsOS2 :: <span class="keyword-type">proc</span> "cdecl" (info: ^<a class="code-typename" href="/vendor/stb/truetype/#fontinfo">fontinfo</a>, typoAscent, typoDescent, typoLineGap: ^<span class="doc-builtin">i32</span>) -> <span class="doc-builtin">b32</span> ---</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>analogous to GetFontVMetrics, but returns the "typographic" values from the OS/2
+table (specific to MS/Windows TTF files).</p>
+<p>Returns 1 on success (table present), 0 on failure.</p>
 </details>
 </div>
 <div class="pkg-entity">
@@ -1337,17 +1337,6 @@ is performed (see stbtt_PackSetOversampling)</p>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="MakeGlyphBitmap"><span><a class="doc-id-link" href="#MakeGlyphBitmap">MakeGlyphBitmap<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/stb/truetype/stb_truetype.odin#L428"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">MakeGlyphBitmap :: <span class="keyword-type">proc</span> "cdecl" (
-	info:                     ^<a class="code-typename" href="/vendor/stb/truetype/#fontinfo">fontinfo</a>, 
-	output:                   [^]<span class="doc-builtin">u8</span>, 
-	out_w, out_h, out_stride: <span class="doc-builtin">i32</span>, 
-	scale_x, scale_y:         <span class="doc-builtin">f32</span>, 
-) ---</pre>
-</div>
-</div>
-<div class="pkg-entity">
 <h3 id="MakeGlyphBitmapSubpixel"><span><a class="doc-id-link" href="#MakeGlyphBitmapSubpixel">MakeGlyphBitmapSubpixel<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/stb/truetype/stb_truetype.odin#L429"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">MakeGlyphBitmapSubpixel :: <span class="keyword-type">proc</span> "cdecl" (
@@ -1355,6 +1344,17 @@ is performed (see stbtt_PackSetOversampling)</p>
 	output:                             [^]<span class="doc-builtin">u8</span>, 
 	out_w, out_h, out_stride:           <span class="doc-builtin">i32</span>, 
 	scale_x, scale_y, shift_x, shift_y: <span class="doc-builtin">f32</span>, 
+) ---</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="MakeGlyphBitmap"><span><a class="doc-id-link" href="#MakeGlyphBitmap">MakeGlyphBitmap<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/stb/truetype/stb_truetype.odin#L428"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">MakeGlyphBitmap :: <span class="keyword-type">proc</span> "cdecl" (
+	info:                     ^<a class="code-typename" href="/vendor/stb/truetype/#fontinfo">fontinfo</a>, 
+	output:                   [^]<span class="doc-builtin">u8</span>, 
+	out_w, out_h, out_stride: <span class="doc-builtin">i32</span>, 
+	scale_x, scale_y:         <span class="doc-builtin">f32</span>, 
 ) ---</pre>
 </div>
 </div>
@@ -1396,40 +1396,15 @@ bilinear filtering).</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="PackFontRanges"><span><a class="doc-id-link" href="#PackFontRanges">PackFontRanges<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/stb/truetype/stb_truetype.odin#L145"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">PackFontRanges :: <span class="keyword-type">proc</span> "cdecl" (spc: ^<a class="code-typename" href="/vendor/stb/truetype/#pack_context">pack_context</a>, fontdata: [^]<span class="doc-builtin">u8</span>, font_index: <span class="doc-builtin">i32</span>, ranges: [^]<a class="code-typename" href="/vendor/stb/truetype/#pack_range">pack_range</a>, num_ranges: <span class="doc-builtin">i32</span>) -> <span class="doc-builtin">i32</span> ---</pre>
-</div>
-<details class="odin-doc-toggle" open>
-<summary class="hideme"><span>&nbsp;</span></summary>
-<p>Creates character bitmaps from multiple ranges of characters stored in
-ranges. This will usually create a better-packed bitmap than multiple
-calls to stbtt_PackFontRange. Note that you can call this multiple
-times within a single PackBegin/PackEnd.</p>
-</details>
-</div>
-<div class="pkg-entity">
-<h3 id="PackFontRangesGatherRects"><span><a class="doc-id-link" href="#PackFontRangesGatherRects">PackFontRangesGatherRects<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/stb/truetype/stb_truetype.odin#L185"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">PackFontRangesGatherRects :: <span class="keyword-type">proc</span> "cdecl" (spc: ^<a class="code-typename" href="/vendor/stb/truetype/#pack_context">pack_context</a>, info: ^<a class="code-typename" href="/vendor/stb/truetype/#fontinfo">fontinfo</a>, ranges: ^<a class="code-typename" href="/vendor/stb/truetype/#pack_range">pack_range</a>, num_ranges: <span class="doc-builtin">i32</span>, rects: [^]stb_rect_pack.<a class="code-typename" href="/vendor/stb/rect_pack/#Rect">Rect</a>) -> <span class="doc-builtin">i32</span> ---</pre>
-</div>
-<details class="odin-doc-toggle" open>
-<summary class="hideme"><span>&nbsp;</span></summary>
-<p>Calling these functions in sequence is roughly equivalent to calling
-stbtt_PackFontRanges(). If you more control over the packing of multiple
-fonts, or if you want to pack custom data into a font texture, take a look
-at the source to of stbtt_PackFontRanges() and create a custom version
-using these functions, e.g. call GatherRects multiple times,
-building up a single array of rects, then call PackRects once,
-then call RenderIntoRects repeatedly. This may result in a
-better packing than calling PackFontRanges multiple times
-(or it may not).</p>
-</details>
-</div>
-<div class="pkg-entity">
 <h3 id="PackFontRangesPackRects"><span><a class="doc-id-link" href="#PackFontRangesPackRects">PackFontRangesPackRects<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/stb/truetype/stb_truetype.odin#L186"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">PackFontRangesPackRects :: <span class="keyword-type">proc</span> "cdecl" (spc: ^<a class="code-typename" href="/vendor/stb/truetype/#pack_context">pack_context</a>, rects: [^]stb_rect_pack.<a class="code-typename" href="/vendor/stb/rect_pack/#Rect">Rect</a>, num_rects: <span class="doc-builtin">i32</span>) ---</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="PackFontRangesRenderIntoRects"><span><a class="doc-id-link" href="#PackFontRangesRenderIntoRects">PackFontRangesRenderIntoRects<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/stb/truetype/stb_truetype.odin#L187"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">PackFontRangesRenderIntoRects :: <span class="keyword-type">proc</span> "cdecl" (spc: ^<a class="code-typename" href="/vendor/stb/truetype/#pack_context">pack_context</a>, info: ^<a class="code-typename" href="/vendor/stb/truetype/#fontinfo">fontinfo</a>, ranges: ^<a class="code-typename" href="/vendor/stb/truetype/#pack_range">pack_range</a>, num_ranges: <span class="doc-builtin">i32</span>, rects: [^]stb_rect_pack.<a class="code-typename" href="/vendor/stb/rect_pack/#Rect">Rect</a>) -> <span class="doc-builtin">i32</span> ---</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -1459,10 +1434,35 @@ and pass that result as 'font_size':
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="PackFontRangesRenderIntoRects"><span><a class="doc-id-link" href="#PackFontRangesRenderIntoRects">PackFontRangesRenderIntoRects<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/stb/truetype/stb_truetype.odin#L187"><em>Source</em></a></div></h3>
+<h3 id="PackFontRanges"><span><a class="doc-id-link" href="#PackFontRanges">PackFontRanges<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/stb/truetype/stb_truetype.odin#L145"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">PackFontRangesRenderIntoRects :: <span class="keyword-type">proc</span> "cdecl" (spc: ^<a class="code-typename" href="/vendor/stb/truetype/#pack_context">pack_context</a>, info: ^<a class="code-typename" href="/vendor/stb/truetype/#fontinfo">fontinfo</a>, ranges: ^<a class="code-typename" href="/vendor/stb/truetype/#pack_range">pack_range</a>, num_ranges: <span class="doc-builtin">i32</span>, rects: [^]stb_rect_pack.<a class="code-typename" href="/vendor/stb/rect_pack/#Rect">Rect</a>) -> <span class="doc-builtin">i32</span> ---</pre>
+<pre class="doc-code">PackFontRanges :: <span class="keyword-type">proc</span> "cdecl" (spc: ^<a class="code-typename" href="/vendor/stb/truetype/#pack_context">pack_context</a>, fontdata: [^]<span class="doc-builtin">u8</span>, font_index: <span class="doc-builtin">i32</span>, ranges: [^]<a class="code-typename" href="/vendor/stb/truetype/#pack_range">pack_range</a>, num_ranges: <span class="doc-builtin">i32</span>) -> <span class="doc-builtin">i32</span> ---</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Creates character bitmaps from multiple ranges of characters stored in
+ranges. This will usually create a better-packed bitmap than multiple
+calls to stbtt_PackFontRange. Note that you can call this multiple
+times within a single PackBegin/PackEnd.</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="PackFontRangesGatherRects"><span><a class="doc-id-link" href="#PackFontRangesGatherRects">PackFontRangesGatherRects<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/stb/truetype/stb_truetype.odin#L185"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">PackFontRangesGatherRects :: <span class="keyword-type">proc</span> "cdecl" (spc: ^<a class="code-typename" href="/vendor/stb/truetype/#pack_context">pack_context</a>, info: ^<a class="code-typename" href="/vendor/stb/truetype/#fontinfo">fontinfo</a>, ranges: ^<a class="code-typename" href="/vendor/stb/truetype/#pack_range">pack_range</a>, num_ranges: <span class="doc-builtin">i32</span>, rects: [^]stb_rect_pack.<a class="code-typename" href="/vendor/stb/rect_pack/#Rect">Rect</a>) -> <span class="doc-builtin">i32</span> ---</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Calling these functions in sequence is roughly equivalent to calling
+stbtt_PackFontRanges(). If you more control over the packing of multiple
+fonts, or if you want to pack custom data into a font texture, take a look
+at the source to of stbtt_PackFontRanges() and create a custom version
+using these functions, e.g. call GatherRects multiple times,
+building up a single array of rects, then call PackRects once,
+then call RenderIntoRects repeatedly. This may result in a
+better packing than calling PackFontRanges multiple times
+(or it may not).</p>
+</details>
 </div>
 <div class="pkg-entity">
 <h3 id="PackSetOversampling"><span><a class="doc-id-link" href="#PackSetOversampling">PackSetOversampling<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/stb/truetype/stb_truetype.odin#L161"><em>Source</em></a></div></h3>
@@ -1554,7 +1554,7 @@ so if you prefer to measure height by the ascent only, use a similar calculation
 <li><a href="https://github.com/odin-lang/Odin/tree/master/vendor/stb/truetype/stb_truetype.odin">stb_truetype.odin</a></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2022-04 (vendor "odin") Windows_amd64 @ 2022-04-12 21:09:40.260018000 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2022-04 (vendor "odin") Windows_amd64 @ 2022-04-13 21:09:07.498658600 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
@@ -1634,10 +1634,10 @@ so if you prefer to measure height by the ascent only, use a similar calculation
 <li><a href="#FreeSDF">FreeSDF</a></li>
 <li><a href="#FreeShape">FreeShape</a></li>
 <li><a href="#GetBakedQuad">GetBakedQuad</a></li>
-<li><a href="#GetCodepointBitmapBoxSubpixel">GetCodepointBitmapBoxSubpixel</a></li>
-<li><a href="#GetCodepointBitmap">GetCodepointBitmap</a></li>
 <li><a href="#GetCodepointBitmapBox">GetCodepointBitmapBox</a></li>
+<li><a href="#GetCodepointBitmapBoxSubpixel">GetCodepointBitmapBoxSubpixel</a></li>
 <li><a href="#GetCodepointBitmapSubpixel">GetCodepointBitmapSubpixel</a></li>
+<li><a href="#GetCodepointBitmap">GetCodepointBitmap</a></li>
 <li><a href="#GetCodepointBox">GetCodepointBox</a></li>
 <li><a href="#GetCodepointHMetrics">GetCodepointHMetrics</a></li>
 <li><a href="#GetCodepointKernAdvance">GetCodepointKernAdvance</a></li>
@@ -1647,8 +1647,8 @@ so if you prefer to measure height by the ascent only, use a similar calculation
 <li><a href="#GetFontBoundingBox">GetFontBoundingBox</a></li>
 <li><a href="#GetFontNameString">GetFontNameString</a></li>
 <li><a href="#GetFontOffsetForIndex">GetFontOffsetForIndex</a></li>
-<li><a href="#GetFontVMetricsOS2">GetFontVMetricsOS2</a></li>
 <li><a href="#GetFontVMetrics">GetFontVMetrics</a></li>
+<li><a href="#GetFontVMetricsOS2">GetFontVMetricsOS2</a></li>
 <li><a href="#GetGlyphBitmap">GetGlyphBitmap</a></li>
 <li><a href="#GetGlyphBitmapBox">GetGlyphBitmapBox</a></li>
 <li><a href="#GetGlyphBitmapBoxSubpixel">GetGlyphBitmapBoxSubpixel</a></li>
@@ -1670,16 +1670,16 @@ so if you prefer to measure height by the ascent only, use a similar calculation
 <li><a href="#MakeCodepointBitmapSubpixel">MakeCodepointBitmapSubpixel</a></li>
 <li><a href="#MakeCodepointBitmapSubpixelPrefilter">MakeCodepointBitmapSubpixelPrefilter</a></li>
 <li><a href="#MakeGlyphBitmapSubpixelPrefilter">MakeGlyphBitmapSubpixelPrefilter</a></li>
-<li><a href="#MakeGlyphBitmap">MakeGlyphBitmap</a></li>
 <li><a href="#MakeGlyphBitmapSubpixel">MakeGlyphBitmapSubpixel</a></li>
+<li><a href="#MakeGlyphBitmap">MakeGlyphBitmap</a></li>
 <li><a href="#POINT_SIZE">POINT_SIZE</a></li>
 <li><a href="#PackBegin">PackBegin</a></li>
 <li><a href="#PackEnd">PackEnd</a></li>
+<li><a href="#PackFontRangesPackRects">PackFontRangesPackRects</a></li>
+<li><a href="#PackFontRangesRenderIntoRects">PackFontRangesRenderIntoRects</a></li>
+<li><a href="#PackFontRange">PackFontRange</a></li>
 <li><a href="#PackFontRanges">PackFontRanges</a></li>
 <li><a href="#PackFontRangesGatherRects">PackFontRangesGatherRects</a></li>
-<li><a href="#PackFontRangesPackRects">PackFontRangesPackRects</a></li>
-<li><a href="#PackFontRange">PackFontRange</a></li>
-<li><a href="#PackFontRangesRenderIntoRects">PackFontRangesRenderIntoRects</a></li>
 <li><a href="#PackSetOversampling">PackSetOversampling</a></li>
 <li><a href="#PackSetSkipMissingCodepoints">PackSetSkipMissingCodepoints</a></li>
 <li><a href="#Rasterize">Rasterize</a></li>
