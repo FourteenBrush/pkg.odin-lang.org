@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>package unicode/utf16 - pkg.odin-lang.org</title>	<link rel="stylesheet" type="text/css" href="https://odin-lang.org/scss/custom.min.css">
+	<title>package image/qoi - pkg.odin-lang.org</title>	<link rel="stylesheet" type="text/css" href="https://odin-lang.org/scss/custom.min.css">
 	<link rel=stylesheet href="//odin-lang.org/lib/highlight/styles/github-dark.min.css">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3"/>
 	<script src="//odin-lang.org/lib/highlight/highlight.min.js"></script>
@@ -113,7 +113,7 @@
 <li class="nav-item"><a href="/core/hash">hash</a></li>
 <li class="nav-item"><a href="/core/image">image</a><ul>
 <li><a href="/core/image/png">png</a></li>
-<li><a href="/core/image/qoi">qoi</a></li>
+<li><a class="active" href="/core/image/qoi">qoi</a></li>
 </ul>
 
 </li>
@@ -172,7 +172,7 @@
 <li class="nav-item"><a href="/core/thread">thread</a></li>
 <li class="nav-item"><a href="/core/time">time</a></li>
 <li class="nav-item"><a href="/core/unicode">unicode</a><ul>
-<li><a class="active" href="/core/unicode/utf16">utf16</a></li>
+<li><a href="/core/unicode/utf16">utf16</a></li>
 <li><a href="/core/unicode/utf8">utf8</a></li>
 <li><a href="/core/unicode/utf8/utf8string">utf8/utf8string</a></li>
 </ul>
@@ -185,19 +185,32 @@
 <nav class="pkg-breadcrumb" aria-label="breadcrumb">
 <ol class="breadcrumb">
 <li class="breadcrumb-item"><a href="/core">core</a></li>
-<li class="breadcrumb-item"><a href="/core/unicode">unicode</a></li>
-<li class="breadcrumb-item active" aria-current="page"><a href="/core/unicode/utf16">utf16</a></li>
+<li class="breadcrumb-item"><a href="/core/image">image</a></li>
+<li class="breadcrumb-item active" aria-current="page"><a href="/core/image/qoi">qoi</a></li>
 </ol>
 </nav>
-<h1>package core:unicode/utf16<div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/unicode/utf16"><em>Source</em></a></div></h1>
-<div id="algolia-search" data-path="core/unicode/utf16"></div>
+<h1>package core:image/qoi<div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/qoi"><em>Source</em></a></div></h1>
+<div id="algolia-search" data-path="core/image/qoi"></div>
+<h2>Overview</h2>
+<div id="pkg-overview">
+<p>package qoi implements a QOI image reader</p>
+<p>The QOI specification is at https://qoiformat.org.</p>
+</div>
 <div id="pkg-index">
 <h2>Index</h2>
 <div>
 <details class="doc-index" id="doc-index-Types" aria-labelledby="#doc-index-Types-header">
 <summary id="#doc-index-Types-header">
-Types (0)</summary>
-<p>This section is empty.</p>
+Types (7)</summary>
+<ul>
+<li><a href="#Error">Error</a></li>
+<li><a href="#General">General</a></li>
+<li><a href="#Image">Image</a></li>
+<li><a href="#Options">Options</a></li>
+<li><a href="#QOI_Opcode_Tag">QOI_Opcode_Tag</a></li>
+<li><a href="#RGBA_Pixel">RGBA_Pixel</a></li>
+<li><a href="#RGB_Pixel">RGB_Pixel</a></li>
+</ul>
 </details>
 </div>
 <div>
@@ -205,8 +218,8 @@ Types (0)</summary>
 <summary id="#doc-index-Constants-header">
 Constants (2)</summary>
 <ul>
-<li><a href="#MAX_RUNE">MAX_RUNE</a></li>
-<li><a href="#REPLACEMENT_CHAR">REPLACEMENT_CHAR</a></li>
+<li><a href="#QOI_Data_Mask">QOI_Data_Mask</a></li>
+<li><a href="#QOI_Opcode_Mask">QOI_Opcode_Mask</a></li>
 </ul>
 </details>
 </div>
@@ -222,40 +235,93 @@ Variables (0)</summary>
 <summary id="#doc-index-Procedures-header">
 Procedures (7)</summary>
 <ul>
-<li><a href="#decode_surrogate_pair">decode_surrogate_pair</a></li>
-<li><a href="#decode_to_utf8">decode_to_utf8</a></li>
-<li><a href="#decode">decode</a></li>
-<li><a href="#encode_surrogate_pair">encode_surrogate_pair</a></li>
-<li><a href="#encode">encode</a></li>
-<li><a href="#encode_string">encode_string</a></li>
-<li><a href="#is_surrogate">is_surrogate</a></li>
+<li><a href="#destroy">destroy</a></li>
+<li><a href="#load_from_context">load_from_context</a></li>
+<li><a href="#load_from_file">load_from_file</a></li>
+<li><a href="#load_from_slice">load_from_slice</a></li>
+<li><a href="#qoi_hash">qoi_hash</a></li>
+<li><a href="#save_to_file">save_to_file</a></li>
+<li><a href="#save_to_memory">save_to_memory</a></li>
 </ul>
 </details>
 </div>
 <div>
 <details class="doc-index" id="doc-index-Procedure Groups" aria-labelledby="#doc-index-Procedure Groups-header">
 <summary id="#doc-index-Procedure Groups-header">
-Procedure Groups (0)</summary>
-<p>This section is empty.</p>
+Procedure Groups (2)</summary>
+<ul>
+<li><a href="#load">load</a></li>
+<li><a href="#save">save</a></li>
+</ul>
 </details>
 </div>
 </div>
 <h2 id="pkg-Types" class="pkg-header">Types</h2>
 <section class="documentation">
-<p>This section is empty.</p>
+<div class="pkg-entity">
+<h3 id="Error"><span><a class="doc-id-link" href="#Error">Error<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/qoi/qoi.odin#L21"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Error :: image.<a class="code-typename" href="/core/image/#Error">Error</a></pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="General"><span><a class="doc-id-link" href="#General">General<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/qoi/qoi.odin#L22"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">General :: compress.<a class="code-typename" href="/core/compress/#General_Error">General_Error</a></pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Image"><span><a class="doc-id-link" href="#Image">Image<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/qoi/qoi.odin#L23"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Image :: image.<a class="code-typename" href="/core/image/#Image">Image</a></pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Options"><span><a class="doc-id-link" href="#Options">Options<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/qoi/qoi.odin#L24"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Options :: image.<a class="code-typename" href="/core/image/#Options">Options</a></pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="QOI_Opcode_Tag"><span><a class="doc-id-link" href="#QOI_Opcode_Tag">QOI_Opcode_Tag<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/qoi/qoi.odin#L386"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">QOI_Opcode_Tag :: <span class="keyword-type">enum</span> <span class="doc-builtin">u8</span> {
+	<span class="comment">// 2-bit tags</span>
+	INDEX = 0,   <span class="comment">// 6-bit index into color array follows</span>
+	DIFF  = 64,  <span class="comment">// 3x (RGB) 2-bit difference follows (-2..1), bias of 2.</span>
+	LUMA  = 128, <span class="comment">// Luma difference</span>
+	RUN   = 192, <span class="comment">// Run length encoding, bias -1</span>
+	<span class="comment">// 8-bit tags</span>
+	RGB   = 254, <span class="comment">// Raw RGB  pixel follows</span>
+	RGBA  = 255, <span class="comment">// Raw RGBA pixel follows</span>
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="RGBA_Pixel"><span><a class="doc-id-link" href="#RGBA_Pixel">RGBA_Pixel<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/qoi/qoi.odin#L27"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">RGBA_Pixel :: [4]<span class="doc-builtin">u8</span></pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="RGB_Pixel"><span><a class="doc-id-link" href="#RGB_Pixel">RGB_Pixel<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/qoi/qoi.odin#L26"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">RGB_Pixel :: [3]<span class="doc-builtin">u8</span></pre>
+</div>
+</div>
 </section>
 <h2 id="pkg-Constants" class="pkg-header">Constants</h2>
 <section class="documentation">
 <div class="pkg-entity">
-<h3 id="MAX_RUNE"><span><a class="doc-id-link" href="#MAX_RUNE">MAX_RUNE<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/unicode/utf16/utf16.odin#L6"><em>Source</em></a></div></h3>
+<h3 id="QOI_Data_Mask"><span><a class="doc-id-link" href="#QOI_Data_Mask">QOI_Data_Mask<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/qoi/qoi.odin#L399"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">MAX_RUNE :: '\U0010ffff'</pre>
+<pre class="doc-code">QOI_Data_Mask :: 0b0011_1111</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="REPLACEMENT_CHAR"><span><a class="doc-id-link" href="#REPLACEMENT_CHAR">REPLACEMENT_CHAR<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/unicode/utf16/utf16.odin#L5"><em>Source</em></a></div></h3>
+<h3 id="QOI_Opcode_Mask"><span><a class="doc-id-link" href="#QOI_Opcode_Mask">QOI_Opcode_Mask<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/qoi/qoi.odin#L398"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">REPLACEMENT_CHAR :: '\ufffd'</pre>
+<pre class="doc-code">QOI_Opcode_Mask :: 0b1100_0000</pre>
 </div>
 </div>
 </section>
@@ -266,75 +332,114 @@ Procedure Groups (0)</summary>
 <h2 id="pkg-Procedures" class="pkg-header">Procedures</h2>
 <section class="documentation">
 <div class="pkg-entity">
-<h3 id="decode_surrogate_pair"><span><a class="doc-id-link" href="#decode_surrogate_pair">decode_surrogate_pair<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/unicode/utf16/utf16.odin#L18"><em>Source</em></a></div></h3>
+<h3 id="destroy"><span><a class="doc-id-link" href="#destroy">destroy<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/qoi/qoi.odin#L369"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">decode_surrogate_pair :: <span class="keyword-type">proc</span> "odin" (r1, r2: <span class="doc-builtin">rune</span>) -> <span class="doc-builtin">rune</span> {…}</pre>
+<pre class="doc-code">destroy :: <span class="keyword-type">proc</span> "odin" (img: ^image.<a class="code-typename" href="/core/image/#Image">Image</a>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Cleanup of image-specific data.</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="load_from_context"><span><a class="doc-id-link" href="#load_from_context">load_from_context<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/qoi/qoi.odin#L209"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">load_from_context :: <span class="keyword-type">proc</span> "odin" (ctx: ^$, options: image.<a class="code-typename" href="/core/image/#Options">Options</a> = Options{}, allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> (img: ^image.<a class="code-typename" href="/core/image/#Image">Image</a>, err: image.<a class="code-typename" href="/core/image/#Error">Error</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="decode_to_utf8"><span><a class="doc-id-link" href="#decode_to_utf8">decode_to_utf8<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/unicode/utf16/utf16.odin#L110"><em>Source</em></a></div></h3>
+<h3 id="load_from_file"><span><a class="doc-id-link" href="#load_from_file">load_from_file<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/qoi/qoi.odin#L194"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">decode_to_utf8 :: <span class="keyword-type">proc</span> "odin" (d: []<span class="doc-builtin">u8</span>, s: []<span class="doc-builtin">u16</span>) -> (n: <span class="doc-builtin">int</span>) {…}</pre>
+<pre class="doc-code">load_from_file :: <span class="keyword-type">proc</span> "odin" (filename: <span class="doc-builtin">string</span>, options: image.<a class="code-typename" href="/core/image/#Options">Options</a> = Options{}, allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> (img: ^image.<a class="code-typename" href="/core/image/#Image">Image</a>, err: image.<a class="code-typename" href="/core/image/#Error">Error</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="decode"><span><a class="doc-id-link" href="#decode">decode<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/unicode/utf16/utf16.odin#L86"><em>Source</em></a></div></h3>
+<h3 id="load_from_slice"><span><a class="doc-id-link" href="#load_from_slice">load_from_slice<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/qoi/qoi.odin#L185"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">decode :: <span class="keyword-type">proc</span> "odin" (d: []<span class="doc-builtin">rune</span>, s: []<span class="doc-builtin">u16</span>) -> (n: <span class="doc-builtin">int</span>) {…}</pre>
+<pre class="doc-code">load_from_slice :: <span class="keyword-type">proc</span> "odin" (slice: []<span class="doc-builtin">u8</span>, options: image.<a class="code-typename" href="/core/image/#Options">Options</a> = Options{}, allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> (img: ^image.<a class="code-typename" href="/core/image/#Image">Image</a>, err: image.<a class="code-typename" href="/core/image/#Error">Error</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="encode_surrogate_pair"><span><a class="doc-id-link" href="#encode_surrogate_pair">encode_surrogate_pair<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/unicode/utf16/utf16.odin#L26"><em>Source</em></a></div></h3>
+<h3 id="qoi_hash"><span><a class="doc-id-link" href="#qoi_hash">qoi_hash<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/qoi/qoi.odin#L401"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">encode_surrogate_pair :: <span class="keyword-type">proc</span> "odin" (c: <span class="doc-builtin">rune</span>) -> (r1, r2: <span class="doc-builtin">rune</span>) {…}</pre>
+<pre class="doc-code">qoi_hash :: <span class="keyword-type">proc</span> "odin" (pixel: [4]<span class="doc-builtin">u8</span>) -> (index: <span class="doc-builtin">u8</span>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="encode"><span><a class="doc-id-link" href="#encode">encode<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/unicode/utf16/utf16.odin#L35"><em>Source</em></a></div></h3>
+<h3 id="save_to_file"><span><a class="doc-id-link" href="#save_to_file">save_to_file<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/qoi/qoi.odin#L171"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">encode :: <span class="keyword-type">proc</span> "odin" (d: []<span class="doc-builtin">u16</span>, s: []<span class="doc-builtin">rune</span>) -> <span class="doc-builtin">int</span> {…}</pre>
+<pre class="doc-code">save_to_file :: <span class="keyword-type">proc</span> "odin" (output: <span class="doc-builtin">string</span>, img: ^image.<a class="code-typename" href="/core/image/#Image">Image</a>, options: image.<a class="code-typename" href="/core/image/#Options">Options</a> = Options{}, allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> (err: image.<a class="code-typename" href="/core/image/#Error">Error</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="encode_string"><span><a class="doc-id-link" href="#encode_string">encode_string<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/unicode/utf16/utf16.odin#L61"><em>Source</em></a></div></h3>
+<h3 id="save_to_memory"><span><a class="doc-id-link" href="#save_to_memory">save_to_memory<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/qoi/qoi.odin#L29"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">encode_string :: <span class="keyword-type">proc</span> "odin" (d: []<span class="doc-builtin">u16</span>, s: <span class="doc-builtin">string</span>) -> <span class="doc-builtin">int</span> {…}</pre>
-</div>
-</div>
-<div class="pkg-entity">
-<h3 id="is_surrogate"><span><a class="doc-id-link" href="#is_surrogate">is_surrogate<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/unicode/utf16/utf16.odin#L14"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">is_surrogate :: <span class="keyword-type">proc</span> "odin" (r: <span class="doc-builtin">rune</span>) -> <span class="doc-builtin">bool</span> {…}</pre>
+<pre class="doc-code">save_to_memory :: <span class="keyword-type">proc</span> "odin" (output: ^bytes.<a class="code-typename" href="/core/bytes/#Buffer">Buffer</a>, img: ^image.<a class="code-typename" href="/core/image/#Image">Image</a>, options: image.<a class="code-typename" href="/core/image/#Options">Options</a> = Options{}, allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> (err: image.<a class="code-typename" href="/core/image/#Error">Error</a>) {…}</pre>
 </div>
 </div>
 </section>
 <h2 id="pkg-Procedure Groups" class="pkg-header">Procedure Groups</h2>
 <section class="documentation">
-<p>This section is empty.</p>
+<div class="pkg-entity">
+<h3 id="load"><span><a class="doc-id-link" href="#load">load<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/qoi/qoi.odin#L364"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">load :: proc{
+	<a class="code-procedure" href="/core/image/qoi/#load_from_file">load_from_file</a>,
+	<a class="code-procedure" href="/core/image/qoi/#load_from_slice">load_from_slice</a>,
+	<a class="code-procedure" href="/core/image/qoi/#load_from_context">load_from_context</a>,
+}
+</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="save"><span><a class="doc-id-link" href="#save">save<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/qoi/qoi.odin#L183"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">save :: proc{
+	<a class="code-procedure" href="/core/image/qoi/#save_to_memory">save_to_memory</a>,
+	<a class="code-procedure" href="/core/image/qoi/#save_to_file">save_to_file</a>,
+}
+</pre>
+</div>
+</div>
 </section>
 <h2 id="pkg-source-files">Source Files</h2>
 <ul>
-<li><a href="https://github.com/odin-lang/Odin/tree/master/core/unicode/utf16/utf16.odin">utf16.odin</a></li>
+<li><a href="https://github.com/odin-lang/Odin/tree/master/core/image/qoi/qoi.odin">qoi.odin</a></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2022-04 (vendor "odin") Windows_amd64 @ 2022-04-17 21:08:36.498952300 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2022-04 (vendor "odin") Windows_amd64 @ 2022-04-17 21:08:36.452952700 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
 <ul>
+<li><a href="#pkg-overview">Overview</a><li><a href="#pkg-Types">Types</a><ul>
+<li><a href="#Error">Error</a></li>
+<li><a href="#General">General</a></li>
+<li><a href="#Image">Image</a></li>
+<li><a href="#Options">Options</a></li>
+<li><a href="#QOI_Opcode_Tag">QOI_Opcode_Tag</a></li>
+<li><a href="#RGBA_Pixel">RGBA_Pixel</a></li>
+<li><a href="#RGB_Pixel">RGB_Pixel</a></li>
+</ul>
+</li>
 <li><a href="#pkg-Constants">Constants</a><ul>
-<li><a href="#MAX_RUNE">MAX_RUNE</a></li>
-<li><a href="#REPLACEMENT_CHAR">REPLACEMENT_CHAR</a></li>
+<li><a href="#QOI_Data_Mask">QOI_Data_Mask</a></li>
+<li><a href="#QOI_Opcode_Mask">QOI_Opcode_Mask</a></li>
 </ul>
 </li>
 <li><a href="#pkg-Procedures">Procedures</a><ul>
-<li><a href="#decode_surrogate_pair">decode_surrogate_pair</a></li>
-<li><a href="#decode_to_utf8">decode_to_utf8</a></li>
-<li><a href="#decode">decode</a></li>
-<li><a href="#encode_surrogate_pair">encode_surrogate_pair</a></li>
-<li><a href="#encode">encode</a></li>
-<li><a href="#encode_string">encode_string</a></li>
-<li><a href="#is_surrogate">is_surrogate</a></li>
+<li><a href="#destroy">destroy</a></li>
+<li><a href="#load_from_context">load_from_context</a></li>
+<li><a href="#load_from_file">load_from_file</a></li>
+<li><a href="#load_from_slice">load_from_slice</a></li>
+<li><a href="#qoi_hash">qoi_hash</a></li>
+<li><a href="#save_to_file">save_to_file</a></li>
+<li><a href="#save_to_memory">save_to_memory</a></li>
+</ul>
+</li>
+<li><a href="#pkg-Procedure Groups">Procedure Groups</a><ul>
+<li><a href="#load">load</a></li>
+<li><a href="#save">save</a></li>
 </ul>
 </li>
 <li><a href="#pkg-source-files">Source Files</a></ul>
