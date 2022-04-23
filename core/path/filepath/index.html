@@ -213,9 +213,10 @@ Types (3)</summary>
 <div>
 <details class="doc-index" id="doc-index-Constants" aria-labelledby="#doc-index-Constants-header">
 <summary id="#doc-index-Constants-header">
-Constants (3)</summary>
+Constants (4)</summary>
 <ul>
 <li><a href="#LIST_SEPARATOR">LIST_SEPARATOR</a></li>
+<li><a href="#SEPARATOR_CHARS">SEPARATOR_CHARS</a></li>
 <li><a href="#SEPARATOR">SEPARATOR</a></li>
 <li><a href="#SEPARATOR_STRING">SEPARATOR_STRING</a></li>
 </ul>
@@ -231,7 +232,7 @@ Variables (0)</summary>
 <div>
 <details class="doc-index" id="doc-index-Procedures" aria-labelledby="#doc-index-Procedures-header">
 <summary id="#doc-index-Procedures-header">
-Procedures (21)</summary>
+Procedures (24)</summary>
 <ul>
 <li><a href="#abs">abs</a></li>
 <li><a href="#base">base</a></li>
@@ -246,10 +247,13 @@ Procedures (21)</summary>
 <li><a href="#is_separator">is_separator</a></li>
 <li><a href="#join">join</a></li>
 <li><a href="#join_non_empty">join_non_empty</a></li>
+<li><a href="#long_ext">long_ext</a></li>
 <li><a href="#match">match</a></li>
 <li><a href="#rel">rel</a></li>
+<li><a href="#short_stem">short_stem</a></li>
 <li><a href="#split_list">split_list</a></li>
 <li><a href="#split">split</a></li>
+<li><a href="#stem">stem</a></li>
 <li><a href="#to_slash">to_slash</a></li>
 <li><a href="#volume_name_len">volume_name_len</a></li>
 <li><a href="#volume_name">volume_name</a></li>
@@ -277,7 +281,7 @@ Procedure Groups (0)</summary>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="Relative_Error"><span><a class="doc-id-link" href="#Relative_Error">Relative_Error<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/path/filepath/path.odin#L202"><em>Source</em></a></div></h3>
+<h3 id="Relative_Error"><span><a class="doc-id-link" href="#Relative_Error">Relative_Error<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/path/filepath/path.odin#L317"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Relative_Error :: <span class="keyword-type">enum</span> <span class="doc-builtin">int</span> {
 	None, 
@@ -315,6 +319,12 @@ when 'skip_dir' is invoked on a non-directory. 'walk' skips the remaining files 
 </div>
 </div>
 <div class="pkg-entity">
+<h3 id="SEPARATOR_CHARS"><span><a class="doc-id-link" href="#SEPARATOR_CHARS">SEPARATOR_CHARS<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/path/filepath/path.odin#L7"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">SEPARATOR_CHARS :: `/\`</pre>
+</div>
+</div>
+<div class="pkg-entity">
 <h3 id="SEPARATOR"><span><a class="doc-id-link" href="#SEPARATOR">SEPARATOR<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/path/filepath/path_windows.odin#L7"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">SEPARATOR :: '\\'</pre>
@@ -340,31 +350,58 @@ when 'skip_dir' is invoked on a non-directory. 'walk' skips the remaining files 
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="base"><span><a class="doc-id-link" href="#base">base<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/path/filepath/path.odin#L72"><em>Source</em></a></div></h3>
+<h3 id="base"><span><a class="doc-id-link" href="#base">base<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/path/filepath/path.odin#L84"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">base :: <span class="keyword-type">proc</span> "odin" (path: <span class="doc-builtin">string</span>) -> <span class="doc-builtin">string</span> {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Gets the file name and extension from a path.</p>
+<pre>i.e:
+  'path/to/name.tar.gz' -> 'name.tar.gz'
+  'path/to/name.txt'    -> 'name.txt'
+  'path/to/name'        -> 'name'
+
+Returns "." if the path is an empty string.
+</pre>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="clean"><span><a class="doc-id-link" href="#clean">clean<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/path/filepath/path.odin#L98"><em>Source</em></a></div></h3>
+<h3 id="clean"><span><a class="doc-id-link" href="#clean">clean<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/path/filepath/path.odin#L222"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">clean :: <span class="keyword-type">proc</span> "odin" (path: <span class="doc-builtin">string</span>, allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> <span class="doc-builtin">string</span> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="dir"><span><a class="doc-id-link" href="#dir">dir<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/path/filepath/path.odin#L286"><em>Source</em></a></div></h3>
+<h3 id="dir"><span><a class="doc-id-link" href="#dir">dir<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/path/filepath/path.odin#L401"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">dir :: <span class="keyword-type">proc</span> "odin" (path: <span class="doc-builtin">string</span>, allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> <span class="doc-builtin">string</span> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="ext"><span><a class="doc-id-link" href="#ext">ext<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/path/filepath/path.odin#L192"><em>Source</em></a></div></h3>
+<h3 id="ext"><span><a class="doc-id-link" href="#ext">ext<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/path/filepath/path.odin#L180"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">ext :: <span class="keyword-type">proc</span> "odin" (path: <span class="doc-builtin">string</span>) -> <span class="doc-builtin">string</span> {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Gets the file extension from a path, including the dot.</p>
+<pre>The file extension is such that stem(path) + ext(path) = base(path).
+
+Only the last dot is considered when splitting the file extension.
+See `long_ext`.
+
+i.e:
+  'name.tar.gz' -> '.gz'
+  'name.txt'    -> '.txt'
+
+Returns an empty string if there is no dot.
+Returns an empty string if there is a trailing path separator.
+</pre>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="from_slash"><span><a class="doc-id-link" href="#from_slash">from_slash<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/path/filepath/path.odin#L178"><em>Source</em></a></div></h3>
+<h3 id="from_slash"><span><a class="doc-id-link" href="#from_slash">from_slash<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/path/filepath/path.odin#L302"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">from_slash :: <span class="keyword-type">proc</span> "odin" (path: <span class="doc-builtin">string</span>, allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> (new_path: <span class="doc-builtin">string</span>, new_allocation: <span class="doc-builtin">bool</span>) {…}</pre>
 </div>
@@ -394,9 +431,9 @@ when 'skip_dir' is invoked on a non-directory. 'walk' skips the remaining files 
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="is_separator"><span><a class="doc-id-link" href="#is_separator">is_separator<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/path/filepath/path.odin#L8"><em>Source</em></a></div></h3>
+<h3 id="is_separator"><span><a class="doc-id-link" href="#is_separator">is_separator<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/path/filepath/path.odin#L10"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">is_separator :: <span class="keyword-type">proc</span> "odin" (x: <span class="doc-builtin">u8</span>) -> <span class="doc-builtin">bool</span> {…}</pre>
+<pre class="doc-code">is_separator :: <span class="keyword-type">proc</span> "odin" (c: <span class="doc-builtin">u8</span>) -> <span class="doc-builtin">bool</span> {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -414,6 +451,27 @@ when 'skip_dir' is invoked on a non-directory. 'walk' skips the remaining files 
 <div>
 <pre class="doc-code">join_non_empty :: <span class="keyword-type">proc</span> "odin" (elems: ..<span class="doc-builtin">string</span>, allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> <span class="doc-builtin">string</span> {…}</pre>
 </div>
+</div>
+<div class="pkg-entity">
+<h3 id="long_ext"><span><a class="doc-id-link" href="#long_ext">long_ext<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/path/filepath/path.odin#L203"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">long_ext :: <span class="keyword-type">proc</span> "odin" (path: <span class="doc-builtin">string</span>) -> <span class="doc-builtin">string</span> {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Gets the file extension from a path, including the dot.</p>
+<pre>The long file extension is such that short_stem(path) + long_ext(path) = base(path).
+
+The first dot is used to split off the file extension, unlike `ext` which uses the last dot.
+
+i.e:
+  'name.tar.gz' -> '.tar.gz'
+  'name.txt'    -> '.txt'
+
+Returns an empty string if there is no dot.
+Returns an empty string if there is a trailing path separator.
+</pre>
+</details>
 </div>
 <div class="pkg-entity">
 <h3 id="match"><span><a class="doc-id-link" href="#match">match<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/path/filepath/match.odin#L35"><em>Source</em></a></div></h3>
@@ -446,13 +504,34 @@ The only possible error returned is .Syntax_Error</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="rel"><span><a class="doc-id-link" href="#rel">rel<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/path/filepath/path.odin#L208"><em>Source</em></a></div></h3>
+<h3 id="rel"><span><a class="doc-id-link" href="#rel">rel<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/path/filepath/path.odin#L323"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">rel :: <span class="keyword-type">proc</span> "odin" (base_path, target_path: <span class="doc-builtin">string</span>, allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> (<span class="doc-builtin">string</span>, <a class="code-typename" href="/core/path/filepath/#Relative_Error">Relative_Error</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="split_list"><span><a class="doc-id-link" href="#split_list">split_list<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/path/filepath/path.odin#L308"><em>Source</em></a></div></h3>
+<h3 id="short_stem"><span><a class="doc-id-link" href="#short_stem">short_stem<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/path/filepath/path.odin#L157"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">short_stem :: <span class="keyword-type">proc</span> "odin" (path: <span class="doc-builtin">string</span>) -> <span class="doc-builtin">string</span> {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Gets the name of a file from a path.</p>
+<pre>The short stem is such that short_stem(path) + long_ext(path) = base(path).
+
+The first dot is used to split off the file extension, unlike `stem` which uses the last dot.
+
+i.e:
+  'name.tar.gz' -> 'name'
+  'name.txt'    -> 'name'
+
+Returns an empty string if there is no stem. e.g: '.gitignore'.
+Returns an empty string if there's a trailing path separator.
+</pre>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="split_list"><span><a class="doc-id-link" href="#split_list">split_list<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/path/filepath/path.odin#L423"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">split_list :: <span class="keyword-type">proc</span> "odin" (path: <span class="doc-builtin">string</span>, allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> []<span class="doc-builtin">string</span> {…}</pre>
 </div>
@@ -466,25 +545,47 @@ Separators within pairs of double-quotes will be ignored and stripped, e.g. <cod
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="split"><span><a class="doc-id-link" href="#split">split<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/path/filepath/path.odin#L21"><em>Source</em></a></div></h3>
+<h3 id="split"><span><a class="doc-id-link" href="#split">split<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/path/filepath/path.odin#L23"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">split :: <span class="keyword-type">proc</span> "odin" (path: <span class="doc-builtin">string</span>) -> (dir, file: <span class="doc-builtin">string</span>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="to_slash"><span><a class="doc-id-link" href="#to_slash">to_slash<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/path/filepath/path.odin#L185"><em>Source</em></a></div></h3>
+<h3 id="stem"><span><a class="doc-id-link" href="#stem">stem<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/path/filepath/path.odin#L124"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">stem :: <span class="keyword-type">proc</span> "odin" (path: <span class="doc-builtin">string</span>) -> <span class="doc-builtin">string</span> {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Gets the name of a file from a path.</p>
+<pre>The stem of a file is such that stem(path) + ext(path) = base(path).
+
+Only the last dot is considered when splitting the file extension.
+See `short_stem`.
+
+i.e:
+  'name.tar.gz' -> 'name.tar'
+  'name.txt'    -> 'name'
+
+Returns an empty string if there is no stem. e.g: '.gitignore'.
+Returns an empty string if there's a trailing path separator.
+</pre>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="to_slash"><span><a class="doc-id-link" href="#to_slash">to_slash<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/path/filepath/path.odin#L309"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">to_slash :: <span class="keyword-type">proc</span> "odin" (path: <span class="doc-builtin">string</span>, allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> (new_path: <span class="doc-builtin">string</span>, new_allocation: <span class="doc-builtin">bool</span>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="volume_name_len"><span><a class="doc-id-link" href="#volume_name_len">volume_name_len<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/path/filepath/path.odin#L34"><em>Source</em></a></div></h3>
+<h3 id="volume_name_len"><span><a class="doc-id-link" href="#volume_name_len">volume_name_len<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/path/filepath/path.odin#L36"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">volume_name_len :: <span class="keyword-type">proc</span> "odin" (str: <span class="doc-builtin">string</span>) -> (w: <span class="doc-builtin">int</span>) {…}</pre>
+<pre class="doc-code">volume_name_len :: <span class="keyword-type">proc</span> "odin" (path: <span class="doc-builtin">string</span>) -> <span class="doc-builtin">int</span> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="volume_name"><span><a class="doc-id-link" href="#volume_name">volume_name<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/path/filepath/path.odin#L30"><em>Source</em></a></div></h3>
+<h3 id="volume_name"><span><a class="doc-id-link" href="#volume_name">volume_name<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/path/filepath/path.odin#L32"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">volume_name :: <span class="keyword-type">proc</span> "odin" (path: <span class="doc-builtin">string</span>) -> <span class="doc-builtin">string</span> {…}</pre>
 </div>
@@ -517,7 +618,7 @@ NOTE: os.File_Info uses the 'context.temp_allocator' to allocate, and will delet
 <li><em>(hidden platform specific files)</em></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2022-04 (vendor "odin") Windows_amd64 @ 2022-04-22 21:09:15.831778100 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2022-04 (vendor "odin") Windows_amd64 @ 2022-04-23 21:08:54.050881900 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
@@ -530,6 +631,7 @@ NOTE: os.File_Info uses the 'context.temp_allocator' to allocate, and will delet
 </li>
 <li><a href="#pkg-Constants">Constants</a><ul>
 <li><a href="#LIST_SEPARATOR">LIST_SEPARATOR</a></li>
+<li><a href="#SEPARATOR_CHARS">SEPARATOR_CHARS</a></li>
 <li><a href="#SEPARATOR">SEPARATOR</a></li>
 <li><a href="#SEPARATOR_STRING">SEPARATOR_STRING</a></li>
 </ul>
@@ -548,10 +650,13 @@ NOTE: os.File_Info uses the 'context.temp_allocator' to allocate, and will delet
 <li><a href="#is_separator">is_separator</a></li>
 <li><a href="#join">join</a></li>
 <li><a href="#join_non_empty">join_non_empty</a></li>
+<li><a href="#long_ext">long_ext</a></li>
 <li><a href="#match">match</a></li>
 <li><a href="#rel">rel</a></li>
+<li><a href="#short_stem">short_stem</a></li>
 <li><a href="#split_list">split_list</a></li>
 <li><a href="#split">split</a></li>
+<li><a href="#stem">stem</a></li>
 <li><a href="#to_slash">to_slash</a></li>
 <li><a href="#volume_name_len">volume_name_len</a></li>
 <li><a href="#volume_name">volume_name</a></li>
