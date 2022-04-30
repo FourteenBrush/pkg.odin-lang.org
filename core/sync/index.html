@@ -70,9 +70,9 @@
 
 </li>
 <li class="nav-item"><a href="/core/crypto">crypto</a><ul>
-<li><a href="/core/crypto/blake">blake</a></li>
 <li><a href="/core/crypto/blake2b">blake2b</a></li>
 <li><a href="/core/crypto/blake2s">blake2s</a></li>
+<li><a href="/core/crypto/blake">blake</a></li>
 <li><a href="/core/crypto/chacha20">chacha20</a></li>
 <li><a href="/core/crypto/chacha20poly1305">chacha20poly1305</a></li>
 <li><a href="/core/crypto/gost">gost</a></li>
@@ -199,7 +199,7 @@
 <div>
 <details class="doc-index" id="doc-index-Types" aria-labelledby="#doc-index-Types-header">
 <summary id="#doc-index-Types-header">
-Types (21)</summary>
+Types (22)</summary>
 <ul>
 <li><a href="#Atomic_Cond">Atomic_Cond</a></li>
 <li><a href="#Atomic_Memory_Order">Atomic_Memory_Order</a></li>
@@ -216,6 +216,7 @@ Types (21)</summary>
 <li><a href="#Futex">Futex</a></li>
 <li><a href="#Mutex">Mutex</a></li>
 <li><a href="#Once">Once</a></li>
+<li><a href="#Parker">Parker</a></li>
 <li><a href="#RW_Mutex">RW_Mutex</a></li>
 <li><a href="#Recursive_Benaphore">Recursive_Benaphore</a></li>
 <li><a href="#Recursive_Mutex">Recursive_Mutex</a></li>
@@ -249,7 +250,7 @@ Variables (0)</summary>
 <div>
 <details class="doc-index" id="doc-index-Procedures" aria-labelledby="#doc-index-Procedures-header">
 <summary id="#doc-index-Procedures-header">
-Procedures (96)</summary>
+Procedures (99)</summary>
 <ul>
 <li><a href="#atomic_add">atomic_add</a></li>
 <li><a href="#atomic_add_explicit">atomic_add_explicit</a></li>
@@ -296,8 +297,8 @@ Procedures (96)</summary>
 <li><a href="#atomic_sub_explicit">atomic_sub_explicit</a></li>
 <li><a href="#atomic_sub">atomic_sub</a></li>
 <li><a href="#atomic_thread_fence">atomic_thread_fence</a></li>
-<li><a href="#atomic_xor_explicit">atomic_xor_explicit</a></li>
 <li><a href="#atomic_xor">atomic_xor</a></li>
+<li><a href="#atomic_xor_explicit">atomic_xor_explicit</a></li>
 <li><a href="#auto_reset_event_signal">auto_reset_event_signal</a></li>
 <li><a href="#auto_reset_event_wait">auto_reset_event_wait</a></li>
 <li><a href="#barrier_init">barrier_init</a></li>
@@ -308,8 +309,8 @@ Procedures (96)</summary>
 <li><a href="#benaphore_unlock">benaphore_unlock</a></li>
 <li><a href="#cond_broadcast">cond_broadcast</a></li>
 <li><a href="#cond_signal">cond_signal</a></li>
-<li><a href="#cond_wait">cond_wait</a></li>
 <li><a href="#cond_wait_with_timeout">cond_wait_with_timeout</a></li>
+<li><a href="#cond_wait">cond_wait</a></li>
 <li><a href="#cpu_relax">cpu_relax</a></li>
 <li><a href="#current_thread_id">current_thread_id</a></li>
 <li><a href="#futex_broadcast">futex_broadcast</a></li>
@@ -321,6 +322,8 @@ Procedures (96)</summary>
 <li><a href="#mutex_try_lock">mutex_try_lock</a></li>
 <li><a href="#mutex_unlock">mutex_unlock</a></li>
 <li><a href="#once_do">once_do</a></li>
+<li><a href="#park">park</a></li>
+<li><a href="#park_with_timeout">park_with_timeout</a></li>
 <li><a href="#recursive_benaphore_guard">recursive_benaphore_guard</a></li>
 <li><a href="#recursive_benaphore_lock">recursive_benaphore_lock</a></li>
 <li><a href="#recursive_benaphore_try_lock">recursive_benaphore_try_lock</a></li>
@@ -338,11 +341,12 @@ Procedures (96)</summary>
 <li><a href="#rw_mutex_try_shared_lock">rw_mutex_try_shared_lock</a></li>
 <li><a href="#rw_mutex_unlock">rw_mutex_unlock</a></li>
 <li><a href="#sema_post">sema_post</a></li>
-<li><a href="#sema_wait_with_timeout">sema_wait_with_timeout</a></li>
 <li><a href="#sema_wait">sema_wait</a></li>
+<li><a href="#sema_wait_with_timeout">sema_wait_with_timeout</a></li>
 <li><a href="#ticket_mutex_guard">ticket_mutex_guard</a></li>
 <li><a href="#ticket_mutex_lock">ticket_mutex_lock</a></li>
 <li><a href="#ticket_mutex_unlock">ticket_mutex_unlock</a></li>
+<li><a href="#unpark">unpark</a></li>
 <li><a href="#wait_group_add">wait_group_add</a></li>
 <li><a href="#wait_group_done">wait_group_done</a></li>
 <li><a href="#wait_group_wait">wait_group_wait</a></li>
@@ -375,12 +379,10 @@ Procedure Groups (13)</summary>
 <h2 id="pkg-Types" class="pkg-header">Types</h2>
 <section class="documentation">
 <div class="pkg-entity">
-<h3 id="Atomic_Cond"><span><a class="doc-id-link" href="#Atomic_Cond">Atomic_Cond<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives_atomic.odin#L324"><em>Source</em></a></div></h3>
+<h3 id="Atomic_Cond"><span><a class="doc-id-link" href="#Atomic_Cond">Atomic_Cond<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives_atomic.odin#L288"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Atomic_Cond :: <span class="keyword-type">struct</span> {
-	queue_mutex: <a class="code-typename" href="/core/sync/#Atomic_Mutex">Atomic_Mutex</a>,
-	queue_head:  ^Queue_Item,
-	pending:     <span class="doc-builtin">bool</span>,
+	state: <a class="code-typename" href="/core/sync/#Futex">Futex</a>,
 }</pre>
 </div>
 <details class="odin-doc-toggle" open>
@@ -398,8 +400,8 @@ waiting for signalling the occurence of an event</p>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
 <p>Atomic_Memory_Order :: enum {</p>
-<pre>Relaxed = 0,
-Consume = 1,
+<pre>Relaxed = 0, // Unordered
+Consume = 1, // Monotonic
 Acquire = 2,
 Release = 3,
 Acq_Rel = 4,
@@ -472,7 +474,7 @@ The zero value for a Recursive_Mutex is an unlocked mutex</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="Atomic_Sema"><span><a class="doc-id-link" href="#Atomic_Sema">Atomic_Sema<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives_atomic.odin#L402"><em>Source</em></a></div></h3>
+<h3 id="Atomic_Sema"><span><a class="doc-id-link" href="#Atomic_Sema">Atomic_Sema<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives_atomic.odin#L323"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Atomic_Sema :: <span class="keyword-type">struct</span> {
 	count: <a class="code-typename" href="/core/sync/#Futex">Futex</a>,
@@ -486,7 +488,7 @@ Posting to the semaphore increases the count by one, or the provided amount.</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="Auto_Reset_Event"><span><a class="doc-id-link" href="#Auto_Reset_Event">Auto_Reset_Event<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L140"><em>Source</em></a></div></h3>
+<h3 id="Auto_Reset_Event"><span><a class="doc-id-link" href="#Auto_Reset_Event">Auto_Reset_Event<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L136"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Auto_Reset_Event :: <span class="keyword-type">struct</span> {
 	<span class="comment">// status ==  0: Event is reset and no threads are waiting</span>
@@ -498,7 +500,7 @@ Posting to the semaphore increases the count by one, or the provided amount.</p>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="Barrier"><span><a class="doc-id-link" href="#Barrier">Barrier<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L105"><em>Source</em></a></div></h3>
+<h3 id="Barrier"><span><a class="doc-id-link" href="#Barrier">Barrier<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L102"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Barrier :: <span class="keyword-type">struct</span> {
 	mutex:         <a class="code-typename" href="/core/sync/#Mutex">Mutex</a>,
@@ -549,7 +551,7 @@ main :: proc() {
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="Benaphore"><span><a class="doc-id-link" href="#Benaphore">Benaphore<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L193"><em>Source</em></a></div></h3>
+<h3 id="Benaphore"><span><a class="doc-id-link" href="#Benaphore">Benaphore<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L189"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Benaphore :: <span class="keyword-type">struct</span> {
 	counter: <span class="doc-builtin">i32</span>,
@@ -597,7 +599,7 @@ The zero value for a Mutex is an unlocked mutex</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="Once"><span><a class="doc-id-link" href="#Once">Once<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L283"><em>Source</em></a></div></h3>
+<h3 id="Once"><span><a class="doc-id-link" href="#Once">Once<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L279"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Once :: <span class="keyword-type">struct</span> {
 	m:    <a class="code-typename" href="/core/sync/#Mutex">Mutex</a>,
@@ -608,6 +610,24 @@ The zero value for a Mutex is an unlocked mutex</p>
 <summary class="hideme"><span>&nbsp;</span></summary>
 <p>Once is a data value that will perform exactly on action.</p>
 <p>A Once must not be copied after first use.</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="Parker"><span><a class="doc-id-link" href="#Parker">Parker<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L310"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Parker :: <span class="keyword-type">struct</span> {
+	state: <a class="code-typename" href="/core/sync/#Futex">Futex</a>,
+}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>A Parker is an associated token which is initially not present:
+    * The <code>park</code> procedure blocks the current thread unless or until the token
+      is available, at which point the token is consumed.
+    * The <code>park_with_timeout</code> procedures works the same as <code>park</code> but only
+      blocks for the specified duration.
+    * The <code>unpark</code> procedure automatically makes the token available if it
+      was not already.</p>
 </details>
 </div>
 <div class="pkg-entity">
@@ -626,7 +646,7 @@ The zero value for a RW_Mutex is an unlocked mutex</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="Recursive_Benaphore"><span><a class="doc-id-link" href="#Recursive_Benaphore">Recursive_Benaphore<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L221"><em>Source</em></a></div></h3>
+<h3 id="Recursive_Benaphore"><span><a class="doc-id-link" href="#Recursive_Benaphore">Recursive_Benaphore<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L217"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Recursive_Benaphore :: <span class="keyword-type">struct</span> {
 	counter:   <span class="doc-builtin">int</span>,
@@ -665,7 +685,7 @@ Posting to the semaphore increases the count by one, or the provided amount.</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="Ticket_Mutex"><span><a class="doc-id-link" href="#Ticket_Mutex">Ticket_Mutex<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L171"><em>Source</em></a></div></h3>
+<h3 id="Ticket_Mutex"><span><a class="doc-id-link" href="#Ticket_Mutex">Ticket_Mutex<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L167"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Ticket_Mutex :: <span class="keyword-type">struct</span> {
 	ticket:  <span class="doc-builtin">uint</span>,
@@ -787,25 +807,25 @@ Posting to the semaphore increases the count by one, or the provided amount.</p>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="atomic_cond_broadcast"><span><a class="doc-id-link" href="#atomic_cond_broadcast">atomic_cond_broadcast<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives_atomic.odin#L380"><em>Source</em></a></div></h3>
+<h3 id="atomic_cond_broadcast"><span><a class="doc-id-link" href="#atomic_cond_broadcast">atomic_cond_broadcast<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives_atomic.odin#L314"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">atomic_cond_broadcast :: <span class="keyword-type">proc</span> "odin" (c: ^<a class="code-typename" href="/core/sync/#Atomic_Cond">Atomic_Cond</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="atomic_cond_signal"><span><a class="doc-id-link" href="#atomic_cond_signal">atomic_cond_signal<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives_atomic.odin#L362"><em>Source</em></a></div></h3>
+<h3 id="atomic_cond_signal"><span><a class="doc-id-link" href="#atomic_cond_signal">atomic_cond_signal<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives_atomic.odin#L309"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">atomic_cond_signal :: <span class="keyword-type">proc</span> "odin" (c: ^<a class="code-typename" href="/core/sync/#Atomic_Cond">Atomic_Cond</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="atomic_cond_wait_with_timeout"><span><a class="doc-id-link" href="#atomic_cond_wait_with_timeout">atomic_cond_wait_with_timeout<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives_atomic.odin#L345"><em>Source</em></a></div></h3>
+<h3 id="atomic_cond_wait_with_timeout"><span><a class="doc-id-link" href="#atomic_cond_wait_with_timeout">atomic_cond_wait_with_timeout<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives_atomic.odin#L300"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">atomic_cond_wait_with_timeout :: <span class="keyword-type">proc</span> "odin" (c: ^<a class="code-typename" href="/core/sync/#Atomic_Cond">Atomic_Cond</a>, m: ^<a class="code-typename" href="/core/sync/#Atomic_Mutex">Atomic_Mutex</a>, duration: time.<a class="code-typename" href="/core/time/#Duration">Duration</a>) -> (ok: <span class="doc-builtin">bool</span>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="atomic_cond_wait"><span><a class="doc-id-link" href="#atomic_cond_wait">atomic_cond_wait<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives_atomic.odin#L330"><em>Source</em></a></div></h3>
+<h3 id="atomic_cond_wait"><span><a class="doc-id-link" href="#atomic_cond_wait">atomic_cond_wait<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives_atomic.odin#L292"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">atomic_cond_wait :: <span class="keyword-type">proc</span> "odin" (c: ^<a class="code-typename" href="/core/sync/#Atomic_Cond">Atomic_Cond</a>, m: ^<a class="code-typename" href="/core/sync/#Atomic_Mutex">Atomic_Mutex</a>) {…}</pre>
 </div>
@@ -992,19 +1012,19 @@ If the mutex is already locked for reading or writing, the mutex blocks until th
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="atomic_sema_post"><span><a class="doc-id-link" href="#atomic_sema_post">atomic_sema_post<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives_atomic.odin#L406"><em>Source</em></a></div></h3>
+<h3 id="atomic_sema_post"><span><a class="doc-id-link" href="#atomic_sema_post">atomic_sema_post<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives_atomic.odin#L327"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">atomic_sema_post :: <span class="keyword-type">proc</span> "odin" (s: ^<a class="code-typename" href="/core/sync/#Atomic_Sema">Atomic_Sema</a>, count: <span class="doc-builtin">int</span> = 1) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="atomic_sema_wait"><span><a class="doc-id-link" href="#atomic_sema_wait">atomic_sema_wait<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives_atomic.odin#L415"><em>Source</em></a></div></h3>
+<h3 id="atomic_sema_wait"><span><a class="doc-id-link" href="#atomic_sema_wait">atomic_sema_wait<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives_atomic.odin#L336"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">atomic_sema_wait :: <span class="keyword-type">proc</span> "odin" (s: ^<a class="code-typename" href="/core/sync/#Atomic_Sema">Atomic_Sema</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="atomic_sema_wait_with_timeout"><span><a class="doc-id-link" href="#atomic_sema_wait_with_timeout">atomic_sema_wait_with_timeout<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives_atomic.odin#L428"><em>Source</em></a></div></h3>
+<h3 id="atomic_sema_wait_with_timeout"><span><a class="doc-id-link" href="#atomic_sema_wait_with_timeout">atomic_sema_wait_with_timeout<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives_atomic.odin#L349"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">atomic_sema_wait_with_timeout :: <span class="keyword-type">proc</span> "odin" (s: ^<a class="code-typename" href="/core/sync/#Atomic_Sema">Atomic_Sema</a>, duration: time.<a class="code-typename" href="/core/time/#Duration">Duration</a>) -> <span class="doc-builtin">bool</span> {…}</pre>
 </div>
@@ -1046,37 +1066,37 @@ If the mutex is already locked for reading or writing, the mutex blocks until th
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="atomic_xor_explicit"><span><a class="doc-id-link" href="#atomic_xor_explicit">atomic_xor_explicit<span class="a-hidden">&nbsp;¶</span></a></span></h3>
-<div>
-<pre class="doc-code">atomic_xor_explicit :: intrinsics.atomic_xor_explicit</pre>
-</div>
-</div>
-<div class="pkg-entity">
 <h3 id="atomic_xor"><span><a class="doc-id-link" href="#atomic_xor">atomic_xor<span class="a-hidden">&nbsp;¶</span></a></span></h3>
 <div>
 <pre class="doc-code">atomic_xor :: intrinsics.atomic_xor</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="auto_reset_event_signal"><span><a class="doc-id-link" href="#auto_reset_event_signal">auto_reset_event_signal<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L148"><em>Source</em></a></div></h3>
+<h3 id="atomic_xor_explicit"><span><a class="doc-id-link" href="#atomic_xor_explicit">atomic_xor_explicit<span class="a-hidden">&nbsp;¶</span></a></span></h3>
+<div>
+<pre class="doc-code">atomic_xor_explicit :: intrinsics.atomic_xor_explicit</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="auto_reset_event_signal"><span><a class="doc-id-link" href="#auto_reset_event_signal">auto_reset_event_signal<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L144"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">auto_reset_event_signal :: <span class="keyword-type">proc</span> "odin" (e: ^<a class="code-typename" href="/core/sync/#Auto_Reset_Event">Auto_Reset_Event</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="auto_reset_event_wait"><span><a class="doc-id-link" href="#auto_reset_event_wait">auto_reset_event_wait<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L162"><em>Source</em></a></div></h3>
+<h3 id="auto_reset_event_wait"><span><a class="doc-id-link" href="#auto_reset_event_wait">auto_reset_event_wait<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L158"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">auto_reset_event_wait :: <span class="keyword-type">proc</span> "odin" (e: ^<a class="code-typename" href="/core/sync/#Auto_Reset_Event">Auto_Reset_Event</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="barrier_init"><span><a class="doc-id-link" href="#barrier_init">barrier_init<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L113"><em>Source</em></a></div></h3>
+<h3 id="barrier_init"><span><a class="doc-id-link" href="#barrier_init">barrier_init<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L110"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">barrier_init :: <span class="keyword-type">proc</span> "odin" (b: ^<a class="code-typename" href="/core/sync/#Barrier">Barrier</a>, thread_count: <span class="doc-builtin">int</span>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="barrier_wait"><span><a class="doc-id-link" href="#barrier_wait">barrier_wait<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L121"><em>Source</em></a></div></h3>
+<h3 id="barrier_wait"><span><a class="doc-id-link" href="#barrier_wait">barrier_wait<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L118"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">barrier_wait :: <span class="keyword-type">proc</span> "odin" (b: ^<a class="code-typename" href="/core/sync/#Barrier">Barrier</a>) -> (is_leader: <span class="doc-builtin">bool</span>) {…}</pre>
 </div>
@@ -1087,25 +1107,25 @@ Barrier can be reused after all threads rendezvoused once, and can be used conti
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="benaphore_guard"><span><a class="doc-id-link" href="#benaphore_guard">benaphore_guard<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L216"><em>Source</em></a></div></h3>
+<h3 id="benaphore_guard"><span><a class="doc-id-link" href="#benaphore_guard">benaphore_guard<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L212"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">benaphore_guard :: <span class="keyword-type">proc</span> "odin" (b: ^<a class="code-typename" href="/core/sync/#Benaphore">Benaphore</a>) -> <span class="doc-builtin">bool</span> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="benaphore_lock"><span><a class="doc-id-link" href="#benaphore_lock">benaphore_lock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L198"><em>Source</em></a></div></h3>
+<h3 id="benaphore_lock"><span><a class="doc-id-link" href="#benaphore_lock">benaphore_lock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L194"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">benaphore_lock :: <span class="keyword-type">proc</span> "odin" (b: ^<a class="code-typename" href="/core/sync/#Benaphore">Benaphore</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="benaphore_try_lock"><span><a class="doc-id-link" href="#benaphore_try_lock">benaphore_try_lock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L204"><em>Source</em></a></div></h3>
+<h3 id="benaphore_try_lock"><span><a class="doc-id-link" href="#benaphore_try_lock">benaphore_try_lock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L200"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">benaphore_try_lock :: <span class="keyword-type">proc</span> "odin" (b: ^<a class="code-typename" href="/core/sync/#Benaphore">Benaphore</a>) -> <span class="doc-builtin">bool</span> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="benaphore_unlock"><span><a class="doc-id-link" href="#benaphore_unlock">benaphore_unlock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L209"><em>Source</em></a></div></h3>
+<h3 id="benaphore_unlock"><span><a class="doc-id-link" href="#benaphore_unlock">benaphore_unlock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L205"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">benaphore_unlock :: <span class="keyword-type">proc</span> "odin" (b: ^<a class="code-typename" href="/core/sync/#Benaphore">Benaphore</a>) {…}</pre>
 </div>
@@ -1123,15 +1143,15 @@ Barrier can be reused after all threads rendezvoused once, and can be used conti
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="cond_wait"><span><a class="doc-id-link" href="#cond_wait">cond_wait<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L150"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">cond_wait :: <span class="keyword-type">proc</span> "odin" (c: ^<a class="code-typename" href="/core/sync/#Cond">Cond</a>, m: ^<a class="code-typename" href="/core/sync/#Mutex">Mutex</a>) {…}</pre>
-</div>
-</div>
-<div class="pkg-entity">
 <h3 id="cond_wait_with_timeout"><span><a class="doc-id-link" href="#cond_wait_with_timeout">cond_wait_with_timeout<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L154"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">cond_wait_with_timeout :: <span class="keyword-type">proc</span> "odin" (c: ^<a class="code-typename" href="/core/sync/#Cond">Cond</a>, m: ^<a class="code-typename" href="/core/sync/#Mutex">Mutex</a>, duration: time.<a class="code-typename" href="/core/time/#Duration">Duration</a>) -> <span class="doc-builtin">bool</span> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="cond_wait"><span><a class="doc-id-link" href="#cond_wait">cond_wait<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L150"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">cond_wait :: <span class="keyword-type">proc</span> "odin" (c: ^<a class="code-typename" href="/core/sync/#Cond">Cond</a>, m: ^<a class="code-typename" href="/core/sync/#Mutex">Mutex</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -1211,7 +1231,7 @@ Barrier can be reused after all threads rendezvoused once, and can be used conti
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="once_do"><span><a class="doc-id-link" href="#once_do">once_do<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L289"><em>Source</em></a></div></h3>
+<h3 id="once_do"><span><a class="doc-id-link" href="#once_do">once_do<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L285"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">once_do :: <span class="keyword-type">proc</span> "odin" (o: ^<a class="code-typename" href="/core/sync/#Once">Once</a>, fn: <span class="keyword-type">proc</span> "odin" ()) {…}</pre>
 </div>
@@ -1221,25 +1241,48 @@ Barrier can be reused after all threads rendezvoused once, and can be used conti
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="recursive_benaphore_guard"><span><a class="doc-id-link" href="#recursive_benaphore_guard">recursive_benaphore_guard<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L272"><em>Source</em></a></div></h3>
+<h3 id="park"><span><a class="doc-id-link" href="#park">park<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L317"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">park :: <span class="keyword-type">proc</span> "odin" (p: ^<a class="code-typename" href="/core/sync/#Parker">Parker</a>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Blocks the current thread until the token is made available.</p>
+<p>Assumes this is only called by the thread that owns the Parker.</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="park_with_timeout"><span><a class="doc-id-link" href="#park_with_timeout">park_with_timeout<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L336"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">park_with_timeout :: <span class="keyword-type">proc</span> "odin" (p: ^<a class="code-typename" href="/core/sync/#Parker">Parker</a>, duration: time.<a class="code-typename" href="/core/time/#Duration">Duration</a>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Blocks the current thread until the token is made available, but only
+for a limited duration.</p>
+<p>Assumes this is only called by the thread that owns the Parker</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="recursive_benaphore_guard"><span><a class="doc-id-link" href="#recursive_benaphore_guard">recursive_benaphore_guard<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L268"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">recursive_benaphore_guard :: <span class="keyword-type">proc</span> "odin" (b: ^<a class="code-typename" href="/core/sync/#Recursive_Benaphore">Recursive_Benaphore</a>) -> <span class="doc-builtin">bool</span> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="recursive_benaphore_lock"><span><a class="doc-id-link" href="#recursive_benaphore_lock">recursive_benaphore_lock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L228"><em>Source</em></a></div></h3>
+<h3 id="recursive_benaphore_lock"><span><a class="doc-id-link" href="#recursive_benaphore_lock">recursive_benaphore_lock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L224"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">recursive_benaphore_lock :: <span class="keyword-type">proc</span> "odin" (b: ^<a class="code-typename" href="/core/sync/#Recursive_Benaphore">Recursive_Benaphore</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="recursive_benaphore_try_lock"><span><a class="doc-id-link" href="#recursive_benaphore_try_lock">recursive_benaphore_try_lock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L240"><em>Source</em></a></div></h3>
+<h3 id="recursive_benaphore_try_lock"><span><a class="doc-id-link" href="#recursive_benaphore_try_lock">recursive_benaphore_try_lock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L236"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">recursive_benaphore_try_lock :: <span class="keyword-type">proc</span> "odin" (b: ^<a class="code-typename" href="/core/sync/#Recursive_Benaphore">Recursive_Benaphore</a>) -> <span class="doc-builtin">bool</span> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="recursive_benaphore_unlock"><span><a class="doc-id-link" href="#recursive_benaphore_unlock">recursive_benaphore_unlock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L255"><em>Source</em></a></div></h3>
+<h3 id="recursive_benaphore_unlock"><span><a class="doc-id-link" href="#recursive_benaphore_unlock">recursive_benaphore_unlock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L251"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">recursive_benaphore_unlock :: <span class="keyword-type">proc</span> "odin" (b: ^<a class="code-typename" href="/core/sync/#Recursive_Benaphore">Recursive_Benaphore</a>) {…}</pre>
 </div>
@@ -1348,34 +1391,44 @@ If the mutex is already locked for reading or writing, the mutex blocks until th
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="sema_wait_with_timeout"><span><a class="doc-id-link" href="#sema_wait_with_timeout">sema_wait_with_timeout<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L186"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">sema_wait_with_timeout :: <span class="keyword-type">proc</span> "odin" (s: ^<a class="code-typename" href="/core/sync/#Sema">Sema</a>, duration: time.<a class="code-typename" href="/core/time/#Duration">Duration</a>) -> <span class="doc-builtin">bool</span> {…}</pre>
-</div>
-</div>
-<div class="pkg-entity">
 <h3 id="sema_wait"><span><a class="doc-id-link" href="#sema_wait">sema_wait<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L182"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">sema_wait :: <span class="keyword-type">proc</span> "odin" (s: ^<a class="code-typename" href="/core/sync/#Sema">Sema</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="ticket_mutex_guard"><span><a class="doc-id-link" href="#ticket_mutex_guard">ticket_mutex_guard<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L187"><em>Source</em></a></div></h3>
+<h3 id="sema_wait_with_timeout"><span><a class="doc-id-link" href="#sema_wait_with_timeout">sema_wait_with_timeout<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L186"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">sema_wait_with_timeout :: <span class="keyword-type">proc</span> "odin" (s: ^<a class="code-typename" href="/core/sync/#Sema">Sema</a>, duration: time.<a class="code-typename" href="/core/time/#Duration">Duration</a>) -> <span class="doc-builtin">bool</span> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="ticket_mutex_guard"><span><a class="doc-id-link" href="#ticket_mutex_guard">ticket_mutex_guard<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L183"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">ticket_mutex_guard :: <span class="keyword-type">proc</span> "odin" (m: ^<a class="code-typename" href="/core/sync/#Ticket_Mutex">Ticket_Mutex</a>) -> <span class="doc-builtin">bool</span> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="ticket_mutex_lock"><span><a class="doc-id-link" href="#ticket_mutex_lock">ticket_mutex_lock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L176"><em>Source</em></a></div></h3>
+<h3 id="ticket_mutex_lock"><span><a class="doc-id-link" href="#ticket_mutex_lock">ticket_mutex_lock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L172"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">ticket_mutex_lock :: <span class="keyword-type">proc</span> "odin" (m: ^<a class="code-typename" href="/core/sync/#Ticket_Mutex">Ticket_Mutex</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="ticket_mutex_unlock"><span><a class="doc-id-link" href="#ticket_mutex_unlock">ticket_mutex_unlock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L183"><em>Source</em></a></div></h3>
+<h3 id="ticket_mutex_unlock"><span><a class="doc-id-link" href="#ticket_mutex_unlock">ticket_mutex_unlock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L179"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">ticket_mutex_unlock :: <span class="keyword-type">proc</span> "odin" (m: ^<a class="code-typename" href="/core/sync/#Ticket_Mutex">Ticket_Mutex</a>) {…}</pre>
 </div>
+</div>
+<div class="pkg-entity">
+<h3 id="unpark"><span><a class="doc-id-link" href="#unpark">unpark<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L348"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">unpark :: <span class="keyword-type">proc</span> "odin" (p: ^<a class="code-typename" href="/core/sync/#Parker">Parker</a>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Automatically makes thee token available if it was not already.</p>
+</details>
 </div>
 <div class="pkg-entity">
 <h3 id="wait_group_add"><span><a class="doc-id-link" href="#wait_group_add">wait_group_add<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L14"><em>Source</em></a></div></h3>
@@ -1384,19 +1437,19 @@ If the mutex is already locked for reading or writing, the mutex blocks until th
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="wait_group_done"><span><a class="doc-id-link" href="#wait_group_done">wait_group_done<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L34"><em>Source</em></a></div></h3>
+<h3 id="wait_group_done"><span><a class="doc-id-link" href="#wait_group_done">wait_group_done<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L33"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">wait_group_done :: <span class="keyword-type">proc</span> "odin" (wg: ^<a class="code-typename" href="/core/sync/#Wait_Group">Wait_Group</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="wait_group_wait"><span><a class="doc-id-link" href="#wait_group_wait">wait_group_wait<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L38"><em>Source</em></a></div></h3>
+<h3 id="wait_group_wait"><span><a class="doc-id-link" href="#wait_group_wait">wait_group_wait<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L37"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">wait_group_wait :: <span class="keyword-type">proc</span> "odin" (wg: ^<a class="code-typename" href="/core/sync/#Wait_Group">Wait_Group</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="wait_group_wait_with_timeout"><span><a class="doc-id-link" href="#wait_group_wait_with_timeout">wait_group_wait_with_timeout<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L50"><em>Source</em></a></div></h3>
+<h3 id="wait_group_wait_with_timeout"><span><a class="doc-id-link" href="#wait_group_wait_with_timeout">wait_group_wait_with_timeout<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L48"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">wait_group_wait_with_timeout :: <span class="keyword-type">proc</span> "odin" (wg: ^<a class="code-typename" href="/core/sync/#Wait_Group">Wait_Group</a>, duration: time.<a class="code-typename" href="/core/time/#Duration">Duration</a>) -> <span class="doc-builtin">bool</span> {…}</pre>
 </div>
@@ -1619,12 +1672,11 @@ If the mutex is already locked for reading or writing, the mutex blocks until th
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin">primitives.odin</a></li>
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives_atomic.odin">primitives_atomic.odin</a></li>
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives_internal.odin">primitives_internal.odin</a></li>
-<li><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sema_internal.odin">sema_internal.odin</a></li>
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync_util.odin">sync_util.odin</a></li>
 <li><em>(hidden platform specific files)</em></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2022-04 (vendor "odin") Windows_amd64 @ 2022-04-29 21:09:57.763044200 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2022-04 (vendor "odin") Windows_amd64 @ 2022-04-30 21:09:05.712079600 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
@@ -1645,6 +1697,7 @@ If the mutex is already locked for reading or writing, the mutex blocks until th
 <li><a href="#Futex">Futex</a></li>
 <li><a href="#Mutex">Mutex</a></li>
 <li><a href="#Once">Once</a></li>
+<li><a href="#Parker">Parker</a></li>
 <li><a href="#RW_Mutex">RW_Mutex</a></li>
 <li><a href="#Recursive_Benaphore">Recursive_Benaphore</a></li>
 <li><a href="#Recursive_Mutex">Recursive_Mutex</a></li>
@@ -1708,8 +1761,8 @@ If the mutex is already locked for reading or writing, the mutex blocks until th
 <li><a href="#atomic_sub_explicit">atomic_sub_explicit</a></li>
 <li><a href="#atomic_sub">atomic_sub</a></li>
 <li><a href="#atomic_thread_fence">atomic_thread_fence</a></li>
-<li><a href="#atomic_xor_explicit">atomic_xor_explicit</a></li>
 <li><a href="#atomic_xor">atomic_xor</a></li>
+<li><a href="#atomic_xor_explicit">atomic_xor_explicit</a></li>
 <li><a href="#auto_reset_event_signal">auto_reset_event_signal</a></li>
 <li><a href="#auto_reset_event_wait">auto_reset_event_wait</a></li>
 <li><a href="#barrier_init">barrier_init</a></li>
@@ -1720,8 +1773,8 @@ If the mutex is already locked for reading or writing, the mutex blocks until th
 <li><a href="#benaphore_unlock">benaphore_unlock</a></li>
 <li><a href="#cond_broadcast">cond_broadcast</a></li>
 <li><a href="#cond_signal">cond_signal</a></li>
-<li><a href="#cond_wait">cond_wait</a></li>
 <li><a href="#cond_wait_with_timeout">cond_wait_with_timeout</a></li>
+<li><a href="#cond_wait">cond_wait</a></li>
 <li><a href="#cpu_relax">cpu_relax</a></li>
 <li><a href="#current_thread_id">current_thread_id</a></li>
 <li><a href="#futex_broadcast">futex_broadcast</a></li>
@@ -1733,6 +1786,8 @@ If the mutex is already locked for reading or writing, the mutex blocks until th
 <li><a href="#mutex_try_lock">mutex_try_lock</a></li>
 <li><a href="#mutex_unlock">mutex_unlock</a></li>
 <li><a href="#once_do">once_do</a></li>
+<li><a href="#park">park</a></li>
+<li><a href="#park_with_timeout">park_with_timeout</a></li>
 <li><a href="#recursive_benaphore_guard">recursive_benaphore_guard</a></li>
 <li><a href="#recursive_benaphore_lock">recursive_benaphore_lock</a></li>
 <li><a href="#recursive_benaphore_try_lock">recursive_benaphore_try_lock</a></li>
@@ -1750,11 +1805,12 @@ If the mutex is already locked for reading or writing, the mutex blocks until th
 <li><a href="#rw_mutex_try_shared_lock">rw_mutex_try_shared_lock</a></li>
 <li><a href="#rw_mutex_unlock">rw_mutex_unlock</a></li>
 <li><a href="#sema_post">sema_post</a></li>
-<li><a href="#sema_wait_with_timeout">sema_wait_with_timeout</a></li>
 <li><a href="#sema_wait">sema_wait</a></li>
+<li><a href="#sema_wait_with_timeout">sema_wait_with_timeout</a></li>
 <li><a href="#ticket_mutex_guard">ticket_mutex_guard</a></li>
 <li><a href="#ticket_mutex_lock">ticket_mutex_lock</a></li>
 <li><a href="#ticket_mutex_unlock">ticket_mutex_unlock</a></li>
+<li><a href="#unpark">unpark</a></li>
 <li><a href="#wait_group_add">wait_group_add</a></li>
 <li><a href="#wait_group_done">wait_group_done</a></li>
 <li><a href="#wait_group_wait">wait_group_wait</a></li>
