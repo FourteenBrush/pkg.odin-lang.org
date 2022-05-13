@@ -264,7 +264,7 @@ Procedure Groups (0)</summary>
 <h2 id="pkg-Types" class="pkg-header">Types</h2>
 <section class="documentation">
 <div class="pkg-entity">
-<h3 id="Error"><span><a class="doc-id-link" href="#Error">Error<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/csv/reader.odin#L81"><em>Source</em></a></div></h3>
+<h3 id="Error"><span><a class="doc-id-link" href="#Error">Error<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/csv/reader.odin#L85"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Error :: <span class="keyword-type">union</span> {
 	<a class="code-typename" href="/core/encoding/csv/#Reader_Error">Reader_Error</a>, 
@@ -293,6 +293,9 @@ Procedure Groups (0)</summary>
 	trim_leading_space:  <span class="doc-builtin">bool</span>,
 	<span class="comment">// If lazy_quotes is true, a quote may appear in an unquoted field and a non-doubled quote may appear in a quoted field</span>
 	lazy_quotes:         <span class="doc-builtin">bool</span>,
+	<span class="comment">// multiline_fields, when set to true, will treat a field starting with a " as a multiline string</span>
+	<span class="comment">// therefore, instead of reading until the next \n, it'll read until the next "</span>
+	multiline_fields:    <span class="doc-builtin">bool</span>,
 	<span class="comment">// reuse_record controls whether calls to 'read' may return a slice using the backing buffer</span>
 	<span class="comment">// for performance</span>
 	<span class="comment">// By default, each call to 'read' returns a newly allocated slice</span>
@@ -319,7 +322,7 @@ Procedure Groups (0)</summary>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="Reader_Error_Kind"><span><a class="doc-id-link" href="#Reader_Error_Kind">Reader_Error_Kind<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/csv/reader.odin#L59"><em>Source</em></a></div></h3>
+<h3 id="Reader_Error_Kind"><span><a class="doc-id-link" href="#Reader_Error_Kind">Reader_Error_Kind<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/csv/reader.odin#L63"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Reader_Error_Kind :: <span class="keyword-type">enum</span> <span class="doc-builtin">int</span> {
 	Bare_Quote, 
@@ -330,7 +333,7 @@ Procedure Groups (0)</summary>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="Reader_Error"><span><a class="doc-id-link" href="#Reader_Error">Reader_Error<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/csv/reader.odin#L73"><em>Source</em></a></div></h3>
+<h3 id="Reader_Error"><span><a class="doc-id-link" href="#Reader_Error">Reader_Error<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/csv/reader.odin#L77"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Reader_Error :: <span class="keyword-type">struct</span> {
 	kind:       <a class="code-typename" href="/core/encoding/csv/#Reader_Error_Kind">Reader_Error_Kind</a>,
@@ -362,7 +365,7 @@ Procedure Groups (0)</summary>
 <h2 id="pkg-Constants" class="pkg-header">Constants</h2>
 <section class="documentation">
 <div class="pkg-entity">
-<h3 id="DEFAULT_RECORD_BUFFER_CAPACITY"><span><a class="doc-id-link" href="#DEFAULT_RECORD_BUFFER_CAPACITY">DEFAULT_RECORD_BUFFER_CAPACITY<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/csv/reader.odin#L86"><em>Source</em></a></div></h3>
+<h3 id="DEFAULT_RECORD_BUFFER_CAPACITY"><span><a class="doc-id-link" href="#DEFAULT_RECORD_BUFFER_CAPACITY">DEFAULT_RECORD_BUFFER_CAPACITY<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/csv/reader.odin#L90"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">DEFAULT_RECORD_BUFFER_CAPACITY :: 256</pre>
 </div>
@@ -371,7 +374,7 @@ Procedure Groups (0)</summary>
 <h2 id="pkg-Variables" class="pkg-header">Variables</h2>
 <section class="documentation">
 <div class="pkg-entity">
-<h3 id="reader_error_kind_string"><span><a class="doc-id-link" href="#reader_error_kind_string">reader_error_kind_string<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/csv/reader.odin#L66"><em>Source</em></a></div></h3>
+<h3 id="reader_error_kind_string"><span><a class="doc-id-link" href="#reader_error_kind_string">reader_error_kind_string<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/csv/reader.odin#L70"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">reader_error_kind_string: [<a class="code-typename" href="/core/encoding/csv/#Reader_Error_Kind">Reader_Error_Kind</a>]<span class="doc-builtin">string</span> = …</pre>
 </div>
@@ -380,7 +383,7 @@ Procedure Groups (0)</summary>
 <h2 id="pkg-Procedures" class="pkg-header">Procedures</h2>
 <section class="documentation">
 <div class="pkg-entity">
-<h3 id="is_io_error"><span><a class="doc-id-link" href="#is_io_error">is_io_error<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/csv/reader.odin#L132"><em>Source</em></a></div></h3>
+<h3 id="is_io_error"><span><a class="doc-id-link" href="#is_io_error">is_io_error<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/csv/reader.odin#L136"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">is_io_error :: <span class="keyword-type">proc</span> "odin" (err: <a class="code-typename" href="/core/encoding/csv/#Error">Error</a>, io_err: io.<a class="code-typename" href="/core/io/#Error">Error</a>) -> <span class="doc-builtin">bool</span> {…}</pre>
 </div>
@@ -390,7 +393,7 @@ Procedure Groups (0)</summary>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="read_all_from_string"><span><a class="doc-id-link" href="#read_all_from_string">read_all_from_string<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/csv/reader.odin#L174"><em>Source</em></a></div></h3>
+<h3 id="read_all_from_string"><span><a class="doc-id-link" href="#read_all_from_string">read_all_from_string<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/csv/reader.odin#L178"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">read_all_from_string :: <span class="keyword-type">proc</span> "odin" (input: <span class="doc-builtin">string</span>, records_allocator := <a href="/core/runtime/#Context">context.allocator</a>, buffer_allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> ([][]<span class="doc-builtin">string</span>, <a class="code-typename" href="/core/encoding/csv/#Error">Error</a>) {…}</pre>
 </div>
@@ -400,7 +403,7 @@ Procedure Groups (0)</summary>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="read_from_string"><span><a class="doc-id-link" href="#read_from_string">read_from_string<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/csv/reader.odin#L159"><em>Source</em></a></div></h3>
+<h3 id="read_from_string"><span><a class="doc-id-link" href="#read_from_string">read_from_string<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/csv/reader.odin#L163"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">read_from_string :: <span class="keyword-type">proc</span> "odin" (input: <span class="doc-builtin">string</span>, record_allocator := <a href="/core/runtime/#Context">context.allocator</a>, buffer_allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> (record: []<span class="doc-builtin">string</span>, n: <span class="doc-builtin">int</span>, err: <a class="code-typename" href="/core/encoding/csv/#Error">Error</a>) {…}</pre>
 </div>
@@ -410,7 +413,7 @@ Procedure Groups (0)</summary>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="reader_destroy"><span><a class="doc-id-link" href="#reader_destroy">reader_destroy<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/csv/reader.odin#L109"><em>Source</em></a></div></h3>
+<h3 id="reader_destroy"><span><a class="doc-id-link" href="#reader_destroy">reader_destroy<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/csv/reader.odin#L113"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">reader_destroy :: <span class="keyword-type">proc</span> "odin" (r: ^<a class="code-typename" href="/core/encoding/csv/#Reader">Reader</a>) {…}</pre>
 </div>
@@ -420,7 +423,7 @@ Procedure Groups (0)</summary>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="read"><span><a class="doc-id-link" href="#read">read<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/csv/reader.odin#L120"><em>Source</em></a></div></h3>
+<h3 id="read"><span><a class="doc-id-link" href="#read">read<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/csv/reader.odin#L124"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">read :: <span class="keyword-type">proc</span> "odin" (r: ^<a class="code-typename" href="/core/encoding/csv/#Reader">Reader</a>, allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> (record: []<span class="doc-builtin">string</span>, err: <a class="code-typename" href="/core/encoding/csv/#Error">Error</a>) {…}</pre>
 </div>
@@ -431,7 +434,7 @@ Procedure Groups (0)</summary>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="read_all"><span><a class="doc-id-link" href="#read_all">read_all<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/csv/reader.odin#L143"><em>Source</em></a></div></h3>
+<h3 id="read_all"><span><a class="doc-id-link" href="#read_all">read_all<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/csv/reader.odin#L147"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">read_all :: <span class="keyword-type">proc</span> "odin" (r: ^<a class="code-typename" href="/core/encoding/csv/#Reader">Reader</a>, allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> ([][]<span class="doc-builtin">string</span>, <a class="code-typename" href="/core/encoding/csv/#Error">Error</a>) {…}</pre>
 </div>
@@ -443,7 +446,7 @@ read_all is defined to read until an EOF, and does not treat, and does not treat
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="reader_init"><span><a class="doc-id-link" href="#reader_init">reader_init<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/csv/reader.odin#L89"><em>Source</em></a></div></h3>
+<h3 id="reader_init"><span><a class="doc-id-link" href="#reader_init">reader_init<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/csv/reader.odin#L93"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">reader_init :: <span class="keyword-type">proc</span> "odin" (reader: ^<a class="code-typename" href="/core/encoding/csv/#Reader">Reader</a>, r: io.<a class="code-typename" href="/core/io/#Reader">Reader</a>, buffer_allocator := <a href="/core/runtime/#Context">context.allocator</a>) {…}</pre>
 </div>
@@ -453,7 +456,7 @@ read_all is defined to read until an EOF, and does not treat, and does not treat
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="reader_init_with_string"><span><a class="doc-id-link" href="#reader_init_with_string">reader_init_with_string<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/csv/reader.odin#L102"><em>Source</em></a></div></h3>
+<h3 id="reader_init_with_string"><span><a class="doc-id-link" href="#reader_init_with_string">reader_init_with_string<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/csv/reader.odin#L106"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">reader_init_with_string :: <span class="keyword-type">proc</span> "odin" (reader: ^<a class="code-typename" href="/core/encoding/csv/#Reader">Reader</a>, s: <span class="doc-builtin">string</span>, buffer_allocator := <a href="/core/runtime/#Context">context.allocator</a>) {…}</pre>
 </div>
@@ -516,7 +519,7 @@ If the underlying io.Writer does not support flush, nil is returned.</p>
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/csv/writer.odin">writer.odin</a></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2022-05 (vendor "odin") Windows_amd64 @ 2022-05-12 21:09:10.855912200 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2022-05 (vendor "odin") Windows_amd64 @ 2022-05-13 21:09:42.839964600 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
