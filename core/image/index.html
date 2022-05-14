@@ -70,11 +70,11 @@
 
 </li>
 <li class="nav-item"><a href="/core/crypto">crypto</a><ul>
-<li><a href="/core/crypto/blake">blake</a></li>
 <li><a href="/core/crypto/blake2b">blake2b</a></li>
 <li><a href="/core/crypto/blake2s">blake2s</a></li>
-<li><a href="/core/crypto/chacha20">chacha20</a></li>
+<li><a href="/core/crypto/blake">blake</a></li>
 <li><a href="/core/crypto/chacha20poly1305">chacha20poly1305</a></li>
+<li><a href="/core/crypto/chacha20">chacha20</a></li>
 <li><a href="/core/crypto/gost">gost</a></li>
 <li><a href="/core/crypto/groestl">groestl</a></li>
 <li><a href="/core/crypto/haval">haval</a></li>
@@ -203,13 +203,13 @@
 <div>
 <details class="doc-index" id="doc-index-Types" aria-labelledby="#doc-index-Types-header">
 <summary id="#doc-index-Types-header">
-Types (34)</summary>
+Types (35)</summary>
 <ul>
 <li><a href="#Alpha_Key">Alpha_Key</a></li>
 <li><a href="#Channel">Channel</a></li>
 <li><a href="#Error">Error</a></li>
-<li><a href="#GA_Pixel">GA_Pixel</a></li>
 <li><a href="#GA_Pixel_16">GA_Pixel_16</a></li>
+<li><a href="#GA_Pixel">GA_Pixel</a></li>
 <li><a href="#G_Pixel">G_Pixel</a></li>
 <li><a href="#G_Pixel_16">G_Pixel_16</a></li>
 <li><a href="#General_Image_Error">General_Image_Error</a></li>
@@ -234,11 +234,12 @@ Types (34)</summary>
 <li><a href="#QOI_Error">QOI_Error</a></li>
 <li><a href="#QOI_Header">QOI_Header</a></li>
 <li><a href="#QOI_Info">QOI_Info</a></li>
-<li><a href="#RGBA_Pixel_16">RGBA_Pixel_16</a></li>
 <li><a href="#RGBA_Pixel">RGBA_Pixel</a></li>
-<li><a href="#RGB_Pixel_16">RGB_Pixel_16</a></li>
+<li><a href="#RGBA_Pixel_16">RGBA_Pixel_16</a></li>
 <li><a href="#RGB_Pixel">RGB_Pixel</a></li>
+<li><a href="#RGB_Pixel_16">RGB_Pixel_16</a></li>
 <li><a href="#TGA_Header">TGA_Header</a></li>
+<li><a href="#Which_File_Type">Which_File_Type</a></li>
 </ul>
 </details>
 </div>
@@ -263,7 +264,7 @@ Variables (0)</summary>
 <div>
 <details class="doc-index" id="doc-index-Procedures" aria-labelledby="#doc-index-Procedures-header">
 <summary id="#doc-index-Procedures-header">
-Procedures (14)</summary>
+Procedures (16)</summary>
 <ul>
 <li><a href="#alpha_add_if_missing">alpha_add_if_missing</a></li>
 <li><a href="#alpha_apply_keyed_alpha">alpha_apply_keyed_alpha</a></li>
@@ -278,6 +279,8 @@ Procedures (14)</summary>
 <li><a href="#read_data">read_data</a></li>
 <li><a href="#read_u8">read_u8</a></li>
 <li><a href="#return_single_channel">return_single_channel</a></li>
+<li><a href="#which_bytes">which_bytes</a></li>
+<li><a href="#which_file">which_file</a></li>
 <li><a href="#write_bytes">write_bytes</a></li>
 </ul>
 </details>
@@ -285,9 +288,10 @@ Procedures (14)</summary>
 <div>
 <details class="doc-index" id="doc-index-Procedure Groups" aria-labelledby="#doc-index-Procedure Groups-header">
 <summary id="#doc-index-Procedure Groups-header">
-Procedure Groups (1)</summary>
+Procedure Groups (2)</summary>
 <ul>
 <li><a href="#apply_palette">apply_palette</a></li>
+<li><a href="#which">which</a></li>
 </ul>
 </details>
 </div>
@@ -333,15 +337,15 @@ Procedure Groups (1)</summary>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="GA_Pixel"><span><a class="doc-id-link" href="#GA_Pixel">GA_Pixel<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L40"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">GA_Pixel :: [2]<span class="doc-builtin">u8</span></pre>
-</div>
-</div>
-<div class="pkg-entity">
 <h3 id="GA_Pixel_16"><span><a class="doc-id-link" href="#GA_Pixel_16">GA_Pixel_16<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L42"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">GA_Pixel_16 :: [2]<span class="doc-builtin">u16</span></pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="GA_Pixel"><span><a class="doc-id-link" href="#GA_Pixel">GA_Pixel<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L40"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">GA_Pixel :: [2]<span class="doc-builtin">u8</span></pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -688,21 +692,15 @@ Procedure Groups (1)</summary>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="RGBA_Pixel_16"><span><a class="doc-id-link" href="#RGBA_Pixel_16">RGBA_Pixel_16<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L37"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">RGBA_Pixel_16 :: [4]<span class="doc-builtin">u16</span></pre>
-</div>
-</div>
-<div class="pkg-entity">
 <h3 id="RGBA_Pixel"><span><a class="doc-id-link" href="#RGBA_Pixel">RGBA_Pixel<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L35"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">RGBA_Pixel :: [4]<span class="doc-builtin">u8</span></pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="RGB_Pixel_16"><span><a class="doc-id-link" href="#RGB_Pixel_16">RGB_Pixel_16<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L36"><em>Source</em></a></div></h3>
+<h3 id="RGBA_Pixel_16"><span><a class="doc-id-link" href="#RGBA_Pixel_16">RGBA_Pixel_16<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L37"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">RGB_Pixel_16 :: [3]<span class="doc-builtin">u16</span></pre>
+<pre class="doc-code">RGBA_Pixel_16 :: [4]<span class="doc-builtin">u16</span></pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -714,6 +712,12 @@ Procedure Groups (1)</summary>
 <summary class="hideme"><span>&nbsp;</span></summary>
 <p>Color</p>
 </details>
+</div>
+<div class="pkg-entity">
+<h3 id="RGB_Pixel_16"><span><a class="doc-id-link" href="#RGB_Pixel_16">RGB_Pixel_16<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L36"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">RGB_Pixel_16 :: [3]<span class="doc-builtin">u16</span></pre>
+</div>
 </div>
 <div class="pkg-entity">
 <h3 id="TGA_Header"><span><a class="doc-id-link" href="#TGA_Header">TGA_Header<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L377"><em>Source</em></a></div></h3>
@@ -729,6 +733,38 @@ Procedure Groups (1)</summary>
 	dimensions:       [2]<span class="doc-builtin">u16le</span>,
 	bits_per_pixel:   <span class="doc-builtin">u8</span>,
 	image_descriptor: <span class="doc-builtin">u8</span>,
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Which_File_Type"><span><a class="doc-id-link" href="#Which_File_Type">Which_File_Type<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/which.odin#L5"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Which_File_Type :: <span class="keyword-type">enum</span> <span class="doc-builtin">int</span> {
+	Unknown, 
+	BMP, 
+	EXR, 
+	FLIF, 
+	GIF, 
+	HDR,       <span class="comment">// Radiance RGBE HDR</span>
+	ICNS,      <span class="comment">// Apple Icon Image</span>
+	JPEG, 
+	JPEG_2000, 
+	JPEG_XL, 
+	PBM, 
+	PGM, 
+	PPM, 
+	PAM, 
+	PFM,       <span class="comment">// NetPBM family</span>
+	PIC,       <span class="comment">// Softimage PIC</span>
+	PNG,       <span class="comment">// Portable Network Graphics</span>
+	PSD,       <span class="comment">// Photoshop PSD</span>
+	QOI,       <span class="comment">// Quite Okay Image</span>
+	SGI_RGB,   <span class="comment">// Silicon Graphics Image RGB file format</span>
+	Sun_Rast,  <span class="comment">// Sun Raster Graphic</span>
+	TGA,       <span class="comment">// Targa Truevision</span>
+	TIFF,      <span class="comment">// Tagged Image File Format</span>
+	WebP, 
+	XBM,       <span class="comment">// X BitMap</span>
 }</pre>
 </div>
 </div>
@@ -939,6 +975,18 @@ Is the pointer valid, are the dimenions valid?</p>
 </details>
 </div>
 <div class="pkg-entity">
+<h3 id="which_bytes"><span><a class="doc-id-link" href="#which_bytes">which_bytes<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/which.odin#L35"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">which_bytes :: <span class="keyword-type">proc</span> "odin" (data: []<span class="doc-builtin">u8</span>) -> <a class="code-typename" href="/core/image/#Which_File_Type">Which_File_Type</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="which_file"><span><a class="doc-id-link" href="#which_file">which_file<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/which.odin#L163"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">which_file :: <span class="keyword-type">proc</span> "odin" (path: <span class="doc-builtin">string</span>) -> <a class="code-typename" href="/core/image/#Which_File_Type">Which_File_Type</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
 <h3 id="write_bytes"><span><a class="doc-id-link" href="#write_bytes">write_bytes<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L1177"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">write_bytes :: <span class="keyword-type">proc</span> "odin" (buf: ^bytes.<a class="code-typename" href="/core/bytes/#Buffer">Buffer</a>, data: []<span class="doc-builtin">u8</span>) -> (err: compress.<a class="code-typename" href="/core/compress/#General_Error">General_Error</a>) {…}</pre>
@@ -957,13 +1005,24 @@ Is the pointer valid, are the dimenions valid?</p>
 </pre>
 </div>
 </div>
+<div class="pkg-entity">
+<h3 id="which"><span><a class="doc-id-link" href="#which">which<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/which.odin#L30"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">which :: proc{
+	<a class="code-procedure" href="/core/image/#which_bytes">which_bytes</a>,
+	<a class="code-procedure" href="/core/image/#which_file">which_file</a>,
+}
+</pre>
+</div>
+</div>
 </section>
 <h2 id="pkg-source-files">Source Files</h2>
 <ul>
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin">common.odin</a></li>
+<li><a href="https://github.com/odin-lang/Odin/tree/master/core/image/which.odin">which.odin</a></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2022-05 (vendor "odin") Windows_amd64 @ 2022-05-13 21:09:42.856964400 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2022-05 (vendor "odin") Windows_amd64 @ 2022-05-14 21:09:22.040730300 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
@@ -972,8 +1031,8 @@ Is the pointer valid, are the dimenions valid?</p>
 <li><a href="#Alpha_Key">Alpha_Key</a></li>
 <li><a href="#Channel">Channel</a></li>
 <li><a href="#Error">Error</a></li>
-<li><a href="#GA_Pixel">GA_Pixel</a></li>
 <li><a href="#GA_Pixel_16">GA_Pixel_16</a></li>
+<li><a href="#GA_Pixel">GA_Pixel</a></li>
 <li><a href="#G_Pixel">G_Pixel</a></li>
 <li><a href="#G_Pixel_16">G_Pixel_16</a></li>
 <li><a href="#General_Image_Error">General_Image_Error</a></li>
@@ -998,11 +1057,12 @@ Is the pointer valid, are the dimenions valid?</p>
 <li><a href="#QOI_Error">QOI_Error</a></li>
 <li><a href="#QOI_Header">QOI_Header</a></li>
 <li><a href="#QOI_Info">QOI_Info</a></li>
-<li><a href="#RGBA_Pixel_16">RGBA_Pixel_16</a></li>
 <li><a href="#RGBA_Pixel">RGBA_Pixel</a></li>
-<li><a href="#RGB_Pixel_16">RGB_Pixel_16</a></li>
+<li><a href="#RGBA_Pixel_16">RGBA_Pixel_16</a></li>
 <li><a href="#RGB_Pixel">RGB_Pixel</a></li>
+<li><a href="#RGB_Pixel_16">RGB_Pixel_16</a></li>
 <li><a href="#TGA_Header">TGA_Header</a></li>
+<li><a href="#Which_File_Type">Which_File_Type</a></li>
 </ul>
 </li>
 <li><a href="#pkg-Constants">Constants</a><ul>
@@ -1025,11 +1085,14 @@ Is the pointer valid, are the dimenions valid?</p>
 <li><a href="#read_data">read_data</a></li>
 <li><a href="#read_u8">read_u8</a></li>
 <li><a href="#return_single_channel">return_single_channel</a></li>
+<li><a href="#which_bytes">which_bytes</a></li>
+<li><a href="#which_file">which_file</a></li>
 <li><a href="#write_bytes">write_bytes</a></li>
 </ul>
 </li>
 <li><a href="#pkg-Procedure Groups">Procedure Groups</a><ul>
 <li><a href="#apply_palette">apply_palette</a></li>
+<li><a href="#which">which</a></li>
 </ul>
 </li>
 <li><a href="#pkg-source-files">Source Files</a></ul>
