@@ -70,9 +70,9 @@
 
 </li>
 <li class="nav-item"><a href="/core/crypto">crypto</a><ul>
-<li><a href="/core/crypto/blake">blake</a></li>
 <li><a href="/core/crypto/blake2b">blake2b</a></li>
 <li><a href="/core/crypto/blake2s">blake2s</a></li>
+<li><a href="/core/crypto/blake">blake</a></li>
 <li><a href="/core/crypto/chacha20poly1305">chacha20poly1305</a></li>
 <li><a href="/core/crypto/chacha20">chacha20</a></li>
 <li><a href="/core/crypto/gost">gost</a></li>
@@ -160,7 +160,11 @@
 <li class="nav-item"><a href="/core/reflect">reflect</a></li>
 <li class="nav-item"><a href="/core/runtime">runtime</a></li>
 <li class="nav-item"><a href="/core/simd">simd</a></li>
-<li class="nav-item"><a href="/core/slice">slice</a></li>
+<li class="nav-item"><a href="/core/slice">slice</a><ul>
+<li><a href="/core/slice/heap">heap</a></li>
+</ul>
+
+</li>
 <li class="nav-item"><a href="/core/sort">sort</a></li>
 <li class="nav-item"><a href="/core/strconv">strconv</a><ul>
 <li><a href="/core/strconv/decimal">decimal</a></li>
@@ -227,7 +231,7 @@ Variables (0)</summary>
 <div>
 <details class="doc-index" id="doc-index-Procedures" aria-labelledby="#doc-index-Procedures-header">
 <summary id="#doc-index-Procedures-header">
-Procedures (9)</summary>
+Procedures (10)</summary>
 <ul>
 <li><a href="#clear">clear</a></li>
 <li><a href="#create">create</a></li>
@@ -238,6 +242,7 @@ Procedures (9)</summary>
 <li><a href="#iterate_by_unset">iterate_by_unset</a></li>
 <li><a href="#make_iterator">make_iterator</a></li>
 <li><a href="#set">set</a></li>
+<li><a href="#unset">unset</a></li>
 </ul>
 </details>
 </div>
@@ -284,7 +289,7 @@ Procedure Groups (0)</summary>
 <h2 id="pkg-Procedures" class="pkg-header">Procedures</h2>
 <section class="documentation">
 <div class="pkg-entity">
-<h3 id="clear"><span><a class="doc-id-link" href="#clear">clear<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/container/bit_array/bit_array.odin#L209"><em>Source</em></a></div></h3>
+<h3 id="clear"><span><a class="doc-id-link" href="#clear">clear<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/container/bit_array/bit_array.odin#L236"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">clear :: <span class="keyword-type">proc</span> "odin" (ba: ^<a class="code-typename" href="/core/container/bit_array/#Bit_Array">Bit_Array</a>) {…}</pre>
 </div>
@@ -294,7 +299,7 @@ Procedure Groups (0)</summary>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="create"><span><a class="doc-id-link" href="#create">create<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/container/bit_array/bit_array.odin#L191"><em>Source</em></a></div></h3>
+<h3 id="create"><span><a class="doc-id-link" href="#create">create<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/container/bit_array/bit_array.odin#L218"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">create :: <span class="keyword-type">proc</span> "odin" (max_index: <span class="doc-builtin">int</span>, min_index: <span class="doc-builtin">int</span> = 0, allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> (res: ^<a class="code-typename" href="/core/container/bit_array/#Bit_Array">Bit_Array</a>, ok: <span class="doc-builtin">bool</span>) <span class="directive">#optional_ok</span> {…}</pre>
 </div>
@@ -304,7 +309,7 @@ Procedure Groups (0)</summary>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="destroy"><span><a class="doc-id-link" href="#destroy">destroy<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/container/bit_array/bit_array.odin#L217"><em>Source</em></a></div></h3>
+<h3 id="destroy"><span><a class="doc-id-link" href="#destroy">destroy<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/container/bit_array/bit_array.odin#L244"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">destroy :: <span class="keyword-type">proc</span> "odin" (ba: ^<a class="code-typename" href="/core/container/bit_array/#Bit_Array">Bit_Array</a>) {…}</pre>
 </div>
@@ -417,6 +422,24 @@ Out:
 </pre>
 </details>
 </div>
+<div class="pkg-entity">
+<h3 id="unset"><span><a class="doc-id-link" href="#unset">unset<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/container/bit_array/bit_array.odin#L198"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">unset :: <span class="keyword-type">proc</span> "odin" (ba: ^<a class="code-typename" href="/core/container/bit_array/#Bit_Array">Bit_Array</a>, #any_int index: <span class="doc-builtin">uint</span>, allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> (ok: <span class="doc-builtin">bool</span>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>In:</p>
+<pre>	- ba:    ^Bit_Array - a pointer to the Bit Array
+	- index: The bit index. Can be an enum member.
+
+Out:
+	- ok:    Whether or not we managed to unset requested bit.
+
+`unset` automatically resizes the Bit Array to accommodate the requested index if needed.
+</pre>
+</details>
+</div>
 </section>
 <h2 id="pkg-Procedure Groups" class="pkg-header">Procedure Groups</h2>
 <section class="documentation">
@@ -428,7 +451,7 @@ Out:
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/container/bit_array/doc.odin">doc.odin</a></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2022-06 (vendor "odin") Windows_amd64 @ 2022-06-11 21:08:25.703315700 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2022-06 (vendor "odin") Windows_amd64 @ 2022-06-12 21:08:06.447956800 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
@@ -448,6 +471,7 @@ Out:
 <li><a href="#iterate_by_unset">iterate_by_unset</a></li>
 <li><a href="#make_iterator">make_iterator</a></li>
 <li><a href="#set">set</a></li>
+<li><a href="#unset">unset</a></li>
 </ul>
 </li>
 <li><a href="#pkg-source-files">Source Files</a></ul>
