@@ -70,11 +70,11 @@
 
 </li>
 <li class="nav-item"><a href="/core/crypto">crypto</a><ul>
+<li><a href="/core/crypto/blake">blake</a></li>
 <li><a href="/core/crypto/blake2b">blake2b</a></li>
 <li><a href="/core/crypto/blake2s">blake2s</a></li>
-<li><a href="/core/crypto/blake">blake</a></li>
-<li><a href="/core/crypto/chacha20poly1305">chacha20poly1305</a></li>
 <li><a href="/core/crypto/chacha20">chacha20</a></li>
+<li><a href="/core/crypto/chacha20poly1305">chacha20poly1305</a></li>
 <li><a href="/core/crypto/gost">gost</a></li>
 <li><a href="/core/crypto/groestl">groestl</a></li>
 <li><a href="/core/crypto/haval">haval</a></li>
@@ -210,13 +210,13 @@
 <summary id="#doc-index-Types-header">
 Types (10)</summary>
 <ul>
-<li><a href="#Cond_Incl_State">Cond_Incl_State</a></li>
 <li><a href="#Cond_Incl">Cond_Incl</a></li>
+<li><a href="#Cond_Incl_State">Cond_Incl_State</a></li>
 <li><a href="#Error_Handler">Error_Handler</a></li>
+<li><a href="#Macro">Macro</a></li>
 <li><a href="#Macro_Arg">Macro_Arg</a></li>
 <li><a href="#Macro_Handler">Macro_Handler</a></li>
 <li><a href="#Macro_Kind">Macro_Kind</a></li>
-<li><a href="#Macro">Macro</a></li>
 <li><a href="#Macro_Param">Macro_Param</a></li>
 <li><a href="#Pragma_Handler">Pragma_Handler</a></li>
 <li><a href="#Preprocessor">Preprocessor</a></li>
@@ -253,8 +253,8 @@ Procedures (57)</summary>
 <li><a href="#convert_pp_char">convert_pp_char</a></li>
 <li><a href="#convert_pp_number">convert_pp_number</a></li>
 <li><a href="#convert_pp_string">convert_pp_string</a></li>
-<li><a href="#convert_pp_tokens">convert_pp_tokens</a></li>
 <li><a href="#convert_pp_token">convert_pp_token</a></li>
+<li><a href="#convert_pp_tokens">convert_pp_tokens</a></li>
 <li><a href="#copy_line">copy_line</a></li>
 <li><a href="#counter_macro">counter_macro</a></li>
 <li><a href="#define_macro">define_macro</a></li>
@@ -315,16 +315,6 @@ Procedure Groups (0)</summary>
 <h2 id="pkg-Types" class="pkg-header">Types</h2>
 <section class="documentation">
 <div class="pkg-entity">
-<h3 id="Cond_Incl_State"><span><a class="doc-id-link" href="#Cond_Incl_State">Cond_Incl_State<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/c/frontend/preprocessor/preprocess.odin#L48"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">Cond_Incl_State :: <span class="keyword-type">enum</span> <span class="doc-builtin">u8</span> {
-	In_Then, 
-	In_Elif, 
-	In_Else, 
-}</pre>
-</div>
-</div>
-<div class="pkg-entity">
 <h3 id="Cond_Incl"><span><a class="doc-id-link" href="#Cond_Incl">Cond_Incl<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/c/frontend/preprocessor/preprocess.odin#L54"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Cond_Incl :: <span class="keyword-type">struct</span> {
@@ -336,9 +326,32 @@ Procedure Groups (0)</summary>
 </div>
 </div>
 <div class="pkg-entity">
+<h3 id="Cond_Incl_State"><span><a class="doc-id-link" href="#Cond_Incl_State">Cond_Incl_State<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/c/frontend/preprocessor/preprocess.odin#L48"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Cond_Incl_State :: <span class="keyword-type">enum</span> <span class="doc-builtin">u8</span> {
+	In_Then, 
+	In_Elif, 
+	In_Else, 
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
 <h3 id="Error_Handler"><span><a class="doc-id-link" href="#Error_Handler">Error_Handler<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/c/frontend/preprocessor/preprocess.odin#L18"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Error_Handler :: c_frontend_tokenizer.<a class="code-typename" href="/core/c/frontend/tokenizer/#Error_Handler">Error_Handler</a></pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Macro"><span><a class="doc-id-link" href="#Macro">Macro<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/c/frontend/preprocessor/preprocess.odin#L39"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Macro :: <span class="keyword-type">struct</span> {
+	name:         <span class="doc-builtin">string</span>,
+	kind:         <a class="code-typename" href="/core/c/frontend/preprocessor/#Macro_Kind">Macro_Kind</a>,
+	params:       ^<a class="code-typename" href="/core/c/frontend/preprocessor/#Macro_Param">Macro_Param</a>,
+	va_args_name: <span class="doc-builtin">string</span>,
+	body:         ^c_frontend_tokenizer.<a class="code-typename" href="/core/c/frontend/tokenizer/#Token">Token</a>,
+	handler:      <a class="code-typename" href="/core/c/frontend/preprocessor/#Macro_Handler">Macro_Handler</a>,
+}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -364,19 +377,6 @@ Procedure Groups (0)</summary>
 <pre class="doc-code">Macro_Kind :: <span class="keyword-type">enum</span> <span class="doc-builtin">u8</span> {
 	Function_Like, 
 	Value_Like, 
-}</pre>
-</div>
-</div>
-<div class="pkg-entity">
-<h3 id="Macro"><span><a class="doc-id-link" href="#Macro">Macro<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/c/frontend/preprocessor/preprocess.odin#L39"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">Macro :: <span class="keyword-type">struct</span> {
-	name:         <span class="doc-builtin">string</span>,
-	kind:         <a class="code-typename" href="/core/c/frontend/preprocessor/#Macro_Kind">Macro_Kind</a>,
-	params:       ^<a class="code-typename" href="/core/c/frontend/preprocessor/#Macro_Param">Macro_Param</a>,
-	va_args_name: <span class="doc-builtin">string</span>,
-	body:         ^c_frontend_tokenizer.<a class="code-typename" href="/core/c/frontend/tokenizer/#Token">Token</a>,
-	handler:      <a class="code-typename" href="/core/c/frontend/preprocessor/#Macro_Handler">Macro_Handler</a>,
 }</pre>
 </div>
 </div>
@@ -493,15 +493,15 @@ Procedure Groups (0)</summary>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="convert_pp_tokens"><span><a class="doc-id-link" href="#convert_pp_tokens">convert_pp_tokens<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/c/frontend/preprocessor/preprocess.odin#L331"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">convert_pp_tokens :: <span class="keyword-type">proc</span> "odin" (cpp: ^<a class="code-typename" href="/core/c/frontend/preprocessor/#Preprocessor">Preprocessor</a>, t: ^c_frontend_tokenizer.<a class="code-typename" href="/core/c/frontend/tokenizer/#Token">Token</a>, is_keyword: c_frontend_tokenizer.<a class="code-typename" href="/core/c/frontend/tokenizer/#Is_Keyword_Proc">Is_Keyword_Proc</a>) {…}</pre>
-</div>
-</div>
-<div class="pkg-entity">
 <h3 id="convert_pp_token"><span><a class="doc-id-link" href="#convert_pp_token">convert_pp_token<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/c/frontend/preprocessor/preprocess.odin#L319"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">convert_pp_token :: <span class="keyword-type">proc</span> "odin" (cpp: ^<a class="code-typename" href="/core/c/frontend/preprocessor/#Preprocessor">Preprocessor</a>, t: ^c_frontend_tokenizer.<a class="code-typename" href="/core/c/frontend/tokenizer/#Token">Token</a>, is_keyword: c_frontend_tokenizer.<a class="code-typename" href="/core/c/frontend/tokenizer/#Is_Keyword_Proc">Is_Keyword_Proc</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="convert_pp_tokens"><span><a class="doc-id-link" href="#convert_pp_tokens">convert_pp_tokens<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/c/frontend/preprocessor/preprocess.odin#L331"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">convert_pp_tokens :: <span class="keyword-type">proc</span> "odin" (cpp: ^<a class="code-typename" href="/core/c/frontend/preprocessor/#Preprocessor">Preprocessor</a>, t: ^c_frontend_tokenizer.<a class="code-typename" href="/core/c/frontend/tokenizer/#Token">Token</a>, is_keyword: c_frontend_tokenizer.<a class="code-typename" href="/core/c/frontend/tokenizer/#Is_Keyword_Proc">Is_Keyword_Proc</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -792,19 +792,19 @@ Procedure Groups (0)</summary>
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/c/frontend/preprocessor/unquote.odin">unquote.odin</a></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2022-08 (vendor "odin") Windows_amd64 @ 2022-08-02 21:10:36.662163300 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2022-08 (vendor "odin") Windows_amd64 @ 2022-08-03 21:09:55.590713100 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
 <ul>
 <li><a href="#pkg-Types">Types</a><ul>
-<li><a href="#Cond_Incl_State">Cond_Incl_State</a></li>
 <li><a href="#Cond_Incl">Cond_Incl</a></li>
+<li><a href="#Cond_Incl_State">Cond_Incl_State</a></li>
 <li><a href="#Error_Handler">Error_Handler</a></li>
+<li><a href="#Macro">Macro</a></li>
 <li><a href="#Macro_Arg">Macro_Arg</a></li>
 <li><a href="#Macro_Handler">Macro_Handler</a></li>
 <li><a href="#Macro_Kind">Macro_Kind</a></li>
-<li><a href="#Macro">Macro</a></li>
 <li><a href="#Macro_Param">Macro_Param</a></li>
 <li><a href="#Pragma_Handler">Pragma_Handler</a></li>
 <li><a href="#Preprocessor">Preprocessor</a></li>
@@ -824,8 +824,8 @@ Procedure Groups (0)</summary>
 <li><a href="#convert_pp_char">convert_pp_char</a></li>
 <li><a href="#convert_pp_number">convert_pp_number</a></li>
 <li><a href="#convert_pp_string">convert_pp_string</a></li>
-<li><a href="#convert_pp_tokens">convert_pp_tokens</a></li>
 <li><a href="#convert_pp_token">convert_pp_token</a></li>
+<li><a href="#convert_pp_tokens">convert_pp_tokens</a></li>
 <li><a href="#copy_line">copy_line</a></li>
 <li><a href="#counter_macro">counter_macro</a></li>
 <li><a href="#define_macro">define_macro</a></li>

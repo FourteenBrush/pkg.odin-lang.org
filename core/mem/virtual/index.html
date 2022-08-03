@@ -70,11 +70,11 @@
 
 </li>
 <li class="nav-item"><a href="/core/crypto">crypto</a><ul>
+<li><a href="/core/crypto/blake">blake</a></li>
 <li><a href="/core/crypto/blake2b">blake2b</a></li>
 <li><a href="/core/crypto/blake2s">blake2s</a></li>
-<li><a href="/core/crypto/blake">blake</a></li>
-<li><a href="/core/crypto/chacha20poly1305">chacha20poly1305</a></li>
 <li><a href="/core/crypto/chacha20">chacha20</a></li>
+<li><a href="/core/crypto/chacha20poly1305">chacha20poly1305</a></li>
 <li><a href="/core/crypto/gost">gost</a></li>
 <li><a href="/core/crypto/groestl">groestl</a></li>
 <li><a href="/core/crypto/haval">haval</a></li>
@@ -212,9 +212,9 @@ Types (10)</summary>
 <li><a href="#Allocator_Error">Allocator_Error</a></li>
 <li><a href="#Growing_Arena">Growing_Arena</a></li>
 <li><a href="#Growing_Arena_Temp">Growing_Arena_Temp</a></li>
+<li><a href="#Memory_Block">Memory_Block</a></li>
 <li><a href="#Memory_Block_Flag">Memory_Block_Flag</a></li>
 <li><a href="#Memory_Block_Flags">Memory_Block_Flags</a></li>
-<li><a href="#Memory_Block">Memory_Block</a></li>
 <li><a href="#Protect_Flag">Protect_Flag</a></li>
 <li><a href="#Protect_Flags">Protect_Flags</a></li>
 <li><a href="#Static_Arena">Static_Arena</a></li>
@@ -251,9 +251,9 @@ Procedures (32)</summary>
 <li><a href="#alloc_from_memory_block">alloc_from_memory_block</a></li>
 <li><a href="#commit">commit</a></li>
 <li><a href="#decommit">decommit</a></li>
+<li><a href="#growing_arena_alloc">growing_arena_alloc</a></li>
 <li><a href="#growing_arena_allocator">growing_arena_allocator</a></li>
 <li><a href="#growing_arena_allocator_proc">growing_arena_allocator_proc</a></li>
-<li><a href="#growing_arena_alloc">growing_arena_alloc</a></li>
 <li><a href="#growing_arena_bootstrap_new_by_name">growing_arena_bootstrap_new_by_name</a></li>
 <li><a href="#growing_arena_bootstrap_new_by_offset">growing_arena_bootstrap_new_by_offset</a></li>
 <li><a href="#growing_arena_check_temp">growing_arena_check_temp</a></li>
@@ -268,8 +268,8 @@ Procedures (32)</summary>
 <li><a href="#release">release</a></li>
 <li><a href="#reserve">reserve</a></li>
 <li><a href="#reserve_and_commit">reserve_and_commit</a></li>
-<li><a href="#static_arena_allocator">static_arena_allocator</a></li>
 <li><a href="#static_arena_alloc">static_arena_alloc</a></li>
+<li><a href="#static_arena_allocator">static_arena_allocator</a></li>
 <li><a href="#static_arena_allocator_proc">static_arena_allocator_proc</a></li>
 <li><a href="#static_arena_bootstrap_new_by_name">static_arena_bootstrap_new_by_name</a></li>
 <li><a href="#static_arena_bootstrap_new_by_offset">static_arena_bootstrap_new_by_offset</a></li>
@@ -288,8 +288,8 @@ Procedures (32)</summary>
 <summary id="#doc-index-Procedure Groups-header">
 Procedure Groups (9)</summary>
 <ul>
-<li><a href="#arena_allocator">arena_allocator</a></li>
 <li><a href="#arena_alloc">arena_alloc</a></li>
+<li><a href="#arena_allocator">arena_allocator</a></li>
 <li><a href="#arena_check_temp">arena_check_temp</a></li>
 <li><a href="#arena_destroy">arena_destroy</a></li>
 <li><a href="#arena_free_all">arena_free_all</a></li>
@@ -332,6 +332,18 @@ Procedure Groups (9)</summary>
 </div>
 </div>
 <div class="pkg-entity">
+<h3 id="Memory_Block"><span><a class="doc-id-link" href="#Memory_Block">Memory_Block<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/virtual.odin#L46"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Memory_Block :: <span class="keyword-type">struct</span> {
+	prev:      ^<a class="code-typename" href="/core/mem/virtual/#Memory_Block">Memory_Block</a>,
+	base:      [^]<span class="doc-builtin">u8</span>,
+	used:      <span class="doc-builtin">uint</span>,
+	committed: <span class="doc-builtin">uint</span>,
+	reserved:  <span class="doc-builtin">uint</span>,
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
 <h3 id="Memory_Block_Flag"><span><a class="doc-id-link" href="#Memory_Block_Flag">Memory_Block_Flag<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/virtual.odin#L53"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Memory_Block_Flag :: <span class="keyword-type">enum</span> <span class="doc-builtin">u32</span> {
@@ -343,18 +355,6 @@ Procedure Groups (9)</summary>
 <h3 id="Memory_Block_Flags"><span><a class="doc-id-link" href="#Memory_Block_Flags">Memory_Block_Flags<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/virtual.odin#L56"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Memory_Block_Flags :: distinct <span class="keyword-type">bit_set</span>[<a class="code-typename" href="/core/mem/virtual/#Memory_Block_Flag">Memory_Block_Flag</a>; <span class="doc-builtin">u32</span>]</pre>
-</div>
-</div>
-<div class="pkg-entity">
-<h3 id="Memory_Block"><span><a class="doc-id-link" href="#Memory_Block">Memory_Block<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/virtual.odin#L46"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">Memory_Block :: <span class="keyword-type">struct</span> {
-	prev:      ^<a class="code-typename" href="/core/mem/virtual/#Memory_Block">Memory_Block</a>,
-	base:      [^]<span class="doc-builtin">u8</span>,
-	used:      <span class="doc-builtin">uint</span>,
-	committed: <span class="doc-builtin">uint</span>,
-	reserved:  <span class="doc-builtin">uint</span>,
-}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -456,6 +456,12 @@ Procedure Groups (9)</summary>
 </div>
 </div>
 <div class="pkg-entity">
+<h3 id="growing_arena_alloc"><span><a class="doc-id-link" href="#growing_arena_alloc">growing_arena_alloc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/growing_arena.odin#L16"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">growing_arena_alloc :: <span class="keyword-type">proc</span> "odin" (arena: ^<a class="code-typename" href="/core/mem/virtual/#Growing_Arena">Growing_Arena</a>, min_size: <span class="doc-builtin">int</span>, alignment: <span class="doc-builtin">int</span>) -> (data: []<span class="doc-builtin">u8</span>, err: runtime.<a class="code-typename" href="/core/runtime/#Allocator_Error">Allocator_Error</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
 <h3 id="growing_arena_allocator"><span><a class="doc-id-link" href="#growing_arena_allocator">growing_arena_allocator<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/growing_arena.odin#L93"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">growing_arena_allocator :: <span class="keyword-type">proc</span> "odin" (arena: ^<a class="code-typename" href="/core/mem/virtual/#Growing_Arena">Growing_Arena</a>) -> runtime.<a class="code-typename" href="/core/runtime/#Allocator">Allocator</a> {…}</pre>
@@ -471,12 +477,6 @@ Procedure Groups (9)</summary>
 	old_memory:      <span class="doc-builtin">rawptr</span>, 
 	old_size:        <span class="doc-builtin">int</span>, 
 ) -> ([]<span class="doc-builtin">u8</span>, runtime.<a class="code-typename" href="/core/runtime/#Allocator_Error">Allocator_Error</a>) {…}</pre>
-</div>
-</div>
-<div class="pkg-entity">
-<h3 id="growing_arena_alloc"><span><a class="doc-id-link" href="#growing_arena_alloc">growing_arena_alloc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/growing_arena.odin#L16"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">growing_arena_alloc :: <span class="keyword-type">proc</span> "odin" (arena: ^<a class="code-typename" href="/core/mem/virtual/#Growing_Arena">Growing_Arena</a>, min_size: <span class="doc-builtin">int</span>, alignment: <span class="doc-builtin">int</span>) -> (data: []<span class="doc-builtin">u8</span>, err: runtime.<a class="code-typename" href="/core/runtime/#Allocator_Error">Allocator_Error</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -564,15 +564,15 @@ Procedure Groups (9)</summary>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="static_arena_allocator"><span><a class="doc-id-link" href="#static_arena_allocator">static_arena_allocator<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/static_arena.odin#L91"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">static_arena_allocator :: <span class="keyword-type">proc</span> "odin" (arena: ^<a class="code-typename" href="/core/mem/virtual/#Static_Arena">Static_Arena</a>) -> runtime.<a class="code-typename" href="/core/runtime/#Allocator">Allocator</a> {…}</pre>
-</div>
-</div>
-<div class="pkg-entity">
 <h3 id="static_arena_alloc"><span><a class="doc-id-link" href="#static_arena_alloc">static_arena_alloc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/static_arena.odin#L32"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">static_arena_alloc :: <span class="keyword-type">proc</span> "odin" (arena: ^<a class="code-typename" href="/core/mem/virtual/#Static_Arena">Static_Arena</a>, size: <span class="doc-builtin">int</span>, alignment: <span class="doc-builtin">int</span>) -> (data: []<span class="doc-builtin">u8</span>, err: runtime.<a class="code-typename" href="/core/runtime/#Allocator_Error">Allocator_Error</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="static_arena_allocator"><span><a class="doc-id-link" href="#static_arena_allocator">static_arena_allocator<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/static_arena.odin#L91"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">static_arena_allocator :: <span class="keyword-type">proc</span> "odin" (arena: ^<a class="code-typename" href="/core/mem/virtual/#Static_Arena">Static_Arena</a>) -> runtime.<a class="code-typename" href="/core/runtime/#Allocator">Allocator</a> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -645,21 +645,21 @@ Procedure Groups (9)</summary>
 <h2 id="pkg-Procedure Groups" class="pkg-header">Procedure Groups</h2>
 <section class="documentation">
 <div class="pkg-entity">
-<h3 id="arena_allocator"><span><a class="doc-id-link" href="#arena_allocator">arena_allocator<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/arena_util.odin#L18"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">arena_allocator :: proc{
-	<a class="code-procedure" href="/core/mem/virtual/#static_arena_allocator">static_arena_allocator</a>,
-	<a class="code-procedure" href="/core/mem/virtual/#growing_arena_allocator">growing_arena_allocator</a>,
-}
-</pre>
-</div>
-</div>
-<div class="pkg-entity">
 <h3 id="arena_alloc"><span><a class="doc-id-link" href="#arena_alloc">arena_alloc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/arena_util.odin#L23"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">arena_alloc :: proc{
 	<a class="code-procedure" href="/core/mem/virtual/#static_arena_alloc">static_arena_alloc</a>,
 	<a class="code-procedure" href="/core/mem/virtual/#growing_arena_alloc">growing_arena_alloc</a>,
+}
+</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="arena_allocator"><span><a class="doc-id-link" href="#arena_allocator">arena_allocator<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/arena_util.odin#L18"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">arena_allocator :: proc{
+	<a class="code-procedure" href="/core/mem/virtual/#static_arena_allocator">static_arena_allocator</a>,
+	<a class="code-procedure" href="/core/mem/virtual/#growing_arena_allocator">growing_arena_allocator</a>,
 }
 </pre>
 </div>
@@ -745,7 +745,7 @@ Procedure Groups (9)</summary>
 <li><em>(hidden platform specific files)</em></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2022-08 (vendor "odin") Windows_amd64 @ 2022-08-02 21:10:36.766162200 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2022-08 (vendor "odin") Windows_amd64 @ 2022-08-03 21:09:55.730725100 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
@@ -754,9 +754,9 @@ Procedure Groups (9)</summary>
 <li><a href="#Allocator_Error">Allocator_Error</a></li>
 <li><a href="#Growing_Arena">Growing_Arena</a></li>
 <li><a href="#Growing_Arena_Temp">Growing_Arena_Temp</a></li>
+<li><a href="#Memory_Block">Memory_Block</a></li>
 <li><a href="#Memory_Block_Flag">Memory_Block_Flag</a></li>
 <li><a href="#Memory_Block_Flags">Memory_Block_Flags</a></li>
-<li><a href="#Memory_Block">Memory_Block</a></li>
 <li><a href="#Protect_Flag">Protect_Flag</a></li>
 <li><a href="#Protect_Flags">Protect_Flags</a></li>
 <li><a href="#Static_Arena">Static_Arena</a></li>
@@ -778,9 +778,9 @@ Procedure Groups (9)</summary>
 <li><a href="#alloc_from_memory_block">alloc_from_memory_block</a></li>
 <li><a href="#commit">commit</a></li>
 <li><a href="#decommit">decommit</a></li>
+<li><a href="#growing_arena_alloc">growing_arena_alloc</a></li>
 <li><a href="#growing_arena_allocator">growing_arena_allocator</a></li>
 <li><a href="#growing_arena_allocator_proc">growing_arena_allocator_proc</a></li>
-<li><a href="#growing_arena_alloc">growing_arena_alloc</a></li>
 <li><a href="#growing_arena_bootstrap_new_by_name">growing_arena_bootstrap_new_by_name</a></li>
 <li><a href="#growing_arena_bootstrap_new_by_offset">growing_arena_bootstrap_new_by_offset</a></li>
 <li><a href="#growing_arena_check_temp">growing_arena_check_temp</a></li>
@@ -795,8 +795,8 @@ Procedure Groups (9)</summary>
 <li><a href="#release">release</a></li>
 <li><a href="#reserve">reserve</a></li>
 <li><a href="#reserve_and_commit">reserve_and_commit</a></li>
-<li><a href="#static_arena_allocator">static_arena_allocator</a></li>
 <li><a href="#static_arena_alloc">static_arena_alloc</a></li>
+<li><a href="#static_arena_allocator">static_arena_allocator</a></li>
 <li><a href="#static_arena_allocator_proc">static_arena_allocator_proc</a></li>
 <li><a href="#static_arena_bootstrap_new_by_name">static_arena_bootstrap_new_by_name</a></li>
 <li><a href="#static_arena_bootstrap_new_by_offset">static_arena_bootstrap_new_by_offset</a></li>
@@ -810,8 +810,8 @@ Procedure Groups (9)</summary>
 </ul>
 </li>
 <li><a href="#pkg-Procedure Groups">Procedure Groups</a><ul>
-<li><a href="#arena_allocator">arena_allocator</a></li>
 <li><a href="#arena_alloc">arena_alloc</a></li>
+<li><a href="#arena_allocator">arena_allocator</a></li>
 <li><a href="#arena_check_temp">arena_check_temp</a></li>
 <li><a href="#arena_destroy">arena_destroy</a></li>
 <li><a href="#arena_free_all">arena_free_all</a></li>

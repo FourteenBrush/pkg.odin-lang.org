@@ -70,11 +70,11 @@
 
 </li>
 <li class="nav-item"><a href="/core/crypto">crypto</a><ul>
+<li><a href="/core/crypto/blake">blake</a></li>
 <li><a href="/core/crypto/blake2b">blake2b</a></li>
 <li><a href="/core/crypto/blake2s">blake2s</a></li>
-<li><a href="/core/crypto/blake">blake</a></li>
-<li><a href="/core/crypto/chacha20poly1305">chacha20poly1305</a></li>
 <li><a href="/core/crypto/chacha20">chacha20</a></li>
+<li><a href="/core/crypto/chacha20poly1305">chacha20poly1305</a></li>
 <li><a href="/core/crypto/gost">gost</a></li>
 <li><a href="/core/crypto/groestl">groestl</a></li>
 <li><a href="/core/crypto/haval">haval</a></li>
@@ -216,8 +216,8 @@ Types (5)</summary>
 <ul>
 <li><a href="#Error">Error</a></li>
 <li><a href="#Reader">Reader</a></li>
-<li><a href="#Reader_Error_Kind">Reader_Error_Kind</a></li>
 <li><a href="#Reader_Error">Reader_Error</a></li>
+<li><a href="#Reader_Error_Kind">Reader_Error_Kind</a></li>
 <li><a href="#Writer">Writer</a></li>
 </ul>
 </details>
@@ -246,17 +246,17 @@ Variables (1)</summary>
 Procedures (12)</summary>
 <ul>
 <li><a href="#is_io_error">is_io_error</a></li>
+<li><a href="#read">read</a></li>
+<li><a href="#read_all">read_all</a></li>
 <li><a href="#read_all_from_string">read_all_from_string</a></li>
 <li><a href="#read_from_string">read_from_string</a></li>
 <li><a href="#reader_destroy">reader_destroy</a></li>
-<li><a href="#read">read</a></li>
-<li><a href="#read_all">read_all</a></li>
 <li><a href="#reader_init">reader_init</a></li>
 <li><a href="#reader_init_with_string">reader_init_with_string</a></li>
-<li><a href="#writer_init">writer_init</a></li>
 <li><a href="#write">write</a></li>
 <li><a href="#write_all">write_all</a></li>
 <li><a href="#writer_flush">writer_flush</a></li>
+<li><a href="#writer_init">writer_init</a></li>
 </ul>
 </details>
 </div>
@@ -329,17 +329,6 @@ Procedure Groups (0)</summary>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="Reader_Error_Kind"><span><a class="doc-id-link" href="#Reader_Error_Kind">Reader_Error_Kind<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/csv/reader.odin#L63"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">Reader_Error_Kind :: <span class="keyword-type">enum</span> <span class="doc-builtin">int</span> {
-	Bare_Quote, 
-	Quote, 
-	Field_Count, 
-	Invalid_Delim, 
-}</pre>
-</div>
-</div>
-<div class="pkg-entity">
 <h3 id="Reader_Error"><span><a class="doc-id-link" href="#Reader_Error">Reader_Error<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/csv/reader.odin#L77"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Reader_Error :: <span class="keyword-type">struct</span> {
@@ -349,6 +338,17 @@ Procedure Groups (0)</summary>
 	column:     <span class="doc-builtin">int</span>,
 	expected,
 	got:        <span class="doc-builtin">int</span>,
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Reader_Error_Kind"><span><a class="doc-id-link" href="#Reader_Error_Kind">Reader_Error_Kind<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/csv/reader.odin#L63"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Reader_Error_Kind :: <span class="keyword-type">enum</span> <span class="doc-builtin">int</span> {
+	Bare_Quote, 
+	Quote, 
+	Field_Count, 
+	Invalid_Delim, 
 }</pre>
 </div>
 </div>
@@ -400,6 +400,29 @@ Procedure Groups (0)</summary>
 </details>
 </div>
 <div class="pkg-entity">
+<h3 id="read"><span><a class="doc-id-link" href="#read">read<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/csv/reader.odin#L124"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">read :: <span class="keyword-type">proc</span> "odin" (r: ^<a class="code-typename" href="/core/encoding/csv/#Reader">Reader</a>, allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> (record: []<span class="doc-builtin">string</span>, err: <a class="code-typename" href="/core/encoding/csv/#Error">Error</a>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>read reads a single record (a slice of fields) from r</p>
+<p>All \r\n sequences are normalized to \n, including multi-line field</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="read_all"><span><a class="doc-id-link" href="#read_all">read_all<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/csv/reader.odin#L147"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">read_all :: <span class="keyword-type">proc</span> "odin" (r: ^<a class="code-typename" href="/core/encoding/csv/#Reader">Reader</a>, allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> ([][]<span class="doc-builtin">string</span>, <a class="code-typename" href="/core/encoding/csv/#Error">Error</a>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>read_all reads all the remaining records from r.
+Each record is a slice of fields.
+read_all is defined to read until an EOF, and does not treat, and does not treat EOF as an error</p>
+</details>
+</div>
+<div class="pkg-entity">
 <h3 id="read_all_from_string"><span><a class="doc-id-link" href="#read_all_from_string">read_all_from_string<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/csv/reader.odin#L178"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">read_all_from_string :: <span class="keyword-type">proc</span> "odin" (input: <span class="doc-builtin">string</span>, records_allocator := <a href="/core/runtime/#Context">context.allocator</a>, buffer_allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> ([][]<span class="doc-builtin">string</span>, <a class="code-typename" href="/core/encoding/csv/#Error">Error</a>) {…}</pre>
@@ -430,29 +453,6 @@ Procedure Groups (0)</summary>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="read"><span><a class="doc-id-link" href="#read">read<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/csv/reader.odin#L124"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">read :: <span class="keyword-type">proc</span> "odin" (r: ^<a class="code-typename" href="/core/encoding/csv/#Reader">Reader</a>, allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> (record: []<span class="doc-builtin">string</span>, err: <a class="code-typename" href="/core/encoding/csv/#Error">Error</a>) {…}</pre>
-</div>
-<details class="odin-doc-toggle" open>
-<summary class="hideme"><span>&nbsp;</span></summary>
-<p>read reads a single record (a slice of fields) from r</p>
-<p>All \r\n sequences are normalized to \n, including multi-line field</p>
-</details>
-</div>
-<div class="pkg-entity">
-<h3 id="read_all"><span><a class="doc-id-link" href="#read_all">read_all<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/csv/reader.odin#L147"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">read_all :: <span class="keyword-type">proc</span> "odin" (r: ^<a class="code-typename" href="/core/encoding/csv/#Reader">Reader</a>, allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> ([][]<span class="doc-builtin">string</span>, <a class="code-typename" href="/core/encoding/csv/#Error">Error</a>) {…}</pre>
-</div>
-<details class="odin-doc-toggle" open>
-<summary class="hideme"><span>&nbsp;</span></summary>
-<p>read_all reads all the remaining records from r.
-Each record is a slice of fields.
-read_all is defined to read until an EOF, and does not treat, and does not treat EOF as an error</p>
-</details>
-</div>
-<div class="pkg-entity">
 <h3 id="reader_init"><span><a class="doc-id-link" href="#reader_init">reader_init<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/csv/reader.odin#L93"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">reader_init :: <span class="keyword-type">proc</span> "odin" (reader: ^<a class="code-typename" href="/core/encoding/csv/#Reader">Reader</a>, r: io.<a class="code-typename" href="/core/io/#Reader">Reader</a>, buffer_allocator := <a href="/core/runtime/#Context">context.allocator</a>) {…}</pre>
@@ -470,16 +470,6 @@ read_all is defined to read until an EOF, and does not treat, and does not treat
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
 <p>reader_init_with_string initializes a new Reader from s</p>
-</details>
-</div>
-<div class="pkg-entity">
-<h3 id="writer_init"><span><a class="doc-id-link" href="#writer_init">writer_init<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/csv/writer.odin#L19"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">writer_init :: <span class="keyword-type">proc</span> "odin" (writer: ^<a class="code-typename" href="/core/encoding/csv/#Writer">Writer</a>, w: io.<a class="code-typename" href="/core/io/#Writer">Writer</a>) {…}</pre>
-</div>
-<details class="odin-doc-toggle" open>
-<summary class="hideme"><span>&nbsp;</span></summary>
-<p>writer_init initializes a Writer that writes to w</p>
 </details>
 </div>
 <div class="pkg-entity">
@@ -515,6 +505,16 @@ A record is a slice of strings, where each string is a single field.</p>
 If the underlying io.Writer does not support flush, nil is returned.</p>
 </details>
 </div>
+<div class="pkg-entity">
+<h3 id="writer_init"><span><a class="doc-id-link" href="#writer_init">writer_init<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/csv/writer.odin#L19"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">writer_init :: <span class="keyword-type">proc</span> "odin" (writer: ^<a class="code-typename" href="/core/encoding/csv/#Writer">Writer</a>, w: io.<a class="code-typename" href="/core/io/#Writer">Writer</a>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>writer_init initializes a Writer that writes to w</p>
+</details>
+</div>
 </section>
 <h2 id="pkg-Procedure Groups" class="pkg-header">Procedure Groups</h2>
 <section class="documentation">
@@ -526,7 +526,7 @@ If the underlying io.Writer does not support flush, nil is returned.</p>
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/csv/writer.odin">writer.odin</a></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2022-08 (vendor "odin") Windows_amd64 @ 2022-08-02 21:10:36.669161000 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2022-08 (vendor "odin") Windows_amd64 @ 2022-08-03 21:09:55.598716900 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
@@ -534,8 +534,8 @@ If the underlying io.Writer does not support flush, nil is returned.</p>
 <li><a href="#pkg-overview">Overview</a><li><a href="#pkg-Types">Types</a><ul>
 <li><a href="#Error">Error</a></li>
 <li><a href="#Reader">Reader</a></li>
-<li><a href="#Reader_Error_Kind">Reader_Error_Kind</a></li>
 <li><a href="#Reader_Error">Reader_Error</a></li>
+<li><a href="#Reader_Error_Kind">Reader_Error_Kind</a></li>
 <li><a href="#Writer">Writer</a></li>
 </ul>
 </li>
@@ -549,17 +549,17 @@ If the underlying io.Writer does not support flush, nil is returned.</p>
 </li>
 <li><a href="#pkg-Procedures">Procedures</a><ul>
 <li><a href="#is_io_error">is_io_error</a></li>
+<li><a href="#read">read</a></li>
+<li><a href="#read_all">read_all</a></li>
 <li><a href="#read_all_from_string">read_all_from_string</a></li>
 <li><a href="#read_from_string">read_from_string</a></li>
 <li><a href="#reader_destroy">reader_destroy</a></li>
-<li><a href="#read">read</a></li>
-<li><a href="#read_all">read_all</a></li>
 <li><a href="#reader_init">reader_init</a></li>
 <li><a href="#reader_init_with_string">reader_init_with_string</a></li>
-<li><a href="#writer_init">writer_init</a></li>
 <li><a href="#write">write</a></li>
 <li><a href="#write_all">write_all</a></li>
 <li><a href="#writer_flush">writer_flush</a></li>
+<li><a href="#writer_init">writer_init</a></li>
 </ul>
 </li>
 <li><a href="#pkg-source-files">Source Files</a></ul>

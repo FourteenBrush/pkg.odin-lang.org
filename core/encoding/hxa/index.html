@@ -70,11 +70,11 @@
 
 </li>
 <li class="nav-item"><a href="/core/crypto">crypto</a><ul>
+<li><a href="/core/crypto/blake">blake</a></li>
 <li><a href="/core/crypto/blake2b">blake2b</a></li>
 <li><a href="/core/crypto/blake2s">blake2s</a></li>
-<li><a href="/core/crypto/blake">blake</a></li>
-<li><a href="/core/crypto/chacha20poly1305">chacha20poly1305</a></li>
 <li><a href="/core/crypto/chacha20">chacha20</a></li>
+<li><a href="/core/crypto/chacha20poly1305">chacha20poly1305</a></li>
 <li><a href="/core/crypto/gost">gost</a></li>
 <li><a href="/core/crypto/groestl">groestl</a></li>
 <li><a href="/core/crypto/haval">haval</a></li>
@@ -300,16 +300,16 @@ Types (15)</summary>
 <li><a href="#File">File</a></li>
 <li><a href="#Header">Header</a></li>
 <li><a href="#Image_Type">Image_Type</a></li>
+<li><a href="#Layer">Layer</a></li>
 <li><a href="#Layer_Data_Type">Layer_Data_Type</a></li>
 <li><a href="#Layer_Stack">Layer_Stack</a></li>
-<li><a href="#Layer">Layer</a></li>
 <li><a href="#Meta">Meta</a></li>
 <li><a href="#Meta_Value_Type">Meta_Value_Type</a></li>
+<li><a href="#Node">Node</a></li>
 <li><a href="#Node_Geometry">Node_Geometry</a></li>
 <li><a href="#Node_Image">Node_Image</a></li>
 <li><a href="#Node_Index">Node_Index</a></li>
 <li><a href="#Node_Type">Node_Type</a></li>
-<li><a href="#Node">Node</a></li>
 <li><a href="#Read_Error">Read_Error</a></li>
 <li><a href="#Write_Error">Write_Error</a></li>
 </ul>
@@ -370,11 +370,11 @@ Procedures (8)</summary>
 <li><a href="#file_destroy">file_destroy</a></li>
 <li><a href="#meta_destroy">meta_destroy</a></li>
 <li><a href="#nodes_destroy">nodes_destroy</a></li>
-<li><a href="#read_from_file">read_from_file</a></li>
 <li><a href="#read">read</a></li>
+<li><a href="#read_from_file">read_from_file</a></li>
 <li><a href="#required_write_size">required_write_size</a></li>
-<li><a href="#write_to_file">write_to_file</a></li>
 <li><a href="#write">write</a></li>
+<li><a href="#write_to_file">write_to_file</a></li>
 </ul>
 </details>
 </div>
@@ -425,6 +425,23 @@ Procedure Groups (0)</summary>
 </details>
 </div>
 <div class="pkg-entity">
+<h3 id="Layer"><span><a class="doc-id-link" href="#Layer">Layer<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/hxa/hxa.odin#L65"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Layer :: <span class="keyword-type">struct</span> {
+	name:       <span class="doc-builtin">string</span>,
+	<span class="comment">// name of the layer (maximum length is 255)</span>
+	components: <span class="doc-builtin">u8</span>,
+	<span class="comment">// 2 for uv, 3 for xyz/rgb, 4 for rgba</span>
+	data:       <span class="keyword-type">union</span> {
+		[]<span class="doc-builtin">u8</span>, 
+		[]<span class="doc-builtin">i32le</span>, 
+		[]<span class="doc-builtin">f32le</span>, 
+		[]<span class="doc-builtin">f64le</span>, 
+	},
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
 <h3 id="Layer_Data_Type"><span><a class="doc-id-link" href="#Layer_Data_Type">Layer_Data_Type<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/hxa/hxa.odin#L29"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Layer_Data_Type :: <span class="keyword-type">enum</span> <span class="doc-builtin">u8</span> {
@@ -444,23 +461,6 @@ Procedure Groups (0)</summary>
 <summary class="hideme"><span>&nbsp;</span></summary>
 <p>Layers stacks are arrays of layers where all the layers have the same number of entries (polygons, edges, vertices or pixels)</p>
 </details>
-</div>
-<div class="pkg-entity">
-<h3 id="Layer"><span><a class="doc-id-link" href="#Layer">Layer<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/hxa/hxa.odin#L65"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">Layer :: <span class="keyword-type">struct</span> {
-	name:       <span class="doc-builtin">string</span>,
-	<span class="comment">// name of the layer (maximum length is 255)</span>
-	components: <span class="doc-builtin">u8</span>,
-	<span class="comment">// 2 for uv, 3 for xyz/rgb, 4 for rgba</span>
-	data:       <span class="keyword-type">union</span> {
-		[]<span class="doc-builtin">u8</span>, 
-		[]<span class="doc-builtin">i32le</span>, 
-		[]<span class="doc-builtin">f32le</span>, 
-		[]<span class="doc-builtin">f64le</span>, 
-	},
-}</pre>
-</div>
 </div>
 <div class="pkg-entity">
 <h3 id="Meta"><span><a class="doc-id-link" href="#Meta">Meta<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/hxa/hxa.odin#L53"><em>Source</em></a></div></h3>
@@ -491,6 +491,22 @@ Procedure Groups (0)</summary>
 	Meta   = 5, 
 }</pre>
 </div>
+</div>
+<div class="pkg-entity">
+<h3 id="Node"><span><a class="doc-id-link" href="#Node">Node<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/hxa/hxa.odin#L98"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Node :: <span class="keyword-type">struct</span> {
+	meta_data: []<a class="code-typename" href="/core/encoding/hxa/#Meta">Meta</a>,
+	content:   <span class="keyword-type">union</span> {
+		<a class="code-typename" href="/core/encoding/hxa/#Node_Geometry">Node_Geometry</a>, 
+		<a class="code-typename" href="/core/encoding/hxa/#Node_Image">Node_Image</a>, 
+	},
+}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>A file consists of an array of nodes, All nodes have meta data. Geometry nodes have geometry, image nodes have pixels</p>
+</details>
 </div>
 <div class="pkg-entity">
 <h3 id="Node_Geometry"><span><a class="doc-id-link" href="#Node_Geometry">Node_Geometry<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/hxa/hxa.odin#L79"><em>Source</em></a></div></h3>
@@ -537,22 +553,6 @@ Procedure Groups (0)</summary>
 	Image     = 2, <span class="comment">// node containing a 1D, 2D, 3D, or Cube image, and meta data.</span>
 }</pre>
 </div>
-</div>
-<div class="pkg-entity">
-<h3 id="Node"><span><a class="doc-id-link" href="#Node">Node<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/hxa/hxa.odin#L98"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">Node :: <span class="keyword-type">struct</span> {
-	meta_data: []<a class="code-typename" href="/core/encoding/hxa/#Meta">Meta</a>,
-	content:   <span class="keyword-type">union</span> {
-		<a class="code-typename" href="/core/encoding/hxa/#Node_Geometry">Node_Geometry</a>, 
-		<a class="code-typename" href="/core/encoding/hxa/#Node_Image">Node_Image</a>, 
-	},
-}</pre>
-</div>
-<details class="odin-doc-toggle" open>
-<summary class="hideme"><span>&nbsp;</span></summary>
-<p>A file consists of an array of nodes, All nodes have meta data. Geometry nodes have geometry, image nodes have pixels</p>
-</details>
 </div>
 <div class="pkg-entity">
 <h3 id="Read_Error"><span><a class="doc-id-link" href="#Read_Error">Read_Error<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/hxa/read.odin#L7"><em>Source</em></a></div></h3>
@@ -796,15 +796,15 @@ Procedure Groups (0)</summary>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="read_from_file"><span><a class="doc-id-link" href="#read_from_file">read_from_file<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/hxa/read.odin#L14"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">read_from_file :: <span class="keyword-type">proc</span> "odin" (filename: <span class="doc-builtin">string</span>, print_error: <span class="doc-builtin">bool</span> = false, allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> (file: <a class="code-typename" href="/core/encoding/hxa/#File">File</a>, err: <a class="code-typename" href="/core/encoding/hxa/#Read_Error">Read_Error</a>) {…}</pre>
-</div>
-</div>
-<div class="pkg-entity">
 <h3 id="read"><span><a class="doc-id-link" href="#read">read<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/hxa/read.odin#L31"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">read :: <span class="keyword-type">proc</span> "odin" (data: []<span class="doc-builtin">u8</span>, filename: <span class="doc-builtin">string</span> = "<input>", print_error: <span class="doc-builtin">bool</span> = false, allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> (file: <a class="code-typename" href="/core/encoding/hxa/#File">File</a>, err: <a class="code-typename" href="/core/encoding/hxa/#Read_Error">Read_Error</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="read_from_file"><span><a class="doc-id-link" href="#read_from_file">read_from_file<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/hxa/read.odin#L14"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">read_from_file :: <span class="keyword-type">proc</span> "odin" (filename: <span class="doc-builtin">string</span>, print_error: <span class="doc-builtin">bool</span> = false, allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> (file: <a class="code-typename" href="/core/encoding/hxa/#File">File</a>, err: <a class="code-typename" href="/core/encoding/hxa/#Read_Error">Read_Error</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -814,15 +814,15 @@ Procedure Groups (0)</summary>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="write_to_file"><span><a class="doc-id-link" href="#write_to_file">write_to_file<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/hxa/write.odin#L12"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">write_to_file :: <span class="keyword-type">proc</span> "odin" (filepath: <span class="doc-builtin">string</span>, file: <a class="code-typename" href="/core/encoding/hxa/#File">File</a>) -> (err: <a class="code-typename" href="/core/encoding/hxa/#Write_Error">Write_Error</a>) {…}</pre>
-</div>
-</div>
-<div class="pkg-entity">
 <h3 id="write"><span><a class="doc-id-link" href="#write">write<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/hxa/write.odin#L27"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">write :: <span class="keyword-type">proc</span> "odin" (buf: []<span class="doc-builtin">u8</span>, file: <a class="code-typename" href="/core/encoding/hxa/#File">File</a>) -> (n: <span class="doc-builtin">int</span>, err: <a class="code-typename" href="/core/encoding/hxa/#Write_Error">Write_Error</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="write_to_file"><span><a class="doc-id-link" href="#write_to_file">write_to_file<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/hxa/write.odin#L12"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">write_to_file :: <span class="keyword-type">proc</span> "odin" (filepath: <span class="doc-builtin">string</span>, file: <a class="code-typename" href="/core/encoding/hxa/#File">File</a>) -> (err: <a class="code-typename" href="/core/encoding/hxa/#Write_Error">Write_Error</a>) {…}</pre>
 </div>
 </div>
 </section>
@@ -838,7 +838,7 @@ Procedure Groups (0)</summary>
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/hxa/write.odin">write.odin</a></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2022-08 (vendor "odin") Windows_amd64 @ 2022-08-02 21:10:36.672160700 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2022-08 (vendor "odin") Windows_amd64 @ 2022-08-03 21:09:55.602718300 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
@@ -847,16 +847,16 @@ Procedure Groups (0)</summary>
 <li><a href="#File">File</a></li>
 <li><a href="#Header">Header</a></li>
 <li><a href="#Image_Type">Image_Type</a></li>
+<li><a href="#Layer">Layer</a></li>
 <li><a href="#Layer_Data_Type">Layer_Data_Type</a></li>
 <li><a href="#Layer_Stack">Layer_Stack</a></li>
-<li><a href="#Layer">Layer</a></li>
 <li><a href="#Meta">Meta</a></li>
 <li><a href="#Meta_Value_Type">Meta_Value_Type</a></li>
+<li><a href="#Node">Node</a></li>
 <li><a href="#Node_Geometry">Node_Geometry</a></li>
 <li><a href="#Node_Image">Node_Image</a></li>
 <li><a href="#Node_Index">Node_Index</a></li>
 <li><a href="#Node_Type">Node_Type</a></li>
-<li><a href="#Node">Node</a></li>
 <li><a href="#Read_Error">Read_Error</a></li>
 <li><a href="#Write_Error">Write_Error</a></li>
 </ul>
@@ -900,11 +900,11 @@ Procedure Groups (0)</summary>
 <li><a href="#file_destroy">file_destroy</a></li>
 <li><a href="#meta_destroy">meta_destroy</a></li>
 <li><a href="#nodes_destroy">nodes_destroy</a></li>
-<li><a href="#read_from_file">read_from_file</a></li>
 <li><a href="#read">read</a></li>
+<li><a href="#read_from_file">read_from_file</a></li>
 <li><a href="#required_write_size">required_write_size</a></li>
-<li><a href="#write_to_file">write_to_file</a></li>
 <li><a href="#write">write</a></li>
+<li><a href="#write_to_file">write_to_file</a></li>
 </ul>
 </li>
 <li><a href="#pkg-source-files">Source Files</a></ul>

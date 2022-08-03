@@ -110,13 +110,13 @@
 Types (10)</summary>
 <ul>
 <li><a href="#ErrorCode">ErrorCode</a></li>
-<li><a href="#EventCode">EventCode</a></li>
 <li><a href="#Event">Event</a></li>
+<li><a href="#EventCode">EventCode</a></li>
 <li><a href="#LocalEndpoint">LocalEndpoint</a></li>
 <li><a href="#NetworkStats">NetworkStats</a></li>
+<li><a href="#Player">Player</a></li>
 <li><a href="#PlayerHandle">PlayerHandle</a></li>
 <li><a href="#PlayerType">PlayerType</a></li>
-<li><a href="#Player">Player</a></li>
 <li><a href="#Session">Session</a></li>
 <li><a href="#SessionCallbacks">SessionCallbacks</a></li>
 </ul>
@@ -198,6 +198,40 @@ Procedure Groups (0)</summary>
 </div>
 </div>
 <div class="pkg-entity">
+<h3 id="Event"><span><a class="doc-id-link" href="#Event">Event<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/ggpo/ggpo.odin#L126"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Event :: <span class="keyword-type">struct</span> {
+	code: <a class="code-typename" href="/vendor/ggpo/#EventCode">EventCode</a>,
+	u:    <span class="keyword-type">struct</span> <span class="directive">#raw_union</span> {
+		connected:              <span class="keyword-type">struct</span> {
+			player: <a class="code-typename" href="/vendor/ggpo/#PlayerHandle">PlayerHandle</a>,
+		},
+		synchronizing:          <span class="keyword-type">struct</span> {
+			player: <a class="code-typename" href="/vendor/ggpo/#PlayerHandle">PlayerHandle</a>,
+			count:  <span class="doc-builtin">i32</span>,
+			total:  <span class="doc-builtin">i32</span>,
+		},
+		synchronized:           <span class="keyword-type">struct</span> {
+			player: <a class="code-typename" href="/vendor/ggpo/#PlayerHandle">PlayerHandle</a>,
+		},
+		disconnected:           <span class="keyword-type">struct</span> {
+			player: <a class="code-typename" href="/vendor/ggpo/#PlayerHandle">PlayerHandle</a>,
+		},
+		timesync:               <span class="keyword-type">struct</span> {
+			frames_ahead: <span class="doc-builtin">i32</span>,
+		},
+		connection_interrupted: <span class="keyword-type">struct</span> {
+			player:             <a class="code-typename" href="/vendor/ggpo/#PlayerHandle">PlayerHandle</a>,
+			disconnect_timeout: <span class="doc-builtin">i32</span>,
+		},
+		connection_resumed:     <span class="keyword-type">struct</span> {
+			player: <a class="code-typename" href="/vendor/ggpo/#PlayerHandle">PlayerHandle</a>,
+		},
+	},
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
 <h3 id="EventCode"><span><a class="doc-id-link" href="#EventCode">EventCode<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/ggpo/ggpo.odin#L109"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">EventCode :: <span class="keyword-type">enum</span> <span class="doc-builtin">i32</span> {
@@ -238,40 +272,6 @@ Procedure Groups (0)</summary>
  * the Event object indicates how many frames the client is.
  *</p>
 </details>
-</div>
-<div class="pkg-entity">
-<h3 id="Event"><span><a class="doc-id-link" href="#Event">Event<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/ggpo/ggpo.odin#L126"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">Event :: <span class="keyword-type">struct</span> {
-	code: <a class="code-typename" href="/vendor/ggpo/#EventCode">EventCode</a>,
-	u:    <span class="keyword-type">struct</span> <span class="directive">#raw_union</span> {
-		connected:              <span class="keyword-type">struct</span> {
-			player: <a class="code-typename" href="/vendor/ggpo/#PlayerHandle">PlayerHandle</a>,
-		},
-		synchronizing:          <span class="keyword-type">struct</span> {
-			player: <a class="code-typename" href="/vendor/ggpo/#PlayerHandle">PlayerHandle</a>,
-			count:  <span class="doc-builtin">i32</span>,
-			total:  <span class="doc-builtin">i32</span>,
-		},
-		synchronized:           <span class="keyword-type">struct</span> {
-			player: <a class="code-typename" href="/vendor/ggpo/#PlayerHandle">PlayerHandle</a>,
-		},
-		disconnected:           <span class="keyword-type">struct</span> {
-			player: <a class="code-typename" href="/vendor/ggpo/#PlayerHandle">PlayerHandle</a>,
-		},
-		timesync:               <span class="keyword-type">struct</span> {
-			frames_ahead: <span class="doc-builtin">i32</span>,
-		},
-		connection_interrupted: <span class="keyword-type">struct</span> {
-			player:             <a class="code-typename" href="/vendor/ggpo/#PlayerHandle">PlayerHandle</a>,
-			disconnect_timeout: <span class="doc-builtin">i32</span>,
-		},
-		connection_resumed:     <span class="keyword-type">struct</span> {
-			player: <a class="code-typename" href="/vendor/ggpo/#PlayerHandle">PlayerHandle</a>,
-		},
-	},
-}</pre>
-</div>
 </div>
 <div class="pkg-entity">
 <h3 id="LocalEndpoint"><span><a class="doc-id-link" href="#LocalEndpoint">LocalEndpoint<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/ggpo/ggpo.odin#L60"><em>Source</em></a></div></h3>
@@ -334,22 +334,6 @@ Procedure Groups (0)</summary>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="PlayerHandle"><span><a class="doc-id-link" href="#PlayerHandle">PlayerHandle<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/ggpo/ggpo.odin#L15"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">PlayerHandle :: distinct <span class="doc-builtin">i32</span></pre>
-</div>
-</div>
-<div class="pkg-entity">
-<h3 id="PlayerType"><span><a class="doc-id-link" href="#PlayerType">PlayerType<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/ggpo/ggpo.odin#L16"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">PlayerType :: <span class="keyword-type">enum</span> <span class="doc-builtin">i32</span> {
-	LOCAL, 
-	REMOTE, 
-	SPECTATOR, 
-}</pre>
-</div>
-</div>
-<div class="pkg-entity">
 <h3 id="Player"><span><a class="doc-id-link" href="#Player">Player<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/ggpo/ggpo.odin#L47"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Player :: <span class="keyword-type">struct</span> {
@@ -363,6 +347,22 @@ Procedure Groups (0)</summary>
 			port:       <span class="doc-builtin">u16</span>,
 		},
 	},
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="PlayerHandle"><span><a class="doc-id-link" href="#PlayerHandle">PlayerHandle<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/ggpo/ggpo.odin#L15"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">PlayerHandle :: distinct <span class="doc-builtin">i32</span></pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="PlayerType"><span><a class="doc-id-link" href="#PlayerType">PlayerType<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/ggpo/ggpo.odin#L16"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">PlayerType :: <span class="keyword-type">enum</span> <span class="doc-builtin">i32</span> {
+	LOCAL, 
+	REMOTE, 
+	SPECTATOR, 
 }</pre>
 </div>
 </div>
@@ -808,20 +808,20 @@ Procedure Groups (0)</summary>
 <li><a href="https://github.com/odin-lang/Odin/tree/master/vendor/ggpo/ggpo.odin">ggpo.odin</a></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2022-08 (vendor "odin") Windows_amd64 @ 2022-08-02 21:10:36.883164800 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2022-08 (vendor "odin") Windows_amd64 @ 2022-08-03 21:09:55.868735900 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
 <ul>
 <li><a href="#pkg-Types">Types</a><ul>
 <li><a href="#ErrorCode">ErrorCode</a></li>
-<li><a href="#EventCode">EventCode</a></li>
 <li><a href="#Event">Event</a></li>
+<li><a href="#EventCode">EventCode</a></li>
 <li><a href="#LocalEndpoint">LocalEndpoint</a></li>
 <li><a href="#NetworkStats">NetworkStats</a></li>
+<li><a href="#Player">Player</a></li>
 <li><a href="#PlayerHandle">PlayerHandle</a></li>
 <li><a href="#PlayerType">PlayerType</a></li>
-<li><a href="#Player">Player</a></li>
 <li><a href="#Session">Session</a></li>
 <li><a href="#SessionCallbacks">SessionCallbacks</a></li>
 </ul>

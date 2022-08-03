@@ -70,11 +70,11 @@
 
 </li>
 <li class="nav-item"><a href="/core/crypto">crypto</a><ul>
+<li><a href="/core/crypto/blake">blake</a></li>
 <li><a href="/core/crypto/blake2b">blake2b</a></li>
 <li><a href="/core/crypto/blake2s">blake2s</a></li>
-<li><a href="/core/crypto/blake">blake</a></li>
-<li><a href="/core/crypto/chacha20poly1305">chacha20poly1305</a></li>
 <li><a href="/core/crypto/chacha20">chacha20</a></li>
+<li><a href="/core/crypto/chacha20poly1305">chacha20poly1305</a></li>
 <li><a href="/core/crypto/gost">gost</a></li>
 <li><a href="/core/crypto/groestl">groestl</a></li>
 <li><a href="/core/crypto/haval">haval</a></li>
@@ -230,8 +230,8 @@ Types (37)</summary>
 <li><a href="#Netpbm_Info">Netpbm_Info</a></li>
 <li><a href="#Option">Option</a></li>
 <li><a href="#Options">Options</a></li>
-<li><a href="#PNG_Chunk_Header">PNG_Chunk_Header</a></li>
 <li><a href="#PNG_Chunk">PNG_Chunk</a></li>
+<li><a href="#PNG_Chunk_Header">PNG_Chunk_Header</a></li>
 <li><a href="#PNG_Chunk_Type">PNG_Chunk_Type</a></li>
 <li><a href="#PNG_Color_Type">PNG_Color_Type</a></li>
 <li><a href="#PNG_Color_Value">PNG_Color_Value</a></li>
@@ -278,8 +278,8 @@ Procedures (20)</summary>
 <li><a href="#alpha_add_if_missing">alpha_add_if_missing</a></li>
 <li><a href="#alpha_apply_keyed_alpha">alpha_apply_keyed_alpha</a></li>
 <li><a href="#alpha_drop_if_present">alpha_drop_if_present</a></li>
-<li><a href="#apply_palette_rgba">apply_palette_rgba</a></li>
 <li><a href="#apply_palette_rgb">apply_palette_rgb</a></li>
+<li><a href="#apply_palette_rgba">apply_palette_rgba</a></li>
 <li><a href="#compute_buffer_size">compute_buffer_size</a></li>
 <li><a href="#destroy">destroy</a></li>
 <li><a href="#expand_grayscale">expand_grayscale</a></li>
@@ -538,21 +538,21 @@ Procedure Groups (3)</summary>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="PNG_Chunk_Header"><span><a class="doc-id-link" href="#PNG_Chunk_Header">PNG_Chunk_Header<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L267"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">PNG_Chunk_Header :: <span class="keyword-type">struct</span> <span class="directive">#packed</span> {
-	length: <span class="doc-builtin">u32be</span>,
-	type:   <a class="code-typename" href="/core/image/#PNG_Chunk_Type">PNG_Chunk_Type</a>,
-}</pre>
-</div>
-</div>
-<div class="pkg-entity">
 <h3 id="PNG_Chunk"><span><a class="doc-id-link" href="#PNG_Chunk">PNG_Chunk<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L272"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">PNG_Chunk :: <span class="keyword-type">struct</span> <span class="directive">#packed</span> {
 	header: <a class="code-typename" href="/core/image/#PNG_Chunk_Header">PNG_Chunk_Header</a>,
 	data:   []<span class="doc-builtin">u8</span>,
 	crc:    <span class="doc-builtin">u32be</span>,
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="PNG_Chunk_Header"><span><a class="doc-id-link" href="#PNG_Chunk_Header">PNG_Chunk_Header<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L267"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">PNG_Chunk_Header :: <span class="keyword-type">struct</span> <span class="directive">#packed</span> {
+	length: <span class="doc-builtin">u32be</span>,
+	type:   <a class="code-typename" href="/core/image/#PNG_Chunk_Type">PNG_Chunk_Type</a>,
 }</pre>
 </div>
 </div>
@@ -902,17 +902,6 @@ In this case a keyed alpha pixel will be replaced with the background color.
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="apply_palette_rgba"><span><a class="doc-id-link" href="#apply_palette_rgba">apply_palette_rgba<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L1042"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">apply_palette_rgba :: <span class="keyword-type">proc</span> "odin" (img: ^<a class="code-typename" href="/core/image/#Image">Image</a>, palette: [256][4]<span class="doc-builtin">u8</span>, allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> (ok: <span class="doc-builtin">bool</span>) {…}</pre>
-</div>
-<details class="odin-doc-toggle" open>
-<summary class="hideme"><span>&nbsp;</span></summary>
-<p>Apply palette to 8-bit single-channel image and return an 8-bit RGBA image, in-place.
-If the image given is not a valid 8-bit single channel image, the procedure will return <code>false</code> early.</p>
-</details>
-</div>
-<div class="pkg-entity">
 <h3 id="apply_palette_rgb"><span><a class="doc-id-link" href="#apply_palette_rgb">apply_palette_rgb<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L1005"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">apply_palette_rgb :: <span class="keyword-type">proc</span> "odin" (img: ^<a class="code-typename" href="/core/image/#Image">Image</a>, palette: [256][3]<span class="doc-builtin">u8</span>, allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> (ok: <span class="doc-builtin">bool</span>) {…}</pre>
@@ -920,6 +909,17 @@ If the image given is not a valid 8-bit single channel image, the procedure will
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
 <p>Apply palette to 8-bit single-channel image and return an 8-bit RGB image, in-place.
+If the image given is not a valid 8-bit single channel image, the procedure will return <code>false</code> early.</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="apply_palette_rgba"><span><a class="doc-id-link" href="#apply_palette_rgba">apply_palette_rgba<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/image/common.odin#L1042"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">apply_palette_rgba :: <span class="keyword-type">proc</span> "odin" (img: ^<a class="code-typename" href="/core/image/#Image">Image</a>, palette: [256][4]<span class="doc-builtin">u8</span>, allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> (ok: <span class="doc-builtin">bool</span>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Apply palette to 8-bit single-channel image and return an 8-bit RGBA image, in-place.
 If the image given is not a valid 8-bit single channel image, the procedure will return <code>false</code> early.</p>
 </details>
 </div>
@@ -1082,7 +1082,7 @@ Is the pointer valid, are the dimenions valid?</p>
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/image/which.odin">which.odin</a></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2022-08 (vendor "odin") Windows_amd64 @ 2022-08-02 21:10:36.683161500 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2022-08 (vendor "odin") Windows_amd64 @ 2022-08-03 21:09:55.638720400 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
@@ -1106,8 +1106,8 @@ Is the pointer valid, are the dimenions valid?</p>
 <li><a href="#Netpbm_Info">Netpbm_Info</a></li>
 <li><a href="#Option">Option</a></li>
 <li><a href="#Options">Options</a></li>
-<li><a href="#PNG_Chunk_Header">PNG_Chunk_Header</a></li>
 <li><a href="#PNG_Chunk">PNG_Chunk</a></li>
+<li><a href="#PNG_Chunk_Header">PNG_Chunk_Header</a></li>
 <li><a href="#PNG_Chunk_Type">PNG_Chunk_Type</a></li>
 <li><a href="#PNG_Color_Type">PNG_Color_Type</a></li>
 <li><a href="#PNG_Color_Value">PNG_Color_Value</a></li>
@@ -1137,8 +1137,8 @@ Is the pointer valid, are the dimenions valid?</p>
 <li><a href="#alpha_add_if_missing">alpha_add_if_missing</a></li>
 <li><a href="#alpha_apply_keyed_alpha">alpha_apply_keyed_alpha</a></li>
 <li><a href="#alpha_drop_if_present">alpha_drop_if_present</a></li>
-<li><a href="#apply_palette_rgba">apply_palette_rgba</a></li>
 <li><a href="#apply_palette_rgb">apply_palette_rgb</a></li>
+<li><a href="#apply_palette_rgba">apply_palette_rgba</a></li>
 <li><a href="#compute_buffer_size">compute_buffer_size</a></li>
 <li><a href="#destroy">destroy</a></li>
 <li><a href="#expand_grayscale">expand_grayscale</a></li>
