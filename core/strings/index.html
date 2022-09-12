@@ -238,7 +238,7 @@ Variables (0)</summary>
 <div>
 <details class="doc-index" id="doc-index-Procedures" aria-labelledby="#doc-index-Procedures-header">
 <summary id="#doc-index-Procedures-header">
-Procedures (159)</summary>
+Procedures (157)</summary>
 <ul>
 <li><a href="#builder_cap">builder_cap</a></li>
 <li><a href="#builder_destroy">builder_destroy</a></li>
@@ -349,7 +349,6 @@ Procedures (159)</summary>
 <li><a href="#string_from_nul_terminated_ptr">string_from_nul_terminated_ptr</a></li>
 <li><a href="#string_from_ptr">string_from_ptr</a></li>
 <li><a href="#to_ada_case">to_ada_case</a></li>
-<li><a href="#to_byte_reader">to_byte_reader</a></li>
 <li><a href="#to_camel_case">to_camel_case</a></li>
 <li><a href="#to_delimiter_case">to_delimiter_case</a></li>
 <li><a href="#to_kebab_case">to_kebab_case</a></li>
@@ -358,7 +357,6 @@ Procedures (159)</summary>
 <li><a href="#to_pascal_case">to_pascal_case</a></li>
 <li><a href="#to_reader">to_reader</a></li>
 <li><a href="#to_reader_at">to_reader_at</a></li>
-<li><a href="#to_rune_reader">to_rune_reader</a></li>
 <li><a href="#to_screaming_snake_case">to_screaming_snake_case</a></li>
 <li><a href="#to_snake_case">to_snake_case</a></li>
 <li><a href="#to_stream">to_stream</a></li>
@@ -1080,7 +1078,7 @@ strings.index_rune("abcädef", 'f') -> 7
 <div class="pkg-entity">
 <h3 id="intern_get"><span><a class="doc-id-link" href="#intern_get">intern_get<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/intern.odin#L34"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">intern_get :: <span class="keyword-type">proc</span> "odin" (m: ^<a class="code-typename" href="/core/strings/#Intern">Intern</a>, text: <span class="doc-builtin">string</span>) -> <span class="doc-builtin">string</span> {…}</pre>
+<pre class="doc-code">intern_get :: <span class="keyword-type">proc</span> "odin" (m: ^<a class="code-typename" href="/core/strings/#Intern">Intern</a>, text: <span class="doc-builtin">string</span>) -> (str: <span class="doc-builtin">string</span>, err: runtime.<a class="code-typename" href="/core/runtime/#Allocator_Error">Allocator_Error</a>) {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -1091,7 +1089,7 @@ the returned string lives as long as the map entry lives</p>
 <div class="pkg-entity">
 <h3 id="intern_get_cstring"><span><a class="doc-id-link" href="#intern_get_cstring">intern_get_cstring<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/intern.odin#L41"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">intern_get_cstring :: <span class="keyword-type">proc</span> "odin" (m: ^<a class="code-typename" href="/core/strings/#Intern">Intern</a>, text: <span class="doc-builtin">string</span>) -> <span class="doc-builtin">cstring</span> {…}</pre>
+<pre class="doc-code">intern_get_cstring :: <span class="keyword-type">proc</span> "odin" (m: ^<a class="code-typename" href="/core/strings/#Intern">Intern</a>, text: <span class="doc-builtin">string</span>) -> (str: <span class="doc-builtin">cstring</span>, err: runtime.<a class="code-typename" href="/core/runtime/#Allocator_Error">Allocator_Error</a>) {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -1215,14 +1213,14 @@ strings.index("test", "tt") -> -1
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>returns the index of any first char of <code>chars</code> found in <code>s</code>, -1 if not found</p>
+<p>returns the last matching index in <code>s</code> of any char in <code>chars</code> found in <code>s</code>, -1 if not found</p>
 <pre>iterates the string in reverse
 
-strings.index_any("test", "s") -> 2
-strings.index_any("test", "se") -> 2
-strings.index_any("test", "et") -> 1
-strings.index_any("test", "set") -> 3
-strings.index_any("test", "x") -> -1
+strings.last_index_any("test", "s") -> 2
+strings.last_index_any("test", "se") -> 2
+strings.last_index_any("test", "et") -> 3
+strings.last_index_any("test", "set") -> 3
+strings.last_index_any("test", "x") -> -1
 </pre>
 </details>
 </div>
@@ -1270,7 +1268,7 @@ strings.index_byte("teäst", 'ä') -> -1
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>left_justify returns a string with a pad string at left side if the str's rune length is smaller than length</p>
+<p>left_justify returns a string with a pad string at right side if the str's rune length is smaller than length</p>
 </details>
 </div>
 <div class="pkg-entity">
@@ -1361,7 +1359,7 @@ strings.prefix_length("testing", "est") -> 0
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="reader_length"><span><a class="doc-id-link" href="#reader_length">reader_length<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/reader.odin#L60"><em>Source</em></a></div></h3>
+<h3 id="reader_length"><span><a class="doc-id-link" href="#reader_length">reader_length<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/reader.odin#L46"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">reader_length :: <span class="keyword-type">proc</span> "odin" (r: ^<a class="code-typename" href="/core/strings/#Reader">Reader</a>) -> <span class="doc-builtin">int</span> {…}</pre>
 </div>
@@ -1371,7 +1369,7 @@ strings.prefix_length("testing", "est") -> 0
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="reader_read"><span><a class="doc-id-link" href="#reader_read">reader_read<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/reader.odin#L74"><em>Source</em></a></div></h3>
+<h3 id="reader_read"><span><a class="doc-id-link" href="#reader_read">reader_read<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/reader.odin#L60"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">reader_read :: <span class="keyword-type">proc</span> "odin" (r: ^<a class="code-typename" href="/core/strings/#Reader">Reader</a>, p: []<span class="doc-builtin">u8</span>) -> (n: <span class="doc-builtin">int</span>, err: io.<a class="code-typename" href="/core/io/#Error">Error</a>) {…}</pre>
 </div>
@@ -1382,7 +1380,7 @@ returns <code>n</code> amount of read bytes and an io.Error</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="reader_read_at"><span><a class="doc-id-link" href="#reader_read_at">reader_read_at<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/reader.odin#L86"><em>Source</em></a></div></h3>
+<h3 id="reader_read_at"><span><a class="doc-id-link" href="#reader_read_at">reader_read_at<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/reader.odin#L72"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">reader_read_at :: <span class="keyword-type">proc</span> "odin" (r: ^<a class="code-typename" href="/core/strings/#Reader">Reader</a>, p: []<span class="doc-builtin">u8</span>, off: <span class="doc-builtin">i64</span>) -> (n: <span class="doc-builtin">int</span>, err: io.<a class="code-typename" href="/core/io/#Error">Error</a>) {…}</pre>
 </div>
@@ -1393,7 +1391,7 @@ returns <code>n</code> amount of read bytes and an io.Error</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="reader_read_byte"><span><a class="doc-id-link" href="#reader_read_byte">reader_read_byte<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/reader.odin#L101"><em>Source</em></a></div></h3>
+<h3 id="reader_read_byte"><span><a class="doc-id-link" href="#reader_read_byte">reader_read_byte<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/reader.odin#L87"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">reader_read_byte :: <span class="keyword-type">proc</span> "odin" (r: ^<a class="code-typename" href="/core/strings/#Reader">Reader</a>) -> (<span class="doc-builtin">u8</span>, io.<a class="code-typename" href="/core/io/#Error">Error</a>) {…}</pre>
 </div>
@@ -1403,7 +1401,7 @@ returns <code>n</code> amount of read bytes and an io.Error</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="reader_read_rune"><span><a class="doc-id-link" href="#reader_read_rune">reader_read_rune<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/reader.odin#L122"><em>Source</em></a></div></h3>
+<h3 id="reader_read_rune"><span><a class="doc-id-link" href="#reader_read_rune">reader_read_rune<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/reader.odin#L108"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">reader_read_rune :: <span class="keyword-type">proc</span> "odin" (r: ^<a class="code-typename" href="/core/strings/#Reader">Reader</a>) -> (ch: <span class="doc-builtin">rune</span>, size: <span class="doc-builtin">int</span>, err: io.<a class="code-typename" href="/core/io/#Error">Error</a>) {…}</pre>
 </div>
@@ -1413,7 +1411,7 @@ returns <code>n</code> amount of read bytes and an io.Error</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="reader_seek"><span><a class="doc-id-link" href="#reader_seek">reader_seek<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/reader.odin#L152"><em>Source</em></a></div></h3>
+<h3 id="reader_seek"><span><a class="doc-id-link" href="#reader_seek">reader_seek<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/reader.odin#L138"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">reader_seek :: <span class="keyword-type">proc</span> "odin" (r: ^<a class="code-typename" href="/core/strings/#Reader">Reader</a>, offset: <span class="doc-builtin">i64</span>, whence: io.<a class="code-typename" href="/core/io/#Seek_From">Seek_From</a>) -> (<span class="doc-builtin">i64</span>, io.<a class="code-typename" href="/core/io/#Error">Error</a>) {…}</pre>
 </div>
@@ -1423,7 +1421,7 @@ returns <code>n</code> amount of read bytes and an io.Error</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="reader_size"><span><a class="doc-id-link" href="#reader_size">reader_size<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/reader.odin#L68"><em>Source</em></a></div></h3>
+<h3 id="reader_size"><span><a class="doc-id-link" href="#reader_size">reader_size<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/reader.odin#L54"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">reader_size :: <span class="keyword-type">proc</span> "odin" (r: ^<a class="code-typename" href="/core/strings/#Reader">Reader</a>) -> <span class="doc-builtin">i64</span> {…}</pre>
 </div>
@@ -1443,7 +1441,7 @@ returns <code>n</code> amount of read bytes and an io.Error</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="reader_unread_byte"><span><a class="doc-id-link" href="#reader_unread_byte">reader_unread_byte<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/reader.odin#L112"><em>Source</em></a></div></h3>
+<h3 id="reader_unread_byte"><span><a class="doc-id-link" href="#reader_unread_byte">reader_unread_byte<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/reader.odin#L98"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">reader_unread_byte :: <span class="keyword-type">proc</span> "odin" (r: ^<a class="code-typename" href="/core/strings/#Reader">Reader</a>) -> io.<a class="code-typename" href="/core/io/#Error">Error</a> {…}</pre>
 </div>
@@ -1453,7 +1451,7 @@ returns <code>n</code> amount of read bytes and an io.Error</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="reader_unread_rune"><span><a class="doc-id-link" href="#reader_unread_rune">reader_unread_rune<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/reader.odin#L139"><em>Source</em></a></div></h3>
+<h3 id="reader_unread_rune"><span><a class="doc-id-link" href="#reader_unread_rune">reader_unread_rune<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/reader.odin#L125"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">reader_unread_rune :: <span class="keyword-type">proc</span> "odin" (r: ^<a class="code-typename" href="/core/strings/#Reader">Reader</a>) -> io.<a class="code-typename" href="/core/io/#Error">Error</a> {…}</pre>
 </div>
@@ -1464,7 +1462,7 @@ can only be used once and after a valid read_rune call</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="reader_write_to"><span><a class="doc-id-link" href="#reader_write_to">reader_write_to<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/reader.odin#L174"><em>Source</em></a></div></h3>
+<h3 id="reader_write_to"><span><a class="doc-id-link" href="#reader_write_to">reader_write_to<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/reader.odin#L160"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">reader_write_to :: <span class="keyword-type">proc</span> "odin" (r: ^<a class="code-typename" href="/core/strings/#Reader">Reader</a>, w: io.<a class="code-typename" href="/core/io/#Writer">Writer</a>) -> (n: <span class="doc-builtin">i64</span>, err: io.<a class="code-typename" href="/core/io/#Error">Error</a>) {…}</pre>
 </div>
@@ -1576,7 +1574,7 @@ fmt.eprintln(a, b) // abcxyz zyxcba
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>right_justify returns a string with a pad string at right side if the str's rune length is smaller than length</p>
+<p>right_justify returns a string with a pad string at left side if the str's rune length is smaller than length</p>
 </details>
 </div>
 <div class="pkg-entity">
@@ -1909,16 +1907,6 @@ the string is valid as long as the parameters stay alive</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="to_byte_reader"><span><a class="doc-id-link" href="#to_byte_reader">to_byte_reader<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/reader.odin#L46"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">to_byte_reader :: <span class="keyword-type">proc</span> "odin" (r: ^<a class="code-typename" href="/core/strings/#Reader">Reader</a>, s: <span class="doc-builtin">string</span>) -> io.<a class="code-typename" href="/core/io/#Byte_Reader">Byte_Reader</a> {…}</pre>
-</div>
-<details class="odin-doc-toggle" open>
-<summary class="hideme"><span>&nbsp;</span></summary>
-<p>init a reader to the string <code>s</code> and return an io.Byte_Reader</p>
-</details>
-</div>
-<div class="pkg-entity">
 <h3 id="to_camel_case"><span><a class="doc-id-link" href="#to_camel_case">to_camel_case<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/conversion.odin#L146"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">to_camel_case :: <span class="keyword-type">proc</span> "odin" (path: <span class="doc-builtin">string</span>, allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> <span class="doc-builtin">string</span> {…}</pre>
@@ -2008,16 +1996,6 @@ strings.to_lower("Test") -> test
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
 <p>init a reader to the string <code>s</code> and return an io.Reader_At</p>
-</details>
-</div>
-<div class="pkg-entity">
-<h3 id="to_rune_reader"><span><a class="doc-id-link" href="#to_rune_reader">to_rune_reader<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/reader.odin#L53"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">to_rune_reader :: <span class="keyword-type">proc</span> "odin" (r: ^<a class="code-typename" href="/core/strings/#Reader">Reader</a>, s: <span class="doc-builtin">string</span>) -> io.<a class="code-typename" href="/core/io/#Rune_Reader">Rune_Reader</a> {…}</pre>
-</div>
-<details class="odin-doc-toggle" open>
-<summary class="hideme"><span>&nbsp;</span></summary>
-<p>init a reader to the string <code>s</code> and return an io.Rune_Reader</p>
 </details>
 </div>
 <div class="pkg-entity">
@@ -2554,7 +2532,7 @@ fmt.println(strings.to_string(builder)) // -> abcxyz
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin">strings.odin</a></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2022-08 (vendor "odin") Windows_amd64 @ 2022-08-07 21:09:02.250920600 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2022-09 (vendor "odin") Windows_amd64 @ 2022-09-12 23:32:04.184145000 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
@@ -2678,7 +2656,6 @@ fmt.println(strings.to_string(builder)) // -> abcxyz
 <li><a href="#string_from_nul_terminated_ptr">string_from_nul_terminated_ptr</a></li>
 <li><a href="#string_from_ptr">string_from_ptr</a></li>
 <li><a href="#to_ada_case">to_ada_case</a></li>
-<li><a href="#to_byte_reader">to_byte_reader</a></li>
 <li><a href="#to_camel_case">to_camel_case</a></li>
 <li><a href="#to_delimiter_case">to_delimiter_case</a></li>
 <li><a href="#to_kebab_case">to_kebab_case</a></li>
@@ -2687,7 +2664,6 @@ fmt.println(strings.to_string(builder)) // -> abcxyz
 <li><a href="#to_pascal_case">to_pascal_case</a></li>
 <li><a href="#to_reader">to_reader</a></li>
 <li><a href="#to_reader_at">to_reader_at</a></li>
-<li><a href="#to_rune_reader">to_rune_reader</a></li>
 <li><a href="#to_screaming_snake_case">to_screaming_snake_case</a></li>
 <li><a href="#to_snake_case">to_snake_case</a></li>
 <li><a href="#to_stream">to_stream</a></li>

@@ -206,10 +206,11 @@
 <div>
 <details class="doc-index" id="doc-index-Types" aria-labelledby="#doc-index-Types-header">
 <summary id="#doc-index-Types-header">
-Types (7)</summary>
+Types (8)</summary>
 <ul>
 <li><a href="#File_Console_Logger_Data">File_Console_Logger_Data</a></li>
 <li><a href="#Level">Level</a></li>
+<li><a href="#Log_Allocator">Log_Allocator</a></li>
 <li><a href="#Logger">Logger</a></li>
 <li><a href="#Logger_Proc">Logger_Proc</a></li>
 <li><a href="#Multi_Logger_Data">Multi_Logger_Data</a></li>
@@ -243,7 +244,7 @@ Variables (1)</summary>
 <div>
 <details class="doc-index" id="doc-index-Procedures" aria-labelledby="#doc-index-Procedures-header">
 <summary id="#doc-index-Procedures-header">
-Procedures (26)</summary>
+Procedures (29)</summary>
 <ul>
 <li><a href="#create_console_logger">create_console_logger</a></li>
 <li><a href="#create_file_logger">create_file_logger</a></li>
@@ -263,6 +264,9 @@ Procedures (26)</summary>
 <li><a href="#info">info</a></li>
 <li><a href="#infof">infof</a></li>
 <li><a href="#log">log</a></li>
+<li><a href="#log_allocator">log_allocator</a></li>
+<li><a href="#log_allocator_init">log_allocator_init</a></li>
+<li><a href="#log_allocator_proc">log_allocator_proc</a></li>
 <li><a href="#logf">logf</a></li>
 <li><a href="#multi_logger_proc">multi_logger_proc</a></li>
 <li><a href="#nil_logger">nil_logger</a></li>
@@ -294,22 +298,58 @@ Procedure Groups (0)</summary>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="Level"><span><a class="doc-id-link" href="#Level">Level<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/log/log.odin#L9"><em>Source</em></a></div></h3>
+<h3 id="Level"><span><a class="doc-id-link" href="#Level">Level<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/log/log.odin#L18"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Level :: runtime.<a class="code-typename" href="/core/runtime/#Logger_Level">Logger_Level</a></pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Logger_Level :: enum {</p>
+<pre>Debug   = 0,
+Info    = 10,
+Warning = 20,
+Error   = 30,
+Fatal   = 40,
+</pre>
+<p>}</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="Logger"><span><a class="doc-id-link" href="#Logger">Logger<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/log/log.odin#L60"><em>Source</em></a></div></h3>
+<h3 id="Log_Allocator"><span><a class="doc-id-link" href="#Log_Allocator">Log_Allocator<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/log/log_allocator.odin#L5"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Log_Allocator :: <span class="keyword-type">struct</span> {
+	allocator: runtime.<a class="code-typename" href="/core/runtime/#Allocator">Allocator</a>,
+	level:     runtime.<a class="code-typename" href="/core/runtime/#Logger_Level">Logger_Level</a>,
+	prefix:    <span class="doc-builtin">string</span>,
+	locked:    <span class="doc-builtin">bool</span>,
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Logger"><span><a class="doc-id-link" href="#Logger">Logger<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/log/log.odin#L68"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Logger :: runtime.<a class="code-typename" href="/core/runtime/#Logger">Logger</a></pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Logger :: struct {</p>
+<pre>procedure:    Logger_Proc,
+data:      	  rawptr,
+lowest_level: Level,
+options:   	  Logger_Options,
+</pre>
+<p>}</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="Logger_Proc"><span><a class="doc-id-link" href="#Logger_Proc">Logger_Proc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/log/log.odin#L55"><em>Source</em></a></div></h3>
+<h3 id="Logger_Proc"><span><a class="doc-id-link" href="#Logger_Proc">Logger_Proc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/log/log.odin#L58"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Logger_Proc :: runtime.<a class="code-typename" href="/core/runtime/#Logger_Proc">Logger_Proc</a></pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Logger_Proc :: #type proc(data: rawptr, level: Level, text: string, options: Options, location := #caller_location);</p>
+</details>
 </div>
 <div class="pkg-entity">
 <h3 id="Multi_Logger_Data"><span><a class="doc-id-link" href="#Multi_Logger_Data">Multi_Logger_Data<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/log/multi_logger.odin#L4"><em>Source</em></a></div></h3>
@@ -320,16 +360,34 @@ Procedure Groups (0)</summary>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="Option"><span><a class="doc-id-link" href="#Option">Option<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/log/log.odin#L20"><em>Source</em></a></div></h3>
+<h3 id="Option"><span><a class="doc-id-link" href="#Option">Option<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/log/log.odin#L32"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Option :: runtime.<a class="code-typename" href="/core/runtime/#Logger_Option">Logger_Option</a></pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Option :: enum {</p>
+<pre>Level,
+Date,
+Time,
+Short_File_Path,
+Long_File_Path,
+Line,
+Procedure,
+Terminal_Color
+</pre>
+<p>}</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="Options"><span><a class="doc-id-link" href="#Options">Options<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/log/log.odin#L34"><em>Source</em></a></div></h3>
+<h3 id="Options"><span><a class="doc-id-link" href="#Options">Options<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/log/log.odin#L37"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Options :: <span class="keyword-type">bit_set</span>[runtime.<a class="code-typename" href="/core/runtime/#Logger_Option">Logger_Option</a>]</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Options :: bit_set[Option];</p>
+</details>
 </div>
 </section>
 <h2 id="pkg-Constants" class="pkg-header">Constants</h2>
@@ -395,25 +453,21 @@ Procedure Groups (0)</summary>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="debug"><span><a class="doc-id-link" href="#debug">debug<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/log/log.odin#L95"><em>Source</em></a></div></h3>
+<h3 id="debug"><span><a class="doc-id-link" href="#debug">debug<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/log/log.odin#L94"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">debug :: <span class="keyword-type">proc</span> "odin" (args: ..<span class="doc-builtin">any</span>, sep: <span class="doc-builtin">string</span> = " ", location := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="debugf"><span><a class="doc-id-link" href="#debugf">debugf<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/log/log.odin#L79"><em>Source</em></a></div></h3>
+<h3 id="debugf"><span><a class="doc-id-link" href="#debugf">debugf<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/log/log.odin#L78"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">debugf :: <span class="keyword-type">proc</span> "odin" (fmt_str: <span class="doc-builtin">string</span>, args: ..<span class="doc-builtin">any</span>, location := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>) {…}</pre>
 </div>
-<details class="odin-doc-toggle" open>
-<summary class="hideme"><span>&nbsp;</span></summary>
-<p>TODO(bill): Should these be redesigned so that they are do not rely upon <code>package fmt</code>?</p>
-</details>
 </div>
 <div class="pkg-entity">
 <h3 id="destroy_console_logger"><span><a class="doc-id-link" href="#destroy_console_logger">destroy_console_logger<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/log/file_console_logger.odin#L59"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">destroy_console_logger :: <span class="keyword-type">proc</span> "odin" (log: ^runtime.<a class="code-typename" href="/core/runtime/#Logger">Logger</a>) {…}</pre>
+<pre class="doc-code">destroy_console_logger :: <span class="keyword-type">proc</span> "odin" (log: runtime.<a class="code-typename" href="/core/runtime/#Logger">Logger</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -441,25 +495,25 @@ Procedure Groups (0)</summary>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="error"><span><a class="doc-id-link" href="#error">error<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/log/log.odin#L104"><em>Source</em></a></div></h3>
+<h3 id="error"><span><a class="doc-id-link" href="#error">error<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/log/log.odin#L103"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">error :: <span class="keyword-type">proc</span> "odin" (args: ..<span class="doc-builtin">any</span>, sep: <span class="doc-builtin">string</span> = " ", location := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="errorf"><span><a class="doc-id-link" href="#errorf">errorf<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/log/log.odin#L88"><em>Source</em></a></div></h3>
+<h3 id="errorf"><span><a class="doc-id-link" href="#errorf">errorf<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/log/log.odin#L87"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">errorf :: <span class="keyword-type">proc</span> "odin" (fmt_str: <span class="doc-builtin">string</span>, args: ..<span class="doc-builtin">any</span>, location := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="fatal"><span><a class="doc-id-link" href="#fatal">fatal<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/log/log.odin#L107"><em>Source</em></a></div></h3>
+<h3 id="fatal"><span><a class="doc-id-link" href="#fatal">fatal<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/log/log.odin#L106"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">fatal :: <span class="keyword-type">proc</span> "odin" (args: ..<span class="doc-builtin">any</span>, sep: <span class="doc-builtin">string</span> = " ", location := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="fatalf"><span><a class="doc-id-link" href="#fatalf">fatalf<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/log/log.odin#L91"><em>Source</em></a></div></h3>
+<h3 id="fatalf"><span><a class="doc-id-link" href="#fatalf">fatalf<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/log/log.odin#L90"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">fatalf :: <span class="keyword-type">proc</span> "odin" (fmt_str: <span class="doc-builtin">string</span>, args: ..<span class="doc-builtin">any</span>, location := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>) {…}</pre>
 </div>
@@ -471,25 +525,49 @@ Procedure Groups (0)</summary>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="info"><span><a class="doc-id-link" href="#info">info<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/log/log.odin#L98"><em>Source</em></a></div></h3>
+<h3 id="info"><span><a class="doc-id-link" href="#info">info<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/log/log.odin#L97"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">info :: <span class="keyword-type">proc</span> "odin" (args: ..<span class="doc-builtin">any</span>, sep: <span class="doc-builtin">string</span> = " ", location := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="infof"><span><a class="doc-id-link" href="#infof">infof<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/log/log.odin#L82"><em>Source</em></a></div></h3>
+<h3 id="infof"><span><a class="doc-id-link" href="#infof">infof<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/log/log.odin#L81"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">infof :: <span class="keyword-type">proc</span> "odin" (fmt_str: <span class="doc-builtin">string</span>, args: ..<span class="doc-builtin">any</span>, location := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="log"><span><a class="doc-id-link" href="#log">log<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/log/log.odin#L123"><em>Source</em></a></div></h3>
+<h3 id="log"><span><a class="doc-id-link" href="#log">log<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/log/log.odin#L122"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">log :: <span class="keyword-type">proc</span> "odin" (level: runtime.<a class="code-typename" href="/core/runtime/#Logger_Level">Logger_Level</a>, args: ..<span class="doc-builtin">any</span>, sep: <span class="doc-builtin">string</span> = " ", location := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="logf"><span><a class="doc-id-link" href="#logf">logf<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/log/log.odin#L135"><em>Source</em></a></div></h3>
+<h3 id="log_allocator"><span><a class="doc-id-link" href="#log_allocator">log_allocator<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/log/log_allocator.odin#L20"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">log_allocator :: <span class="keyword-type">proc</span> "odin" (la: ^<a class="code-typename" href="/core/log/#Log_Allocator">Log_Allocator</a>) -> runtime.<a class="code-typename" href="/core/runtime/#Allocator">Allocator</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="log_allocator_init"><span><a class="doc-id-link" href="#log_allocator_init">log_allocator_init<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/log/log_allocator.odin#L12"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">log_allocator_init :: <span class="keyword-type">proc</span> "odin" (la: ^<a class="code-typename" href="/core/log/#Log_Allocator">Log_Allocator</a>, level: runtime.<a class="code-typename" href="/core/runtime/#Logger_Level">Logger_Level</a>, allocator := <a href="/core/runtime/#Context">context.allocator</a>, prefix: <span class="doc-builtin">string</span> = "") {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="log_allocator_proc"><span><a class="doc-id-link" href="#log_allocator_proc">log_allocator_proc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/log/log_allocator.odin#L27"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">log_allocator_proc :: <span class="keyword-type">proc</span> "odin" (
+	allocator_data:  <span class="doc-builtin">rawptr</span>, 
+	mode:            runtime.<a class="code-typename" href="/core/runtime/#Allocator_Mode">Allocator_Mode</a>, 
+	size, alignment: <span class="doc-builtin">int</span>, 
+	old_memory:      <span class="doc-builtin">rawptr</span>, 
+	old_size:        <span class="doc-builtin">int</span>, 
+) -> ([]<span class="doc-builtin">u8</span>, runtime.<a class="code-typename" href="/core/runtime/#Allocator_Error">Allocator_Error</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="logf"><span><a class="doc-id-link" href="#logf">logf<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/log/log.odin#L134"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">logf :: <span class="keyword-type">proc</span> "odin" (level: runtime.<a class="code-typename" href="/core/runtime/#Logger_Level">Logger_Level</a>, fmt_str: <span class="doc-builtin">string</span>, args: ..<span class="doc-builtin">any</span>, location := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>) {…}</pre>
 </div>
@@ -513,25 +591,25 @@ Procedure Groups (0)</summary>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="panic"><span><a class="doc-id-link" href="#panic">panic<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/log/log.odin#L111"><em>Source</em></a></div></h3>
+<h3 id="panic"><span><a class="doc-id-link" href="#panic">panic<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/log/log.odin#L110"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">panic :: <span class="keyword-type">proc</span> "odin" (args: ..<span class="doc-builtin">any</span>, location := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>) -> ! {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="panicf"><span><a class="doc-id-link" href="#panicf">panicf<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/log/log.odin#L115"><em>Source</em></a></div></h3>
+<h3 id="panicf"><span><a class="doc-id-link" href="#panicf">panicf<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/log/log.odin#L114"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">panicf :: <span class="keyword-type">proc</span> "odin" (fmt: <span class="doc-builtin">string</span>, args: ..<span class="doc-builtin">any</span>, loc := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>) -> ! {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="warn"><span><a class="doc-id-link" href="#warn">warn<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/log/log.odin#L101"><em>Source</em></a></div></h3>
+<h3 id="warn"><span><a class="doc-id-link" href="#warn">warn<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/log/log.odin#L100"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">warn :: <span class="keyword-type">proc</span> "odin" (args: ..<span class="doc-builtin">any</span>, sep: <span class="doc-builtin">string</span> = " ", location := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="warnf"><span><a class="doc-id-link" href="#warnf">warnf<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/log/log.odin#L85"><em>Source</em></a></div></h3>
+<h3 id="warnf"><span><a class="doc-id-link" href="#warnf">warnf<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/log/log.odin#L84"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">warnf :: <span class="keyword-type">proc</span> "odin" (fmt_str: <span class="doc-builtin">string</span>, args: ..<span class="doc-builtin">any</span>, location := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>) {…}</pre>
 </div>
@@ -545,10 +623,11 @@ Procedure Groups (0)</summary>
 <ul>
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/log/file_console_logger.odin">file_console_logger.odin</a></li>
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/log/log.odin">log.odin</a></li>
+<li><a href="https://github.com/odin-lang/Odin/tree/master/core/log/log_allocator.odin">log_allocator.odin</a></li>
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/log/multi_logger.odin">multi_logger.odin</a></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2022-08 (vendor "odin") Windows_amd64 @ 2022-08-07 21:09:02.163520700 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2022-09 (vendor "odin") Windows_amd64 @ 2022-09-12 23:32:04.060739700 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
@@ -556,6 +635,7 @@ Procedure Groups (0)</summary>
 <li><a href="#pkg-Types">Types</a><ul>
 <li><a href="#File_Console_Logger_Data">File_Console_Logger_Data</a></li>
 <li><a href="#Level">Level</a></li>
+<li><a href="#Log_Allocator">Log_Allocator</a></li>
 <li><a href="#Logger">Logger</a></li>
 <li><a href="#Logger_Proc">Logger_Proc</a></li>
 <li><a href="#Multi_Logger_Data">Multi_Logger_Data</a></li>
@@ -594,6 +674,9 @@ Procedure Groups (0)</summary>
 <li><a href="#info">info</a></li>
 <li><a href="#infof">infof</a></li>
 <li><a href="#log">log</a></li>
+<li><a href="#log_allocator">log_allocator</a></li>
+<li><a href="#log_allocator_init">log_allocator_init</a></li>
+<li><a href="#log_allocator_proc">log_allocator_proc</a></li>
 <li><a href="#logf">logf</a></li>
 <li><a href="#multi_logger_proc">multi_logger_proc</a></li>
 <li><a href="#nil_logger">nil_logger</a></li>
