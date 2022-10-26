@@ -246,7 +246,7 @@ Variables (1)</summary>
 <div>
 <details class="doc-index" id="doc-index-Procedures" aria-labelledby="#doc-index-Procedures-header">
 <summary id="#doc-index-Procedures-header">
-Procedures (25)</summary>
+Procedures (26)</summary>
 <ul>
 <li><a href="#alloc_from_memory_block">alloc_from_memory_block</a></li>
 <li><a href="#arena_alloc">arena_alloc</a></li>
@@ -258,6 +258,7 @@ Procedures (25)</summary>
 <li><a href="#arena_growing_bootstrap_new_by_name">arena_growing_bootstrap_new_by_name</a></li>
 <li><a href="#arena_growing_bootstrap_new_by_offset">arena_growing_bootstrap_new_by_offset</a></li>
 <li><a href="#arena_growing_free_last_memory_block">arena_growing_free_last_memory_block</a></li>
+<li><a href="#arena_init_buffer">arena_init_buffer</a></li>
 <li><a href="#arena_init_growing">arena_init_growing</a></li>
 <li><a href="#arena_init_static">arena_init_static</a></li>
 <li><a href="#arena_static_bootstrap_new_by_name">arena_static_bootstrap_new_by_name</a></li>
@@ -296,7 +297,7 @@ Procedure Groups (2)</summary>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="Arena"><span><a class="doc-id-link" href="#Arena">Arena<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/arena.odin#L10"><em>Source</em></a></div></h3>
+<h3 id="Arena"><span><a class="doc-id-link" href="#Arena">Arena<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/arena.odin#L11"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Arena :: <span class="keyword-type">struct</span> {
 	kind:               <a class="code-typename" href="/core/mem/virtual/#Arena_Kind">Arena_Kind</a>,
@@ -312,13 +313,14 @@ Procedure Groups (2)</summary>
 <h3 id="Arena_Kind"><span><a class="doc-id-link" href="#Arena_Kind">Arena_Kind<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/arena.odin#L5"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Arena_Kind :: <span class="keyword-type">enum</span> <span class="doc-builtin">uint</span> {
-	Growing = 0, <span class="comment">// chained memory blocks (singly linked list)</span>
-	Static  = 1, <span class="comment">// fixed reservation sized</span>
+	Growing = 0, <span class="comment">// Chained memory blocks (singly linked list).</span>
+	Static  = 1, <span class="comment">// Fixed reservation sized.</span>
+	Buffer  = 2, <span class="comment">// Uses a fixed sized buffer.</span>
 }</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="Arena_Temp"><span><a class="doc-id-link" href="#Arena_Temp">Arena_Temp<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/arena.odin#L250"><em>Source</em></a></div></h3>
+<h3 id="Arena_Temp"><span><a class="doc-id-link" href="#Arena_Temp">Arena_Temp<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/arena.odin#L281"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Arena_Temp :: <span class="keyword-type">struct</span> {
 	arena: ^<a class="code-typename" href="/core/mem/virtual/#Arena">Arena</a>,
@@ -373,13 +375,13 @@ Procedure Groups (2)</summary>
 <h2 id="pkg-Constants" class="pkg-header">Constants</h2>
 <section class="documentation">
 <div class="pkg-entity">
-<h3 id="DEFAULT_ARENA_GROWING_MINIMUM_BLOCK_SIZE"><span><a class="doc-id-link" href="#DEFAULT_ARENA_GROWING_MINIMUM_BLOCK_SIZE">DEFAULT_ARENA_GROWING_MINIMUM_BLOCK_SIZE<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/arena.odin#L22"><em>Source</em></a></div></h3>
+<h3 id="DEFAULT_ARENA_GROWING_MINIMUM_BLOCK_SIZE"><span><a class="doc-id-link" href="#DEFAULT_ARENA_GROWING_MINIMUM_BLOCK_SIZE">DEFAULT_ARENA_GROWING_MINIMUM_BLOCK_SIZE<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/arena.odin#L23"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">DEFAULT_ARENA_GROWING_MINIMUM_BLOCK_SIZE :: DEFAULT_ARENA_STATIC_COMMIT_SIZE</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="DEFAULT_ARENA_STATIC_COMMIT_SIZE"><span><a class="doc-id-link" href="#DEFAULT_ARENA_STATIC_COMMIT_SIZE">DEFAULT_ARENA_STATIC_COMMIT_SIZE<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/arena.odin#L21"><em>Source</em></a></div></h3>
+<h3 id="DEFAULT_ARENA_STATIC_COMMIT_SIZE"><span><a class="doc-id-link" href="#DEFAULT_ARENA_STATIC_COMMIT_SIZE">DEFAULT_ARENA_STATIC_COMMIT_SIZE<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/arena.odin#L22"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">DEFAULT_ARENA_STATIC_COMMIT_SIZE :: 1 << 20</pre>
 </div>
@@ -389,7 +391,7 @@ Procedure Groups (2)</summary>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="DEFAULT_ARENA_STATIC_RESERVE_SIZE"><span><a class="doc-id-link" href="#DEFAULT_ARENA_STATIC_RESERVE_SIZE">DEFAULT_ARENA_STATIC_RESERVE_SIZE<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/arena.odin#L25"><em>Source</em></a></div></h3>
+<h3 id="DEFAULT_ARENA_STATIC_RESERVE_SIZE"><span><a class="doc-id-link" href="#DEFAULT_ARENA_STATIC_RESERVE_SIZE">DEFAULT_ARENA_STATIC_RESERVE_SIZE<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/arena.odin#L26"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">DEFAULT_ARENA_STATIC_RESERVE_SIZE :: 1 << 30 when size_of(uintptr) == 8 else 1 << 27</pre>
 </div>
@@ -423,19 +425,19 @@ Procedure Groups (2)</summary>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="arena_alloc"><span><a class="doc-id-link" href="#arena_alloc">arena_alloc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/arena.odin#L49"><em>Source</em></a></div></h3>
+<h3 id="arena_alloc"><span><a class="doc-id-link" href="#arena_alloc">arena_alloc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/arena.odin#L73"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">arena_alloc :: <span class="keyword-type">proc</span> "odin" (arena: ^<a class="code-typename" href="/core/mem/virtual/#Arena">Arena</a>, size: <span class="doc-builtin">uint</span>, alignment: <span class="doc-builtin">uint</span>, loc := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>) -> (data: []<span class="doc-builtin">u8</span>, err: runtime.<a class="code-typename" href="/core/runtime/#Allocator_Error">Allocator_Error</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="arena_allocator"><span><a class="doc-id-link" href="#arena_allocator">arena_allocator<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/arena.odin#L190"><em>Source</em></a></div></h3>
+<h3 id="arena_allocator"><span><a class="doc-id-link" href="#arena_allocator">arena_allocator<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/arena.odin#L221"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">arena_allocator :: <span class="keyword-type">proc</span> "odin" (arena: ^<a class="code-typename" href="/core/mem/virtual/#Arena">Arena</a>) -> runtime.<a class="code-typename" href="/core/runtime/#Allocator">Allocator</a> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="arena_allocator_proc"><span><a class="doc-id-link" href="#arena_allocator_proc">arena_allocator_proc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/arena.odin#L194"><em>Source</em></a></div></h3>
+<h3 id="arena_allocator_proc"><span><a class="doc-id-link" href="#arena_allocator_proc">arena_allocator_proc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/arena.odin#L225"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">arena_allocator_proc :: <span class="keyword-type">proc</span> "odin" (
 	allocator_data:  <span class="doc-builtin">rawptr</span>, 
@@ -447,79 +449,85 @@ Procedure Groups (2)</summary>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="arena_check_temp"><span><a class="doc-id-link" href="#arena_check_temp">arena_check_temp<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/arena.odin#L298"><em>Source</em></a></div></h3>
+<h3 id="arena_check_temp"><span><a class="doc-id-link" href="#arena_check_temp">arena_check_temp<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/arena.odin#L329"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">arena_check_temp :: <span class="keyword-type">proc</span> "odin" (arena: ^<a class="code-typename" href="/core/mem/virtual/#Arena">Arena</a>, loc := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="arena_destroy"><span><a class="doc-id-link" href="#arena_destroy">arena_destroy<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/arena.odin#L129"><em>Source</em></a></div></h3>
+<h3 id="arena_destroy"><span><a class="doc-id-link" href="#arena_destroy">arena_destroy<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/arena.odin#L158"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">arena_destroy :: <span class="keyword-type">proc</span> "odin" (arena: ^<a class="code-typename" href="/core/mem/virtual/#Arena">Arena</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="arena_free_all"><span><a class="doc-id-link" href="#arena_free_all">arena_free_all<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/arena.odin#L116"><em>Source</em></a></div></h3>
+<h3 id="arena_free_all"><span><a class="doc-id-link" href="#arena_free_all">arena_free_all<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/arena.odin#L145"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">arena_free_all :: <span class="keyword-type">proc</span> "odin" (arena: ^<a class="code-typename" href="/core/mem/virtual/#Arena">Arena</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="arena_growing_bootstrap_new_by_name"><span><a class="doc-id-link" href="#arena_growing_bootstrap_new_by_name">arena_growing_bootstrap_new_by_name<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/arena.odin#L164"><em>Source</em></a></div></h3>
+<h3 id="arena_growing_bootstrap_new_by_name"><span><a class="doc-id-link" href="#arena_growing_bootstrap_new_by_name">arena_growing_bootstrap_new_by_name<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/arena.odin#L195"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">arena_growing_bootstrap_new_by_name :: <span class="keyword-type">proc</span> "odin" ($T: <span class="doc-builtin">typeid</span>, $field_name: <span class="doc-builtin">string</span> = , minimum_block_size: <span class="doc-builtin">uint</span> = DEFAULT_ARENA_GROWING_MINIMUM_BLOCK_SIZE) -> (ptr: ^<span class="doc-builtin">typeid</span>, err: runtime.<a class="code-typename" href="/core/runtime/#Allocator_Error">Allocator_Error</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="arena_growing_bootstrap_new_by_offset"><span><a class="doc-id-link" href="#arena_growing_bootstrap_new_by_offset">arena_growing_bootstrap_new_by_offset<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/arena.odin#L149"><em>Source</em></a></div></h3>
+<h3 id="arena_growing_bootstrap_new_by_offset"><span><a class="doc-id-link" href="#arena_growing_bootstrap_new_by_offset">arena_growing_bootstrap_new_by_offset<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/arena.odin#L180"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">arena_growing_bootstrap_new_by_offset :: <span class="keyword-type">proc</span> "odin" ($T: <span class="doc-builtin">typeid</span>, offset_to_arena: <span class="doc-builtin">uintptr</span>, minimum_block_size: <span class="doc-builtin">uint</span> = DEFAULT_ARENA_GROWING_MINIMUM_BLOCK_SIZE) -> (ptr: ^<span class="doc-builtin">typeid</span>, err: runtime.<a class="code-typename" href="/core/runtime/#Allocator_Error">Allocator_Error</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="arena_growing_free_last_memory_block"><span><a class="doc-id-link" href="#arena_growing_free_last_memory_block">arena_growing_free_last_memory_block<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/arena.odin#L108"><em>Source</em></a></div></h3>
+<h3 id="arena_growing_free_last_memory_block"><span><a class="doc-id-link" href="#arena_growing_free_last_memory_block">arena_growing_free_last_memory_block<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/arena.odin#L137"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">arena_growing_free_last_memory_block :: <span class="keyword-type">proc</span> "odin" (arena: ^<a class="code-typename" href="/core/mem/virtual/#Arena">Arena</a>, loc := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="arena_init_growing"><span><a class="doc-id-link" href="#arena_init_growing">arena_init_growing<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/arena.odin#L30"><em>Source</em></a></div></h3>
+<h3 id="arena_init_buffer"><span><a class="doc-id-link" href="#arena_init_buffer">arena_init_buffer<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/arena.odin#L50"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">arena_init_buffer :: <span class="keyword-type">proc</span> "odin" (arena: ^<a class="code-typename" href="/core/mem/virtual/#Arena">Arena</a>, buffer: []<span class="doc-builtin">u8</span>) -> (err: runtime.<a class="code-typename" href="/core/runtime/#Allocator_Error">Allocator_Error</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="arena_init_growing"><span><a class="doc-id-link" href="#arena_init_growing">arena_init_growing<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/arena.odin#L31"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">arena_init_growing :: <span class="keyword-type">proc</span> "odin" (arena: ^<a class="code-typename" href="/core/mem/virtual/#Arena">Arena</a>, reserved: <span class="doc-builtin">uint</span> = DEFAULT_ARENA_GROWING_MINIMUM_BLOCK_SIZE) -> (err: runtime.<a class="code-typename" href="/core/runtime/#Allocator_Error">Allocator_Error</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="arena_init_static"><span><a class="doc-id-link" href="#arena_init_static">arena_init_static<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/arena.odin#L40"><em>Source</em></a></div></h3>
+<h3 id="arena_init_static"><span><a class="doc-id-link" href="#arena_init_static">arena_init_static<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/arena.odin#L41"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">arena_init_static :: <span class="keyword-type">proc</span> "odin" (arena: ^<a class="code-typename" href="/core/mem/virtual/#Arena">Arena</a>, reserved: <span class="doc-builtin">uint</span>, commit_size: <span class="doc-builtin">uint</span> = DEFAULT_ARENA_STATIC_COMMIT_SIZE) -> (err: runtime.<a class="code-typename" href="/core/runtime/#Allocator_Error">Allocator_Error</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="arena_static_bootstrap_new_by_name"><span><a class="doc-id-link" href="#arena_static_bootstrap_new_by_name">arena_static_bootstrap_new_by_name<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/arena.odin#L184"><em>Source</em></a></div></h3>
+<h3 id="arena_static_bootstrap_new_by_name"><span><a class="doc-id-link" href="#arena_static_bootstrap_new_by_name">arena_static_bootstrap_new_by_name<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/arena.odin#L215"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">arena_static_bootstrap_new_by_name :: <span class="keyword-type">proc</span> "odin" ($T: <span class="doc-builtin">typeid</span>, $field_name: <span class="doc-builtin">string</span> = , reserved: <span class="doc-builtin">uint</span>) -> (ptr: ^<span class="doc-builtin">typeid</span>, err: runtime.<a class="code-typename" href="/core/runtime/#Allocator_Error">Allocator_Error</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="arena_static_bootstrap_new_by_offset"><span><a class="doc-id-link" href="#arena_static_bootstrap_new_by_offset">arena_static_bootstrap_new_by_offset<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/arena.odin#L169"><em>Source</em></a></div></h3>
+<h3 id="arena_static_bootstrap_new_by_offset"><span><a class="doc-id-link" href="#arena_static_bootstrap_new_by_offset">arena_static_bootstrap_new_by_offset<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/arena.odin#L200"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">arena_static_bootstrap_new_by_offset :: <span class="keyword-type">proc</span> "odin" ($T: <span class="doc-builtin">typeid</span>, offset_to_arena: <span class="doc-builtin">uintptr</span>, minimum_block_size: <span class="doc-builtin">uint</span> = DEFAULT_ARENA_GROWING_MINIMUM_BLOCK_SIZE) -> (ptr: ^<span class="doc-builtin">typeid</span>, err: runtime.<a class="code-typename" href="/core/runtime/#Allocator_Error">Allocator_Error</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="arena_static_reset_to"><span><a class="doc-id-link" href="#arena_static_reset_to">arena_static_reset_to<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/arena.odin#L89"><em>Source</em></a></div></h3>
+<h3 id="arena_static_reset_to"><span><a class="doc-id-link" href="#arena_static_reset_to">arena_static_reset_to<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/arena.odin#L118"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">arena_static_reset_to :: <span class="keyword-type">proc</span> "odin" (arena: ^<a class="code-typename" href="/core/mem/virtual/#Arena">Arena</a>, pos: <span class="doc-builtin">uint</span>, loc := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>) -> <span class="doc-builtin">bool</span> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="arena_temp_begin"><span><a class="doc-id-link" href="#arena_temp_begin">arena_temp_begin<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/arena.odin#L257"><em>Source</em></a></div></h3>
+<h3 id="arena_temp_begin"><span><a class="doc-id-link" href="#arena_temp_begin">arena_temp_begin<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/arena.odin#L288"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">arena_temp_begin :: <span class="keyword-type">proc</span> "odin" (arena: ^<a class="code-typename" href="/core/mem/virtual/#Arena">Arena</a>, loc := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>) -> (temp: <a class="code-typename" href="/core/mem/virtual/#Arena_Temp">Arena_Temp</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="arena_temp_end"><span><a class="doc-id-link" href="#arena_temp_end">arena_temp_end<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/arena.odin#L268"><em>Source</em></a></div></h3>
+<h3 id="arena_temp_end"><span><a class="doc-id-link" href="#arena_temp_end">arena_temp_end<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/arena.odin#L299"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">arena_temp_end :: <span class="keyword-type">proc</span> "odin" (temp: <a class="code-typename" href="/core/mem/virtual/#Arena_Temp">Arena_Temp</a>, loc := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>) {…}</pre>
 </div>
@@ -543,7 +551,7 @@ Procedure Groups (2)</summary>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="memory_block_dealloc"><span><a class="doc-id-link" href="#memory_block_dealloc">memory_block_dealloc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/virtual.odin#L151"><em>Source</em></a></div></h3>
+<h3 id="memory_block_dealloc"><span><a class="doc-id-link" href="#memory_block_dealloc">memory_block_dealloc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/virtual.odin#L155"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">memory_block_dealloc :: <span class="keyword-type">proc</span> "odin" (block_to_free: ^<a class="code-typename" href="/core/mem/virtual/#Memory_Block">Memory_Block</a>) {…}</pre>
 </div>
@@ -576,7 +584,7 @@ Procedure Groups (2)</summary>
 <h2 id="pkg-Procedure Groups" class="pkg-header">Procedure Groups</h2>
 <section class="documentation">
 <div class="pkg-entity">
-<h3 id="arena_growing_bootstrap_new"><span><a class="doc-id-link" href="#arena_growing_bootstrap_new">arena_growing_bootstrap_new<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/arena.odin#L138"><em>Source</em></a></div></h3>
+<h3 id="arena_growing_bootstrap_new"><span><a class="doc-id-link" href="#arena_growing_bootstrap_new">arena_growing_bootstrap_new<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/arena.odin#L169"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">arena_growing_bootstrap_new :: proc{
 	<a class="code-procedure" href="/core/mem/virtual/#arena_growing_bootstrap_new_by_offset">arena_growing_bootstrap_new_by_offset</a>,
@@ -586,7 +594,7 @@ Procedure Groups (2)</summary>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="arena_static_bootstrap_new"><span><a class="doc-id-link" href="#arena_static_bootstrap_new">arena_static_bootstrap_new<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/arena.odin#L143"><em>Source</em></a></div></h3>
+<h3 id="arena_static_bootstrap_new"><span><a class="doc-id-link" href="#arena_static_bootstrap_new">arena_static_bootstrap_new<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/arena.odin#L174"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">arena_static_bootstrap_new :: proc{
 	<a class="code-procedure" href="/core/mem/virtual/#arena_static_bootstrap_new_by_offset">arena_static_bootstrap_new_by_offset</a>,
@@ -604,7 +612,7 @@ Procedure Groups (2)</summary>
 <li><em>(hidden platform specific files)</em></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2022-10 (vendor "odin") Windows_amd64 @ 2022-10-25 21:11:45.731185000 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2022-10 (vendor "odin") Windows_amd64 @ 2022-10-26 21:11:05.238939900 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
@@ -643,6 +651,7 @@ Procedure Groups (2)</summary>
 <li><a href="#arena_growing_bootstrap_new_by_name">arena_growing_bootstrap_new_by_name</a></li>
 <li><a href="#arena_growing_bootstrap_new_by_offset">arena_growing_bootstrap_new_by_offset</a></li>
 <li><a href="#arena_growing_free_last_memory_block">arena_growing_free_last_memory_block</a></li>
+<li><a href="#arena_init_buffer">arena_init_buffer</a></li>
 <li><a href="#arena_init_growing">arena_init_growing</a></li>
 <li><a href="#arena_init_static">arena_init_static</a></li>
 <li><a href="#arena_static_bootstrap_new_by_name">arena_static_bootstrap_new_by_name</a></li>
