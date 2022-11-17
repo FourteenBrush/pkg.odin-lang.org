@@ -207,10 +207,9 @@
 <div>
 <details class="doc-index" id="doc-index-Types" aria-labelledby="#doc-index-Types-header">
 <summary id="#doc-index-Types-header">
-Types (35)</summary>
+Types (34)</summary>
 <ul>
 <li><a href="#Enum_Field">Enum_Field</a></li>
-<li><a href="#Map_Entry_Info">Map_Entry_Info</a></li>
 <li><a href="#Struct_Field">Struct_Field</a></li>
 <li><a href="#Struct_Tag">Struct_Tag</a></li>
 <li><a href="#Type_Info">Type_Info</a></li>
@@ -266,7 +265,7 @@ Variables (0)</summary>
 <div>
 <details class="doc-index" id="doc-index-Procedures" aria-labelledby="#doc-index-Procedures-header">
 <summary id="#doc-index-Procedures-header">
-Procedures (99)</summary>
+Procedures (100)</summary>
 <ul>
 <li><a href="#align_of_typeid">align_of_typeid</a></li>
 <li><a href="#any_base">any_base</a></li>
@@ -330,8 +329,9 @@ Procedures (99)</summary>
 <li><a href="#is_tuple">is_tuple</a></li>
 <li><a href="#is_union">is_union</a></li>
 <li><a href="#is_unsigned">is_unsigned</a></li>
+<li><a href="#iterate_array">iterate_array</a></li>
+<li><a href="#iterate_map">iterate_map</a></li>
 <li><a href="#length">length</a></li>
-<li><a href="#map_entry_info_slice">map_entry_info_slice</a></li>
 <li><a href="#ne">ne</a></li>
 <li><a href="#not_equal">not_equal</a></li>
 <li><a href="#relative_pointer_to_absolute">relative_pointer_to_absolute</a></li>
@@ -390,12 +390,6 @@ Procedure Groups (2)</summary>
 	name:  <span class="doc-builtin">string</span>,
 	value: runtime.<a class="code-typename" href="/core/runtime/#Type_Info_Enum_Value">Type_Info_Enum_Value</a>,
 }</pre>
-</div>
-</div>
-<div class="pkg-entity">
-<h3 id="Map_Entry_Info"><span><a class="doc-id-link" href="#Map_Entry_Info">Map_Entry_Info<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/reflect/map.odin#L8"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">Map_Entry_Info :: <span class="keyword-type">struct</span> {}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -1035,15 +1029,21 @@ Each key is a non-empty string which contains no control characters other than s
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="length"><span><a class="doc-id-link" href="#length">length<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/reflect/reflect.odin#L253"><em>Source</em></a></div></h3>
+<h3 id="iterate_array"><span><a class="doc-id-link" href="#iterate_array">iterate_array<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/reflect/iterator.odin#L5"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">length :: <span class="keyword-type">proc</span> "odin" (val: <span class="doc-builtin">any</span>) -> <span class="doc-builtin">int</span> {…}</pre>
+<pre class="doc-code">iterate_array :: <span class="keyword-type">proc</span> "odin" (val: <span class="doc-builtin">any</span>, it: ^<span class="doc-builtin">int</span>) -> (elem: <span class="doc-builtin">any</span>, index: <span class="doc-builtin">int</span>, ok: <span class="doc-builtin">bool</span>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="map_entry_info_slice"><span><a class="doc-id-link" href="#map_entry_info_slice">map_entry_info_slice<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/reflect/map.odin#L14"><em>Source</em></a></div></h3>
+<h3 id="iterate_map"><span><a class="doc-id-link" href="#iterate_map">iterate_map<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/reflect/iterator.odin#L44"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">map_entry_info_slice :: <span class="keyword-type">proc</span> "odin" (m: $T/<span class="keyword-type">map</span>[$]$, allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> (entries: []<a class="code-typename" href="/core/reflect/#Map_Entry_Info">Map_Entry_Info</a>(K, V)) {…}</pre>
+<pre class="doc-code">iterate_map :: <span class="keyword-type">proc</span> "odin" (val: <span class="doc-builtin">any</span>, it: ^<span class="doc-builtin">int</span>) -> (key, value: <span class="doc-builtin">any</span>, ok: <span class="doc-builtin">bool</span>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="length"><span><a class="doc-id-link" href="#length">length<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/reflect/reflect.odin#L253"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">length :: <span class="keyword-type">proc</span> "odin" (val: <span class="doc-builtin">any</span>) -> <span class="doc-builtin">int</span> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -1286,19 +1286,18 @@ Each key is a non-empty string which contains no control characters other than s
 </section>
 <h2 id="pkg-source-files">Source Files</h2>
 <ul>
-<li><a href="https://github.com/odin-lang/Odin/tree/master/core/reflect/map.odin">map.odin</a></li>
+<li><a href="https://github.com/odin-lang/Odin/tree/master/core/reflect/iterator.odin">iterator.odin</a></li>
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/reflect/reflect.odin">reflect.odin</a></li>
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/reflect/types.odin">types.odin</a></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2022-11 (vendor "odin") Windows_amd64 @ 2022-11-16 21:09:48.876315100 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2022-11 (vendor "odin") Windows_amd64 @ 2022-11-17 21:10:51.858684900 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
 <ul>
 <li><a href="#pkg-Types">Types</a><ul>
 <li><a href="#Enum_Field">Enum_Field</a></li>
-<li><a href="#Map_Entry_Info">Map_Entry_Info</a></li>
 <li><a href="#Struct_Field">Struct_Field</a></li>
 <li><a href="#Struct_Tag">Struct_Tag</a></li>
 <li><a href="#Type_Info">Type_Info</a></li>
@@ -1401,8 +1400,9 @@ Each key is a non-empty string which contains no control characters other than s
 <li><a href="#is_tuple">is_tuple</a></li>
 <li><a href="#is_union">is_union</a></li>
 <li><a href="#is_unsigned">is_unsigned</a></li>
+<li><a href="#iterate_array">iterate_array</a></li>
+<li><a href="#iterate_map">iterate_map</a></li>
 <li><a href="#length">length</a></li>
-<li><a href="#map_entry_info_slice">map_entry_info_slice</a></li>
 <li><a href="#ne">ne</a></li>
 <li><a href="#not_equal">not_equal</a></li>
 <li><a href="#relative_pointer_to_absolute">relative_pointer_to_absolute</a></li>
