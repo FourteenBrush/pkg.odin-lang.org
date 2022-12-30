@@ -1378,7 +1378,7 @@ Procedure Groups (0)</summary>
 	pUserData: <span class="doc-builtin">rawptr</span>,
 	onMalloc:  <span class="keyword-type">proc</span> "cdecl" (sz: <span class="doc-builtin">uint</span>, pUserData: <span class="doc-builtin">rawptr</span>) -> <span class="doc-builtin">rawptr</span>,
 	onRealloc: <span class="keyword-type">proc</span> "cdecl" (p: <span class="doc-builtin">rawptr</span>, sz: <span class="doc-builtin">uint</span>, pUserData: <span class="doc-builtin">rawptr</span>) -> <span class="doc-builtin">rawptr</span>,
-	onFree:    <span class="keyword-type">proc</span> "cdecl" (opaque: <span class="doc-builtin">rawptr</span>, address: <span class="doc-builtin">rawptr</span>),
+	onFree:    <span class="keyword-type">proc</span> "cdecl" (p: <span class="doc-builtin">rawptr</span>, pUserData: <span class="doc-builtin">rawptr</span>),
 }</pre>
 </div>
 </div>
@@ -1518,7 +1518,7 @@ Procedure Groups (0)</summary>
 	onDeviceStart:             <span class="keyword-type">proc</span> "cdecl" (pDevice: ^<a class="code-typename" href="/vendor/miniaudio/#device">device</a>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a>,
 	onDeviceStop:              <span class="keyword-type">proc</span> "cdecl" (pDevice: ^<a class="code-typename" href="/vendor/miniaudio/#device">device</a>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a>,
 	onDeviceRead:              <span class="keyword-type">proc</span> "cdecl" (pDevice: ^<a class="code-typename" href="/vendor/miniaudio/#device">device</a>, pFrames: <span class="doc-builtin">rawptr</span>, frameCount: <span class="doc-builtin">u32</span>, pFramesRead: ^<span class="doc-builtin">u32</span>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a>,
-	onDeviceWrite:             <span class="keyword-type">proc</span> "cdecl" (pDevice: ^<a class="code-typename" href="/vendor/miniaudio/#device">device</a>, pFrames: <span class="doc-builtin">rawptr</span>, frameCount: <span class="doc-builtin">u32</span>, pFramesRead: ^<span class="doc-builtin">u32</span>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a>,
+	onDeviceWrite:             <span class="keyword-type">proc</span> "cdecl" (pDevice: ^<a class="code-typename" href="/vendor/miniaudio/#device">device</a>, pFrames: <span class="doc-builtin">rawptr</span>, frameCount: <span class="doc-builtin">u32</span>, pFramesWritten: ^<span class="doc-builtin">u32</span>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a>,
 	onDeviceDataLoop:          <span class="keyword-type">proc</span> "cdecl" (pDevice: ^<a class="code-typename" href="/vendor/miniaudio/#device">device</a>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a>,
 	onDeviceDataLoopWakeup:    <span class="keyword-type">proc</span> "cdecl" (pDevice: ^<a class="code-typename" href="/vendor/miniaudio/#device">device</a>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a>,
 	onDeviceGetInfo:           <span class="keyword-type">proc</span> "cdecl" (pDevice: ^<a class="code-typename" href="/vendor/miniaudio/#device">device</a>, type: <a class="code-typename" href="/vendor/miniaudio/#device_type">device_type</a>, pDeviceInfo: ^<a class="code-typename" href="/vendor/miniaudio/#device_info">device_info</a>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a>,
@@ -2171,7 +2171,7 @@ wake up the audio thread.</p>
 	onSeek:          <span class="keyword-type">proc</span> "cdecl" (pDataSource: ^<a class="code-typename" href="/vendor/miniaudio/#data_source">data_source</a>, frameIndex: <span class="doc-builtin">u64</span>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a>,
 	onGetDataFormat: <span class="keyword-type">proc</span> "cdecl" (pDataSource: ^<a class="code-typename" href="/vendor/miniaudio/#data_source">data_source</a>, pFormat: ^<a class="code-typename" href="/vendor/miniaudio/#format">format</a>, pChannels: ^<span class="doc-builtin">u32</span>, pSampleRate: ^<span class="doc-builtin">u32</span>, pChannelMap: [^]<a class="code-typename" href="/vendor/miniaudio/#channel">channel</a>, channelMapCap: <span class="doc-builtin">uint</span>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a>,
 	onGetCursor:     <span class="keyword-type">proc</span> "cdecl" (pDataSource: ^<a class="code-typename" href="/vendor/miniaudio/#data_source">data_source</a>, pCursor: ^<span class="doc-builtin">u64</span>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a>,
-	onGetLength:     <span class="keyword-type">proc</span> "cdecl" (pDataSource: ^<a class="code-typename" href="/vendor/miniaudio/#data_source">data_source</a>, pCursor: ^<span class="doc-builtin">u64</span>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a>,
+	onGetLength:     <span class="keyword-type">proc</span> "cdecl" (pDataSource: ^<a class="code-typename" href="/vendor/miniaudio/#data_source">data_source</a>, pLength: ^<span class="doc-builtin">u64</span>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a>,
 	onSetLooping:    <span class="keyword-type">proc</span> "cdecl" (pDataSource: ^<a class="code-typename" href="/vendor/miniaudio/#data_source">data_source</a>, isLooping: <span class="doc-builtin">b32</span>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a>,
 	flags:           <span class="doc-builtin">u32</span>,
 }</pre>
@@ -4600,7 +4600,7 @@ thread at a time can read and seek.</p>
 	<span class="comment">// Optional. Latency will be reported as 0. </span>
 	onGetRequiredInputFrameCount:  <span class="keyword-type">proc</span> "cdecl" (pUserData: <span class="doc-builtin">rawptr</span>, pBackend: ^<a class="code-typename" href="/vendor/miniaudio/#resampling_backend">resampling_backend</a>, outputFrameCount: <span class="doc-builtin">u64</span>, pInputFrameCount: ^<span class="doc-builtin">u64</span>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a>,
 	<span class="comment">// Optional. Latency mitigation will be disabled. </span>
-	onGetExpectedOutputFrameCount: <span class="keyword-type">proc</span> "cdecl" (pUserData: <span class="doc-builtin">rawptr</span>, pBackend: ^<a class="code-typename" href="/vendor/miniaudio/#resampling_backend">resampling_backend</a>, outputFrameCount: <span class="doc-builtin">u64</span>, pInputFrameCount: ^<span class="doc-builtin">u64</span>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a>,
+	onGetExpectedOutputFrameCount: <span class="keyword-type">proc</span> "cdecl" (pUserData: <span class="doc-builtin">rawptr</span>, pBackend: ^<a class="code-typename" href="/vendor/miniaudio/#resampling_backend">resampling_backend</a>, inputFrameCount: <span class="doc-builtin">u64</span>, pOutputFrameCount: ^<span class="doc-builtin">u64</span>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a>,
 	<span class="comment">// Optional. Latency mitigation will be disabled. </span>
 	onReset:                       <span class="keyword-type">proc</span> "cdecl" (pUserData: <span class="doc-builtin">rawptr</span>, pBackend: ^<a class="code-typename" href="/vendor/miniaudio/#resampling_backend">resampling_backend</a>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a>,
 }</pre>
@@ -5474,7 +5474,7 @@ appropriate for a given situation.</p>
 	onOpenW: <span class="keyword-type">proc</span> "cdecl" (pVFS: ^<a class="code-typename" href="/vendor/miniaudio/#vfs">vfs</a>, pFilePath: [^]<span class="doc-builtin">u16</span>, openMode: <span class="doc-builtin">u32</span>, pFile: ^<a class="code-typename" href="/vendor/miniaudio/#vfs_file">vfs_file</a>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a>,
 	onClose: <span class="keyword-type">proc</span> "cdecl" (pVFS: ^<a class="code-typename" href="/vendor/miniaudio/#vfs">vfs</a>, file: <a class="code-typename" href="/vendor/miniaudio/#vfs_file">vfs_file</a>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a>,
 	onRead:  <span class="keyword-type">proc</span> "cdecl" (pVFS: ^<a class="code-typename" href="/vendor/miniaudio/#vfs">vfs</a>, file: <a class="code-typename" href="/vendor/miniaudio/#vfs_file">vfs_file</a>, pDst: <span class="doc-builtin">rawptr</span>, sizeInBytes: <span class="doc-builtin">uint</span>, pBytesRead: ^<span class="doc-builtin">uint</span>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a>,
-	onWrite: <span class="keyword-type">proc</span> "cdecl" (pVFS: ^<a class="code-typename" href="/vendor/miniaudio/#vfs">vfs</a>, file: <a class="code-typename" href="/vendor/miniaudio/#vfs_file">vfs_file</a>, pDst: <span class="doc-builtin">rawptr</span>, sizeInBytes: <span class="doc-builtin">uint</span>, pBytesRead: ^<span class="doc-builtin">uint</span>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a>,
+	onWrite: <span class="keyword-type">proc</span> "cdecl" (pVFS: ^<a class="code-typename" href="/vendor/miniaudio/#vfs">vfs</a>, file: <a class="code-typename" href="/vendor/miniaudio/#vfs_file">vfs_file</a>, pSrc: <span class="doc-builtin">rawptr</span>, sizeInBytes: <span class="doc-builtin">uint</span>, pBytesWritten: ^<span class="doc-builtin">uint</span>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a>,
 	onSeek:  <span class="keyword-type">proc</span> "cdecl" (pVFS: ^<a class="code-typename" href="/vendor/miniaudio/#vfs">vfs</a>, file: <a class="code-typename" href="/vendor/miniaudio/#vfs_file">vfs_file</a>, offset: <span class="doc-builtin">i64</span>, origin: <a class="code-typename" href="/vendor/miniaudio/#seek_origin">seek_origin</a>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a>,
 	onTell:  <span class="keyword-type">proc</span> "cdecl" (pVFS: ^<a class="code-typename" href="/vendor/miniaudio/#vfs">vfs</a>, file: <a class="code-typename" href="/vendor/miniaudio/#vfs_file">vfs_file</a>, pCursor: ^<span class="doc-builtin">i64</span>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a>,
 	onInfo:  <span class="keyword-type">proc</span> "cdecl" (pVFS: ^<a class="code-typename" href="/vendor/miniaudio/#vfs">vfs</a>, file: <a class="code-typename" href="/vendor/miniaudio/#vfs_file">vfs_file</a>, pInfo: ^<a class="code-typename" href="/vendor/miniaudio/#file_info">file_info</a>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a>,
@@ -5918,7 +5918,7 @@ appropriate for a given situation.</p>
 <div class="pkg-entity">
 <h3 id="audio_buffer_get_available_frames"><span><a class="doc-id-link" href="#audio_buffer_get_available_frames">audio_buffer_get_available_frames<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/miniaudio/utilities.odin#L238"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">audio_buffer_get_available_frames :: <span class="keyword-type">proc</span> "cdecl" (pAudioBuffer: ^<a class="code-typename" href="/vendor/miniaudio/#audio_buffer">audio_buffer</a>, pCursor: ^<span class="doc-builtin">u64</span>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a> ---</pre>
+<pre class="doc-code">audio_buffer_get_available_frames :: <span class="keyword-type">proc</span> "cdecl" (pAudioBuffer: ^<a class="code-typename" href="/vendor/miniaudio/#audio_buffer">audio_buffer</a>, pAvailableFrames: ^<span class="doc-builtin">u64</span>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a> ---</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -5930,7 +5930,7 @@ appropriate for a given situation.</p>
 <div class="pkg-entity">
 <h3 id="audio_buffer_get_length_in_pcm_frames"><span><a class="doc-id-link" href="#audio_buffer_get_length_in_pcm_frames">audio_buffer_get_length_in_pcm_frames<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/miniaudio/utilities.odin#L237"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">audio_buffer_get_length_in_pcm_frames :: <span class="keyword-type">proc</span> "cdecl" (pAudioBuffer: ^<a class="code-typename" href="/vendor/miniaudio/#audio_buffer">audio_buffer</a>, pCursor: ^<span class="doc-builtin">u64</span>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a> ---</pre>
+<pre class="doc-code">audio_buffer_get_length_in_pcm_frames :: <span class="keyword-type">proc</span> "cdecl" (pAudioBuffer: ^<a class="code-typename" href="/vendor/miniaudio/#audio_buffer">audio_buffer</a>, pLength: ^<span class="doc-builtin">u64</span>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a> ---</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -5966,7 +5966,7 @@ appropriate for a given situation.</p>
 <div class="pkg-entity">
 <h3 id="audio_buffer_ref_get_available_frames"><span><a class="doc-id-link" href="#audio_buffer_ref_get_available_frames">audio_buffer_ref_get_available_frames<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/miniaudio/utilities.odin#L202"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">audio_buffer_ref_get_available_frames :: <span class="keyword-type">proc</span> "cdecl" (pAudioBufferRef: ^<a class="code-typename" href="/vendor/miniaudio/#audio_buffer_ref">audio_buffer_ref</a>, pCursor: ^<span class="doc-builtin">u64</span>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a> ---</pre>
+<pre class="doc-code">audio_buffer_ref_get_available_frames :: <span class="keyword-type">proc</span> "cdecl" (pAudioBufferRef: ^<a class="code-typename" href="/vendor/miniaudio/#audio_buffer_ref">audio_buffer_ref</a>, pAvailableFrames: ^<span class="doc-builtin">u64</span>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a> ---</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -5978,7 +5978,7 @@ appropriate for a given situation.</p>
 <div class="pkg-entity">
 <h3 id="audio_buffer_ref_get_length_in_pcm_frames"><span><a class="doc-id-link" href="#audio_buffer_ref_get_length_in_pcm_frames">audio_buffer_ref_get_length_in_pcm_frames<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/miniaudio/utilities.odin#L201"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">audio_buffer_ref_get_length_in_pcm_frames :: <span class="keyword-type">proc</span> "cdecl" (pAudioBufferRef: ^<a class="code-typename" href="/vendor/miniaudio/#audio_buffer_ref">audio_buffer_ref</a>, pCursor: ^<span class="doc-builtin">u64</span>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a> ---</pre>
+<pre class="doc-code">audio_buffer_ref_get_length_in_pcm_frames :: <span class="keyword-type">proc</span> "cdecl" (pAudioBufferRef: ^<a class="code-typename" href="/vendor/miniaudio/#audio_buffer_ref">audio_buffer_ref</a>, pLength: ^<span class="doc-builtin">u64</span>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a> ---</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -6020,7 +6020,7 @@ appropriate for a given situation.</p>
 <div class="pkg-entity">
 <h3 id="audio_buffer_ref_unmap"><span><a class="doc-id-link" href="#audio_buffer_ref_unmap">audio_buffer_ref_unmap<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/miniaudio/utilities.odin#L198"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">audio_buffer_ref_unmap :: <span class="keyword-type">proc</span> "cdecl" (pAudioBufferRef: ^<a class="code-typename" href="/vendor/miniaudio/#audio_buffer_ref">audio_buffer_ref</a>, frameIndex: <span class="doc-builtin">u64</span>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a> ---</pre>
+<pre class="doc-code">audio_buffer_ref_unmap :: <span class="keyword-type">proc</span> "cdecl" (pAudioBufferRef: ^<a class="code-typename" href="/vendor/miniaudio/#audio_buffer_ref">audio_buffer_ref</a>, frameCount: <span class="doc-builtin">u64</span>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a> ---</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -6044,7 +6044,7 @@ appropriate for a given situation.</p>
 <div class="pkg-entity">
 <h3 id="audio_buffer_unmap"><span><a class="doc-id-link" href="#audio_buffer_unmap">audio_buffer_unmap<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/miniaudio/utilities.odin#L234"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">audio_buffer_unmap :: <span class="keyword-type">proc</span> "cdecl" (pAudioBuffer: ^<a class="code-typename" href="/vendor/miniaudio/#audio_buffer">audio_buffer</a>, frameIndex: <span class="doc-builtin">u64</span>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a> ---</pre>
+<pre class="doc-code">audio_buffer_unmap :: <span class="keyword-type">proc</span> "cdecl" (pAudioBuffer: ^<a class="code-typename" href="/vendor/miniaudio/#audio_buffer">audio_buffer</a>, frameCount: <span class="doc-builtin">u64</span>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a> ---</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -6322,7 +6322,7 @@ is also zero, `MA_DEFAULT_SAMPLE_RATE` will be used instead.
 <div class="pkg-entity">
 <h3 id="calculate_buffer_size_in_frames_from_milliseconds"><span><a class="doc-id-link" href="#calculate_buffer_size_in_frames_from_milliseconds">calculate_buffer_size_in_frames_from_milliseconds<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/miniaudio/utilities.odin#L23"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">calculate_buffer_size_in_frames_from_milliseconds :: <span class="keyword-type">proc</span> "cdecl" (x, y: <span class="doc-builtin">u32</span>) -> <span class="doc-builtin">u32</span> ---</pre>
+<pre class="doc-code">calculate_buffer_size_in_frames_from_milliseconds :: <span class="keyword-type">proc</span> "cdecl" (bufferSizeInMilliseconds: <span class="doc-builtin">u32</span>, sampleRate: <span class="doc-builtin">u32</span>) -> <span class="doc-builtin">u32</span> ---</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -6332,7 +6332,7 @@ is also zero, `MA_DEFAULT_SAMPLE_RATE` will be used instead.
 <div class="pkg-entity">
 <h3 id="calculate_buffer_size_in_milliseconds_from_frames"><span><a class="doc-id-link" href="#calculate_buffer_size_in_milliseconds_from_frames">calculate_buffer_size_in_milliseconds_from_frames<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/miniaudio/utilities.odin#L18"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">calculate_buffer_size_in_milliseconds_from_frames :: <span class="keyword-type">proc</span> "cdecl" (x, y: <span class="doc-builtin">u32</span>) -> <span class="doc-builtin">u32</span> ---</pre>
+<pre class="doc-code">calculate_buffer_size_in_milliseconds_from_frames :: <span class="keyword-type">proc</span> "cdecl" (bufferSizeInFrames: <span class="doc-builtin">u32</span>, sampleRate: <span class="doc-builtin">u32</span>) -> <span class="doc-builtin">u32</span> ---</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -6523,7 +6523,7 @@ The channel map buffer must have a capacity of at least `channels`.
 <div class="pkg-entity">
 <h3 id="clip_pcm_frames"><span><a class="doc-id-link" href="#clip_pcm_frames">clip_pcm_frames<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/miniaudio/utilities.odin#L56"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">clip_pcm_frames :: <span class="keyword-type">proc</span> "cdecl" (dst: <span class="doc-builtin">rawptr</span>, src: <span class="doc-builtin">rawptr</span>, frameCount: <span class="doc-builtin">u64</span>, format: <a class="code-typename" href="/vendor/miniaudio/#format">format</a>, channels: <span class="doc-builtin">u32</span>) ---</pre>
+<pre class="doc-code">clip_pcm_frames :: <span class="keyword-type">proc</span> "cdecl" (pDst, pSrc: <span class="doc-builtin">rawptr</span>, frameCount: <span class="doc-builtin">u64</span>, format: <a class="code-typename" href="/vendor/miniaudio/#format">format</a>, channels: <span class="doc-builtin">u32</span>) ---</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -7218,7 +7218,7 @@ This function is useful for one-off bulk conversions, but if you're streaming da
 <div class="pkg-entity">
 <h3 id="data_converter_get_expected_output_frame_count"><span><a class="doc-id-link" href="#data_converter_get_expected_output_frame_count">data_converter_get_expected_output_frame_count<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/miniaudio/data_conversion.odin#L342"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">data_converter_get_expected_output_frame_count :: <span class="keyword-type">proc</span> "cdecl" (pConverter: ^<a class="code-typename" href="/vendor/miniaudio/#data_converter">data_converter</a>, outputFrameCount: <span class="doc-builtin">u64</span>, pInputFrameCount: ^<span class="doc-builtin">u64</span>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a> ---</pre>
+<pre class="doc-code">data_converter_get_expected_output_frame_count :: <span class="keyword-type">proc</span> "cdecl" (pConverter: ^<a class="code-typename" href="/vendor/miniaudio/#data_converter">data_converter</a>, inputFrameCount: <span class="doc-builtin">u64</span>, pOutputFrameCount: ^<span class="doc-builtin">u64</span>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a> ---</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -7338,19 +7338,19 @@ This function is useful for one-off bulk conversions, but if you're streaming da
 <div class="pkg-entity">
 <h3 id="data_source_get_length_in_pcm_frames"><span><a class="doc-id-link" href="#data_source_get_length_in_pcm_frames">data_source_get_length_in_pcm_frames<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/miniaudio/utilities.odin#L162"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">data_source_get_length_in_pcm_frames :: <span class="keyword-type">proc</span> "cdecl" (pDataSource: ^<a class="code-typename" href="/vendor/miniaudio/#data_source">data_source</a>, pCursor: ^<span class="doc-builtin">u64</span>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a> ---</pre>
+<pre class="doc-code">data_source_get_length_in_pcm_frames :: <span class="keyword-type">proc</span> "cdecl" (pDataSource: ^<a class="code-typename" href="/vendor/miniaudio/#data_source">data_source</a>, pLength: ^<span class="doc-builtin">u64</span>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a> ---</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="data_source_get_length_in_seconds"><span><a class="doc-id-link" href="#data_source_get_length_in_seconds">data_source_get_length_in_seconds<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/miniaudio/utilities.odin#L164"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">data_source_get_length_in_seconds :: <span class="keyword-type">proc</span> "cdecl" (pDataSource: ^<a class="code-typename" href="/vendor/miniaudio/#data_source">data_source</a>, pCursor: ^<span class="doc-builtin">f32</span>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a> ---</pre>
+<pre class="doc-code">data_source_get_length_in_seconds :: <span class="keyword-type">proc</span> "cdecl" (pDataSource: ^<a class="code-typename" href="/vendor/miniaudio/#data_source">data_source</a>, pLength: ^<span class="doc-builtin">f32</span>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a> ---</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="data_source_get_loop_point_in_pcm_frames"><span><a class="doc-id-link" href="#data_source_get_loop_point_in_pcm_frames">data_source_get_loop_point_in_pcm_frames<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/miniaudio/utilities.odin#L170"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">data_source_get_loop_point_in_pcm_frames :: <span class="keyword-type">proc</span> "cdecl" (pDataSource: ^<a class="code-typename" href="/vendor/miniaudio/#data_source">data_source</a>, pRangeBegInFrames: ^<span class="doc-builtin">u64</span>, pRangeEndInFrames: ^<span class="doc-builtin">u64</span>) ---</pre>
+<pre class="doc-code">data_source_get_loop_point_in_pcm_frames :: <span class="keyword-type">proc</span> "cdecl" (pDataSource: ^<a class="code-typename" href="/vendor/miniaudio/#data_source">data_source</a>, pLoopBegInFrames: ^<span class="doc-builtin">u64</span>, pLoopEndInFrames: ^<span class="doc-builtin">u64</span>) ---</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -7440,7 +7440,7 @@ This function is useful for one-off bulk conversions, but if you're streaming da
 <div class="pkg-entity">
 <h3 id="data_source_set_loop_point_in_pcm_frames"><span><a class="doc-id-link" href="#data_source_set_loop_point_in_pcm_frames">data_source_set_loop_point_in_pcm_frames<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/miniaudio/utilities.odin#L169"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">data_source_set_loop_point_in_pcm_frames :: <span class="keyword-type">proc</span> "cdecl" (pDataSource: ^<a class="code-typename" href="/vendor/miniaudio/#data_source">data_source</a>, rangeBegInFrames: <span class="doc-builtin">u64</span>, rangeEndInFrames: <span class="doc-builtin">u64</span>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a> ---</pre>
+<pre class="doc-code">data_source_set_loop_point_in_pcm_frames :: <span class="keyword-type">proc</span> "cdecl" (pDataSource: ^<a class="code-typename" href="/vendor/miniaudio/#data_source">data_source</a>, loopBegInFrames: <span class="doc-builtin">u64</span>, loopEndInFrames: <span class="doc-builtin">u64</span>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a> ---</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -7452,7 +7452,7 @@ This function is useful for one-off bulk conversions, but if you're streaming da
 <div class="pkg-entity">
 <h3 id="data_source_set_next"><span><a class="doc-id-link" href="#data_source_set_next">data_source_set_next<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/miniaudio/utilities.odin#L173"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">data_source_set_next :: <span class="keyword-type">proc</span> "cdecl" (pDataSource: ^<a class="code-typename" href="/vendor/miniaudio/#data_source">data_source</a>, pCurrentDataSource: ^<a class="code-typename" href="/vendor/miniaudio/#data_source">data_source</a>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a> ---</pre>
+<pre class="doc-code">data_source_set_next :: <span class="keyword-type">proc</span> "cdecl" (pDataSource: ^<a class="code-typename" href="/vendor/miniaudio/#data_source">data_source</a>, pNextDataSource: ^<a class="code-typename" href="/vendor/miniaudio/#data_source">data_source</a>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a> ---</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -7512,7 +7512,7 @@ This function is useful for one-off bulk conversions, but if you're streaming da
 <div class="pkg-entity">
 <h3 id="decoder_get_available_frames"><span><a class="doc-id-link" href="#decoder_get_available_frames">decoder_get_available_frames<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/miniaudio/decoding.odin#L161"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">decoder_get_available_frames :: <span class="keyword-type">proc</span> "cdecl" (pDecoder: ^<a class="code-typename" href="/vendor/miniaudio/#decoder">decoder</a>, pCursor: ^<span class="doc-builtin">u64</span>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a> ---</pre>
+<pre class="doc-code">decoder_get_available_frames :: <span class="keyword-type">proc</span> "cdecl" (pDecoder: ^<a class="code-typename" href="/vendor/miniaudio/#decoder">decoder</a>, pAvailableFrames: ^<span class="doc-builtin">u64</span>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a> ---</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -7553,7 +7553,7 @@ returned.
 <div class="pkg-entity">
 <h3 id="decoder_get_length_in_pcm_frames"><span><a class="doc-id-link" href="#decoder_get_length_in_pcm_frames">decoder_get_length_in_pcm_frames<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/miniaudio/decoding.odin#L150"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">decoder_get_length_in_pcm_frames :: <span class="keyword-type">proc</span> "cdecl" (pDecoder: ^<a class="code-typename" href="/vendor/miniaudio/#decoder">decoder</a>, pCursor: ^<span class="doc-builtin">u64</span>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a> ---</pre>
+<pre class="doc-code">decoder_get_length_in_pcm_frames :: <span class="keyword-type">proc</span> "cdecl" (pDecoder: ^<a class="code-typename" href="/vendor/miniaudio/#decoder">decoder</a>, pLength: ^<span class="doc-builtin">u64</span>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a> ---</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -7956,7 +7956,7 @@ ma_device_get_master_volume_gain_db()
 <div class="pkg-entity">
 <h3 id="device_get_master_volume_db"><span><a class="doc-id-link" href="#device_get_master_volume_db">device_get_master_volume_db<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/miniaudio/device_io_procs.odin#L1481"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">device_get_master_volume_db :: <span class="keyword-type">proc</span> "cdecl" (pDevice: ^<a class="code-typename" href="/vendor/miniaudio/#device">device</a>, pVolume: ^<span class="doc-builtin">f32</span>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a> ---</pre>
+<pre class="doc-code">device_get_master_volume_db :: <span class="keyword-type">proc</span> "cdecl" (pDevice: ^<a class="code-typename" href="/vendor/miniaudio/#device">device</a>, pGainDB: ^<span class="doc-builtin">f32</span>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a> ---</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -8738,7 +8738,7 @@ ma_device_get_master_volume_db()
 <div class="pkg-entity">
 <h3 id="device_set_master_volume_db"><span><a class="doc-id-link" href="#device_set_master_volume_db">device_set_master_volume_db<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/miniaudio/device_io_procs.odin#L1438"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">device_set_master_volume_db :: <span class="keyword-type">proc</span> "cdecl" (pDevice: ^<a class="code-typename" href="/vendor/miniaudio/#device">device</a>, volume: <span class="doc-builtin">f32</span>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a> ---</pre>
+<pre class="doc-code">device_set_master_volume_db :: <span class="keyword-type">proc</span> "cdecl" (pDevice: ^<a class="code-typename" href="/vendor/miniaudio/#device">device</a>, gainDB: <span class="doc-builtin">f32</span>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a> ---</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -8990,7 +8990,7 @@ ma_device_stop()
 <div class="pkg-entity">
 <h3 id="encoder_write_pcm_frames"><span><a class="doc-id-link" href="#encoder_write_pcm_frames">encoder_write_pcm_frames<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/miniaudio/encoding.odin#L63"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">encoder_write_pcm_frames :: <span class="keyword-type">proc</span> "cdecl" (pEncoder: ^<a class="code-typename" href="/vendor/miniaudio/#encoder">encoder</a>, pFramesIn: <span class="doc-builtin">rawptr</span>, frameCount: <span class="doc-builtin">u64</span>, pFramesWritten: ^<span class="doc-builtin">u64</span>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a> ---</pre>
+<pre class="doc-code">encoder_write_pcm_frames :: <span class="keyword-type">proc</span> "cdecl" (pEncoder: ^<a class="code-typename" href="/vendor/miniaudio/#encoder">encoder</a>, FramesIn: <span class="doc-builtin">rawptr</span>, frameCount: <span class="doc-builtin">u64</span>, pFramesWritten: ^<span class="doc-builtin">u64</span>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a> ---</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -9104,7 +9104,7 @@ ma_device_stop()
 <div class="pkg-entity">
 <h3 id="engine_listener_set_cone"><span><a class="doc-id-link" href="#engine_listener_set_cone">engine_listener_set_cone<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/miniaudio/engine.odin#L332"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">engine_listener_set_cone :: <span class="keyword-type">proc</span> "cdecl" (pEngine: ^<a class="code-typename" href="/vendor/miniaudio/#engine">engine</a>, listenerIndex: <span class="doc-builtin">u32</span>, x, y, z: <span class="doc-builtin">f32</span>) ---</pre>
+<pre class="doc-code">engine_listener_set_cone :: <span class="keyword-type">proc</span> "cdecl" (pEngine: ^<a class="code-typename" href="/vendor/miniaudio/#engine">engine</a>, listenerIndex: <span class="doc-builtin">u32</span>, innerAngleInRadians, outerAngleInRadians, outerGain: <span class="doc-builtin">f32</span>) ---</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -9188,7 +9188,7 @@ ma_device_stop()
 <div class="pkg-entity">
 <h3 id="engine_set_gain_db"><span><a class="doc-id-link" href="#engine_set_gain_db">engine_set_gain_db<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/miniaudio/engine.odin#L322"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">engine_set_gain_db :: <span class="keyword-type">proc</span> "cdecl" (pEngine: ^<a class="code-typename" href="/vendor/miniaudio/#engine">engine</a>, volume: <span class="doc-builtin">f32</span>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a> ---</pre>
+<pre class="doc-code">engine_set_gain_db :: <span class="keyword-type">proc</span> "cdecl" (pEngine: ^<a class="code-typename" href="/vendor/miniaudio/#engine">engine</a>, gainDB: <span class="doc-builtin">f32</span>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a> ---</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -9801,7 +9801,7 @@ ma_is_backend_enabled()
 <div class="pkg-entity">
 <h3 id="linear_resampler_get_expected_output_frame_count"><span><a class="doc-id-link" href="#linear_resampler_get_expected_output_frame_count">linear_resampler_get_expected_output_frame_count<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/miniaudio/data_conversion.odin#L122"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">linear_resampler_get_expected_output_frame_count :: <span class="keyword-type">proc</span> "cdecl" (pResampler: ^<a class="code-typename" href="/vendor/miniaudio/#linear_resampler">linear_resampler</a>, outputFrameCount: <span class="doc-builtin">u64</span>, pInputFrameCount: ^<span class="doc-builtin">u64</span>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a> ---</pre>
+<pre class="doc-code">linear_resampler_get_expected_output_frame_count :: <span class="keyword-type">proc</span> "cdecl" (pResampler: ^<a class="code-typename" href="/vendor/miniaudio/#linear_resampler">linear_resampler</a>, inputFrameCount: <span class="doc-builtin">u64</span>, pOutputFrameCount: ^<span class="doc-builtin">u64</span>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a> ---</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -10195,10 +10195,10 @@ ma_is_backend_enabled()
 <h3 id="ma_copy_and_apply_volume_and_clip_pcm_frames"><span><a class="doc-id-link" href="#ma_copy_and_apply_volume_and_clip_pcm_frames">ma_copy_and_apply_volume_and_clip_pcm_frames<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/miniaudio/utilities.odin#L97"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">ma_copy_and_apply_volume_and_clip_pcm_frames :: <span class="keyword-type">proc</span> "cdecl" (
-	pFramesOut, pFramesIn: <span class="doc-builtin">rawptr</span>, 
-	frameCount:            <span class="doc-builtin">u64</span>, 
-	format:                <a class="code-typename" href="/vendor/miniaudio/#format">format</a>, 
-	channels:              <span class="doc-builtin">u32</span>, 
+	pDst, pSrc: <span class="doc-builtin">rawptr</span>, 
+	frameCount: <span class="doc-builtin">u64</span>, 
+	format:     <a class="code-typename" href="/vendor/miniaudio/#format">format</a>, 
+	channels:   <span class="doc-builtin">u32</span>, 
 ) ---</pre>
 </div>
 </div>
@@ -10305,7 +10305,7 @@ ma_is_backend_enabled()
 <div class="pkg-entity">
 <h3 id="node_get_output_channels"><span><a class="doc-id-link" href="#node_get_output_channels">node_get_output_channels<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/miniaudio/node_graph.odin#L173"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">node_get_output_channels :: <span class="keyword-type">proc</span> "cdecl" (pNode: ^<a class="code-typename" href="/vendor/miniaudio/#node">node</a>, inputBusIndex: <span class="doc-builtin">u32</span>) -> <span class="doc-builtin">u32</span> ---</pre>
+<pre class="doc-code">node_get_output_channels :: <span class="keyword-type">proc</span> "cdecl" (pNode: ^<a class="code-typename" href="/vendor/miniaudio/#node">node</a>, outputBusIndex: <span class="doc-builtin">u32</span>) -> <span class="doc-builtin">u32</span> ---</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -10651,7 +10651,7 @@ ma_is_backend_enabled()
 <div class="pkg-entity">
 <h3 id="paged_audio_buffer_get_length_in_pcm_frames"><span><a class="doc-id-link" href="#paged_audio_buffer_get_length_in_pcm_frames">paged_audio_buffer_get_length_in_pcm_frames<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/miniaudio/utilities.odin#L300"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">paged_audio_buffer_get_length_in_pcm_frames :: <span class="keyword-type">proc</span> "cdecl" (pPagedAudioBuffer: ^<a class="code-typename" href="/vendor/miniaudio/#paged_audio_buffer">paged_audio_buffer</a>, pCursor: ^<span class="doc-builtin">u64</span>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a> ---</pre>
+<pre class="doc-code">paged_audio_buffer_get_length_in_pcm_frames :: <span class="keyword-type">proc</span> "cdecl" (pPagedAudioBuffer: ^<a class="code-typename" href="/vendor/miniaudio/#paged_audio_buffer">paged_audio_buffer</a>, pLength: ^<span class="doc-builtin">u64</span>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a> ---</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -11134,13 +11134,13 @@ ma_is_backend_enabled()
 <div class="pkg-entity">
 <h3 id="rb_seek_read"><span><a class="doc-id-link" href="#rb_seek_read">rb_seek_read<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/miniaudio/data_conversion.odin#L534"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">rb_seek_read :: <span class="keyword-type">proc</span> "cdecl" (pRB: ^<a class="code-typename" href="/vendor/miniaudio/#rb">rb</a>, sizeInBytes: <span class="doc-builtin">uint</span>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a> ---</pre>
+<pre class="doc-code">rb_seek_read :: <span class="keyword-type">proc</span> "cdecl" (pRB: ^<a class="code-typename" href="/vendor/miniaudio/#rb">rb</a>, offsetInBytes: <span class="doc-builtin">uint</span>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a> ---</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="rb_seek_write"><span><a class="doc-id-link" href="#rb_seek_write">rb_seek_write<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/miniaudio/data_conversion.odin#L535"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">rb_seek_write :: <span class="keyword-type">proc</span> "cdecl" (pRB: ^<a class="code-typename" href="/vendor/miniaudio/#rb">rb</a>, sizeInBytes: <span class="doc-builtin">uint</span>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a> ---</pre>
+<pre class="doc-code">rb_seek_write :: <span class="keyword-type">proc</span> "cdecl" (pRB: ^<a class="code-typename" href="/vendor/miniaudio/#rb">rb</a>, offsetInBytes: <span class="doc-builtin">uint</span>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a> ---</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -11168,7 +11168,7 @@ ma_is_backend_enabled()
 <div class="pkg-entity">
 <h3 id="resampler_get_expected_output_frame_count"><span><a class="doc-id-link" href="#resampler_get_expected_output_frame_count">resampler_get_expected_output_frame_count<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/miniaudio/data_conversion.odin#L200"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">resampler_get_expected_output_frame_count :: <span class="keyword-type">proc</span> "cdecl" (pResampler: ^<a class="code-typename" href="/vendor/miniaudio/#resampler">resampler</a>, outputFrameCount: <span class="doc-builtin">u64</span>, pInputFrameCount: ^<span class="doc-builtin">u64</span>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a> ---</pre>
+<pre class="doc-code">resampler_get_expected_output_frame_count :: <span class="keyword-type">proc</span> "cdecl" (pResampler: ^<a class="code-typename" href="/vendor/miniaudio/#resampler">resampler</a>, inputFrameCount: <span class="doc-builtin">u64</span>, pOutputFrameCount: ^<span class="doc-builtin">u64</span>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a> ---</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -11314,7 +11314,7 @@ It is an error for both [pFrameCountOut] and [pFrameCountIn] to be NULL.
 <div class="pkg-entity">
 <h3 id="resource_manager_data_buffer_get_available_frames"><span><a class="doc-id-link" href="#resource_manager_data_buffer_get_available_frames">resource_manager_data_buffer_get_available_frames<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/miniaudio/resource_manager.odin#L249"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">resource_manager_data_buffer_get_available_frames :: <span class="keyword-type">proc</span> "cdecl" (pDataBuffer: ^<a class="code-typename" href="/vendor/miniaudio/#resource_manager_data_buffer">resource_manager_data_buffer</a>, pCursor: ^<span class="doc-builtin">u64</span>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a> ---</pre>
+<pre class="doc-code">resource_manager_data_buffer_get_available_frames :: <span class="keyword-type">proc</span> "cdecl" (pDataBuffer: ^<a class="code-typename" href="/vendor/miniaudio/#resource_manager_data_buffer">resource_manager_data_buffer</a>, pAvailableFrames: ^<span class="doc-builtin">u64</span>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a> ---</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -11338,7 +11338,7 @@ It is an error for both [pFrameCountOut] and [pFrameCountIn] to be NULL.
 <div class="pkg-entity">
 <h3 id="resource_manager_data_buffer_get_length_in_pcm_frames"><span><a class="doc-id-link" href="#resource_manager_data_buffer_get_length_in_pcm_frames">resource_manager_data_buffer_get_length_in_pcm_frames<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/miniaudio/resource_manager.odin#L245"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">resource_manager_data_buffer_get_length_in_pcm_frames :: <span class="keyword-type">proc</span> "cdecl" (pDataBuffer: ^<a class="code-typename" href="/vendor/miniaudio/#resource_manager_data_buffer">resource_manager_data_buffer</a>, pCursor: ^<span class="doc-builtin">u64</span>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a> ---</pre>
+<pre class="doc-code">resource_manager_data_buffer_get_length_in_pcm_frames :: <span class="keyword-type">proc</span> "cdecl" (pDataBuffer: ^<a class="code-typename" href="/vendor/miniaudio/#resource_manager_data_buffer">resource_manager_data_buffer</a>, pLength: ^<span class="doc-builtin">u64</span>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a> ---</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -11414,7 +11414,7 @@ It is an error for both [pFrameCountOut] and [pFrameCountIn] to be NULL.
 <div class="pkg-entity">
 <h3 id="resource_manager_data_source_get_available_frames"><span><a class="doc-id-link" href="#resource_manager_data_source_get_available_frames">resource_manager_data_source_get_available_frames<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/miniaudio/resource_manager.odin#L280"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">resource_manager_data_source_get_available_frames :: <span class="keyword-type">proc</span> "cdecl" (pDataSource: ^<a class="code-typename" href="/vendor/miniaudio/#resource_manager_data_source">resource_manager_data_source</a>, pCursor: ^<span class="doc-builtin">u64</span>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a> ---</pre>
+<pre class="doc-code">resource_manager_data_source_get_available_frames :: <span class="keyword-type">proc</span> "cdecl" (pDataSource: ^<a class="code-typename" href="/vendor/miniaudio/#resource_manager_data_source">resource_manager_data_source</a>, pAvailableFrames: ^<span class="doc-builtin">u64</span>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a> ---</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -11437,7 +11437,7 @@ It is an error for both [pFrameCountOut] and [pFrameCountIn] to be NULL.
 <div class="pkg-entity">
 <h3 id="resource_manager_data_source_get_length_in_pcm_frames"><span><a class="doc-id-link" href="#resource_manager_data_source_get_length_in_pcm_frames">resource_manager_data_source_get_length_in_pcm_frames<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/miniaudio/resource_manager.odin#L276"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">resource_manager_data_source_get_length_in_pcm_frames :: <span class="keyword-type">proc</span> "cdecl" (pDataSource: ^<a class="code-typename" href="/vendor/miniaudio/#resource_manager_data_source">resource_manager_data_source</a>, pCursor: ^<span class="doc-builtin">u64</span>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a> ---</pre>
+<pre class="doc-code">resource_manager_data_source_get_length_in_pcm_frames :: <span class="keyword-type">proc</span> "cdecl" (pDataSource: ^<a class="code-typename" href="/vendor/miniaudio/#resource_manager_data_source">resource_manager_data_source</a>, pLength: ^<span class="doc-builtin">u64</span>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a> ---</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -11507,7 +11507,7 @@ It is an error for both [pFrameCountOut] and [pFrameCountIn] to be NULL.
 <div class="pkg-entity">
 <h3 id="resource_manager_data_stream_get_available_frames"><span><a class="doc-id-link" href="#resource_manager_data_stream_get_available_frames">resource_manager_data_stream_get_available_frames<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/miniaudio/resource_manager.odin#L264"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">resource_manager_data_stream_get_available_frames :: <span class="keyword-type">proc</span> "cdecl" (pDataStream: ^<a class="code-typename" href="/vendor/miniaudio/#resource_manager_data_stream">resource_manager_data_stream</a>, pCursor: ^<span class="doc-builtin">u64</span>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a> ---</pre>
+<pre class="doc-code">resource_manager_data_stream_get_available_frames :: <span class="keyword-type">proc</span> "cdecl" (pDataStream: ^<a class="code-typename" href="/vendor/miniaudio/#resource_manager_data_stream">resource_manager_data_stream</a>, pAvailableFrames: ^<span class="doc-builtin">u64</span>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a> ---</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -11530,7 +11530,7 @@ It is an error for both [pFrameCountOut] and [pFrameCountIn] to be NULL.
 <div class="pkg-entity">
 <h3 id="resource_manager_data_stream_get_length_in_pcm_frames"><span><a class="doc-id-link" href="#resource_manager_data_stream_get_length_in_pcm_frames">resource_manager_data_stream_get_length_in_pcm_frames<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/miniaudio/resource_manager.odin#L260"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">resource_manager_data_stream_get_length_in_pcm_frames :: <span class="keyword-type">proc</span> "cdecl" (pDataStream: ^<a class="code-typename" href="/vendor/miniaudio/#resource_manager_data_stream">resource_manager_data_stream</a>, pCursor: ^<span class="doc-builtin">u64</span>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a> ---</pre>
+<pre class="doc-code">resource_manager_data_stream_get_length_in_pcm_frames :: <span class="keyword-type">proc</span> "cdecl" (pDataStream: ^<a class="code-typename" href="/vendor/miniaudio/#resource_manager_data_stream">resource_manager_data_stream</a>, pLength: ^<span class="doc-builtin">u64</span>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a> ---</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -11758,13 +11758,13 @@ It is an error for both [pFrameCountOut] and [pFrameCountIn] to be NULL.
 <div class="pkg-entity">
 <h3 id="resource_manager_unregister_data"><span><a class="doc-id-link" href="#resource_manager_unregister_data">resource_manager_unregister_data<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/miniaudio/resource_manager.odin#L232"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">resource_manager_unregister_data :: <span class="keyword-type">proc</span> "cdecl" (pResourceManager: ^<a class="code-typename" href="/vendor/miniaudio/#resource_manager">resource_manager</a>, pFilePath: <span class="doc-builtin">cstring</span>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a> ---</pre>
+<pre class="doc-code">resource_manager_unregister_data :: <span class="keyword-type">proc</span> "cdecl" (pResourceManager: ^<a class="code-typename" href="/vendor/miniaudio/#resource_manager">resource_manager</a>, pName: <span class="doc-builtin">cstring</span>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a> ---</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="resource_manager_unregister_data_w"><span><a class="doc-id-link" href="#resource_manager_unregister_data_w">resource_manager_unregister_data_w<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/miniaudio/resource_manager.odin#L233"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">resource_manager_unregister_data_w :: <span class="keyword-type">proc</span> "cdecl" (pResourceManager: ^<a class="code-typename" href="/vendor/miniaudio/#resource_manager">resource_manager</a>, pFilePath: [^]<span class="doc-builtin">u16</span>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a> ---</pre>
+<pre class="doc-code">resource_manager_unregister_data_w :: <span class="keyword-type">proc</span> "cdecl" (pResourceManager: ^<a class="code-typename" href="/vendor/miniaudio/#resource_manager">resource_manager</a>, pName: [^]<span class="doc-builtin">u16</span>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a> ---</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -11938,13 +11938,13 @@ makes more sense for the purpose of mixing to initialize it to the center point.
 <div class="pkg-entity">
 <h3 id="sound_get_length_in_pcm_frames"><span><a class="doc-id-link" href="#sound_get_length_in_pcm_frames">sound_get_length_in_pcm_frames<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/miniaudio/engine.odin#L192"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">sound_get_length_in_pcm_frames :: <span class="keyword-type">proc</span> "cdecl" (pSound: ^<a class="code-typename" href="/vendor/miniaudio/#sound">sound</a>, pCursor: ^<span class="doc-builtin">u64</span>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a> ---</pre>
+<pre class="doc-code">sound_get_length_in_pcm_frames :: <span class="keyword-type">proc</span> "cdecl" (pSound: ^<a class="code-typename" href="/vendor/miniaudio/#sound">sound</a>, pLength: ^<span class="doc-builtin">u64</span>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a> ---</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="sound_get_length_in_seconds"><span><a class="doc-id-link" href="#sound_get_length_in_seconds">sound_get_length_in_seconds<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/miniaudio/engine.odin#L194"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">sound_get_length_in_seconds :: <span class="keyword-type">proc</span> "cdecl" (pSound: ^<a class="code-typename" href="/vendor/miniaudio/#sound">sound</a>, pCursor: ^<span class="doc-builtin">f32</span>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a> ---</pre>
+<pre class="doc-code">sound_get_length_in_seconds :: <span class="keyword-type">proc</span> "cdecl" (pSound: ^<a class="code-typename" href="/vendor/miniaudio/#sound">sound</a>, pLength: ^<span class="doc-builtin">f32</span>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a> ---</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -12214,7 +12214,7 @@ makes more sense for the purpose of mixing to initialize it to the center point.
 <div class="pkg-entity">
 <h3 id="sound_group_set_cone"><span><a class="doc-id-link" href="#sound_group_set_cone">sound_group_set_cone<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/miniaudio/engine.odin#L246"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">sound_group_set_cone :: <span class="keyword-type">proc</span> "cdecl" (pGroup: ^<a class="code-typename" href="/vendor/miniaudio/#sound_group">sound_group</a>, x, y, z: <span class="doc-builtin">f32</span>) ---</pre>
+<pre class="doc-code">sound_group_set_cone :: <span class="keyword-type">proc</span> "cdecl" (pGroup: ^<a class="code-typename" href="/vendor/miniaudio/#sound_group">sound_group</a>, innerAngleInRadians, outerAngleInRadians, outerGain: <span class="doc-builtin">f32</span>) ---</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -12226,19 +12226,19 @@ makes more sense for the purpose of mixing to initialize it to the center point.
 <div class="pkg-entity">
 <h3 id="sound_group_set_directional_attenuation_factor"><span><a class="doc-id-link" href="#sound_group_set_directional_attenuation_factor">sound_group_set_directional_attenuation_factor<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/miniaudio/engine.odin#L250"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">sound_group_set_directional_attenuation_factor :: <span class="keyword-type">proc</span> "cdecl" (pGroup: ^<a class="code-typename" href="/vendor/miniaudio/#sound_group">sound_group</a>, volume: <span class="doc-builtin">f32</span>) ---</pre>
+<pre class="doc-code">sound_group_set_directional_attenuation_factor :: <span class="keyword-type">proc</span> "cdecl" (pGroup: ^<a class="code-typename" href="/vendor/miniaudio/#sound_group">sound_group</a>, directionalAttenuationFactor: <span class="doc-builtin">f32</span>) ---</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="sound_group_set_doppler_factor"><span><a class="doc-id-link" href="#sound_group_set_doppler_factor">sound_group_set_doppler_factor<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/miniaudio/engine.odin#L248"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">sound_group_set_doppler_factor :: <span class="keyword-type">proc</span> "cdecl" (pGroup: ^<a class="code-typename" href="/vendor/miniaudio/#sound_group">sound_group</a>, volume: <span class="doc-builtin">f32</span>) ---</pre>
+<pre class="doc-code">sound_group_set_doppler_factor :: <span class="keyword-type">proc</span> "cdecl" (pGroup: ^<a class="code-typename" href="/vendor/miniaudio/#sound_group">sound_group</a>, dopplerFactor: <span class="doc-builtin">f32</span>) ---</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="sound_group_set_fade_in_milliseconds"><span><a class="doc-id-link" href="#sound_group_set_fade_in_milliseconds">sound_group_set_fade_in_milliseconds<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/miniaudio/engine.odin#L253"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">sound_group_set_fade_in_milliseconds :: <span class="keyword-type">proc</span> "cdecl" (pGroup: ^<a class="code-typename" href="/vendor/miniaudio/#sound_group">sound_group</a>, volumeBeg, volumeEnd: <span class="doc-builtin">f32</span>, fadeLengthInFrames: <span class="doc-builtin">u64</span>) ---</pre>
+<pre class="doc-code">sound_group_set_fade_in_milliseconds :: <span class="keyword-type">proc</span> "cdecl" (pGroup: ^<a class="code-typename" href="/vendor/miniaudio/#sound_group">sound_group</a>, volumeBeg, volumeEnd: <span class="doc-builtin">f32</span>, fadeLengthInMilliseconds: <span class="doc-builtin">u64</span>) ---</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -12250,31 +12250,31 @@ makes more sense for the purpose of mixing to initialize it to the center point.
 <div class="pkg-entity">
 <h3 id="sound_group_set_max_distance"><span><a class="doc-id-link" href="#sound_group_set_max_distance">sound_group_set_max_distance<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/miniaudio/engine.odin#L244"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">sound_group_set_max_distance :: <span class="keyword-type">proc</span> "cdecl" (pGroup: ^<a class="code-typename" href="/vendor/miniaudio/#sound_group">sound_group</a>, volume: <span class="doc-builtin">f32</span>) ---</pre>
+<pre class="doc-code">sound_group_set_max_distance :: <span class="keyword-type">proc</span> "cdecl" (pGroup: ^<a class="code-typename" href="/vendor/miniaudio/#sound_group">sound_group</a>, maxDistance: <span class="doc-builtin">f32</span>) ---</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="sound_group_set_max_gain"><span><a class="doc-id-link" href="#sound_group_set_max_gain">sound_group_set_max_gain<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/miniaudio/engine.odin#L240"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">sound_group_set_max_gain :: <span class="keyword-type">proc</span> "cdecl" (pGroup: ^<a class="code-typename" href="/vendor/miniaudio/#sound_group">sound_group</a>, volume: <span class="doc-builtin">f32</span>) ---</pre>
+<pre class="doc-code">sound_group_set_max_gain :: <span class="keyword-type">proc</span> "cdecl" (pGroup: ^<a class="code-typename" href="/vendor/miniaudio/#sound_group">sound_group</a>, maxGain: <span class="doc-builtin">f32</span>) ---</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="sound_group_set_min_distance"><span><a class="doc-id-link" href="#sound_group_set_min_distance">sound_group_set_min_distance<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/miniaudio/engine.odin#L242"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">sound_group_set_min_distance :: <span class="keyword-type">proc</span> "cdecl" (pGroup: ^<a class="code-typename" href="/vendor/miniaudio/#sound_group">sound_group</a>, volume: <span class="doc-builtin">f32</span>) ---</pre>
+<pre class="doc-code">sound_group_set_min_distance :: <span class="keyword-type">proc</span> "cdecl" (pGroup: ^<a class="code-typename" href="/vendor/miniaudio/#sound_group">sound_group</a>, minDistance: <span class="doc-builtin">f32</span>) ---</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="sound_group_set_min_gain"><span><a class="doc-id-link" href="#sound_group_set_min_gain">sound_group_set_min_gain<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/miniaudio/engine.odin#L238"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">sound_group_set_min_gain :: <span class="keyword-type">proc</span> "cdecl" (pGroup: ^<a class="code-typename" href="/vendor/miniaudio/#sound_group">sound_group</a>, volume: <span class="doc-builtin">f32</span>) ---</pre>
+<pre class="doc-code">sound_group_set_min_gain :: <span class="keyword-type">proc</span> "cdecl" (pGroup: ^<a class="code-typename" href="/vendor/miniaudio/#sound_group">sound_group</a>, minGain: <span class="doc-builtin">f32</span>) ---</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="sound_group_set_pan"><span><a class="doc-id-link" href="#sound_group_set_pan">sound_group_set_pan<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/miniaudio/engine.odin#L214"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">sound_group_set_pan :: <span class="keyword-type">proc</span> "cdecl" (pGroup: ^<a class="code-typename" href="/vendor/miniaudio/#sound_group">sound_group</a>, volume: <span class="doc-builtin">f32</span>) ---</pre>
+<pre class="doc-code">sound_group_set_pan :: <span class="keyword-type">proc</span> "cdecl" (pGroup: ^<a class="code-typename" href="/vendor/miniaudio/#sound_group">sound_group</a>, pan: <span class="doc-builtin">f32</span>) ---</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -12292,7 +12292,7 @@ makes more sense for the purpose of mixing to initialize it to the center point.
 <div class="pkg-entity">
 <h3 id="sound_group_set_pitch"><span><a class="doc-id-link" href="#sound_group_set_pitch">sound_group_set_pitch<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/miniaudio/engine.odin#L218"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">sound_group_set_pitch :: <span class="keyword-type">proc</span> "cdecl" (pGroup: ^<a class="code-typename" href="/vendor/miniaudio/#sound_group">sound_group</a>, volume: <span class="doc-builtin">f32</span>) ---</pre>
+<pre class="doc-code">sound_group_set_pitch :: <span class="keyword-type">proc</span> "cdecl" (pGroup: ^<a class="code-typename" href="/vendor/miniaudio/#sound_group">sound_group</a>, pitch: <span class="doc-builtin">f32</span>) ---</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -12310,7 +12310,7 @@ makes more sense for the purpose of mixing to initialize it to the center point.
 <div class="pkg-entity">
 <h3 id="sound_group_set_rolloff"><span><a class="doc-id-link" href="#sound_group_set_rolloff">sound_group_set_rolloff<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/miniaudio/engine.odin#L236"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">sound_group_set_rolloff :: <span class="keyword-type">proc</span> "cdecl" (pGroup: ^<a class="code-typename" href="/vendor/miniaudio/#sound_group">sound_group</a>, volume: <span class="doc-builtin">f32</span>) ---</pre>
+<pre class="doc-code">sound_group_set_rolloff :: <span class="keyword-type">proc</span> "cdecl" (pGroup: ^<a class="code-typename" href="/vendor/miniaudio/#sound_group">sound_group</a>, rolloff: <span class="doc-builtin">f32</span>) ---</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -12322,7 +12322,7 @@ makes more sense for the purpose of mixing to initialize it to the center point.
 <div class="pkg-entity">
 <h3 id="sound_group_set_start_time_in_milliseconds"><span><a class="doc-id-link" href="#sound_group_set_start_time_in_milliseconds">sound_group_set_start_time_in_milliseconds<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/miniaudio/engine.odin#L256"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">sound_group_set_start_time_in_milliseconds :: <span class="keyword-type">proc</span> "cdecl" (pGroup: ^<a class="code-typename" href="/vendor/miniaudio/#sound_group">sound_group</a>, absoluteGlobalTimeInFrames: <span class="doc-builtin">u64</span>) ---</pre>
+<pre class="doc-code">sound_group_set_start_time_in_milliseconds :: <span class="keyword-type">proc</span> "cdecl" (pGroup: ^<a class="code-typename" href="/vendor/miniaudio/#sound_group">sound_group</a>, absoluteGlobalTimeInMilliseconds: <span class="doc-builtin">u64</span>) ---</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -12334,7 +12334,7 @@ makes more sense for the purpose of mixing to initialize it to the center point.
 <div class="pkg-entity">
 <h3 id="sound_group_set_stop_time_in_milliseconds"><span><a class="doc-id-link" href="#sound_group_set_stop_time_in_milliseconds">sound_group_set_stop_time_in_milliseconds<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/miniaudio/engine.odin#L258"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">sound_group_set_stop_time_in_milliseconds :: <span class="keyword-type">proc</span> "cdecl" (pGroup: ^<a class="code-typename" href="/vendor/miniaudio/#sound_group">sound_group</a>, absoluteGlobalTimeInFrames: <span class="doc-builtin">u64</span>) ---</pre>
+<pre class="doc-code">sound_group_set_stop_time_in_milliseconds :: <span class="keyword-type">proc</span> "cdecl" (pGroup: ^<a class="code-typename" href="/vendor/miniaudio/#sound_group">sound_group</a>, absoluteGlobalTimeInMilliseconds: <span class="doc-builtin">u64</span>) ---</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -12448,7 +12448,7 @@ makes more sense for the purpose of mixing to initialize it to the center point.
 <div class="pkg-entity">
 <h3 id="sound_set_cone"><span><a class="doc-id-link" href="#sound_set_cone">sound_set_cone<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/miniaudio/engine.odin#L171"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">sound_set_cone :: <span class="keyword-type">proc</span> "cdecl" (pSound: ^<a class="code-typename" href="/vendor/miniaudio/#sound">sound</a>, x, y, z: <span class="doc-builtin">f32</span>) ---</pre>
+<pre class="doc-code">sound_set_cone :: <span class="keyword-type">proc</span> "cdecl" (pSound: ^<a class="code-typename" href="/vendor/miniaudio/#sound">sound</a>, innerAngleInRadians, outerAngleInRadians, outerGain: <span class="doc-builtin">f32</span>) ---</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -12460,19 +12460,19 @@ makes more sense for the purpose of mixing to initialize it to the center point.
 <div class="pkg-entity">
 <h3 id="sound_set_directional_attenuation_factor"><span><a class="doc-id-link" href="#sound_set_directional_attenuation_factor">sound_set_directional_attenuation_factor<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/miniaudio/engine.odin#L175"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">sound_set_directional_attenuation_factor :: <span class="keyword-type">proc</span> "cdecl" (pSound: ^<a class="code-typename" href="/vendor/miniaudio/#sound">sound</a>, volume: <span class="doc-builtin">f32</span>) ---</pre>
+<pre class="doc-code">sound_set_directional_attenuation_factor :: <span class="keyword-type">proc</span> "cdecl" (pSound: ^<a class="code-typename" href="/vendor/miniaudio/#sound">sound</a>, directionalAttenuationFactor: <span class="doc-builtin">f32</span>) ---</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="sound_set_doppler_factor"><span><a class="doc-id-link" href="#sound_set_doppler_factor">sound_set_doppler_factor<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/miniaudio/engine.odin#L173"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">sound_set_doppler_factor :: <span class="keyword-type">proc</span> "cdecl" (pSound: ^<a class="code-typename" href="/vendor/miniaudio/#sound">sound</a>, volume: <span class="doc-builtin">f32</span>) ---</pre>
+<pre class="doc-code">sound_set_doppler_factor :: <span class="keyword-type">proc</span> "cdecl" (pSound: ^<a class="code-typename" href="/vendor/miniaudio/#sound">sound</a>, dopplerFactor: <span class="doc-builtin">f32</span>) ---</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="sound_set_fade_in_milliseconds"><span><a class="doc-id-link" href="#sound_set_fade_in_milliseconds">sound_set_fade_in_milliseconds<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/miniaudio/engine.odin#L178"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">sound_set_fade_in_milliseconds :: <span class="keyword-type">proc</span> "cdecl" (pSound: ^<a class="code-typename" href="/vendor/miniaudio/#sound">sound</a>, volumeBeg, volumeEnd: <span class="doc-builtin">f32</span>, fadeLengthInFrames: <span class="doc-builtin">u64</span>) ---</pre>
+<pre class="doc-code">sound_set_fade_in_milliseconds :: <span class="keyword-type">proc</span> "cdecl" (pSound: ^<a class="code-typename" href="/vendor/miniaudio/#sound">sound</a>, volumeBeg, volumeEnd: <span class="doc-builtin">f32</span>, fadeLengthInMilliseconds: <span class="doc-builtin">u64</span>) ---</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -12484,37 +12484,37 @@ makes more sense for the purpose of mixing to initialize it to the center point.
 <div class="pkg-entity">
 <h3 id="sound_set_looping"><span><a class="doc-id-link" href="#sound_set_looping">sound_set_looping<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/miniaudio/engine.odin#L186"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">sound_set_looping :: <span class="keyword-type">proc</span> "cdecl" (pSound: ^<a class="code-typename" href="/vendor/miniaudio/#sound">sound</a>, enabled: <span class="doc-builtin">b32</span>) ---</pre>
+<pre class="doc-code">sound_set_looping :: <span class="keyword-type">proc</span> "cdecl" (pSound: ^<a class="code-typename" href="/vendor/miniaudio/#sound">sound</a>, isLooping: <span class="doc-builtin">b32</span>) ---</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="sound_set_max_distance"><span><a class="doc-id-link" href="#sound_set_max_distance">sound_set_max_distance<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/miniaudio/engine.odin#L169"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">sound_set_max_distance :: <span class="keyword-type">proc</span> "cdecl" (pSound: ^<a class="code-typename" href="/vendor/miniaudio/#sound">sound</a>, volume: <span class="doc-builtin">f32</span>) ---</pre>
+<pre class="doc-code">sound_set_max_distance :: <span class="keyword-type">proc</span> "cdecl" (pSound: ^<a class="code-typename" href="/vendor/miniaudio/#sound">sound</a>, maxDistance: <span class="doc-builtin">f32</span>) ---</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="sound_set_max_gain"><span><a class="doc-id-link" href="#sound_set_max_gain">sound_set_max_gain<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/miniaudio/engine.odin#L165"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">sound_set_max_gain :: <span class="keyword-type">proc</span> "cdecl" (pSound: ^<a class="code-typename" href="/vendor/miniaudio/#sound">sound</a>, volume: <span class="doc-builtin">f32</span>) ---</pre>
+<pre class="doc-code">sound_set_max_gain :: <span class="keyword-type">proc</span> "cdecl" (pSound: ^<a class="code-typename" href="/vendor/miniaudio/#sound">sound</a>, maxGain: <span class="doc-builtin">f32</span>) ---</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="sound_set_min_distance"><span><a class="doc-id-link" href="#sound_set_min_distance">sound_set_min_distance<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/miniaudio/engine.odin#L167"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">sound_set_min_distance :: <span class="keyword-type">proc</span> "cdecl" (pSound: ^<a class="code-typename" href="/vendor/miniaudio/#sound">sound</a>, volume: <span class="doc-builtin">f32</span>) ---</pre>
+<pre class="doc-code">sound_set_min_distance :: <span class="keyword-type">proc</span> "cdecl" (pSound: ^<a class="code-typename" href="/vendor/miniaudio/#sound">sound</a>, minDistance: <span class="doc-builtin">f32</span>) ---</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="sound_set_min_gain"><span><a class="doc-id-link" href="#sound_set_min_gain">sound_set_min_gain<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/miniaudio/engine.odin#L163"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">sound_set_min_gain :: <span class="keyword-type">proc</span> "cdecl" (pSound: ^<a class="code-typename" href="/vendor/miniaudio/#sound">sound</a>, volume: <span class="doc-builtin">f32</span>) ---</pre>
+<pre class="doc-code">sound_set_min_gain :: <span class="keyword-type">proc</span> "cdecl" (pSound: ^<a class="code-typename" href="/vendor/miniaudio/#sound">sound</a>, minGain: <span class="doc-builtin">f32</span>) ---</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="sound_set_pan"><span><a class="doc-id-link" href="#sound_set_pan">sound_set_pan<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/miniaudio/engine.odin#L139"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">sound_set_pan :: <span class="keyword-type">proc</span> "cdecl" (pSound: ^<a class="code-typename" href="/vendor/miniaudio/#sound">sound</a>, volume: <span class="doc-builtin">f32</span>) ---</pre>
+<pre class="doc-code">sound_set_pan :: <span class="keyword-type">proc</span> "cdecl" (pSound: ^<a class="code-typename" href="/vendor/miniaudio/#sound">sound</a>, pan: <span class="doc-builtin">f32</span>) ---</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -12532,7 +12532,7 @@ makes more sense for the purpose of mixing to initialize it to the center point.
 <div class="pkg-entity">
 <h3 id="sound_set_pitch"><span><a class="doc-id-link" href="#sound_set_pitch">sound_set_pitch<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/miniaudio/engine.odin#L143"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">sound_set_pitch :: <span class="keyword-type">proc</span> "cdecl" (pSound: ^<a class="code-typename" href="/vendor/miniaudio/#sound">sound</a>, volume: <span class="doc-builtin">f32</span>) ---</pre>
+<pre class="doc-code">sound_set_pitch :: <span class="keyword-type">proc</span> "cdecl" (pSound: ^<a class="code-typename" href="/vendor/miniaudio/#sound">sound</a>, pitch: <span class="doc-builtin">f32</span>) ---</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -12550,7 +12550,7 @@ makes more sense for the purpose of mixing to initialize it to the center point.
 <div class="pkg-entity">
 <h3 id="sound_set_rolloff"><span><a class="doc-id-link" href="#sound_set_rolloff">sound_set_rolloff<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/miniaudio/engine.odin#L161"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">sound_set_rolloff :: <span class="keyword-type">proc</span> "cdecl" (pSound: ^<a class="code-typename" href="/vendor/miniaudio/#sound">sound</a>, volume: <span class="doc-builtin">f32</span>) ---</pre>
+<pre class="doc-code">sound_set_rolloff :: <span class="keyword-type">proc</span> "cdecl" (pSound: ^<a class="code-typename" href="/vendor/miniaudio/#sound">sound</a>, rolloff: <span class="doc-builtin">f32</span>) ---</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -12562,7 +12562,7 @@ makes more sense for the purpose of mixing to initialize it to the center point.
 <div class="pkg-entity">
 <h3 id="sound_set_start_time_in_milliseconds"><span><a class="doc-id-link" href="#sound_set_start_time_in_milliseconds">sound_set_start_time_in_milliseconds<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/miniaudio/engine.odin#L181"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">sound_set_start_time_in_milliseconds :: <span class="keyword-type">proc</span> "cdecl" (pSound: ^<a class="code-typename" href="/vendor/miniaudio/#sound">sound</a>, absoluteGlobalTimeInFrames: <span class="doc-builtin">u64</span>) ---</pre>
+<pre class="doc-code">sound_set_start_time_in_milliseconds :: <span class="keyword-type">proc</span> "cdecl" (pSound: ^<a class="code-typename" href="/vendor/miniaudio/#sound">sound</a>, absoluteGlobalTimeInMilliseconds: <span class="doc-builtin">u64</span>) ---</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -12574,7 +12574,7 @@ makes more sense for the purpose of mixing to initialize it to the center point.
 <div class="pkg-entity">
 <h3 id="sound_set_stop_time_in_milliseconds"><span><a class="doc-id-link" href="#sound_set_stop_time_in_milliseconds">sound_set_stop_time_in_milliseconds<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/miniaudio/engine.odin#L183"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">sound_set_stop_time_in_milliseconds :: <span class="keyword-type">proc</span> "cdecl" (pSound: ^<a class="code-typename" href="/vendor/miniaudio/#sound">sound</a>, absoluteGlobalTimeInFrames: <span class="doc-builtin">u64</span>) ---</pre>
+<pre class="doc-code">sound_set_stop_time_in_milliseconds :: <span class="keyword-type">proc</span> "cdecl" (pSound: ^<a class="code-typename" href="/vendor/miniaudio/#sound">sound</a>, absoluteGlobalTimeInMilliseconds: <span class="doc-builtin">u64</span>) ---</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -12814,7 +12814,7 @@ makes more sense for the purpose of mixing to initialize it to the center point.
 <div class="pkg-entity">
 <h3 id="spatializer_listener_set_direction"><span><a class="doc-id-link" href="#spatializer_listener_set_direction">spatializer_listener_set_direction<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/miniaudio/effects.odin#L200"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">spatializer_listener_set_direction :: <span class="keyword-type">proc</span> "cdecl" (pListener: ^<a class="code-typename" href="/vendor/miniaudio/#spatializer_listener">spatializer_listener</a>, innerAngleInRadians, outerAngleInRadians, outerGain: <span class="doc-builtin">f32</span>) ---</pre>
+<pre class="doc-code">spatializer_listener_set_direction :: <span class="keyword-type">proc</span> "cdecl" (pListener: ^<a class="code-typename" href="/vendor/miniaudio/#spatializer_listener">spatializer_listener</a>, x, y, z: <span class="doc-builtin">f32</span>) ---</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -12826,7 +12826,7 @@ makes more sense for the purpose of mixing to initialize it to the center point.
 <div class="pkg-entity">
 <h3 id="spatializer_listener_set_position"><span><a class="doc-id-link" href="#spatializer_listener_set_position">spatializer_listener_set_position<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/miniaudio/effects.odin#L198"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">spatializer_listener_set_position :: <span class="keyword-type">proc</span> "cdecl" (pListener: ^<a class="code-typename" href="/vendor/miniaudio/#spatializer_listener">spatializer_listener</a>, innerAngleInRadians, outerAngleInRadians, outerGain: <span class="doc-builtin">f32</span>) ---</pre>
+<pre class="doc-code">spatializer_listener_set_position :: <span class="keyword-type">proc</span> "cdecl" (pListener: ^<a class="code-typename" href="/vendor/miniaudio/#spatializer_listener">spatializer_listener</a>, x, y, z: <span class="doc-builtin">f32</span>) ---</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -12838,13 +12838,13 @@ makes more sense for the purpose of mixing to initialize it to the center point.
 <div class="pkg-entity">
 <h3 id="spatializer_listener_set_velocity"><span><a class="doc-id-link" href="#spatializer_listener_set_velocity">spatializer_listener_set_velocity<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/miniaudio/effects.odin#L202"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">spatializer_listener_set_velocity :: <span class="keyword-type">proc</span> "cdecl" (pListener: ^<a class="code-typename" href="/vendor/miniaudio/#spatializer_listener">spatializer_listener</a>, innerAngleInRadians, outerAngleInRadians, outerGain: <span class="doc-builtin">f32</span>) ---</pre>
+<pre class="doc-code">spatializer_listener_set_velocity :: <span class="keyword-type">proc</span> "cdecl" (pListener: ^<a class="code-typename" href="/vendor/miniaudio/#spatializer_listener">spatializer_listener</a>, x, y, z: <span class="doc-builtin">f32</span>) ---</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="spatializer_listener_set_world_up"><span><a class="doc-id-link" href="#spatializer_listener_set_world_up">spatializer_listener_set_world_up<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/miniaudio/effects.odin#L206"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">spatializer_listener_set_world_up :: <span class="keyword-type">proc</span> "cdecl" (pListener: ^<a class="code-typename" href="/vendor/miniaudio/#spatializer_listener">spatializer_listener</a>, innerAngleInRadians, outerAngleInRadians, outerGain: <span class="doc-builtin">f32</span>) ---</pre>
+<pre class="doc-code">spatializer_listener_set_world_up :: <span class="keyword-type">proc</span> "cdecl" (pListener: ^<a class="code-typename" href="/vendor/miniaudio/#spatializer_listener">spatializer_listener</a>, x, y, z: <span class="doc-builtin">f32</span>) ---</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -12874,49 +12874,49 @@ makes more sense for the purpose of mixing to initialize it to the center point.
 <div class="pkg-entity">
 <h3 id="spatializer_set_direction"><span><a class="doc-id-link" href="#spatializer_set_direction">spatializer_set_direction<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/miniaudio/effects.odin#L295"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">spatializer_set_direction :: <span class="keyword-type">proc</span> "cdecl" (pSpatializer: ^<a class="code-typename" href="/vendor/miniaudio/#spatializer">spatializer</a>, innerAngleInRadians, outerAngleInRadians, outerGain: <span class="doc-builtin">f32</span>) ---</pre>
+<pre class="doc-code">spatializer_set_direction :: <span class="keyword-type">proc</span> "cdecl" (pSpatializer: ^<a class="code-typename" href="/vendor/miniaudio/#spatializer">spatializer</a>, x, y, z: <span class="doc-builtin">f32</span>) ---</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="spatializer_set_directional_attenuation_factor"><span><a class="doc-id-link" href="#spatializer_set_directional_attenuation_factor">spatializer_set_directional_attenuation_factor<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/miniaudio/effects.odin#L291"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">spatializer_set_directional_attenuation_factor :: <span class="keyword-type">proc</span> "cdecl" (pSpatializer: ^<a class="code-typename" href="/vendor/miniaudio/#spatializer">spatializer</a>, rolloff: <span class="doc-builtin">f32</span>) ---</pre>
+<pre class="doc-code">spatializer_set_directional_attenuation_factor :: <span class="keyword-type">proc</span> "cdecl" (pSpatializer: ^<a class="code-typename" href="/vendor/miniaudio/#spatializer">spatializer</a>, directionalAttenuationFactor: <span class="doc-builtin">f32</span>) ---</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="spatializer_set_doppler_factor"><span><a class="doc-id-link" href="#spatializer_set_doppler_factor">spatializer_set_doppler_factor<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/miniaudio/effects.odin#L289"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">spatializer_set_doppler_factor :: <span class="keyword-type">proc</span> "cdecl" (pSpatializer: ^<a class="code-typename" href="/vendor/miniaudio/#spatializer">spatializer</a>, rolloff: <span class="doc-builtin">f32</span>) ---</pre>
+<pre class="doc-code">spatializer_set_doppler_factor :: <span class="keyword-type">proc</span> "cdecl" (pSpatializer: ^<a class="code-typename" href="/vendor/miniaudio/#spatializer">spatializer</a>, dopplerFactor: <span class="doc-builtin">f32</span>) ---</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="spatializer_set_max_distance"><span><a class="doc-id-link" href="#spatializer_set_max_distance">spatializer_set_max_distance<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/miniaudio/effects.odin#L285"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">spatializer_set_max_distance :: <span class="keyword-type">proc</span> "cdecl" (pSpatializer: ^<a class="code-typename" href="/vendor/miniaudio/#spatializer">spatializer</a>, rolloff: <span class="doc-builtin">f32</span>) ---</pre>
+<pre class="doc-code">spatializer_set_max_distance :: <span class="keyword-type">proc</span> "cdecl" (pSpatializer: ^<a class="code-typename" href="/vendor/miniaudio/#spatializer">spatializer</a>, maxDistance: <span class="doc-builtin">f32</span>) ---</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="spatializer_set_max_gain"><span><a class="doc-id-link" href="#spatializer_set_max_gain">spatializer_set_max_gain<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/miniaudio/effects.odin#L281"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">spatializer_set_max_gain :: <span class="keyword-type">proc</span> "cdecl" (pSpatializer: ^<a class="code-typename" href="/vendor/miniaudio/#spatializer">spatializer</a>, rolloff: <span class="doc-builtin">f32</span>) ---</pre>
+<pre class="doc-code">spatializer_set_max_gain :: <span class="keyword-type">proc</span> "cdecl" (pSpatializer: ^<a class="code-typename" href="/vendor/miniaudio/#spatializer">spatializer</a>, maxGain: <span class="doc-builtin">f32</span>) ---</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="spatializer_set_min_distance"><span><a class="doc-id-link" href="#spatializer_set_min_distance">spatializer_set_min_distance<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/miniaudio/effects.odin#L283"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">spatializer_set_min_distance :: <span class="keyword-type">proc</span> "cdecl" (pSpatializer: ^<a class="code-typename" href="/vendor/miniaudio/#spatializer">spatializer</a>, rolloff: <span class="doc-builtin">f32</span>) ---</pre>
+<pre class="doc-code">spatializer_set_min_distance :: <span class="keyword-type">proc</span> "cdecl" (pSpatializer: ^<a class="code-typename" href="/vendor/miniaudio/#spatializer">spatializer</a>, minDistance: <span class="doc-builtin">f32</span>) ---</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="spatializer_set_min_gain"><span><a class="doc-id-link" href="#spatializer_set_min_gain">spatializer_set_min_gain<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/miniaudio/effects.odin#L279"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">spatializer_set_min_gain :: <span class="keyword-type">proc</span> "cdecl" (pSpatializer: ^<a class="code-typename" href="/vendor/miniaudio/#spatializer">spatializer</a>, rolloff: <span class="doc-builtin">f32</span>) ---</pre>
+<pre class="doc-code">spatializer_set_min_gain :: <span class="keyword-type">proc</span> "cdecl" (pSpatializer: ^<a class="code-typename" href="/vendor/miniaudio/#spatializer">spatializer</a>, minGain: <span class="doc-builtin">f32</span>) ---</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="spatializer_set_position"><span><a class="doc-id-link" href="#spatializer_set_position">spatializer_set_position<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/miniaudio/effects.odin#L293"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">spatializer_set_position :: <span class="keyword-type">proc</span> "cdecl" (pSpatializer: ^<a class="code-typename" href="/vendor/miniaudio/#spatializer">spatializer</a>, innerAngleInRadians, outerAngleInRadians, outerGain: <span class="doc-builtin">f32</span>) ---</pre>
+<pre class="doc-code">spatializer_set_position :: <span class="keyword-type">proc</span> "cdecl" (pSpatializer: ^<a class="code-typename" href="/vendor/miniaudio/#spatializer">spatializer</a>, x, y, z: <span class="doc-builtin">f32</span>) ---</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -12934,7 +12934,7 @@ makes more sense for the purpose of mixing to initialize it to the center point.
 <div class="pkg-entity">
 <h3 id="spatializer_set_velocity"><span><a class="doc-id-link" href="#spatializer_set_velocity">spatializer_set_velocity<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/miniaudio/effects.odin#L297"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">spatializer_set_velocity :: <span class="keyword-type">proc</span> "cdecl" (pSpatializer: ^<a class="code-typename" href="/vendor/miniaudio/#spatializer">spatializer</a>, innerAngleInRadians, outerAngleInRadians, outerGain: <span class="doc-builtin">f32</span>) ---</pre>
+<pre class="doc-code">spatializer_set_velocity :: <span class="keyword-type">proc</span> "cdecl" (pSpatializer: ^<a class="code-typename" href="/vendor/miniaudio/#spatializer">spatializer</a>, x, y, z: <span class="doc-builtin">f32</span>) ---</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -13054,13 +13054,13 @@ makes more sense for the purpose of mixing to initialize it to the center point.
 <div class="pkg-entity">
 <h3 id="vfs_write"><span><a class="doc-id-link" href="#vfs_write">vfs_write<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/miniaudio/vfs.odin#L67"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">vfs_write :: <span class="keyword-type">proc</span> "cdecl" (pVFS: ^<a class="code-typename" href="/vendor/miniaudio/#vfs">vfs</a>, file: <a class="code-typename" href="/vendor/miniaudio/#vfs_file">vfs_file</a>, pDst: <span class="doc-builtin">rawptr</span>, sizeInBytes: <span class="doc-builtin">uint</span>, pBytesRead: ^<span class="doc-builtin">uint</span>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a> ---</pre>
+<pre class="doc-code">vfs_write :: <span class="keyword-type">proc</span> "cdecl" (pVFS: ^<a class="code-typename" href="/vendor/miniaudio/#vfs">vfs</a>, file: <a class="code-typename" href="/vendor/miniaudio/#vfs_file">vfs_file</a>, pSrc: <span class="doc-builtin">rawptr</span>, sizeInBytes: <span class="doc-builtin">uint</span>, pBytesWritten: ^<span class="doc-builtin">uint</span>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a> ---</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="volume_db_to_linear"><span><a class="doc-id-link" href="#volume_db_to_linear">volume_db_to_linear<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/miniaudio/utilities.odin#L108"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">volume_db_to_linear :: <span class="keyword-type">proc</span> "cdecl" (degrees: <span class="doc-builtin">f32</span>) -> <span class="doc-builtin">f32</span> ---</pre>
+<pre class="doc-code">volume_db_to_linear :: <span class="keyword-type">proc</span> "cdecl" (gain: <span class="doc-builtin">f32</span>) -> <span class="doc-builtin">f32</span> ---</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -13070,7 +13070,7 @@ makes more sense for the purpose of mixing to initialize it to the center point.
 <div class="pkg-entity">
 <h3 id="volume_linear_to_db"><span><a class="doc-id-link" href="#volume_linear_to_db">volume_linear_to_db<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/miniaudio/utilities.odin#L103"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">volume_linear_to_db :: <span class="keyword-type">proc</span> "cdecl" (degrees: <span class="doc-builtin">f32</span>) -> <span class="doc-builtin">f32</span> ---</pre>
+<pre class="doc-code">volume_linear_to_db :: <span class="keyword-type">proc</span> "cdecl" (factor: <span class="doc-builtin">f32</span>) -> <span class="doc-builtin">f32</span> ---</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -13116,7 +13116,7 @@ makes more sense for the purpose of mixing to initialize it to the center point.
 <div class="pkg-entity">
 <h3 id="waveform_set_frequency"><span><a class="doc-id-link" href="#waveform_set_frequency">waveform_set_frequency<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/miniaudio/generation.odin#L82"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">waveform_set_frequency :: <span class="keyword-type">proc</span> "cdecl" (pWaveform: ^<a class="code-typename" href="/vendor/miniaudio/#waveform">waveform</a>, amplitude: <span class="doc-builtin">f64</span>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a> ---</pre>
+<pre class="doc-code">waveform_set_frequency :: <span class="keyword-type">proc</span> "cdecl" (pWaveform: ^<a class="code-typename" href="/vendor/miniaudio/#waveform">waveform</a>, frequency: <span class="doc-builtin">f64</span>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a> ---</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -13164,7 +13164,7 @@ makes more sense for the purpose of mixing to initialize it to the center point.
 <li><a href="https://github.com/odin-lang/Odin/tree/master/vendor/miniaudio/vfs.odin">vfs.odin</a></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2022-12 (vendor "odin") Windows_amd64 @ 2022-12-29 21:08:34.789241600 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2022-12 (vendor "odin") Windows_amd64 @ 2022-12-30 21:08:32.842728500 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">

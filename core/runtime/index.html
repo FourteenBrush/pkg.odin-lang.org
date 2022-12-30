@@ -839,7 +839,7 @@ Procedure Groups (22)</summary>
 <div class="pkg-entity">
 <h3 id="Logger_Proc"><span><a class="doc-id-link" href="#Logger_Proc">Logger_Proc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/core.odin#L361"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">Logger_Proc :: <span class="keyword-type">proc</span> "odin" (logger_data: <span class="doc-builtin">rawptr</span>, level: <a class="code-typename" href="/core/runtime/#Logger_Level">Logger_Level</a>, text: <span class="doc-builtin">string</span>, options: <span class="keyword-type">bit_set</span>[<a class="code-typename" href="/core/runtime/#Logger_Option">Logger_Option</a>], location := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>)</pre>
+<pre class="doc-code">Logger_Proc :: <span class="keyword-type">proc</span> "odin" (data: <span class="doc-builtin">rawptr</span>, level: <a class="code-typename" href="/core/runtime/#Logger_Level">Logger_Level</a>, text: <span class="doc-builtin">string</span>, options: <span class="keyword-type">bit_set</span>[<a class="code-typename" href="/core/runtime/#Logger_Option">Logger_Option</a>], location := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>)</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -904,9 +904,9 @@ information, we have a simple table that stores some traits about the cell.</p>
 	<span class="comment">// 8-bytes on 64-bit, 4-bytes on 32-bit</span>
 	vs:         ^<a class="code-typename" href="/core/runtime/#Map_Cell_Info">Map_Cell_Info</a>,
 	<span class="comment">// 8-bytes on 64-bit, 4-bytes on 32-bit</span>
-	key_hasher: <span class="keyword-type">proc</span> "contextless" (data: <span class="doc-builtin">rawptr</span>, seed: <span class="doc-builtin">uintptr</span> = 0) -> <span class="doc-builtin">uintptr</span>,
+	key_hasher: <span class="keyword-type">proc</span> "contextless" (key: <span class="doc-builtin">rawptr</span>, seed: <span class="doc-builtin">uintptr</span>) -> <span class="doc-builtin">uintptr</span>,
 	<span class="comment">// 8-bytes on 64-bit, 4-bytes on 32-bit</span>
-	key_equal:  <span class="keyword-type">proc</span> "contextless" (_: <span class="doc-builtin">rawptr</span>, _: <span class="doc-builtin">rawptr</span>) -> <span class="doc-builtin">bool</span>,
+	key_equal:  <span class="keyword-type">proc</span> "contextless" (lhs, rhs: <span class="doc-builtin">rawptr</span>) -> <span class="doc-builtin">bool</span>,
 }</pre>
 </div>
 <details class="odin-doc-toggle" open>
@@ -1690,19 +1690,19 @@ This will be set by the compiler</p>
 <div class="pkg-entity">
 <h3 id="abs_f16"><span><a class="doc-id-link" href="#abs_f16">abs_f16<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L502"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">abs_f16 :: <span class="keyword-type">proc</span> "contextless" (n: <span class="doc-builtin">f16</span>) -> <span class="doc-builtin">f16</span> {…}</pre>
+<pre class="doc-code">abs_f16 :: <span class="keyword-type">proc</span> "contextless" (x: <span class="doc-builtin">f16</span>) -> <span class="doc-builtin">f16</span> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="abs_f32"><span><a class="doc-id-link" href="#abs_f32">abs_f32<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L505"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">abs_f32 :: <span class="keyword-type">proc</span> "contextless" (n: <span class="doc-builtin">f32</span>) -> <span class="doc-builtin">f32</span> {…}</pre>
+<pre class="doc-code">abs_f32 :: <span class="keyword-type">proc</span> "contextless" (x: <span class="doc-builtin">f32</span>) -> <span class="doc-builtin">f32</span> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="abs_f64"><span><a class="doc-id-link" href="#abs_f64">abs_f64<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L508"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">abs_f64 :: <span class="keyword-type">proc</span> "contextless" (n: <span class="doc-builtin">f64</span>) -> <span class="doc-builtin">f64</span> {…}</pre>
+<pre class="doc-code">abs_f64 :: <span class="keyword-type">proc</span> "contextless" (x: <span class="doc-builtin">f64</span>) -> <span class="doc-builtin">f64</span> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -1810,7 +1810,7 @@ This will be set by the compiler</p>
 <div class="pkg-entity">
 <h3 id="bounds_check_error_loc"><span><a class="doc-id-link" href="#bounds_check_error_loc">bounds_check_error_loc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/error_checks.odin#L274"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">bounds_check_error_loc :: <span class="keyword-type">proc</span> "contextless" (using loc := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>, len, cap: <span class="doc-builtin">int</span>) {…}</pre>
+<pre class="doc-code">bounds_check_error_loc :: <span class="keyword-type">proc</span> "contextless" (using loc := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>, index, count: <span class="doc-builtin">int</span>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -1846,19 +1846,19 @@ This will be set by the compiler</p>
 <div class="pkg-entity">
 <h3 id="bswap_f16"><span><a class="doc-id-link" href="#bswap_f16">bswap_f16<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L45"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">bswap_f16 :: <span class="keyword-type">proc</span> "contextless" (n: <span class="doc-builtin">f16</span>) -> <span class="doc-builtin">f16</span> {…}</pre>
+<pre class="doc-code">bswap_f16 :: <span class="keyword-type">proc</span> "contextless" (f: <span class="doc-builtin">f16</span>) -> <span class="doc-builtin">f16</span> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="bswap_f32"><span><a class="doc-id-link" href="#bswap_f32">bswap_f32<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L52"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">bswap_f32 :: <span class="keyword-type">proc</span> "contextless" (n: <span class="doc-builtin">f32</span>) -> <span class="doc-builtin">f32</span> {…}</pre>
+<pre class="doc-code">bswap_f32 :: <span class="keyword-type">proc</span> "contextless" (f: <span class="doc-builtin">f32</span>) -> <span class="doc-builtin">f32</span> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="bswap_f64"><span><a class="doc-id-link" href="#bswap_f64">bswap_f64<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L59"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">bswap_f64 :: <span class="keyword-type">proc</span> "contextless" (n: <span class="doc-builtin">f64</span>) -> <span class="doc-builtin">f64</span> {…}</pre>
+<pre class="doc-code">bswap_f64 :: <span class="keyword-type">proc</span> "contextless" (f: <span class="doc-builtin">f64</span>) -> <span class="doc-builtin">f64</span> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -1966,7 +1966,7 @@ This will be set by the compiler</p>
 	size, alignment: <span class="doc-builtin">int</span>, 
 	old_memory:      <span class="doc-builtin">rawptr</span>, 
 	old_size:        <span class="doc-builtin">int</span>, 
-) -> ([]<span class="doc-builtin">u8</span>, <a class="code-typename" href="/core/runtime/#Allocator_Error">Allocator_Error</a>) {…}</pre>
+) -> (data: []<span class="doc-builtin">u8</span>, err: <a class="code-typename" href="/core/runtime/#Allocator_Error">Allocator_Error</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -2008,7 +2008,7 @@ This will be set by the compiler</p>
 <div class="pkg-entity">
 <h3 id="default_logger_proc"><span><a class="doc-id-link" href="#default_logger_proc">default_logger_proc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/core.odin#L590"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">default_logger_proc :: <span class="keyword-type">proc</span> "odin" (logger_data: <span class="doc-builtin">rawptr</span>, level: <a class="code-typename" href="/core/runtime/#Logger_Level">Logger_Level</a>, text: <span class="doc-builtin">string</span>, options: <span class="keyword-type">bit_set</span>[<a class="code-typename" href="/core/runtime/#Logger_Option">Logger_Option</a>], location := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>) {…}</pre>
+<pre class="doc-code">default_logger_proc :: <span class="keyword-type">proc</span> "odin" (data: <span class="doc-builtin">rawptr</span>, level: <a class="code-typename" href="/core/runtime/#Logger_Level">Logger_Level</a>, text: <span class="doc-builtin">string</span>, options: <span class="keyword-type">bit_set</span>[<a class="code-typename" href="/core/runtime/#Logger_Option">Logger_Option</a>], location := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -2038,7 +2038,7 @@ This will be set by the compiler</p>
 	size, alignment: <span class="doc-builtin">int</span>, 
 	old_memory:      <span class="doc-builtin">rawptr</span>, 
 	old_size:        <span class="doc-builtin">int</span>, 
-) -> ([]<span class="doc-builtin">u8</span>, <a class="code-typename" href="/core/runtime/#Allocator_Error">Allocator_Error</a>) {…}</pre>
+) -> (data: []<span class="doc-builtin">u8</span>, err: <a class="code-typename" href="/core/runtime/#Allocator_Error">Allocator_Error</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -2107,14 +2107,14 @@ This will be set by the compiler</p>
 <pre class="doc-code">dynamic_array_expr_error :: <span class="keyword-type">proc</span> "contextless" (
 	file:         <span class="doc-builtin">string</span>, 
 	line, column: <span class="doc-builtin">i32</span>, 
-	lo, hi:       <span class="doc-builtin">int</span>, 
+	low, high, 
 ) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="dynamic_array_expr_error_loc"><span><a class="doc-id-link" href="#dynamic_array_expr_error_loc">dynamic_array_expr_error_loc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/error_checks.odin#L286"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">dynamic_array_expr_error_loc :: <span class="keyword-type">proc</span> "contextless" (using loc := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>, lo, hi: <span class="doc-builtin">int</span>, len: <span class="doc-builtin">int</span>) {…}</pre>
+<pre class="doc-code">dynamic_array_expr_error_loc :: <span class="keyword-type">proc</span> "contextless" (using loc := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>, low, high, max: <span class="doc-builtin">int</span>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -2240,7 +2240,7 @@ This will be set by the compiler</p>
 <div class="pkg-entity">
 <h3 id="is_power_of_two_int"><span><a class="doc-id-link" href="#is_power_of_two_int">is_power_of_two_int<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L66"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">is_power_of_two_int :: <span class="keyword-type">proc</span> "odin" (a: <span class="doc-builtin">int</span>) -> <span class="doc-builtin">bool</span> {…}</pre>
+<pre class="doc-code">is_power_of_two_int :: <span class="keyword-type">proc</span> "odin" (x: <span class="doc-builtin">int</span>) -> <span class="doc-builtin">bool</span> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -2282,13 +2282,13 @@ This will be set by the compiler</p>
 <div class="pkg-entity">
 <h3 id="make_map"><span><a class="doc-id-link" href="#make_map">make_map<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/core_builtin.odin#L234"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">make_map :: <span class="keyword-type">proc</span> "odin" ($T: typeid/<span class="keyword-type">map</span>[$]$, #any_int cap: <span class="doc-builtin">int</span> = 1 << runtime.MAP_MIN_LOG2_CAPACITY, allocator := <a href="/core/runtime/#Context">context.allocator</a>, loc := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>) -> T {…}</pre>
+<pre class="doc-code">make_map :: <span class="keyword-type">proc</span> "odin" ($T: typeid/<span class="keyword-type">map</span>[$]$, #any_int capacity: <span class="doc-builtin">int</span> = 1 << MAP_MIN_LOG2_CAPACITY, allocator := <a href="/core/runtime/#Context">context.allocator</a>, loc := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>) -> T {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="make_map_expr_error_loc"><span><a class="doc-id-link" href="#make_map_expr_error_loc">make_map_expr_error_loc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/error_checks.odin#L255"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">make_map_expr_error_loc :: <span class="keyword-type">proc</span> "contextless" (loc := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>, len: <span class="doc-builtin">int</span>) {…}</pre>
+<pre class="doc-code">make_map_expr_error_loc :: <span class="keyword-type">proc</span> "contextless" (loc := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>, cap: <span class="doc-builtin">int</span>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -2430,19 +2430,19 @@ This will be set by the compiler</p>
 <div class="pkg-entity">
 <h3 id="map_hash_is_deleted"><span><a class="doc-id-link" href="#map_hash_is_deleted">map_hash_is_deleted<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/dynamic_map_internal.odin#L244"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">map_hash_is_deleted :: <span class="keyword-type">proc</span> "contextless" (x: <span class="doc-builtin">uintptr</span>) -> <span class="doc-builtin">bool</span> {…}</pre>
+<pre class="doc-code">map_hash_is_deleted :: <span class="keyword-type">proc</span> "contextless" (hash: <span class="doc-builtin">uintptr</span>) -> <span class="doc-builtin">bool</span> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="map_hash_is_empty"><span><a class="doc-id-link" href="#map_hash_is_empty">map_hash_is_empty<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/dynamic_map_internal.odin#L239"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">map_hash_is_empty :: <span class="keyword-type">proc</span> "contextless" (x: <span class="doc-builtin">uintptr</span>) -> <span class="doc-builtin">bool</span> {…}</pre>
+<pre class="doc-code">map_hash_is_empty :: <span class="keyword-type">proc</span> "contextless" (hash: <span class="doc-builtin">uintptr</span>) -> <span class="doc-builtin">bool</span> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="map_hash_is_valid"><span><a class="doc-id-link" href="#map_hash_is_valid">map_hash_is_valid<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/dynamic_map_internal.odin#L249"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">map_hash_is_valid :: <span class="keyword-type">proc</span> "contextless" (x: <span class="doc-builtin">uintptr</span>) -> <span class="doc-builtin">bool</span> {…}</pre>
+<pre class="doc-code">map_hash_is_valid :: <span class="keyword-type">proc</span> "contextless" (hash: <span class="doc-builtin">uintptr</span>) -> <span class="doc-builtin">bool</span> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -2597,13 +2597,13 @@ map_info :: proc "contextless" ($T: typeid/map[$K]$V) -> ^Map_Info {...}</p>
 <div class="pkg-entity">
 <h3 id="matrix3x3_inverse"><span><a class="doc-id-link" href="#matrix3x3_inverse">matrix3x3_inverse<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/core_builtin_matrix.odin#L232"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">matrix3x3_inverse :: <span class="keyword-type">proc</span> "contextless" (m: $M/<span class="keyword-type">matrix</span>[3, 3]$) -> (y: $M/<span class="keyword-type">matrix</span>[3, 3]$) {…}</pre>
+<pre class="doc-code">matrix3x3_inverse :: <span class="keyword-type">proc</span> "contextless" (x: $M/<span class="keyword-type">matrix</span>[3, 3]$) -> (y: $M/<span class="keyword-type">matrix</span>[3, 3]$) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="matrix3x3_inverse_transpose"><span><a class="doc-id-link" href="#matrix3x3_inverse_transpose">matrix3x3_inverse_transpose<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/core_builtin_matrix.odin#L163"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">matrix3x3_inverse_transpose :: <span class="keyword-type">proc</span> "contextless" (m: $M/<span class="keyword-type">matrix</span>[3, 3]$) -> (y: $M/<span class="keyword-type">matrix</span>[3, 3]$) {…}</pre>
+<pre class="doc-code">matrix3x3_inverse_transpose :: <span class="keyword-type">proc</span> "contextless" (x: $M/<span class="keyword-type">matrix</span>[3, 3]$) -> (y: $M/<span class="keyword-type">matrix</span>[3, 3]$) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -2655,19 +2655,19 @@ map_info :: proc "contextless" ($T: typeid/map[$K]$V) -> ^Map_Info {...}</p>
 <div class="pkg-entity">
 <h3 id="max_f16"><span><a class="doc-id-link" href="#max_f16">max_f16<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L521"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">max_f16 :: <span class="keyword-type">proc</span> "contextless" (x, base: <span class="doc-builtin">f16</span>) -> <span class="doc-builtin">f16</span> {…}</pre>
+<pre class="doc-code">max_f16 :: <span class="keyword-type">proc</span> "contextless" (a, b: <span class="doc-builtin">f16</span>) -> <span class="doc-builtin">f16</span> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="max_f32"><span><a class="doc-id-link" href="#max_f32">max_f32<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L524"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">max_f32 :: <span class="keyword-type">proc</span> "contextless" (x, base: <span class="doc-builtin">f32</span>) -> <span class="doc-builtin">f32</span> {…}</pre>
+<pre class="doc-code">max_f32 :: <span class="keyword-type">proc</span> "contextless" (a, b: <span class="doc-builtin">f32</span>) -> <span class="doc-builtin">f32</span> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="max_f64"><span><a class="doc-id-link" href="#max_f64">max_f64<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L527"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">max_f64 :: <span class="keyword-type">proc</span> "contextless" (x, base: <span class="doc-builtin">f64</span>) -> <span class="doc-builtin">f64</span> {…}</pre>
+<pre class="doc-code">max_f64 :: <span class="keyword-type">proc</span> "contextless" (a, b: <span class="doc-builtin">f64</span>) -> <span class="doc-builtin">f64</span> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -2709,7 +2709,7 @@ map_info :: proc "contextless" ($T: typeid/map[$K]$V) -> ^Map_Info {...}</p>
 <div class="pkg-entity">
 <h3 id="mem_free_all"><span><a class="doc-id-link" href="#mem_free_all">mem_free_all<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L180"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">mem_free_all :: <span class="keyword-type">proc</span> "odin" (allocator := <a href="/core/runtime/#Context">context.allocator</a>, loc := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>) -> <a class="code-typename" href="/core/runtime/#Allocator_Error">Allocator_Error</a> {…}</pre>
+<pre class="doc-code">mem_free_all :: <span class="keyword-type">proc</span> "odin" (allocator := <a href="/core/runtime/#Context">context.allocator</a>, loc := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>) -> (err: <a class="code-typename" href="/core/runtime/#Allocator_Error">Allocator_Error</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -2768,19 +2768,19 @@ map_info :: proc "contextless" ($T: typeid/map[$K]$V) -> ^Map_Info {...}</p>
 <div class="pkg-entity">
 <h3 id="min_f16"><span><a class="doc-id-link" href="#min_f16">min_f16<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L512"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">min_f16 :: <span class="keyword-type">proc</span> "contextless" (x, base: <span class="doc-builtin">f16</span>) -> <span class="doc-builtin">f16</span> {…}</pre>
+<pre class="doc-code">min_f16 :: <span class="keyword-type">proc</span> "contextless" (a, b: <span class="doc-builtin">f16</span>) -> <span class="doc-builtin">f16</span> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="min_f32"><span><a class="doc-id-link" href="#min_f32">min_f32<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L515"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">min_f32 :: <span class="keyword-type">proc</span> "contextless" (x, base: <span class="doc-builtin">f32</span>) -> <span class="doc-builtin">f32</span> {…}</pre>
+<pre class="doc-code">min_f32 :: <span class="keyword-type">proc</span> "contextless" (a, b: <span class="doc-builtin">f32</span>) -> <span class="doc-builtin">f32</span> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="min_f64"><span><a class="doc-id-link" href="#min_f64">min_f64<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L518"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">min_f64 :: <span class="keyword-type">proc</span> "contextless" (x, base: <span class="doc-builtin">f64</span>) -> <span class="doc-builtin">f64</span> {…}</pre>
+<pre class="doc-code">min_f64 :: <span class="keyword-type">proc</span> "contextless" (a, b: <span class="doc-builtin">f64</span>) -> <span class="doc-builtin">f64</span> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -2810,7 +2810,7 @@ map_info :: proc "contextless" ($T: typeid/map[$K]$V) -> ^Map_Info {...}</p>
 <div class="pkg-entity">
 <h3 id="multi_pointer_slice_expr_error"><span><a class="doc-id-link" href="#multi_pointer_slice_expr_error">multi_pointer_slice_expr_error<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/error_checks.odin#L60"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">multi_pointer_slice_expr_error :: <span class="keyword-type">proc</span> "contextless" (file: <span class="doc-builtin">string</span>, line, column: <span class="doc-builtin">i32</span>, index, count: <span class="doc-builtin">int</span>) {…}</pre>
+<pre class="doc-code">multi_pointer_slice_expr_error :: <span class="keyword-type">proc</span> "contextless" (file: <span class="doc-builtin">string</span>, line, column: <span class="doc-builtin">i32</span>, lo, hi: <span class="doc-builtin">int</span>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -3086,13 +3086,13 @@ map_info :: proc "contextless" ($T: typeid/map[$K]$V) -> ^Map_Info {...}</p>
 <div class="pkg-entity">
 <h3 id="reserve_soa"><span><a class="doc-id-link" href="#reserve_soa">reserve_soa<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/core_builtin_soa.odin#L192"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">reserve_soa :: <span class="keyword-type">proc</span> "odin" (array: ^$T/<span class="directive">#soa</span>[<span class="keyword">dynamic</span>], length: <span class="doc-builtin">int</span>, loc := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>) -> <span class="doc-builtin">bool</span> {…}</pre>
+<pre class="doc-code">reserve_soa :: <span class="keyword-type">proc</span> "odin" (array: ^$T/<span class="directive">#soa</span>[<span class="keyword">dynamic</span>], capacity: <span class="doc-builtin">int</span>, loc := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>) -> <span class="doc-builtin">bool</span> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="resize_dynamic_array"><span><a class="doc-id-link" href="#resize_dynamic_array">resize_dynamic_array<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/core_builtin.odin#L558"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">resize_dynamic_array :: <span class="keyword-type">proc</span> "odin" (array: ^$T/[<span class="keyword">dynamic</span>]$, capacity: <span class="doc-builtin">int</span>, loc := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>) -> <span class="doc-builtin">bool</span> {…}</pre>
+<pre class="doc-code">resize_dynamic_array :: <span class="keyword-type">proc</span> "odin" (array: ^$T/[<span class="keyword">dynamic</span>]$, length: <span class="doc-builtin">int</span>, loc := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>) -> <span class="doc-builtin">bool</span> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -3104,7 +3104,7 @@ map_info :: proc "contextless" ($T: typeid/map[$K]$V) -> ^Map_Info {...}</p>
 <div class="pkg-entity">
 <h3 id="shrink_dynamic_array"><span><a class="doc-id-link" href="#shrink_dynamic_array">shrink_dynamic_array<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/core_builtin.odin#L598"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">shrink_dynamic_array :: <span class="keyword-type">proc</span> "odin" (array: ^$T/[<span class="keyword">dynamic</span>]$, capacity: <span class="doc-builtin">int</span>, loc := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>) -> <span class="doc-builtin">bool</span> {…}</pre>
+<pre class="doc-code">shrink_dynamic_array :: <span class="keyword-type">proc</span> "odin" (array: ^$T/[<span class="keyword">dynamic</span>]$, new_cap: <span class="doc-builtin">int</span> = -1, loc := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>) -> (did_shrink: <span class="doc-builtin">bool</span>) {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -3126,13 +3126,13 @@ If `len(array) < new_cap`, then `len(array)` will be left unchanged.
 <div class="pkg-entity">
 <h3 id="slice_expr_error_hi"><span><a class="doc-id-link" href="#slice_expr_error_hi">slice_expr_error_hi<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/error_checks.odin#L67"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">slice_expr_error_hi :: <span class="keyword-type">proc</span> "contextless" (file: <span class="doc-builtin">string</span>, line, column: <span class="doc-builtin">i32</span>, index, count: <span class="doc-builtin">int</span>) {…}</pre>
+<pre class="doc-code">slice_expr_error_hi :: <span class="keyword-type">proc</span> "contextless" (file: <span class="doc-builtin">string</span>, line, column: <span class="doc-builtin">i32</span>, hi: <span class="doc-builtin">int</span>, len: <span class="doc-builtin">int</span>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="slice_expr_error_hi_loc"><span><a class="doc-id-link" href="#slice_expr_error_hi_loc">slice_expr_error_hi_loc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/error_checks.odin#L278"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">slice_expr_error_hi_loc :: <span class="keyword-type">proc</span> "contextless" (using loc := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>, len, cap: <span class="doc-builtin">int</span>) {…}</pre>
+<pre class="doc-code">slice_expr_error_hi_loc :: <span class="keyword-type">proc</span> "contextless" (using loc := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>, hi: <span class="doc-builtin">int</span>, len: <span class="doc-builtin">int</span>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -3182,31 +3182,31 @@ If `len(array) < new_cap`, then `len(array)` will be left unchanged.
 <div class="pkg-entity">
 <h3 id="string_ge"><span><a class="doc-id-link" href="#string_ge">string_ge<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L382"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">string_ge :: <span class="keyword-type">proc</span> "contextless" (lhs, rhs: <span class="doc-builtin">string</span>) -> <span class="doc-builtin">bool</span> {…}</pre>
+<pre class="doc-code">string_ge :: <span class="keyword-type">proc</span> "contextless" (a, b: <span class="doc-builtin">string</span>) -> <span class="doc-builtin">bool</span> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="string_gt"><span><a class="doc-id-link" href="#string_gt">string_gt<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L380"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">string_gt :: <span class="keyword-type">proc</span> "contextless" (lhs, rhs: <span class="doc-builtin">string</span>) -> <span class="doc-builtin">bool</span> {…}</pre>
+<pre class="doc-code">string_gt :: <span class="keyword-type">proc</span> "contextless" (a, b: <span class="doc-builtin">string</span>) -> <span class="doc-builtin">bool</span> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="string_le"><span><a class="doc-id-link" href="#string_le">string_le<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L381"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">string_le :: <span class="keyword-type">proc</span> "contextless" (lhs, rhs: <span class="doc-builtin">string</span>) -> <span class="doc-builtin">bool</span> {…}</pre>
+<pre class="doc-code">string_le :: <span class="keyword-type">proc</span> "contextless" (a, b: <span class="doc-builtin">string</span>) -> <span class="doc-builtin">bool</span> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="string_lt"><span><a class="doc-id-link" href="#string_lt">string_lt<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L379"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">string_lt :: <span class="keyword-type">proc</span> "contextless" (lhs, rhs: <span class="doc-builtin">string</span>) -> <span class="doc-builtin">bool</span> {…}</pre>
+<pre class="doc-code">string_lt :: <span class="keyword-type">proc</span> "contextless" (a, b: <span class="doc-builtin">string</span>) -> <span class="doc-builtin">bool</span> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="string_ne"><span><a class="doc-id-link" href="#string_ne">string_ne<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L378"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">string_ne :: <span class="keyword-type">proc</span> "contextless" (lhs, rhs: <span class="doc-builtin">string</span>) -> <span class="doc-builtin">bool</span> {…}</pre>
+<pre class="doc-code">string_ne :: <span class="keyword-type">proc</span> "contextless" (a, b: <span class="doc-builtin">string</span>) -> <span class="doc-builtin">bool</span> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -3589,7 +3589,7 @@ If `len(array) < new_cap`, then `len(array)` will be left unchanged.
 <li><em>(hidden platform specific files)</em></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2022-12 (vendor "odin") Windows_amd64 @ 2022-12-29 21:08:34.454742300 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2022-12 (vendor "odin") Windows_amd64 @ 2022-12-30 21:08:32.457311900 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">

@@ -551,7 +551,7 @@ Procedure Groups (0)</summary>
 	<span class="comment">// 	 * similarly, to delay the packing of the data until write time.</span>
 	unpack_func_ptr:           <span class="keyword-type">proc</span> "cdecl" (ctxt: <a class="code-typename" href="/vendor/OpenEXRCore/#context_t">context_t</a>, data: <span class="doc-builtin">rawptr</span>, attrsize: <span class="doc-builtin">i32</span>, outsize: ^<span class="doc-builtin">i32</span>, outbuffer: ^<span class="doc-builtin">rawptr</span>) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a>,
 	pack_func_ptr:             <span class="keyword-type">proc</span> "cdecl" (ctxt: <a class="code-typename" href="/vendor/OpenEXRCore/#context_t">context_t</a>, data: <span class="doc-builtin">rawptr</span>, datasize: <span class="doc-builtin">i32</span>, outsize: ^<span class="doc-builtin">i32</span>, outbuffer: <span class="doc-builtin">rawptr</span>) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a>,
-	destroy_unpacked_func_ptr: <span class="keyword-type">proc</span> "cdecl" (ctxt: <a class="code-typename" href="/vendor/OpenEXRCore/#context_t">context_t</a>, userdata: <span class="doc-builtin">rawptr</span>, failed: <span class="doc-builtin">i32</span>),
+	destroy_unpacked_func_ptr: <span class="keyword-type">proc</span> "cdecl" (ctxt: <a class="code-typename" href="/vendor/OpenEXRCore/#context_t">context_t</a>, data: <span class="doc-builtin">rawptr</span>, attrsize: <span class="doc-builtin">i32</span>),
 }</pre>
 </div>
 <details class="odin-doc-toggle" open>
@@ -1520,7 +1520,7 @@ Procedure Groups (0)</summary>
 <div class="pkg-entity">
 <h3 id="memory_allocation_func_t"><span><a class="doc-id-link" href="#memory_allocation_func_t">memory_allocation_func_t<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/OpenEXRCore/exr_base.odin#L26"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">memory_allocation_func_t :: <span class="keyword-type">proc</span> "cdecl" (size: <span class="doc-builtin">uint</span>) -> <span class="doc-builtin">rawptr</span></pre>
+<pre class="doc-code">memory_allocation_func_t :: <span class="keyword-type">proc</span> "cdecl" (bytes: <span class="doc-builtin">uint</span>) -> <span class="doc-builtin">rawptr</span></pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -1543,7 +1543,7 @@ Procedure Groups (0)</summary>
 <div class="pkg-entity">
 <h3 id="memory_free_func_t"><span><a class="doc-id-link" href="#memory_free_func_t">memory_free_func_t<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/OpenEXRCore/exr_base.odin#L42"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">memory_free_func_t :: <span class="keyword-type">proc</span> "cdecl" (_: <span class="doc-builtin">rawptr</span>)</pre>
+<pre class="doc-code">memory_free_func_t :: <span class="keyword-type">proc</span> "cdecl" (ptr: <span class="doc-builtin">rawptr</span>)</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -2200,7 +2200,7 @@ Return type for all functions.</p>
 <div class="pkg-entity">
 <h3 id="attr_get_string_vector"><span><a class="doc-id-link" href="#attr_get_string_vector">attr_get_string_vector<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/OpenEXRCore/exr_part.odin#L611"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">attr_get_string_vector :: <span class="keyword-type">proc</span> "cdecl" (ctxt: <a class="code-typename" href="/vendor/OpenEXRCore/#context_t">context_t</a>, part_index: <span class="doc-builtin">i32</span>, name: <span class="doc-builtin">cstring</span>, length: ^<span class="doc-builtin">i32</span>, out: ^<span class="doc-builtin">cstring</span>) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a> ---</pre>
+<pre class="doc-code">attr_get_string_vector :: <span class="keyword-type">proc</span> "cdecl" (ctxt: <a class="code-typename" href="/vendor/OpenEXRCore/#context_t">context_t</a>, part_index: <span class="doc-builtin">i32</span>, name: <span class="doc-builtin">cstring</span>, size: ^<span class="doc-builtin">i32</span>, out: ^<span class="doc-builtin">cstring</span>) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a> ---</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -2278,13 +2278,13 @@ Return type for all functions.</p>
 <div class="pkg-entity">
 <h3 id="attr_set_box2f"><span><a class="doc-id-link" href="#attr_set_box2f">attr_set_box2f<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/OpenEXRCore/exr_part.odin#L407"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">attr_set_box2f :: <span class="keyword-type">proc</span> "cdecl" (ctxt: <a class="code-typename" href="/vendor/OpenEXRCore/#context_t">context_t</a>, part_index: <span class="doc-builtin">i32</span>, name: <span class="doc-builtin">cstring</span>, outval: ^<a class="code-typename" href="/vendor/OpenEXRCore/#attr_box2f_t">attr_box2f_t</a>) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a> ---</pre>
+<pre class="doc-code">attr_set_box2f :: <span class="keyword-type">proc</span> "cdecl" (ctxt: <a class="code-typename" href="/vendor/OpenEXRCore/#context_t">context_t</a>, part_index: <span class="doc-builtin">i32</span>, name: <span class="doc-builtin">cstring</span>, val: ^<a class="code-typename" href="/vendor/OpenEXRCore/#attr_box2f_t">attr_box2f_t</a>) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a> ---</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="attr_set_box2i"><span><a class="doc-id-link" href="#attr_set_box2i">attr_set_box2i<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/OpenEXRCore/exr_part.odin#L395"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">attr_set_box2i :: <span class="keyword-type">proc</span> "cdecl" (ctxt: <a class="code-typename" href="/vendor/OpenEXRCore/#context_t">context_t</a>, part_index: <span class="doc-builtin">i32</span>, name: <span class="doc-builtin">cstring</span>, outval: ^<a class="code-typename" href="/vendor/OpenEXRCore/#attr_box2i_t">attr_box2i_t</a>) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a> ---</pre>
+<pre class="doc-code">attr_set_box2i :: <span class="keyword-type">proc</span> "cdecl" (ctxt: <a class="code-typename" href="/vendor/OpenEXRCore/#context_t">context_t</a>, part_index: <span class="doc-builtin">i32</span>, name: <span class="doc-builtin">cstring</span>, val: ^<a class="code-typename" href="/vendor/OpenEXRCore/#attr_box2i_t">attr_box2i_t</a>) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a> ---</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -2314,7 +2314,7 @@ Return type for all functions.</p>
 <div class="pkg-entity">
 <h3 id="attr_set_double"><span><a class="doc-id-link" href="#attr_set_double">attr_set_double<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/OpenEXRCore/exr_part.odin#L459"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">attr_set_double :: <span class="keyword-type">proc</span> "cdecl" (ctxt: <a class="code-typename" href="/vendor/OpenEXRCore/#context_t">context_t</a>, part_index: <span class="doc-builtin">i32</span>, name: <span class="doc-builtin">cstring</span>, out: <span class="doc-builtin">f64</span>) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a> ---</pre>
+<pre class="doc-code">attr_set_double :: <span class="keyword-type">proc</span> "cdecl" (ctxt: <a class="code-typename" href="/vendor/OpenEXRCore/#context_t">context_t</a>, part_index: <span class="doc-builtin">i32</span>, name: <span class="doc-builtin">cstring</span>, val: <span class="doc-builtin">f64</span>) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a> ---</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -2344,7 +2344,7 @@ Return type for all functions.</p>
 <div class="pkg-entity">
 <h3 id="attr_set_keycode"><span><a class="doc-id-link" href="#attr_set_keycode">attr_set_keycode<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/OpenEXRCore/exr_part.odin#L502"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">attr_set_keycode :: <span class="keyword-type">proc</span> "cdecl" (ctxt: <a class="code-typename" href="/vendor/OpenEXRCore/#context_t">context_t</a>, part_index: <span class="doc-builtin">i32</span>, name: <span class="doc-builtin">cstring</span>, out: ^<a class="code-typename" href="/vendor/OpenEXRCore/#attr_keycode_t">attr_keycode_t</a>) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a> ---</pre>
+<pre class="doc-code">attr_set_keycode :: <span class="keyword-type">proc</span> "cdecl" (ctxt: <a class="code-typename" href="/vendor/OpenEXRCore/#context_t">context_t</a>, part_index: <span class="doc-builtin">i32</span>, name: <span class="doc-builtin">cstring</span>, kc: ^<a class="code-typename" href="/vendor/OpenEXRCore/#attr_keycode_t">attr_keycode_t</a>) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a> ---</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -2356,37 +2356,37 @@ Return type for all functions.</p>
 <div class="pkg-entity">
 <h3 id="attr_set_m33d"><span><a class="doc-id-link" href="#attr_set_m33d">attr_set_m33d<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/OpenEXRCore/exr_part.odin#L534"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">attr_set_m33d :: <span class="keyword-type">proc</span> "cdecl" (ctxt: <a class="code-typename" href="/vendor/OpenEXRCore/#context_t">context_t</a>, part_index: <span class="doc-builtin">i32</span>, name: <span class="doc-builtin">cstring</span>, out: ^<a class="code-typename" href="/vendor/OpenEXRCore/#attr_m33d_t">attr_m33d_t</a>) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a> ---</pre>
+<pre class="doc-code">attr_set_m33d :: <span class="keyword-type">proc</span> "cdecl" (ctxt: <a class="code-typename" href="/vendor/OpenEXRCore/#context_t">context_t</a>, part_index: <span class="doc-builtin">i32</span>, name: <span class="doc-builtin">cstring</span>, m: ^<a class="code-typename" href="/vendor/OpenEXRCore/#attr_m33d_t">attr_m33d_t</a>) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a> ---</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="attr_set_m33f"><span><a class="doc-id-link" href="#attr_set_m33f">attr_set_m33f<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/OpenEXRCore/exr_part.odin#L522"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">attr_set_m33f :: <span class="keyword-type">proc</span> "cdecl" (ctxt: <a class="code-typename" href="/vendor/OpenEXRCore/#context_t">context_t</a>, part_index: <span class="doc-builtin">i32</span>, name: <span class="doc-builtin">cstring</span>, out: ^<a class="code-typename" href="/vendor/OpenEXRCore/#attr_m33f_t">attr_m33f_t</a>) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a> ---</pre>
+<pre class="doc-code">attr_set_m33f :: <span class="keyword-type">proc</span> "cdecl" (ctxt: <a class="code-typename" href="/vendor/OpenEXRCore/#context_t">context_t</a>, part_index: <span class="doc-builtin">i32</span>, name: <span class="doc-builtin">cstring</span>, m: ^<a class="code-typename" href="/vendor/OpenEXRCore/#attr_m33f_t">attr_m33f_t</a>) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a> ---</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="attr_set_m44d"><span><a class="doc-id-link" href="#attr_set_m44d">attr_set_m44d<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/OpenEXRCore/exr_part.odin#L558"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">attr_set_m44d :: <span class="keyword-type">proc</span> "cdecl" (ctxt: <a class="code-typename" href="/vendor/OpenEXRCore/#context_t">context_t</a>, part_index: <span class="doc-builtin">i32</span>, name: <span class="doc-builtin">cstring</span>, out: ^<a class="code-typename" href="/vendor/OpenEXRCore/#attr_m44d_t">attr_m44d_t</a>) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a> ---</pre>
+<pre class="doc-code">attr_set_m44d :: <span class="keyword-type">proc</span> "cdecl" (ctxt: <a class="code-typename" href="/vendor/OpenEXRCore/#context_t">context_t</a>, part_index: <span class="doc-builtin">i32</span>, name: <span class="doc-builtin">cstring</span>, m: ^<a class="code-typename" href="/vendor/OpenEXRCore/#attr_m44d_t">attr_m44d_t</a>) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a> ---</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="attr_set_m44f"><span><a class="doc-id-link" href="#attr_set_m44f">attr_set_m44f<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/OpenEXRCore/exr_part.odin#L546"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">attr_set_m44f :: <span class="keyword-type">proc</span> "cdecl" (ctxt: <a class="code-typename" href="/vendor/OpenEXRCore/#context_t">context_t</a>, part_index: <span class="doc-builtin">i32</span>, name: <span class="doc-builtin">cstring</span>, out: ^<a class="code-typename" href="/vendor/OpenEXRCore/#attr_m44f_t">attr_m44f_t</a>) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a> ---</pre>
+<pre class="doc-code">attr_set_m44f :: <span class="keyword-type">proc</span> "cdecl" (ctxt: <a class="code-typename" href="/vendor/OpenEXRCore/#context_t">context_t</a>, part_index: <span class="doc-builtin">i32</span>, name: <span class="doc-builtin">cstring</span>, m: ^<a class="code-typename" href="/vendor/OpenEXRCore/#attr_m44f_t">attr_m44f_t</a>) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a> ---</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="attr_set_preview"><span><a class="doc-id-link" href="#attr_set_preview">attr_set_preview<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/OpenEXRCore/exr_part.odin#L570"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">attr_set_preview :: <span class="keyword-type">proc</span> "cdecl" (ctxt: <a class="code-typename" href="/vendor/OpenEXRCore/#context_t">context_t</a>, part_index: <span class="doc-builtin">i32</span>, name: <span class="doc-builtin">cstring</span>, out: ^<a class="code-typename" href="/vendor/OpenEXRCore/#attr_preview_t">attr_preview_t</a>) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a> ---</pre>
+<pre class="doc-code">attr_set_preview :: <span class="keyword-type">proc</span> "cdecl" (ctxt: <a class="code-typename" href="/vendor/OpenEXRCore/#context_t">context_t</a>, part_index: <span class="doc-builtin">i32</span>, name: <span class="doc-builtin">cstring</span>, p: ^<a class="code-typename" href="/vendor/OpenEXRCore/#attr_preview_t">attr_preview_t</a>) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a> ---</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="attr_set_rational"><span><a class="doc-id-link" href="#attr_set_rational">attr_set_rational<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/OpenEXRCore/exr_part.odin#L582"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">attr_set_rational :: <span class="keyword-type">proc</span> "cdecl" (ctxt: <a class="code-typename" href="/vendor/OpenEXRCore/#context_t">context_t</a>, part_index: <span class="doc-builtin">i32</span>, name: <span class="doc-builtin">cstring</span>, out: ^<a class="code-typename" href="/vendor/OpenEXRCore/#attr_rational_t">attr_rational_t</a>) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a> ---</pre>
+<pre class="doc-code">attr_set_rational :: <span class="keyword-type">proc</span> "cdecl" (ctxt: <a class="code-typename" href="/vendor/OpenEXRCore/#context_t">context_t</a>, part_index: <span class="doc-builtin">i32</span>, name: <span class="doc-builtin">cstring</span>, r: ^<a class="code-typename" href="/vendor/OpenEXRCore/#attr_rational_t">attr_rational_t</a>) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a> ---</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -2404,13 +2404,13 @@ Return type for all functions.</p>
 <div class="pkg-entity">
 <h3 id="attr_set_tiledesc"><span><a class="doc-id-link" href="#attr_set_tiledesc">attr_set_tiledesc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/OpenEXRCore/exr_part.odin#L631"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">attr_set_tiledesc :: <span class="keyword-type">proc</span> "cdecl" (ctxt: <a class="code-typename" href="/vendor/OpenEXRCore/#context_t">context_t</a>, part_index: <span class="doc-builtin">i32</span>, name: <span class="doc-builtin">cstring</span>, out: ^<a class="code-typename" href="/vendor/OpenEXRCore/#attr_tiledesc_t">attr_tiledesc_t</a>) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a> ---</pre>
+<pre class="doc-code">attr_set_tiledesc :: <span class="keyword-type">proc</span> "cdecl" (ctxt: <a class="code-typename" href="/vendor/OpenEXRCore/#context_t">context_t</a>, part_index: <span class="doc-builtin">i32</span>, name: <span class="doc-builtin">cstring</span>, td: ^<a class="code-typename" href="/vendor/OpenEXRCore/#attr_tiledesc_t">attr_tiledesc_t</a>) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a> ---</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="attr_set_timecode"><span><a class="doc-id-link" href="#attr_set_timecode">attr_set_timecode<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/OpenEXRCore/exr_part.odin#L643"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">attr_set_timecode :: <span class="keyword-type">proc</span> "cdecl" (ctxt: <a class="code-typename" href="/vendor/OpenEXRCore/#context_t">context_t</a>, part_index: <span class="doc-builtin">i32</span>, name: <span class="doc-builtin">cstring</span>, out: ^<a class="code-typename" href="/vendor/OpenEXRCore/#attr_timecode_t">attr_timecode_t</a>) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a> ---</pre>
+<pre class="doc-code">attr_set_timecode :: <span class="keyword-type">proc</span> "cdecl" (ctxt: <a class="code-typename" href="/vendor/OpenEXRCore/#context_t">context_t</a>, part_index: <span class="doc-builtin">i32</span>, name: <span class="doc-builtin">cstring</span>, tc: ^<a class="code-typename" href="/vendor/OpenEXRCore/#attr_timecode_t">attr_timecode_t</a>) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a> ---</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -2428,37 +2428,37 @@ Return type for all functions.</p>
 <div class="pkg-entity">
 <h3 id="attr_set_v2d"><span><a class="doc-id-link" href="#attr_set_v2d">attr_set_v2d<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/OpenEXRCore/exr_part.odin#L679"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">attr_set_v2d :: <span class="keyword-type">proc</span> "cdecl" (ctxt: <a class="code-typename" href="/vendor/OpenEXRCore/#context_t">context_t</a>, part_index: <span class="doc-builtin">i32</span>, name: <span class="doc-builtin">cstring</span>, out: ^<a class="code-typename" href="/vendor/OpenEXRCore/#attr_v2d_t">attr_v2d_t</a>) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a> ---</pre>
+<pre class="doc-code">attr_set_v2d :: <span class="keyword-type">proc</span> "cdecl" (ctxt: <a class="code-typename" href="/vendor/OpenEXRCore/#context_t">context_t</a>, part_index: <span class="doc-builtin">i32</span>, name: <span class="doc-builtin">cstring</span>, v: ^<a class="code-typename" href="/vendor/OpenEXRCore/#attr_v2d_t">attr_v2d_t</a>) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a> ---</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="attr_set_v2f"><span><a class="doc-id-link" href="#attr_set_v2f">attr_set_v2f<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/OpenEXRCore/exr_part.odin#L667"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">attr_set_v2f :: <span class="keyword-type">proc</span> "cdecl" (ctxt: <a class="code-typename" href="/vendor/OpenEXRCore/#context_t">context_t</a>, part_index: <span class="doc-builtin">i32</span>, name: <span class="doc-builtin">cstring</span>, out: ^<a class="code-typename" href="/vendor/OpenEXRCore/#attr_v2f_t">attr_v2f_t</a>) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a> ---</pre>
+<pre class="doc-code">attr_set_v2f :: <span class="keyword-type">proc</span> "cdecl" (ctxt: <a class="code-typename" href="/vendor/OpenEXRCore/#context_t">context_t</a>, part_index: <span class="doc-builtin">i32</span>, name: <span class="doc-builtin">cstring</span>, v: ^<a class="code-typename" href="/vendor/OpenEXRCore/#attr_v2f_t">attr_v2f_t</a>) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a> ---</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="attr_set_v2i"><span><a class="doc-id-link" href="#attr_set_v2i">attr_set_v2i<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/OpenEXRCore/exr_part.odin#L655"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">attr_set_v2i :: <span class="keyword-type">proc</span> "cdecl" (ctxt: <a class="code-typename" href="/vendor/OpenEXRCore/#context_t">context_t</a>, part_index: <span class="doc-builtin">i32</span>, name: <span class="doc-builtin">cstring</span>, out: ^<a class="code-typename" href="/vendor/OpenEXRCore/#attr_v2i_t">attr_v2i_t</a>) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a> ---</pre>
+<pre class="doc-code">attr_set_v2i :: <span class="keyword-type">proc</span> "cdecl" (ctxt: <a class="code-typename" href="/vendor/OpenEXRCore/#context_t">context_t</a>, part_index: <span class="doc-builtin">i32</span>, name: <span class="doc-builtin">cstring</span>, v: ^<a class="code-typename" href="/vendor/OpenEXRCore/#attr_v2i_t">attr_v2i_t</a>) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a> ---</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="attr_set_v3d"><span><a class="doc-id-link" href="#attr_set_v3d">attr_set_v3d<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/OpenEXRCore/exr_part.odin#L715"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">attr_set_v3d :: <span class="keyword-type">proc</span> "cdecl" (ctxt: <a class="code-typename" href="/vendor/OpenEXRCore/#context_t">context_t</a>, part_index: <span class="doc-builtin">i32</span>, name: <span class="doc-builtin">cstring</span>, out: ^<a class="code-typename" href="/vendor/OpenEXRCore/#attr_v3d_t">attr_v3d_t</a>) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a> ---</pre>
+<pre class="doc-code">attr_set_v3d :: <span class="keyword-type">proc</span> "cdecl" (ctxt: <a class="code-typename" href="/vendor/OpenEXRCore/#context_t">context_t</a>, part_index: <span class="doc-builtin">i32</span>, name: <span class="doc-builtin">cstring</span>, v: ^<a class="code-typename" href="/vendor/OpenEXRCore/#attr_v3d_t">attr_v3d_t</a>) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a> ---</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="attr_set_v3f"><span><a class="doc-id-link" href="#attr_set_v3f">attr_set_v3f<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/OpenEXRCore/exr_part.odin#L703"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">attr_set_v3f :: <span class="keyword-type">proc</span> "cdecl" (ctxt: <a class="code-typename" href="/vendor/OpenEXRCore/#context_t">context_t</a>, part_index: <span class="doc-builtin">i32</span>, name: <span class="doc-builtin">cstring</span>, out: ^<a class="code-typename" href="/vendor/OpenEXRCore/#attr_v3f_t">attr_v3f_t</a>) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a> ---</pre>
+<pre class="doc-code">attr_set_v3f :: <span class="keyword-type">proc</span> "cdecl" (ctxt: <a class="code-typename" href="/vendor/OpenEXRCore/#context_t">context_t</a>, part_index: <span class="doc-builtin">i32</span>, name: <span class="doc-builtin">cstring</span>, v: ^<a class="code-typename" href="/vendor/OpenEXRCore/#attr_v3f_t">attr_v3f_t</a>) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a> ---</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="attr_set_v3i"><span><a class="doc-id-link" href="#attr_set_v3i">attr_set_v3i<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/OpenEXRCore/exr_part.odin#L691"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">attr_set_v3i :: <span class="keyword-type">proc</span> "cdecl" (ctxt: <a class="code-typename" href="/vendor/OpenEXRCore/#context_t">context_t</a>, part_index: <span class="doc-builtin">i32</span>, name: <span class="doc-builtin">cstring</span>, out: ^<a class="code-typename" href="/vendor/OpenEXRCore/#attr_v3i_t">attr_v3i_t</a>) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a> ---</pre>
+<pre class="doc-code">attr_set_v3i :: <span class="keyword-type">proc</span> "cdecl" (ctxt: <a class="code-typename" href="/vendor/OpenEXRCore/#context_t">context_t</a>, part_index: <span class="doc-builtin">i32</span>, name: <span class="doc-builtin">cstring</span>, v: ^<a class="code-typename" href="/vendor/OpenEXRCore/#attr_v3i_t">attr_v3i_t</a>) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a> ---</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -2668,7 +2668,7 @@ Return type for all functions.</p>
 <div class="pkg-entity">
 <h3 id="get_attribute_count"><span><a class="doc-id-link" href="#get_attribute_count">get_attribute_count<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/OpenEXRCore/exr_part.odin#L177"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">get_attribute_count :: <span class="keyword-type">proc</span> "cdecl" (ctxt: <a class="code-typename" href="/vendor/OpenEXRCore/#context_t">context_t</a>, part_index: <span class="doc-builtin">i32</span>, out: ^<span class="doc-builtin">i32</span>) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a> ---</pre>
+<pre class="doc-code">get_attribute_count :: <span class="keyword-type">proc</span> "cdecl" (ctxt: <a class="code-typename" href="/vendor/OpenEXRCore/#context_t">context_t</a>, part_index: <span class="doc-builtin">i32</span>, count: ^<span class="doc-builtin">i32</span>) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a> ---</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -2881,7 +2881,7 @@ Return type for all functions.</p>
 	part_index: <span class="doc-builtin">i32</span>, 
 	levelx:     <span class="doc-builtin">i32</span>, 
 	levely:     <span class="doc-builtin">i32</span>, 
-	tilew:      ^<span class="doc-builtin">i32</span>, 
+	levw:       ^<span class="doc-builtin">i32</span>, 
 ) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a> ---</pre>
 </div>
 <details class="odin-doc-toggle" open>
@@ -2940,7 +2940,7 @@ Return type for all functions.</p>
 <div class="pkg-entity">
 <h3 id="get_pixel_aspect_ratio"><span><a class="doc-id-link" href="#get_pixel_aspect_ratio">get_pixel_aspect_ratio<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/OpenEXRCore/exr_part.odin#L339"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">get_pixel_aspect_ratio :: <span class="keyword-type">proc</span> "cdecl" (ctxt: <a class="code-typename" href="/vendor/OpenEXRCore/#context_t">context_t</a>, part_index: <span class="doc-builtin">i32</span>, level: ^<span class="doc-builtin">f32</span>) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a> ---</pre>
+<pre class="doc-code">get_pixel_aspect_ratio :: <span class="keyword-type">proc</span> "cdecl" (ctxt: <a class="code-typename" href="/vendor/OpenEXRCore/#context_t">context_t</a>, part_index: <span class="doc-builtin">i32</span>, par: ^<span class="doc-builtin">f32</span>) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a> ---</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -2975,7 +2975,7 @@ Return type for all functions.</p>
 <div class="pkg-entity">
 <h3 id="get_screen_window_width"><span><a class="doc-id-link" href="#get_screen_window_width">get_screen_window_width<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/OpenEXRCore/exr_part.odin#L349"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">get_screen_window_width :: <span class="keyword-type">proc</span> "cdecl" (ctxt: <a class="code-typename" href="/vendor/OpenEXRCore/#context_t">context_t</a>, part_index: <span class="doc-builtin">i32</span>, level: ^<span class="doc-builtin">f32</span>) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a> ---</pre>
+<pre class="doc-code">get_screen_window_width :: <span class="keyword-type">proc</span> "cdecl" (ctxt: <a class="code-typename" href="/vendor/OpenEXRCore/#context_t">context_t</a>, part_index: <span class="doc-builtin">i32</span>, out: ^<span class="doc-builtin">f32</span>) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a> ---</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -3072,7 +3072,7 @@ Return type for all functions.</p>
 <div class="pkg-entity">
 <h3 id="get_zip_compression_level"><span><a class="doc-id-link" href="#get_zip_compression_level">get_zip_compression_level<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/OpenEXRCore/exr_part.odin#L136"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">get_zip_compression_level :: <span class="keyword-type">proc</span> "cdecl" (ctxt: <a class="code-typename" href="/vendor/OpenEXRCore/#context_t">context_t</a>, part_index: <span class="doc-builtin">i32</span>, out: ^<span class="doc-builtin">i32</span>) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a> ---</pre>
+<pre class="doc-code">get_zip_compression_level :: <span class="keyword-type">proc</span> "cdecl" (ctxt: <a class="code-typename" href="/vendor/OpenEXRCore/#context_t">context_t</a>, part_index: <span class="doc-builtin">i32</span>, level: ^<span class="doc-builtin">i32</span>) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a> ---</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -3132,7 +3132,7 @@ Return type for all functions.</p>
 <div class="pkg-entity">
 <h3 id="print_context_info"><span><a class="doc-id-link" href="#print_context_info">print_context_info<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/OpenEXRCore/exr_debug.odin#L11"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">print_context_info :: <span class="keyword-type">proc</span> "cdecl" (ctxt: <a class="code-typename" href="/vendor/OpenEXRCore/#context_t">context_t</a>, onoff: <span class="doc-builtin">b32</span>) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a> ---</pre>
+<pre class="doc-code">print_context_info :: <span class="keyword-type">proc</span> "cdecl" (c: <a class="code-typename" href="/vendor/OpenEXRCore/#context_t">context_t</a>, verbose: <span class="doc-builtin">b32</span>) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a> ---</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -3189,7 +3189,7 @@ Return type for all functions.</p>
 <div class="pkg-entity">
 <h3 id="register_attr_type_handler"><span><a class="doc-id-link" href="#register_attr_type_handler">register_attr_type_handler<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/OpenEXRCore/exr_context.odin#L451"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">register_attr_type_handler :: <span class="keyword-type">proc</span> "cdecl" (ctxt: <a class="code-typename" href="/vendor/OpenEXRCore/#context_t">context_t</a>, type: <span class="doc-builtin">cstring</span>, unpack_func_ptr: <span class="keyword-type">proc</span> "cdecl" (ctxt: <a class="code-typename" href="/vendor/OpenEXRCore/#context_t">context_t</a>, data: <span class="doc-builtin">rawptr</span>, attrsize: <span class="doc-builtin">i32</span>, outsize: ^<span class="doc-builtin">i32</span>, outbuffer: ^<span class="doc-builtin">rawptr</span>) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a>, pack_func_ptr: <span class="keyword-type">proc</span> "cdecl" (ctxt: <a class="code-typename" href="/vendor/OpenEXRCore/#context_t">context_t</a>, data: <span class="doc-builtin">rawptr</span>, datasize: <span class="doc-builtin">i32</span>, outsize: ^<span class="doc-builtin">i32</span>, outbuffer: <span class="doc-builtin">rawptr</span>) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a>, destroy_unpacked_func_ptr: <span class="keyword-type">proc</span> "cdecl" (ctxt: <a class="code-typename" href="/vendor/OpenEXRCore/#context_t">context_t</a>, userdata: <span class="doc-builtin">rawptr</span>, failed: <span class="doc-builtin">i32</span>)) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a> ---</pre>
+<pre class="doc-code">register_attr_type_handler :: <span class="keyword-type">proc</span> "cdecl" (ctxt: <a class="code-typename" href="/vendor/OpenEXRCore/#context_t">context_t</a>, type: <span class="doc-builtin">cstring</span>, unpack_func_ptr: <span class="keyword-type">proc</span> "cdecl" (ctxt: <a class="code-typename" href="/vendor/OpenEXRCore/#context_t">context_t</a>, data: <span class="doc-builtin">rawptr</span>, attrsize: <span class="doc-builtin">i32</span>, outsize: ^<span class="doc-builtin">i32</span>, outbuffer: ^<span class="doc-builtin">rawptr</span>) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a>, pack_func_ptr: <span class="keyword-type">proc</span> "cdecl" (ctxt: <a class="code-typename" href="/vendor/OpenEXRCore/#context_t">context_t</a>, data: <span class="doc-builtin">rawptr</span>, datasize: <span class="doc-builtin">i32</span>, outsize: ^<span class="doc-builtin">i32</span>, outbuffer: <span class="doc-builtin">rawptr</span>) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a>, destroy_unpacked_func_ptr: <span class="keyword-type">proc</span> "cdecl" (ctxt: <a class="code-typename" href="/vendor/OpenEXRCore/#context_t">context_t</a>, data: <span class="doc-builtin">rawptr</span>, datasize: <span class="doc-builtin">i32</span>)) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a> ---</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -3227,7 +3227,7 @@ Return type for all functions.</p>
 <div class="pkg-entity">
 <h3 id="set_chunk_count"><span><a class="doc-id-link" href="#set_chunk_count">set_chunk_count<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/OpenEXRCore/exr_part.odin#L377"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">set_chunk_count :: <span class="keyword-type">proc</span> "cdecl" (ctxt: <a class="code-typename" href="/vendor/OpenEXRCore/#context_t">context_t</a>, part_index: <span class="doc-builtin">i32</span>, level: <span class="doc-builtin">i32</span>) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a> ---</pre>
+<pre class="doc-code">set_chunk_count :: <span class="keyword-type">proc</span> "cdecl" (ctxt: <a class="code-typename" href="/vendor/OpenEXRCore/#context_t">context_t</a>, part_index: <span class="doc-builtin">i32</span>, val: <span class="doc-builtin">i32</span>) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a> ---</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -3253,7 +3253,7 @@ Return type for all functions.</p>
 <div class="pkg-entity">
 <h3 id="set_default_dwa_compression_quality"><span><a class="doc-id-link" href="#set_default_dwa_compression_quality">set_default_dwa_compression_quality<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/OpenEXRCore/exr_base.odin#L154"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">set_default_dwa_compression_quality :: <span class="keyword-type">proc</span> "cdecl" (ms: <span class="doc-builtin">f32</span>) ---</pre>
+<pre class="doc-code">set_default_dwa_compression_quality :: <span class="keyword-type">proc</span> "cdecl" (q: <span class="doc-builtin">f32</span>) ---</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -3267,7 +3267,7 @@ Return type for all functions.</p>
 <div class="pkg-entity">
 <h3 id="set_default_maximum_image_size"><span><a class="doc-id-link" href="#set_default_maximum_image_size">set_default_maximum_image_size<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/OpenEXRCore/exr_base.odin#L82"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">set_default_maximum_image_size :: <span class="keyword-type">proc</span> "cdecl" (joy, event: <span class="doc-builtin">i32</span>) ---</pre>
+<pre class="doc-code">set_default_maximum_image_size :: <span class="keyword-type">proc</span> "cdecl" (w, h: <span class="doc-builtin">i32</span>) ---</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -3306,7 +3306,7 @@ Return type for all functions.</p>
 <div class="pkg-entity">
 <h3 id="set_default_maximum_tile_size"><span><a class="doc-id-link" href="#set_default_maximum_tile_size">set_default_maximum_tile_size<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/OpenEXRCore/exr_base.odin#L123"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">set_default_maximum_tile_size :: <span class="keyword-type">proc</span> "cdecl" (joy, event: <span class="doc-builtin">i32</span>) ---</pre>
+<pre class="doc-code">set_default_maximum_tile_size :: <span class="keyword-type">proc</span> "cdecl" (w, h: <span class="doc-builtin">i32</span>) ---</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -3370,7 +3370,7 @@ Return type for all functions.</p>
 <div class="pkg-entity">
 <h3 id="set_default_zip_compression_level"><span><a class="doc-id-link" href="#set_default_zip_compression_level">set_default_zip_compression_level<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/OpenEXRCore/exr_base.odin#L143"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">set_default_zip_compression_level :: <span class="keyword-type">proc</span> "cdecl" (interval: <span class="doc-builtin">i32</span>) ---</pre>
+<pre class="doc-code">set_default_zip_compression_level :: <span class="keyword-type">proc</span> "cdecl" (l: <span class="doc-builtin">i32</span>) ---</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -3433,7 +3433,7 @@ Return type for all functions.</p>
 <div class="pkg-entity">
 <h3 id="set_pixel_aspect_ratio"><span><a class="doc-id-link" href="#set_pixel_aspect_ratio">set_pixel_aspect_ratio<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/OpenEXRCore/exr_part.odin#L341"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">set_pixel_aspect_ratio :: <span class="keyword-type">proc</span> "cdecl" (ctxt: <a class="code-typename" href="/vendor/OpenEXRCore/#context_t">context_t</a>, part_index: <span class="doc-builtin">i32</span>, level: <span class="doc-builtin">f32</span>) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a> ---</pre>
+<pre class="doc-code">set_pixel_aspect_ratio :: <span class="keyword-type">proc</span> "cdecl" (ctxt: <a class="code-typename" href="/vendor/OpenEXRCore/#context_t">context_t</a>, part_index: <span class="doc-builtin">i32</span>, par: <span class="doc-builtin">f32</span>) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a> ---</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -3453,7 +3453,7 @@ Return type for all functions.</p>
 <div class="pkg-entity">
 <h3 id="set_screen_window_width"><span><a class="doc-id-link" href="#set_screen_window_width">set_screen_window_width<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/OpenEXRCore/exr_part.odin#L351"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">set_screen_window_width :: <span class="keyword-type">proc</span> "cdecl" (ctxt: <a class="code-typename" href="/vendor/OpenEXRCore/#context_t">context_t</a>, part_index: <span class="doc-builtin">i32</span>, level: <span class="doc-builtin">f32</span>) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a> ---</pre>
+<pre class="doc-code">set_screen_window_width :: <span class="keyword-type">proc</span> "cdecl" (ctxt: <a class="code-typename" href="/vendor/OpenEXRCore/#context_t">context_t</a>, part_index: <span class="doc-builtin">i32</span>, ssw: <span class="doc-builtin">f32</span>) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a> ---</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -3479,7 +3479,7 @@ Return type for all functions.</p>
 <div class="pkg-entity">
 <h3 id="set_version"><span><a class="doc-id-link" href="#set_version">set_version<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/OpenEXRCore/exr_part.odin#L375"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">set_version :: <span class="keyword-type">proc</span> "cdecl" (ctxt: <a class="code-typename" href="/vendor/OpenEXRCore/#context_t">context_t</a>, part_index: <span class="doc-builtin">i32</span>, level: <span class="doc-builtin">i32</span>) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a> ---</pre>
+<pre class="doc-code">set_version :: <span class="keyword-type">proc</span> "cdecl" (ctxt: <a class="code-typename" href="/vendor/OpenEXRCore/#context_t">context_t</a>, part_index: <span class="doc-builtin">i32</span>, val: <span class="doc-builtin">i32</span>) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a> ---</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -3745,7 +3745,7 @@ Return type for all functions.</p>
 <li><a href="https://github.com/odin-lang/Odin/tree/master/vendor/OpenEXRCore/exr_part.odin">exr_part.odin</a></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2022-12 (vendor "odin") Windows_amd64 @ 2022-12-29 21:08:34.710261600 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2022-12 (vendor "odin") Windows_amd64 @ 2022-12-30 21:08:32.756125900 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
