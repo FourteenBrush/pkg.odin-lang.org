@@ -1376,16 +1376,16 @@ Procedure Groups (0)</summary>
 <div>
 <pre class="doc-code">allocation_callbacks :: <span class="keyword-type">struct</span> {
 	pUserData: <span class="doc-builtin">rawptr</span>,
-	onMalloc:  <span class="keyword-type">proc</span> "cdecl" (sz: <span class="doc-builtin">uint</span>, pUserData: <span class="doc-builtin">rawptr</span>) -> <span class="doc-builtin">rawptr</span>,
-	onRealloc: <span class="keyword-type">proc</span> "cdecl" (p: <span class="doc-builtin">rawptr</span>, sz: <span class="doc-builtin">uint</span>, pUserData: <span class="doc-builtin">rawptr</span>) -> <span class="doc-builtin">rawptr</span>,
-	onFree:    <span class="keyword-type">proc</span> "cdecl" (p: <span class="doc-builtin">rawptr</span>, pUserData: <span class="doc-builtin">rawptr</span>),
+	onMalloc:  <span class="keyword-type">proc</span> "cdecl" (sz: , pUserData: ) -> <span class="doc-builtin">rawptr</span>,
+	onRealloc: <span class="keyword-type">proc</span> "cdecl" (p: , sz: , pUserData: ) -> <span class="doc-builtin">rawptr</span>,
+	onFree:    <span class="keyword-type">proc</span> "cdecl" (p: , pUserData: ),
 }</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="async_notification"><span><a class="doc-id-link" href="#async_notification">async_notification<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/miniaudio/synchronization.odin#L107"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">async_notification :: <span class="keyword-type">struct</span>($Key: typeid, $Value: typeid) where intrinsics.type_is_valid_map_key(Key) {}</pre>
+<pre class="doc-code">async_notification :: <span class="keyword-type">struct</span> {}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -1509,16 +1509,16 @@ Procedure Groups (0)</summary>
 <h3 id="backend_callbacks"><span><a class="doc-id-link" href="#backend_callbacks">backend_callbacks<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/miniaudio/device_io_types.odin#L530"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">backend_callbacks :: <span class="keyword-type">struct</span> {
-	onContextInit:             <span class="keyword-type">proc</span> "cdecl" (pContext: ^<a class="code-typename" href="/vendor/miniaudio/#context_type">context_type</a>, pConfig: ^<a class="code-typename" href="/vendor/miniaudio/#context_config">context_config</a>, pCallbacks: ^<a class="code-typename" href="/vendor/miniaudio/#backend_callbacks">backend_callbacks</a>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a>,
+	onContextInit:             <span class="keyword-type">proc</span> "cdecl" (pContext: , pConfig: , pCallbacks: ) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a>,
 	onContextUninit:           <span class="keyword-type">proc</span> "cdecl" (pContext: ^<a class="code-typename" href="/vendor/miniaudio/#context_type">context_type</a>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a>,
 	onContextEnumerateDevices: <span class="keyword-type">proc</span> "cdecl" (pContext: ^<a class="code-typename" href="/vendor/miniaudio/#context_type">context_type</a>, callback: <a class="code-typename" href="/vendor/miniaudio/#enum_devices_callback_proc">enum_devices_callback_proc</a>, pUserData: <span class="doc-builtin">rawptr</span>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a>,
 	onContextGetDeviceInfo:    <span class="keyword-type">proc</span> "cdecl" (pContext: ^<a class="code-typename" href="/vendor/miniaudio/#context_type">context_type</a>, deviceType: <a class="code-typename" href="/vendor/miniaudio/#device_type">device_type</a>, pDeviceID: ^<a class="code-typename" href="/vendor/miniaudio/#device_id">device_id</a>, pDeviceInfo: ^<a class="code-typename" href="/vendor/miniaudio/#device_info">device_info</a>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a>,
-	onDeviceInit:              <span class="keyword-type">proc</span> "cdecl" (pDevice: ^<a class="code-typename" href="/vendor/miniaudio/#device">device</a>, pConfig: ^<a class="code-typename" href="/vendor/miniaudio/#device_config">device_config</a>, pDescriptorPlayback, pDescriptorCapture: ^<a class="code-typename" href="/vendor/miniaudio/#device_descriptor">device_descriptor</a>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a>,
+	onDeviceInit:              <span class="keyword-type">proc</span> "cdecl" (pDevice: , pConfig: , pDescriptorPlayback, pDescriptorCapture: ) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a>,
 	onDeviceUninit:            <span class="keyword-type">proc</span> "cdecl" (pDevice: ^<a class="code-typename" href="/vendor/miniaudio/#device">device</a>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a>,
 	onDeviceStart:             <span class="keyword-type">proc</span> "cdecl" (pDevice: ^<a class="code-typename" href="/vendor/miniaudio/#device">device</a>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a>,
 	onDeviceStop:              <span class="keyword-type">proc</span> "cdecl" (pDevice: ^<a class="code-typename" href="/vendor/miniaudio/#device">device</a>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a>,
-	onDeviceRead:              <span class="keyword-type">proc</span> "cdecl" (pDevice: ^<a class="code-typename" href="/vendor/miniaudio/#device">device</a>, pFrames: <span class="doc-builtin">rawptr</span>, frameCount: <span class="doc-builtin">u32</span>, pFramesRead: ^<span class="doc-builtin">u32</span>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a>,
-	onDeviceWrite:             <span class="keyword-type">proc</span> "cdecl" (pDevice: ^<a class="code-typename" href="/vendor/miniaudio/#device">device</a>, pFrames: <span class="doc-builtin">rawptr</span>, frameCount: <span class="doc-builtin">u32</span>, pFramesWritten: ^<span class="doc-builtin">u32</span>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a>,
+	onDeviceRead:              <span class="keyword-type">proc</span> "cdecl" (pDevice: , pFrames: , frameCount: , pFramesRead: ) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a>,
+	onDeviceWrite:             <span class="keyword-type">proc</span> "cdecl" (pDevice: , pFrames: , frameCount: , pFramesWritten: ) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a>,
 	onDeviceDataLoop:          <span class="keyword-type">proc</span> "cdecl" (pDevice: ^<a class="code-typename" href="/vendor/miniaudio/#device">device</a>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a>,
 	onDeviceDataLoopWakeup:    <span class="keyword-type">proc</span> "cdecl" (pDevice: ^<a class="code-typename" href="/vendor/miniaudio/#device">device</a>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a>,
 	onDeviceGetInfo:           <span class="keyword-type">proc</span> "cdecl" (pDevice: ^<a class="code-typename" href="/vendor/miniaudio/#device">device</a>, type: <a class="code-typename" href="/vendor/miniaudio/#device_type">device_type</a>, pDeviceInfo: ^<a class="code-typename" href="/vendor/miniaudio/#device_info">device_info</a>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a>,
@@ -1821,8 +1821,8 @@ wake up the audio thread.</p>
 	pShuffleTable:  [^]<span class="doc-builtin">u8</span>,
 	weights:        <span class="keyword-type">struct</span> <span class="directive">#raw_union</span> {
 		<span class="comment">// [in][out] </span>
-		f32: ^[^]<span class="doc-builtin">f32</span>,
-		s16: ^[^]<span class="doc-builtin">i32</span>,
+		f32: ,
+		s16: ,
 	},
 	<span class="comment">// Memory management. </span>
 	_pHeap:         <span class="doc-builtin">rawptr</span>,
@@ -1863,19 +1863,9 @@ wake up the audio thread.</p>
 	pEvent: ^<a class="code-typename" href="/vendor/miniaudio/#event">event</a>,
 	<span class="comment">// This will be signalled when the event is complete. </span>
 	data:   <span class="keyword-type">struct</span> <span class="directive">#raw_union</span> {
-		quit:               <span class="keyword-type">struct</span> {
-			_unused: <span class="doc-builtin">i32</span>,
-		},
-		createAudioClient:  <span class="keyword-type">struct</span> {
-			deviceType:           <a class="code-typename" href="/vendor/miniaudio/#device_type">device_type</a>,
-			pAudioClient:         <span class="doc-builtin">rawptr</span>,
-			ppAudioClientService: ^<span class="doc-builtin">rawptr</span>,
-			pResult:              ^<a class="code-typename" href="/vendor/miniaudio/#result">result</a>,
-		},
-		releaseAudioClient: <span class="keyword-type">struct</span> {
-			pDevice:    ^<a class="code-typename" href="/vendor/miniaudio/#device">device</a>,
-			deviceType: <a class="code-typename" href="/vendor/miniaudio/#device_type">device_type</a>,
-		},
+		quit:               ,
+		createAudioClient:  ,
+		releaseAudioClient: ,
 	},
 }</pre>
 </div>
@@ -1894,23 +1884,23 @@ wake up the audio thread.</p>
 	pUserData:           <span class="doc-builtin">rawptr</span>,
 	allocationCallbacks: <a class="code-typename" href="/vendor/miniaudio/#allocation_callbacks">allocation_callbacks</a>,
 	alsa:                <span class="keyword-type">struct</span> {
-		useVerboseDeviceEnumeration: <span class="doc-builtin">b32</span>,
+		useVerboseDeviceEnumeration: ,
 	},
 	pulse:               <span class="keyword-type">struct</span> {
-		pApplicationName: <span class="doc-builtin">cstring</span>,
-		pServerName:      <span class="doc-builtin">cstring</span>,
-		tryAutoSpawn:     <span class="doc-builtin">b32</span>,
+		pApplicationName: ,
+		pServerName:      ,
+		tryAutoSpawn:     ,
 	},
 	coreaudio:           <span class="keyword-type">struct</span> {
-		sessionCategory:          <a class="code-typename" href="/vendor/miniaudio/#ios_session_category">ios_session_category</a>,
-		sessionCategoryOptions:   <span class="doc-builtin">u32</span>,
-		noAudioSessionActivate:   <span class="doc-builtin">b32</span>,
+		sessionCategory:          ,
+		sessionCategoryOptions:   ,
+		noAudioSessionActivate:   ,
 		<span class="comment">// iOS only. When set to true, does not perform an explicit [[AVAudioSession sharedInstace] setActive:true] on initialization. </span>
-		noAudioSessionDeactivate: <span class="doc-builtin">b32</span>,
+		noAudioSessionDeactivate: ,
 	},
 	jack:                <span class="keyword-type">struct</span> {
-		pClientName:    <span class="doc-builtin">cstring</span>,
-		tryStartServer: <span class="doc-builtin">b32</span>,
+		pClientName:    ,
+		tryStartServer: ,
 	},
 	custom:              <a class="code-typename" href="/vendor/miniaudio/#backend_callbacks">backend_callbacks</a>,
 }</pre>
@@ -1941,94 +1931,25 @@ wake up the audio thread.</p>
 	pDeviceInfos:            [^]<a class="code-typename" href="/vendor/miniaudio/#device_info">device_info</a>,
 	<span class="comment">// Playback devices first, then capture. </span>
 	_:                       <span class="keyword-type">struct</span> <span class="directive">#raw_union</span> {
-		wasapi:       <span class="keyword-type">struct</span> {
-			commandThread: <a class="code-typename" href="/vendor/miniaudio/#thread">thread</a>,
-			commandLock:   <a class="code-typename" href="/vendor/miniaudio/#mutex">mutex</a>,
-			commandSem:    <a class="code-typename" href="/vendor/miniaudio/#semaphore">semaphore</a>,
-			commandIndex:  <span class="doc-builtin">u32</span>,
-			commandCount:  <span class="doc-builtin">u32</span>,
-			commands:      [4]<a class="code-typename" href="/vendor/miniaudio/#context_command__wasapi">context_command__wasapi</a>,
-		},
-		dsound:       <span class="keyword-type">struct</span> {
-			hDSoundDLL:                   <a class="code-typename" href="/vendor/miniaudio/#handle">handle</a>,
-			DirectSoundCreate:            <span class="keyword-type">proc</span> "stdcall" (),
-			DirectSoundEnumerateA:        <span class="keyword-type">proc</span> "stdcall" (),
-			DirectSoundCaptureCreate:     <span class="keyword-type">proc</span> "stdcall" (),
-			DirectSoundCaptureEnumerateA: <span class="keyword-type">proc</span> "stdcall" (),
-		},
-		winmm:        <span class="keyword-type">struct</span> {
-			hWinMM:                 <a class="code-typename" href="/vendor/miniaudio/#handle">handle</a>,
-			waveOutGetNumDevs:      <span class="keyword-type">proc</span> "stdcall" (),
-			waveOutGetDevCapsA:     <span class="keyword-type">proc</span> "stdcall" (),
-			waveOutOpen:            <span class="keyword-type">proc</span> "stdcall" (),
-			waveOutClose:           <span class="keyword-type">proc</span> "stdcall" (),
-			waveOutPrepareHeader:   <span class="keyword-type">proc</span> "stdcall" (),
-			waveOutUnprepareHeader: <span class="keyword-type">proc</span> "stdcall" (),
-			waveOutWrite:           <span class="keyword-type">proc</span> "stdcall" (),
-			waveOutReset:           <span class="keyword-type">proc</span> "stdcall" (),
-			waveInGetNumDevs:       <span class="keyword-type">proc</span> "stdcall" (),
-			waveInGetDevCapsA:      <span class="keyword-type">proc</span> "stdcall" (),
-			waveInOpen:             <span class="keyword-type">proc</span> "stdcall" (),
-			waveInClose:            <span class="keyword-type">proc</span> "stdcall" (),
-			waveInPrepareHeader:    <span class="keyword-type">proc</span> "stdcall" (),
-			waveInUnprepareHeader:  <span class="keyword-type">proc</span> "stdcall" (),
-			waveInAddBuffer:        <span class="keyword-type">proc</span> "stdcall" (),
-			waveInStart:            <span class="keyword-type">proc</span> "stdcall" (),
-			waveInReset:            <span class="keyword-type">proc</span> "stdcall" (),
-		},
-		alsa:         <span class="keyword-type">struct</span>($Key: typeid, $Value: typeid) where intrinsics.type_is_valid_map_key(Key) {},
-		pulse:        <span class="keyword-type">struct</span>($Key: typeid, $Value: typeid) where intrinsics.type_is_valid_map_key(Key) {},
-		jack:         <span class="keyword-type">struct</span> {
-			jackSO:                        <a class="code-typename" href="/vendor/miniaudio/#handle">handle</a>,
-			jack_client_open:              <span class="keyword-type">proc</span> "stdcall" (),
-			jack_client_close:             <span class="keyword-type">proc</span> "stdcall" (),
-			jack_client_name_size:         <span class="keyword-type">proc</span> "stdcall" (),
-			jack_set_process_callback:     <span class="keyword-type">proc</span> "stdcall" (),
-			jack_set_buffer_size_callback: <span class="keyword-type">proc</span> "stdcall" (),
-			jack_on_shutdown:              <span class="keyword-type">proc</span> "stdcall" (),
-			jack_get_sample_rate:          <span class="keyword-type">proc</span> "stdcall" (),
-			jack_get_buffer_size:          <span class="keyword-type">proc</span> "stdcall" (),
-			jack_get_ports:                <span class="keyword-type">proc</span> "stdcall" (),
-			jack_activate:                 <span class="keyword-type">proc</span> "stdcall" (),
-			jack_deactivate:               <span class="keyword-type">proc</span> "stdcall" (),
-			jack_connect:                  <span class="keyword-type">proc</span> "stdcall" (),
-			jack_port_register:            <span class="keyword-type">proc</span> "stdcall" (),
-			jack_port_name:                <span class="keyword-type">proc</span> "stdcall" (),
-			jack_port_get_buffer:          <span class="keyword-type">proc</span> "stdcall" (),
-			jack_free:                     <span class="keyword-type">proc</span> "stdcall" (),
-			pClientName:                   <span class="doc-builtin">cstring</span>,
-			tryStartServer:                <span class="doc-builtin">b32</span>,
-		},
-		coreaudio:    <span class="keyword-type">struct</span>($Key: typeid, $Value: typeid) where intrinsics.type_is_valid_map_key(Key) {},
-		sndio:        <span class="keyword-type">struct</span>($Key: typeid, $Value: typeid) where intrinsics.type_is_valid_map_key(Key) {},
-		audio4:       <span class="keyword-type">struct</span>($Key: typeid, $Value: typeid) where intrinsics.type_is_valid_map_key(Key) {},
-		oss:          <span class="keyword-type">struct</span>($Key: typeid, $Value: typeid) where intrinsics.type_is_valid_map_key(Key) {},
-		aaudio:       <span class="keyword-type">struct</span>($Key: typeid, $Value: typeid) where intrinsics.type_is_valid_map_key(Key) {},
-		opensl:       <span class="keyword-type">struct</span>($Key: typeid, $Value: typeid) where intrinsics.type_is_valid_map_key(Key) {},
-		webaudio:     <span class="keyword-type">struct</span>($Key: typeid, $Value: typeid) where intrinsics.type_is_valid_map_key(Key) {},
-		null_backend: <span class="keyword-type">struct</span> {
-			_unused: <span class="doc-builtin">i32</span>,
-		},
+		wasapi:       ,
+		dsound:       ,
+		winmm:        ,
+		alsa:         ,
+		pulse:        ,
+		jack:         ,
+		coreaudio:    ,
+		sndio:        ,
+		audio4:       ,
+		oss:          ,
+		aaudio:       ,
+		opensl:       ,
+		webaudio:     ,
+		null_backend: ,
 	},
 	_:                       <span class="keyword-type">struct</span> <span class="directive">#raw_union</span> {
-		win32:   <span class="keyword-type">struct</span> {
-			hOle32DLL:           <a class="code-typename" href="/vendor/miniaudio/#handle">handle</a>,
-			CoInitializeEx:      <span class="keyword-type">proc</span> "stdcall" (),
-			CoUninitialize:      <span class="keyword-type">proc</span> "stdcall" (),
-			CoCreateInstance:    <span class="keyword-type">proc</span> "stdcall" (),
-			CoTaskMemFree:       <span class="keyword-type">proc</span> "stdcall" (),
-			PropVariantClear:    <span class="keyword-type">proc</span> "stdcall" (),
-			StringFromGUID2:     <span class="keyword-type">proc</span> "stdcall" (),
-			hUser32DLL:          <a class="code-typename" href="/vendor/miniaudio/#handle">handle</a>,
-			GetForegroundWindow: <span class="keyword-type">proc</span> "stdcall" (),
-			GetDesktopWindow:    <span class="keyword-type">proc</span> "stdcall" (),
-			hAdvapi32DLL:        <a class="code-typename" href="/vendor/miniaudio/#handle">handle</a>,
-			RegOpenKeyExA:       <span class="keyword-type">proc</span> "stdcall" (),
-			RegCloseKey:         <span class="keyword-type">proc</span> "stdcall" (),
-			RegQueryValueExA:    <span class="keyword-type">proc</span> "stdcall" (),
-		},
-		posix:   <span class="keyword-type">struct</span>($Key: typeid, $Value: typeid) where intrinsics.type_is_valid_map_key(Key) {},
-		_unused: <span class="doc-builtin">i32</span>,
+		win32:   ,
+		posix:   ,
+		_unused: ,
 	},
 }</pre>
 </div>
@@ -2102,7 +2023,7 @@ wake up the audio thread.</p>
 <div class="pkg-entity">
 <h3 id="data_source"><span><a class="doc-id-link" href="#data_source">data_source<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/miniaudio/utilities.odin#L119"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">data_source :: <span class="keyword-type">struct</span>($Key: typeid, $Value: typeid) where intrinsics.type_is_valid_map_key(Key) {}</pre>
+<pre class="doc-code">data_source :: <span class="keyword-type">struct</span> {}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -2208,15 +2129,8 @@ wake up the audio thread.</p>
 	<span class="comment">// The number of valid frames remaining in the cahce. </span>
 	allocationCallbacks:    <a class="code-typename" href="/vendor/miniaudio/#allocation_callbacks">allocation_callbacks</a>,
 	data:                   <span class="keyword-type">struct</span> <span class="directive">#raw_union</span> {
-		vfs:    <span class="keyword-type">struct</span> {
-			pVFS: ^<a class="code-typename" href="/vendor/miniaudio/#vfs">vfs</a>,
-			file: <a class="code-typename" href="/vendor/miniaudio/#vfs_file">vfs_file</a>,
-		},
-		memory: <span class="keyword-type">struct</span> {
-			pData:          [^]<span class="doc-builtin">u8</span>,
-			dataSize:       <span class="doc-builtin">uint</span>,
-			currentReadPos: <span class="doc-builtin">uint</span>,
-		},
+		vfs:    ,
+		memory: ,
 	},
 }</pre>
 </div>
@@ -2276,14 +2190,14 @@ wake up the audio thread.</p>
 <h3 id="decoding_backend_vtable"><span><a class="doc-id-link" href="#decoding_backend_vtable">decoding_backend_vtable<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/miniaudio/decoding.odin#L34"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">decoding_backend_vtable :: <span class="keyword-type">struct</span> {
-	onInit:       <span class="keyword-type">proc</span> "cdecl" (pUserData: <span class="doc-builtin">rawptr</span>, onRead: <a class="code-typename" href="/vendor/miniaudio/#decoder_read_proc">decoder_read_proc</a>, onSeek: <a class="code-typename" href="/vendor/miniaudio/#decoder_seek_proc">decoder_seek_proc</a>, onTell: <a class="code-typename" href="/vendor/miniaudio/#decoder_tell_proc">decoder_tell_proc</a>, pReadSeekTellUserData: <span class="doc-builtin">rawptr</span>, pConfig: ^<a class="code-typename" href="/vendor/miniaudio/#decoding_backend_config">decoding_backend_config</a>, pAllocationCallbacks: ^<a class="code-typename" href="/vendor/miniaudio/#allocation_callbacks">allocation_callbacks</a>, ppBackend: ^^<a class="code-typename" href="/vendor/miniaudio/#data_source">data_source</a>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a>,
-	onInitFile:   <span class="keyword-type">proc</span> "cdecl" (pUserData: <span class="doc-builtin">rawptr</span>, pFilePath: <span class="doc-builtin">cstring</span>, pConfig: ^<a class="code-typename" href="/vendor/miniaudio/#decoding_backend_config">decoding_backend_config</a>, pAllocationCallbacks: ^<a class="code-typename" href="/vendor/miniaudio/#allocation_callbacks">allocation_callbacks</a>, ppBackend: ^^<a class="code-typename" href="/vendor/miniaudio/#data_source">data_source</a>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a>,
+	onInit:       <span class="keyword-type">proc</span> "cdecl" (pUserData: , onRead: , onSeek: , onTell: , pReadSeekTellUserData: , pConfig: , pAllocationCallbacks: , ppBackend: ) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a>,
+	onInitFile:   <span class="keyword-type">proc</span> "cdecl" (pUserData: , pFilePath: , pConfig: , pAllocationCallbacks: , ppBackend: ) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a>,
 	<span class="comment">// Optional. </span>
-	onInitFileW:  <span class="keyword-type">proc</span> "cdecl" (pUserData: <span class="doc-builtin">rawptr</span>, pFilePath: [^]<span class="doc-builtin">u16</span>, pConfig: ^<a class="code-typename" href="/vendor/miniaudio/#decoding_backend_config">decoding_backend_config</a>, pAllocationCallbacks: ^<a class="code-typename" href="/vendor/miniaudio/#allocation_callbacks">allocation_callbacks</a>, ppBackend: ^^<a class="code-typename" href="/vendor/miniaudio/#data_source">data_source</a>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a>,
+	onInitFileW:  <span class="keyword-type">proc</span> "cdecl" (pUserData: , pFilePath: , pConfig: , pAllocationCallbacks: , ppBackend: ) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a>,
 	<span class="comment">// Optional. </span>
-	onInitMemory: <span class="keyword-type">proc</span> "cdecl" (pUserData: <span class="doc-builtin">rawptr</span>, pData: <span class="doc-builtin">rawptr</span>, dataSize: <span class="doc-builtin">uint</span>, pConfig: ^<a class="code-typename" href="/vendor/miniaudio/#decoding_backend_config">decoding_backend_config</a>, pAllocationCallbacks: ^<a class="code-typename" href="/vendor/miniaudio/#allocation_callbacks">allocation_callbacks</a>, ppBackend: ^^<a class="code-typename" href="/vendor/miniaudio/#data_source">data_source</a>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a>,
+	onInitMemory: <span class="keyword-type">proc</span> "cdecl" (pUserData: , pData: , dataSize: , pConfig: , pAllocationCallbacks: , ppBackend: ) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a>,
 	<span class="comment">// Optional. </span>
-	onUninit:     <span class="keyword-type">proc</span> "cdecl" (pUserData: <span class="doc-builtin">rawptr</span>, pBackend: ^<a class="code-typename" href="/vendor/miniaudio/#data_source">data_source</a>, pAllocationCallbacks: ^<a class="code-typename" href="/vendor/miniaudio/#allocation_callbacks">allocation_callbacks</a>),
+	onUninit:     <span class="keyword-type">proc</span> "cdecl" (pUserData: , pBackend: , pAllocationCallbacks: ),
 }</pre>
 </div>
 </div>
@@ -2389,171 +2303,82 @@ wake up the audio thread.</p>
 	duplexRB:                  <a class="code-typename" href="/vendor/miniaudio/#duplex_rb">duplex_rb</a>,
 	<span class="comment">// Intermediary buffer for duplex device on asynchronous backends. </span>
 	resampling:                <span class="keyword-type">struct</span> {
-		algorithm:        <a class="code-typename" href="/vendor/miniaudio/#resample_algorithm">resample_algorithm</a>,
-		pBackendVTable:   ^<a class="code-typename" href="/vendor/miniaudio/#resampling_backend_vtable">resampling_backend_vtable</a>,
-		pBackendUserData: <span class="doc-builtin">rawptr</span>,
-		linear:           <span class="keyword-type">struct</span> {
-			lpfOrder: <span class="doc-builtin">u32</span>,
-		},
+		algorithm:        ,
+		pBackendVTable:   ,
+		pBackendUserData: ,
+		linear:           ,
 	},
 	playback:                  <span class="keyword-type">struct</span> {
-		pID:                        ^<a class="code-typename" href="/vendor/miniaudio/#device_id">device_id</a>,
+		pID:                        ,
 		<span class="comment">// Set to NULL if using default ID, otherwise set to the address of "id". </span>
-		id:                         <a class="code-typename" href="/vendor/miniaudio/#device_id">device_id</a>,
+		id:                         ,
 		<span class="comment">// If using an explicit device, will be set to a copy of the ID used for initialization. Otherwise cleared to 0. </span>
-		name:                       [256]<span class="doc-builtin">u8</span>,
+		name:                       ,
 		<span class="comment">// Maybe temporary. Likely to be replaced with a query API. </span>
-		shareMode:                  <a class="code-typename" href="/vendor/miniaudio/#share_mode">share_mode</a>,
+		shareMode:                  ,
 		<span class="comment">// Set to whatever was passed in when the device was initialized. </span>
-		playback_format:            <a class="code-typename" href="/vendor/miniaudio/#format">format</a>,
-		channels:                   <span class="doc-builtin">u32</span>,
-		channelMap:                 [254]<a class="code-typename" href="/vendor/miniaudio/#channel">channel</a>,
-		internalFormat:             <a class="code-typename" href="/vendor/miniaudio/#format">format</a>,
-		internalChannels:           <span class="doc-builtin">u32</span>,
-		internalSampleRate:         <span class="doc-builtin">u32</span>,
-		internalChannelMap:         [254]<a class="code-typename" href="/vendor/miniaudio/#channel">channel</a>,
-		internalPeriodSizeInFrames: <span class="doc-builtin">u32</span>,
-		internalPeriods:            <span class="doc-builtin">u32</span>,
-		channelMixMode:             <a class="code-typename" href="/vendor/miniaudio/#channel_mix_mode">channel_mix_mode</a>,
-		converter:                  <a class="code-typename" href="/vendor/miniaudio/#data_converter">data_converter</a>,
-		pIntermediaryBuffer:        <span class="doc-builtin">rawptr</span>,
+		playback_format:            ,
+		channels:                   ,
+		channelMap:                 ,
+		internalFormat:             ,
+		internalChannels:           ,
+		internalSampleRate:         ,
+		internalChannelMap:         ,
+		internalPeriodSizeInFrames: ,
+		internalPeriods:            ,
+		channelMixMode:             ,
+		converter:                  ,
+		pIntermediaryBuffer:        ,
 		<span class="comment">// For implementing fixed sized buffer callbacks. Will be null if using variable sized callbacks. </span>
-		intermediaryBufferCap:      <span class="doc-builtin">u32</span>,
-		intermediaryBufferLen:      <span class="doc-builtin">u32</span>,
+		intermediaryBufferCap:      ,
+		intermediaryBufferLen:      ,
 		<span class="comment">// How many valid frames are sitting in the intermediary buffer. </span>
-		pInputCache:                <span class="doc-builtin">rawptr</span>,
+		pInputCache:                ,
 		<span class="comment">// In external format. Can be null. </span>
-		inputCacheCap:              <span class="doc-builtin">u64</span>,
-		inputCacheConsumed:         <span class="doc-builtin">u64</span>,
-		inputCacheRemaining:        <span class="doc-builtin">u64</span>,
+		inputCacheCap:              ,
+		inputCacheConsumed:         ,
+		inputCacheRemaining:        ,
 	},
 	capture:                   <span class="keyword-type">struct</span> {
-		pID:                        ^<a class="code-typename" href="/vendor/miniaudio/#device_id">device_id</a>,
+		pID:                        ,
 		<span class="comment">// Set to NULL if using default ID, otherwise set to the address of "id". </span>
-		id:                         <a class="code-typename" href="/vendor/miniaudio/#device_id">device_id</a>,
+		id:                         ,
 		<span class="comment">// If using an explicit device, will be set to a copy of the ID used for initialization. Otherwise cleared to 0. </span>
-		name:                       [256]<span class="doc-builtin">u8</span>,
+		name:                       ,
 		<span class="comment">// Maybe temporary. Likely to be replaced with a query API. </span>
-		shareMode:                  <a class="code-typename" href="/vendor/miniaudio/#share_mode">share_mode</a>,
+		shareMode:                  ,
 		<span class="comment">// Set to whatever was passed in when the device was initialized. </span>
-		capture_format:             <a class="code-typename" href="/vendor/miniaudio/#format">format</a>,
-		channels:                   <span class="doc-builtin">u32</span>,
-		channelMap:                 [254]<a class="code-typename" href="/vendor/miniaudio/#channel">channel</a>,
-		internalFormat:             <a class="code-typename" href="/vendor/miniaudio/#format">format</a>,
-		internalChannels:           <span class="doc-builtin">u32</span>,
-		internalSampleRate:         <span class="doc-builtin">u32</span>,
-		internalChannelMap:         [254]<a class="code-typename" href="/vendor/miniaudio/#channel">channel</a>,
-		internalPeriodSizeInFrames: <span class="doc-builtin">u32</span>,
-		internalPeriods:            <span class="doc-builtin">u32</span>,
-		channelMixMode:             <a class="code-typename" href="/vendor/miniaudio/#channel_mix_mode">channel_mix_mode</a>,
-		converter:                  <a class="code-typename" href="/vendor/miniaudio/#data_converter">data_converter</a>,
-		pIntermediaryBuffer:        <span class="doc-builtin">rawptr</span>,
+		capture_format:             ,
+		channels:                   ,
+		channelMap:                 ,
+		internalFormat:             ,
+		internalChannels:           ,
+		internalSampleRate:         ,
+		internalChannelMap:         ,
+		internalPeriodSizeInFrames: ,
+		internalPeriods:            ,
+		channelMixMode:             ,
+		converter:                  ,
+		pIntermediaryBuffer:        ,
 		<span class="comment">// For implementing fixed sized buffer callbacks. Will be null if using variable sized callbacks. </span>
-		intermediaryBufferCap:      <span class="doc-builtin">u32</span>,
-		intermediaryBufferLen:      <span class="doc-builtin">u32</span>,
+		intermediaryBufferCap:      ,
+		intermediaryBufferLen:      ,
 	},
 	_:                         <span class="keyword-type">struct</span> <span class="directive">#raw_union</span> {
-		wasapi:      <span class="keyword-type">struct</span> {
-			pAudioClientPlayback:             <span class="doc-builtin">rawptr</span>,
-			pAudioClientCapture:              <span class="doc-builtin">rawptr</span>,
-			pRenderClient:                    <span class="doc-builtin">rawptr</span>,
-			pCaptureClient:                   <span class="doc-builtin">rawptr</span>,
-			pDeviceEnumerator:                <span class="doc-builtin">rawptr</span>,
-			<span class="comment">// Used for IMMNotificationClient notifications. Required for detecting default device changes. </span>
-			notificationClient:               <a class="code-typename" href="/vendor/miniaudio/#IMMNotificationClient">IMMNotificationClient</a>,
-			hEventPlayback:                   <a class="code-typename" href="/vendor/miniaudio/#handle">handle</a>,
-			hEventCapture:                    <a class="code-typename" href="/vendor/miniaudio/#handle">handle</a>,
-			<span class="comment">// Auto reset. Initialized to unsignaled. </span>
-			actualPeriodSizeInFramesPlayback: <span class="doc-builtin">u32</span>,
-			<span class="comment">// Value from GetBufferSize(). internalPeriodSizeInFrames is not set to the _actual_ buffer size when low-latency shared mode is being used due to the way the IAudioClient3 API works. </span>
-			actualPeriodSizeInFramesCapture:  <span class="doc-builtin">u32</span>,
-			originalPeriodSizeInFrames:       <span class="doc-builtin">u32</span>,
-			originalPeriodSizeInMilliseconds: <span class="doc-builtin">u32</span>,
-			originalPeriods:                  <span class="doc-builtin">u32</span>,
-			originalPerformanceProfile:       <a class="code-typename" href="/vendor/miniaudio/#performance_profile">performance_profile</a>,
-			periodSizeInFramesPlayback:       <span class="doc-builtin">u32</span>,
-			periodSizeInFramesCapture:        <span class="doc-builtin">u32</span>,
-			pMappedBufferCapture:             <span class="doc-builtin">rawptr</span>,
-			mappedBufferCaptureCap:           <span class="doc-builtin">u32</span>,
-			mappedBufferCaptureLen:           <span class="doc-builtin">u32</span>,
-			pMappedBufferPlayback:            <span class="doc-builtin">rawptr</span>,
-			mappedBufferPlaybackCap:          <span class="doc-builtin">u32</span>,
-			mappedBufferPlaybackLen:          <span class="doc-builtin">u32</span>,
-			isStartedCapture:                 <span class="doc-builtin">b32</span>,
-			<span class="comment">// atomic</span>
-			<span class="comment">// Can be read and written simultaneously across different threads. Must be used atomically, and must be 32-bit. </span>
-			isStartedPlayback:                <span class="doc-builtin">b32</span>,
-			<span class="comment">// atomic</span>
-			<span class="comment">// Can be read and written simultaneously across different threads. Must be used atomically, and must be 32-bit. </span>
-			noAutoConvertSRC:                 <span class="doc-builtin">b8</span>,
-			<span class="comment">// When set to true, disables the use of AUDCLNT_STREAMFLAGS_AUTOCONVERTPCM. </span>
-			noDefaultQualitySRC:              <span class="doc-builtin">b8</span>,
-			<span class="comment">// When set to true, disables the use of AUDCLNT_STREAMFLAGS_SRC_DEFAULT_QUALITY. </span>
-			noHardwareOffloading:             <span class="doc-builtin">b8</span>,
-			allowCaptureAutoStreamRouting:    <span class="doc-builtin">b8</span>,
-			allowPlaybackAutoStreamRouting:   <span class="doc-builtin">b8</span>,
-			isDetachedPlayback:               <span class="doc-builtin">b8</span>,
-			isDetachedCapture:                <span class="doc-builtin">b8</span>,
-		},
-		dsound:      <span class="keyword-type">struct</span> {
-			pPlayback:              <span class="doc-builtin">rawptr</span>,
-			pPlaybackPrimaryBuffer: <span class="doc-builtin">rawptr</span>,
-			pPlaybackBuffer:        <span class="doc-builtin">rawptr</span>,
-			pCapture:               <span class="doc-builtin">rawptr</span>,
-			pCaptureBuffer:         <span class="doc-builtin">rawptr</span>,
-		},
-		winmm:       <span class="keyword-type">struct</span> {
-			hDevicePlayback:              <a class="code-typename" href="/vendor/miniaudio/#handle">handle</a>,
-			hDeviceCapture:               <a class="code-typename" href="/vendor/miniaudio/#handle">handle</a>,
-			hEventPlayback:               <a class="code-typename" href="/vendor/miniaudio/#handle">handle</a>,
-			hEventCapture:                <a class="code-typename" href="/vendor/miniaudio/#handle">handle</a>,
-			fragmentSizeInFrames:         <span class="doc-builtin">u32</span>,
-			iNextHeaderPlayback:          <span class="doc-builtin">u32</span>,
-			<span class="comment">// [0,periods). Used as an index into pWAVEHDRPlayback. </span>
-			iNextHeaderCapture:           <span class="doc-builtin">u32</span>,
-			<span class="comment">// [0,periods). Used as an index into pWAVEHDRCapture. </span>
-			headerFramesConsumedPlayback: <span class="doc-builtin">u32</span>,
-			<span class="comment">// The number of PCM frames consumed in the buffer in pWAVEHEADER[iNextHeader]. </span>
-			headerFramesConsumedCapture:  <span class="doc-builtin">u32</span>,
-			pWAVEHDRPlayback:             [^]<span class="doc-builtin">u8</span>,
-			pWAVEHDRCapture:              [^]<span class="doc-builtin">u8</span>,
-			<span class="comment">// One instantiation for each period. </span>
-			pIntermediaryBufferPlayback:  [^]<span class="doc-builtin">u8</span>,
-			pIntermediaryBufferCapture:   [^]<span class="doc-builtin">u8</span>,
-			_pHeapData:                   [^]<span class="doc-builtin">u8</span>,
-		},
-		alsa:        <span class="keyword-type">struct</span>($Key: typeid, $Value: typeid) where intrinsics.type_is_valid_map_key(Key) {},
-		pulse:       <span class="keyword-type">struct</span>($Key: typeid, $Value: typeid) where intrinsics.type_is_valid_map_key(Key) {},
-		jack:        <span class="keyword-type">struct</span> {
-			pClient:                     <span class="doc-builtin">rawptr</span>,
-			pPortsPlayback:              [^]<span class="doc-builtin">rawptr</span>,
-			pPortsCapture:               [^]<span class="doc-builtin">rawptr</span>,
-			pIntermediaryBufferPlayback: [^]<span class="doc-builtin">f32</span>,
-			<span class="comment">// Typed as a float because JACK is always floating point. </span>
-			pIntermediaryBufferCapture:  [^]<span class="doc-builtin">f32</span>,
-		},
-		coreaudio:   <span class="keyword-type">struct</span>($Key: typeid, $Value: typeid) where intrinsics.type_is_valid_map_key(Key) {},
-		sndio:       <span class="keyword-type">struct</span>($Key: typeid, $Value: typeid) where intrinsics.type_is_valid_map_key(Key) {},
-		audio4:      <span class="keyword-type">struct</span>($Key: typeid, $Value: typeid) where intrinsics.type_is_valid_map_key(Key) {},
-		oss:         <span class="keyword-type">struct</span>($Key: typeid, $Value: typeid) where intrinsics.type_is_valid_map_key(Key) {},
-		aaudio:      <span class="keyword-type">struct</span>($Key: typeid, $Value: typeid) where intrinsics.type_is_valid_map_key(Key) {},
-		opensl:      <span class="keyword-type">struct</span>($Key: typeid, $Value: typeid) where intrinsics.type_is_valid_map_key(Key) {},
-		webaudio:    <span class="keyword-type">struct</span>($Key: typeid, $Value: typeid) where intrinsics.type_is_valid_map_key(Key) {},
-		null_device: <span class="keyword-type">struct</span> {
-			deviceThread:                         <a class="code-typename" href="/vendor/miniaudio/#thread">thread</a>,
-			operationEvent:                       <a class="code-typename" href="/vendor/miniaudio/#event">event</a>,
-			operationCompletionEvent:             <a class="code-typename" href="/vendor/miniaudio/#event">event</a>,
-			operationSemaphore:                   <a class="code-typename" href="/vendor/miniaudio/#semaphore">semaphore</a>,
-			operation:                            <span class="doc-builtin">u32</span>,
-			operationResult:                      <a class="code-typename" href="/vendor/miniaudio/#result">result</a>,
-			timer:                                <a class="code-typename" href="/vendor/miniaudio/#timer">timer</a>,
-			priorRunTime:                         <span class="doc-builtin">f64</span>,
-			currentPeriodFramesRemainingPlayback: <span class="doc-builtin">u32</span>,
-			currentPeriodFramesRemainingCapture:  <span class="doc-builtin">u32</span>,
-			lastProcessedFramePlayback:           <span class="doc-builtin">u64</span>,
-			lastProcessedFrameCapture:            <span class="doc-builtin">u64</span>,
-			sStarted:                             <span class="doc-builtin">b32</span>,
-		},
+		wasapi:      ,
+		dsound:      ,
+		winmm:       ,
+		alsa:        ,
+		pulse:       ,
+		jack:        ,
+		coreaudio:   ,
+		sndio:       ,
+		audio4:      ,
+		oss:         ,
+		aaudio:      ,
+		opensl:      ,
+		webaudio:    ,
+		null_device: ,
 	},
 }</pre>
 </div>
@@ -2582,55 +2407,55 @@ wake up the audio thread.</p>
 	pUserData:                 <span class="doc-builtin">rawptr</span>,
 	resampling:                <a class="code-typename" href="/vendor/miniaudio/#resampler_config">resampler_config</a>,
 	playback:                  <span class="keyword-type">struct</span> {
-		pDeviceID:      ^<a class="code-typename" href="/vendor/miniaudio/#device_id">device_id</a>,
-		format:         <a class="code-typename" href="/vendor/miniaudio/#format">format</a>,
-		channels:       <span class="doc-builtin">u32</span>,
-		channelMap:     [^]<a class="code-typename" href="/vendor/miniaudio/#channel">channel</a>,
-		channelMixMode: <a class="code-typename" href="/vendor/miniaudio/#channel_mix_mode">channel_mix_mode</a>,
-		shareMode:      <a class="code-typename" href="/vendor/miniaudio/#share_mode">share_mode</a>,
+		pDeviceID:      ,
+		format:         ,
+		channels:       ,
+		channelMap:     ,
+		channelMixMode: ,
+		shareMode:      ,
 	},
 	capture:                   <span class="keyword-type">struct</span> {
-		pDeviceID:      ^<a class="code-typename" href="/vendor/miniaudio/#device_id">device_id</a>,
-		format:         <a class="code-typename" href="/vendor/miniaudio/#format">format</a>,
-		channels:       <span class="doc-builtin">u32</span>,
-		channelMap:     [^]<a class="code-typename" href="/vendor/miniaudio/#channel">channel</a>,
-		channelMixMode: <a class="code-typename" href="/vendor/miniaudio/#channel_mix_mode">channel_mix_mode</a>,
-		shareMode:      <a class="code-typename" href="/vendor/miniaudio/#share_mode">share_mode</a>,
+		pDeviceID:      ,
+		format:         ,
+		channels:       ,
+		channelMap:     ,
+		channelMixMode: ,
+		shareMode:      ,
 	},
 	wasapi:                    <span class="keyword-type">struct</span> {
-		noAutoConvertSRC:     <span class="doc-builtin">b8</span>,
+		noAutoConvertSRC:     ,
 		<span class="comment">// When set to true, disables the use of AUDCLNT_STREAMFLAGS_AUTOCONVERTPCM. </span>
-		noDefaultQualitySRC:  <span class="doc-builtin">b8</span>,
+		noDefaultQualitySRC:  ,
 		<span class="comment">// When set to true, disables the use of AUDCLNT_STREAMFLAGS_SRC_DEFAULT_QUALITY. </span>
-		noAutoStreamRouting:  <span class="doc-builtin">b8</span>,
+		noAutoStreamRouting:  ,
 		<span class="comment">// Disables automatic stream routing. </span>
-		noHardwareOffloading: <span class="doc-builtin">b8</span>,
+		noHardwareOffloading: ,
 	},
 	alsa:                      <span class="keyword-type">struct</span> {
-		noMMap:         <span class="doc-builtin">b32</span>,
+		noMMap:         ,
 		<span class="comment">// Disables MMap mode. </span>
-		noAutoFormat:   <span class="doc-builtin">b32</span>,
+		noAutoFormat:   ,
 		<span class="comment">// Opens the ALSA device with SND_PCM_NO_AUTO_FORMAT. </span>
-		noAutoChannels: <span class="doc-builtin">b32</span>,
+		noAutoChannels: ,
 		<span class="comment">// Opens the ALSA device with SND_PCM_NO_AUTO_CHANNELS. </span>
-		noAutoResample: <span class="doc-builtin">b32</span>,
+		noAutoResample: ,
 	},
 	pulse:                     <span class="keyword-type">struct</span> {
-		pStreamNamePlayback: <span class="doc-builtin">cstring</span>,
-		pStreamNameCapture:  <span class="doc-builtin">cstring</span>,
+		pStreamNamePlayback: ,
+		pStreamNameCapture:  ,
 	},
 	coreaudio:                 <span class="keyword-type">struct</span> {
-		allowNominalSampleRateChange: <span class="doc-builtin">b32</span>,
+		allowNominalSampleRateChange: ,
 	},
 	opensl:                    <span class="keyword-type">struct</span> {
-		streamType:      <a class="code-typename" href="/vendor/miniaudio/#opensl_stream_type">opensl_stream_type</a>,
-		recordingPreset: <a class="code-typename" href="/vendor/miniaudio/#opensl_recording_preset">opensl_recording_preset</a>,
+		streamType:      ,
+		recordingPreset: ,
 	},
 	aaudio:                    <span class="keyword-type">struct</span> {
-		usage:                   <a class="code-typename" href="/vendor/miniaudio/#aaudio_usage">aaudio_usage</a>,
-		contentType:             <a class="code-typename" href="/vendor/miniaudio/#aaudio_content_type">aaudio_content_type</a>,
-		inputPreset:             <a class="code-typename" href="/vendor/miniaudio/#aaudio_input_preset">aaudio_input_preset</a>,
-		noAutoStartAfterReroute: <span class="doc-builtin">b32</span>,
+		usage:                   ,
+		contentType:             ,
+		inputPreset:             ,
+		noAutoStartAfterReroute: ,
 	},
 }</pre>
 </div>
@@ -2733,9 +2558,9 @@ ma_device_stop()
 	webaudio:    [32]<span class="doc-builtin">u8</span>,
 	<span class="comment">// Web Audio always uses default devices for now, but if this changes it'll be a GUID. </span>
 	custom:      <span class="keyword-type">struct</span> <span class="directive">#raw_union</span> {
-		i: <span class="doc-builtin">i32</span>,
-		s: [256]<span class="doc-builtin">u8</span>,
-		p: <span class="doc-builtin">rawptr</span>,
+		i: ,
+		s: ,
+		p: ,
 	},
 	<span class="comment">// The custom backend could be anything. Give them a few options. </span>
 	nullbackend: <span class="doc-builtin">i32</span>,
@@ -2754,13 +2579,13 @@ ma_device_stop()
 	nativeDataFormatCount: <span class="doc-builtin">u32</span>,
 	nativeDataFormats:     [64]<span class="keyword-type">struct</span> {
 		<span class="comment">// Not sure how big to make this. There can be *many* permutations for virtual devices which can support anything. </span>
-		format:     <a class="code-typename" href="/vendor/miniaudio/#format">format</a>,
+		format:     ,
 		<span class="comment">// Sample format. If set to ma_format_unknown, all sample formats are supported. </span>
-		channels:   <span class="doc-builtin">u32</span>,
+		channels:   ,
 		<span class="comment">// If set to 0, all channels are supported. </span>
-		sampleRate: <span class="doc-builtin">u32</span>,
+		sampleRate: ,
 		<span class="comment">// If set to 0, all sample rates are supported. </span>
-		flags:      <span class="doc-builtin">u32</span>,
+		flags:      ,
 	},
 }</pre>
 </div>
@@ -2800,18 +2625,10 @@ ma_device_job_thread_post(). The thread will do the processing of the job.</p>
 	pDevice: ^<a class="code-typename" href="/vendor/miniaudio/#device">device</a>,
 	type:    <a class="code-typename" href="/vendor/miniaudio/#device_notification_type">device_notification_type</a>,
 	data:    <span class="keyword-type">struct</span> <span class="directive">#raw_union</span> {
-		started:      <span class="keyword-type">struct</span> {
-			_unused: <span class="doc-builtin">i32</span>,
-		},
-		stopped:      <span class="keyword-type">struct</span> {
-			_unused: <span class="doc-builtin">i32</span>,
-		},
-		rerouted:     <span class="keyword-type">struct</span> {
-			_unused: <span class="doc-builtin">i32</span>,
-		},
-		interruption: <span class="keyword-type">struct</span> {
-			_unused: <span class="doc-builtin">i32</span>,
-		},
+		started:      ,
+		stopped:      ,
+		rerouted:     ,
+		interruption: ,
 	},
 }</pre>
 </div>
@@ -2933,10 +2750,7 @@ in frames. The internal sample rate of the capture device is also needed in orde
 	pInternalEncoder: <span class="doc-builtin">rawptr</span>,
 	<span class="comment">// <-- The drwav/drflac/stb_vorbis/etc. objects. </span>
 	data:             <span class="keyword-type">struct</span> {
-		vfs: <span class="keyword-type">struct</span> {
-			pVFS: ^<a class="code-typename" href="/vendor/miniaudio/#vfs">vfs</a>,
-			file: <a class="code-typename" href="/vendor/miniaudio/#vfs_file">vfs_file</a>,
-		},
+		vfs: ,
 	},
 }</pre>
 </div>
@@ -3195,7 +3009,7 @@ is too inefficient.
 <div>
 <pre class="doc-code">fence :: <span class="keyword-type">struct</span> {
 	e:       <a class="code-typename" href="/vendor/miniaudio/#event">event</a>,
-	counter: <span class="keyword-type">struct</span>($Key: typeid, $Value: typeid) where intrinsics.type_is_valid_map_key(Key) {},
+	counter: <span class="keyword-type">struct</span> {},
 }</pre>
 </div>
 <details class="odin-doc-toggle" open>
@@ -3472,14 +3286,8 @@ counter hits zero.</p>
 <pre class="doc-code">job :: <span class="keyword-type">struct</span> {
 	toc:   <span class="keyword-type">struct</span> <span class="directive">#raw_union</span> {
 		<span class="comment">// 8 bytes. We encode the job code into the slot allocation data to save space. </span>
-		breakup:    <span class="keyword-type">struct</span> {
-			code:     <span class="doc-builtin">u16</span>,
-			<span class="comment">// Job type. </span>
-			slot:     <span class="doc-builtin">u16</span>,
-			<span class="comment">// Index into a ma_slot_allocator. </span>
-			refcount: <span class="doc-builtin">u32</span>,
-		},
-		allocation: <span class="doc-builtin">u64</span>,
+		breakup:    ,
+		allocation: ,
 	},
 	next:  <span class="doc-builtin">u64</span>,
 	<span class="comment">// atomic</span>
@@ -3488,97 +3296,11 @@ counter hits zero.</p>
 	<span class="comment">// Execution order. Used to create a data dependency and ensure a job is executed in order. Usage is contextual depending on the job type. </span>
 	data:  <span class="keyword-type">struct</span> <span class="directive">#raw_union</span> {
 		<span class="comment">// Miscellaneous. </span>
-		custom:          <span class="keyword-type">struct</span> {
-			proc_: <a class="code-typename" href="/vendor/miniaudio/#job_proc">job_proc</a>,
-			data0: <span class="doc-builtin">uintptr</span>,
-			data1: <span class="doc-builtin">uintptr</span>,
-		},
+		custom:          ,
 		<span class="comment">// Resource Manager </span>
-		resourceManager: <span class="keyword-type">struct</span> <span class="directive">#raw_union</span> {
-			loadDataBufferNode: <span class="keyword-type">struct</span> {
-				pResourceManager:  <span class="doc-builtin">rawptr</span>,
-				pDataBufferNode:   <span class="doc-builtin">rawptr</span>,
-				pFilePath:         <span class="doc-builtin">cstring</span>,
-				pFilePathW:        [^]<span class="doc-builtin">u16</span>,
-				flags:             <span class="doc-builtin">u32</span>,
-				<span class="comment">// Resource manager data source flags that were used when initializing the data buffer. </span>
-				pInitNotification: ^<a class="code-typename" href="/vendor/miniaudio/#async_notification">async_notification</a>,
-				<span class="comment">// Signalled when the data buffer has been initialized and the format/channels/rate can be retrieved. </span>
-				pDoneNotification: ^<a class="code-typename" href="/vendor/miniaudio/#async_notification">async_notification</a>,
-				<span class="comment">// Signalled when the data buffer has been fully decoded. Will be passed through to MA_JOB_TYPE_RESOURCE_MANAGER_PAGE_DATA_BUFFER_NODE when decoding. </span>
-				pInitFence:        ^<a class="code-typename" href="/vendor/miniaudio/#fence">fence</a>,
-				<span class="comment">// Released when initialization of the decoder is complete. </span>
-				pDoneFence:        ^<a class="code-typename" href="/vendor/miniaudio/#fence">fence</a>,
-			},
-			freeDataBufferNode: <span class="keyword-type">struct</span> {
-				pResourceManager:  <span class="doc-builtin">rawptr</span>,
-				pDataBufferNode:   <span class="doc-builtin">rawptr</span>,
-				pDoneNotification: ^<a class="code-typename" href="/vendor/miniaudio/#async_notification">async_notification</a>,
-				pDoneFence:        ^<a class="code-typename" href="/vendor/miniaudio/#fence">fence</a>,
-			},
-			pageDataBufferNode: <span class="keyword-type">struct</span> {
-				pResourceManager:  <span class="doc-builtin">rawptr</span>,
-				pDataBufferNode:   <span class="doc-builtin">rawptr</span>,
-				pDecoder:          <span class="doc-builtin">rawptr</span>,
-				pDoneNotification: ^<a class="code-typename" href="/vendor/miniaudio/#async_notification">async_notification</a>,
-				<span class="comment">// Signalled when the data buffer has been fully decoded. </span>
-				pDoneFence:        ^<a class="code-typename" href="/vendor/miniaudio/#fence">fence</a>,
-			},
-			loadDataBuffer:     <span class="keyword-type">struct</span> {
-				pDataBuffer:             <span class="doc-builtin">rawptr</span>,
-				pInitNotification:       ^<a class="code-typename" href="/vendor/miniaudio/#async_notification">async_notification</a>,
-				<span class="comment">// Signalled when the data buffer has been initialized and the format/channels/rate can be retrieved. </span>
-				pDoneNotification:       ^<a class="code-typename" href="/vendor/miniaudio/#async_notification">async_notification</a>,
-				<span class="comment">// Signalled when the data buffer has been fully decoded. </span>
-				pInitFence:              ^<a class="code-typename" href="/vendor/miniaudio/#fence">fence</a>,
-				<span class="comment">// Released when the data buffer has been initialized and the format/channels/rate can be retrieved. </span>
-				pDoneFence:              ^<a class="code-typename" href="/vendor/miniaudio/#fence">fence</a>,
-				<span class="comment">// Released when the data buffer has been fully decoded. </span>
-				rangeBegInPCMFrames:     <span class="doc-builtin">u64</span>,
-				rangeEndInPCMFrames:     <span class="doc-builtin">u64</span>,
-				loopPointBegInPCMFrames: <span class="doc-builtin">u64</span>,
-				loopPointEndInPCMFrames: <span class="doc-builtin">u64</span>,
-				isLooping:               <span class="doc-builtin">u32</span>,
-			},
-			freeDataBuffer:     <span class="keyword-type">struct</span> {
-				pDataBuffer:       <span class="doc-builtin">rawptr</span>,
-				pDoneNotification: ^<a class="code-typename" href="/vendor/miniaudio/#async_notification">async_notification</a>,
-				pDoneFence:        ^<a class="code-typename" href="/vendor/miniaudio/#fence">fence</a>,
-			},
-			loadDataStream:     <span class="keyword-type">struct</span> {
-				pDataStream:       <span class="doc-builtin">rawptr</span>,
-				pFilePath:         <span class="doc-builtin">cstring</span>,
-				<span class="comment">// Allocated when the job is posted, freed by the job thread after loading. </span>
-				pFilePathW:        [^]<span class="doc-builtin">u16</span>,
-				<span class="comment">// ^ As above ^. Only used if pFilePath is NULL. </span>
-				initialSeekPoint:  <span class="doc-builtin">u64</span>,
-				pInitNotification: ^<a class="code-typename" href="/vendor/miniaudio/#async_notification">async_notification</a>,
-				<span class="comment">// Signalled after the first two pages have been decoded and frames can be read from the stream. </span>
-				pInitFence:        ^<a class="code-typename" href="/vendor/miniaudio/#fence">fence</a>,
-			},
-			freeDataStream:     <span class="keyword-type">struct</span> {
-				pDataStream:       <span class="doc-builtin">rawptr</span>,
-				pDoneNotification: ^<a class="code-typename" href="/vendor/miniaudio/#async_notification">async_notification</a>,
-				pDoneFence:        ^<a class="code-typename" href="/vendor/miniaudio/#fence">fence</a>,
-			},
-			pageDataStream:     <span class="keyword-type">struct</span> {
-				pDataStream: <span class="doc-builtin">rawptr</span>,
-				pageIndex:   <span class="doc-builtin">u32</span>,
-			},
-			seekDataStream:     <span class="keyword-type">struct</span> {
-				pDataStream: <span class="doc-builtin">rawptr</span>,
-				frameIndex:  <span class="doc-builtin">u64</span>,
-			},
-		},
+		resourceManager: ,
 		<span class="comment">// Device. </span>
-		device:          <span class="keyword-type">struct</span> {
-			aaudio: <span class="keyword-type">struct</span> {
-				reroute: <span class="keyword-type">struct</span> {
-					pDevice:    <span class="doc-builtin">rawptr</span>,
-					deviceType: <span class="doc-builtin">u32</span>,
-				},
-			},
-		},
+		device:          ,
 	},
 }</pre>
 </div>
@@ -3688,13 +3410,13 @@ ma_job_queue_post(). ma_job_queue_next() will return MA_NO_DATA_AVAILABLE if not
 	inTimeInt:     <span class="doc-builtin">u32</span>,
 	inTimeFrac:    <span class="doc-builtin">u32</span>,
 	x0:            <span class="keyword-type">struct</span> <span class="directive">#raw_union</span> {
-		f32: [^]<span class="doc-builtin">f32</span>,
-		s16: [^]<span class="doc-builtin">i16</span>,
+		f32: ,
+		s16: ,
 	},
 	<span class="comment">// The previous input frame. </span>
 	x1:            <span class="keyword-type">struct</span> <span class="directive">#raw_union</span> {
-		f32: [^]<span class="doc-builtin">f32</span>,
-		s16: [^]<span class="doc-builtin">i16</span>,
+		f32: ,
+		s16: ,
 	},
 	<span class="comment">// The next input frame. </span>
 	lpf:           <a class="code-typename" href="/vendor/miniaudio/#lpf">lpf</a>,
@@ -3975,7 +3697,7 @@ Do not modify the state of the device from inside the callback.</p>
 <div class="pkg-entity">
 <h3 id="node"><span><a class="doc-id-link" href="#node">node<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/miniaudio/node_graph.odin#L28"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">node :: <span class="keyword-type">struct</span>($Key: typeid, $Value: typeid) where intrinsics.type_is_valid_map_key(Key) {}</pre>
+<pre class="doc-code">node :: <span class="keyword-type">struct</span> {}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -4165,13 +3887,13 @@ list. Think of the input bus as a linked list, with the output bus being an item
 	<span class="comment">// </span>
 	<span class="comment">// 	On output, set `pFrameCountOut` to the number of PCM frames that were actually output and set</span>
 	<span class="comment">// 	`pFrameCountIn` to the number of input frames that were consumed.</span>
-	onProcess:                    <span class="keyword-type">proc</span> "cdecl" (pNode: ^<a class="code-typename" href="/vendor/miniaudio/#node">node</a>, ppFramesIn: ^[^]<span class="doc-builtin">f32</span>, pFrameCountIn: ^<span class="doc-builtin">u32</span>, ppFramesOut: ^[^]<span class="doc-builtin">f32</span>, pFrameCountOut: ^<span class="doc-builtin">u32</span>),
+	onProcess:                    <span class="keyword-type">proc</span> "cdecl" (pNode: , ppFramesIn: , pFrameCountIn: , ppFramesOut: , pFrameCountOut: ),
 	<span class="comment">// 	A callback for retrieving the number of a input frames that are required to output the</span>
 	<span class="comment">// 	specified number of output frames. You would only want to implement this when the node performs</span>
 	<span class="comment">// 	resampling. This is optional, even for nodes that perform resampling, but it does offer a</span>
 	<span class="comment">// 	small reduction in latency as it allows miniaudio to calculate the exact number of input frames</span>
 	<span class="comment">// 	to read at a time instead of having to estimate.</span>
-	onGetRequiredInputFrameCount: <span class="keyword-type">proc</span> "cdecl" (pNode: ^<a class="code-typename" href="/vendor/miniaudio/#node">node</a>, outputFrameCount: <span class="doc-builtin">u32</span>, pInputFrameCount: ^<span class="doc-builtin">u32</span>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a>,
+	onGetRequiredInputFrameCount: <span class="keyword-type">proc</span> "cdecl" (pNode: , outputFrameCount: , pInputFrameCount: ) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a>,
 	<span class="comment">// 	The number of input buses. This is how many sub-buffers will be contained in the `ppFramesIn`</span>
 	<span class="comment">// 	parameters of the callbacks above.</span>
 	inputBusCount:                <span class="doc-builtin">u8</span>,
@@ -4192,14 +3914,8 @@ list. Think of the input bus as a linked list, with the output bus being an item
 	config:    <a class="code-typename" href="/vendor/miniaudio/#noise_config">noise_config</a>,
 	lcg:       <a class="code-typename" href="/vendor/miniaudio/#lcg">lcg</a>,
 	state:     <span class="keyword-type">struct</span> <span class="directive">#raw_union</span> {
-		pink:     <span class="keyword-type">struct</span> {
-			bin:          ^[^]<span class="doc-builtin">f64</span>,
-			accumulation: [^]<span class="doc-builtin">f64</span>,
-			counter:      [^]<span class="doc-builtin">u32</span>,
-		},
-		brownian: <span class="keyword-type">struct</span> {
-			accumulation: [^]<span class="doc-builtin">f64</span>,
-		},
+		pink:     ,
+		brownian: ,
 	},
 	<span class="comment">// Memory management. </span>
 	_pHeap:    <span class="doc-builtin">rawptr</span>,
@@ -4551,7 +4267,7 @@ thread at a time can read and seek.</p>
 	sampleRateIn:     <span class="doc-builtin">u32</span>,
 	sampleRateOut:    <span class="doc-builtin">u32</span>,
 	state:            <span class="keyword-type">struct</span> {
-		linear: <a class="code-typename" href="/vendor/miniaudio/#linear_resampler">linear_resampler</a>,
+		linear: ,
 	},
 	<span class="comment">// Memory management. </span>
 	_pHeap:           <span class="doc-builtin">rawptr</span>,
@@ -4573,7 +4289,7 @@ thread at a time can read and seek.</p>
 	pBackendVTable:   ^<a class="code-typename" href="/vendor/miniaudio/#resampling_backend_vtable">resampling_backend_vtable</a>,
 	pBackendUserData: <span class="doc-builtin">rawptr</span>,
 	linear:           <span class="keyword-type">struct</span> {
-		lpfOrder: <span class="doc-builtin">u32</span>,
+		lpfOrder: ,
 	},
 }</pre>
 </div>
@@ -4581,28 +4297,28 @@ thread at a time can read and seek.</p>
 <div class="pkg-entity">
 <h3 id="resampling_backend"><span><a class="doc-id-link" href="#resampling_backend">resampling_backend<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/miniaudio/data_conversion.odin#L59"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">resampling_backend :: <span class="keyword-type">struct</span>($Key: typeid, $Value: typeid) where intrinsics.type_is_valid_map_key(Key) {}</pre>
+<pre class="doc-code">resampling_backend :: <span class="keyword-type">struct</span> {}</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="resampling_backend_vtable"><span><a class="doc-id-link" href="#resampling_backend_vtable">resampling_backend_vtable<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/miniaudio/data_conversion.odin#L60"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">resampling_backend_vtable :: <span class="keyword-type">struct</span> {
-	onGetHeapSize:                 <span class="keyword-type">proc</span> "cdecl" (pUserData: <span class="doc-builtin">rawptr</span>, pConfig: ^<a class="code-typename" href="/vendor/miniaudio/#resampler_config">resampler_config</a>, pHeapSizeInBytes: ^<span class="doc-builtin">uint</span>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a>,
-	onInit:                        <span class="keyword-type">proc</span> "cdecl" (pUserData: <span class="doc-builtin">rawptr</span>, pConfig: ^<a class="code-typename" href="/vendor/miniaudio/#resampler_config">resampler_config</a>, pHeap: <span class="doc-builtin">rawptr</span>, ppBackend: ^^<a class="code-typename" href="/vendor/miniaudio/#resampling_backend">resampling_backend</a>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a>,
-	onUninit:                      <span class="keyword-type">proc</span> "cdecl" (pUserData: <span class="doc-builtin">rawptr</span>, pBackend: ^<a class="code-typename" href="/vendor/miniaudio/#resampling_backend">resampling_backend</a>, pAllocationCallbacks: ^<a class="code-typename" href="/vendor/miniaudio/#allocation_callbacks">allocation_callbacks</a>),
-	onProcess:                     <span class="keyword-type">proc</span> "cdecl" (pUserData: <span class="doc-builtin">rawptr</span>, pBackend: ^<a class="code-typename" href="/vendor/miniaudio/#resampling_backend">resampling_backend</a>, pFramesIn: <span class="doc-builtin">rawptr</span>, pFrameCountIn: ^<span class="doc-builtin">u64</span>, pFramesOut: <span class="doc-builtin">rawptr</span>, pFrameCountOut: ^<span class="doc-builtin">u64</span>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a>,
-	onSetRate:                     <span class="keyword-type">proc</span> "cdecl" (pUserData: <span class="doc-builtin">rawptr</span>, pBackend: ^<a class="code-typename" href="/vendor/miniaudio/#resampling_backend">resampling_backend</a>, sampleRateIn: <span class="doc-builtin">u32</span>, sampleRateOut: <span class="doc-builtin">u32</span>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a>,
+	onGetHeapSize:                 <span class="keyword-type">proc</span> "cdecl" (pUserData: , pConfig: , pHeapSizeInBytes: ) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a>,
+	onInit:                        <span class="keyword-type">proc</span> "cdecl" (pUserData: , pConfig: , pHeap: , ppBackend: ) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a>,
+	onUninit:                      <span class="keyword-type">proc</span> "cdecl" (pUserData: , pBackend: , pAllocationCallbacks: ),
+	onProcess:                     <span class="keyword-type">proc</span> "cdecl" (pUserData: , pBackend: , pFramesIn: , pFrameCountIn: , pFramesOut: , pFrameCountOut: ) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a>,
+	onSetRate:                     <span class="keyword-type">proc</span> "cdecl" (pUserData: , pBackend: , sampleRateIn: , sampleRateOut: ) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a>,
 	<span class="comment">// Optional. Rate changes will be disabled. </span>
-	onGetInputLatency:             <span class="keyword-type">proc</span> "cdecl" (pUserData: <span class="doc-builtin">rawptr</span>, pBackend: ^<a class="code-typename" href="/vendor/miniaudio/#resampling_backend">resampling_backend</a>) -> <span class="doc-builtin">u64</span>,
+	onGetInputLatency:             <span class="keyword-type">proc</span> "cdecl" (pUserData: , pBackend: ) -> <span class="doc-builtin">u64</span>,
 	<span class="comment">// Optional. Latency will be reported as 0. </span>
-	onGetOutputLatency:            <span class="keyword-type">proc</span> "cdecl" (pUserData: <span class="doc-builtin">rawptr</span>, pBackend: ^<a class="code-typename" href="/vendor/miniaudio/#resampling_backend">resampling_backend</a>) -> <span class="doc-builtin">u64</span>,
+	onGetOutputLatency:            <span class="keyword-type">proc</span> "cdecl" (pUserData: , pBackend: ) -> <span class="doc-builtin">u64</span>,
 	<span class="comment">// Optional. Latency will be reported as 0. </span>
-	onGetRequiredInputFrameCount:  <span class="keyword-type">proc</span> "cdecl" (pUserData: <span class="doc-builtin">rawptr</span>, pBackend: ^<a class="code-typename" href="/vendor/miniaudio/#resampling_backend">resampling_backend</a>, outputFrameCount: <span class="doc-builtin">u64</span>, pInputFrameCount: ^<span class="doc-builtin">u64</span>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a>,
+	onGetRequiredInputFrameCount:  <span class="keyword-type">proc</span> "cdecl" (pUserData: , pBackend: , outputFrameCount: , pInputFrameCount: ) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a>,
 	<span class="comment">// Optional. Latency mitigation will be disabled. </span>
-	onGetExpectedOutputFrameCount: <span class="keyword-type">proc</span> "cdecl" (pUserData: <span class="doc-builtin">rawptr</span>, pBackend: ^<a class="code-typename" href="/vendor/miniaudio/#resampling_backend">resampling_backend</a>, inputFrameCount: <span class="doc-builtin">u64</span>, pOutputFrameCount: ^<span class="doc-builtin">u64</span>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a>,
+	onGetExpectedOutputFrameCount: <span class="keyword-type">proc</span> "cdecl" (pUserData: , pBackend: , inputFrameCount: , pOutputFrameCount: ) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a>,
 	<span class="comment">// Optional. Latency mitigation will be disabled. </span>
-	onReset:                       <span class="keyword-type">proc</span> "cdecl" (pUserData: <span class="doc-builtin">rawptr</span>, pBackend: ^<a class="code-typename" href="/vendor/miniaudio/#resampling_backend">resampling_backend</a>) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a>,
+	onReset:                       <span class="keyword-type">proc</span> "cdecl" (pUserData: , pBackend: ) -> <a class="code-typename" href="/vendor/miniaudio/#result">result</a>,
 }</pre>
 </div>
 </div>
@@ -4681,11 +4397,11 @@ thread at a time can read and seek.</p>
 	isConnectorInitialized: <span class="doc-builtin">b32</span>,
 	<span class="comment">// Used for asynchronous loading to ensure we don't try to initialize the connector multiple times while waiting for the node to fully load. </span>
 	connector:              <span class="keyword-type">struct</span> <span class="directive">#raw_union</span> {
-		decoder:     <a class="code-typename" href="/vendor/miniaudio/#decoder">decoder</a>,
+		decoder:     ,
 		<span class="comment">// Supply type is ma_resource_manager_data_supply_type_encoded </span>
-		buffer:      <a class="code-typename" href="/vendor/miniaudio/#audio_buffer">audio_buffer</a>,
+		buffer:      ,
 		<span class="comment">// Supply type is ma_resource_manager_data_supply_type_decoded </span>
-		pagedBuffer: <a class="code-typename" href="/vendor/miniaudio/#paged_audio_buffer">paged_audio_buffer</a>,
+		pagedBuffer: ,
 	},
 }</pre>
 </div>
@@ -4720,8 +4436,8 @@ thread at a time can read and seek.</p>
 <div>
 <pre class="doc-code">resource_manager_data_source :: <span class="keyword-type">struct</span> {
 	backend:          <span class="keyword-type">struct</span> <span class="directive">#raw_union</span> {
-		buffer: <a class="code-typename" href="/vendor/miniaudio/#resource_manager_data_buffer">resource_manager_data_buffer</a>,
-		stream: <a class="code-typename" href="/vendor/miniaudio/#resource_manager_data_stream">resource_manager_data_stream</a>,
+		buffer: ,
+		stream: ,
 	},
 	<span class="comment">// Must be the first item because we need the first item to be the data source callbacks for the buffer or stream. </span>
 	flags:            <span class="doc-builtin">u32</span>,
@@ -4817,23 +4533,9 @@ thread at a time can read and seek.</p>
 	<span class="comment">// atomic</span>
 	<span class="comment">// Read and written from different threads so needs to be accessed atomically. </span>
 	backend: <span class="keyword-type">struct</span> <span class="directive">#raw_union</span> {
-		encoded:      <span class="keyword-type">struct</span> {
-			pData:       <span class="doc-builtin">rawptr</span>,
-			sizeInBytes: <span class="doc-builtin">uint</span>,
-		},
-		decoded:      <span class="keyword-type">struct</span> {
-			pData:             <span class="doc-builtin">rawptr</span>,
-			totalFrameCount:   <span class="doc-builtin">u64</span>,
-			decodedFrameCount: <span class="doc-builtin">u64</span>,
-			format:            <a class="code-typename" href="/vendor/miniaudio/#format">format</a>,
-			channels:          <span class="doc-builtin">u32</span>,
-			sampleRate:        <span class="doc-builtin">u32</span>,
-		},
-		decodedPaged: <span class="keyword-type">struct</span> {
-			data:              <a class="code-typename" href="/vendor/miniaudio/#paged_audio_buffer_data">paged_audio_buffer_data</a>,
-			decodedFrameCount: <span class="doc-builtin">u64</span>,
-			sampleRate:        <span class="doc-builtin">u32</span>,
-		},
+		encoded:      ,
+		decoded:      ,
+		decodedPaged: ,
 	},
 }</pre>
 </div>
@@ -5454,7 +5156,7 @@ Do not restart or uninitialize the device from the callback.</p>
 <div class="pkg-entity">
 <h3 id="vfs"><span><a class="doc-id-link" href="#vfs">vfs<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/miniaudio/vfs.odin#L22"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">vfs :: <span class="keyword-type">struct</span>($Key: typeid, $Value: typeid) where intrinsics.type_is_valid_map_key(Key) {}</pre>
+<pre class="doc-code">vfs :: <span class="keyword-type">struct</span> {}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -13164,7 +12866,7 @@ makes more sense for the purpose of mixing to initialize it to the center point.
 <li><a href="https://github.com/odin-lang/Odin/tree/master/vendor/miniaudio/vfs.odin">vfs.odin</a></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2022-12 (vendor "odin") Windows_amd64 @ 2022-12-31 21:08:34.961969500 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2023-01 (vendor "odin") Windows_amd64 @ 2023-01-01 21:09:02.818914300 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
