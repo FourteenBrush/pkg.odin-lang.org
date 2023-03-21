@@ -141,6 +141,7 @@
 </ul>
 
 </li>
+<li class="nav-item"><a href="/core/net">net</a></li>
 <li class="nav-item">odin<ul>
 <li><a href="/core/odin/ast">ast</a></li>
 <li><a href="/core/odin/doc-format">doc-format</a></li>
@@ -202,6 +203,12 @@
 </nav>
 <h1>package core:dynlib<div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/dynlib"><em>Source</em></a></div></h1>
 <div id="algolia-search" data-path="core/dynlib"></div>
+<h2>Overview</h2>
+<div id="pkg-overview">
+<p>Package core:dynlib implements loading of shared libraries/DLLs and their symbols.</p>
+<p>The behaviour of dynamically loaded libraries is specific to the target platform of the program.
+For in depth detail on the underlying behaviour please refer to your target platform's documentation.</p>
+</div>
 <div id="pkg-index">
 <h2>Index</h2>
 <div>
@@ -249,10 +256,14 @@ Procedure Groups (0)</summary>
 <h2 id="pkg-Types" class="pkg-header">Types</h2>
 <section class="documentation">
 <div class="pkg-entity">
-<h3 id="Library"><span><a class="doc-id-link" href="#Library">Library<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/dynlib/lib.odin#L3"><em>Source</em></a></div></h3>
+<h3 id="Library"><span><a class="doc-id-link" href="#Library">Library<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/dynlib/lib.odin#L6"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Library :: distinct <span class="doc-builtin">rawptr</span></pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>A handle to a dynamically loaded library.</p>
+</details>
 </div>
 </section>
 <h2 id="pkg-Constants" class="pkg-header">Constants</h2>
@@ -266,22 +277,104 @@ Procedure Groups (0)</summary>
 <h2 id="pkg-Procedures" class="pkg-header">Procedures</h2>
 <section class="documentation">
 <div class="pkg-entity">
-<h3 id="load_library"><span><a class="doc-id-link" href="#load_library">load_library<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/dynlib/lib.odin#L5"><em>Source</em></a></div></h3>
+<h3 id="load_library"><span><a class="doc-id-link" href="#load_library">load_library<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/dynlib/lib.odin#L35"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">load_library :: <span class="keyword-type">proc</span> "odin" (path: <span class="doc-builtin">string</span>, global_symbols: <span class="doc-builtin">bool</span> = false) -> (<a class="code-typename" href="/core/dynlib/#Library">Library</a>, <span class="doc-builtin">bool</span>) {…}</pre>
+<pre class="doc-code">load_library :: <span class="keyword-type">proc</span> "odin" (path: <span class="doc-builtin">string</span>, global_symbols: <span class="doc-builtin">bool</span> = false) -> (library: <a class="code-typename" href="/core/dynlib/#Library">Library</a>, did_load: <span class="doc-builtin">bool</span>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Loads a dynamic library from the filesystem. The paramater <code>global_symbols</code> makes the symbols in the loaded
+library available to resolve references in subsequently loaded libraries.</p>
+<p>The paramater <code>global_symbols</code> is only used for the platforms <code>linux</code>, <code>darwin</code>, <code>freebsd</code> and <code>openbsd</code>.
+On <code>windows</code> this paramater is ignored.</p>
+<p>The underlying behaviour is platform specific.<br>
+On <code>linux</code>, <code>darwin</code>, <code>freebsd</code> and <code>openbsd</code> refer to <code>dlopen</code>.<br>
+On <code>windows</code> refer to <code>LoadLibraryW</code>.</p>
+<p><b>Implicit Allocators</b><br>
+<code>context.temp_allocator</code></p>
+<p></p>
+<details open class="code-example">
+<summary>Example:</summary>
+<pre><code class="hljs" data-lang="odin">import "core:dynlib"
+import "core:fmt"
+
+load_my_library :: proc() {
+	LIBRARY_PATH :: "my_library.dll"
+	library, ok := dynlib.load_library(LIBRARY_PATH)
+	if ! ok {
+		return
+	}
+	fmt.println("The library %q was successfully loaded", LIBRARY_PATH)
+}
+</code></pre>
+</details>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="symbol_address"><span><a class="doc-id-link" href="#symbol_address">symbol_address<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/dynlib/lib.odin#L13"><em>Source</em></a></div></h3>
+<h3 id="symbol_address"><span><a class="doc-id-link" href="#symbol_address">symbol_address<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/dynlib/lib.odin#L92"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">symbol_address :: <span class="keyword-type">proc</span> "odin" (library: <a class="code-typename" href="/core/dynlib/#Library">Library</a>, symbol: <span class="doc-builtin">string</span>) -> (ptr: <span class="doc-builtin">rawptr</span>, found: <span class="doc-builtin">bool</span>) <span class="directive">#optional_ok</span> {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Loads the address of a procedure/variable from a dynamic library.</p>
+<p>The underlying behaviour is platform specific.<br>
+On <code>linux</code>, <code>darwin</code>, <code>freebsd</code> and <code>openbsd</code> refer to <code>dlsym</code>.<br>
+On <code>windows</code> refer to <code>GetProcAddress</code>.</p>
+<p><b>Implicit Allocators</b><br>
+<code>context.temp_allocator</code></p>
+<p></p>
+<details open class="code-example">
+<summary>Example:</summary>
+<pre><code class="hljs" data-lang="odin">import "core:dynlib"
+import "core:fmt"
+
+find_a_in_my_library :: proc() {
+	LIBRARY_PATH :: "my_library.dll"
+	library, ok := dynlib.load_library(LIBRARY_PATH)
+	if ! ok {
+		return
+	}
+
+	a, found_a := dynlib.symbol_address(library, "a")
+	if found_a do fmt.printf("The symbol %q was found at the address %v", "a", a)
+}
+</code></pre>
+</details>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="unload_library"><span><a class="doc-id-link" href="#unload_library">unload_library<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/dynlib/lib.odin#L9"><em>Source</em></a></div></h3>
+<h3 id="unload_library"><span><a class="doc-id-link" href="#unload_library">unload_library<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/dynlib/lib.odin#L63"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">unload_library :: <span class="keyword-type">proc</span> "odin" (library: <a class="code-typename" href="/core/dynlib/#Library">Library</a>) -> <span class="doc-builtin">bool</span> {…}</pre>
+<pre class="doc-code">unload_library :: <span class="keyword-type">proc</span> "odin" (library: <a class="code-typename" href="/core/dynlib/#Library">Library</a>) -> (did_unload: <span class="doc-builtin">bool</span>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Unloads a dynamic library.</p>
+<p>The underlying behaviour is platform specific.<br>
+On <code>linux</code>, <code>darwin</code>, <code>freebsd</code> and <code>openbsd</code> refer to <code>dlclose</code>.<br>
+On <code>windows</code> refer to <code>FreeLibrary</code>.</p>
+<p></p>
+<details open class="code-example">
+<summary>Example:</summary>
+<pre><code class="hljs" data-lang="odin">import "core:dynlib"
+import "core:fmt"
+
+load_then_unload_my_library :: proc() {
+	LIBRARY_PATH :: "my_library.dll"
+	library, ok := dynlib.load_library(LIBRARY_PATH)
+	if ! ok {
+		return
+	}
+	did_unload := dynlib.unload_library(library)
+	if ! did_unload {
+		return
+	}
+	fmt.println("The library %q was successfully unloaded", LIBRARY_PATH)
+}
+</code></pre>
+</details>
+</details>
 </div>
 </section>
 <h2 id="pkg-Procedure Groups" class="pkg-header">Procedure Groups</h2>
@@ -290,16 +383,17 @@ Procedure Groups (0)</summary>
 </section>
 <h2 id="pkg-source-files">Source Files</h2>
 <ul>
+<li><a href="https://github.com/odin-lang/Odin/tree/master/core/dynlib/doc.odin">doc.odin</a></li>
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/dynlib/lib.odin">lib.odin</a></li>
 <li><em>(hidden platform specific files)</em></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2023-01 (vendor "odin") Windows_amd64 @ 2023-01-15 21:08:15.333470200 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2023-03 (vendor "odin") Windows_amd64 @ 2023-03-21 15:34:43.179640000 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
 <ul>
-<li><a href="#pkg-Types">Types</a><ul>
+<li><a href="#pkg-overview">Overview</a><li><a href="#pkg-Types">Types</a><ul>
 <li><a href="#Library">Library</a></li>
 </ul>
 </li>

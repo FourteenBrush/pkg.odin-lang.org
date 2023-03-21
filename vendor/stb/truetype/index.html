@@ -770,6 +770,7 @@ problematic because there are e.g. 16 english LCIDs and 16 arabic LCIDs</p>
 	pixels:                [^]<span class="doc-builtin">u8</span>, 
 	pw, ph:                <span class="doc-builtin">i32</span>, 
 	first_char, num_chars: <span class="doc-builtin">i32</span>, 
+	chardata:              [^]<a class="code-typename" href="/vendor/stb/truetype/#bakedchar">bakedchar</a>, 
 ) -> <span class="doc-builtin">i32</span> ---</pre>
 </div>
 <details class="odin-doc-toggle" open>
@@ -863,11 +864,12 @@ returns data size or 0 if SVG not found.</p>
 <h3 id="GetBakedQuad"><span><a class="doc-id-link" href="#GetBakedQuad">GetBakedQuad<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/stb/truetype/stb_truetype.odin#L63"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">GetBakedQuad :: <span class="keyword-type">proc</span> "cdecl" (
-	chardata:   ^<a class="code-typename" href="/vendor/stb/truetype/#bakedchar">bakedchar</a>, 
-	pw, ph:     <span class="doc-builtin">i32</span>, 
-	char_index: <span class="doc-builtin">i32</span>, 
-	xpos, ypos: ^<span class="doc-builtin">f32</span>, 
-	q:          ^<a class="code-typename" href="/vendor/stb/truetype/#aligned_quad">aligned_quad</a>, 
+	chardata:        ^<a class="code-typename" href="/vendor/stb/truetype/#bakedchar">bakedchar</a>, 
+	pw, ph:          <span class="doc-builtin">i32</span>, 
+	char_index:      <span class="doc-builtin">i32</span>, 
+	xpos, ypos:      ^<span class="doc-builtin">f32</span>, 
+	q:               ^<a class="code-typename" href="/vendor/stb/truetype/#aligned_quad">aligned_quad</a>, 
+	opengl_fillrule: <span class="doc-builtin">b32</span>, 
 ) ---</pre>
 </div>
 <details class="odin-doc-toggle" open>
@@ -888,6 +890,7 @@ see discussion of "BASELINE" above.</p>
 	scale_x, scale_y:    <span class="doc-builtin">f32</span>, 
 	codepoint:           <span class="doc-builtin">rune</span>, 
 	width, height, xoff, 
+	yoff:                ^<span class="doc-builtin">i32</span>, 
 ) -> [^]<span class="doc-builtin">u8</span> ---</pre>
 </div>
 <details class="odin-doc-toggle" open>
@@ -895,7 +898,7 @@ see discussion of "BASELINE" above.</p>
 <p>allocates a large-enough single-channel 8bpp bitmap and renders the
 specified character/glyph at the specified scale into it, with
 antialiasing. 0 is no coverage (transparent), 255 is fully covered (opaque).
-*width & *height are filled out with the width & height of the bitmap,
+<i>width & </i>height are filled out with the width & height of the bitmap,
 which is stored left-to-right, top-to-bottom.</p>
 <p>xoff/yoff are the offset it pixel space from the glyph origin to the top-left of the bitmap</p>
 </details>
@@ -908,6 +911,7 @@ which is stored left-to-right, top-to-bottom.</p>
 	codepoint:        <span class="doc-builtin">rune</span>, 
 	scale_x, scale_y: <span class="doc-builtin">f32</span>, 
 	ix0, iy0, ix1, 
+	iy1:              ^<span class="doc-builtin">i32</span>, 
 ) ---</pre>
 </div>
 <details class="odin-doc-toggle" open>
@@ -927,6 +931,7 @@ y-increases-up, so CodepointBitmapBox and CodepointBox are inverted.)</p>
 	codepoint:                          <span class="doc-builtin">rune</span>, 
 	scale_x, scale_y, shift_x, shift_y: <span class="doc-builtin">f32</span>, 
 	ix0, iy0, ix1, 
+	iy1:                                ^<span class="doc-builtin">i32</span>, 
 ) ---</pre>
 </div>
 <details class="odin-doc-toggle" open>
@@ -943,6 +948,7 @@ shift for the character</p>
 	scale_x, scale_y, shift_x, shift_y: <span class="doc-builtin">f32</span>, 
 	codepoint:                          <span class="doc-builtin">rune</span>, 
 	width, height, xoff, 
+	yoff:                               ^<span class="doc-builtin">i32</span>, 
 ) -> [^]<span class="doc-builtin">u8</span> ---</pre>
 </div>
 <details class="odin-doc-toggle" open>
@@ -958,6 +964,7 @@ shift for the character</p>
 	info:       ^<a class="code-typename" href="/vendor/stb/truetype/#fontinfo">fontinfo</a>, 
 	codepoint:  <span class="doc-builtin">rune</span>, 
 	x0, y0, x1, 
+	y1:         ^<span class="doc-builtin">i32</span>, 
 ) -> <span class="doc-builtin">i32</span> ---</pre>
 </div>
 <details class="odin-doc-toggle" open>
@@ -997,6 +1004,7 @@ advanceWidth is the offset from the current horizontal position to the next hori
 	onedge_value:        <span class="doc-builtin">u8</span>, 
 	pixel_dist_scale:    <span class="doc-builtin">f32</span>, 
 	width, height, xoff, 
+	yoff:                ^<span class="doc-builtin">i32</span>, 
 ) -> [^]<span class="doc-builtin">u8</span> ---</pre>
 </div>
 </div>
@@ -1041,6 +1049,7 @@ its x,y, using cx,cy as the bezier control point.</p>
 	length:                 <span class="doc-builtin">i32</span>, 
 	platformID:             <a class="code-typename" href="/vendor/stb/truetype/#PLATFORM_ID">PLATFORM_ID</a>, 
 	encodingID, languageID, 
+	nameID:                 <span class="doc-builtin">i32</span>, 
 ) -> <span class="doc-builtin">cstring</span> ---</pre>
 </div>
 <details class="odin-doc-toggle" open>
@@ -1076,7 +1085,7 @@ return '0' for index 0, and -1 for all other indices.</p>
 <p>ascent is the coordinate above the baseline the font extends; descent
 is the coordinate below the baseline the font extends (i.e. it is typically negative)
 lineGap is the spacing between one row's descent and the next row's ascent...
-so you should advance the vertical position by "*ascent - *descent + *lineGap"
+so you should advance the vertical position by "<i>ascent - </i>descent + *lineGap"
   these are expressed in unscaled coordinates, so you must multiply by
   the scale factor for a given size</p>
 </details>
@@ -1101,6 +1110,7 @@ table (specific to MS/Windows TTF files).</p>
 	scale_x, scale_y:    <span class="doc-builtin">f32</span>, 
 	glyph:               <span class="doc-builtin">i32</span>, 
 	width, height, xoff, 
+	yoff:                ^<span class="doc-builtin">i32</span>, 
 ) -> [^]<span class="doc-builtin">u8</span> ---</pre>
 </div>
 <details class="odin-doc-toggle" open>
@@ -1117,6 +1127,7 @@ on glyph indices instead of Unicode codepoints (for efficiency)</p>
 	glyph:            <span class="doc-builtin">i32</span>, 
 	scale_x, scale_y: <span class="doc-builtin">f32</span>, 
 	ix0, iy0, ix1, 
+	iy1:              ^<span class="doc-builtin">i32</span>, 
 ) ---</pre>
 </div>
 </div>
@@ -1128,6 +1139,7 @@ on glyph indices instead of Unicode codepoints (for efficiency)</p>
 	glyph:                              <span class="doc-builtin">i32</span>, 
 	scale_x, scale_y, shift_x, shift_y: <span class="doc-builtin">f32</span>, 
 	ix0, iy0, ix1, 
+	iy1:                                ^<span class="doc-builtin">i32</span>, 
 ) ---</pre>
 </div>
 </div>
@@ -1139,6 +1151,7 @@ on glyph indices instead of Unicode codepoints (for efficiency)</p>
 	scale_x, scale_y, shift_x, shift_y: <span class="doc-builtin">f32</span>, 
 	glyph:                              <span class="doc-builtin">i32</span>, 
 	width, height, xoff, 
+	yoff:                               ^<span class="doc-builtin">i32</span>, 
 ) -> [^]<span class="doc-builtin">u8</span> ---</pre>
 </div>
 </div>
@@ -1149,6 +1162,7 @@ on glyph indices instead of Unicode codepoints (for efficiency)</p>
 	info:        ^<a class="code-typename" href="/vendor/stb/truetype/#fontinfo">fontinfo</a>, 
 	glyph_index: <span class="doc-builtin">i32</span>, 
 	x0, y0, x1, 
+	y1:          ^<span class="doc-builtin">i32</span>, 
 ) -> <span class="doc-builtin">i32</span> ---</pre>
 </div>
 </div>
@@ -1178,6 +1192,7 @@ on glyph indices instead of Unicode codepoints (for efficiency)</p>
 	onedge_value:        <span class="doc-builtin">u8</span>, 
 	pixel_dist_scale:    <span class="doc-builtin">f32</span>, 
 	width, height, xoff, 
+	yoff:                ^<span class="doc-builtin">i32</span>, 
 ) -> [^]<span class="doc-builtin">u8</span> ---</pre>
 </div>
 </div>
@@ -1229,11 +1244,12 @@ less than the total fonts. If an error occurs, -1 is returned.</p>
 <h3 id="GetPackedQuad"><span><a class="doc-id-link" href="#GetPackedQuad">GetPackedQuad<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/stb/truetype/stb_truetype.odin#L169"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">GetPackedQuad :: <span class="keyword-type">proc</span> "cdecl" (
-	chardata:   ^<a class="code-typename" href="/vendor/stb/truetype/#packedchar">packedchar</a>, 
-	pw, ph:     <span class="doc-builtin">i32</span>, 
-	char_index: <span class="doc-builtin">i32</span>, 
-	xpos, ypos: ^<span class="doc-builtin">f32</span>, 
-	q:          ^<a class="code-typename" href="/vendor/stb/truetype/#aligned_quad">aligned_quad</a>, 
+	chardata:         ^<a class="code-typename" href="/vendor/stb/truetype/#packedchar">packedchar</a>, 
+	pw, ph:           <span class="doc-builtin">i32</span>, 
+	char_index:       <span class="doc-builtin">i32</span>, 
+	xpos, ypos:       ^<span class="doc-builtin">f32</span>, 
+	q:                ^<a class="code-typename" href="/vendor/stb/truetype/#aligned_quad">aligned_quad</a>, 
+	align_to_integer: <span class="doc-builtin">b32</span>, 
 ) ---</pre>
 </div>
 </div>
@@ -1245,6 +1261,7 @@ less than the total fonts. If an error occurs, -1 is returned.</p>
 	index:           <span class="doc-builtin">i32</span>, 
 	size:            <span class="doc-builtin">f32</span>, 
 	ascent, descent, 
+	lineGap:         ^<span class="doc-builtin">f32</span>, 
 ) ---</pre>
 </div>
 <details class="odin-doc-toggle" open>
@@ -1284,6 +1301,7 @@ value data with no additional data structures. Returns 0 on failure.</p>
 	output:                   [^]<span class="doc-builtin">u8</span>, 
 	out_w, out_h, out_stride: <span class="doc-builtin">i32</span>, 
 	scale_x, scale_y:         <span class="doc-builtin">f32</span>, 
+	codepoint:                <span class="doc-builtin">rune</span>, 
 ) ---</pre>
 </div>
 <details class="odin-doc-toggle" open>
@@ -1302,6 +1320,7 @@ width and height and positioning info for it first.</p>
 	output:                             [^]<span class="doc-builtin">u8</span>, 
 	out_w, out_h, out_stride:           <span class="doc-builtin">i32</span>, 
 	scale_x, scale_y, shift_x, shift_y: <span class="doc-builtin">f32</span>, 
+	codepoint:                          <span class="doc-builtin">rune</span>, 
 ) ---</pre>
 </div>
 <details class="odin-doc-toggle" open>
@@ -1320,6 +1339,7 @@ shift for the character</p>
 	scale_x, scale_y, shift_x, shift_y: <span class="doc-builtin">f32</span>, 
 	oversample_x, oversample_y:         <span class="doc-builtin">b32</span>, 
 	sub_x, sub_y:                       ^<span class="doc-builtin">f32</span>, 
+	codepoint:                          <span class="doc-builtin">rune</span>, 
 ) ---</pre>
 </div>
 <details class="odin-doc-toggle" open>
@@ -1336,6 +1356,7 @@ is performed (see stbtt_PackSetOversampling)</p>
 	output:                   [^]<span class="doc-builtin">u8</span>, 
 	out_w, out_h, out_stride: <span class="doc-builtin">i32</span>, 
 	scale_x, scale_y:         <span class="doc-builtin">f32</span>, 
+	glyph:                    <span class="doc-builtin">i32</span>, 
 ) ---</pre>
 </div>
 </div>
@@ -1347,6 +1368,7 @@ is performed (see stbtt_PackSetOversampling)</p>
 	output:                             [^]<span class="doc-builtin">u8</span>, 
 	out_w, out_h, out_stride:           <span class="doc-builtin">i32</span>, 
 	scale_x, scale_y, shift_x, shift_y: <span class="doc-builtin">f32</span>, 
+	glyph:                              <span class="doc-builtin">i32</span>, 
 ) ---</pre>
 </div>
 </div>
@@ -1360,13 +1382,14 @@ is performed (see stbtt_PackSetOversampling)</p>
 	scale_x, scale_y, shift_x, shift_y: <span class="doc-builtin">f32</span>, 
 	oversample_x, oversample_y:         <span class="doc-builtin">i32</span>, 
 	sub_x, sub_y:                       ^<span class="doc-builtin">f32</span>, 
+	glyph:                              <span class="doc-builtin">i32</span>, 
 ) ---</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="POINT_SIZE"><span><a class="doc-id-link" href="#POINT_SIZE">POINT_SIZE<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/stb/truetype/stb_truetype.odin#L108"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">POINT_SIZE :: <span class="keyword-type">proc</span> "odin" (x: $) -> $ {…}</pre>
+<pre class="doc-code">POINT_SIZE :: <span class="keyword-type">proc</span> "odin" (x: $T) -> $T {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -1376,6 +1399,7 @@ is performed (see stbtt_PackSetOversampling)</p>
 	spc:                                     ^<a class="code-typename" href="/vendor/stb/truetype/#pack_context">pack_context</a>, 
 	pixels:                                  [^]<span class="doc-builtin">u8</span>, 
 	width, height, stride_in_bytes, padding: <span class="doc-builtin">i32</span>, 
+	alloc_context:                           <span class="doc-builtin">rawptr</span>, 
 ) -> <span class="doc-builtin">i32</span> ---</pre>
 </div>
 <details class="odin-doc-toggle" open>
@@ -1409,6 +1433,7 @@ bilinear filtering).</p>
 	font_index:                                      <span class="doc-builtin">i32</span>, 
 	font_size:                                       <span class="doc-builtin">f32</span>, 
 	first_unicode_char_in_range, num_chars_in_range: <span class="doc-builtin">i32</span>, 
+	chardata_for_range:                              ^<a class="code-typename" href="/vendor/stb/truetype/#packedchar">packedchar</a>, 
 ) -> <span class="doc-builtin">i32</span> ---</pre>
 </div>
 <details class="odin-doc-toggle" open>
@@ -1515,6 +1540,7 @@ typically an empty box by convention.</p>
 	shift_x, shift_y:   <span class="doc-builtin">f32</span>, 
 	x_off, y_off:       <span class="doc-builtin">i32</span>, 
 	invert:             <span class="doc-builtin">b32</span>, 
+	userdata:           <span class="doc-builtin">rawptr</span>, 
 ) ---</pre>
 </div>
 <details class="odin-doc-toggle" open>
@@ -1559,7 +1585,7 @@ so if you prefer to measure height by the ascent only, use a similar calculation
 <li><a href="https://github.com/odin-lang/Odin/tree/master/vendor/stb/truetype/stb_truetype.odin">stb_truetype.odin</a></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2023-01 (vendor "odin") Windows_amd64 @ 2023-01-15 21:08:15.701608400 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2023-03 (vendor "odin") Windows_amd64 @ 2023-03-21 15:34:43.717044000 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">

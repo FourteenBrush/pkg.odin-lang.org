@@ -357,15 +357,15 @@ Procedure Groups (0)</summary>
 <div>
 <pre class="doc-code">ID3D10Blob_VTable :: <span class="keyword-type">struct</span> {
 	iunknown_vtable:  directx_dxgi.<a class="code-typename" href="/vendor/directx/dxgi/#IUnknown_VTable">IUnknown_VTable</a>,
-	GetBufferPointer: <span class="keyword-type">proc</span> "stdcall" (this: ) -> <span class="doc-builtin">rawptr</span>,
-	GetBufferSize:    <span class="keyword-type">proc</span> "stdcall" (this: ) -> <span class="doc-builtin">uint</span>,
+	GetBufferPointer: <span class="keyword-type">proc</span> "stdcall" (this: ^<a class="code-typename" href="/vendor/directx/d3d_compiler/#ID3D10Blob">ID3D10Blob</a>) -> <span class="doc-builtin">rawptr</span>,
+	GetBufferSize:    <span class="keyword-type">proc</span> "stdcall" (this: ^<a class="code-typename" href="/vendor/directx/d3d_compiler/#ID3D10Blob">ID3D10Blob</a>) -> <span class="doc-builtin">uint</span>,
 }</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="ID3D10Effect"><span><a class="doc-id-link" href="#ID3D10Effect">ID3D10Effect<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/directx/d3d_compiler/d3d_compiler.odin#L233"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">ID3D10Effect :: <span class="keyword-type">struct</span> {}</pre>
+<pre class="doc-code">ID3D10Effect :: <span class="keyword-type">struct</span>($Key: typeid, $Value: typeid) where intrinsics.type_is_valid_map_key(Key) {}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -382,9 +382,9 @@ Procedure Groups (0)</summary>
 <div>
 <pre class="doc-code">ID3D11Linker_VTable :: <span class="keyword-type">struct</span> {
 	iunknown_vtable:         directx_dxgi.<a class="code-typename" href="/vendor/directx/dxgi/#IUnknown_VTable">IUnknown_VTable</a>,
-	Link:                    <span class="keyword-type">proc</span> "stdcall" (this: , pEntry: , pEntryName: , pTargetName: , uFlags: , ppShaderBlob: , ppErrorBuffer: ) -> sys_windows.<a class="code-typename" href="//#HRESULT">HRESULT</a>,
-	UseLibrary:              <span class="keyword-type">proc</span> "stdcall" (this: , pLibraryMI: ) -> sys_windows.<a class="code-typename" href="//#HRESULT">HRESULT</a>,
-	AddClipPlaneFromCBuffer: <span class="keyword-type">proc</span> "stdcall" (this: , uCBufferSlot: , uCBufferEntry: ) -> sys_windows.<a class="code-typename" href="//#HRESULT">HRESULT</a>,
+	Link:                    <span class="keyword-type">proc</span> "stdcall" (this: ^<a class="code-typename" href="/vendor/directx/d3d_compiler/#ID3D11Linker">ID3D11Linker</a>, pEntry: ^<a class="code-typename" href="/vendor/directx/d3d_compiler/#ID3D11ModuleInstance">ID3D11ModuleInstance</a>, pEntryName: <span class="doc-builtin">cstring</span>, pTargetName: <span class="doc-builtin">cstring</span>, uFlags: <span class="doc-builtin">u32</span>, ppShaderBlob: ^^<a class="code-typename" href="/vendor/directx/d3d_compiler/#ID3D10Blob">ID3D10Blob</a>, ppErrorBuffer: ^^<a class="code-typename" href="/vendor/directx/d3d_compiler/#ID3D10Blob">ID3D10Blob</a>) -> sys_windows.<a class="code-typename" href="//#HRESULT">HRESULT</a>,
+	UseLibrary:              <span class="keyword-type">proc</span> "stdcall" (this: ^<a class="code-typename" href="/vendor/directx/d3d_compiler/#ID3D11Linker">ID3D11Linker</a>, pLibraryMI: ^<a class="code-typename" href="/vendor/directx/d3d_compiler/#ID3D11ModuleInstance">ID3D11ModuleInstance</a>) -> sys_windows.<a class="code-typename" href="//#HRESULT">HRESULT</a>,
+	AddClipPlaneFromCBuffer: <span class="keyword-type">proc</span> "stdcall" (this: ^<a class="code-typename" href="/vendor/directx/d3d_compiler/#ID3D11Linker">ID3D11Linker</a>, uCBufferSlot: <span class="doc-builtin">u32</span>, uCBufferEntry: <span class="doc-builtin">u32</span>) -> sys_windows.<a class="code-typename" href="//#HRESULT">HRESULT</a>,
 }</pre>
 </div>
 </div>
@@ -411,16 +411,16 @@ Procedure Groups (0)</summary>
 <div>
 <pre class="doc-code">ID3D11ModuleInstance_VTable :: <span class="keyword-type">struct</span> {
 	iunknown_vtable:                         directx_dxgi.<a class="code-typename" href="/vendor/directx/dxgi/#IUnknown_VTable">IUnknown_VTable</a>,
-	BindConstantBuffer:                      <span class="keyword-type">proc</span> "stdcall" (this: , uSrcSlot: , uDstSlot: , cbDstOffset: ) -> sys_windows.<a class="code-typename" href="//#HRESULT">HRESULT</a>,
-	BindConstantBufferByName:                <span class="keyword-type">proc</span> "stdcall" (this: , pName: , uDstSlot: , cbDstOffset: ) -> sys_windows.<a class="code-typename" href="//#HRESULT">HRESULT</a>,
-	BindResource:                            <span class="keyword-type">proc</span> "stdcall" (this: , uSrcSlot: , uDstSlot: , uCount: ) -> sys_windows.<a class="code-typename" href="//#HRESULT">HRESULT</a>,
-	BindResourceByName:                      <span class="keyword-type">proc</span> "stdcall" (this: , pName: , uDstSlot: , uCount: ) -> sys_windows.<a class="code-typename" href="//#HRESULT">HRESULT</a>,
-	BindSampler:                             <span class="keyword-type">proc</span> "stdcall" (this: , uSrcSlot: , uDstSlot: , uCount: ) -> sys_windows.<a class="code-typename" href="//#HRESULT">HRESULT</a>,
-	BindSamplerByName:                       <span class="keyword-type">proc</span> "stdcall" (this: , pName: , uDstSlot: , uCount: ) -> sys_windows.<a class="code-typename" href="//#HRESULT">HRESULT</a>,
-	BindUnorderedAccessView:                 <span class="keyword-type">proc</span> "stdcall" (this: , uSrcSlot: , uDstSlot: , uCount: ) -> sys_windows.<a class="code-typename" href="//#HRESULT">HRESULT</a>,
-	BindUnorderedAccessViewByName:           <span class="keyword-type">proc</span> "stdcall" (this: , pName: , uDstSlot: , uCount: ) -> sys_windows.<a class="code-typename" href="//#HRESULT">HRESULT</a>,
-	BindResourceAsUnorderedAccessView:       <span class="keyword-type">proc</span> "stdcall" (this: , uSrcSrvSlot: , uDstUavSlot: , uCount: ) -> sys_windows.<a class="code-typename" href="//#HRESULT">HRESULT</a>,
-	BindResourceAsUnorderedAccessViewByName: <span class="keyword-type">proc</span> "stdcall" (this: , pSrvName: , uDstUavSlot: , uCount: ) -> sys_windows.<a class="code-typename" href="//#HRESULT">HRESULT</a>,
+	BindConstantBuffer:                      <span class="keyword-type">proc</span> "stdcall" (this: ^<a class="code-typename" href="/vendor/directx/d3d_compiler/#ID3D11ModuleInstance">ID3D11ModuleInstance</a>, uSrcSlot: <span class="doc-builtin">u32</span>, uDstSlot: <span class="doc-builtin">u32</span>, cbDstOffset: <span class="doc-builtin">u32</span>) -> sys_windows.<a class="code-typename" href="//#HRESULT">HRESULT</a>,
+	BindConstantBufferByName:                <span class="keyword-type">proc</span> "stdcall" (this: ^<a class="code-typename" href="/vendor/directx/d3d_compiler/#ID3D11ModuleInstance">ID3D11ModuleInstance</a>, pName: <span class="doc-builtin">cstring</span>, uDstSlot: <span class="doc-builtin">u32</span>, cbDstOffset: <span class="doc-builtin">u32</span>) -> sys_windows.<a class="code-typename" href="//#HRESULT">HRESULT</a>,
+	BindResource:                            <span class="keyword-type">proc</span> "stdcall" (this: ^<a class="code-typename" href="/vendor/directx/d3d_compiler/#ID3D11ModuleInstance">ID3D11ModuleInstance</a>, uSrcSlot: <span class="doc-builtin">u32</span>, uDstSlot: <span class="doc-builtin">u32</span>, uCount: <span class="doc-builtin">u32</span>) -> sys_windows.<a class="code-typename" href="//#HRESULT">HRESULT</a>,
+	BindResourceByName:                      <span class="keyword-type">proc</span> "stdcall" (this: ^<a class="code-typename" href="/vendor/directx/d3d_compiler/#ID3D11ModuleInstance">ID3D11ModuleInstance</a>, pName: <span class="doc-builtin">cstring</span>, uDstSlot: <span class="doc-builtin">u32</span>, uCount: <span class="doc-builtin">u32</span>) -> sys_windows.<a class="code-typename" href="//#HRESULT">HRESULT</a>,
+	BindSampler:                             <span class="keyword-type">proc</span> "stdcall" (this: ^<a class="code-typename" href="/vendor/directx/d3d_compiler/#ID3D11ModuleInstance">ID3D11ModuleInstance</a>, uSrcSlot: <span class="doc-builtin">u32</span>, uDstSlot: <span class="doc-builtin">u32</span>, uCount: <span class="doc-builtin">u32</span>) -> sys_windows.<a class="code-typename" href="//#HRESULT">HRESULT</a>,
+	BindSamplerByName:                       <span class="keyword-type">proc</span> "stdcall" (this: ^<a class="code-typename" href="/vendor/directx/d3d_compiler/#ID3D11ModuleInstance">ID3D11ModuleInstance</a>, pName: <span class="doc-builtin">cstring</span>, uDstSlot: <span class="doc-builtin">u32</span>, uCount: <span class="doc-builtin">u32</span>) -> sys_windows.<a class="code-typename" href="//#HRESULT">HRESULT</a>,
+	BindUnorderedAccessView:                 <span class="keyword-type">proc</span> "stdcall" (this: ^<a class="code-typename" href="/vendor/directx/d3d_compiler/#ID3D11ModuleInstance">ID3D11ModuleInstance</a>, uSrcSlot: <span class="doc-builtin">u32</span>, uDstSlot: <span class="doc-builtin">u32</span>, uCount: <span class="doc-builtin">u32</span>) -> sys_windows.<a class="code-typename" href="//#HRESULT">HRESULT</a>,
+	BindUnorderedAccessViewByName:           <span class="keyword-type">proc</span> "stdcall" (this: ^<a class="code-typename" href="/vendor/directx/d3d_compiler/#ID3D11ModuleInstance">ID3D11ModuleInstance</a>, pName: <span class="doc-builtin">cstring</span>, uDstSlot: <span class="doc-builtin">u32</span>, uCount: <span class="doc-builtin">u32</span>) -> sys_windows.<a class="code-typename" href="//#HRESULT">HRESULT</a>,
+	BindResourceAsUnorderedAccessView:       <span class="keyword-type">proc</span> "stdcall" (this: ^<a class="code-typename" href="/vendor/directx/d3d_compiler/#ID3D11ModuleInstance">ID3D11ModuleInstance</a>, uSrcSrvSlot: <span class="doc-builtin">u32</span>, uDstUavSlot: <span class="doc-builtin">u32</span>, uCount: <span class="doc-builtin">u32</span>) -> sys_windows.<a class="code-typename" href="//#HRESULT">HRESULT</a>,
+	BindResourceAsUnorderedAccessViewByName: <span class="keyword-type">proc</span> "stdcall" (this: ^<a class="code-typename" href="/vendor/directx/d3d_compiler/#ID3D11ModuleInstance">ID3D11ModuleInstance</a>, pSrvName: <span class="doc-builtin">cstring</span>, uDstUavSlot: <span class="doc-builtin">u32</span>, uCount: <span class="doc-builtin">u32</span>) -> sys_windows.<a class="code-typename" href="//#HRESULT">HRESULT</a>,
 }</pre>
 </div>
 </div>
@@ -429,7 +429,7 @@ Procedure Groups (0)</summary>
 <div>
 <pre class="doc-code">ID3D11Module_VTable :: <span class="keyword-type">struct</span> {
 	iunknown_vtable: directx_dxgi.<a class="code-typename" href="/vendor/directx/dxgi/#IUnknown_VTable">IUnknown_VTable</a>,
-	CreateInstance:  <span class="keyword-type">proc</span> "stdcall" (this: , pNamespace: , ppModuleInstance: ) -> sys_windows.<a class="code-typename" href="//#HRESULT">HRESULT</a>,
+	CreateInstance:  <span class="keyword-type">proc</span> "stdcall" (this: ^<a class="code-typename" href="/vendor/directx/d3d_compiler/#ID3D11Module">ID3D11Module</a>, pNamespace: <span class="doc-builtin">cstring</span>, ppModuleInstance: ^^<a class="code-typename" href="/vendor/directx/d3d_compiler/#ID3D11ModuleInstance">ID3D11ModuleInstance</a>) -> sys_windows.<a class="code-typename" href="//#HRESULT">HRESULT</a>,
 }</pre>
 </div>
 </div>
@@ -457,8 +457,8 @@ Procedure Groups (0)</summary>
 <h3 id="ID3DInclude_VTable"><span><a class="doc-id-link" href="#ID3DInclude_VTable">ID3DInclude_VTable<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/directx/d3d_compiler/d3d_compiler.odin#L147"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">ID3DInclude_VTable :: <span class="keyword-type">struct</span> {
-	Open:  <span class="keyword-type">proc</span> "stdcall" (this: , IncludeType: , pFileName: , pParentData: , ppData: , pBytes: ) -> sys_windows.<a class="code-typename" href="//#HRESULT">HRESULT</a>,
-	Close: <span class="keyword-type">proc</span> "stdcall" (this: , pData: ) -> sys_windows.<a class="code-typename" href="//#HRESULT">HRESULT</a>,
+	Open:  <span class="keyword-type">proc</span> "stdcall" (this: ^<a class="code-typename" href="/vendor/directx/d3d_compiler/#ID3DInclude">ID3DInclude</a>, IncludeType: <a class="code-typename" href="/vendor/directx/d3d_compiler/#INCLUDE_TYPE">INCLUDE_TYPE</a>, pFileName: <span class="doc-builtin">cstring</span>, pParentData: <span class="doc-builtin">rawptr</span>, ppData: ^<span class="doc-builtin">rawptr</span>, pBytes: ^<span class="doc-builtin">u32</span>) -> sys_windows.<a class="code-typename" href="//#HRESULT">HRESULT</a>,
+	Close: <span class="keyword-type">proc</span> "stdcall" (this: ^<a class="code-typename" href="/vendor/directx/d3d_compiler/#ID3DInclude">ID3DInclude</a>, pData: <span class="doc-builtin">rawptr</span>) -> sys_windows.<a class="code-typename" href="//#HRESULT">HRESULT</a>,
 }</pre>
 </div>
 </div>
@@ -681,6 +681,7 @@ Procedure Groups (0)</summary>
 	Flags1:      <span class="doc-builtin">u32</span>, 
 	Flags2:      <span class="doc-builtin">u32</span>, 
 	ppCode:      ^^<a class="code-typename" href="/vendor/directx/d3d_compiler/#ID3D10Blob">ID3D10Blob</a>, 
+	ppErrorMsgs: ^^<a class="code-typename" href="/vendor/directx/d3d_compiler/#ID3D10Blob">ID3D10Blob</a>, 
 ) -> sys_windows.<a class="code-typename" href="//#HRESULT">HRESULT</a> ---</pre>
 </div>
 </div>
@@ -701,6 +702,7 @@ Procedure Groups (0)</summary>
 	pSecondaryData:     <span class="doc-builtin">rawptr</span>, 
 	SecondaryDataSize:  <span class="doc-builtin">uint</span>, 
 	ppCode:             ^^<a class="code-typename" href="/vendor/directx/d3d_compiler/#ID3D10Blob">ID3D10Blob</a>, 
+	ppErrorMsgs:        ^^<a class="code-typename" href="/vendor/directx/d3d_compiler/#ID3D10Blob">ID3D10Blob</a>, 
 ) -> sys_windows.<a class="code-typename" href="//#HRESULT">HRESULT</a> ---</pre>
 </div>
 </div>
@@ -716,6 +718,7 @@ Procedure Groups (0)</summary>
 	Flags1:      <span class="doc-builtin">u32</span>, 
 	Flags2:      <span class="doc-builtin">u32</span>, 
 	ppCode:      ^^<a class="code-typename" href="/vendor/directx/d3d_compiler/#ID3D10Blob">ID3D10Blob</a>, 
+	ppErrorMsgs: ^^<a class="code-typename" href="/vendor/directx/d3d_compiler/#ID3D10Blob">ID3D10Blob</a>, 
 ) -> sys_windows.<a class="code-typename" href="//#HRESULT">HRESULT</a> ---</pre>
 </div>
 </div>
@@ -741,13 +744,14 @@ Procedure Groups (0)</summary>
 <h3 id="DecompressShaders"><span><a class="doc-id-link" href="#DecompressShaders">DecompressShaders<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/directx/d3d_compiler/d3d_compiler.odin#L42"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">DecompressShaders :: <span class="keyword-type">proc</span> "stdcall" (
-	pSrcData:    <span class="doc-builtin">rawptr</span>, 
-	SrcDataSize: <span class="doc-builtin">uint</span>, 
-	uNumShaders: <span class="doc-builtin">u32</span>, 
-	uStartIndex: <span class="doc-builtin">u32</span>, 
-	pIndices:    ^<span class="doc-builtin">u32</span>, 
-	uFlags:      <span class="doc-builtin">u32</span>, 
-	ppShaders:   ^^<a class="code-typename" href="/vendor/directx/d3d_compiler/#ID3D10Blob">ID3D10Blob</a>, 
+	pSrcData:      <span class="doc-builtin">rawptr</span>, 
+	SrcDataSize:   <span class="doc-builtin">uint</span>, 
+	uNumShaders:   <span class="doc-builtin">u32</span>, 
+	uStartIndex:   <span class="doc-builtin">u32</span>, 
+	pIndices:      ^<span class="doc-builtin">u32</span>, 
+	uFlags:        <span class="doc-builtin">u32</span>, 
+	ppShaders:     ^^<a class="code-typename" href="/vendor/directx/d3d_compiler/#ID3D10Blob">ID3D10Blob</a>, 
+	pTotalShaders: ^<span class="doc-builtin">u32</span>, 
 ) -> sys_windows.<a class="code-typename" href="//#HRESULT">HRESULT</a> ---</pre>
 </div>
 </div>
@@ -774,6 +778,7 @@ Procedure Groups (0)</summary>
 	StartByteOffset:   <span class="doc-builtin">uint</span>, 
 	NumInsts:          <span class="doc-builtin">uint</span>, 
 	pFinishByteOffset: ^<span class="doc-builtin">uint</span>, 
+	ppDisassembly:     ^^<a class="code-typename" href="/vendor/directx/d3d_compiler/#ID3D10Blob">ID3D10Blob</a>, 
 ) -> sys_windows.<a class="code-typename" href="//#HRESULT">HRESULT</a> ---</pre>
 </div>
 </div>
@@ -817,6 +822,7 @@ Procedure Groups (0)</summary>
 	StartInstIndex: <span class="doc-builtin">uint</span>, 
 	NumInsts:       <span class="doc-builtin">uint</span>, 
 	pOffsets:       ^<span class="doc-builtin">uint</span>, 
+	pTotalInsts:    ^<span class="doc-builtin">uint</span>, 
 ) -> sys_windows.<a class="code-typename" href="//#HRESULT">HRESULT</a> ---</pre>
 </div>
 </div>
@@ -836,6 +842,7 @@ Procedure Groups (0)</summary>
 	pDefines:    ^<a class="code-typename" href="/vendor/directx/d3d_compiler/#SHADER_MACRO">SHADER_MACRO</a>, 
 	pInclude:    ^<a class="code-typename" href="/vendor/directx/d3d_compiler/#ID3DInclude">ID3DInclude</a>, 
 	ppCodeText:  ^^<a class="code-typename" href="/vendor/directx/d3d_compiler/#ID3D10Blob">ID3D10Blob</a>, 
+	ppErrorMsgs: ^^<a class="code-typename" href="/vendor/directx/d3d_compiler/#ID3D10Blob">ID3D10Blob</a>, 
 ) -> sys_windows.<a class="code-typename" href="//#HRESULT">HRESULT</a> ---</pre>
 </div>
 </div>
@@ -867,6 +874,7 @@ Procedure Groups (0)</summary>
 	Flags:       <span class="doc-builtin">u32</span>, 
 	pPart:       <span class="doc-builtin">rawptr</span>, 
 	PartSize:    <span class="doc-builtin">uint</span>, 
+	ppNewShader: ^^<a class="code-typename" href="/vendor/directx/d3d_compiler/#ID3D10Blob">ID3D10Blob</a>, 
 ) -> sys_windows.<a class="code-typename" href="//#HRESULT">HRESULT</a> ---</pre>
 </div>
 </div>
@@ -892,7 +900,7 @@ Procedure Groups (0)</summary>
 <li><a href="https://github.com/odin-lang/Odin/tree/master/vendor/directx/d3d_compiler/d3d_compiler.odin">d3d_compiler.odin</a></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2023-01 (vendor "odin") Windows_amd64 @ 2023-01-15 21:08:15.570752400 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2023-03 (vendor "odin") Windows_amd64 @ 2023-03-21 15:34:43.548408800 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">

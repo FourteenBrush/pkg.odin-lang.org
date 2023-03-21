@@ -549,9 +549,9 @@ Procedure Groups (0)</summary>
 	<span class="comment">// 	 * fills in these function pointers. This allows a user to delay</span>
 	<span class="comment">// 	 * the expansion of the custom type until access is desired, and</span>
 	<span class="comment">// 	 * similarly, to delay the packing of the data until write time.</span>
-	unpack_func_ptr:           <span class="keyword-type">proc</span> "cdecl" (ctxt: , data: , attrsize: , outsize: , outbuffer: ) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a>,
-	pack_func_ptr:             <span class="keyword-type">proc</span> "cdecl" (ctxt: , data: , datasize: , outsize: , outbuffer: ) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a>,
-	destroy_unpacked_func_ptr: <span class="keyword-type">proc</span> "cdecl" (ctxt: , data: , attrsize: ),
+	unpack_func_ptr:           <span class="keyword-type">proc</span> "cdecl" (ctxt: <a class="code-typename" href="/vendor/OpenEXRCore/#context_t">context_t</a>, data: <span class="doc-builtin">rawptr</span>, attrsize: <span class="doc-builtin">i32</span>, outsize: ^<span class="doc-builtin">i32</span>, outbuffer: ^<span class="doc-builtin">rawptr</span>) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a>,
+	pack_func_ptr:             <span class="keyword-type">proc</span> "cdecl" (ctxt: <a class="code-typename" href="/vendor/OpenEXRCore/#context_t">context_t</a>, data: <span class="doc-builtin">rawptr</span>, datasize: <span class="doc-builtin">i32</span>, outsize: ^<span class="doc-builtin">i32</span>, outbuffer: <span class="doc-builtin">rawptr</span>) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a>,
+	destroy_unpacked_func_ptr: <span class="keyword-type">proc</span> "cdecl" (ctxt: <a class="code-typename" href="/vendor/OpenEXRCore/#context_t">context_t</a>, data: <span class="doc-builtin">rawptr</span>, attrsize: <span class="doc-builtin">i32</span>),
 }</pre>
 </div>
 <details class="odin-doc-toggle" open>
@@ -740,34 +740,34 @@ Procedure Groups (0)</summary>
 	<span class="comment">// 	 * of these entries.</span>
 	_:                <span class="keyword-type">struct</span> <span class="directive">#raw_union</span> {
 		<span class="comment">// NB: not pointers for POD types</span>
-		uc:             ,
-		d:              ,
-		f:              ,
-		i:              ,
-		box2i:          ,
-		box2f:          ,
-		chlist:         ,
-		chromaticities: ,
-		keycode:        ,
-		floatvector:    ,
-		m33f:           ,
-		m33d:           ,
-		m44f:           ,
-		m44d:           ,
-		preview:        ,
-		rational:       ,
-		string:         ,
-		stringvector:   ,
-		tiledesc:       ,
-		timecode:       ,
-		v2i:            ,
-		v2f:            ,
-		v2d:            ,
-		v3i:            ,
-		v3f:            ,
-		v3d:            ,
-		opaque:         ,
-		rawptr:         ,
+		uc:             <span class="doc-builtin">u8</span>,
+		d:              <span class="doc-builtin">f64</span>,
+		f:              <span class="doc-builtin">f32</span>,
+		i:              <span class="doc-builtin">i32</span>,
+		box2i:          ^<a class="code-typename" href="/vendor/OpenEXRCore/#attr_box2i_t">attr_box2i_t</a>,
+		box2f:          ^<a class="code-typename" href="/vendor/OpenEXRCore/#attr_box2f_t">attr_box2f_t</a>,
+		chlist:         ^<a class="code-typename" href="/vendor/OpenEXRCore/#attr_chlist_t">attr_chlist_t</a>,
+		chromaticities: ^<a class="code-typename" href="/vendor/OpenEXRCore/#attr_chromaticities_t">attr_chromaticities_t</a>,
+		keycode:        ^<a class="code-typename" href="/vendor/OpenEXRCore/#attr_keycode_t">attr_keycode_t</a>,
+		floatvector:    ^<a class="code-typename" href="/vendor/OpenEXRCore/#attr_float_vector_t">attr_float_vector_t</a>,
+		m33f:           ^<a class="code-typename" href="/vendor/OpenEXRCore/#attr_m33f_t">attr_m33f_t</a>,
+		m33d:           ^<a class="code-typename" href="/vendor/OpenEXRCore/#attr_m33d_t">attr_m33d_t</a>,
+		m44f:           ^<a class="code-typename" href="/vendor/OpenEXRCore/#attr_m44f_t">attr_m44f_t</a>,
+		m44d:           ^<a class="code-typename" href="/vendor/OpenEXRCore/#attr_m44d_t">attr_m44d_t</a>,
+		preview:        ^<a class="code-typename" href="/vendor/OpenEXRCore/#attr_preview_t">attr_preview_t</a>,
+		rational:       ^<a class="code-typename" href="/vendor/OpenEXRCore/#attr_rational_t">attr_rational_t</a>,
+		string:         ^<a class="code-typename" href="/vendor/OpenEXRCore/#attr_string_t">attr_string_t</a>,
+		stringvector:   ^<a class="code-typename" href="/vendor/OpenEXRCore/#attr_string_vector_t">attr_string_vector_t</a>,
+		tiledesc:       ^<a class="code-typename" href="/vendor/OpenEXRCore/#attr_tiledesc_t">attr_tiledesc_t</a>,
+		timecode:       ^<a class="code-typename" href="/vendor/OpenEXRCore/#attr_timecode_t">attr_timecode_t</a>,
+		v2i:            ^<a class="code-typename" href="/vendor/OpenEXRCore/#attr_v2i_t">attr_v2i_t</a>,
+		v2f:            ^<a class="code-typename" href="/vendor/OpenEXRCore/#attr_v2f_t">attr_v2f_t</a>,
+		v2d:            ^<a class="code-typename" href="/vendor/OpenEXRCore/#attr_v2d_t">attr_v2d_t</a>,
+		v3i:            ^<a class="code-typename" href="/vendor/OpenEXRCore/#attr_v3i_t">attr_v3i_t</a>,
+		v3f:            ^<a class="code-typename" href="/vendor/OpenEXRCore/#attr_v3f_t">attr_v3f_t</a>,
+		v3d:            ^<a class="code-typename" href="/vendor/OpenEXRCore/#attr_v3d_t">attr_v3d_t</a>,
+		opaque:         ^<a class="code-typename" href="/vendor/OpenEXRCore/#attr_opaquedata_t">attr_opaquedata_t</a>,
+		rawptr:         ^<span class="doc-builtin">u8</span>,
 	},
 }</pre>
 </div>
@@ -916,8 +916,8 @@ Procedure Groups (0)</summary>
 	<span class="comment">// 	 * operation, this pointer is considered const and not</span>
 	<span class="comment">// 	 * modified. To make this more clear, a union is used here.</span>
 	_:                      <span class="keyword-type">struct</span> <span class="directive">#raw_union</span> {
-		decode_to_ptr:   ,
-		encode_from_ptr: ,
+		decode_to_ptr:   ^<span class="doc-builtin">u8</span>,
+		encode_from_ptr: ^<span class="doc-builtin">u8</span>,
 	},
 }</pre>
 </div>
@@ -1190,11 +1190,11 @@ Procedure Groups (0)</summary>
 	<span class="comment">// Enable a custom allocator for the different buffers (if</span>
 	<span class="comment">// 	 * decoding on a GPU). If `NULL`, will use the allocator from the</span>
 	<span class="comment">// 	 * context.</span>
-	alloc_fn:                       <span class="keyword-type">proc</span> "cdecl" (_: , _: ) -> <span class="doc-builtin">rawptr</span>,
+	alloc_fn:                       <span class="keyword-type">proc</span> "cdecl" (_: <a class="code-typename" href="/vendor/OpenEXRCore/#transcoding_pipeline_buffer_id_t">transcoding_pipeline_buffer_id_t</a>, _: <span class="doc-builtin">uint</span>) -> <span class="doc-builtin">rawptr</span>,
 	<span class="comment">// Enable a custom allocator for the different buffers (if</span>
 	<span class="comment">// 	 * decoding on a GPU). If `NULL`, will use the allocator from the</span>
 	<span class="comment">// 	 * context.</span>
-	free_fn:                        <span class="keyword-type">proc</span> "cdecl" (_: , _: ),
+	free_fn:                        <span class="keyword-type">proc</span> "cdecl" (_: <a class="code-typename" href="/vendor/OpenEXRCore/#transcoding_pipeline_buffer_id_t">transcoding_pipeline_buffer_id_t</a>, _: <span class="doc-builtin">rawptr</span>),
 	<span class="comment">// Function chosen to read chunk data from the context.</span>
 	<span class="comment">// 	 *</span>
 	<span class="comment">// 	 * Initialized to a default generic read routine, may be updated</span>
@@ -1208,7 +1208,7 @@ Procedure Groups (0)</summary>
 	<span class="comment">// 	 *</span>
 	<span class="comment">// 	 * This is allowed to be overridden, but probably is not necessary</span>
 	<span class="comment">// 	 * in most scenarios.</span>
-	read_fn:                        <span class="keyword-type">proc</span> "cdecl" (pipeline: ) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a>,
+	read_fn:                        <span class="keyword-type">proc</span> "cdecl" (pipeline: ^<a class="code-typename" href="/vendor/OpenEXRCore/#decode_pipeline_t">decode_pipeline_t</a>) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a>,
 	<span class="comment">// Function chosen based on the compression type of the part to</span>
 	<span class="comment">// 	 * decompress data.</span>
 	<span class="comment">// 	 *</span>
@@ -1218,14 +1218,14 @@ Procedure Groups (0)</summary>
 	<span class="comment">// 	 *</span>
 	<span class="comment">// 	 * If only compressed data is desired, then assign this to `NULL`</span>
 	<span class="comment">// 	 * after initialization.</span>
-	decompress_fn:                  <span class="keyword-type">proc</span> "cdecl" (pipeline: ) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a>,
+	decompress_fn:                  <span class="keyword-type">proc</span> "cdecl" (pipeline: ^<a class="code-typename" href="/vendor/OpenEXRCore/#decode_pipeline_t">decode_pipeline_t</a>) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a>,
 	<span class="comment">// Function which can be provided if you have bespoke handling for</span>
 	<span class="comment">// 	 * non-image data and need to re-allocate the data to handle the</span>
 	<span class="comment">// 	 * about-to-be unpacked data.</span>
 	<span class="comment">// 	 *</span>
 	<span class="comment">// 	 * If left `NULL`, will assume the memory pointed to by the channel</span>
 	<span class="comment">// 	 * pointers is sufficient.</span>
-	realloc_nonimage_data_fn:       <span class="keyword-type">proc</span> "cdecl" (pipeline: ) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a>,
+	realloc_nonimage_data_fn:       <span class="keyword-type">proc</span> "cdecl" (pipeline: ^<a class="code-typename" href="/vendor/OpenEXRCore/#decode_pipeline_t">decode_pipeline_t</a>) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a>,
 	<span class="comment">// Function chosen based on the output layout of the channels of the part to</span>
 	<span class="comment">// 	 * decompress data.</span>
 	<span class="comment">// 	 *</span>
@@ -1235,7 +1235,7 @@ Procedure Groups (0)</summary>
 	<span class="comment">// 	 *</span>
 	<span class="comment">// 	 * If only compressed data is desired, then leave or assign this</span>
 	<span class="comment">// 	 * to `NULL` after initialization.</span>
-	unpack_and_convert_fn:          <span class="keyword-type">proc</span> "cdecl" (pipeline: ) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a>,
+	unpack_and_convert_fn:          <span class="keyword-type">proc</span> "cdecl" (pipeline: ^<a class="code-typename" href="/vendor/OpenEXRCore/#decode_pipeline_t">decode_pipeline_t</a>) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a>,
 	<span class="comment">// Small stash of channel info values. This is faster than calling</span>
 	<span class="comment">// 	 * malloc when the channel count in the part is small (RGBAZ),</span>
 	<span class="comment">// 	 * which is super common, however if there are a large number of</span>
@@ -1409,24 +1409,24 @@ Procedure Groups (0)</summary>
 	<span class="comment">// Enable a custom allocator for the different buffers (if</span>
 	<span class="comment">// 	 * encoding on a GPU). If `NULL`, will use the allocator from the</span>
 	<span class="comment">// 	 * context.</span>
-	alloc_fn:                       <span class="keyword-type">proc</span> "cdecl" (_: , _: ) -> <span class="doc-builtin">rawptr</span>,
+	alloc_fn:                       <span class="keyword-type">proc</span> "cdecl" (_: <a class="code-typename" href="/vendor/OpenEXRCore/#transcoding_pipeline_buffer_id_t">transcoding_pipeline_buffer_id_t</a>, _: <span class="doc-builtin">uint</span>) -> <span class="doc-builtin">rawptr</span>,
 	<span class="comment">// Enable a custom allocator for the different buffers (if</span>
 	<span class="comment">// 	 * encoding on a GPU). If `NULL`, will use the allocator from the</span>
 	<span class="comment">// 	 * context.</span>
-	free_fn:                        <span class="keyword-type">proc</span> "cdecl" (_: , _: ),
+	free_fn:                        <span class="keyword-type">proc</span> "cdecl" (_: <a class="code-typename" href="/vendor/OpenEXRCore/#transcoding_pipeline_buffer_id_t">transcoding_pipeline_buffer_id_t</a>, _: <span class="doc-builtin">rawptr</span>),
 	<span class="comment">// Function chosen based on the output layout of the channels of the part to</span>
 	<span class="comment">// 	 * decompress data.</span>
 	<span class="comment">// 	 *</span>
 	<span class="comment">// 	 * If the user has a custom method for the</span>
 	<span class="comment">// 	 * compression on this part, this can be changed after</span>
 	<span class="comment">// 	 * initialization.</span>
-	convert_and_pack_fn:            <span class="keyword-type">proc</span> "cdecl" (pipeline: ) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a>,
+	convert_and_pack_fn:            <span class="keyword-type">proc</span> "cdecl" (pipeline: ^<a class="code-typename" href="/vendor/OpenEXRCore/#encode_pipeline_t">encode_pipeline_t</a>) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a>,
 	<span class="comment">// Function chosen based on the compression type of the part to</span>
 	<span class="comment">// 	 * compress data.</span>
 	<span class="comment">// 	 *</span>
 	<span class="comment">// 	 * If the user has a custom compression method for the compression</span>
 	<span class="comment">// 	 * type on this part, this can be changed after initialization.</span>
-	compress_fn:                    <span class="keyword-type">proc</span> "cdecl" (pipeline: ) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a>,
+	compress_fn:                    <span class="keyword-type">proc</span> "cdecl" (pipeline: ^<a class="code-typename" href="/vendor/OpenEXRCore/#encode_pipeline_t">encode_pipeline_t</a>) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a>,
 	<span class="comment">// This routine is used when waiting for other threads to finish</span>
 	<span class="comment">// 	 * writing previous chunks such that this thread can write this</span>
 	<span class="comment">// 	 * chunk. This is used for parts which have a specified chunk</span>
@@ -1444,12 +1444,12 @@ Procedure Groups (0)</summary>
 	<span class="comment">// 	 *</span>
 	<span class="comment">// 	 * It is up to the user to provide an appropriate routine if</span>
 	<span class="comment">// 	 * performing multi-threaded writing.</span>
-	yield_until_ready_fn:           <span class="keyword-type">proc</span> "cdecl" (pipeline: ) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a>,
+	yield_until_ready_fn:           <span class="keyword-type">proc</span> "cdecl" (pipeline: ^<a class="code-typename" href="/vendor/OpenEXRCore/#encode_pipeline_t">encode_pipeline_t</a>) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a>,
 	<span class="comment">// Function chosen to write chunk data to the context.</span>
 	<span class="comment">// 	 *</span>
 	<span class="comment">// 	 * This is allowed to be overridden, but probably is not necessary</span>
 	<span class="comment">// 	 * in most scenarios.</span>
-	write_fn:                       <span class="keyword-type">proc</span> "cdecl" (pipeline: ) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a>,
+	write_fn:                       <span class="keyword-type">proc</span> "cdecl" (pipeline: ^<a class="code-typename" href="/vendor/OpenEXRCore/#encode_pipeline_t">encode_pipeline_t</a>) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a>,
 	<span class="comment">// Small stash of channel info values. This is faster than calling</span>
 	<span class="comment">// 	 * malloc when the channel count in the part is small (RGBAZ),</span>
 	<span class="comment">// 	 * which is super common, however if there are a large number of</span>
@@ -1685,7 +1685,7 @@ Procedure Groups (0)</summary>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>Error codes that may be returned by various functions.
+<p>Error codes that may be returned by various functions. 
 Return type for all functions.</p>
 </details>
 </div>
@@ -1857,7 +1857,7 @@ Return type for all functions.</p>
  * (successive) entries into each destination pointer (if not <code>NULL</code>).
  *
  * So each channel pointer must then point to an array of
- * chunk.width * chunk.height pointers.
+ <i> chunk.width </i> chunk.height pointers.
  *
  * With this, you can only extract desired pixels (although all the
  * pixels must be initially decompressed) to handle such operations
@@ -1948,7 +1948,7 @@ Return type for all functions.</p>
  * (successive) entries into each destination.
  *
  * So each channel pointer must then point to an array of
- * chunk.width * chunk.height pointers. If an entry is
+ <i> chunk.width </i> chunk.height pointers. If an entry is
  * <code>NULL</code>, 0 samples will be placed in the output.
  *
  * If this is NOT set (0), the default packing routine assumes the
@@ -2010,6 +2010,7 @@ Return type for all functions.</p>
 	ptype:      <a class="code-typename" href="/vendor/OpenEXRCore/#pixel_type_t">pixel_type_t</a>, 
 	percept:    <a class="code-typename" href="/vendor/OpenEXRCore/#perceptual_treatment_t">perceptual_treatment_t</a>, 
 	xsamp:      <span class="doc-builtin">i32</span>, 
+	ysamp:      <span class="doc-builtin">i32</span>, 
 ) -> <span class="doc-builtin">i32</span> ---</pre>
 </div>
 <details class="odin-doc-toggle" open>
@@ -2236,6 +2237,7 @@ Return type for all functions.</p>
 	name:       <span class="doc-builtin">cstring</span>, 
 	type:       ^<span class="doc-builtin">cstring</span>, 
 	size:       ^<span class="doc-builtin">i32</span>, 
+	out:        ^<span class="doc-builtin">rawptr</span>, 
 ) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a> ---</pre>
 </div>
 </div>
@@ -2422,6 +2424,7 @@ Return type for all functions.</p>
 	name:       <span class="doc-builtin">cstring</span>, 
 	type:       <span class="doc-builtin">cstring</span>, 
 	size:       <span class="doc-builtin">i32</span>, 
+	out:        <span class="doc-builtin">rawptr</span>, 
 ) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a> ---</pre>
 </div>
 </div>
@@ -2882,6 +2885,7 @@ Return type for all functions.</p>
 	levelx:     <span class="doc-builtin">i32</span>, 
 	levely:     <span class="doc-builtin">i32</span>, 
 	levw:       ^<span class="doc-builtin">i32</span>, 
+	levh:       ^<span class="doc-builtin">i32</span>, 
 ) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a> ---</pre>
 </div>
 <details class="odin-doc-toggle" open>
@@ -3001,6 +3005,7 @@ Return type for all functions.</p>
 	xsize:      ^<span class="doc-builtin">u32</span>, 
 	ysize:      ^<span class="doc-builtin">u32</span>, 
 	level:      ^<a class="code-typename" href="/vendor/OpenEXRCore/#tile_level_mode_t">tile_level_mode_t</a>, 
+	round:      ^<a class="code-typename" href="/vendor/OpenEXRCore/#tile_round_mode_t">tile_round_mode_t</a>, 
 ) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a> ---</pre>
 </div>
 <details class="odin-doc-toggle" open>
@@ -3038,6 +3043,7 @@ Return type for all functions.</p>
 	levelx:     <span class="doc-builtin">i32</span>, 
 	levely:     <span class="doc-builtin">i32</span>, 
 	tilew:      ^<span class="doc-builtin">i32</span>, 
+	tileh:      ^<span class="doc-builtin">i32</span>, 
 ) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a> ---</pre>
 </div>
 <details class="odin-doc-toggle" open>
@@ -3099,6 +3105,7 @@ Return type for all functions.</p>
 	screenWindowCenter: <a class="code-typename" href="/vendor/OpenEXRCore/#attr_v2f_t">attr_v2f_t</a>, 
 	screenWindowWidth:  <span class="doc-builtin">f32</span>, 
 	lineorder:          <a class="code-typename" href="/vendor/OpenEXRCore/#lineorder_t">lineorder_t</a>, 
+	ctype:              <a class="code-typename" href="/vendor/OpenEXRCore/#compression_t">compression_t</a>, 
 ) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a> ---</pre>
 </div>
 <details class="odin-doc-toggle" open>
@@ -3183,13 +3190,14 @@ Return type for all functions.</p>
 	tiley:      <span class="doc-builtin">i32</span>, 
 	levelx:     <span class="doc-builtin">i32</span>, 
 	levely:     <span class="doc-builtin">i32</span>, 
+	cinfo:      ^<a class="code-typename" href="/vendor/OpenEXRCore/#chunk_info_t">chunk_info_t</a>, 
 ) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a> ---</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="register_attr_type_handler"><span><a class="doc-id-link" href="#register_attr_type_handler">register_attr_type_handler<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/OpenEXRCore/exr_context.odin#L451"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">register_attr_type_handler :: <span class="keyword-type">proc</span> "cdecl" (ctxt: <a class="code-typename" href="/vendor/OpenEXRCore/#context_t">context_t</a>, type: <span class="doc-builtin">cstring</span>, unpack_func_ptr: <span class="keyword-type">proc</span> "cdecl" (ctxt: , data: , attrsize: , outsize: , outbuffer: ) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a>, pack_func_ptr: <span class="keyword-type">proc</span> "cdecl" (ctxt: , data: , datasize: , outsize: , outbuffer: ) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a>, destroy_unpacked_func_ptr: <span class="keyword-type">proc</span> "cdecl" (ctxt: , data: , datasize: )) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a> ---</pre>
+<pre class="doc-code">register_attr_type_handler :: <span class="keyword-type">proc</span> "cdecl" (ctxt: <a class="code-typename" href="/vendor/OpenEXRCore/#context_t">context_t</a>, type: <span class="doc-builtin">cstring</span>, unpack_func_ptr: <span class="keyword-type">proc</span> "cdecl" (ctxt: <a class="code-typename" href="/vendor/OpenEXRCore/#context_t">context_t</a>, data: <span class="doc-builtin">rawptr</span>, attrsize: <span class="doc-builtin">i32</span>, outsize: ^<span class="doc-builtin">i32</span>, outbuffer: ^<span class="doc-builtin">rawptr</span>) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a>, pack_func_ptr: <span class="keyword-type">proc</span> "cdecl" (ctxt: <a class="code-typename" href="/vendor/OpenEXRCore/#context_t">context_t</a>, data: <span class="doc-builtin">rawptr</span>, datasize: <span class="doc-builtin">i32</span>, outsize: ^<span class="doc-builtin">i32</span>, outbuffer: <span class="doc-builtin">rawptr</span>) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a>, destroy_unpacked_func_ptr: <span class="keyword-type">proc</span> "cdecl" (ctxt: <a class="code-typename" href="/vendor/OpenEXRCore/#context_t">context_t</a>, data: <span class="doc-builtin">rawptr</span>, datasize: <span class="doc-builtin">i32</span>)) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a> ---</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -3469,6 +3477,7 @@ Return type for all functions.</p>
 	x_size:     <span class="doc-builtin">u32</span>, 
 	y_size:     <span class="doc-builtin">u32</span>, 
 	level_mode: <a class="code-typename" href="/vendor/OpenEXRCore/#tile_level_mode_t">tile_level_mode_t</a>, 
+	round_mode: <a class="code-typename" href="/vendor/OpenEXRCore/#tile_round_mode_t">tile_round_mode_t</a>, 
 ) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a> ---</pre>
 </div>
 <details class="odin-doc-toggle" open>
@@ -3612,13 +3621,14 @@ Return type for all functions.</p>
 <h3 id="write_deep_scanline_chunk"><span><a class="doc-id-link" href="#write_deep_scanline_chunk">write_deep_scanline_chunk<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/OpenEXRCore/exr_chunkio.odin#L115"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">write_deep_scanline_chunk :: <span class="keyword-type">proc</span> "cdecl" (
-	ctxt:          <a class="code-typename" href="/vendor/OpenEXRCore/#context_t">context_t</a>, 
-	part_index:    <span class="doc-builtin">i32</span>, 
-	y:             <span class="doc-builtin">i32</span>, 
-	packed_data:   <span class="doc-builtin">rawptr</span>, 
-	packed_size:   <span class="doc-builtin">u64</span>, 
-	unpacked_size: <span class="doc-builtin">u64</span>, 
-	sample_data:   <span class="doc-builtin">rawptr</span>, 
+	ctxt:             <a class="code-typename" href="/vendor/OpenEXRCore/#context_t">context_t</a>, 
+	part_index:       <span class="doc-builtin">i32</span>, 
+	y:                <span class="doc-builtin">i32</span>, 
+	packed_data:      <span class="doc-builtin">rawptr</span>, 
+	packed_size:      <span class="doc-builtin">u64</span>, 
+	unpacked_size:    <span class="doc-builtin">u64</span>, 
+	sample_data:      <span class="doc-builtin">rawptr</span>, 
+	sample_data_size: <span class="doc-builtin">u64</span>, 
 ) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a> ---</pre>
 </div>
 <details class="odin-doc-toggle" open>
@@ -3632,16 +3642,17 @@ Return type for all functions.</p>
 <h3 id="write_deep_tile_chunk"><span><a class="doc-id-link" href="#write_deep_tile_chunk">write_deep_tile_chunk<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/OpenEXRCore/exr_chunkio.odin#L135"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">write_deep_tile_chunk :: <span class="keyword-type">proc</span> "cdecl" (
-	ctxt:          <a class="code-typename" href="/vendor/OpenEXRCore/#context_t">context_t</a>, 
-	part_index:    <span class="doc-builtin">i32</span>, 
-	tilex:         <span class="doc-builtin">i32</span>, 
-	tiley:         <span class="doc-builtin">i32</span>, 
-	levelx:        <span class="doc-builtin">i32</span>, 
-	levely:        <span class="doc-builtin">i32</span>, 
-	packed_data:   <span class="doc-builtin">rawptr</span>, 
-	packed_size:   <span class="doc-builtin">u64</span>, 
-	unpacked_size: <span class="doc-builtin">u64</span>, 
-	sample_data:   <span class="doc-builtin">rawptr</span>, 
+	ctxt:             <a class="code-typename" href="/vendor/OpenEXRCore/#context_t">context_t</a>, 
+	part_index:       <span class="doc-builtin">i32</span>, 
+	tilex:            <span class="doc-builtin">i32</span>, 
+	tiley:            <span class="doc-builtin">i32</span>, 
+	levelx:           <span class="doc-builtin">i32</span>, 
+	levely:           <span class="doc-builtin">i32</span>, 
+	packed_data:      <span class="doc-builtin">rawptr</span>, 
+	packed_size:      <span class="doc-builtin">u64</span>, 
+	unpacked_size:    <span class="doc-builtin">u64</span>, 
+	sample_data:      <span class="doc-builtin">rawptr</span>, 
+	sample_data_size: <span class="doc-builtin">u64</span>, 
 ) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a> ---</pre>
 </div>
 </div>
@@ -3704,6 +3715,7 @@ Return type for all functions.</p>
 	levelx:      <span class="doc-builtin">i32</span>, 
 	levely:      <span class="doc-builtin">i32</span>, 
 	packed_data: <span class="doc-builtin">rawptr</span>, 
+	packed_size: <span class="doc-builtin">u64</span>, 
 ) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a> ---</pre>
 </div>
 </div>
@@ -3717,6 +3729,7 @@ Return type for all functions.</p>
 	tiley:      <span class="doc-builtin">i32</span>, 
 	levelx:     <span class="doc-builtin">i32</span>, 
 	levely:     <span class="doc-builtin">i32</span>, 
+	cinfo:      ^<a class="code-typename" href="/vendor/OpenEXRCore/#chunk_info_t">chunk_info_t</a>, 
 ) -> <a class="code-typename" href="/vendor/OpenEXRCore/#result_t">result_t</a> ---</pre>
 </div>
 <details class="odin-doc-toggle" open>
@@ -3745,7 +3758,7 @@ Return type for all functions.</p>
 <li><a href="https://github.com/odin-lang/Odin/tree/master/vendor/OpenEXRCore/exr_part.odin">exr_part.odin</a></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2023-01 (vendor "odin") Windows_amd64 @ 2023-01-15 21:08:15.612867200 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2023-03 (vendor "odin") Windows_amd64 @ 2023-03-21 15:34:43.602251200 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
