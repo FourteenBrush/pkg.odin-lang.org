@@ -210,7 +210,7 @@
 <summary id="#doc-index-Types-header">
 Types (8)</summary>
 <ul>
-<li><a href="#Loadahead_Reader">Loadahead_Reader</a></li>
+<li><a href="#Lookahead_Reader">Lookahead_Reader</a></li>
 <li><a href="#Read_Writer">Read_Writer</a></li>
 <li><a href="#Reader">Reader</a></li>
 <li><a href="#Scanner">Scanner</a></li>
@@ -241,7 +241,7 @@ Variables (0)</summary>
 <div>
 <details class="doc-index" id="doc-index-Procedures" aria-labelledby="#doc-index-Procedures-header">
 <summary id="#doc-index-Procedures-header">
-Procedures (51)</summary>
+Procedures (52)</summary>
 <ul>
 <li><a href="#lookahead_reader_buffer">lookahead_reader_buffer</a></li>
 <li><a href="#lookahead_reader_consume">lookahead_reader_consume</a></li>
@@ -290,6 +290,7 @@ Procedures (51)</summary>
 <li><a href="#writer_reset">writer_reset</a></li>
 <li><a href="#writer_size">writer_size</a></li>
 <li><a href="#writer_to_stream">writer_to_stream</a></li>
+<li><a href="#writer_to_writer">writer_to_writer</a></li>
 <li><a href="#writer_write">writer_write</a></li>
 <li><a href="#writer_write_byte">writer_write_byte</a></li>
 <li><a href="#writer_write_rune">writer_write_rune</a></li>
@@ -308,9 +309,9 @@ Procedure Groups (0)</summary>
 <h2 id="pkg-Types" class="pkg-header">Types</h2>
 <section class="documentation">
 <div class="pkg-entity">
-<h3 id="Loadahead_Reader"><span><a class="doc-id-link" href="#Loadahead_Reader">Loadahead_Reader<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/bufio/lookahead_reader.odin#L10"><em>Source</em></a></div></h3>
+<h3 id="Lookahead_Reader"><span><a class="doc-id-link" href="#Lookahead_Reader">Lookahead_Reader<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/bufio/lookahead_reader.odin#L10"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">Loadahead_Reader :: <span class="keyword-type">struct</span> {
+<pre class="doc-code">Lookahead_Reader :: <span class="keyword-type">struct</span> {
 	r:   io.<a class="code-typename" href="/core/io/#Reader">Reader</a>,
 	buf: []<span class="doc-builtin">u8</span>,
 	n:   <span class="doc-builtin">int</span>,
@@ -318,9 +319,9 @@ Procedure Groups (0)</summary>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>Loadahead_Reader provides io lookahead.
+<p>Lookahead_Reader provides io lookahead.
 This is useful for tokenizers/parsers.
-Loadahead_Reader is similar to bufio.Reader, but unlike bufio.Reader, Loadahead_Reader's buffer size
+Lookahead_Reader is similar to bufio.Reader, but unlike bufio.Reader, Lookahead_Reader's buffer size
 will EXACTLY match the specified size, whereas bufio.Reader's buffer size may differ from the specified size.
 This makes sure that the buffer will not be accidentally read beyond the expected size.</p>
 </details>
@@ -459,13 +460,13 @@ This makes sure that the buffer will not be accidentally read beyond the expecte
 <div class="pkg-entity">
 <h3 id="lookahead_reader_buffer"><span><a class="doc-id-link" href="#lookahead_reader_buffer">lookahead_reader_buffer<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/bufio/lookahead_reader.odin#L23"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">lookahead_reader_buffer :: <span class="keyword-type">proc</span> "odin" (lr: ^<a class="code-typename" href="/core/bufio/#Loadahead_Reader">Loadahead_Reader</a>) -> []<span class="doc-builtin">u8</span> {…}</pre>
+<pre class="doc-code">lookahead_reader_buffer :: <span class="keyword-type">proc</span> "odin" (lr: ^<a class="code-typename" href="/core/bufio/#Lookahead_Reader">Lookahead_Reader</a>) -> []<span class="doc-builtin">u8</span> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="lookahead_reader_consume"><span><a class="doc-id-link" href="#lookahead_reader_consume">lookahead_reader_consume<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/bufio/lookahead_reader.odin#L67"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">lookahead_reader_consume :: <span class="keyword-type">proc</span> "odin" (lr: ^<a class="code-typename" href="/core/bufio/#Loadahead_Reader">Loadahead_Reader</a>, n: <span class="doc-builtin">int</span>) -> io.<a class="code-typename" href="/core/io/#Error">Error</a> {…}</pre>
+<pre class="doc-code">lookahead_reader_consume :: <span class="keyword-type">proc</span> "odin" (lr: ^<a class="code-typename" href="/core/bufio/#Lookahead_Reader">Lookahead_Reader</a>, n: <span class="doc-builtin">int</span>) -> io.<a class="code-typename" href="/core/io/#Error">Error</a> {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -475,19 +476,19 @@ This makes sure that the buffer will not be accidentally read beyond the expecte
 <div class="pkg-entity">
 <h3 id="lookahead_reader_consume_all"><span><a class="doc-id-link" href="#lookahead_reader_consume_all">lookahead_reader_consume_all<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/bufio/lookahead_reader.odin#L81"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">lookahead_reader_consume_all :: <span class="keyword-type">proc</span> "odin" (lr: ^<a class="code-typename" href="/core/bufio/#Loadahead_Reader">Loadahead_Reader</a>) -> io.<a class="code-typename" href="/core/io/#Error">Error</a> {…}</pre>
+<pre class="doc-code">lookahead_reader_consume_all :: <span class="keyword-type">proc</span> "odin" (lr: ^<a class="code-typename" href="/core/bufio/#Lookahead_Reader">Lookahead_Reader</a>) -> io.<a class="code-typename" href="/core/io/#Error">Error</a> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="lookahead_reader_init"><span><a class="doc-id-link" href="#lookahead_reader_init">lookahead_reader_init<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/bufio/lookahead_reader.odin#L16"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">lookahead_reader_init :: <span class="keyword-type">proc</span> "odin" (lr: ^<a class="code-typename" href="/core/bufio/#Loadahead_Reader">Loadahead_Reader</a>, r: io.<a class="code-typename" href="/core/io/#Reader">Reader</a>, buf: []<span class="doc-builtin">u8</span>) -> ^<a class="code-typename" href="/core/bufio/#Loadahead_Reader">Loadahead_Reader</a> {…}</pre>
+<pre class="doc-code">lookahead_reader_init :: <span class="keyword-type">proc</span> "odin" (lr: ^<a class="code-typename" href="/core/bufio/#Lookahead_Reader">Lookahead_Reader</a>, r: io.<a class="code-typename" href="/core/io/#Reader">Reader</a>, buf: []<span class="doc-builtin">u8</span>) -> ^<a class="code-typename" href="/core/bufio/#Lookahead_Reader">Lookahead_Reader</a> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="lookahead_reader_peek"><span><a class="doc-id-link" href="#lookahead_reader_peek">lookahead_reader_peek<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/bufio/lookahead_reader.odin#L31"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">lookahead_reader_peek :: <span class="keyword-type">proc</span> "odin" (lr: ^<a class="code-typename" href="/core/bufio/#Loadahead_Reader">Loadahead_Reader</a>, n: <span class="doc-builtin">int</span>) -> ([]<span class="doc-builtin">u8</span>, io.<a class="code-typename" href="/core/io/#Error">Error</a>) {…}</pre>
+<pre class="doc-code">lookahead_reader_peek :: <span class="keyword-type">proc</span> "odin" (lr: ^<a class="code-typename" href="/core/bufio/#Lookahead_Reader">Lookahead_Reader</a>, n: <span class="doc-builtin">int</span>) -> ([]<span class="doc-builtin">u8</span>, io.<a class="code-typename" href="/core/io/#Error">Error</a>) {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -499,7 +500,7 @@ NOTE: The returned buffer is not a copy of the underlying buffer</p>
 <div class="pkg-entity">
 <h3 id="lookahead_reader_peek_all"><span><a class="doc-id-link" href="#lookahead_reader_peek_all">lookahead_reader_peek_all<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/bufio/lookahead_reader.odin#L61"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">lookahead_reader_peek_all :: <span class="keyword-type">proc</span> "odin" (lr: ^<a class="code-typename" href="/core/bufio/#Loadahead_Reader">Loadahead_Reader</a>) -> ([]<span class="doc-builtin">u8</span>, io.<a class="code-typename" href="/core/io/#Error">Error</a>) {…}</pre>
+<pre class="doc-code">lookahead_reader_peek_all :: <span class="keyword-type">proc</span> "odin" (lr: ^<a class="code-typename" href="/core/bufio/#Lookahead_Reader">Lookahead_Reader</a>) -> ([]<span class="doc-builtin">u8</span>, io.<a class="code-typename" href="/core/io/#Error">Error</a>) {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -876,6 +877,16 @@ this procedure calls the underlying read_from implementation without buffering</
 </details>
 </div>
 <div class="pkg-entity">
+<h3 id="writer_to_writer"><span><a class="doc-id-link" href="#writer_to_writer">writer_to_writer<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/bufio/writer.odin#L231"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">writer_to_writer :: <span class="keyword-type">proc</span> "odin" (b: ^<a class="code-typename" href="/core/bufio/#Writer">Writer</a>) -> (s: io.<a class="code-typename" href="/core/io/#Writer">Writer</a>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>writer_to_stream converts a Writer into an io.Stream</p>
+</details>
+</div>
+<div class="pkg-entity">
 <h3 id="writer_write"><span><a class="doc-id-link" href="#writer_write">writer_write<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/bufio/writer.odin#L92"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">writer_write :: <span class="keyword-type">proc</span> "odin" (b: ^<a class="code-typename" href="/core/bufio/#Writer">Writer</a>, p: []<span class="doc-builtin">u8</span>) -> (n: <span class="doc-builtin">int</span>, err: io.<a class="code-typename" href="/core/io/#Error">Error</a>) {…}</pre>
@@ -933,13 +944,13 @@ If n &lt; len(p), it will return an error explaining why the write is short</p>
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/bufio/writer.odin">writer.odin</a></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2023-04 (vendor "odin") Windows_amd64 @ 2023-04-26 21:09:18.547270300 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2023-04 (vendor "odin") Windows_amd64 @ 2023-04-27 21:08:29.384587200 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
 <ul>
 <li><a href="#pkg-Types">Types</a><ul>
-<li><a href="#Loadahead_Reader">Loadahead_Reader</a></li>
+<li><a href="#Lookahead_Reader">Lookahead_Reader</a></li>
 <li><a href="#Read_Writer">Read_Writer</a></li>
 <li><a href="#Reader">Reader</a></li>
 <li><a href="#Scanner">Scanner</a></li>
@@ -1002,6 +1013,7 @@ If n &lt; len(p), it will return an error explaining why the write is short</p>
 <li><a href="#writer_reset">writer_reset</a></li>
 <li><a href="#writer_size">writer_size</a></li>
 <li><a href="#writer_to_stream">writer_to_stream</a></li>
+<li><a href="#writer_to_writer">writer_to_writer</a></li>
 <li><a href="#writer_write">writer_write</a></li>
 <li><a href="#writer_write_byte">writer_write_byte</a></li>
 <li><a href="#writer_write_rune">writer_write_rune</a></li>
