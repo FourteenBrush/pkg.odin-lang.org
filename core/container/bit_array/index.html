@@ -233,7 +233,7 @@ Variables (0)</summary>
 <div>
 <details class="doc-index" id="doc-index-Procedures" aria-labelledby="#doc-index-Procedures-header">
 <summary id="#doc-index-Procedures-header">
-Procedures (10)</summary>
+Procedures (13)</summary>
 <ul>
 <li><a href="#clear">clear</a></li>
 <li><a href="#create">create</a></li>
@@ -244,6 +244,9 @@ Procedures (10)</summary>
 <li><a href="#iterate_by_unset">iterate_by_unset</a></li>
 <li><a href="#make_iterator">make_iterator</a></li>
 <li><a href="#set">set</a></li>
+<li><a href="#unsafe_get">unsafe_get</a></li>
+<li><a href="#unsafe_set">unsafe_set</a></li>
+<li><a href="#unsafe_unset">unsafe_unset</a></li>
 <li><a href="#unset">unset</a></li>
 </ul>
 </details>
@@ -291,155 +294,177 @@ Procedure Groups (0)</summary>
 <h2 id="pkg-Procedures" class="pkg-header">Procedures</h2>
 <section class="documentation">
 <div class="pkg-entity">
-<h3 id="clear"><span><a class="doc-id-link" href="#clear">clear<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/container/bit_array/bit_array.odin#L236"><em>Source</em></a></div></h3>
+<h3 id="clear"><span><a class="doc-id-link" href="#clear">clear<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/container/bit_array/bit_array.odin#L294"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">clear :: <span class="keyword-type">proc</span> "odin" (ba: ^<a class="code-typename" href="/core/container/bit_array/#Bit_Array">Bit_Array</a>) {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>Sets all bits to <code>false</code>.</p>
+<p>Sets all values in the Bit_Array to zero.</p>
+<p><b>Inputs:</b><br><span class="doc-list">ba: The target Bit_Array</span></p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="create"><span><a class="doc-id-link" href="#create">create<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/container/bit_array/bit_array.odin#L218"><em>Source</em></a></div></h3>
+<h3 id="create"><span><a class="doc-id-link" href="#create">create<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/container/bit_array/bit_array.odin#L271"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">create :: <span class="keyword-type">proc</span> "odin" (max_index: <span class="doc-builtin">int</span>, min_index: <span class="doc-builtin">int</span> = 0, allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> (res: ^<a class="code-typename" href="/core/container/bit_array/#Bit_Array">Bit_Array</a>, ok: <span class="doc-builtin">bool</span>) <span class="directive">#optional_ok</span> {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
 <p>A helper function to create a Bit Array with optional bias, in case your smallest index is non-zero (including negative).</p>
+<p><i>Allocates (`new(Bit_Array) & make(ba.bits)`)</i></p>
+<p><b>Inputs:</b><br><span class="doc-list">max_index: maximum starting index</span>
+<span class="doc-list">min_index: minimum starting index (used as a bias)</span>
+<span class="doc-list">allocator: (default is context.allocator)</span></p>
+<p><b>Returns:</b><br><span class="doc-list">ba: Allocates a bit_Array, backing data is set to <code>max-min / 64</code> indices, rounded up (eg 65 - 0 allocates for [2]u64).</span></p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="destroy"><span><a class="doc-id-link" href="#destroy">destroy<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/container/bit_array/bit_array.odin#L244"><em>Source</em></a></div></h3>
+<h3 id="destroy"><span><a class="doc-id-link" href="#destroy">destroy<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/container/bit_array/bit_array.odin#L304"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">destroy :: <span class="keyword-type">proc</span> "odin" (ba: ^<a class="code-typename" href="/core/container/bit_array/#Bit_Array">Bit_Array</a>) {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>Releases the memory used by the Bit Array.</p>
+<p>Deallocates the Bit_Array and its backing storage</p>
+<p><b>Inputs:</b><br><span class="doc-list">ba: The target Bit_Array</span></p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="get"><span><a class="doc-id-link" href="#get">get<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/container/bit_array/bit_array.odin#L140"><em>Source</em></a></div></h3>
+<h3 id="get"><span><a class="doc-id-link" href="#get">get<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/container/bit_array/bit_array.odin#L151"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">get :: <span class="keyword-type">proc</span> "odin" (ba: ^<a class="code-typename" href="/core/container/bit_array/#Bit_Array">Bit_Array</a>, #any_int index: <span class="doc-builtin">uint</span>, allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> (res: <span class="doc-builtin">bool</span>, ok: <span class="doc-builtin">bool</span>) {…}</pre>
+<pre class="doc-code">get :: <span class="keyword-type">proc</span> "odin" (ba: ^<a class="code-typename" href="/core/container/bit_array/#Bit_Array">Bit_Array</a>, #any_int index: <span class="doc-builtin">uint</span>) -> (res: <span class="doc-builtin">bool</span>, ok: <span class="doc-builtin">bool</span>) <span class="directive">#optional_ok</span> {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>In:</p>
-<pre>	- ba:    ^Bit_Array - a pointer to the Bit Array
-	- index: The bit index. Can be an enum member.
-
-Out:
-	- res:   The bit you're interested in.
-	- ok:    Whether the index was valid. Returns `false` if the index is smaller than the bias.
-
-The `ok` return value may be ignored.
-</pre>
+<p>Gets the state of a bit in the bit-array</p>
+<p><b>Inputs:</b><br><span class="doc-list">ba: Pointer to the Bit_Array</span>
+<span class="doc-list">index: Which bit in the array</span></p>
+<p><b>Returns:</b><br><span class="doc-list">res: <code>true</code> if the bit at <code>index</code> is set.</span>
+<span class="doc-list">ok: Whether the index was valid. Returns <code>false</code> if the index is smaller than the bias.</span></p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="iterate_by_all"><span><a class="doc-id-link" href="#iterate_by_all">iterate_by_all<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/container/bit_array/bit_array.odin#L52"><em>Source</em></a></div></h3>
+<h3 id="iterate_by_all"><span><a class="doc-id-link" href="#iterate_by_all">iterate_by_all<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/container/bit_array/bit_array.odin#L53"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">iterate_by_all :: <span class="keyword-type">proc</span> "odin" (it: ^<a class="code-typename" href="/core/container/bit_array/#Bit_Array_Iterator">Bit_Array_Iterator</a>) -> (set: <span class="doc-builtin">bool</span>, index: <span class="doc-builtin">int</span>, ok: <span class="doc-builtin">bool</span>) {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>In:</p>
-<pre>	- it:    ^Bit_Array_Iterator - the iterator struct that holds the state.
-
-Out:
-	- set:    bool - the state of the bit at `index`
-	- index:  int - the next bit of the Bit_Array referenced by `it`.
-	- ok:	  bool - `true` if the iterator returned a valid index,
-		  `false` if there were no more bits
-</pre>
+<p>Returns the next bit, including its set-state. ok=false once exhausted</p>
+<p><b>Inputs:</b><br><span class="doc-list">it: The iterator that holds the state.</span></p>
+<p><b>Returns:</b><br><span class="doc-list">set: <code>true</code> if the bit at <code>index</code> is set.</span>
+<span class="doc-list">index: The next bit of the Bit_Array referenced by <code>it</code>.</span>
+<span class="doc-list">ok: <code>true</code> if the iterator can continue, <code>false</code> if the iterator is done</span></p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="iterate_by_set"><span><a class="doc-id-link" href="#iterate_by_set">iterate_by_set<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/container/bit_array/bit_array.odin#L77"><em>Source</em></a></div></h3>
+<h3 id="iterate_by_set"><span><a class="doc-id-link" href="#iterate_by_set">iterate_by_set<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/container/bit_array/bit_array.odin#L78"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">iterate_by_set :: <span class="keyword-type">proc</span> "odin" (it: ^<a class="code-typename" href="/core/container/bit_array/#Bit_Array_Iterator">Bit_Array_Iterator</a>) -> (index: <span class="doc-builtin">int</span>, ok: <span class="doc-builtin">bool</span>) {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>In:</p>
-<pre>	- it:     ^Bit_Array_Iterator - the iterator struct that holds the state.
-
-Out:
-	- index:  int - the next set bit of the Bit_Array referenced by `it`.
-	- ok:	  bool - `true` if the iterator returned a valid index,
-		  `false` if there were no more bits set
-</pre>
+<p>Returns the next Set Bit, for example if <code>0b1010</code>, then the iterator will return index={1, 3} over two calls.</p>
+<p><b>Inputs:</b><br><span class="doc-list">it: The iterator that holds the state.</span></p>
+<p><b>Returns:</b><br><span class="doc-list">index: The next <i>set</i> bit of the Bit_Array referenced by <code>it</code>.</span>
+<span class="doc-list">ok: <code>true</code> if the iterator can continue, <code>false</code> if the iterator is done</span></p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="iterate_by_unset"><span><a class="doc-id-link" href="#iterate_by_unset">iterate_by_unset<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/container/bit_array/bit_array.odin#L90"><em>Source</em></a></div></h3>
+<h3 id="iterate_by_unset"><span><a class="doc-id-link" href="#iterate_by_unset">iterate_by_unset<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/container/bit_array/bit_array.odin#L91"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">iterate_by_unset :: <span class="keyword-type">proc</span> "odin" (it: ^<a class="code-typename" href="/core/container/bit_array/#Bit_Array_Iterator">Bit_Array_Iterator</a>) -> (index: <span class="doc-builtin">int</span>, ok: <span class="doc-builtin">bool</span>) {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>In:</p>
-<pre>	- it:	  ^Bit_Array_Iterator - the iterator struct that holds the state.
-
-Out:
-	- index:  int - the next unset bit of the Bit_Array referenced by `it`.
-	- ok:	  bool - `true` if the iterator returned a valid index,
-		  `false` if there were no more unset bits
-</pre>
+<p>Returns the next Unset Bit, for example if <code>0b1010</code>, then the iterator will return index={0, 2} over two calls.</p>
+<p><b>Inputs:</b><br><span class="doc-list">it: The iterator that holds the state.</span></p>
+<p><b>Returns:</b><br><span class="doc-list">index: The next <i>unset</i> bit of the Bit_Array referenced by <code>it</code>.</span>
+<span class="doc-list">ok: <code>true</code> if the iterator can continue, <code>false</code> if the iterator is done</span></p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="make_iterator"><span><a class="doc-id-link" href="#make_iterator">make_iterator<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/container/bit_array/bit_array.odin#L38"><em>Source</em></a></div></h3>
+<h3 id="make_iterator"><span><a class="doc-id-link" href="#make_iterator">make_iterator<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/container/bit_array/bit_array.odin#L39"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">make_iterator :: <span class="keyword-type">proc</span> "odin" (ba: ^<a class="code-typename" href="/core/container/bit_array/#Bit_Array">Bit_Array</a>) -> (it: <a class="code-typename" href="/core/container/bit_array/#Bit_Array_Iterator">Bit_Array_Iterator</a>) {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>In:</p>
-<pre>	- ba:   ^Bit_Array - the array to iterate over
-
-Out:
-	- it:   ^Bit_Array_Iterator - the iterator that holds iteration state
-</pre>
+<p>Wraps a <code>Bit_Array</code> into an Iterator</p>
+<p><b>Inputs:</b><br><span class="doc-list">ba: Pointer to the Bit_Array</span></p>
+<p><b>Returns:</b><br><span class="doc-list">it: Iterator struct</span></p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="set"><span><a class="doc-id-link" href="#set">set<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/container/bit_array/bit_array.odin#L171"><em>Source</em></a></div></h3>
+<h3 id="set"><span><a class="doc-id-link" href="#set">set<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/container/bit_array/bit_array.odin#L199"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">set :: <span class="keyword-type">proc</span> "odin" (ba: ^<a class="code-typename" href="/core/container/bit_array/#Bit_Array">Bit_Array</a>, #any_int index: <span class="doc-builtin">uint</span>, allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> (ok: <span class="doc-builtin">bool</span>) {…}</pre>
+<pre class="doc-code">set :: <span class="keyword-type">proc</span> "odin" (ba: ^<a class="code-typename" href="/core/container/bit_array/#Bit_Array">Bit_Array</a>, #any_int index: <span class="doc-builtin">uint</span>, set_to: <span class="doc-builtin">bool</span> = true, allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> (ok: <span class="doc-builtin">bool</span>) {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>In:</p>
-<pre>	- ba:    ^Bit_Array - a pointer to the Bit Array
-	- index: The bit index. Can be an enum member.
-
-Out:
-	- ok:    Whether or not we managed to set requested bit.
-
-`set` automatically resizes the Bit Array to accommodate the requested index if needed.
-</pre>
+<p>Sets the state of a bit in the bit-array</p>
+<p><i>Conditionally Allocates (Resizes backing data when `index > len(ba.bits)`)</i></p>
+<p><b>Inputs:</b><br><span class="doc-list">ba: Pointer to the Bit_Array</span>
+<span class="doc-list">index: Which bit in the array</span>
+<span class="doc-list">set_to: <code>true</code> sets the bit on, <code>false</code> to turn it off</span>
+<span class="doc-list">allocator: (default is context.allocator)</span></p>
+<p><b>Returns:</b><br><span class="doc-list">ok: Whether the set was successful, <code>false</code> on allocation failure or bad index</span></p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="unset"><span><a class="doc-id-link" href="#unset">unset<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/container/bit_array/bit_array.odin#L198"><em>Source</em></a></div></h3>
+<h3 id="unsafe_get"><span><a class="doc-id-link" href="#unsafe_get">unsafe_get<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/container/bit_array/bit_array.odin#L182"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">unsafe_get :: <span class="keyword-type">proc</span> "odin" (ba: ^<a class="code-typename" href="/core/container/bit_array/#Bit_Array">Bit_Array</a>, #any_int index: <span class="doc-builtin">uint</span>) -> <span class="doc-builtin">bool</span> {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Gets the state of a bit in the bit-array</p>
+<p><i>Bypasses all Checks</i></p>
+<p><b>Inputs:</b><br><span class="doc-list">ba: Pointer to the Bit_Array</span>
+<span class="doc-list">index: Which bit in the array</span></p>
+<p><b>Returns:</b><br><span class="doc-list"><code>true</code> if bit is set</span></p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="unsafe_set"><span><a class="doc-id-link" href="#unsafe_set">unsafe_set<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/container/bit_array/bit_array.odin#L227"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">unsafe_set :: <span class="keyword-type">proc</span> "odin" (ba: ^<a class="code-typename" href="/core/container/bit_array/#Bit_Array">Bit_Array</a>, bit: <span class="doc-builtin">int</span>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Sets the state of a bit in the bit-array</p>
+<p><i>Bypasses all checks</i></p>
+<p><b>Inputs:</b><br><span class="doc-list">ba: Pointer to the Bit_Array</span>
+<span class="doc-list">index: Which bit in the array</span></p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="unsafe_unset"><span><a class="doc-id-link" href="#unsafe_unset">unsafe_unset<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/container/bit_array/bit_array.odin#L255"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">unsafe_unset :: <span class="keyword-type">proc</span> "odin" (b: ^<a class="code-typename" href="/core/container/bit_array/#Bit_Array">Bit_Array</a>, bit: <span class="doc-builtin">int</span>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Unsets the state of a bit in the bit-array</p>
+<p><i>Bypasses all Checks</i></p>
+<p><b>Inputs:</b><br><span class="doc-list">ba: Pointer to the Bit_Array</span>
+<span class="doc-list">index: Which bit in the array</span></p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="unset"><span><a class="doc-id-link" href="#unset">unset<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/container/bit_array/bit_array.odin#L243"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">unset :: <span class="keyword-type">proc</span> "odin" (ba: ^<a class="code-typename" href="/core/container/bit_array/#Bit_Array">Bit_Array</a>, #any_int index: <span class="doc-builtin">uint</span>, allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> (ok: <span class="doc-builtin">bool</span>) {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>In:</p>
-<pre>	- ba:    ^Bit_Array - a pointer to the Bit Array
-	- index: The bit index. Can be an enum member.
-
-Out:
-	- ok:    Whether or not we managed to unset requested bit.
-
-`unset` automatically resizes the Bit Array to accommodate the requested index if needed.
-</pre>
+<p>Unsets the state of a bit in the bit-array. (Convienence wrapper for <code>set</code>)</p>
+<p><i>Conditionally Allocates (Resizes backing data when `index > len(ba.bits)`)</i></p>
+<p><b>Inputs:</b><br><span class="doc-list">ba: Pointer to the Bit_Array</span>
+<span class="doc-list">index: Which bit in the array</span>
+<span class="doc-list">allocator: (default is context.allocator)</span></p>
+<p><b>Returns:</b><br><span class="doc-list">ok: Whether the unset was successful, <code>false</code> on allocation failure or bad index</span></p>
 </details>
 </div>
 </section>
@@ -453,7 +478,7 @@ Out:
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/container/bit_array/doc.odin">doc.odin</a></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2023-05 (vendor "odin") Windows_amd64 @ 2023-05-02 21:09:50.790992100 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2023-05 (vendor "odin") Windows_amd64 @ 2023-05-03 21:08:57.412149400 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
@@ -473,6 +498,9 @@ Out:
 <li><a href="#iterate_by_unset">iterate_by_unset</a></li>
 <li><a href="#make_iterator">make_iterator</a></li>
 <li><a href="#set">set</a></li>
+<li><a href="#unsafe_get">unsafe_get</a></li>
+<li><a href="#unsafe_set">unsafe_set</a></li>
+<li><a href="#unsafe_unset">unsafe_unset</a></li>
 <li><a href="#unset">unset</a></li>
 </ul>
 </li>
