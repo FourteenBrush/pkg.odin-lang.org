@@ -1,5 +1,20 @@
 "use strict";
 
+const userAgent = navigator.userAgent;
+const osList = [
+	{lookFor: "Win",     name: "windows"},
+	{lookFor: "Mac",     name: "macos"},
+	{lookFor: "X11",     name: "unix"},
+	{lookFor: "Linux",   name: "linux"},
+	{lookFor: "iPhone",  name: "ios"},
+	{lookFor: "Android", name: "android"},
+];
+for (const os of osList) {
+	if (userAgent.includes(os.lookFor)) {
+		document.body.classList.add(`os-${os.name}`);	
+	}	
+}
+
 var odin_pkg_name;
 
 let odin_search = document.getElementById("odin-search");
@@ -163,7 +178,7 @@ if (odin_search) {
 		// Build formated string based on matched letters
 		let formatted_str = "";
 		let last_idx = 0;
-		for (let idx of matched_indices) {
+		for (const idx of matched_indices) {
 			formatted_str += str.substr(last_idx, idx - last_idx) + "<b>" + str.charAt(idx) + "</b>";
 			last_idx = idx + 1;
 		}
@@ -175,25 +190,24 @@ if (odin_search) {
 
 	function fuzzy_entity_match(entities, search_text) {
 		let results = [];
-		for (let e of entities) {
-			let [matched, score, formatted] = fuzzy_match(e, search_text);
+		for (const entity of entities) {
+			let full_name = entity.full;
+			let [matched, score, formatted] = fuzzy_match(full_name, search_text);
 			if (!matched) {
 				continue;
 			}
 
-			if (e.includes(".")) {
+			if (full_name.includes(".")) {
 				// Weight the name of the entity itself more than the entire thing
-				let base_name = e.split(".", 2)[1];
+				let base_name = full_name.split(".", 2)[1];
 				let [base_matched, base_score, _] = fuzzy_match(base_name, search_text);
 				if (base_matched) {
 					score += base_score;
 				}
 			}
 
-			// if (score < 0) { continue; }
-
 			results.push({
-				"name":      e,
+				"entity":    entity,
 				"score":     score,
 				"formatted": formatted,
 			});
@@ -201,7 +215,7 @@ if (odin_search) {
 
 		results.sort(function(a, b) {
 			if (a.score == b.score) {
-				return strcmp(a.name, b.name);
+				return strcmp(a.entity.name, b.entity.name);
 			}
 			return b.score - a.score;
 		});
@@ -209,13 +223,18 @@ if (odin_search) {
 		return results;
 	}
 
-
-	if (odin_search.className == "odin-search-all" ||
-	    odin_search.className == "odin-search-collection") {
+	{
+		const IS_PACKAGE_PAGE = odin_search.className == "odin-search-package";
 		let entities = [];
-		for (let [pkg_name, pkg] of Object.entries(odin_pkg_data.packages)) {
-			for (let e of pkg.entities) {
-				entities.push(e.full);
+		if (IS_PACKAGE_PAGE) {
+			for (const e of odin_pkg_data.packages[odin_pkg_name].entities) {
+				entities.push(e);
+			}
+		} else {
+			for (const [pkg_name, pkg] of Object.entries(odin_pkg_data.packages)) {
+				for (const e of pkg.entities) {
+					entities.push(e);
+				}
 			}
 		}
 
@@ -275,8 +294,8 @@ if (odin_search) {
 			results.length = Math.min(results.length, MAX_RESULTS_LENGTH);
 
 			let innerHTML = '';
-			for (let result of results) {
-				let [pkg_name, entity_name] = result.name.split(".", 2);
+			for (const result of results) {
+				let [pkg_name, entity_name] = result.entity.full.split(".", 2);
 
 				let score = result.score;
 
@@ -286,7 +305,23 @@ if (odin_search) {
 				let full_path = `${pkg_path}/#${entity_name}`;
 				innerHTML += `<li data-path="${full_path}">`;
 				// innerHTML += `${score}&mdash;`;
-				innerHTML += `<a href="${pkg_path}/#${entity_name}"><a href="${pkg_path}">${formatted_pkg}</a>.<a href="${full_path}">${formatted_name}</a></a></li>\n`;
+
+				if (IS_PACKAGE_PAGE) {
+					innerHTML += `<a href="${full_path}">${formatted_name}</a>`;
+				} else {
+					innerHTML += `<a href="${pkg_path}">${formatted_pkg}</a>.<a href="${full_path}">${formatted_name}</a>`;
+				}
+
+				switch (result.entity.kind) {
+				case "c": innerHTML += `&nbsp;<span class="kind">constant</span>`;          break;
+				case "v": innerHTML += `&nbsp;<span class="kind">variable</span>`;          break;
+				case "t": innerHTML += `&nbsp;<span class="kind">type</span>`;              break;
+				case "p": innerHTML += `&nbsp;<span class="kind">procedure</span>`;         break;
+				case "g": innerHTML += `&nbsp;<span class="kind">procedure group</span>`;   break;
+				case "b": innerHTML += `&nbsp;<span class="kind">builtin procedure</span>`; break;
+				}
+
+				innerHTML += `</li>\n`;
 			}
 			let end_time = performance.now();
 			let diff = (end_time - start_time).toFixed(1);
@@ -326,65 +361,11 @@ if (odin_search) {
 			ev.stopPropagation();
 			return;
 		}, false);
-
-
-	} else if (odin_search.className == "odin-search-package") {
-		let entities     = odin_pkg_data.packages[odin_pkg_name].entities.map(e => e.name);
-		let doc_entities = getElementsByClassNameArray("doc-id-link").map(x => x.closest(".pkg-entity")).filter(x => x);
-
-		let pkg_top        = document.getElementById("pkg-top");
-		let pkg_headers    = getElementsByClassNameArray("pkg-header");
-		let empty_sections = getElementsByClassNameArray("pkg-empty-section");
-
-		function set_all_displays(v) {
-			pkg_top.style.display = v;
-			pkg_headers.forEach(x => x.style.display = v);
-			empty_sections.forEach(x => x.style.display = v);
-		}
-
-		function reset_entities() {
-			for (let e of doc_entities) {
-				e.style.display = null;
-				e.style.order = null;
-			}
-			set_all_displays(null);
-		}
-
-		let curr_search_value = "";
-		odin_search.addEventListener("input", ev => {
-			let search_text = odin_search.value.trim();
-			if (curr_search_value == search_text) {
-				ev.stopPropagation(); return;
-			}
-
-			curr_search_value = search_text;
-			if (!search_text) {
-				reset_entities();
-				ev.stopPropagation(); return;
-			}
-
-			let results = fuzzy_entity_match(entities, search_text);
-			if (results.length == 0) {
-				reset_entities();
-				ev.stopPropagation(); return;
-			}
-			set_all_displays("none");
-
-			let max_score = Math.max(...results.map(x => x.score));
-
-			let result_names = results.map(e => e.name);
-			for (let e of doc_entities) {
-				let name = e.getElementsByTagName("h3")[0].id;
-				let idx = result_names.indexOf(name);
-				if (idx >= 0) {
-					e.style.display = null;
-					e.style.order = max_score-results[idx].score+1;
-				} else {
-					e.style.display = "none";
-					e.style.order = null;
-				}
-			}
-			ev.stopPropagation(); return;
-		}, false);
 	}
+
+	window.addEventListener("keydown", ev => {
+		if ((ev.key === 'k' && (ev.metaKey || ev.ctrlKey)) || ev.key === '/') {
+			odin_search.focus();
+		}
+	});
 }
