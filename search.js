@@ -344,7 +344,7 @@ if (odin_search) {
 				}
 				break;
 			case "Esc":
-				move_search_cursor = -1;
+				curr_search_index = -1;
 				draw_search_cursor();
 				break;
 			case "Up":
@@ -366,6 +366,7 @@ if (odin_search) {
 	window.addEventListener("keydown", ev => {
 		if ((ev.key === 'k' && (ev.metaKey || ev.ctrlKey)) || ev.key === '/') {
 			odin_search.focus();
+			ev.preventDefault();
 		}
 	});
 }
