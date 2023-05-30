@@ -213,6 +213,7 @@
 			</div>
 		</div>
 	
+<div id="odin-search-time"></div>
 <ul id="odin-search-results"></ul>
 <div id="pkg-top">
 <h2>Overview</h2>
@@ -361,7 +362,7 @@ Variables (4)</summary>
 <div>
 <details class="doc-index" id="doc-index-Procedures" aria-labelledby="#doc-index-Procedures-header">
 <summary id="#doc-index-Procedures-header">
-Procedures (284)</summary>
+Procedures (287)</summary>
 <ul>
 <li><a href="#DEFAULT_TEMP_ALLOCATOR_TEMP_GUARD">DEFAULT_TEMP_ALLOCATOR_TEMP_GUARD</a></li>
 <li><a href="#abs_complex128">abs_complex128</a></li>
@@ -517,6 +518,8 @@ Procedures (284)</summary>
 <li><a href="#map_probe_distance">map_probe_distance</a></li>
 <li><a href="#map_reserve_dynamic">map_reserve_dynamic</a></li>
 <li><a href="#map_resize_threshold">map_resize_threshold</a></li>
+<li><a href="#map_seed">map_seed</a></li>
+<li><a href="#map_seed_from_map_data">map_seed_from_map_data</a></li>
 <li><a href="#map_shrink_dynamic">map_shrink_dynamic</a></li>
 <li><a href="#matrix1x1_adjugate">matrix1x1_adjugate</a></li>
 <li><a href="#matrix1x1_determinant">matrix1x1_determinant</a></li>
@@ -622,6 +625,7 @@ Procedures (284)</summary>
 <li><a href="#slice_expr_error_lo_hi_loc">slice_expr_error_lo_hi_loc</a></li>
 <li><a href="#slice_handle_error">slice_handle_error</a></li>
 <li><a href="#string_cmp">string_cmp</a></li>
+<li><a href="#string_decode_last_rune">string_decode_last_rune</a></li>
 <li><a href="#string_decode_rune">string_decode_rune</a></li>
 <li><a href="#string_eq">string_eq</a></li>
 <li><a href="#string_ge">string_ge</a></li>
@@ -959,7 +963,7 @@ information, we have a simple table that stores some traits about the cell.</p>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="Map_Info"><span><a class="doc-id-link" href="#Map_Info">Map_Info<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/dynamic_map_internal.odin#L280"><em>Source</em></a></div></h3>
+<h3 id="Map_Info"><span><a class="doc-id-link" href="#Map_Info">Map_Info<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/dynamic_map_internal.odin#L300"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Map_Info :: <span class="keyword-type">struct</span> {
 	ks:         ^<a class="code-typename" href="/core/runtime/#Map_Cell_Info">Map_Cell_Info</a>,
@@ -1640,13 +1644,13 @@ modified after creation</p>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="HASH_MASK"><span><a class="doc-id-link" href="#HASH_MASK">HASH_MASK<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/dynamic_map_internal.odin#L812"><em>Source</em></a></div></h3>
+<h3 id="HASH_MASK"><span><a class="doc-id-link" href="#HASH_MASK">HASH_MASK<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/dynamic_map_internal.odin#L877"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">HASH_MASK :: 1 << (8 * size_of(uintptr) - 1) - 1</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="INITIAL_HASH_SEED"><span><a class="doc-id-link" href="#INITIAL_HASH_SEED">INITIAL_HASH_SEED<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/dynamic_map_internal.odin#L810"><em>Source</em></a></div></h3>
+<h3 id="INITIAL_HASH_SEED"><span><a class="doc-id-link" href="#INITIAL_HASH_SEED">INITIAL_HASH_SEED<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/dynamic_map_internal.odin#L875"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">INITIAL_HASH_SEED :: 0xcbf29ce484222325</pre>
 </div>
@@ -1767,55 +1771,55 @@ This will be set by the compiler</p>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="abs_complex128"><span><a class="doc-id-link" href="#abs_complex128">abs_complex128<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L540"><em>Source</em></a></div></h3>
+<h3 id="abs_complex128"><span><a class="doc-id-link" href="#abs_complex128">abs_complex128<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L576"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">abs_complex128 :: <span class="keyword-type">proc</span> "contextless" (x: <span class="doc-builtin">complex128</span>) -> <span class="doc-builtin">f64</span> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="abs_complex32"><span><a class="doc-id-link" href="#abs_complex32">abs_complex32<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L532"><em>Source</em></a></div></h3>
+<h3 id="abs_complex32"><span><a class="doc-id-link" href="#abs_complex32">abs_complex32<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L568"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">abs_complex32 :: <span class="keyword-type">proc</span> "contextless" (x: <span class="doc-builtin">complex32</span>) -> <span class="doc-builtin">f16</span> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="abs_complex64"><span><a class="doc-id-link" href="#abs_complex64">abs_complex64<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L536"><em>Source</em></a></div></h3>
+<h3 id="abs_complex64"><span><a class="doc-id-link" href="#abs_complex64">abs_complex64<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L572"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">abs_complex64 :: <span class="keyword-type">proc</span> "contextless" (x: <span class="doc-builtin">complex64</span>) -> <span class="doc-builtin">f32</span> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="abs_f16"><span><a class="doc-id-link" href="#abs_f16">abs_f16<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L503"><em>Source</em></a></div></h3>
+<h3 id="abs_f16"><span><a class="doc-id-link" href="#abs_f16">abs_f16<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L539"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">abs_f16 :: <span class="keyword-type">proc</span> "contextless" (x: <span class="doc-builtin">f16</span>) -> <span class="doc-builtin">f16</span> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="abs_f32"><span><a class="doc-id-link" href="#abs_f32">abs_f32<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L506"><em>Source</em></a></div></h3>
+<h3 id="abs_f32"><span><a class="doc-id-link" href="#abs_f32">abs_f32<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L542"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">abs_f32 :: <span class="keyword-type">proc</span> "contextless" (x: <span class="doc-builtin">f32</span>) -> <span class="doc-builtin">f32</span> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="abs_f64"><span><a class="doc-id-link" href="#abs_f64">abs_f64<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L509"><em>Source</em></a></div></h3>
+<h3 id="abs_f64"><span><a class="doc-id-link" href="#abs_f64">abs_f64<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L545"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">abs_f64 :: <span class="keyword-type">proc</span> "contextless" (x: <span class="doc-builtin">f64</span>) -> <span class="doc-builtin">f64</span> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="abs_quaternion128"><span><a class="doc-id-link" href="#abs_quaternion128">abs_quaternion128<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L548"><em>Source</em></a></div></h3>
+<h3 id="abs_quaternion128"><span><a class="doc-id-link" href="#abs_quaternion128">abs_quaternion128<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L584"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">abs_quaternion128 :: <span class="keyword-type">proc</span> "contextless" (x: <span class="doc-builtin">quaternion128</span>) -> <span class="doc-builtin">f32</span> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="abs_quaternion256"><span><a class="doc-id-link" href="#abs_quaternion256">abs_quaternion256<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L552"><em>Source</em></a></div></h3>
+<h3 id="abs_quaternion256"><span><a class="doc-id-link" href="#abs_quaternion256">abs_quaternion256<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L588"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">abs_quaternion256 :: <span class="keyword-type">proc</span> "contextless" (x: <span class="doc-builtin">quaternion256</span>) -> <span class="doc-builtin">f64</span> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="abs_quaternion64"><span><a class="doc-id-link" href="#abs_quaternion64">abs_quaternion64<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L544"><em>Source</em></a></div></h3>
+<h3 id="abs_quaternion64"><span><a class="doc-id-link" href="#abs_quaternion64">abs_quaternion64<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L580"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">abs_quaternion64 :: <span class="keyword-type">proc</span> "contextless" (x: <span class="doc-builtin">quaternion64</span>) -> <span class="doc-builtin">f16</span> {…}</pre>
 </div>
@@ -2167,19 +2171,19 @@ This will be set by the compiler</p>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="default_hasher"><span><a class="doc-id-link" href="#default_hasher">default_hasher<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/dynamic_map_internal.odin#L814"><em>Source</em></a></div></h3>
+<h3 id="default_hasher"><span><a class="doc-id-link" href="#default_hasher">default_hasher<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/dynamic_map_internal.odin#L879"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">default_hasher :: <span class="keyword-type">proc</span> "contextless" (data: <span class="doc-builtin">rawptr</span>, seed: <span class="doc-builtin">uintptr</span>, N: <span class="doc-builtin">int</span>) -> <span class="doc-builtin">uintptr</span> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="default_hasher_cstring"><span><a class="doc-id-link" href="#default_hasher_cstring">default_hasher_cstring<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/dynamic_map_internal.odin#L829"><em>Source</em></a></div></h3>
+<h3 id="default_hasher_cstring"><span><a class="doc-id-link" href="#default_hasher_cstring">default_hasher_cstring<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/dynamic_map_internal.odin#L894"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">default_hasher_cstring :: <span class="keyword-type">proc</span> "contextless" (data: <span class="doc-builtin">rawptr</span>, seed: <span class="doc-builtin">uintptr</span> = 0) -> <span class="doc-builtin">uintptr</span> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="default_hasher_string"><span><a class="doc-id-link" href="#default_hasher_string">default_hasher_string<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/dynamic_map_internal.odin#L825"><em>Source</em></a></div></h3>
+<h3 id="default_hasher_string"><span><a class="doc-id-link" href="#default_hasher_string">default_hasher_string<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/dynamic_map_internal.odin#L890"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">default_hasher_string :: <span class="keyword-type">proc</span> "contextless" (data: <span class="doc-builtin">rawptr</span>, seed: <span class="doc-builtin">uintptr</span> = 0) -> <span class="doc-builtin">uintptr</span> {…}</pre>
 </div>
@@ -2288,13 +2292,13 @@ This will be set by the compiler</p>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="divmodti4"><span><a class="doc-id-link" href="#divmodti4">divmodti4<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L928"><em>Source</em></a></div></h3>
+<h3 id="divmodti4"><span><a class="doc-id-link" href="#divmodti4">divmodti4<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L964"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">divmodti4 :: <span class="keyword-type">proc</span> "c" (a, b: <span class="doc-builtin">i128</span>, rem: ^<span class="doc-builtin">i128</span>) -> <span class="doc-builtin">i128</span> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="divti3"><span><a class="doc-id-link" href="#divti3">divti3<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L934"><em>Source</em></a></div></h3>
+<h3 id="divti3"><span><a class="doc-id-link" href="#divti3">divti3<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L970"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">divti3 :: <span class="keyword-type">proc</span> "c" (a, b: <span class="doc-builtin">i128</span>) -> <span class="doc-builtin">i128</span> {…}</pre>
 </div>
@@ -2341,49 +2345,49 @@ This will be set by the compiler</p>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="extendhfsf2"><span><a class="doc-id-link" href="#extendhfsf2">extendhfsf2<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L779"><em>Source</em></a></div></h3>
+<h3 id="extendhfsf2"><span><a class="doc-id-link" href="#extendhfsf2">extendhfsf2<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L815"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">extendhfsf2 :: <span class="keyword-type">proc</span> "c" (value: <span class="doc-builtin">u16</span>) -> <span class="doc-builtin">f32</span> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="fixdfti"><span><a class="doc-id-link" href="#fixdfti">fixdfti<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L941"><em>Source</em></a></div></h3>
+<h3 id="fixdfti"><span><a class="doc-id-link" href="#fixdfti">fixdfti<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L977"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">fixdfti :: <span class="keyword-type">proc</span>(a: <span class="doc-builtin">u64</span>) -> <span class="doc-builtin">i128</span> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="fixunsdfdi"><span><a class="doc-id-link" href="#fixunsdfdi">fixunsdfdi<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L886"><em>Source</em></a></div></h3>
+<h3 id="fixunsdfdi"><span><a class="doc-id-link" href="#fixunsdfdi">fixunsdfdi<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L922"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">fixunsdfdi :: <span class="keyword-type">proc</span> "c" (a: <span class="doc-builtin">f64</span>) -> <span class="doc-builtin">i128</span> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="fixunsdfti"><span><a class="doc-id-link" href="#fixunsdfti">fixunsdfti<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L879"><em>Source</em></a></div></h3>
+<h3 id="fixunsdfti"><span><a class="doc-id-link" href="#fixunsdfti">fixunsdfti<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L915"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">fixunsdfti :: <span class="keyword-type">proc</span> "c" (a: <span class="doc-builtin">f64</span>) -> <span class="doc-builtin">u128</span> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="floattidf"><span><a class="doc-id-link" href="#floattidf">floattidf<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L786"><em>Source</em></a></div></h3>
+<h3 id="floattidf"><span><a class="doc-id-link" href="#floattidf">floattidf<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L822"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">floattidf :: <span class="keyword-type">proc</span> "c" (a: <span class="doc-builtin">i128</span>) -> <span class="doc-builtin">f64</span> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="floattidf_unsigned"><span><a class="doc-id-link" href="#floattidf_unsigned">floattidf_unsigned<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L833"><em>Source</em></a></div></h3>
+<h3 id="floattidf_unsigned"><span><a class="doc-id-link" href="#floattidf_unsigned">floattidf_unsigned<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L869"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">floattidf_unsigned :: <span class="keyword-type">proc</span> "c" (a: <span class="doc-builtin">u128</span>) -> <span class="doc-builtin">f64</span> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="gnu_f2h_ieee"><span><a class="doc-id-link" href="#gnu_f2h_ieee">gnu_f2h_ieee<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L774"><em>Source</em></a></div></h3>
+<h3 id="gnu_f2h_ieee"><span><a class="doc-id-link" href="#gnu_f2h_ieee">gnu_f2h_ieee<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L810"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">gnu_f2h_ieee :: <span class="keyword-type">proc</span> "c" (value: <span class="doc-builtin">f32</span>) -> <span class="doc-builtin">u16</span> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="gnu_h2f_ieee"><span><a class="doc-id-link" href="#gnu_h2f_ieee">gnu_h2f_ieee<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L755"><em>Source</em></a></div></h3>
+<h3 id="gnu_h2f_ieee"><span><a class="doc-id-link" href="#gnu_h2f_ieee">gnu_h2f_ieee<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L791"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">gnu_h2f_ieee :: <span class="keyword-type">proc</span> "c" (value: <span class="doc-builtin">u16</span>) -> <span class="doc-builtin">f32</span> {…}</pre>
 </div>
@@ -2539,7 +2543,7 @@ This will be set by the compiler</p>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="map_alloc_dynamic"><span><a class="doc-id-link" href="#map_alloc_dynamic">map_alloc_dynamic<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/dynamic_map_internal.odin#L335"><em>Source</em></a></div></h3>
+<h3 id="map_alloc_dynamic"><span><a class="doc-id-link" href="#map_alloc_dynamic">map_alloc_dynamic<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/dynamic_map_internal.odin#L355"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">map_alloc_dynamic :: <span class="keyword-type">proc</span>(info: ^<a class="code-typename" href="/core/runtime/#Map_Info">Map_Info</a>, log2_capacity: <span class="doc-builtin">uintptr</span>, allocator := <a href="/core/runtime/#Context">context.allocator</a>, loc := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>) -> (result: <a class="code-typename" href="/core/runtime/#Raw_Map">Raw_Map</a>, err: <a class="code-typename" href="/core/runtime/#Allocator_Error">Allocator_Error</a>) {…}</pre>
 </div>
@@ -2579,7 +2583,7 @@ This will be set by the compiler</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="map_clear_dynamic"><span><a class="doc-id-link" href="#map_clear_dynamic">map_clear_dynamic<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/dynamic_map_internal.odin#L685"><em>Source</em></a></div></h3>
+<h3 id="map_clear_dynamic"><span><a class="doc-id-link" href="#map_clear_dynamic">map_clear_dynamic<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/dynamic_map_internal.odin#L745"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">map_clear_dynamic :: <span class="keyword-type">proc</span> "contextless" (<span class="keyword-type"> #no_alias</span> m: ^<a class="code-typename" href="/core/runtime/#Raw_Map">Raw_Map</a>, <span class="keyword-type"> #no_alias</span> info: ^<a class="code-typename" href="/core/runtime/#Map_Info">Map_Info</a>) {…}</pre>
 </div>
@@ -2591,37 +2595,37 @@ This will be set by the compiler</p>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="map_desired_position"><span><a class="doc-id-link" href="#map_desired_position">map_desired_position<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/dynamic_map_internal.odin#L258"><em>Source</em></a></div></h3>
+<h3 id="map_desired_position"><span><a class="doc-id-link" href="#map_desired_position">map_desired_position<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/dynamic_map_internal.odin#L278"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">map_desired_position :: <span class="keyword-type">proc</span> "contextless" (m: <a class="code-typename" href="/core/runtime/#Raw_Map">Raw_Map</a>, hash: <span class="doc-builtin">uintptr</span>) -> <span class="doc-builtin">uintptr</span> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="map_erase_dynamic"><span><a class="doc-id-link" href="#map_erase_dynamic">map_erase_dynamic<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/dynamic_map_internal.odin#L629"><em>Source</em></a></div></h3>
+<h3 id="map_erase_dynamic"><span><a class="doc-id-link" href="#map_erase_dynamic">map_erase_dynamic<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/dynamic_map_internal.odin#L690"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">map_erase_dynamic :: <span class="keyword-type">proc</span> "contextless" (<span class="keyword-type"> #no_alias</span> m: ^<a class="code-typename" href="/core/runtime/#Raw_Map">Raw_Map</a>, <span class="keyword-type"> #no_alias</span> info: ^<a class="code-typename" href="/core/runtime/#Map_Info">Map_Info</a>, k: <span class="doc-builtin">uintptr</span>) -> (old_k, old_v: <span class="doc-builtin">uintptr</span>, ok: <span class="doc-builtin">bool</span>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="map_exists_dynamic"><span><a class="doc-id-link" href="#map_exists_dynamic">map_exists_dynamic<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/dynamic_map_internal.odin#L603"><em>Source</em></a></div></h3>
+<h3 id="map_exists_dynamic"><span><a class="doc-id-link" href="#map_exists_dynamic">map_exists_dynamic<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/dynamic_map_internal.odin#L664"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">map_exists_dynamic :: <span class="keyword-type">proc</span> "contextless" (m: <a class="code-typename" href="/core/runtime/#Raw_Map">Raw_Map</a>, <span class="keyword-type"> #no_alias</span> info: ^<a class="code-typename" href="/core/runtime/#Map_Info">Map_Info</a>, k: <span class="doc-builtin">uintptr</span>) -> (ok: <span class="doc-builtin">bool</span>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="map_free_dynamic"><span><a class="doc-id-link" href="#map_free_dynamic">map_free_dynamic<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/dynamic_map_internal.odin#L568"><em>Source</em></a></div></h3>
+<h3 id="map_free_dynamic"><span><a class="doc-id-link" href="#map_free_dynamic">map_free_dynamic<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/dynamic_map_internal.odin#L629"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">map_free_dynamic :: <span class="keyword-type">proc</span>(m: <a class="code-typename" href="/core/runtime/#Raw_Map">Raw_Map</a>, info: ^<a class="code-typename" href="/core/runtime/#Map_Info">Map_Info</a>, loc := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>) -> <a class="code-typename" href="/core/runtime/#Allocator_Error">Allocator_Error</a> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="map_get"><span><a class="doc-id-link" href="#map_get">map_get<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/dynamic_map_internal.odin#L706"><em>Source</em></a></div></h3>
+<h3 id="map_get"><span><a class="doc-id-link" href="#map_get">map_get<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/dynamic_map_internal.odin#L766"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">map_get :: <span class="keyword-type">proc</span> "contextless" (m: $T/<span class="keyword-type">map</span>[$T]$T, key: $T) -> (stored_key: $T, stored_value: $T, ok: <span class="doc-builtin">bool</span>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="map_grow_dynamic"><span><a class="doc-id-link" href="#map_grow_dynamic">map_grow_dynamic<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/dynamic_map_internal.odin#L451"><em>Source</em></a></div></h3>
+<h3 id="map_grow_dynamic"><span><a class="doc-id-link" href="#map_grow_dynamic">map_grow_dynamic<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/dynamic_map_internal.odin#L510"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">map_grow_dynamic :: <span class="keyword-type">proc</span>(<span class="keyword-type"> #no_alias</span> m: ^<a class="code-typename" href="/core/runtime/#Raw_Map">Raw_Map</a>, <span class="keyword-type"> #no_alias</span> info: ^<a class="code-typename" href="/core/runtime/#Map_Info">Map_Info</a>, loc := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>) -> <a class="code-typename" href="/core/runtime/#Allocator_Error">Allocator_Error</a> {…}</pre>
 </div>
@@ -2662,25 +2666,25 @@ map_info :: proc "contextless" ($T: typeid/map[$K]$V) -> ^Map_Info {...}</p>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="map_insert_hash_dynamic"><span><a class="doc-id-link" href="#map_insert_hash_dynamic">map_insert_hash_dynamic<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/dynamic_map_internal.odin#L376"><em>Source</em></a></div></h3>
+<h3 id="map_insert_hash_dynamic"><span><a class="doc-id-link" href="#map_insert_hash_dynamic">map_insert_hash_dynamic<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/dynamic_map_internal.odin#L396"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">map_insert_hash_dynamic :: <span class="keyword-type">proc</span>(<span class="keyword-type"> #no_alias</span> m: ^<a class="code-typename" href="/core/runtime/#Raw_Map">Raw_Map</a>, <span class="keyword-type"> #no_alias</span> info: ^<a class="code-typename" href="/core/runtime/#Map_Info">Map_Info</a>, h: <span class="doc-builtin">uintptr</span>, ik: <span class="doc-builtin">uintptr</span>, iv: <span class="doc-builtin">uintptr</span>) -> (result: <span class="doc-builtin">uintptr</span>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="map_kvh_data_dynamic"><span><a class="doc-id-link" href="#map_kvh_data_dynamic">map_kvh_data_dynamic<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/dynamic_map_internal.odin#L293"><em>Source</em></a></div></h3>
+<h3 id="map_kvh_data_dynamic"><span><a class="doc-id-link" href="#map_kvh_data_dynamic">map_kvh_data_dynamic<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/dynamic_map_internal.odin#L313"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">map_kvh_data_dynamic :: <span class="keyword-type">proc</span> "contextless" (m: <a class="code-typename" href="/core/runtime/#Raw_Map">Raw_Map</a>, <span class="keyword-type"> #no_alias</span> info: ^<a class="code-typename" href="/core/runtime/#Map_Info">Map_Info</a>) -> (ks: <span class="doc-builtin">uintptr</span>, vs: <span class="doc-builtin">uintptr</span>, hs: [^]<span class="doc-builtin">uintptr</span>, sk: <span class="doc-builtin">uintptr</span>, sv: <span class="doc-builtin">uintptr</span>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="map_kvh_data_static"><span><a class="doc-id-link" href="#map_kvh_data_static">map_kvh_data_static<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/dynamic_map_internal.odin#L696"><em>Source</em></a></div></h3>
+<h3 id="map_kvh_data_static"><span><a class="doc-id-link" href="#map_kvh_data_static">map_kvh_data_static<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/dynamic_map_internal.odin#L756"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">map_kvh_data_static :: <span class="keyword-type">proc</span> "contextless" (m: $T/<span class="keyword-type">map</span>[$T]$T) -> (ks: [^]<a class="code-typename" href="/core/runtime/#Map_Cell">Map_Cell</a>(K), vs: [^]<a class="code-typename" href="/core/runtime/#Map_Cell">Map_Cell</a>(V), hs: [^]<span class="doc-builtin">uintptr</span>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="map_kvh_data_values_dynamic"><span><a class="doc-id-link" href="#map_kvh_data_values_dynamic">map_kvh_data_values_dynamic<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/dynamic_map_internal.odin#L310"><em>Source</em></a></div></h3>
+<h3 id="map_kvh_data_values_dynamic"><span><a class="doc-id-link" href="#map_kvh_data_values_dynamic">map_kvh_data_values_dynamic<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/dynamic_map_internal.odin#L330"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">map_kvh_data_values_dynamic :: <span class="keyword-type">proc</span> "contextless" (m: <a class="code-typename" href="/core/runtime/#Raw_Map">Raw_Map</a>, <span class="keyword-type"> #no_alias</span> info: ^<a class="code-typename" href="/core/runtime/#Map_Info">Map_Info</a>) -> (vs: <span class="doc-builtin">uintptr</span>) {…}</pre>
 </div>
@@ -2704,19 +2708,19 @@ map_info :: proc "contextless" ($T: typeid/map[$K]$V) -> ^Map_Info {...}</p>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="map_lookup_dynamic"><span><a class="doc-id-link" href="#map_lookup_dynamic">map_lookup_dynamic<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/dynamic_map_internal.odin#L580"><em>Source</em></a></div></h3>
+<h3 id="map_lookup_dynamic"><span><a class="doc-id-link" href="#map_lookup_dynamic">map_lookup_dynamic<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/dynamic_map_internal.odin#L641"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">map_lookup_dynamic :: <span class="keyword-type">proc</span> "contextless" (m: <a class="code-typename" href="/core/runtime/#Raw_Map">Raw_Map</a>, <span class="keyword-type"> #no_alias</span> info: ^<a class="code-typename" href="/core/runtime/#Map_Info">Map_Info</a>, k: <span class="doc-builtin">uintptr</span>) -> (index: <span class="doc-builtin">uintptr</span>, ok: <span class="doc-builtin">bool</span>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="map_probe_distance"><span><a class="doc-id-link" href="#map_probe_distance">map_probe_distance<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/dynamic_map_internal.odin#L265"><em>Source</em></a></div></h3>
+<h3 id="map_probe_distance"><span><a class="doc-id-link" href="#map_probe_distance">map_probe_distance<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/dynamic_map_internal.odin#L285"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">map_probe_distance :: <span class="keyword-type">proc</span> "contextless" (m: <a class="code-typename" href="/core/runtime/#Raw_Map">Raw_Map</a>, hash: <span class="doc-builtin">uintptr</span>, slot: <span class="doc-builtin">uintptr</span>) -> <span class="doc-builtin">uintptr</span> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="map_reserve_dynamic"><span><a class="doc-id-link" href="#map_reserve_dynamic">map_reserve_dynamic<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/dynamic_map_internal.odin#L459"><em>Source</em></a></div></h3>
+<h3 id="map_reserve_dynamic"><span><a class="doc-id-link" href="#map_reserve_dynamic">map_reserve_dynamic<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/dynamic_map_internal.odin#L518"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">map_reserve_dynamic :: <span class="keyword-type">proc</span>(<span class="keyword-type"> #no_alias</span> m: ^<a class="code-typename" href="/core/runtime/#Raw_Map">Raw_Map</a>, <span class="keyword-type"> #no_alias</span> info: ^<a class="code-typename" href="/core/runtime/#Map_Info">Map_Info</a>, new_capacity: <span class="doc-builtin">uintptr</span>, loc := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>) -> <a class="code-typename" href="/core/runtime/#Allocator_Error">Allocator_Error</a> {…}</pre>
 </div>
@@ -2728,7 +2732,19 @@ map_info :: proc "contextless" ($T: typeid/map[$K]$V) -> ^Map_Info {...}</p>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="map_shrink_dynamic"><span><a class="doc-id-link" href="#map_shrink_dynamic">map_shrink_dynamic<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/dynamic_map_internal.odin#L522"><em>Source</em></a></div></h3>
+<h3 id="map_seed"><span><a class="doc-id-link" href="#map_seed">map_seed<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/dynamic_map_internal.odin#L255"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">map_seed :: <span class="keyword-type">proc</span> "contextless" (m: <a class="code-typename" href="/core/runtime/#Raw_Map">Raw_Map</a>) -> <span class="doc-builtin">uintptr</span> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="map_seed_from_map_data"><span><a class="doc-id-link" href="#map_seed_from_map_data">map_seed_from_map_data<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/dynamic_map_internal.odin#L261"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">map_seed_from_map_data :: <span class="keyword-type">proc</span> "contextless" (data: <span class="doc-builtin">uintptr</span>) -> <span class="doc-builtin">uintptr</span> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="map_shrink_dynamic"><span><a class="doc-id-link" href="#map_shrink_dynamic">map_shrink_dynamic<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/dynamic_map_internal.odin#L582"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">map_shrink_dynamic :: <span class="keyword-type">proc</span>(<span class="keyword-type"> #no_alias</span> m: ^<a class="code-typename" href="/core/runtime/#Raw_Map">Raw_Map</a>, <span class="keyword-type"> #no_alias</span> info: ^<a class="code-typename" href="/core/runtime/#Map_Info">Map_Info</a>, loc := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>) -> <a class="code-typename" href="/core/runtime/#Allocator_Error">Allocator_Error</a> {…}</pre>
 </div>
@@ -2853,19 +2869,19 @@ map_info :: proc "contextless" ($T: typeid/map[$K]$V) -> ^Map_Info {...}</p>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="max_f16"><span><a class="doc-id-link" href="#max_f16">max_f16<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L522"><em>Source</em></a></div></h3>
+<h3 id="max_f16"><span><a class="doc-id-link" href="#max_f16">max_f16<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L558"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">max_f16 :: <span class="keyword-type">proc</span> "contextless" (a, b: <span class="doc-builtin">f16</span>) -> <span class="doc-builtin">f16</span> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="max_f32"><span><a class="doc-id-link" href="#max_f32">max_f32<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L525"><em>Source</em></a></div></h3>
+<h3 id="max_f32"><span><a class="doc-id-link" href="#max_f32">max_f32<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L561"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">max_f32 :: <span class="keyword-type">proc</span> "contextless" (a, b: <span class="doc-builtin">f32</span>) -> <span class="doc-builtin">f32</span> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="max_f64"><span><a class="doc-id-link" href="#max_f64">max_f64<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L528"><em>Source</em></a></div></h3>
+<h3 id="max_f64"><span><a class="doc-id-link" href="#max_f64">max_f64<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L564"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">max_f64 :: <span class="keyword-type">proc</span> "contextless" (a, b: <span class="doc-builtin">f64</span>) -> <span class="doc-builtin">f64</span> {…}</pre>
 </div>
@@ -2979,43 +2995,43 @@ map_info :: proc "contextless" ($T: typeid/map[$K]$V) -> ^Map_Info {...}</p>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="min_f16"><span><a class="doc-id-link" href="#min_f16">min_f16<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L513"><em>Source</em></a></div></h3>
+<h3 id="min_f16"><span><a class="doc-id-link" href="#min_f16">min_f16<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L549"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">min_f16 :: <span class="keyword-type">proc</span> "contextless" (a, b: <span class="doc-builtin">f16</span>) -> <span class="doc-builtin">f16</span> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="min_f32"><span><a class="doc-id-link" href="#min_f32">min_f32<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L516"><em>Source</em></a></div></h3>
+<h3 id="min_f32"><span><a class="doc-id-link" href="#min_f32">min_f32<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L552"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">min_f32 :: <span class="keyword-type">proc</span> "contextless" (a, b: <span class="doc-builtin">f32</span>) -> <span class="doc-builtin">f32</span> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="min_f64"><span><a class="doc-id-link" href="#min_f64">min_f64<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L519"><em>Source</em></a></div></h3>
+<h3 id="min_f64"><span><a class="doc-id-link" href="#min_f64">min_f64<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L555"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">min_f64 :: <span class="keyword-type">proc</span> "contextless" (a, b: <span class="doc-builtin">f64</span>) -> <span class="doc-builtin">f64</span> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="modti3"><span><a class="doc-id-link" href="#modti3">modti3<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L915"><em>Source</em></a></div></h3>
+<h3 id="modti3"><span><a class="doc-id-link" href="#modti3">modti3<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L951"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">modti3 :: <span class="keyword-type">proc</span> "c" (a, b: <span class="doc-builtin">i128</span>) -> <span class="doc-builtin">i128</span> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="mul_quaternion128"><span><a class="doc-id-link" href="#mul_quaternion128">mul_quaternion128<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L625"><em>Source</em></a></div></h3>
+<h3 id="mul_quaternion128"><span><a class="doc-id-link" href="#mul_quaternion128">mul_quaternion128<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L661"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">mul_quaternion128 :: <span class="keyword-type">proc</span> "contextless" (q, r: <span class="doc-builtin">quaternion128</span>) -> <span class="doc-builtin">quaternion128</span> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="mul_quaternion256"><span><a class="doc-id-link" href="#mul_quaternion256">mul_quaternion256<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L637"><em>Source</em></a></div></h3>
+<h3 id="mul_quaternion256"><span><a class="doc-id-link" href="#mul_quaternion256">mul_quaternion256<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L673"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">mul_quaternion256 :: <span class="keyword-type">proc</span> "contextless" (q, r: <span class="doc-builtin">quaternion256</span>) -> <span class="doc-builtin">quaternion256</span> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="mul_quaternion64"><span><a class="doc-id-link" href="#mul_quaternion64">mul_quaternion64<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L613"><em>Source</em></a></div></h3>
+<h3 id="mul_quaternion64"><span><a class="doc-id-link" href="#mul_quaternion64">mul_quaternion64<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L649"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">mul_quaternion64 :: <span class="keyword-type">proc</span> "contextless" (q, r: <span class="doc-builtin">quaternion64</span>) -> <span class="doc-builtin">quaternion64</span> {…}</pre>
 </div>
@@ -3238,37 +3254,37 @@ map_info :: proc "contextless" ($T: typeid/map[$K]$V) -> ^Map_Info {...}</p>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="quo_complex128"><span><a class="doc-id-link" href="#quo_complex128">quo_complex128<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L595"><em>Source</em></a></div></h3>
+<h3 id="quo_complex128"><span><a class="doc-id-link" href="#quo_complex128">quo_complex128<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L631"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">quo_complex128 :: <span class="keyword-type">proc</span> "contextless" (n, m: <span class="doc-builtin">complex128</span>) -> <span class="doc-builtin">complex128</span> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="quo_complex32"><span><a class="doc-id-link" href="#quo_complex32">quo_complex32<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L558"><em>Source</em></a></div></h3>
+<h3 id="quo_complex32"><span><a class="doc-id-link" href="#quo_complex32">quo_complex32<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L594"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">quo_complex32 :: <span class="keyword-type">proc</span> "contextless" (n, m: <span class="doc-builtin">complex32</span>) -> <span class="doc-builtin">complex32</span> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="quo_complex64"><span><a class="doc-id-link" href="#quo_complex64">quo_complex64<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L577"><em>Source</em></a></div></h3>
+<h3 id="quo_complex64"><span><a class="doc-id-link" href="#quo_complex64">quo_complex64<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L613"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">quo_complex64 :: <span class="keyword-type">proc</span> "contextless" (n, m: <span class="doc-builtin">complex64</span>) -> <span class="doc-builtin">complex64</span> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="quo_quaternion128"><span><a class="doc-id-link" href="#quo_quaternion128">quo_quaternion128<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L663"><em>Source</em></a></div></h3>
+<h3 id="quo_quaternion128"><span><a class="doc-id-link" href="#quo_quaternion128">quo_quaternion128<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L699"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">quo_quaternion128 :: <span class="keyword-type">proc</span> "contextless" (q, r: <span class="doc-builtin">quaternion128</span>) -> <span class="doc-builtin">quaternion128</span> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="quo_quaternion256"><span><a class="doc-id-link" href="#quo_quaternion256">quo_quaternion256<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L677"><em>Source</em></a></div></h3>
+<h3 id="quo_quaternion256"><span><a class="doc-id-link" href="#quo_quaternion256">quo_quaternion256<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L713"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">quo_quaternion256 :: <span class="keyword-type">proc</span> "contextless" (q, r: <span class="doc-builtin">quaternion256</span>) -> <span class="doc-builtin">quaternion256</span> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="quo_quaternion64"><span><a class="doc-id-link" href="#quo_quaternion64">quo_quaternion64<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L649"><em>Source</em></a></div></h3>
+<h3 id="quo_quaternion64"><span><a class="doc-id-link" href="#quo_quaternion64">quo_quaternion64<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L685"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">quo_quaternion64 :: <span class="keyword-type">proc</span> "contextless" (q, r: <span class="doc-builtin">quaternion64</span>) -> <span class="doc-builtin">quaternion64</span> {…}</pre>
 </div>
@@ -3396,6 +3412,12 @@ If `len(array) &lt; new_cap`, then `len(array)` will be left unchanged.
 </div>
 </div>
 <div class="pkg-entity">
+<h3 id="string_decode_last_rune"><span><a class="doc-id-link" href="#string_decode_last_rune">string_decode_last_rune<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L503"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">string_decode_last_rune :: <span class="keyword-type">proc</span> "contextless" (s: <span class="doc-builtin">string</span>) -> (<span class="doc-builtin">rune</span>, <span class="doc-builtin">int</span>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
 <h3 id="string_decode_rune"><span><a class="doc-id-link" href="#string_decode_rune">string_decode_rune<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L424"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">string_decode_rune :: <span class="keyword-type">proc</span> "contextless" (s: <span class="doc-builtin">string</span>) -> (<span class="doc-builtin">rune</span>, <span class="doc-builtin">int</span>) {…}</pre>
@@ -3444,13 +3466,13 @@ If `len(array) &lt; new_cap`, then `len(array)` will be left unchanged.
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="truncdfhf2"><span><a class="doc-id-link" href="#truncdfhf2">truncdfhf2<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L750"><em>Source</em></a></div></h3>
+<h3 id="truncdfhf2"><span><a class="doc-id-link" href="#truncdfhf2">truncdfhf2<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L786"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">truncdfhf2 :: <span class="keyword-type">proc</span> "c" (value: <span class="doc-builtin">f64</span>) -> <span class="doc-builtin">u16</span> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="truncsfhf2"><span><a class="doc-id-link" href="#truncsfhf2">truncsfhf2<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L692"><em>Source</em></a></div></h3>
+<h3 id="truncsfhf2"><span><a class="doc-id-link" href="#truncsfhf2">truncsfhf2<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L728"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">truncsfhf2 :: <span class="keyword-type">proc</span> "c" (value: <span class="doc-builtin">f32</span>) -> <span class="doc-builtin">u16</span> {…}</pre>
 </div>
@@ -3528,19 +3550,19 @@ If `len(array) &lt; new_cap`, then `len(array)` will be left unchanged.
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="udivmodti4"><span><a class="doc-id-link" href="#udivmodti4">udivmodti4<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L904"><em>Source</em></a></div></h3>
+<h3 id="udivmodti4"><span><a class="doc-id-link" href="#udivmodti4">udivmodti4<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L940"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">udivmodti4 :: <span class="keyword-type">proc</span> "c" (a, b: <span class="doc-builtin">u128</span>, rem: ^<span class="doc-builtin">u128</span>) -> <span class="doc-builtin">u128</span> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="udivti3"><span><a class="doc-id-link" href="#udivti3">udivti3<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L909"><em>Source</em></a></div></h3>
+<h3 id="udivti3"><span><a class="doc-id-link" href="#udivti3">udivti3<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L945"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">udivti3 :: <span class="keyword-type">proc</span> "c" (a, b: <span class="doc-builtin">u128</span>) -> <span class="doc-builtin">u128</span> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="umodti3"><span><a class="doc-id-link" href="#umodti3">umodti3<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L896"><em>Source</em></a></div></h3>
+<h3 id="umodti3"><span><a class="doc-id-link" href="#umodti3">umodti3<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/internal.odin#L932"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">umodti3 :: <span class="keyword-type">proc</span> "c" (a, b: <span class="doc-builtin">u128</span>) -> <span class="doc-builtin">u128</span> {…}</pre>
 </div>
@@ -3818,7 +3840,7 @@ If `len(array) &lt; new_cap`, then `len(array)` will be left unchanged.
 <li><em>(hidden platform specific files)</em></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2023-05 (vendor "odin") Windows_amd64 @ 2023-05-29 21:08:02.519353300 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2023-05 (vendor "odin") Windows_amd64 @ 2023-05-30 01:12:10.799886900 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
@@ -4085,6 +4107,8 @@ If `len(array) &lt; new_cap`, then `len(array)` will be left unchanged.
 <li><a href="#map_probe_distance">map_probe_distance</a></li>
 <li><a href="#map_reserve_dynamic">map_reserve_dynamic</a></li>
 <li><a href="#map_resize_threshold">map_resize_threshold</a></li>
+<li><a href="#map_seed">map_seed</a></li>
+<li><a href="#map_seed_from_map_data">map_seed_from_map_data</a></li>
 <li><a href="#map_shrink_dynamic">map_shrink_dynamic</a></li>
 <li><a href="#matrix1x1_adjugate">matrix1x1_adjugate</a></li>
 <li><a href="#matrix1x1_determinant">matrix1x1_determinant</a></li>
@@ -4190,6 +4214,7 @@ If `len(array) &lt; new_cap`, then `len(array)` will be left unchanged.
 <li><a href="#slice_expr_error_lo_hi_loc">slice_expr_error_lo_hi_loc</a></li>
 <li><a href="#slice_handle_error">slice_handle_error</a></li>
 <li><a href="#string_cmp">string_cmp</a></li>
+<li><a href="#string_decode_last_rune">string_decode_last_rune</a></li>
 <li><a href="#string_decode_rune">string_decode_rune</a></li>
 <li><a href="#string_eq">string_eq</a></li>
 <li><a href="#string_ge">string_ge</a></li>
