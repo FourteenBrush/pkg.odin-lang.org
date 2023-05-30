@@ -43,6 +43,7 @@
 <div class="py-3">
 <h4 style="text-transform: capitalize">core Library</h4>
 <ul>
+<li class="nav-item"><a href="/core/builtin">builtin</a></li>
 <li class="nav-item"><a href="/core/bufio">bufio</a></li>
 <li class="nav-item"><a href="/core/bytes">bytes</a></li>
 <li class="nav-item"><a href="/core/c">c</a><ul>
@@ -382,7 +383,7 @@ All uses of an <code>Arena_Temp</code> must be handled by ending them with <code
 <div class="pkg-entity">
 <h3 id="Memory_Block_Flags"><span><a class="doc-id-link" href="#Memory_Block_Flags">Memory_Block_Flags<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/virtual.odin#L59"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">Memory_Block_Flags :: distinct <span class="keyword-type">bit_set</span>[<a class="code-typename" href="/core/mem/virtual/#Memory_Block_Flag">Memory_Block_Flag</a>; <span class="doc-builtin">u32</span>]</pre>
+<pre class="doc-code">Memory_Block_Flags :: <span class="keyword-type">distinct</span> <span class="keyword-type">bit_set</span>[<a class="code-typename" href="/core/mem/virtual/#Memory_Block_Flag">Memory_Block_Flag</a>; <span class="doc-builtin">u32</span>]</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -398,7 +399,7 @@ All uses of an <code>Arena_Temp</code> must be handled by ending them with <code
 <div class="pkg-entity">
 <h3 id="Protect_Flags"><span><a class="doc-id-link" href="#Protect_Flags">Protect_Flags<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/virtual.odin#L39"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">Protect_Flags :: distinct <span class="keyword-type">bit_set</span>[<a class="code-typename" href="/core/mem/virtual/#Protect_Flag">Protect_Flag</a>; <span class="doc-builtin">u32</span>]</pre>
+<pre class="doc-code">Protect_Flags :: <span class="keyword-type">distinct</span> <span class="keyword-type">bit_set</span>[<a class="code-typename" href="/core/mem/virtual/#Protect_Flag">Protect_Flag</a>; <span class="doc-builtin">u32</span>]</pre>
 </div>
 </div>
 <h2 id="pkg-Constants" class="pkg-header">Constants</h2>
@@ -453,12 +454,20 @@ All uses of an <code>Arena_Temp</code> must be handled by ending them with <code
 <div>
 <pre class="doc-code">arena_alloc :: <span class="keyword-type">proc</span>(arena: ^<a class="code-typename" href="/core/mem/virtual/#Arena">Arena</a>, size: <span class="doc-builtin">uint</span>, alignment: <span class="doc-builtin">uint</span>, loc := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>) -> (data: []<span class="doc-builtin">u8</span>, err: runtime.<a class="code-typename" href="/core/runtime/#Allocator_Error">Allocator_Error</a>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Allocates memory from the provided arena.</p>
+</details>
 </div>
 <div class="pkg-entity">
 <h3 id="arena_allocator"><span><a class="doc-id-link" href="#arena_allocator">arena_allocator<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/arena.odin#L270"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">arena_allocator :: <span class="keyword-type">proc</span>(arena: ^<a class="code-typename" href="/core/mem/virtual/#Arena">Arena</a>) -> runtime.<a class="code-typename" href="/core/runtime/#Allocator">Allocator</a> {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Create an <code>Allocator</code> from the provided <code>Arena</code></p>
+</details>
 </div>
 <div class="pkg-entity">
 <h3 id="arena_allocator_proc"><span><a class="doc-id-link" href="#arena_allocator_proc">arena_allocator_proc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/arena.odin#L275"><em>Source</em></a></div></h3>
@@ -513,12 +522,20 @@ A buffer based arena does not <code>delete</code> the provided <code>[]byte</cod
 <div>
 <pre class="doc-code">arena_growing_bootstrap_new_by_name :: <span class="keyword-type">proc</span>($T: <span class="doc-builtin">typeid</span>, $field_name: <span class="doc-builtin">string</span> = , minimum_block_size: <span class="doc-builtin">uint</span> = DEFAULT_ARENA_GROWING_MINIMUM_BLOCK_SIZE) -> (ptr: ^<span class="doc-builtin">typeid</span>, err: runtime.<a class="code-typename" href="/core/runtime/#Allocator_Error">Allocator_Error</a>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Ability to bootstrap allocate a struct with an arena within the struct itself using the growing variant strategy.</p>
+</details>
 </div>
 <div class="pkg-entity">
 <h3 id="arena_growing_bootstrap_new_by_offset"><span><a class="doc-id-link" href="#arena_growing_bootstrap_new_by_offset">arena_growing_bootstrap_new_by_offset<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/arena.odin#L225"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">arena_growing_bootstrap_new_by_offset :: <span class="keyword-type">proc</span>($T: <span class="doc-builtin">typeid</span>, offset_to_arena: <span class="doc-builtin">uintptr</span>, minimum_block_size: <span class="doc-builtin">uint</span> = DEFAULT_ARENA_GROWING_MINIMUM_BLOCK_SIZE) -> (ptr: ^<span class="doc-builtin">typeid</span>, err: runtime.<a class="code-typename" href="/core/runtime/#Allocator_Error">Allocator_Error</a>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Ability to bootstrap allocate a struct with an arena within the struct itself using the growing variant strategy.</p>
+</details>
 </div>
 <div class="pkg-entity">
 <h3 id="arena_growing_free_last_memory_block"><span><a class="doc-id-link" href="#arena_growing_free_last_memory_block">arena_growing_free_last_memory_block<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/arena.odin#L159"><em>Source</em></a></div></h3>
@@ -535,30 +552,53 @@ A buffer based arena does not <code>delete</code> the provided <code>[]byte</cod
 <div>
 <pre class="doc-code">arena_init_buffer :: <span class="keyword-type">proc</span>(arena: ^<a class="code-typename" href="/core/mem/virtual/#Arena">Arena</a>, buffer: []<span class="doc-builtin">u8</span>) -> (err: runtime.<a class="code-typename" href="/core/runtime/#Allocator_Error">Allocator_Error</a>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Initialization of an <code>Arena</code> to be a <code>.Buffer</code> variant.
+A buffer arena contains single <code>Memory_Block</code> created from a user provided []byte.</p>
+</details>
 </div>
 <div class="pkg-entity">
 <h3 id="arena_init_growing"><span><a class="doc-id-link" href="#arena_init_growing">arena_init_growing<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/arena.odin#L42"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">arena_init_growing :: <span class="keyword-type">proc</span>(arena: ^<a class="code-typename" href="/core/mem/virtual/#Arena">Arena</a>, reserved: <span class="doc-builtin">uint</span> = DEFAULT_ARENA_GROWING_MINIMUM_BLOCK_SIZE) -> (err: runtime.<a class="code-typename" href="/core/runtime/#Allocator_Error">Allocator_Error</a>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Initialization of an <code>Arena</code> to be a <code>.Growing</code> variant.
+A growing arena is a linked list of <code>Memory_Block</code>s allocated with virtual memory.</p>
+</details>
 </div>
 <div class="pkg-entity">
 <h3 id="arena_init_static"><span><a class="doc-id-link" href="#arena_init_static">arena_init_static<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/arena.odin#L54"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">arena_init_static :: <span class="keyword-type">proc</span>(arena: ^<a class="code-typename" href="/core/mem/virtual/#Arena">Arena</a>, reserved: <span class="doc-builtin">uint</span>, commit_size: <span class="doc-builtin">uint</span> = DEFAULT_ARENA_STATIC_COMMIT_SIZE) -> (err: runtime.<a class="code-typename" href="/core/runtime/#Allocator_Error">Allocator_Error</a>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Initialization of an <code>Arena</code> to be a <code>.Static</code> variant.
+A static arena contains a single <code>Memory_Block</code> allocated with virtual memory.</p>
+</details>
 </div>
 <div class="pkg-entity">
 <h3 id="arena_static_bootstrap_new_by_name"><span><a class="doc-id-link" href="#arena_static_bootstrap_new_by_name">arena_static_bootstrap_new_by_name<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/arena.odin#L263"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">arena_static_bootstrap_new_by_name :: <span class="keyword-type">proc</span>($T: <span class="doc-builtin">typeid</span>, $field_name: <span class="doc-builtin">string</span> = , reserved: <span class="doc-builtin">uint</span>) -> (ptr: ^<span class="doc-builtin">typeid</span>, err: runtime.<a class="code-typename" href="/core/runtime/#Allocator_Error">Allocator_Error</a>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Ability to bootstrap allocate a struct with an arena within the struct itself using the growing variant strategy.</p>
+</details>
 </div>
 <div class="pkg-entity">
 <h3 id="arena_static_bootstrap_new_by_offset"><span><a class="doc-id-link" href="#arena_static_bootstrap_new_by_offset">arena_static_bootstrap_new_by_offset<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/arena.odin#L247"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">arena_static_bootstrap_new_by_offset :: <span class="keyword-type">proc</span>($T: <span class="doc-builtin">typeid</span>, offset_to_arena: <span class="doc-builtin">uintptr</span>, reserved: <span class="doc-builtin">uint</span>) -> (ptr: ^<span class="doc-builtin">typeid</span>, err: runtime.<a class="code-typename" href="/core/runtime/#Allocator_Error">Allocator_Error</a>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Ability to bootstrap allocate a struct with an arena within the struct itself using the growing variant strategy.</p>
+</details>
 </div>
 <div class="pkg-entity">
 <h3 id="arena_static_reset_to"><span><a class="doc-id-link" href="#arena_static_reset_to">arena_static_reset_to<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/arena.odin#L137"><em>Source</em></a></div></h3>
@@ -575,6 +615,10 @@ A buffer based arena does not <code>delete</code> the provided <code>[]byte</cod
 <div>
 <pre class="doc-code">arena_temp_begin :: <span class="keyword-type">proc</span>(arena: ^<a class="code-typename" href="/core/mem/virtual/#Arena">Arena</a>, loc := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>) -> (temp: <a class="code-typename" href="/core/mem/virtual/#Arena_Temp">Arena_Temp</a>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Begins the section of temporary arena memory.</p>
+</details>
 </div>
 <div class="pkg-entity">
 <h3 id="arena_temp_end"><span><a class="doc-id-link" href="#arena_temp_end">arena_temp_end<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/arena.odin#L355"><em>Source</em></a></div></h3>
@@ -682,7 +726,7 @@ A buffer based arena does not <code>delete</code> the provided <code>[]byte</cod
 <li><em>(hidden platform specific files)</em></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2023-05 (vendor "odin") Windows_amd64 @ 2023-05-30 22:11:12.315978500 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2023-05 (vendor "odin") Windows_amd64 @ 2023-05-30 23:12:53.486793600 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
