@@ -225,6 +225,10 @@
 </div>
 <ul id="odin-search-results"></ul>
 <div id="pkg-top">
+<h2>Overview</h2>
+<div id="pkg-overview">
+<p>Package core:math/rand implements various random number generators</p>
+</div>
 <div id="pkg-index">
 <h2>Index</h2>
 <div>
@@ -322,7 +326,7 @@ Procedure Groups (0)</summary>
 <section class="documentation">
 <h2 id="pkg-Types" class="pkg-header">Types</h2>
 <div class="pkg-entity">
-<h3 id="Rand"><span><a class="doc-id-link" href="#Rand">Rand<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L5"><em>Source</em></a></div></h3>
+<h3 id="Rand"><span><a class="doc-id-link" href="#Rand">Rand<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L9"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Rand :: <span class="keyword-type">struct</span> {
 	state:     <span class="doc-builtin">u64</span>,
@@ -337,20 +341,62 @@ Procedure Groups (0)</summary>
 <p class="pkg-empty-section">This section is empty.</p>
 <h2 id="pkg-Procedures" class="pkg-header">Procedures</h2>
 <div class="pkg-entity">
-<h3 id="choice"><span><a class="doc-id-link" href="#choice">choice<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L198"><em>Source</em></a></div></h3>
+<h3 id="choice"><span><a class="doc-id-link" href="#choice">choice<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L810"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">choice :: <span class="keyword-type">proc</span>(array: $T/[]$T, r: ^<a class="code-typename" href="/core/math/rand/#Rand">Rand</a> = nil) -> (res: $T) {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>Returns a random element from the given slice</p>
+<p>Returns a random element from the provided slice. If no generator is provided the global random number generator will be used.<br></p>
+<p><b>Inputs:</b><br><span class="doc-list">array: The slice to choose an element from</span>
+<span class="doc-list">r: The random number generator to use, or nil for the global generator</span></p>
+<p><b>Returns:</b><br><span class="doc-list">res: A random element from <code>array</code></span></p>
+<details open class="code-example">
+<summary><b>Example:</b></summary>
+<pre><code class="hljs" data-lang="odin">import "core:math/rand"
+import "core:fmt"
+
+choice_example :: proc() {
+	// Using the global random number generator
+	data: [4]int = { 1, 2, 3, 4 }
+	fmt.println(rand.choice(data[:]))
+	fmt.println(rand.choice(data[:]))
+	fmt.println(rand.choice(data[:]))
+	fmt.println(rand.choice(data[:]))
+}
+</code></pre>
+<b>Possible Output:</b><pre class="doc-code">3
+2
+2
+4
+</pre>
+</details>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="create"><span><a class="doc-id-link" href="#create">create<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L20"><em>Source</em></a></div></h3>
+<h3 id="create"><span><a class="doc-id-link" href="#create">create<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L67"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">create :: <span class="keyword-type">proc</span>(seed: <span class="doc-builtin">u64</span>) -> <a class="code-typename" href="/core/math/rand/#Rand">Rand</a> {…}</pre>
+<pre class="doc-code">create :: <span class="keyword-type">proc</span>(seed: <span class="doc-builtin">u64</span>) -> (res: <a class="code-typename" href="/core/math/rand/#Rand">Rand</a>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Creates a new random number generator.</p>
+<p><b>Inputs:</b><br><span class="doc-list">seed: The seed value to create the random number generator with</span></p>
+<p><b>Returns:</b><br><span class="doc-list">res: The created random number generator</span></p>
+<details open class="code-example">
+<summary><b>Example:</b></summary>
+<pre><code class="hljs" data-lang="odin">import "core:math/rand"
+import "core:fmt"
+
+create_example :: proc() {
+	my_rand := rand.create(1)
+	fmt.println(rand.uint64(&my_rand))
+}
+</code></pre>
+<b>Possible Output:</b><pre class="doc-code">10
+</pre>
+</details>
+</details>
 </div>
 <div class="pkg-entity">
 <h3 id="exp_float64"><span><a class="doc-id-link" href="#exp_float64">exp_float64<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/exp.odin#L19"><em>Source</em></a></div></h3>
@@ -372,13 +418,32 @@ the desired rate parameter</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="float32"><span><a class="doc-id-link" href="#float32">float32<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L150"><em>Source</em></a></div></h3>
+<h3 id="float32"><span><a class="doc-id-link" href="#float32">float32<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L583"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">float32 :: <span class="keyword-type">proc</span>(r: ^<a class="code-typename" href="/core/math/rand/#Rand">Rand</a> = nil) -> <span class="doc-builtin">f32</span> {…}</pre>
+<pre class="doc-code">float32 :: <span class="keyword-type">proc</span>(r: ^<a class="code-typename" href="/core/math/rand/#Rand">Rand</a> = nil) -> (val: <span class="doc-builtin">f32</span>) {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>Uniform random distribution [0, 1)</p>
+<p>Generates a random single floating point value in the range <code>(0, 1]</code> using the provided random number generator. If no generator is provided the global random number generator will be used.<br></p>
+<p><b>Inputs:</b><br><span class="doc-list">r: The random number generator to use, or nil for the global generator</span></p>
+<p><b>Returns:</b><br><span class="doc-list">val: A random single floating point value in the range <code>(0, 1]</code></span></p>
+<details open class="code-example">
+<summary><b>Example:</b></summary>
+<pre><code class="hljs" data-lang="odin">import "core:math/rand"
+import "core:fmt"
+
+float32_example :: proc() {
+	// Using the global random number generator
+	fmt.println(rand.float32())
+	// Using local random number generator
+	my_rand := rand.create(1)
+	fmt.println(rand.float32(&my_rand))
+}
+</code></pre>
+<b>Possible Output:</b><pre class="doc-code">0.043
+0.511
+</pre>
+</details>
 </details>
 </div>
 <div class="pkg-entity">
@@ -499,10 +564,35 @@ https://wikipedia.org/wiki/Pareto_distribution</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="float32_range"><span><a class="doc-id-link" href="#float32_range">float32_range<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L153"><em>Source</em></a></div></h3>
+<h3 id="float32_range"><span><a class="doc-id-link" href="#float32_range">float32_range<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L644"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">float32_range :: <span class="keyword-type">proc</span>(lo, hi: <span class="doc-builtin">f32</span>, r: ^<a class="code-typename" href="/core/math/rand/#Rand">Rand</a> = nil) -> <span class="doc-builtin">f32</span> {…}</pre>
+<pre class="doc-code">float32_range :: <span class="keyword-type">proc</span>(low, high: <span class="doc-builtin">f32</span>, r: ^<a class="code-typename" href="/core/math/rand/#Rand">Rand</a> = nil) -> (val: <span class="doc-builtin">f32</span>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Generates a random single floating point value in the range <code>(low, high]</code> using the provided random number generator. If no generator is provided the global random number generator will be used.<br></p>
+<p><b>Inputs:</b><br><span class="doc-list">low: The lower bounds of the value, this value is inclusive</span>
+<span class="doc-list">high: The upper bounds of the value, this value is exclusive</span>
+<span class="doc-list">r: The random number generator to use, or nil for the global generator</span></p>
+<p><b>Returns:</b><br><span class="doc-list">val: A random single floating point value in the range <code>(low, high]</code></span></p>
+<details open class="code-example">
+<summary><b>Example:</b></summary>
+<pre><code class="hljs" data-lang="odin">import "core:math/rand"
+import "core:fmt"
+
+float32_range_example :: proc() {
+	// Using the global random number generator
+	fmt.println(rand.float32_range(-10, 300))
+	// Using local random number generator
+	my_rand := rand.create(1)
+	fmt.println(rand.float32_range(600, 900, &my_rand))
+}
+</code></pre>
+<b>Possible Output:</b><pre class="doc-code">15.312
+673.130
+</pre>
+</details>
+</details>
 </div>
 <div class="pkg-entity">
 <h3 id="float32_triangular"><span><a class="doc-id-link" href="#float32_triangular">float32_triangular<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/distributions.odin#L29"><em>Source</em></a></div></h3>
@@ -516,10 +606,35 @@ See: http://wikipedia.org/wiki/Triangular_distribution</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="float32_uniform"><span><a class="doc-id-link" href="#float32_uniform">float32_uniform<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L153"><em>Source</em></a></div></h3>
+<h3 id="float32_uniform"><span><a class="doc-id-link" href="#float32_uniform">float32_uniform<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L644"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">float32_uniform :: <a class="code-procedure" href="/core/math/rand/#float32_range">float32_range</a></pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Generates a random single floating point value in the range <code>(low, high]</code> using the provided random number generator. If no generator is provided the global random number generator will be used.<br></p>
+<p><b>Inputs:</b><br><span class="doc-list">low: The lower bounds of the value, this value is inclusive</span>
+<span class="doc-list">high: The upper bounds of the value, this value is exclusive</span>
+<span class="doc-list">r: The random number generator to use, or nil for the global generator</span></p>
+<p><b>Returns:</b><br><span class="doc-list">val: A random single floating point value in the range <code>(low, high]</code></span></p>
+<details open class="code-example">
+<summary><b>Example:</b></summary>
+<pre><code class="hljs" data-lang="odin">import "core:math/rand"
+import "core:fmt"
+
+float32_range_example :: proc() {
+	// Using the global random number generator
+	fmt.println(rand.float32_range(-10, 300))
+	// Using local random number generator
+	my_rand := rand.create(1)
+	fmt.println(rand.float32_range(600, 900, &my_rand))
+}
+</code></pre>
+<b>Possible Output:</b><pre class="doc-code">15.312
+673.130
+</pre>
+</details>
+</details>
 </div>
 <div class="pkg-entity">
 <h3 id="float32_von_mises"><span><a class="doc-id-link" href="#float32_von_mises">float32_von_mises<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/distributions.odin#L266"><em>Source</em></a></div></h3>
@@ -545,13 +660,32 @@ When <code>kappa</code> is zero, the Distribution is a uniform Distribution over
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="float64"><span><a class="doc-id-link" href="#float64">float64<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L148"><em>Source</em></a></div></h3>
+<h3 id="float64"><span><a class="doc-id-link" href="#float64">float64<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L554"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">float64 :: <span class="keyword-type">proc</span>(r: ^<a class="code-typename" href="/core/math/rand/#Rand">Rand</a> = nil) -> <span class="doc-builtin">f64</span> {…}</pre>
+<pre class="doc-code">float64 :: <span class="keyword-type">proc</span>(r: ^<a class="code-typename" href="/core/math/rand/#Rand">Rand</a> = nil) -> (val: <span class="doc-builtin">f64</span>) {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>Uniform random distribution [0, 1)</p>
+<p>Generates a random double floating point value in the range <code>(0, 1]</code> using the provided random number generator. If no generator is provided the global random number generator will be used.<br></p>
+<p><b>Inputs:</b><br><span class="doc-list">r: The random number generator to use, or nil for the global generator</span></p>
+<p><b>Returns:</b><br><span class="doc-list">val: A random double floating point value in the range <code>(0, 1]</code></span></p>
+<details open class="code-example">
+<summary><b>Example:</b></summary>
+<pre><code class="hljs" data-lang="odin">import "core:math/rand"
+import "core:fmt"
+
+float64_example :: proc() {
+	// Using the global random number generator
+	fmt.println(rand.float64())
+	// Using local random number generator
+	my_rand := rand.create(1)
+	fmt.println(rand.float64(&my_rand))
+}
+</code></pre>
+<b>Possible Output:</b><pre class="doc-code">0.043
+0.511
+</pre>
+</details>
 </details>
 </div>
 <div class="pkg-entity">
@@ -672,10 +806,35 @@ https://wikipedia.org/wiki/Pareto_distribution</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="float64_range"><span><a class="doc-id-link" href="#float64_range">float64_range<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L152"><em>Source</em></a></div></h3>
+<h3 id="float64_range"><span><a class="doc-id-link" href="#float64_range">float64_range<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L614"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">float64_range :: <span class="keyword-type">proc</span>(lo, hi: <span class="doc-builtin">f64</span>, r: ^<a class="code-typename" href="/core/math/rand/#Rand">Rand</a> = nil) -> <span class="doc-builtin">f64</span> {…}</pre>
+<pre class="doc-code">float64_range :: <span class="keyword-type">proc</span>(low, high: <span class="doc-builtin">f64</span>, r: ^<a class="code-typename" href="/core/math/rand/#Rand">Rand</a> = nil) -> (val: <span class="doc-builtin">f64</span>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Generates a random double floating point value in the range <code>(low, high]</code> using the provided random number generator. If no generator is provided the global random number generator will be used.<br></p>
+<p><b>Inputs:</b><br><span class="doc-list">low: The lower bounds of the value, this value is inclusive</span>
+<span class="doc-list">high: The upper bounds of the value, this value is exclusive</span>
+<span class="doc-list">r: The random number generator to use, or nil for the global generator</span></p>
+<p><b>Returns:</b><br><span class="doc-list">val: A random double floating point value in the range <code>(low, high]</code></span></p>
+<details open class="code-example">
+<summary><b>Example:</b></summary>
+<pre><code class="hljs" data-lang="odin">import "core:math/rand"
+import "core:fmt"
+
+float64_range_example :: proc() {
+	// Using the global random number generator
+	fmt.println(rand.float64_range(-10, 300))
+	// Using local random number generator
+	my_rand := rand.create(1)
+	fmt.println(rand.float64_range(600, 900, &my_rand))
+}
+</code></pre>
+<b>Possible Output:</b><pre class="doc-code">15.312
+673.130
+</pre>
+</details>
+</details>
 </div>
 <div class="pkg-entity">
 <h3 id="float64_triangular"><span><a class="doc-id-link" href="#float64_triangular">float64_triangular<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/distributions.odin#L11"><em>Source</em></a></div></h3>
@@ -689,10 +848,35 @@ See: http://wikipedia.org/wiki/Triangular_distribution</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="float64_uniform"><span><a class="doc-id-link" href="#float64_uniform">float64_uniform<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L152"><em>Source</em></a></div></h3>
+<h3 id="float64_uniform"><span><a class="doc-id-link" href="#float64_uniform">float64_uniform<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L614"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">float64_uniform :: <a class="code-procedure" href="/core/math/rand/#float64_range">float64_range</a></pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Generates a random double floating point value in the range <code>(low, high]</code> using the provided random number generator. If no generator is provided the global random number generator will be used.<br></p>
+<p><b>Inputs:</b><br><span class="doc-list">low: The lower bounds of the value, this value is inclusive</span>
+<span class="doc-list">high: The upper bounds of the value, this value is exclusive</span>
+<span class="doc-list">r: The random number generator to use, or nil for the global generator</span></p>
+<p><b>Returns:</b><br><span class="doc-list">val: A random double floating point value in the range <code>(low, high]</code></span></p>
+<details open class="code-example">
+<summary><b>Example:</b></summary>
+<pre><code class="hljs" data-lang="odin">import "core:math/rand"
+import "core:fmt"
+
+float64_range_example :: proc() {
+	// Using the global random number generator
+	fmt.println(rand.float64_range(-10, 300))
+	// Using local random number generator
+	my_rand := rand.create(1)
+	fmt.println(rand.float64_range(600, 900, &my_rand))
+}
+</code></pre>
+<b>Possible Output:</b><pre class="doc-code">15.312
+673.130
+</pre>
+</details>
+</details>
 </div>
 <div class="pkg-entity">
 <h3 id="float64_von_mises"><span><a class="doc-id-link" href="#float64_von_mises">float64_von_mises<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/distributions.odin#L230"><em>Source</em></a></div></h3>
@@ -718,58 +902,275 @@ When <code>kappa</code> is zero, the Distribution is a uniform Distribution over
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="init"><span><a class="doc-id-link" href="#init">init<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L26"><em>Source</em></a></div></h3>
+<h3 id="init"><span><a class="doc-id-link" href="#init">init<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L95"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">init :: <span class="keyword-type">proc</span>(r: ^<a class="code-typename" href="/core/math/rand/#Rand">Rand</a>, seed: <span class="doc-builtin">u64</span>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Initialises a random number generator.</p>
+<p><b>Inputs:</b><br><span class="doc-list">r: The random number generator to initialise</span>
+<span class="doc-list">seed: The seed value to initialise this random number generator</span></p>
+<details open class="code-example">
+<summary><b>Example:</b></summary>
+<pre><code class="hljs" data-lang="odin">import "core:math/rand"
+import "core:fmt"
+
+init_example :: proc() {
+	my_rand: rand.Rand
+	rand.init(&my_rand, 1)
+	fmt.println(rand.uint64(&my_rand))
+}
+</code></pre>
+<b>Possible Output:</b><pre class="doc-code">10
+</pre>
+</details>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="init_as_system"><span><a class="doc-id-link" href="#init_as_system">init_as_system<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L34"><em>Source</em></a></div></h3>
+<h3 id="init_as_system"><span><a class="doc-id-link" href="#init_as_system">init_as_system<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L132"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">init_as_system :: <span class="keyword-type">proc</span>(r: ^<a class="code-typename" href="/core/math/rand/#Rand">Rand</a> = nil) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Initialises a random number generator to use the system random number generator.<br>
+The system random number generator is platform specific.<br>
+On <code>linux</code> refer to the <code>getrandom</code> syscall.<br>
+On <code>darwin</code> refer to <code>getentropy</code>.<br>
+On <code>windows</code> refer to <code>BCryptGenRandom</code>.</p>
+<p>All other platforms wi</p>
+<p><b>Inputs:</b><br><span class="doc-list">r: The random number generator to use the system random number generator</span></p>
+<p>WARNING: Panics if the system is not either <code>windows</code>, <code>darwin</code> or <code>linux</code></p>
+<details open class="code-example">
+<summary><b>Example:</b></summary>
+<pre><code class="hljs" data-lang="odin">import "core:math/rand"
+import "core:fmt"
+
+init_as_system_example :: proc() {
+	my_rand: rand.Rand
+	rand.init_as_system(&my_rand)
+	fmt.println(rand.uint64(&my_rand))
+}
+</code></pre>
+<b>Possible Output:</b><pre class="doc-code">10
+</pre>
+</details>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="int127"><span><a class="doc-id-link" href="#int127">int127<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L85"><em>Source</em></a></div></h3>
+<h3 id="int127"><span><a class="doc-id-link" href="#int127">int127<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L348"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">int127 :: <span class="keyword-type">proc</span>(r: ^<a class="code-typename" href="/core/math/rand/#Rand">Rand</a> = nil) -> <span class="doc-builtin">i128</span> {…}</pre>
+<pre class="doc-code">int127 :: <span class="keyword-type">proc</span>(r: ^<a class="code-typename" href="/core/math/rand/#Rand">Rand</a> = nil) -> (val: <span class="doc-builtin">i128</span>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Generates a random 127 bit value using the provided random number generator. If no generator is provided the global random number generator will be used.<br>
+The sign bit will always be set to 0, thus all generated numbers will be positive.</p>
+<p><b>Inputs:</b><br><span class="doc-list">r: The random number generator to use, or nil for the global generator</span></p>
+<p><b>Returns:</b><br><span class="doc-list">val: A random 127 bit value</span></p>
+<details open class="code-example">
+<summary><b>Example:</b></summary>
+<pre><code class="hljs" data-lang="odin">import "core:math/rand"
+import "core:fmt"
+
+int127_example :: proc() {
+	// Using the global random number generator
+	fmt.println(rand.int127())
+	// Using local random number generator
+	my_rand := rand.create(1)
+	fmt.println(rand.int127(&my_rand))
+}
+</code></pre>
+<b>Possible Output:</b><pre class="doc-code">10
+389
+</pre>
+</details>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="int127_max"><span><a class="doc-id-link" href="#int127_max">int127_max<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L120"><em>Source</em></a></div></h3>
+<h3 id="int127_max"><span><a class="doc-id-link" href="#int127_max">int127_max<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L471"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">int127_max :: <span class="keyword-type">proc</span>(n: <span class="doc-builtin">i128</span>, r: ^<a class="code-typename" href="/core/math/rand/#Rand">Rand</a> = nil) -> <span class="doc-builtin">i128</span> {…}</pre>
+<pre class="doc-code">int127_max :: <span class="keyword-type">proc</span>(n: <span class="doc-builtin">i128</span>, r: ^<a class="code-typename" href="/core/math/rand/#Rand">Rand</a> = nil) -> (val: <span class="doc-builtin">i128</span>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Generates a random 127 bit value in the range <code>(0, n]</code> using the provided random number generator. If no generator is provided the global random number generator will be used.<br></p>
+<p><b>Inputs:</b><br><span class="doc-list">n: The upper bound of the generated number, this value is exclusive</span>
+<span class="doc-list">r: The random number generator to use, or nil for the global generator</span></p>
+<p><b>Returns:</b><br><span class="doc-list">val: A random 127 bit value in the range <code>(0, n]</code></span></p>
+<p>WARNING: Panics if n is less than 0</p>
+<details open class="code-example">
+<summary><b>Example:</b></summary>
+<pre><code class="hljs" data-lang="odin">import "core:math/rand"
+import "core:fmt"
+
+int127_max_example :: proc() {
+	// Using the global random number generator
+	fmt.println(rand.int127_max(16))
+	// Using local random number generator
+	my_rand := rand.create(1)
+	fmt.println(rand.int127_max(1024, &my_rand))
+}
+</code></pre>
+<b>Possible Output:</b><pre class="doc-code">6
+500
+</pre>
+</details>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="int31"><span><a class="doc-id-link" href="#int31">int31<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L83"><em>Source</em></a></div></h3>
+<h3 id="int31"><span><a class="doc-id-link" href="#int31">int31<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L290"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">int31 :: <span class="keyword-type">proc</span>(r: ^<a class="code-typename" href="/core/math/rand/#Rand">Rand</a> = nil) -> <span class="doc-builtin">i32</span> {…}</pre>
+<pre class="doc-code">int31 :: <span class="keyword-type">proc</span>(r: ^<a class="code-typename" href="/core/math/rand/#Rand">Rand</a> = nil) -> (val: <span class="doc-builtin">i32</span>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Generates a random 31 bit value using the provided random number generator. If no generator is provided the global random number generator will be used.<br>
+The sign bit will always be set to 0, thus all generated numbers will be positive.</p>
+<p><b>Inputs:</b><br><span class="doc-list">r: The random number generator to use, or nil for the global generator</span></p>
+<p><b>Returns:</b><br><span class="doc-list">val: A random 31 bit value</span></p>
+<details open class="code-example">
+<summary><b>Example:</b></summary>
+<pre><code class="hljs" data-lang="odin">import "core:math/rand"
+import "core:fmt"
+
+int31_example :: proc() {
+	// Using the global random number generator
+	fmt.println(rand.int31())
+	// Using local random number generator
+	my_rand := rand.create(1)
+	fmt.println(rand.int31(&my_rand))
+}
+</code></pre>
+<b>Possible Output:</b><pre class="doc-code">10
+389
+</pre>
+</details>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="int31_max"><span><a class="doc-id-link" href="#int31_max">int31_max<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L88"><em>Source</em></a></div></h3>
+<h3 id="int31_max"><span><a class="doc-id-link" href="#int31_max">int31_max<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L381"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">int31_max :: <span class="keyword-type">proc</span>(n: <span class="doc-builtin">i32</span>, r: ^<a class="code-typename" href="/core/math/rand/#Rand">Rand</a> = nil) -> <span class="doc-builtin">i32</span> {…}</pre>
+<pre class="doc-code">int31_max :: <span class="keyword-type">proc</span>(n: <span class="doc-builtin">i32</span>, r: ^<a class="code-typename" href="/core/math/rand/#Rand">Rand</a> = nil) -> (val: <span class="doc-builtin">i32</span>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Generates a random 31 bit value in the range <code>(0, n]</code> using the provided random number generator. If no generator is provided the global random number generator will be used.<br></p>
+<p><b>Inputs:</b><br><span class="doc-list">n: The upper bound of the generated number, this value is exclusive</span>
+<span class="doc-list">r: The random number generator to use, or nil for the global generator</span></p>
+<p><b>Returns:</b><br><span class="doc-list">val: A random 31 bit value in the range <code>(0, n]</code></span></p>
+<p>WARNING: Panics if n is less than 0</p>
+<details open class="code-example">
+<summary><b>Example:</b></summary>
+<pre><code class="hljs" data-lang="odin">import "core:math/rand"
+import "core:fmt"
+
+int31_max_example :: proc() {
+	// Using the global random number generator
+	fmt.println(rand.int31_max(16))
+	// Using local random number generator
+	my_rand := rand.create(1)
+	fmt.println(rand.int31_max(1024, &my_rand))
+}
+</code></pre>
+<b>Possible Output:</b><pre class="doc-code">6
+500
+</pre>
+</details>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="int63"><span><a class="doc-id-link" href="#int63">int63<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L84"><em>Source</em></a></div></h3>
+<h3 id="int63"><span><a class="doc-id-link" href="#int63">int63<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L319"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">int63 :: <span class="keyword-type">proc</span>(r: ^<a class="code-typename" href="/core/math/rand/#Rand">Rand</a> = nil) -> <span class="doc-builtin">i64</span> {…}</pre>
+<pre class="doc-code">int63 :: <span class="keyword-type">proc</span>(r: ^<a class="code-typename" href="/core/math/rand/#Rand">Rand</a> = nil) -> (val: <span class="doc-builtin">i64</span>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Generates a random 63 bit value using the provided random number generator. If no generator is provided the global random number generator will be used.<br>
+The sign bit will always be set to 0, thus all generated numbers will be positive.</p>
+<p><b>Inputs:</b><br><span class="doc-list">r: The random number generator to use, or nil for the global generator</span></p>
+<p><b>Returns:</b><br><span class="doc-list">val: A random 63 bit value</span></p>
+<details open class="code-example">
+<summary><b>Example:</b></summary>
+<pre><code class="hljs" data-lang="odin">import "core:math/rand"
+import "core:fmt"
+
+int63_example :: proc() {
+	// Using the global random number generator
+	fmt.println(rand.int63())
+	// Using local random number generator
+	my_rand := rand.create(1)
+	fmt.println(rand.int63(&my_rand))
+}
+</code></pre>
+<b>Possible Output:</b><pre class="doc-code">10
+389
+</pre>
+</details>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="int63_max"><span><a class="doc-id-link" href="#int63_max">int63_max<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L104"><em>Source</em></a></div></h3>
+<h3 id="int63_max"><span><a class="doc-id-link" href="#int63_max">int63_max<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L426"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">int63_max :: <span class="keyword-type">proc</span>(n: <span class="doc-builtin">i64</span>, r: ^<a class="code-typename" href="/core/math/rand/#Rand">Rand</a> = nil) -> <span class="doc-builtin">i64</span> {…}</pre>
+<pre class="doc-code">int63_max :: <span class="keyword-type">proc</span>(n: <span class="doc-builtin">i64</span>, r: ^<a class="code-typename" href="/core/math/rand/#Rand">Rand</a> = nil) -> (val: <span class="doc-builtin">i64</span>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Generates a random 63 bit value in the range <code>(0, n]</code> using the provided random number generator. If no generator is provided the global random number generator will be used.<br></p>
+<p><b>Inputs:</b><br><span class="doc-list">n: The upper bound of the generated number, this value is exclusive</span>
+<span class="doc-list">r: The random number generator to use, or nil for the global generator</span></p>
+<p><b>Returns:</b><br><span class="doc-list">val: A random 63 bit value in the range <code>(0, n]</code></span></p>
+<p>WARNING: Panics if n is less than 0</p>
+<details open class="code-example">
+<summary><b>Example:</b></summary>
+<pre><code class="hljs" data-lang="odin">import "core:math/rand"
+import "core:fmt"
+
+int63_max_example :: proc() {
+	// Using the global random number generator
+	fmt.println(rand.int63_max(16))
+	// Using local random number generator
+	my_rand := rand.create(1)
+	fmt.println(rand.int63_max(1024, &my_rand))
+}
+</code></pre>
+<b>Possible Output:</b><pre class="doc-code">6
+500
+</pre>
+</details>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="int_max"><span><a class="doc-id-link" href="#int_max">int_max<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L136"><em>Source</em></a></div></h3>
+<h3 id="int_max"><span><a class="doc-id-link" href="#int_max">int_max<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L516"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">int_max :: <span class="keyword-type">proc</span>(n: <span class="doc-builtin">int</span>, r: ^<a class="code-typename" href="/core/math/rand/#Rand">Rand</a> = nil) -> <span class="doc-builtin">int</span> {…}</pre>
+<pre class="doc-code">int_max :: <span class="keyword-type">proc</span>(n: <span class="doc-builtin">int</span>, r: ^<a class="code-typename" href="/core/math/rand/#Rand">Rand</a> = nil) -> (val: <span class="doc-builtin">int</span>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Generates a random integer value in the range <code>(0, n]</code> using the provided random number generator. If no generator is provided the global random number generator will be used.<br></p>
+<p><b>Inputs:</b><br><span class="doc-list">n: The upper bound of the generated number, this value is exclusive</span>
+<span class="doc-list">r: The random number generator to use, or nil for the global generator</span></p>
+<p><b>Returns:</b><br><span class="doc-list">val: A random integer value in the range <code>(0, n]</code></span></p>
+<p>WARNING: Panics if n is less than 0</p>
+<details open class="code-example">
+<summary><b>Example:</b></summary>
+<pre><code class="hljs" data-lang="odin">import "core:math/rand"
+import "core:fmt"
+
+int_max_example :: proc() {
+	// Using the global random number generator
+	fmt.println(rand.int_max(16))
+	// Using local random number generator
+	my_rand := rand.create(1)
+	fmt.println(rand.int_max(1024, &my_rand))
+}
+</code></pre>
+<b>Possible Output:</b><pre class="doc-code">6
+500
+</pre>
+</details>
+</details>
 </div>
 <div class="pkg-entity">
 <h3 id="norm_float64"><span><a class="doc-id-link" href="#norm_float64">norm_float64<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/normal.odin#L21"><em>Source</em></a></div></h3>
@@ -790,50 +1191,214 @@ with a standard normal distribution with a mean of 0 and standard deviation of 1
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="perm"><span><a class="doc-id-link" href="#perm">perm<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L173"><em>Source</em></a></div></h3>
+<h3 id="perm"><span><a class="doc-id-link" href="#perm">perm<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L730"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">perm :: <span class="keyword-type">proc</span>(n: <span class="doc-builtin">int</span>, r: ^<a class="code-typename" href="/core/math/rand/#Rand">Rand</a> = nil, allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> []<span class="doc-builtin">int</span> {…}</pre>
+<pre class="doc-code">perm :: <span class="keyword-type">proc</span>(n: <span class="doc-builtin">int</span>, r: ^<a class="code-typename" href="/core/math/rand/#Rand">Rand</a> = nil, allocator := <a href="/core/runtime/#Context">context.allocator</a>) -> (res: []<span class="doc-builtin">int</span>, err: runtime.<a class="code-typename" href="/core/runtime/#Allocator_Error">Allocator_Error</a>) <span class="directive">#optional_ok</span> {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>perm returns a slice of n ints in a pseudo-random permutation of integers in the range [0, n)</p>
+<p>Creates a slice of <code>int</code> filled with random values using the provided random number generator. If no generator is provided the global random number generator will be used.<br></p>
+<p><i>Allocates Using Provided Allocator</i></p>
+<p><b>Inputs:</b><br><span class="doc-list">n: The size of the created slice</span>
+<span class="doc-list">r: The random number generator to use, or nil for the global generator</span>
+<span class="doc-list">allocator: (default: context.allocator)</span></p>
+<p><b>Returns:</b><br><span class="doc-list">res: A slice filled with random values</span>
+<span class="doc-list">err: An allocator error if one occured, <code>nil</code> otherwise</span></p>
+<details open class="code-example">
+<summary><b>Example:</b></summary>
+<pre><code class="hljs" data-lang="odin">import "core:math/rand"
+import "core:mem"
+import "core:fmt"
+
+perm_example :: proc() -> (err: mem.Allocator_Error) {
+	// Using the global random number generator and using the context allocator
+	data := rand.perm(4) or_return
+	fmt.println(data)
+	defer delete(data, context.allocator)
+
+	// Using local random number generator and temp allocator
+	my_rand := rand.create(1)
+	data_tmp := rand.perm(4, &my_rand, context.temp_allocator) or_return
+	fmt.println(data_tmp)
+
+	return
+}
+</code></pre>
+<b>Possible Output:</b><pre class="doc-code">[7201011, 3, 9123, 231131]
+[19578, 910081, 131, 7]
+</pre>
+</details>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="read"><span><a class="doc-id-link" href="#read">read<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L156"><em>Source</em></a></div></h3>
+<h3 id="read"><span><a class="doc-id-link" href="#read">read<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L675"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">read :: <span class="keyword-type">proc</span>(p: []<span class="doc-builtin">u8</span>, r: ^<a class="code-typename" href="/core/math/rand/#Rand">Rand</a> = nil) -> (n: <span class="doc-builtin">int</span>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Fills a byte slice with random values using the provided random number generator. If no generator is provided the global random number generator will be used.<br></p>
+<p><b>Inputs:</b><br><span class="doc-list">p: The byte slice to fill</span>
+<span class="doc-list">r: The random number generator to use, or nil for the global generator</span></p>
+<p><b>Returns:</b><br><span class="doc-list">n: The number of bytes generated</span></p>
+<details open class="code-example">
+<summary><b>Example:</b></summary>
+<pre><code class="hljs" data-lang="odin">import "core:math/rand"
+import "core:fmt"
+
+read_example :: proc() {
+	// Using the global random number generator
+	data: [8]byte
+	n := rand.read(data[:])
+	fmt.println(n)
+	fmt.println(data)
+}
+</code></pre>
+<b>Possible Output:</b><pre class="doc-code">8
+[32, 4, 59, 7, 1, 2, 2, 119]
+</pre>
+</details>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="set_global_seed"><span><a class="doc-id-link" href="#set_global_seed">set_global_seed<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L15"><em>Source</em></a></div></h3>
+<h3 id="set_global_seed"><span><a class="doc-id-link" href="#set_global_seed">set_global_seed<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L39"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">set_global_seed :: <span class="keyword-type">proc</span>(seed: <span class="doc-builtin">u64</span>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Sets the seed used by the global random number generator.</p>
+<p><b>Inputs:</b><br><span class="doc-list">seed: The seed value</span></p>
+<details open class="code-example">
+<summary><b>Example:</b></summary>
+<pre><code class="hljs" data-lang="odin">import "core:math/rand"
+import "core:fmt"
+
+set_global_seed_example :: proc() {
+	rand.set_global_seed(1)
+	fmt.println(rand.uint64())
+}
+</code></pre>
+<b>Possible Output:</b><pre class="doc-code">10
+</pre>
+</details>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="shuffle"><span><a class="doc-id-link" href="#shuffle">shuffle<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L184"><em>Source</em></a></div></h3>
+<h3 id="shuffle"><span><a class="doc-id-link" href="#shuffle">shuffle<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L765"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">shuffle :: <span class="keyword-type">proc</span>(array: $T/[]$T, r: ^<a class="code-typename" href="/core/math/rand/#Rand">Rand</a> = nil) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Randomizes the ordering of elements for the provided slice. If no generator is provided the global random number generator will be used.<br></p>
+<p><b>Inputs:</b><br><span class="doc-list">array: The slice to randomize</span>
+<span class="doc-list">r: The random number generator to use, or nil for the global generator</span></p>
+<details open class="code-example">
+<summary><b>Example:</b></summary>
+<pre><code class="hljs" data-lang="odin">import "core:math/rand"
+import "core:fmt"
+
+shuffle_example :: proc() {
+	// Using the global random number generator
+	data: [4]int = { 1, 2, 3, 4 }
+	fmt.println(data) // the contents are in order
+	rand.shuffle(data[:])
+	fmt.println(data) // the contents have been shuffled
+}
+</code></pre>
+<b>Possible Output:</b><pre class="doc-code">[1, 2, 3, 4]
+[2, 4, 3, 1]
+</pre>
+</details>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="uint128"><span><a class="doc-id-link" href="#uint128">uint128<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L75"><em>Source</em></a></div></h3>
+<h3 id="uint128"><span><a class="doc-id-link" href="#uint128">uint128<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L254"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">uint128 :: <span class="keyword-type">proc</span>(r: ^<a class="code-typename" href="/core/math/rand/#Rand">Rand</a> = nil) -> <span class="doc-builtin">u128</span> {…}</pre>
+<pre class="doc-code">uint128 :: <span class="keyword-type">proc</span>(r: ^<a class="code-typename" href="/core/math/rand/#Rand">Rand</a> = nil) -> (val: <span class="doc-builtin">u128</span>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Generates a random 128 bit value using the provided random number generator. If no generator is provided the global random number generator will be used.</p>
+<p><b>Inputs:</b><br><span class="doc-list">r: The random number generator to use, or nil for the global generator</span></p>
+<p><b>Returns:</b><br><span class="doc-list">val: A random unsigned 128 bit value</span></p>
+<details open class="code-example">
+<summary><b>Example:</b></summary>
+<pre><code class="hljs" data-lang="odin">import "core:math/rand"
+import "core:fmt"
+
+uint128_example :: proc() {
+	// Using the global random number generator
+	fmt.println(rand.uint128())
+	// Using local random number generator
+	my_rand := rand.create(1)
+	fmt.println(rand.uint128(&my_rand))
+}
+</code></pre>
+<b>Possible Output:</b><pre class="doc-code">10
+389
+</pre>
+</details>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="uint32"><span><a class="doc-id-link" href="#uint32">uint32<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L65"><em>Source</em></a></div></h3>
+<h3 id="uint32"><span><a class="doc-id-link" href="#uint32">uint32<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L190"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">uint32 :: <span class="keyword-type">proc</span>(r: ^<a class="code-typename" href="/core/math/rand/#Rand">Rand</a> = nil) -> <span class="doc-builtin">u32</span> {…}</pre>
+<pre class="doc-code">uint32 :: <span class="keyword-type">proc</span>(r: ^<a class="code-typename" href="/core/math/rand/#Rand">Rand</a> = nil) -> (val: <span class="doc-builtin">u32</span>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Generates a random 32 bit value using the provided random number generator. If no generator is provided the global random number generator will be used.</p>
+<p><b>Inputs:</b><br><span class="doc-list">r: The random number generator to use, or nil for the global generator</span></p>
+<p><b>Returns:</b><br><span class="doc-list">val: A random unsigned 32 bit value</span></p>
+<details open class="code-example">
+<summary><b>Example:</b></summary>
+<pre><code class="hljs" data-lang="odin">import "core:math/rand"
+import "core:fmt"
+
+uint32_example :: proc() {
+	// Using the global random number generator
+	fmt.println(rand.uint32())
+	// Using local random number generator
+	my_rand := rand.create(1)
+	fmt.println(rand.uint32(&my_rand))
+}
+</code></pre>
+<b>Possible Output:</b><pre class="doc-code">10
+389
+</pre>
+</details>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="uint64"><span><a class="doc-id-link" href="#uint64">uint64<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L68"><em>Source</em></a></div></h3>
+<h3 id="uint64"><span><a class="doc-id-link" href="#uint64">uint64<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L220"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">uint64 :: <span class="keyword-type">proc</span>(r: ^<a class="code-typename" href="/core/math/rand/#Rand">Rand</a> = nil) -> <span class="doc-builtin">u64</span> {…}</pre>
+<pre class="doc-code">uint64 :: <span class="keyword-type">proc</span>(r: ^<a class="code-typename" href="/core/math/rand/#Rand">Rand</a> = nil) -> (val: <span class="doc-builtin">u64</span>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Generates a random 64 bit value using the provided random number generator. If no generator is provided the global random number generator will be used.</p>
+<p><b>Inputs:</b><br><span class="doc-list">r: The random number generator to use, or nil for the global generator</span></p>
+<p><b>Returns:</b><br><span class="doc-list">val: A random unsigned 64 bit value</span></p>
+<details open class="code-example">
+<summary><b>Example:</b></summary>
+<pre><code class="hljs" data-lang="odin">import "core:math/rand"
+import "core:fmt"
+
+uint64_example :: proc() {
+	// Using the global random number generator
+	fmt.println(rand.uint64())
+	// Using local random number generator
+	my_rand := rand.create(1)
+	fmt.println(rand.uint64(&my_rand))
+}
+</code></pre>
+<b>Possible Output:</b><pre class="doc-code">10
+389
+</pre>
+</details>
+</details>
 </div>
 <h2 id="pkg-Procedure Groups" class="pkg-header">Procedure Groups</h2>
 <p class="pkg-empty-section">This section is empty.</p>
@@ -847,12 +1412,12 @@ with a standard normal distribution with a mean of 0 and standard deviation of 1
 <li><em>(hidden platform specific files)</em></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2023-05 (vendor "odin") Windows_amd64 @ 2023-05-31 11:05:29.059319000 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2023-05 (vendor "odin") Windows_amd64 @ 2023-05-31 16:04:42.518043700 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
 <ul>
-<li><a href="#pkg-Types">Types</a><ul>
+<li><a href="#pkg-overview">Overview</a><li><a href="#pkg-Types">Types</a><ul>
 <li><a href="#Rand">Rand</a></li>
 </ul>
 </li>
