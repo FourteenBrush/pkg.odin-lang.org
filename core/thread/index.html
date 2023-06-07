@@ -360,16 +360,38 @@ pool's memory address is not allowed to change until it is destroyed.</p>
 	<span class="keyword-type"> using</span> specific:           Thread_Os_Specific,
 	id:                 <span class="doc-builtin">int</span>,
 	procedure:          <a class="code-typename" href="/core/thread/#Thread_Proc">Thread_Proc</a>,
+	<span class="comment">// 		These are values that the user can set as they wish, after the thread has been created.</span>
+	<span class="comment">// 		This data is easily available to the thread proc.</span>
+	<span class="comment">// </span>
+	<span class="comment">// 		These fields can be assigned to directly.</span>
+	<span class="comment">// </span>
+	<span class="comment">// 		Should be set after the thread is created, but before it is started.</span>
 	data:               <span class="doc-builtin">rawptr</span>,
 	user_index:         <span class="doc-builtin">int</span>,
 	user_args:          [8]<span class="doc-builtin">rawptr</span>,
+	<span class="comment">// 		The context to be used as 'context' in the thread proc.</span>
+	<span class="comment">// </span>
+	<span class="comment">// 		This field can be assigned to directly, after the thread has been created, but __before__ the thread has been started.</span>
+	<span class="comment">// 		This field must not be changed after the thread has started.</span>
+	<span class="comment">// </span>
+	<span class="comment">// 		NOTE: If you __don't__ set this, the temp allocator will be managed for you;</span>
+	<span class="comment">// 		      If you __do__ set this, then you're expected to handle whatever allocators you set, yourself.</span>
+	<span class="comment">// </span>
+	<span class="comment">// 		IMPORTANT:</span>
+	<span class="comment">// 		By default, the thread proc will get the same context as `main()` gets.</span>
+	<span class="comment">// 		In this sitation, the thread will get a new temporary allocator which will be cleaned up when the thread dies.</span>
+	<span class="comment">// 		***This does NOT happen when you set `init_context`.***</span>
+	<span class="comment">// 		This means that if you set `init_context`, but still have the `temp_allocator` field set to the default temp allocator,</span>
+	<span class="comment">// 		then you'll need to call `runtime.default_temp_allocator_destroy(auto_cast the_thread.init_context.temp_allocator.data)` manually,</span>
+	<span class="comment">// 		in order to prevent any memory leaks.</span>
+	<span class="comment">// 		This call ***must*** be done ***in the thread proc*** because the default temporary allocator uses thread local state!</span>
 	init_context:       runtime.<a class="code-typename" href="/core/runtime/#Maybe">Maybe</a>(runtime.Context),
 	creation_allocator: runtime.<a class="code-typename" href="/core/runtime/#Allocator">Allocator</a>,
 }</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="Thread_Priority"><span><a class="doc-id-link" href="#Thread_Priority">Thread_Priority<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L29"><em>Source</em></a></div></h3>
+<h3 id="Thread_Priority"><span><a class="doc-id-link" href="#Thread_Priority">Thread_Priority<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L56"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Thread_Priority :: <span class="keyword-type">enum</span> <span class="doc-builtin">int</span> {
 	Normal, 
@@ -395,37 +417,45 @@ pool's memory address is not allowed to change until it is destroyed.</p>
 <p class="pkg-empty-section">This section is empty.</p>
 <h2 id="pkg-Procedures" class="pkg-header">Procedures</h2>
 <div class="pkg-entity">
-<h3 id="create"><span><a class="doc-id-link" href="#create">create<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L35"><em>Source</em></a></div></h3>
+<h3 id="create"><span><a class="doc-id-link" href="#create">create<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L68"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">create :: <span class="keyword-type">proc</span>(procedure: <a class="code-typename" href="/core/thread/#Thread_Proc">Thread_Proc</a>, priority: <a class="code-typename" href="/core/thread/#Thread_Priority">Thread_Priority</a> = Thread_Priority.Normal) -> ^<a class="code-typename" href="/core/thread/#Thread">Thread</a> {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Creates a thread in a suspended state with the given priority.</p>
+<pre>To start the thread, call `thread.start()`.
+
+See `thread.create_and_start()`.
+</pre>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="create_and_start"><span><a class="doc-id-link" href="#create_and_start">create_and_start<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L188"><em>Source</em></a></div></h3>
+<h3 id="create_and_start"><span><a class="doc-id-link" href="#create_and_start">create_and_start<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L221"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">create_and_start :: <span class="keyword-type">proc</span>(fn: <a class="code-typename" href="/core/thread/#Thread_Proc">Thread_Proc</a>, init_context: runtime.<a class="code-typename" href="/core/runtime/#Maybe">Maybe</a>(runtime.Context) = nil, priority: <a class="code-typename" href="/core/thread/#Thread_Priority">Thread_Priority</a> = Thread_Priority.Normal) -> ^<a class="code-typename" href="/core/thread/#Thread">Thread</a> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="create_and_start_with_data"><span><a class="doc-id-link" href="#create_and_start_with_data">create_and_start_with_data<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L198"><em>Source</em></a></div></h3>
+<h3 id="create_and_start_with_data"><span><a class="doc-id-link" href="#create_and_start_with_data">create_and_start_with_data<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L231"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">create_and_start_with_data :: <span class="keyword-type">proc</span>(data: <span class="doc-builtin">rawptr</span>, fn: <span class="keyword-type">proc</span>(data: <span class="doc-builtin">rawptr</span>), init_context: runtime.<a class="code-typename" href="/core/runtime/#Maybe">Maybe</a>(runtime.Context) = nil, priority: <a class="code-typename" href="/core/thread/#Thread_Priority">Thread_Priority</a> = Thread_Priority.Normal) -> ^<a class="code-typename" href="/core/thread/#Thread">Thread</a> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="create_and_start_with_poly_data"><span><a class="doc-id-link" href="#create_and_start_with_poly_data">create_and_start_with_poly_data<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L214"><em>Source</em></a></div></h3>
+<h3 id="create_and_start_with_poly_data"><span><a class="doc-id-link" href="#create_and_start_with_poly_data">create_and_start_with_poly_data<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L247"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">create_and_start_with_poly_data :: <span class="keyword-type">proc</span>(data: $T, fn: <span class="keyword-type">proc</span>(data: $T), init_context: runtime.<a class="code-typename" href="/core/runtime/#Maybe">Maybe</a>(runtime.Context) = nil, priority: <a class="code-typename" href="/core/thread/#Thread_Priority">Thread_Priority</a> = Thread_Priority.Normal) -> ^<a class="code-typename" href="/core/thread/#Thread">Thread</a> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="create_and_start_with_poly_data2"><span><a class="doc-id-link" href="#create_and_start_with_poly_data2">create_and_start_with_poly_data2<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L232"><em>Source</em></a></div></h3>
+<h3 id="create_and_start_with_poly_data2"><span><a class="doc-id-link" href="#create_and_start_with_poly_data2">create_and_start_with_poly_data2<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L265"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">create_and_start_with_poly_data2 :: <span class="keyword-type">proc</span>(arg1: $T, arg2: $T, fn: <span class="keyword-type">proc</span>(_: $T, _: $T), init_context: runtime.<a class="code-typename" href="/core/runtime/#Maybe">Maybe</a>(runtime.Context) = nil, priority: <a class="code-typename" href="/core/thread/#Thread_Priority">Thread_Priority</a> = Thread_Priority.Normal) -> ^<a class="code-typename" href="/core/thread/#Thread">Thread</a> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="create_and_start_with_poly_data3"><span><a class="doc-id-link" href="#create_and_start_with_poly_data3">create_and_start_with_poly_data3<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L253"><em>Source</em></a></div></h3>
+<h3 id="create_and_start_with_poly_data3"><span><a class="doc-id-link" href="#create_and_start_with_poly_data3">create_and_start_with_poly_data3<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L286"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">create_and_start_with_poly_data3 :: <span class="keyword-type">proc</span>(
 	arg1:         $T, 
@@ -438,7 +468,7 @@ pool's memory address is not allowed to change until it is destroyed.</p>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="create_and_start_with_poly_data4"><span><a class="doc-id-link" href="#create_and_start_with_poly_data4">create_and_start_with_poly_data4<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L276"><em>Source</em></a></div></h3>
+<h3 id="create_and_start_with_poly_data4"><span><a class="doc-id-link" href="#create_and_start_with_poly_data4">create_and_start_with_poly_data4<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L309"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">create_and_start_with_poly_data4 :: <span class="keyword-type">proc</span>(
 	arg1:         $T, 
@@ -452,25 +482,25 @@ pool's memory address is not allowed to change until it is destroyed.</p>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="destroy"><span><a class="doc-id-link" href="#destroy">destroy<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L38"><em>Source</em></a></div></h3>
+<h3 id="destroy"><span><a class="doc-id-link" href="#destroy">destroy<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L71"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">destroy :: <span class="keyword-type">proc</span>(thread: ^<a class="code-typename" href="/core/thread/#Thread">Thread</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="is_done"><span><a class="doc-id-link" href="#is_done">is_done<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L46"><em>Source</em></a></div></h3>
+<h3 id="is_done"><span><a class="doc-id-link" href="#is_done">is_done<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L79"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">is_done :: <span class="keyword-type">proc</span>(thread: ^<a class="code-typename" href="/core/thread/#Thread">Thread</a>) -> <span class="doc-builtin">bool</span> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="join"><span><a class="doc-id-link" href="#join">join<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L51"><em>Source</em></a></div></h3>
+<h3 id="join"><span><a class="doc-id-link" href="#join">join<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L84"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">join :: <span class="keyword-type">proc</span>(thread: ^<a class="code-typename" href="/core/thread/#Thread">Thread</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="join_multiple"><span><a class="doc-id-link" href="#join_multiple">join_multiple<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L56"><em>Source</em></a></div></h3>
+<h3 id="join_multiple"><span><a class="doc-id-link" href="#join_multiple">join_multiple<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L89"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">join_multiple :: <span class="keyword-type">proc</span>(threads: ..^<a class="code-typename" href="/core/thread/#Thread">Thread</a>) {…}</pre>
 </div>
@@ -629,31 +659,31 @@ values.</p>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="run"><span><a class="doc-id-link" href="#run">run<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L70"><em>Source</em></a></div></h3>
+<h3 id="run"><span><a class="doc-id-link" href="#run">run<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L103"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">run :: <span class="keyword-type">proc</span>(fn: <span class="keyword-type">proc</span>(), init_context: runtime.<a class="code-typename" href="/core/runtime/#Maybe">Maybe</a>(runtime.Context) = nil, priority: <a class="code-typename" href="/core/thread/#Thread_Priority">Thread_Priority</a> = Thread_Priority.Normal) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="run_with_data"><span><a class="doc-id-link" href="#run_with_data">run_with_data<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L82"><em>Source</em></a></div></h3>
+<h3 id="run_with_data"><span><a class="doc-id-link" href="#run_with_data">run_with_data<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L115"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">run_with_data :: <span class="keyword-type">proc</span>(data: <span class="doc-builtin">rawptr</span>, fn: <span class="keyword-type">proc</span>(data: <span class="doc-builtin">rawptr</span>), init_context: runtime.<a class="code-typename" href="/core/runtime/#Maybe">Maybe</a>(runtime.Context) = nil, priority: <a class="code-typename" href="/core/thread/#Thread_Priority">Thread_Priority</a> = Thread_Priority.Normal) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="run_with_poly_data"><span><a class="doc-id-link" href="#run_with_poly_data">run_with_poly_data<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L98"><em>Source</em></a></div></h3>
+<h3 id="run_with_poly_data"><span><a class="doc-id-link" href="#run_with_poly_data">run_with_poly_data<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L131"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">run_with_poly_data :: <span class="keyword-type">proc</span>(data: $T, fn: <span class="keyword-type">proc</span>(data: $T), init_context: runtime.<a class="code-typename" href="/core/runtime/#Maybe">Maybe</a>(runtime.Context) = nil, priority: <a class="code-typename" href="/core/thread/#Thread_Priority">Thread_Priority</a> = Thread_Priority.Normal) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="run_with_poly_data2"><span><a class="doc-id-link" href="#run_with_poly_data2">run_with_poly_data2<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L116"><em>Source</em></a></div></h3>
+<h3 id="run_with_poly_data2"><span><a class="doc-id-link" href="#run_with_poly_data2">run_with_poly_data2<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L149"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">run_with_poly_data2 :: <span class="keyword-type">proc</span>(arg1: $T, arg2: $T, fn: <span class="keyword-type">proc</span>(_: $T, _: $T), init_context: runtime.<a class="code-typename" href="/core/runtime/#Maybe">Maybe</a>(runtime.Context) = nil, priority: <a class="code-typename" href="/core/thread/#Thread_Priority">Thread_Priority</a> = Thread_Priority.Normal) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="run_with_poly_data3"><span><a class="doc-id-link" href="#run_with_poly_data3">run_with_poly_data3<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L137"><em>Source</em></a></div></h3>
+<h3 id="run_with_poly_data3"><span><a class="doc-id-link" href="#run_with_poly_data3">run_with_poly_data3<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L170"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">run_with_poly_data3 :: <span class="keyword-type">proc</span>(
 	arg1:         $T, 
@@ -666,7 +696,7 @@ values.</p>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="run_with_poly_data4"><span><a class="doc-id-link" href="#run_with_poly_data4">run_with_poly_data4<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L160"><em>Source</em></a></div></h3>
+<h3 id="run_with_poly_data4"><span><a class="doc-id-link" href="#run_with_poly_data4">run_with_poly_data4<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L193"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">run_with_poly_data4 :: <span class="keyword-type">proc</span>(
 	arg1:         $T, 
@@ -680,19 +710,19 @@ values.</p>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="start"><span><a class="doc-id-link" href="#start">start<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L42"><em>Source</em></a></div></h3>
+<h3 id="start"><span><a class="doc-id-link" href="#start">start<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L75"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">start :: <span class="keyword-type">proc</span>(thread: ^<a class="code-typename" href="/core/thread/#Thread">Thread</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="terminate"><span><a class="doc-id-link" href="#terminate">terminate<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L60"><em>Source</em></a></div></h3>
+<h3 id="terminate"><span><a class="doc-id-link" href="#terminate">terminate<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L93"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">terminate :: <span class="keyword-type">proc</span>(thread: ^<a class="code-typename" href="/core/thread/#Thread">Thread</a>, exit_code: <span class="doc-builtin">int</span>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="yield"><span><a class="doc-id-link" href="#yield">yield<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L64"><em>Source</em></a></div></h3>
+<h3 id="yield"><span><a class="doc-id-link" href="#yield">yield<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L97"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">yield :: <span class="keyword-type">proc</span>() {…}</pre>
 </div>
@@ -707,7 +737,7 @@ values.</p>
 <li><em>(hidden platform specific files)</em></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2023-06 (vendor "odin") Windows_amd64 @ 2023-06-06 21:09:45.852534400 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2023-06 (vendor "odin") Windows_amd64 @ 2023-06-07 21:08:09.221903100 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
