@@ -583,9 +583,9 @@ builder_from_bytes_example :: proc() {
 	bytes: [8]byte // &lt;-- gets filled
 	builder := strings.builder_from_bytes(bytes[:])
 	strings.write_byte(&builder, 'a')
-	fmt.println(strings.to_string(builder)) // -> "a"
+	fmt.println(strings.to_string(builder)) // -&gt; "a"
 	strings.write_byte(&builder, 'b')
-	fmt.println(strings.to_string(builder)) // -> "ab"
+	fmt.println(strings.to_string(builder)) // -&gt; "ab"
 }
 </code></pre>
 <b>Output:</b>
@@ -614,9 +614,9 @@ builder_from_bytes_example :: proc() {
 	bytes: [8]byte // &lt;-- gets filled
 	builder := strings.builder_from_bytes(bytes[:])
 	strings.write_byte(&builder, 'a')
-	fmt.println(strings.to_string(builder)) // -> "a"
+	fmt.println(strings.to_string(builder)) // -&gt; "a"
 	strings.write_byte(&builder, 'b')
-	fmt.println(strings.to_string(builder)) // -> "ab"
+	fmt.println(strings.to_string(builder)) // -&gt; "ab"
 }
 </code></pre>
 <b>Output:</b>
@@ -1105,9 +1105,9 @@ count_example :: proc() {
 import "core:strings"
 
 cut_example :: proc() {
-	fmt.println(strings.cut("some example text", 0, 4)) // -> "some"
-	fmt.println(strings.cut("some example text", 2, 2)) // -> "me"
-	fmt.println(strings.cut("some example text", 5, 7)) // -> "example"
+	fmt.println(strings.cut("some example text", 0, 4)) // -&gt; "some"
+	fmt.println(strings.cut("some example text", 2, 2)) // -&gt; "me"
+	fmt.println(strings.cut("some example text", 5, 7)) // -&gt; "example"
 }
 </code></pre>
 <b>Output:</b>
@@ -1420,7 +1420,7 @@ index_byte_example :: proc() {
 import "core:strings"
 
 index_proc_example :: proc() {
-	call :: proc(r: rune) -> bool {
+	call :: proc(r: rune) -&gt; bool {
 		return r == 'a'
 	}
 	fmt.println(strings.index_proc("abcabc", call))
@@ -1842,11 +1842,11 @@ import "core:strings"
 
 partition_example :: proc() {
 	text := "testing this out"
-	head, match, tail := strings.partition(text, " this ") // -> head: "testing", match: " this ", tail: "out"
+	head, match, tail := strings.partition(text, " this ") // -&gt; head: "testing", match: " this ", tail: "out"
 	fmt.println(head, match, tail)
-	head, match, tail = strings.partition(text, "hi") // -> head: "testing t", match: "hi", tail: "s out"
+	head, match, tail = strings.partition(text, "hi") // -&gt; head: "testing t", match: "hi", tail: "s out"
 	fmt.println(head, match, tail)
-	head, match, tail = strings.partition(text, "xyz")    // -> head: "testing this out", match: "", tail: ""
+	head, match, tail = strings.partition(text, "xyz")    // -&gt; head: "testing this out", match: "", tail: ""
 	fmt.println(head)
 	fmt.println(match == "")
 	fmt.println(tail == "")
@@ -2355,7 +2355,7 @@ import "core:strings"
 
 scrub_example :: proc() {
 	text := "Hello\xC0\x80World"
-	fmt.println(strings.scrub(text, "?")) // -> "Hello?World"
+	fmt.println(strings.scrub(text, "?")) // -&gt; "Hello?World"
 }
 </code></pre>
 <b>Output:</b>
@@ -2515,7 +2515,7 @@ import "core:strings"
 split_by_byte_iterator_example :: proc() {
 	text := "a.b.c.d.e"
 	for str in strings.split_by_byte_iterator(&text, '.') {
-		fmt.println(str) // every loop -> a b c d e
+		fmt.println(str) // every loop -&gt; a b c d e
 	}
 }
 </code></pre>
@@ -2644,7 +2644,7 @@ import "core:strings"
 split_lines_after_iterator_example :: proc() {
 	text := "a\nb\nc\nd\ne\n"
 	for str in strings.split_lines_after_iterator(&text) {
-		fmt.print(str) // every loop -> a\n b\n c\n d\n e\n
+		fmt.print(str) // every loop -&gt; a\n b\n c\n d\n e\n
 	}
 }
 </code></pre>
@@ -2711,7 +2711,7 @@ import "core:strings"
 split_lines_iterator_example :: proc() {
 	text := "a\nb\nc\nd\ne"
 	for str in strings.split_lines_iterator(&text) {
-		fmt.print(str)    // every loop -> a b c d e
+		fmt.print(str)    // every loop -&gt; a b c d e
 	}
 	fmt.print("\n")
 }
@@ -2777,7 +2777,7 @@ import "core:strings"
 split_multi_example :: proc() {
 	splits := [?]string { "---", "~~~", ".", "_", "," }
 	res := strings.split_multi("testing,this.out_nice---done~~~last", splits[:])
-	fmt.println(res) // -> [testing, this, out, nice, done, last]
+	fmt.println(res) // -&gt; [testing, this, out, nice, done, last]
 }
 </code></pre>
 <b>Output:</b>
@@ -3356,7 +3356,7 @@ to_upper_snake_case_example :: proc() {
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>Trims null runes from the left, "\x00\x00testing\x00\x00" -> "testing\x00\x00"</p>
+<p>Trims null runes from the left, "\x00\x00testing\x00\x00" -&gt; "testing\x00\x00"</p>
 <p><b>Inputs:</b><br><span class="doc-list">s: The input string</span></p>
 <p><b>Returns:</b><br><span class="doc-list">res: The trimmed string as a slice of the original</span></p>
 </details>
@@ -3378,7 +3378,7 @@ to_upper_snake_case_example :: proc() {
 import "core:strings"
 
 trim_left_proc_example :: proc() {
-	find :: proc(r: rune) -> bool {
+	find :: proc(r: rune) -&gt; bool {
 		return r == 'x'
 	}
 	fmt.println(strings.trim_left_proc("xxxxxxtesting", find))
@@ -3411,7 +3411,7 @@ trim_left_proc_example :: proc() {
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>Trims until a valid non-space rune from the left, "\t\txyz\t\t" -> "xyz\t\t"</p>
+<p>Trims until a valid non-space rune from the left, "\t\txyz\t\t" -&gt; "xyz\t\t"</p>
 <p><b>Inputs:</b><br><span class="doc-list">s: The input string</span></p>
 <p><b>Returns:</b><br><span class="doc-list">res: The trimmed string as a slice of the original</span></p>
 </details>
@@ -3423,7 +3423,7 @@ trim_left_proc_example :: proc() {
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>Trims null runes from both sides, "\x00\x00testing\x00\x00" -> "testing"</p>
+<p>Trims null runes from both sides, "\x00\x00testing\x00\x00" -&gt; "testing"</p>
 <p><b>Inputs:</b><br><span class="doc-list">s: The input string</span>
 Returns:
 <span class="doc-list">res: The trimmed string as a slice of the original</span></p>
@@ -3477,7 +3477,7 @@ testing
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>Trims null runes from the right, "\x00\x00testing\x00\x00" -> "\x00\x00testing"</p>
+<p>Trims null runes from the right, "\x00\x00testing\x00\x00" -&gt; "\x00\x00testing"</p>
 <p><b>Inputs:</b><br><span class="doc-list">s: The input string</span></p>
 <p><b>Returns:</b><br><span class="doc-list">res: The trimmed string as a slice of the original</span></p>
 </details>
@@ -3499,7 +3499,7 @@ testing
 import "core:strings"
 
 trim_right_proc_example :: proc() {
-	find :: proc(r: rune) -> bool {
+	find :: proc(r: rune) -&gt; bool {
 		return r != 't'
 	}
 	fmt.println(strings.trim_right_proc("testing", find))
@@ -3532,7 +3532,7 @@ trim_right_proc_example :: proc() {
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>Trims from the right until a valid non-space rune, "\t\txyz\t\t" -> "\t\txyz"</p>
+<p>Trims from the right until a valid non-space rune, "\t\txyz\t\t" -&gt; "\t\txyz"</p>
 <p><b>Inputs:</b><br><span class="doc-list">s: The input string</span></p>
 <p><b>Returns:</b><br><span class="doc-list">res: The trimmed string as a slice of the original</span></p>
 </details>
@@ -3544,7 +3544,7 @@ trim_right_proc_example :: proc() {
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>Trims from both sides until a valid non-space rune, "\t\txyz\t\t" -> "xyz"</p>
+<p>Trims from both sides until a valid non-space rune, "\t\txyz\t\t" -&gt; "xyz"</p>
 <p><b>Inputs:</b><br><span class="doc-list">s: The input string</span></p>
 <p><b>Returns:</b><br><span class="doc-list">res: The trimmed string as a slice of the original</span></p>
 </details>
@@ -3638,7 +3638,7 @@ write_byte_example :: proc() {
 	builder := strings.builder_make()
 	strings.write_byte(&builder, 'a')        // 1
 	strings.write_byte(&builder, 'b')        // 1
-	fmt.println(strings.to_string(builder))  // -> ab
+	fmt.println(strings.to_string(builder))  // -&gt; ab
 }
 </code></pre>
 <b>Output:</b>
@@ -3668,7 +3668,7 @@ write_bytes_example :: proc() {
 	builder := strings.builder_make()
 	bytes := [?]byte { 'a', 'b', 'c' }
 	strings.write_bytes(&builder, bytes[:]) // 3
-	fmt.println(strings.to_string(builder)) // -> abc
+	fmt.println(strings.to_string(builder)) // -&gt; abc
 }
 </code></pre>
 </details>
@@ -3717,11 +3717,11 @@ write_encoded_rune_example :: proc() {
 <p><b>Inputs:</b><br><span class="doc-list">b: A pointer to the Builder</span>
 <span class="doc-list">r: The rune to be appended</span>
 <span class="doc-list">quote: The quote character</span>
-<span class="doc-list">html_safe: Optional boolean flag to encode '&lt;', '>', '&' as digits (default is false)</span></p>
+<span class="doc-list">html_safe: Optional boolean flag to encode '&lt;', '&gt;', '&' as digits (default is false)</span></p>
 <p><b>Usage</b>
 <span class="doc-list">'\a' will be written as such</span>
 <span class="doc-list"><code>r</code> and <code>quote</code> match and <code>quote</code> is <code>\\</code> - they will be written as two slashes</span>
-<span class="doc-list"><code>html_safe</code> flag in case the runes '&lt;', '>', '&' should be encoded as digits e.g. <code>\u0026</code></span></p>
+<span class="doc-list"><code>html_safe</code> flag in case the runes '&lt;', '&gt;', '&' should be encoded as digits e.g. <code>\u0026</code></span></p>
 <p>NOTE: The backing dynamic array may be fixed in capacity or fail to resize, <code>n</code> states the number actually written.</p>
 <p><b>Returns:</b><br><span class="doc-list">n: The number of bytes written</span></p>
 </details>
@@ -3766,7 +3766,7 @@ write_f32_example :: proc() {
 	strings.write_f32(&builder, 3.14159, 'f') // 6
 	strings.write_string(&builder, " - ")     // 3
 	strings.write_f32(&builder, -0.123, 'e')  // 8
-	fmt.println(strings.to_string(builder))   // -> 3.14159012 - -1.23000003e-01
+	fmt.println(strings.to_string(builder))   // -&gt; 3.14159012 - -1.23000003e-01
 }
 </code></pre>
 <b>Output:</b>
@@ -3867,7 +3867,7 @@ write_quoted_rune_example :: proc() {
 	strings.write_string(&builder, "abc")      // 3
 	strings.write_quoted_rune(&builder, 'ä') // 4
 	strings.write_string(&builder, "abc")      // 3
-	fmt.println(strings.to_string(builder))    // -> abc'ä'abc
+	fmt.println(strings.to_string(builder))    // -&gt; abc'ä'abc
 }
 </code></pre>
 <b>Output:</b>
@@ -3929,7 +3929,7 @@ write_rune_example :: proc() {
 	builder := strings.builder_make()
 	strings.write_rune(&builder, 'ä')     // 2 None
 	strings.write_rune(&builder, 'b')       // 1 None
-	fmt.println(strings.to_string(builder)) // -> äb
+	fmt.println(strings.to_string(builder)) // -&gt; äb
 }
 </code></pre>
 <b>Output:</b>
@@ -3959,7 +3959,7 @@ write_string_example :: proc() {
 	builder := strings.builder_make()
 	strings.write_string(&builder, "a")     // 1
 	strings.write_string(&builder, "bc")    // 2
-	fmt.println(strings.to_string(builder)) // -> abc
+	fmt.println(strings.to_string(builder)) // -&gt; abc
 }
 </code></pre>
 <b>Output:</b>
@@ -4077,7 +4077,7 @@ builder_make_example :: proc() {
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/strings/strings.odin">strings.odin</a></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2023-06 (vendor "odin") Windows_amd64 @ 2023-06-08 21:10:51.904325700 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2023-06 (vendor "odin") Windows_amd64 @ 2023-06-09 21:09:35.551434100 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
