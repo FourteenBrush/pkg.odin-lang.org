@@ -391,7 +391,7 @@ Variables (4)</summary>
 <div>
 <details class="doc-index" id="doc-index-Procedures" aria-labelledby="#doc-index-Procedures-header">
 <summary id="#doc-index-Procedures-header">
-Procedures (287)</summary>
+Procedures (289)</summary>
 <ul>
 <li><a href="#DEFAULT_TEMP_ALLOCATOR_TEMP_GUARD">DEFAULT_TEMP_ALLOCATOR_TEMP_GUARD</a></li>
 <li><a href="#abs_complex128">abs_complex128</a></li>
@@ -606,6 +606,8 @@ Procedures (287)</summary>
 <li><a href="#ordered_remove">ordered_remove</a></li>
 <li><a href="#os_write">os_write</a></li>
 <li><a href="#panic">panic</a></li>
+<li><a href="#panic_allocator">panic_allocator</a></li>
+<li><a href="#panic_allocator_proc">panic_allocator_proc</a></li>
 <li><a href="#pop">pop</a></li>
 <li><a href="#pop_front">pop_front</a></li>
 <li><a href="#pop_front_safe">pop_front_safe</a></li>
@@ -773,8 +775,8 @@ Procedure Groups (22)</summary>
 <div>
 <pre class="doc-code">Allocator_Query_Info :: <span class="keyword-type">struct</span> {
 	pointer:   <span class="doc-builtin">rawptr</span>,
-	size:      <a class="code-typename" href="/core/runtime/#Maybe">Maybe</a>(int),
-	alignment: <a class="code-typename" href="/core/runtime/#Maybe">Maybe</a>(int),
+	size:      <a class="code-typename" href="/core/runtime/#Maybe">Maybe</a>($T=int),
+	alignment: <a class="code-typename" href="/core/runtime/#Maybe">Maybe</a>($T=int),
 }</pre>
 </div>
 </div>
@@ -2861,7 +2863,7 @@ there is no type information.</p>
 <div class="pkg-entity">
 <h3 id="map_kvh_data_static"><span><a class="doc-id-link" href="#map_kvh_data_static">map_kvh_data_static<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/dynamic_map_internal.odin#L756"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">map_kvh_data_static :: <span class="keyword-type">proc</span> "contextless" (m: $T/<span class="keyword-type">map</span>[$T]$T) -> (ks: [^]<a class="code-typename" href="/core/runtime/#Map_Cell">Map_Cell</a>(K), vs: [^]<a class="code-typename" href="/core/runtime/#Map_Cell">Map_Cell</a>(V), hs: [^]<span class="doc-builtin">uintptr</span>) {…}</pre>
+<pre class="doc-code">map_kvh_data_static :: <span class="keyword-type">proc</span> "contextless" (m: $T/<span class="keyword-type">map</span>[$T]$T) -> (ks: [^]<a class="code-typename" href="/core/runtime/#Map_Cell">Map_Cell</a>($T), vs: [^]<a class="code-typename" href="/core/runtime/#Map_Cell">Map_Cell</a>($T), hs: [^]<span class="doc-builtin">uintptr</span>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -3316,6 +3318,25 @@ Note: If the index is out of bounds, this procedure will panic.</p>
 <h3 id="panic"><span><a class="doc-id-link" href="#panic">panic<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/core_builtin.odin#L820"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">panic :: <span class="keyword-type">proc</span>(message: <span class="doc-builtin">string</span>, loc := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>) -> ! {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="panic_allocator"><span><a class="doc-id-link" href="#panic_allocator">panic_allocator<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/default_allocators_nil.odin#L79"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">panic_allocator :: <span class="keyword-type">proc</span>() -> <a class="code-typename" href="/core/runtime/#Allocator">Allocator</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="panic_allocator_proc"><span><a class="doc-id-link" href="#panic_allocator_proc">panic_allocator_proc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/runtime/default_allocators_nil.odin#L42"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">panic_allocator_proc :: <span class="keyword-type">proc</span>(
+	allocator_data:  <span class="doc-builtin">rawptr</span>, 
+	mode:            <a class="code-typename" href="/core/runtime/#Allocator_Mode">Allocator_Mode</a>, 
+	size, alignment: <span class="doc-builtin">int</span>, 
+	old_memory:      <span class="doc-builtin">rawptr</span>, 
+	old_size:        <span class="doc-builtin">int</span>, 
+	loc := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>, 
+) -> ([]<span class="doc-builtin">u8</span>, <a class="code-typename" href="/core/runtime/#Allocator_Error">Allocator_Error</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -4161,7 +4182,7 @@ Make uses the specified allocator, default is context.allocator, default is cont
 <li><em>(hidden platform specific files)</em></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2023-06 (vendor "odin") Windows_amd64 @ 2023-06-26 12:53:55.283620900 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2023-06 (vendor "odin") Windows_amd64 @ 2023-06-26 21:10:28.994969000 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
@@ -4487,6 +4508,8 @@ Make uses the specified allocator, default is context.allocator, default is cont
 <li><a href="#ordered_remove">ordered_remove</a></li>
 <li><a href="#os_write">os_write</a></li>
 <li><a href="#panic">panic</a></li>
+<li><a href="#panic_allocator">panic_allocator</a></li>
+<li><a href="#panic_allocator_proc">panic_allocator_proc</a></li>
 <li><a href="#pop">pop</a></li>
 <li><a href="#pop_front">pop_front</a></li>
 <li><a href="#pop_front_safe">pop_front_safe</a></li>
