@@ -340,12 +340,12 @@ Procedure Groups (0)</summary>
 	mutex:             sync.<a class="code-typename" href="/core/sync/#Mutex">Mutex</a>,
 	sem_available:     sync.<a class="code-typename" href="/core/sync/#Sema">Sema</a>,
 	<span class="comment">// the following values are atomic</span>
-	num_waiting:       <span class="doc-builtin">int</span>,
-	num_in_processing: <span class="doc-builtin">int</span>,
-	num_outstanding:   <span class="doc-builtin">int</span>,
+	num_waiting:       <a href="/core/builtin#int"><span class="doc-builtin">int</span></a>,
+	num_in_processing: <a href="/core/builtin#int"><span class="doc-builtin">int</span></a>,
+	num_outstanding:   <a href="/core/builtin#int"><span class="doc-builtin">int</span></a>,
 	<span class="comment">// num_waiting + num_in_processing</span>
-	num_done:          <span class="doc-builtin">int</span>,
-	is_running:        <span class="doc-builtin">bool</span>,
+	num_done:          <a href="/core/builtin#int"><span class="doc-builtin">int</span></a>,
+	is_running:        <a href="/core/builtin#bool"><span class="doc-builtin">bool</span></a>,
 	threads:           []^<a class="code-typename" href="/core/thread/#Thread">Thread</a>,
 	tasks:             [<span class="keyword">dynamic</span>]<a class="code-typename" href="/core/thread/#Task">Task</a>,
 	tasks_done:        [<span class="keyword">dynamic</span>]<a class="code-typename" href="/core/thread/#Task">Task</a>,
@@ -358,7 +358,7 @@ since they use different kinds of locking and mutual exclusion devices.
 Careless access can and will lead to nasty bugs. Once initialized, the
 pool's memory address is not allowed to change until it is destroyed.</p>
 </details>
-<h5>Related Procedures</h5>
+<h5>Related Procedures With Parameters</h5>
 <ul>
 <li><a href="/core/thread/#pool_add_task">pool_add_task</a></li>
 <li><a href="/core/thread/#pool_destroy">pool_destroy</a></li>
@@ -381,14 +381,19 @@ pool's memory address is not allowed to change until it is destroyed.</p>
 <div>
 <pre class="doc-code">Task :: <span class="keyword-type">struct</span> {
 	procedure:  <a class="code-typename" href="/core/thread/#Task_Proc">Task_Proc</a>,
-	data:       <span class="doc-builtin">rawptr</span>,
-	user_index: <span class="doc-builtin">int</span>,
+	data:       <a href="/core/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>,
+	user_index: <a href="/core/builtin#int"><span class="doc-builtin">int</span></a>,
 	allocator:  runtime.<a class="code-typename" href="/core/runtime/#Allocator">Allocator</a>,
 }</pre>
 </div>
-<h5>Indirectly Associated Procedures</h5>
+<h5>Related Procedures With Parameters</h5>
 <ul>
 <li><a href="/core/thread/#pool_do_work">pool_do_work</a></li>
+</ul>
+<h5>Related Procedures With Returns</h5>
+<ul>
+<li><a href="/core/thread/#pool_pop_done">pool_pop_done</a></li>
+<li><a href="/core/thread/#pool_pop_waiting">pool_pop_waiting</a></li>
 </ul>
 </div>
 <div class="pkg-entity">
@@ -396,7 +401,7 @@ pool's memory address is not allowed to change until it is destroyed.</p>
 <div>
 <pre class="doc-code">Task_Proc :: <span class="keyword-type">proc</span>(task: <a class="code-typename" href="/core/thread/#Task">Task</a>)</pre>
 </div>
-<h5>Indirectly Associated Procedures</h5>
+<h5>Related Procedures With Parameters</h5>
 <ul>
 <li><a href="/core/thread/#pool_add_task">pool_add_task</a></li>
 </ul>
@@ -406,8 +411,8 @@ pool's memory address is not allowed to change until it is destroyed.</p>
 <div>
 <pre class="doc-code">Thread :: <span class="keyword-type">struct</span> {
 	<span class="keyword-type">using</span> specific:     Thread_Os_Specific,
-	flags:              <span class="keyword-type">bit_set</span>[<a class="code-typename" href="/core/thread/#Thread_State">Thread_State</a>; <span class="doc-builtin">u8</span>],
-	id:                 <span class="doc-builtin">int</span>,
+	flags:              <span class="keyword-type">bit_set</span>[<a class="code-typename" href="/core/thread/#Thread_State">Thread_State</a>; <a href="/core/builtin#u8"><span class="doc-builtin">u8</span></a>],
+	id:                 <a href="/core/builtin#int"><span class="doc-builtin">int</span></a>,
 	procedure:          <a class="code-typename" href="/core/thread/#Thread_Proc">Thread_Proc</a>,
 	<span class="comment">// 		These are values that the user can set as they wish, after the thread has been created.</span>
 	<span class="comment">// 		This data is easily available to the thread proc.</span>
@@ -415,9 +420,9 @@ pool's memory address is not allowed to change until it is destroyed.</p>
 	<span class="comment">// 		These fields can be assigned to directly.</span>
 	<span class="comment">// </span>
 	<span class="comment">// 		Should be set after the thread is created, but before it is started.</span>
-	data:               <span class="doc-builtin">rawptr</span>,
-	user_index:         <span class="doc-builtin">int</span>,
-	user_args:          [8]<span class="doc-builtin">rawptr</span>,
+	data:               <a href="/core/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>,
+	user_index:         <a href="/core/builtin#int"><span class="doc-builtin">int</span></a>,
+	user_args:          [8]<a href="/core/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>,
 	<span class="comment">// 		The context to be used as 'context' in the thread proc.</span>
 	<span class="comment">// </span>
 	<span class="comment">// 		This field can be assigned to directly, after the thread has been created, but __before__ the thread has been started.</span>
@@ -438,7 +443,7 @@ pool's memory address is not allowed to change until it is destroyed.</p>
 	creation_allocator: runtime.<a class="code-typename" href="/core/runtime/#Allocator">Allocator</a>,
 }</pre>
 </div>
-<h5>Related Procedures</h5>
+<h5>Related Procedures With Parameters</h5>
 <ul>
 <li><a href="/core/thread/#destroy">destroy</a></li>
 <li><a href="/core/thread/#is_done">is_done</a></li>
@@ -446,30 +451,40 @@ pool's memory address is not allowed to change until it is destroyed.</p>
 <li><a href="/core/thread/#start">start</a></li>
 <li><a href="/core/thread/#terminate">terminate</a></li>
 </ul>
+<h5>Related Procedures With Returns</h5>
+<ul>
+<li><a href="/core/thread/#create">create</a></li>
+<li><a href="/core/thread/#create_and_start">create_and_start</a></li>
+<li><a href="/core/thread/#create_and_start_with_data">create_and_start_with_data</a></li>
+<li><a href="/core/thread/#create_and_start_with_poly_data">create_and_start_with_poly_data</a></li>
+<li><a href="/core/thread/#create_and_start_with_poly_data2">create_and_start_with_poly_data2</a></li>
+<li><a href="/core/thread/#create_and_start_with_poly_data3">create_and_start_with_poly_data3</a></li>
+<li><a href="/core/thread/#create_and_start_with_poly_data4">create_and_start_with_poly_data4</a></li>
+</ul>
 </div>
 <div class="pkg-entity">
 <h3 id="Thread_Priority"><span><a class="doc-id-link" href="#Thread_Priority">Thread_Priority<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L63"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">Thread_Priority :: <span class="keyword-type">enum</span> <span class="doc-builtin">int</span> {
+<pre class="doc-code">Thread_Priority :: <span class="keyword-type">enum</span> <a href="/core/builtin#int"><span class="doc-builtin">int</span></a> {
 	Normal, 
 	Low, 
 	High, 
 }</pre>
 </div>
-<h5>Indirectly Associated Procedures</h5>
+<h5>Related Procedures With Parameters</h5>
 <ul>
 <li><a href="/core/thread/#create">create</a></li>
 <li><a href="/core/thread/#create_and_start">create_and_start</a></li>
-<li><a href="/core/thread/#run">run</a></li>
 <li><a href="/core/thread/#create_and_start_with_data">create_and_start_with_data</a></li>
 <li><a href="/core/thread/#create_and_start_with_poly_data">create_and_start_with_poly_data</a></li>
+<li><a href="/core/thread/#create_and_start_with_poly_data2">create_and_start_with_poly_data2</a></li>
+<li><a href="/core/thread/#create_and_start_with_poly_data3">create_and_start_with_poly_data3</a></li>
+<li><a href="/core/thread/#create_and_start_with_poly_data4">create_and_start_with_poly_data4</a></li>
+<li><a href="/core/thread/#run">run</a></li>
 <li><a href="/core/thread/#run_with_data">run_with_data</a></li>
 <li><a href="/core/thread/#run_with_poly_data">run_with_poly_data</a></li>
-<li><a href="/core/thread/#create_and_start_with_poly_data2">create_and_start_with_poly_data2</a></li>
 <li><a href="/core/thread/#run_with_poly_data2">run_with_poly_data2</a></li>
-<li><a href="/core/thread/#create_and_start_with_poly_data3">create_and_start_with_poly_data3</a></li>
 <li><a href="/core/thread/#run_with_poly_data3">run_with_poly_data3</a></li>
-<li><a href="/core/thread/#create_and_start_with_poly_data4">create_and_start_with_poly_data4</a></li>
 <li><a href="/core/thread/#run_with_poly_data4">run_with_poly_data4</a></li>
 </ul>
 </div>
@@ -478,7 +493,7 @@ pool's memory address is not allowed to change until it is destroyed.</p>
 <div>
 <pre class="doc-code">Thread_Proc :: <span class="keyword-type">proc</span>(_: ^<a class="code-typename" href="/core/thread/#Thread">Thread</a>)</pre>
 </div>
-<h5>Related Procedures</h5>
+<h5>Related Procedures With Parameters</h5>
 <ul>
 <li><a href="/core/thread/#create">create</a></li>
 </ul>
@@ -486,7 +501,7 @@ pool's memory address is not allowed to change until it is destroyed.</p>
 <div class="pkg-entity">
 <h3 id="Thread_State"><span><a class="doc-id-link" href="#Thread_State">Thread_State<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L13"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">Thread_State :: <span class="keyword-type">enum</span> <span class="doc-builtin">u8</span> {
+<pre class="doc-code">Thread_State :: <span class="keyword-type">enum</span> <a href="/core/builtin#u8"><span class="doc-builtin">u8</span></a> {
 	Started, 
 	Joined, 
 	Done, 
@@ -521,19 +536,19 @@ See `thread.create_and_start()`.
 <div class="pkg-entity">
 <h3 id="create_and_start"><span><a class="doc-id-link" href="#create_and_start">create_and_start<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L143"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">create_and_start :: <span class="keyword-type">proc</span>(fn: <span class="keyword-type">proc</span>(), init_context: runtime.<a class="code-typename" href="/core/runtime/#Maybe">Maybe</a>($T=Context) = nil, priority: <a class="code-typename" href="/core/thread/#Thread_Priority">Thread_Priority</a> = Thread_Priority.Normal, self_cleanup: <span class="doc-builtin">bool</span> = false) -> ^<a class="code-typename" href="/core/thread/#Thread">Thread</a> {…}</pre>
+<pre class="doc-code">create_and_start :: <span class="keyword-type">proc</span>(fn: <span class="keyword-type">proc</span>(), init_context: runtime.<a class="code-typename" href="/core/runtime/#Maybe">Maybe</a>($T=Context) = nil, priority: <a class="code-typename" href="/core/thread/#Thread_Priority">Thread_Priority</a> = Thread_Priority.Normal, self_cleanup: <a href="/core/builtin#bool"><span class="doc-builtin">bool</span></a> = false) -> ^<a class="code-typename" href="/core/thread/#Thread">Thread</a> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="create_and_start_with_data"><span><a class="doc-id-link" href="#create_and_start_with_data">create_and_start_with_data<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L159"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">create_and_start_with_data :: <span class="keyword-type">proc</span>(data: <span class="doc-builtin">rawptr</span>, fn: <span class="keyword-type">proc</span>(data: <span class="doc-builtin">rawptr</span>), init_context: runtime.<a class="code-typename" href="/core/runtime/#Maybe">Maybe</a>($T=Context) = nil, priority: <a class="code-typename" href="/core/thread/#Thread_Priority">Thread_Priority</a> = Thread_Priority.Normal, self_cleanup: <span class="doc-builtin">bool</span> = false) -> ^<a class="code-typename" href="/core/thread/#Thread">Thread</a> {…}</pre>
+<pre class="doc-code">create_and_start_with_data :: <span class="keyword-type">proc</span>(data: <a href="/core/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>, fn: <span class="keyword-type">proc</span>(data: <a href="/core/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>), init_context: runtime.<a class="code-typename" href="/core/runtime/#Maybe">Maybe</a>($T=Context) = nil, priority: <a class="code-typename" href="/core/thread/#Thread_Priority">Thread_Priority</a> = Thread_Priority.Normal, self_cleanup: <a href="/core/builtin#bool"><span class="doc-builtin">bool</span></a> = false) -> ^<a class="code-typename" href="/core/thread/#Thread">Thread</a> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="create_and_start_with_poly_data"><span><a class="doc-id-link" href="#create_and_start_with_poly_data">create_and_start_with_poly_data<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L176"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">create_and_start_with_poly_data :: <span class="keyword-type">proc</span>(data: $T, fn: <span class="keyword-type">proc</span>(data: $T), init_context: runtime.<a class="code-typename" href="/core/runtime/#Maybe">Maybe</a>($T=Context) = nil, priority: <a class="code-typename" href="/core/thread/#Thread_Priority">Thread_Priority</a> = Thread_Priority.Normal, self_cleanup: <span class="doc-builtin">bool</span> = false) -> ^<a class="code-typename" href="/core/thread/#Thread">Thread</a> {…}</pre>
+<pre class="doc-code">create_and_start_with_poly_data :: <span class="keyword-type">proc</span>(data: $T, fn: <span class="keyword-type">proc</span>(data: $T), init_context: runtime.<a class="code-typename" href="/core/runtime/#Maybe">Maybe</a>($T=Context) = nil, priority: <a class="code-typename" href="/core/thread/#Thread_Priority">Thread_Priority</a> = Thread_Priority.Normal, self_cleanup: <a href="/core/builtin#bool"><span class="doc-builtin">bool</span></a> = false) -> ^<a class="code-typename" href="/core/thread/#Thread">Thread</a> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -545,7 +560,7 @@ See `thread.create_and_start()`.
 	fn:           <span class="keyword-type">proc</span>(_: $T, _: $T), 
 	init_context: runtime.<a class="code-typename" href="/core/runtime/#Maybe">Maybe</a>($T=Context) = nil, 
 	priority:     <a class="code-typename" href="/core/thread/#Thread_Priority">Thread_Priority</a> = Thread_Priority.Normal, 
-	self_cleanup: <span class="doc-builtin">bool</span> = false, 
+	self_cleanup: <a href="/core/builtin#bool"><span class="doc-builtin">bool</span></a> = false, 
 ) -> ^<a class="code-typename" href="/core/thread/#Thread">Thread</a> {…}</pre>
 </div>
 </div>
@@ -559,7 +574,7 @@ See `thread.create_and_start()`.
 	fn:           <span class="keyword-type">proc</span>(arg1: $T, arg2: $T, arg3: $T), 
 	init_context: runtime.<a class="code-typename" href="/core/runtime/#Maybe">Maybe</a>($T=Context) = nil, 
 	priority:     <a class="code-typename" href="/core/thread/#Thread_Priority">Thread_Priority</a> = Thread_Priority.Normal, 
-	self_cleanup: <span class="doc-builtin">bool</span> = false, 
+	self_cleanup: <a href="/core/builtin#bool"><span class="doc-builtin">bool</span></a> = false, 
 ) -> ^<a class="code-typename" href="/core/thread/#Thread">Thread</a> {…}</pre>
 </div>
 </div>
@@ -574,7 +589,7 @@ See `thread.create_and_start()`.
 	fn:           <span class="keyword-type">proc</span>(arg1: $T, arg2: $T, arg3: $T, arg4: $T), 
 	init_context: runtime.<a class="code-typename" href="/core/runtime/#Maybe">Maybe</a>($T=Context) = nil, 
 	priority:     <a class="code-typename" href="/core/thread/#Thread_Priority">Thread_Priority</a> = Thread_Priority.Normal, 
-	self_cleanup: <span class="doc-builtin">bool</span> = false, 
+	self_cleanup: <a href="/core/builtin#bool"><span class="doc-builtin">bool</span></a> = false, 
 ) -> ^<a class="code-typename" href="/core/thread/#Thread">Thread</a> {…}</pre>
 </div>
 </div>
@@ -587,7 +602,7 @@ See `thread.create_and_start()`.
 <div class="pkg-entity">
 <h3 id="is_done"><span><a class="doc-id-link" href="#is_done">is_done<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L86"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">is_done :: <span class="keyword-type">proc</span>(thread: ^<a class="code-typename" href="/core/thread/#Thread">Thread</a>) -> <span class="doc-builtin">bool</span> {…}</pre>
+<pre class="doc-code">is_done :: <span class="keyword-type">proc</span>(thread: ^<a class="code-typename" href="/core/thread/#Thread">Thread</a>) -> <a href="/core/builtin#bool"><span class="doc-builtin">bool</span></a> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -605,7 +620,7 @@ See `thread.create_and_start()`.
 <div class="pkg-entity">
 <h3 id="pool_add_task"><span><a class="doc-id-link" href="#pool_add_task">pool_add_task<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread_pool.odin#L127"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">pool_add_task :: <span class="keyword-type">proc</span>(pool: ^<a class="code-typename" href="/core/thread/#Pool">Pool</a>, allocator: runtime.<a class="code-typename" href="/core/runtime/#Allocator">Allocator</a>, procedure: <a class="code-typename" href="/core/thread/#Task_Proc">Task_Proc</a>, data: <span class="doc-builtin">rawptr</span>, user_index: <span class="doc-builtin">int</span> = 0) {…}</pre>
+<pre class="doc-code">pool_add_task :: <span class="keyword-type">proc</span>(pool: ^<a class="code-typename" href="/core/thread/#Pool">Pool</a>, allocator: runtime.<a class="code-typename" href="/core/runtime/#Allocator">Allocator</a>, procedure: <a class="code-typename" href="/core/thread/#Task_Proc">Task_Proc</a>, data: <a href="/core/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>, user_index: <a href="/core/builtin#int"><span class="doc-builtin">int</span></a> = 0) {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -646,7 +661,7 @@ all the pool threads.</p>
 <div class="pkg-entity">
 <h3 id="pool_init"><span><a class="doc-id-link" href="#pool_init">pool_init<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread_pool.odin#L51"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">pool_init :: <span class="keyword-type">proc</span>(pool: ^<a class="code-typename" href="/core/thread/#Pool">Pool</a>, allocator: runtime.<a class="code-typename" href="/core/runtime/#Allocator">Allocator</a>, thread_count: <span class="doc-builtin">int</span>) {…}</pre>
+<pre class="doc-code">pool_init :: <span class="keyword-type">proc</span>(pool: ^<a class="code-typename" href="/core/thread/#Pool">Pool</a>, allocator: runtime.<a class="code-typename" href="/core/runtime/#Allocator">Allocator</a>, thread_count: <a href="/core/builtin#int"><span class="doc-builtin">int</span></a>) {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -658,7 +673,7 @@ it is destroyed. </p>
 <div class="pkg-entity">
 <h3 id="pool_is_empty"><span><a class="doc-id-link" href="#pool_is_empty">pool_is_empty<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread_pool.odin#L174"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">pool_is_empty :: <span class="keyword-type">proc</span>(pool: ^<a class="code-typename" href="/core/thread/#Pool">Pool</a>) -> <span class="doc-builtin">bool</span> {…}</pre>
+<pre class="doc-code">pool_is_empty :: <span class="keyword-type">proc</span>(pool: ^<a class="code-typename" href="/core/thread/#Pool">Pool</a>) -> <a href="/core/builtin#bool"><span class="doc-builtin">bool</span></a> {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -683,7 +698,7 @@ user data of those tasks will not be freed.</p>
 <div class="pkg-entity">
 <h3 id="pool_num_done"><span><a class="doc-id-link" href="#pool_num_done">pool_num_done<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread_pool.odin#L166"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">pool_num_done :: <span class="keyword-type">proc</span>(pool: ^<a class="code-typename" href="/core/thread/#Pool">Pool</a>) -> <span class="doc-builtin">int</span> {…}</pre>
+<pre class="doc-code">pool_num_done :: <span class="keyword-type">proc</span>(pool: ^<a class="code-typename" href="/core/thread/#Pool">Pool</a>) -> <a href="/core/builtin#int"><span class="doc-builtin">int</span></a> {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -695,7 +710,7 @@ values.</p>
 <div class="pkg-entity">
 <h3 id="pool_num_in_processing"><span><a class="doc-id-link" href="#pool_num_in_processing">pool_num_in_processing<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread_pool.odin#L151"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">pool_num_in_processing :: <span class="keyword-type">proc</span>(pool: ^<a class="code-typename" href="/core/thread/#Pool">Pool</a>) -> <span class="doc-builtin">int</span> {…}</pre>
+<pre class="doc-code">pool_num_in_processing :: <span class="keyword-type">proc</span>(pool: ^<a class="code-typename" href="/core/thread/#Pool">Pool</a>) -> <a href="/core/builtin#int"><span class="doc-builtin">int</span></a> {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -707,7 +722,7 @@ values.</p>
 <div class="pkg-entity">
 <h3 id="pool_num_outstanding"><span><a class="doc-id-link" href="#pool_num_outstanding">pool_num_outstanding<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread_pool.odin#L159"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">pool_num_outstanding :: <span class="keyword-type">proc</span>(pool: ^<a class="code-typename" href="/core/thread/#Pool">Pool</a>) -> <span class="doc-builtin">int</span> {…}</pre>
+<pre class="doc-code">pool_num_outstanding :: <span class="keyword-type">proc</span>(pool: ^<a class="code-typename" href="/core/thread/#Pool">Pool</a>) -> <a href="/core/builtin#int"><span class="doc-builtin">int</span></a> {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -720,7 +735,7 @@ consistent with other num_* values.</p>
 <div class="pkg-entity">
 <h3 id="pool_num_waiting"><span><a class="doc-id-link" href="#pool_num_waiting">pool_num_waiting<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread_pool.odin#L144"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">pool_num_waiting :: <span class="keyword-type">proc</span>(pool: ^<a class="code-typename" href="/core/thread/#Pool">Pool</a>) -> <span class="doc-builtin">int</span> {…}</pre>
+<pre class="doc-code">pool_num_waiting :: <span class="keyword-type">proc</span>(pool: ^<a class="code-typename" href="/core/thread/#Pool">Pool</a>) -> <a href="/core/builtin#int"><span class="doc-builtin">int</span></a> {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -732,7 +747,7 @@ values.</p>
 <div class="pkg-entity">
 <h3 id="pool_pop_done"><span><a class="doc-id-link" href="#pool_pop_done">pool_pop_done<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread_pool.odin#L193"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">pool_pop_done :: <span class="keyword-type">proc</span>(pool: ^<a class="code-typename" href="/core/thread/#Pool">Pool</a>) -> (task: <a class="code-typename" href="/core/thread/#Task">Task</a>, got_task: <span class="doc-builtin">bool</span>) {…}</pre>
+<pre class="doc-code">pool_pop_done :: <span class="keyword-type">proc</span>(pool: ^<a class="code-typename" href="/core/thread/#Pool">Pool</a>) -> (task: <a class="code-typename" href="/core/thread/#Task">Task</a>, got_task: <a href="/core/builtin#bool"><span class="doc-builtin">bool</span></a>) {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -742,7 +757,7 @@ values.</p>
 <div class="pkg-entity">
 <h3 id="pool_pop_waiting"><span><a class="doc-id-link" href="#pool_pop_waiting">pool_pop_waiting<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread_pool.odin#L179"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">pool_pop_waiting :: <span class="keyword-type">proc</span>(pool: ^<a class="code-typename" href="/core/thread/#Pool">Pool</a>) -> (task: <a class="code-typename" href="/core/thread/#Task">Task</a>, got_task: <span class="doc-builtin">bool</span>) {…}</pre>
+<pre class="doc-code">pool_pop_waiting :: <span class="keyword-type">proc</span>(pool: ^<a class="code-typename" href="/core/thread/#Pool">Pool</a>) -> (task: <a class="code-typename" href="/core/thread/#Task">Task</a>, got_task: <a href="/core/builtin#bool"><span class="doc-builtin">bool</span></a>) {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -764,7 +779,7 @@ values.</p>
 <div class="pkg-entity">
 <h3 id="run_with_data"><span><a class="doc-id-link" href="#run_with_data">run_with_data<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L114"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">run_with_data :: <span class="keyword-type">proc</span>(data: <span class="doc-builtin">rawptr</span>, fn: <span class="keyword-type">proc</span>(data: <span class="doc-builtin">rawptr</span>), init_context: runtime.<a class="code-typename" href="/core/runtime/#Maybe">Maybe</a>($T=Context) = nil, priority: <a class="code-typename" href="/core/thread/#Thread_Priority">Thread_Priority</a> = Thread_Priority.Normal) {…}</pre>
+<pre class="doc-code">run_with_data :: <span class="keyword-type">proc</span>(data: <a href="/core/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>, fn: <span class="keyword-type">proc</span>(data: <a href="/core/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>), init_context: runtime.<a class="code-typename" href="/core/runtime/#Maybe">Maybe</a>($T=Context) = nil, priority: <a class="code-typename" href="/core/thread/#Thread_Priority">Thread_Priority</a> = Thread_Priority.Normal) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -815,7 +830,7 @@ values.</p>
 <div class="pkg-entity">
 <h3 id="terminate"><span><a class="doc-id-link" href="#terminate">terminate<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L100"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">terminate :: <span class="keyword-type">proc</span>(thread: ^<a class="code-typename" href="/core/thread/#Thread">Thread</a>, exit_code: <span class="doc-builtin">int</span>) {…}</pre>
+<pre class="doc-code">terminate :: <span class="keyword-type">proc</span>(thread: ^<a class="code-typename" href="/core/thread/#Thread">Thread</a>, exit_code: <a href="/core/builtin#int"><span class="doc-builtin">int</span></a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -834,7 +849,7 @@ values.</p>
 <li><em>(hidden platform specific files)</em></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2023-07 (vendor "odin") Windows_amd64 @ 2023-07-09 21:10:04.870388800 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2023-07 (vendor "odin") Windows_amd64 @ 2023-07-10 21:10:16.249798700 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
