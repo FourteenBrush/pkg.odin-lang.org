@@ -702,7 +702,7 @@ main :: proc "contextless" () {
 </ul>
 </div>
 <div class="pkg-entity">
-<h3 id="Cond"><span><a class="doc-id-link" href="#Cond">Cond<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L147"><em>Source</em></a></div></h3>
+<h3 id="Cond"><span><a class="doc-id-link" href="#Cond">Cond<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L158"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Cond :: <span class="keyword-type">struct</span> {
 	impl: _Cond,
@@ -727,7 +727,7 @@ waiting for signalling the occurence of an event</p>
 </ul>
 </div>
 <div class="pkg-entity">
-<h3 id="Futex"><span><a class="doc-id-link" href="#Futex">Futex<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L196"><em>Source</em></a></div></h3>
+<h3 id="Futex"><span><a class="doc-id-link" href="#Futex">Futex<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L207"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Futex :: <span class="keyword-type">distinct</span> <a href="/core/builtin#u32"><span class="doc-builtin">u32</span></a></pre>
 </div>
@@ -749,7 +749,7 @@ waiting for signalling the occurence of an event</p>
 </ul>
 </div>
 <div class="pkg-entity">
-<h3 id="Mutex"><span><a class="doc-id-link" href="#Mutex">Mutex<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L14"><em>Source</em></a></div></h3>
+<h3 id="Mutex"><span><a class="doc-id-link" href="#Mutex">Mutex<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L25"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Mutex :: <span class="keyword-type">struct</span> {
 	impl: _Mutex,
@@ -757,9 +757,18 @@ waiting for signalling the occurence of an event</p>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>A Mutex is a mutual exclusion lock
-The zero value for a Mutex is an unlocked mutex</p>
-<p>A Mutex must not be copied after first use</p>
+<p>A Mutex is a <a href="https://en.wikipedia.org/wiki/Mutual_exclusion">mutual exclusion lock</a>
+It can be used to prevent more than one thread from executing the same piece of code,
+and thus prevent access to same piece of memory by multiple threads, at the same time.</p>
+<p>A Mutex's zero value represents an initial, <i>unlocked</i> state.</p>
+<p>If another thread tries to take the lock while another thread holds it, it will pause
+until the lock is released. Code or memory that is "surrounded" by a mutex lock is said
+to be "guarded by a mutex".</p>
+<p>A Mutex must not be copied after first use (e.g., after locking it the first time).
+This is because, in order to coordinate with other threads, all threads must watch
+the same memory address to know when the lock has been released. Trying to use a
+copy of the lock at a different memory address will result in broken and unsafe
+behavior. For this reason, Mutexes are marked as <code>#no_copy</code>.</p>
 </details>
 <h5>Related Procedures With Parameters</h5>
 <ul>
@@ -824,7 +833,7 @@ The zero value for a Mutex is an unlocked mutex</p>
 </ul>
 </div>
 <div class="pkg-entity">
-<h3 id="RW_Mutex"><span><a class="doc-id-link" href="#RW_Mutex">RW_Mutex<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L50"><em>Source</em></a></div></h3>
+<h3 id="RW_Mutex"><span><a class="doc-id-link" href="#RW_Mutex">RW_Mutex<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L61"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">RW_Mutex :: <span class="keyword-type">struct</span> {
 	impl: _RW_Mutex,
@@ -880,7 +889,7 @@ The zero value for a RW_Mutex is an unlocked mutex</p>
 </ul>
 </div>
 <div class="pkg-entity">
-<h3 id="Recursive_Mutex"><span><a class="doc-id-link" href="#Recursive_Mutex">Recursive_Mutex<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L114"><em>Source</em></a></div></h3>
+<h3 id="Recursive_Mutex"><span><a class="doc-id-link" href="#Recursive_Mutex">Recursive_Mutex<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L125"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Recursive_Mutex :: <span class="keyword-type">struct</span> {
 	impl: _Recursive_Mutex,
@@ -901,7 +910,7 @@ The zero value for a Recursive_Mutex is an unlocked mutex</p>
 </ul>
 </div>
 <div class="pkg-entity">
-<h3 id="Sema"><span><a class="doc-id-link" href="#Sema">Sema<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L175"><em>Source</em></a></div></h3>
+<h3 id="Sema"><span><a class="doc-id-link" href="#Sema">Sema<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L186"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Sema :: <span class="keyword-type">struct</span> {
 	impl: _Sema,
@@ -1412,25 +1421,25 @@ Barrier can be reused after all threads rendezvoused once, and can be used conti
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="cond_broadcast"><span><a class="doc-id-link" href="#cond_broadcast">cond_broadcast<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L166"><em>Source</em></a></div></h3>
+<h3 id="cond_broadcast"><span><a class="doc-id-link" href="#cond_broadcast">cond_broadcast<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L177"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">cond_broadcast :: <span class="keyword-type">proc</span> "contextless" (c: ^<a class="code-typename" href="/core/sync/#Cond">Cond</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="cond_signal"><span><a class="doc-id-link" href="#cond_signal">cond_signal<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L162"><em>Source</em></a></div></h3>
+<h3 id="cond_signal"><span><a class="doc-id-link" href="#cond_signal">cond_signal<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L173"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">cond_signal :: <span class="keyword-type">proc</span> "contextless" (c: ^<a class="code-typename" href="/core/sync/#Cond">Cond</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="cond_wait"><span><a class="doc-id-link" href="#cond_wait">cond_wait<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L151"><em>Source</em></a></div></h3>
+<h3 id="cond_wait"><span><a class="doc-id-link" href="#cond_wait">cond_wait<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L162"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">cond_wait :: <span class="keyword-type">proc</span> "contextless" (c: ^<a class="code-typename" href="/core/sync/#Cond">Cond</a>, m: ^<a class="code-typename" href="/core/sync/#Mutex">Mutex</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="cond_wait_with_timeout"><span><a class="doc-id-link" href="#cond_wait_with_timeout">cond_wait_with_timeout<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L155"><em>Source</em></a></div></h3>
+<h3 id="cond_wait_with_timeout"><span><a class="doc-id-link" href="#cond_wait_with_timeout">cond_wait_with_timeout<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L166"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">cond_wait_with_timeout :: <span class="keyword-type">proc</span> "contextless" (c: ^<a class="code-typename" href="/core/sync/#Cond">Cond</a>, m: ^<a class="code-typename" href="/core/sync/#Mutex">Mutex</a>, duration: time.<a class="code-typename" href="/core/time/#Duration">Duration</a>) -> <a href="/core/builtin#bool"><span class="doc-builtin">bool</span></a> {…}</pre>
 </div>
@@ -1448,25 +1457,25 @@ Barrier can be reused after all threads rendezvoused once, and can be used conti
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="futex_broadcast"><span><a class="doc-id-link" href="#futex_broadcast">futex_broadcast<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L222"><em>Source</em></a></div></h3>
+<h3 id="futex_broadcast"><span><a class="doc-id-link" href="#futex_broadcast">futex_broadcast<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L233"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">futex_broadcast :: <span class="keyword-type">proc</span> "contextless" (f: ^<a class="code-typename" href="/core/sync/#Futex">Futex</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="futex_signal"><span><a class="doc-id-link" href="#futex_signal">futex_signal<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L218"><em>Source</em></a></div></h3>
+<h3 id="futex_signal"><span><a class="doc-id-link" href="#futex_signal">futex_signal<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L229"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">futex_signal :: <span class="keyword-type">proc</span> "contextless" (f: ^<a class="code-typename" href="/core/sync/#Futex">Futex</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="futex_wait"><span><a class="doc-id-link" href="#futex_wait">futex_wait<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L198"><em>Source</em></a></div></h3>
+<h3 id="futex_wait"><span><a class="doc-id-link" href="#futex_wait">futex_wait<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L209"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">futex_wait :: <span class="keyword-type">proc</span> "contextless" (f: ^<a class="code-typename" href="/core/sync/#Futex">Futex</a>, expected: <a href="/core/builtin#u32"><span class="doc-builtin">u32</span></a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="futex_wait_with_timeout"><span><a class="doc-id-link" href="#futex_wait_with_timeout">futex_wait_with_timeout<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L207"><em>Source</em></a></div></h3>
+<h3 id="futex_wait_with_timeout"><span><a class="doc-id-link" href="#futex_wait_with_timeout">futex_wait_with_timeout<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L218"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">futex_wait_with_timeout :: <span class="keyword-type">proc</span> "contextless" (f: ^<a class="code-typename" href="/core/sync/#Futex">Futex</a>, expected: <a href="/core/builtin#u32"><span class="doc-builtin">u32</span></a>, duration: time.<a class="code-typename" href="/core/time/#Duration">Duration</a>) -> <a href="/core/builtin#bool"><span class="doc-builtin">bool</span></a> {…}</pre>
 </div>
@@ -1476,7 +1485,7 @@ Barrier can be reused after all threads rendezvoused once, and can be used conti
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="mutex_guard"><span><a class="doc-id-link" href="#mutex_guard">mutex_guard<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L40"><em>Source</em></a></div></h3>
+<h3 id="mutex_guard"><span><a class="doc-id-link" href="#mutex_guard">mutex_guard<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L51"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">mutex_guard :: <span class="keyword-type">proc</span> "contextless" (m: ^<a class="code-typename" href="/core/sync/#Mutex">Mutex</a>) -> <a href="/core/builtin#bool"><span class="doc-builtin">bool</span></a> {…}</pre>
 </div>
@@ -1490,7 +1499,7 @@ Barrier can be reused after all threads rendezvoused once, and can be used conti
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="mutex_lock"><span><a class="doc-id-link" href="#mutex_lock">mutex_lock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L19"><em>Source</em></a></div></h3>
+<h3 id="mutex_lock"><span><a class="doc-id-link" href="#mutex_lock">mutex_lock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L30"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">mutex_lock :: <span class="keyword-type">proc</span> "contextless" (m: ^<a class="code-typename" href="/core/sync/#Mutex">Mutex</a>) {…}</pre>
 </div>
@@ -1500,7 +1509,7 @@ Barrier can be reused after all threads rendezvoused once, and can be used conti
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="mutex_try_lock"><span><a class="doc-id-link" href="#mutex_try_lock">mutex_try_lock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L29"><em>Source</em></a></div></h3>
+<h3 id="mutex_try_lock"><span><a class="doc-id-link" href="#mutex_try_lock">mutex_try_lock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L40"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">mutex_try_lock :: <span class="keyword-type">proc</span> "contextless" (m: ^<a class="code-typename" href="/core/sync/#Mutex">Mutex</a>) -> <a href="/core/builtin#bool"><span class="doc-builtin">bool</span></a> {…}</pre>
 </div>
@@ -1510,7 +1519,7 @@ Barrier can be reused after all threads rendezvoused once, and can be used conti
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="mutex_unlock"><span><a class="doc-id-link" href="#mutex_unlock">mutex_unlock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L24"><em>Source</em></a></div></h3>
+<h3 id="mutex_unlock"><span><a class="doc-id-link" href="#mutex_unlock">mutex_unlock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L35"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">mutex_unlock :: <span class="keyword-type">proc</span> "contextless" (m: ^<a class="code-typename" href="/core/sync/#Mutex">Mutex</a>) {…}</pre>
 </div>
@@ -1607,7 +1616,7 @@ for a limited duration.</p>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="recursive_mutex_guard"><span><a class="doc-id-link" href="#recursive_mutex_guard">recursive_mutex_guard<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L137"><em>Source</em></a></div></h3>
+<h3 id="recursive_mutex_guard"><span><a class="doc-id-link" href="#recursive_mutex_guard">recursive_mutex_guard<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L148"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">recursive_mutex_guard :: <span class="keyword-type">proc</span> "contextless" (m: ^<a class="code-typename" href="/core/sync/#Recursive_Mutex">Recursive_Mutex</a>) -> <a href="/core/builtin#bool"><span class="doc-builtin">bool</span></a> {…}</pre>
 </div>
@@ -1621,25 +1630,25 @@ for a limited duration.</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="recursive_mutex_lock"><span><a class="doc-id-link" href="#recursive_mutex_lock">recursive_mutex_lock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L118"><em>Source</em></a></div></h3>
+<h3 id="recursive_mutex_lock"><span><a class="doc-id-link" href="#recursive_mutex_lock">recursive_mutex_lock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L129"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">recursive_mutex_lock :: <span class="keyword-type">proc</span> "contextless" (m: ^<a class="code-typename" href="/core/sync/#Recursive_Mutex">Recursive_Mutex</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="recursive_mutex_try_lock"><span><a class="doc-id-link" href="#recursive_mutex_try_lock">recursive_mutex_try_lock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L126"><em>Source</em></a></div></h3>
+<h3 id="recursive_mutex_try_lock"><span><a class="doc-id-link" href="#recursive_mutex_try_lock">recursive_mutex_try_lock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L137"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">recursive_mutex_try_lock :: <span class="keyword-type">proc</span> "contextless" (m: ^<a class="code-typename" href="/core/sync/#Recursive_Mutex">Recursive_Mutex</a>) -> <a href="/core/builtin#bool"><span class="doc-builtin">bool</span></a> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="recursive_mutex_unlock"><span><a class="doc-id-link" href="#recursive_mutex_unlock">recursive_mutex_unlock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L122"><em>Source</em></a></div></h3>
+<h3 id="recursive_mutex_unlock"><span><a class="doc-id-link" href="#recursive_mutex_unlock">recursive_mutex_unlock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L133"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">recursive_mutex_unlock :: <span class="keyword-type">proc</span> "contextless" (m: ^<a class="code-typename" href="/core/sync/#Recursive_Mutex">Recursive_Mutex</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="rw_mutex_guard"><span><a class="doc-id-link" href="#rw_mutex_guard">rw_mutex_guard<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L91"><em>Source</em></a></div></h3>
+<h3 id="rw_mutex_guard"><span><a class="doc-id-link" href="#rw_mutex_guard">rw_mutex_guard<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L102"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">rw_mutex_guard :: <span class="keyword-type">proc</span> "contextless" (m: ^<a class="code-typename" href="/core/sync/#RW_Mutex">RW_Mutex</a>) -> <a href="/core/builtin#bool"><span class="doc-builtin">bool</span></a> {…}</pre>
 </div>
@@ -1653,7 +1662,7 @@ for a limited duration.</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="rw_mutex_lock"><span><a class="doc-id-link" href="#rw_mutex_lock">rw_mutex_lock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L56"><em>Source</em></a></div></h3>
+<h3 id="rw_mutex_lock"><span><a class="doc-id-link" href="#rw_mutex_lock">rw_mutex_lock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L67"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">rw_mutex_lock :: <span class="keyword-type">proc</span> "contextless" (rw: ^<a class="code-typename" href="/core/sync/#RW_Mutex">RW_Mutex</a>) {…}</pre>
 </div>
@@ -1664,7 +1673,7 @@ If the mutex is already locked for reading or writing, the mutex blocks until th
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="rw_mutex_shared_guard"><span><a class="doc-id-link" href="#rw_mutex_shared_guard">rw_mutex_shared_guard<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L103"><em>Source</em></a></div></h3>
+<h3 id="rw_mutex_shared_guard"><span><a class="doc-id-link" href="#rw_mutex_shared_guard">rw_mutex_shared_guard<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L114"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">rw_mutex_shared_guard :: <span class="keyword-type">proc</span> "contextless" (m: ^<a class="code-typename" href="/core/sync/#RW_Mutex">RW_Mutex</a>) -> <a href="/core/builtin#bool"><span class="doc-builtin">bool</span></a> {…}</pre>
 </div>
@@ -1678,7 +1687,7 @@ If the mutex is already locked for reading or writing, the mutex blocks until th
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="rw_mutex_shared_lock"><span><a class="doc-id-link" href="#rw_mutex_shared_lock">rw_mutex_shared_lock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L71"><em>Source</em></a></div></h3>
+<h3 id="rw_mutex_shared_lock"><span><a class="doc-id-link" href="#rw_mutex_shared_lock">rw_mutex_shared_lock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L82"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">rw_mutex_shared_lock :: <span class="keyword-type">proc</span> "contextless" (rw: ^<a class="code-typename" href="/core/sync/#RW_Mutex">RW_Mutex</a>) {…}</pre>
 </div>
@@ -1688,7 +1697,7 @@ If the mutex is already locked for reading or writing, the mutex blocks until th
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="rw_mutex_shared_unlock"><span><a class="doc-id-link" href="#rw_mutex_shared_unlock">rw_mutex_shared_unlock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L76"><em>Source</em></a></div></h3>
+<h3 id="rw_mutex_shared_unlock"><span><a class="doc-id-link" href="#rw_mutex_shared_unlock">rw_mutex_shared_unlock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L87"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">rw_mutex_shared_unlock :: <span class="keyword-type">proc</span> "contextless" (rw: ^<a class="code-typename" href="/core/sync/#RW_Mutex">RW_Mutex</a>) {…}</pre>
 </div>
@@ -1698,7 +1707,7 @@ If the mutex is already locked for reading or writing, the mutex blocks until th
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="rw_mutex_try_lock"><span><a class="doc-id-link" href="#rw_mutex_try_lock">rw_mutex_try_lock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L66"><em>Source</em></a></div></h3>
+<h3 id="rw_mutex_try_lock"><span><a class="doc-id-link" href="#rw_mutex_try_lock">rw_mutex_try_lock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L77"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">rw_mutex_try_lock :: <span class="keyword-type">proc</span> "contextless" (rw: ^<a class="code-typename" href="/core/sync/#RW_Mutex">RW_Mutex</a>) -> <a href="/core/builtin#bool"><span class="doc-builtin">bool</span></a> {…}</pre>
 </div>
@@ -1708,7 +1717,7 @@ If the mutex is already locked for reading or writing, the mutex blocks until th
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="rw_mutex_try_shared_lock"><span><a class="doc-id-link" href="#rw_mutex_try_shared_lock">rw_mutex_try_shared_lock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L81"><em>Source</em></a></div></h3>
+<h3 id="rw_mutex_try_shared_lock"><span><a class="doc-id-link" href="#rw_mutex_try_shared_lock">rw_mutex_try_shared_lock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L92"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">rw_mutex_try_shared_lock :: <span class="keyword-type">proc</span> "contextless" (rw: ^<a class="code-typename" href="/core/sync/#RW_Mutex">RW_Mutex</a>) -> <a href="/core/builtin#bool"><span class="doc-builtin">bool</span></a> {…}</pre>
 </div>
@@ -1718,7 +1727,7 @@ If the mutex is already locked for reading or writing, the mutex blocks until th
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="rw_mutex_unlock"><span><a class="doc-id-link" href="#rw_mutex_unlock">rw_mutex_unlock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L61"><em>Source</em></a></div></h3>
+<h3 id="rw_mutex_unlock"><span><a class="doc-id-link" href="#rw_mutex_unlock">rw_mutex_unlock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L72"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">rw_mutex_unlock :: <span class="keyword-type">proc</span> "contextless" (rw: ^<a class="code-typename" href="/core/sync/#RW_Mutex">RW_Mutex</a>) {…}</pre>
 </div>
@@ -1728,19 +1737,19 @@ If the mutex is already locked for reading or writing, the mutex blocks until th
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="sema_post"><span><a class="doc-id-link" href="#sema_post">sema_post<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L179"><em>Source</em></a></div></h3>
+<h3 id="sema_post"><span><a class="doc-id-link" href="#sema_post">sema_post<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L190"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">sema_post :: <span class="keyword-type">proc</span> "contextless" (s: ^<a class="code-typename" href="/core/sync/#Sema">Sema</a>, count: <a href="/core/builtin#int"><span class="doc-builtin">int</span></a> = 1) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="sema_wait"><span><a class="doc-id-link" href="#sema_wait">sema_wait<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L183"><em>Source</em></a></div></h3>
+<h3 id="sema_wait"><span><a class="doc-id-link" href="#sema_wait">sema_wait<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L194"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">sema_wait :: <span class="keyword-type">proc</span> "contextless" (s: ^<a class="code-typename" href="/core/sync/#Sema">Sema</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="sema_wait_with_timeout"><span><a class="doc-id-link" href="#sema_wait_with_timeout">sema_wait_with_timeout<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L187"><em>Source</em></a></div></h3>
+<h3 id="sema_wait_with_timeout"><span><a class="doc-id-link" href="#sema_wait_with_timeout">sema_wait_with_timeout<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L198"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">sema_wait_with_timeout :: <span class="keyword-type">proc</span> "contextless" (s: ^<a class="code-typename" href="/core/sync/#Sema">Sema</a>, duration: time.<a class="code-typename" href="/core/time/#Duration">Duration</a>) -> <a href="/core/builtin#bool"><span class="doc-builtin">bool</span></a> {…}</pre>
 </div>
@@ -2027,7 +2036,7 @@ If the mutex is already locked for reading or writing, the mutex blocks until th
 <li><em>(hidden platform specific files)</em></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2023-07 (vendor "odin") Windows_amd64 @ 2023-07-10 21:10:16.092545400 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2023-07 (vendor "odin") Windows_amd64 @ 2023-07-11 21:09:44.422586000 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
