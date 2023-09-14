@@ -348,7 +348,7 @@ Variables (21)</summary>
 <div>
 <details class="doc-index" id="doc-index-Procedures" aria-labelledby="#doc-index-Procedures-header">
 <summary id="#doc-index-Procedures-header">
-Procedures (371)</summary>
+Procedures (373)</summary>
 <ul>
 <li><a href="#AT">AT</a></li>
 <li><a href="#AllocateObject">AllocateObject</a></li>
@@ -378,7 +378,9 @@ Procedures (371)</summary>
 <li><a href="#AutoreleasePool_init">AutoreleasePool_init</a></li>
 <li><a href="#AutoreleasePool_showPools">AutoreleasePool_showPools</a></li>
 <li><a href="#Block_createGlobal">Block_createGlobal</a></li>
+<li><a href="#Block_createGlobalWithParam">Block_createGlobalWithParam</a></li>
 <li><a href="#Block_createLocal">Block_createLocal</a></li>
+<li><a href="#Block_createLocalWithParam">Block_createLocalWithParam</a></li>
 <li><a href="#Bundle_PathForAuxiliaryExecutable">Bundle_PathForAuxiliaryExecutable</a></li>
 <li><a href="#Bundle_URLForAuxiliaryExecutable">Bundle_URLForAuxiliaryExecutable</a></li>
 <li><a href="#Bundle_allBundles">Bundle_allBundles</a></li>
@@ -1049,7 +1051,7 @@ Procedure Groups (1)</summary>
 </ul>
 </div>
 <div class="pkg-entity">
-<h3 id="Block"><span><a class="doc-id-link" href="#Block">Block<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/darwin/Foundation/NSBlock.odin#L6"><em>Source</em></a></div></h3>
+<h3 id="Block"><span><a class="doc-id-link" href="#Block">Block<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/darwin/Foundation/NSBlock.odin#L8"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Block :: <span class="keyword-type">struct</span> {
 	<span class="keyword-type">using</span> _: <a class="code-typename" href="/vendor/darwin/Foundation/#Object">Object</a>,
@@ -1059,7 +1061,9 @@ Procedure Groups (1)</summary>
 <h5>Bound Objective-C Methods</h5>
 <ul>
 <li><a href="/vendor/darwin/Foundation/#Block_createGlobal">createGlobal</a>&nbsp;<em>(class method)</em></li>
+<li><a href="/vendor/darwin/Foundation/#Block_createGlobalWithParam">createGlobalWithParam</a>&nbsp;<em>(class method)</em></li>
 <li><a href="/vendor/darwin/Foundation/#Block_createLocal">createLocal</a>&nbsp;<em>(class method)</em></li>
+<li><a href="/vendor/darwin/Foundation/#Block_createLocalWithParam">createLocalWithParam</a>&nbsp;<em>(class method)</em></li>
 </ul>
 <h6>Methods Inherited From <a href="/vendor/darwin/Foundation/#Object">Object</a></h6>
 <ul>
@@ -4218,14 +4222,15 @@ self-><a href="#AutoreleasePool_showPools">showPools</a>(obj)
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="Block_createGlobal"><span><a class="doc-id-link" href="#Block_createGlobal">Block_createGlobal<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/darwin/Foundation/NSBlock.odin#L9"><em>Source</em></a></div></h3>
+<h3 id="Block_createGlobal"><span><a class="doc-id-link" href="#Block_createGlobal">Block_createGlobal<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/darwin/Foundation/NSBlock.odin#L11"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">Block_createGlobal :: <span class="keyword-type">proc</span> "c" (
+<pre class="doc-code">Block_createGlobal :: <span class="keyword-type">proc</span>(
 	user_data: <a href="/core/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>, 
 	user_proc: <span class="keyword-type">proc</span> "c" (
 	user_data: <a href="/core/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>, 
 ), 
-) -> ^<a class="code-typename" href="/vendor/darwin/Foundation/#Block">Block</a> {…}</pre>
+	allocator := <a href="/core/runtime/#Context">context.allocator</a>, 
+) -> (^<a class="code-typename" href="/vendor/darwin/Foundation/#Block">Block</a>, runtime.<a class="code-typename" href="/core/runtime/#Allocator_Error">Allocator_Error</a>) <span class="directive">#optional_ok</span> {…}</pre>
 <div>
 <h5>Objective-C Method Information</h5>
 <ul>
@@ -4236,17 +4241,47 @@ self-><a href="#AutoreleasePool_showPools">showPools</a>(obj)
 </div>
 <h5>Syntax Usage</h5>
 <pre>
-res := <a href="#Block">Block</a>.<a href="#Block_createGlobal">createGlobal</a>(
+res0, res1 := <a href="#Block">Block</a>.<a href="#Block_createGlobal">createGlobal</a>(
 	user_data,
 	user_proc,
+	allocator,
 )
 </pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="Block_createLocal"><span><a class="doc-id-link" href="#Block_createLocal">Block_createLocal<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/darwin/Foundation/NSBlock.odin#L14"><em>Source</em></a></div></h3>
+<h3 id="Block_createGlobalWithParam"><span><a class="doc-id-link" href="#Block_createGlobalWithParam">Block_createGlobalWithParam<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/darwin/Foundation/NSBlock.odin#L20"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">Block_createLocal :: <span class="keyword-type">proc</span> "c" (
+<pre class="doc-code">Block_createGlobalWithParam :: <span class="keyword-type">proc</span>(
+	user_data: <a href="/core/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>, 
+	user_proc: <span class="keyword-type">proc</span> "c" (
+	user_data: <a href="/core/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>, 
+	t:         $T, 
+), 
+	allocator := <a href="/core/runtime/#Context">context.allocator</a>, 
+) -> (^<a class="code-typename" href="/vendor/darwin/Foundation/#Block">Block</a>, runtime.<a class="code-typename" href="/core/runtime/#Allocator_Error">Allocator_Error</a>) <span class="directive">#optional_ok</span> {…}</pre>
+<div>
+<h5>Objective-C Method Information</h5>
+<ul>
+<li>Class: <a href="#Block">Block</a></li>
+<li>Name: <strong>createGlobalWithParam</strong></li>
+<li>Kind: <em>Class Method</em></li>
+</ul>
+</div>
+<h5>Syntax Usage</h5>
+<pre>
+res0, res1 := <a href="#Block">Block</a>.<a href="#Block_createGlobalWithParam">createGlobalWithParam</a>(
+	user_data,
+	user_proc,
+	allocator,
+)
+</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Block_createLocal"><span><a class="doc-id-link" href="#Block_createLocal">Block_createLocal<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/darwin/Foundation/NSBlock.odin#L15"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Block_createLocal :: <span class="keyword-type">proc</span>(
 	user_data: <a href="/core/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>, 
 	user_proc: <span class="keyword-type">proc</span> "c" (
 	user_data: <a href="/core/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>, 
@@ -4263,6 +4298,33 @@ res := <a href="#Block">Block</a>.<a href="#Block_createGlobal">createGlobal</a>
 <h5>Syntax Usage</h5>
 <pre>
 res := <a href="#Block">Block</a>.<a href="#Block_createLocal">createLocal</a>(
+	user_data,
+	user_proc,
+)
+</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Block_createLocalWithParam"><span><a class="doc-id-link" href="#Block_createLocalWithParam">Block_createLocalWithParam<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/vendor/darwin/Foundation/NSBlock.odin#L24"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Block_createLocalWithParam :: <span class="keyword-type">proc</span>(
+	user_data: <a href="/core/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>, 
+	user_proc: <span class="keyword-type">proc</span> "c" (
+	user_data: <a href="/core/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>, 
+	t:         $T, 
+), 
+) -> ^<a class="code-typename" href="/vendor/darwin/Foundation/#Block">Block</a> {…}</pre>
+<div>
+<h5>Objective-C Method Information</h5>
+<ul>
+<li>Class: <a href="#Block">Block</a></li>
+<li>Name: <strong>createLocalWithParam</strong></li>
+<li>Kind: <em>Class Method</em></li>
+</ul>
+</div>
+<h5>Syntax Usage</h5>
+<pre>
+res := <a href="#Block">Block</a>.<a href="#Block_createLocalWithParam">createLocalWithParam</a>(
 	user_data,
 	user_proc,
 )
@@ -10777,7 +10839,7 @@ res := <a href="#Number">Number</a>.<a href="#Number_numberWithBool">number</a>(
 <li><a href="https://github.com/odin-lang/Odin/tree/master/vendor/darwin/Foundation/objc.odin">objc.odin</a></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2023-09 (vendor "odin") Windows_amd64 @ 2023-09-13 21:06:54.641051600 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2023-09 (vendor "odin") Windows_amd64 @ 2023-09-14 21:08:53.041835800 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
@@ -10981,7 +11043,9 @@ res := <a href="#Number">Number</a>.<a href="#Number_numberWithBool">number</a>(
 <li><a href="#AutoreleasePool_init">AutoreleasePool_init</a></li>
 <li><a href="#AutoreleasePool_showPools">AutoreleasePool_showPools</a></li>
 <li><a href="#Block_createGlobal">Block_createGlobal</a></li>
+<li><a href="#Block_createGlobalWithParam">Block_createGlobalWithParam</a></li>
 <li><a href="#Block_createLocal">Block_createLocal</a></li>
+<li><a href="#Block_createLocalWithParam">Block_createLocalWithParam</a></li>
 <li><a href="#Bundle_PathForAuxiliaryExecutable">Bundle_PathForAuxiliaryExecutable</a></li>
 <li><a href="#Bundle_URLForAuxiliaryExecutable">Bundle_URLForAuxiliaryExecutable</a></li>
 <li><a href="#Bundle_allBundles">Bundle_allBundles</a></li>
