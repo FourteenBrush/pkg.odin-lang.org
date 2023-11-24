@@ -374,7 +374,7 @@ Variables (6)</summary>
 <div>
 <details class="doc-index" id="doc-index-Procedures" aria-labelledby="#doc-index-Procedures-header">
 <summary id="#doc-index-Procedures-header">
-Procedures (61)</summary>
+Procedures (63)</summary>
 <ul>
 <li><a href="#accept_tcp">accept_tcp</a></li>
 <li><a href="#address_to_string">address_to_string</a></li>
@@ -421,12 +421,14 @@ Procedures (61)</summary>
 <li><a href="#percent_decode">percent_decode</a></li>
 <li><a href="#percent_encode">percent_encode</a></li>
 <li><a href="#physical_address_to_string">physical_address_to_string</a></li>
+<li><a href="#recv_any">recv_any</a></li>
 <li><a href="#recv_tcp">recv_tcp</a></li>
 <li><a href="#recv_udp">recv_udp</a></li>
 <li><a href="#replace_environment_path">replace_environment_path</a></li>
 <li><a href="#resolve">resolve</a></li>
 <li><a href="#resolve_ip4">resolve_ip4</a></li>
 <li><a href="#resolve_ip6">resolve_ip6</a></li>
+<li><a href="#send_any">send_any</a></li>
 <li><a href="#send_tcp">send_tcp</a></li>
 <li><a href="#send_udp">send_udp</a></li>
 <li><a href="#set_blocking">set_blocking</a></li>
@@ -540,9 +542,13 @@ Procedure Groups (4)</summary>
 <li><a href="/core/net/#any_socket_to_socket">any_socket_to_socket</a></li>
 <li><a href="/core/net/#bind">bind</a></li>
 <li><a href="/core/net/#close">close</a></li>
+<li><a href="/core/net/#recv_any">recv_any</a></li>
+<li><a href="/core/net/#send_any">send_any</a></li>
 <li><a href="/core/net/#set_blocking">set_blocking</a></li>
 <li><a href="/core/net/#set_option">set_option</a></li>
 <li><a href="/core/net/#shutdown">shutdown</a></li>
+<li><a href="/core/net/#recv">recv</a>&nbsp;<em>(procedure groups)</em></li>
+<li><a href="/core/net/#send">send</a>&nbsp;<em>(procedure groups)</em></li>
 </ul>
 <h5>Related Procedures With Returns</h5>
 <ul>
@@ -1054,6 +1060,16 @@ These can be used for any purpose.
 <summary class="hideme"><span>&nbsp;</span></summary>
 <p>COMMON DEFINITIONS</p>
 </details>
+<h5>Related Procedures With Parameters</h5>
+<ul>
+<li><a href="/core/net/#send_any">send_any</a></li>
+<li><a href="/core/net/#send">send</a>&nbsp;<em>(procedure groups)</em></li>
+</ul>
+<h5>Related Procedures With Returns</h5>
+<ul>
+<li><a href="/core/net/#recv_any">recv_any</a></li>
+<li><a href="/core/net/#recv">recv</a>&nbsp;<em>(procedure groups)</em></li>
+</ul>
 </div>
 <div class="pkg-entity">
 <h3 id="Netmask"><span><a class="doc-id-link" href="#Netmask">Netmask<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/net/common.odin#L156"><em>Source</em></a></div></h3>
@@ -1100,11 +1116,13 @@ These can be used for any purpose.
 <li><a href="/core/net/#listen_tcp">listen_tcp</a></li>
 <li><a href="/core/net/#make_bound_udp_socket">make_bound_udp_socket</a></li>
 <li><a href="/core/net/#make_unbound_udp_socket">make_unbound_udp_socket</a></li>
+<li><a href="/core/net/#recv_any">recv_any</a></li>
 <li><a href="/core/net/#recv_tcp">recv_tcp</a></li>
 <li><a href="/core/net/#recv_udp">recv_udp</a></li>
 <li><a href="/core/net/#resolve">resolve</a></li>
 <li><a href="/core/net/#resolve_ip4">resolve_ip4</a></li>
 <li><a href="/core/net/#resolve_ip6">resolve_ip6</a></li>
+<li><a href="/core/net/#send_any">send_any</a></li>
 <li><a href="/core/net/#send_tcp">send_tcp</a></li>
 <li><a href="/core/net/#send_udp">send_udp</a></li>
 <li><a href="/core/net/#set_blocking">set_blocking</a></li>
@@ -2066,6 +2084,19 @@ Numbers will otherwise be considered to be in base 10.
 </details>
 </div>
 <div class="pkg-entity">
+<h3 id="recv_any"><span><a class="doc-id-link" href="#recv_any">recv_any<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/net/socket.odin#L157"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">recv_any :: <span class="keyword-type">proc</span>(socket: <a class="code-typename" href="/core/net/#Any_Socket">Any_Socket</a>, buf: []<a href="/core/builtin#u8"><span class="doc-builtin">u8</span></a>) -> (bytes_read: <a href="/core/builtin#int"><span class="doc-builtin">int</span></a>, remote_endpoint: runtime.<a class="code-typename" href="/core/runtime/#Maybe">Maybe</a>($T=Endpoint), err: <a class="code-typename" href="/core/net/#Network_Error">Network_Error</a>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Receive data from into a buffer from any socket.</p>
+<pre>Note: `remote_endpoint` parameter is non-nil only if the socket type is UDP. On TCP sockets it
+will always return `nil`.
+</pre>
+</details>
+</div>
+<div class="pkg-entity">
 <h3 id="recv_tcp"><span><a class="doc-id-link" href="#recv_tcp">recv_tcp<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/net/socket.odin#L143"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">recv_tcp :: <span class="keyword-type">proc</span>(socket: <a class="code-typename" href="/core/net/#TCP_Socket">TCP_Socket</a>, buf: []<a href="/core/builtin#u8"><span class="doc-builtin">u8</span></a>) -> (bytes_read: <a href="/core/builtin#int"><span class="doc-builtin">int</span></a>, err: <a class="code-typename" href="/core/net/#Network_Error">Network_Error</a>) {…}</pre>
@@ -2122,7 +2153,13 @@ back an endpoint in both cases.
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="send_tcp"><span><a class="doc-id-link" href="#send_tcp">send_tcp<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/net/socket.odin#L157"><em>Source</em></a></div></h3>
+<h3 id="send_any"><span><a class="doc-id-link" href="#send_any">send_any<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/net/socket.odin#L193"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">send_any :: <span class="keyword-type">proc</span>(socket: <a class="code-typename" href="/core/net/#Any_Socket">Any_Socket</a>, buf: []<a href="/core/builtin#u8"><span class="doc-builtin">u8</span></a>, to: runtime.<a class="code-typename" href="/core/runtime/#Maybe">Maybe</a>($T=Endpoint) = nil) -> (bytes_written: <a href="/core/builtin#int"><span class="doc-builtin">int</span></a>, err: <a class="code-typename" href="/core/net/#Network_Error">Network_Error</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="send_tcp"><span><a class="doc-id-link" href="#send_tcp">send_tcp<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/net/socket.odin#L179"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">send_tcp :: <span class="keyword-type">proc</span>(socket: <a class="code-typename" href="/core/net/#TCP_Socket">TCP_Socket</a>, buf: []<a href="/core/builtin#u8"><span class="doc-builtin">u8</span></a>) -> (bytes_written: <a href="/core/builtin#int"><span class="doc-builtin">int</span></a>, err: <a class="code-typename" href="/core/net/#Network_Error">Network_Error</a>) {…}</pre>
 </div>
@@ -2134,7 +2171,7 @@ back an endpoint in both cases.
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="send_udp"><span><a class="doc-id-link" href="#send_udp">send_udp<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/net/socket.odin#L167"><em>Source</em></a></div></h3>
+<h3 id="send_udp"><span><a class="doc-id-link" href="#send_udp">send_udp<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/net/socket.odin#L189"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">send_udp :: <span class="keyword-type">proc</span>(socket: <a class="code-typename" href="/core/net/#UDP_Socket">UDP_Socket</a>, buf: []<a href="/core/builtin#u8"><span class="doc-builtin">u8</span></a>, to: <a class="code-typename" href="/core/net/#Endpoint">Endpoint</a>) -> (bytes_written: <a href="/core/builtin#int"><span class="doc-builtin">int</span></a>, err: <a class="code-typename" href="/core/net/#Network_Error">Network_Error</a>) {…}</pre>
 </div>
@@ -2147,19 +2184,19 @@ UDP packets are not guarenteed to be received in order.
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="set_blocking"><span><a class="doc-id-link" href="#set_blocking">set_blocking<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/net/socket.odin#L181"><em>Source</em></a></div></h3>
+<h3 id="set_blocking"><span><a class="doc-id-link" href="#set_blocking">set_blocking<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/net/socket.odin#L216"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">set_blocking :: <span class="keyword-type">proc</span>(socket: <a class="code-typename" href="/core/net/#Any_Socket">Any_Socket</a>, should_block: <a href="/core/builtin#bool"><span class="doc-builtin">bool</span></a>) -> (err: <a class="code-typename" href="/core/net/#Network_Error">Network_Error</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="set_option"><span><a class="doc-id-link" href="#set_option">set_option<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/net/socket.odin#L177"><em>Source</em></a></div></h3>
+<h3 id="set_option"><span><a class="doc-id-link" href="#set_option">set_option<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/net/socket.odin#L212"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">set_option :: <span class="keyword-type">proc</span>(socket: <a class="code-typename" href="/core/net/#Any_Socket">Any_Socket</a>, option: <a class="code-typename" href="/core/net/#Socket_Option">Socket_Option</a>, value: <a href="/core/builtin#any"><span class="doc-builtin">any</span></a>, loc := <a href="/core/runtime/#Source_Code_Location">#caller_location</a>) -> <a class="code-typename" href="/core/net/#Network_Error">Network_Error</a> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="shutdown"><span><a class="doc-id-link" href="#shutdown">shutdown<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/net/socket.odin#L173"><em>Source</em></a></div></h3>
+<h3 id="shutdown"><span><a class="doc-id-link" href="#shutdown">shutdown<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/net/socket.odin#L208"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">shutdown :: <span class="keyword-type">proc</span>(socket: <a class="code-typename" href="/core/net/#Any_Socket">Any_Socket</a>, manner: <a class="code-typename" href="/core/net/#Shutdown_Manner">Shutdown_Manner</a>) -> (err: <a class="code-typename" href="/core/net/#Network_Error">Network_Error</a>) {…}</pre>
 </div>
@@ -2217,21 +2254,23 @@ Returns ok=false if port is not a number.</p>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="recv"><span><a class="doc-id-link" href="#recv">recv<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/net/socket.odin#L151"><em>Source</em></a></div></h3>
+<h3 id="recv"><span><a class="doc-id-link" href="#recv">recv<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/net/socket.odin#L173"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">recv :: proc{
 	<a class="code-procedure" href="/core/net/#recv_tcp">recv_tcp</a>,
 	<a class="code-procedure" href="/core/net/#recv_udp">recv_udp</a>,
+	<a class="code-procedure" href="/core/net/#recv_any">recv_any</a>,
 }
 </pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="send"><span><a class="doc-id-link" href="#send">send<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/net/socket.odin#L171"><em>Source</em></a></div></h3>
+<h3 id="send"><span><a class="doc-id-link" href="#send">send<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/net/socket.odin#L206"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">send :: proc{
 	<a class="code-procedure" href="/core/net/#send_tcp">send_tcp</a>,
 	<a class="code-procedure" href="/core/net/#send_udp">send_udp</a>,
+	<a class="code-procedure" href="/core/net/#send_any">send_any</a>,
 }
 </pre>
 </div>
@@ -2259,7 +2298,7 @@ Returns ok=false if port is not a number.</p>
 <li><em>(hidden platform specific files)</em></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2023-11 (vendor "odin") Windows_amd64 @ 2023-11-23 21:08:43.224301800 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2023-11 (vendor "odin") Windows_amd64 @ 2023-11-24 21:07:39.446002100 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
@@ -2396,12 +2435,14 @@ Returns ok=false if port is not a number.</p>
 <li><a href="#percent_decode">percent_decode</a></li>
 <li><a href="#percent_encode">percent_encode</a></li>
 <li><a href="#physical_address_to_string">physical_address_to_string</a></li>
+<li><a href="#recv_any">recv_any</a></li>
 <li><a href="#recv_tcp">recv_tcp</a></li>
 <li><a href="#recv_udp">recv_udp</a></li>
 <li><a href="#replace_environment_path">replace_environment_path</a></li>
 <li><a href="#resolve">resolve</a></li>
 <li><a href="#resolve_ip4">resolve_ip4</a></li>
 <li><a href="#resolve_ip6">resolve_ip6</a></li>
+<li><a href="#send_any">send_any</a></li>
 <li><a href="#send_tcp">send_tcp</a></li>
 <li><a href="#send_udp">send_udp</a></li>
 <li><a href="#set_blocking">set_blocking</a></li>
