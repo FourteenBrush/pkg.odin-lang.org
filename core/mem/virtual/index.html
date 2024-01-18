@@ -239,12 +239,15 @@
 <div>
 <details class="doc-index" id="doc-index-Types" aria-labelledby="#doc-index-Types-header">
 <summary id="#doc-index-Types-header">
-Types (9)</summary>
+Types (12)</summary>
 <ul>
 <li><a href="#Allocator_Error">Allocator_Error</a></li>
 <li><a href="#Arena">Arena</a></li>
 <li><a href="#Arena_Kind">Arena_Kind</a></li>
 <li><a href="#Arena_Temp">Arena_Temp</a></li>
+<li><a href="#Map_File_Error">Map_File_Error</a></li>
+<li><a href="#Map_File_Flag">Map_File_Flag</a></li>
+<li><a href="#Map_File_Flags">Map_File_Flags</a></li>
 <li><a href="#Memory_Block">Memory_Block</a></li>
 <li><a href="#Memory_Block_Flag">Memory_Block_Flag</a></li>
 <li><a href="#Memory_Block_Flags">Memory_Block_Flags</a></li>
@@ -277,7 +280,7 @@ Variables (1)</summary>
 <div>
 <details class="doc-index" id="doc-index-Procedures" aria-labelledby="#doc-index-Procedures-header">
 <summary id="#doc-index-Procedures-header">
-Procedures (27)</summary>
+Procedures (29)</summary>
 <ul>
 <li><a href="#alloc_from_memory_block">alloc_from_memory_block</a></li>
 <li><a href="#arena_alloc">arena_alloc</a></li>
@@ -300,6 +303,8 @@ Procedures (27)</summary>
 <li><a href="#arena_temp_ignore">arena_temp_ignore</a></li>
 <li><a href="#commit">commit</a></li>
 <li><a href="#decommit">decommit</a></li>
+<li><a href="#map_file_from_file_descriptor">map_file_from_file_descriptor</a></li>
+<li><a href="#map_file_from_path">map_file_from_path</a></li>
 <li><a href="#memory_block_alloc">memory_block_alloc</a></li>
 <li><a href="#memory_block_dealloc">memory_block_dealloc</a></li>
 <li><a href="#protect">protect</a></li>
@@ -312,10 +317,11 @@ Procedures (27)</summary>
 <div>
 <details class="doc-index" id="doc-index-Procedure Groups" aria-labelledby="#doc-index-Procedure Groups-header">
 <summary id="#doc-index-Procedure Groups-header">
-Procedure Groups (2)</summary>
+Procedure Groups (3)</summary>
 <ul>
 <li><a href="#arena_growing_bootstrap_new">arena_growing_bootstrap_new</a></li>
 <li><a href="#arena_static_bootstrap_new">arena_static_bootstrap_new</a></li>
+<li><a href="#map_file">map_file</a></li>
 </ul>
 </details>
 </div>
@@ -397,6 +403,46 @@ All uses of an <code>Arena_Temp</code> must be handled by ending them with <code
 <h5>Related Procedures With Returns</h5>
 <ul>
 <li><a href="/core/mem/virtual/#arena_temp_begin">arena_temp_begin</a></li>
+</ul>
+</div>
+<div class="pkg-entity">
+<h3 id="Map_File_Error"><span><a class="doc-id-link" href="#Map_File_Error">Map_File_Error<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/file.odin#L5"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Map_File_Error :: <span class="keyword-type">enum</span> <a href="/core/builtin#int"><span class="doc-builtin">int</span></a> {
+	None, 
+	Open_Failure, 
+	Stat_Failure, 
+	Negative_Size, 
+	Too_Large_Size, 
+	Map_Failure, 
+}</pre>
+</div>
+<h5>Related Procedures With Returns</h5>
+<ul>
+<li><a href="/core/mem/virtual/#map_file_from_file_descriptor">map_file_from_file_descriptor</a></li>
+<li><a href="/core/mem/virtual/#map_file_from_path">map_file_from_path</a></li>
+<li><a href="/core/mem/virtual/#map_file">map_file</a>&nbsp;<em>(procedure groups)</em></li>
+</ul>
+</div>
+<div class="pkg-entity">
+<h3 id="Map_File_Flag"><span><a class="doc-id-link" href="#Map_File_Flag">Map_File_Flag<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/file.odin#L14"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Map_File_Flag :: <span class="keyword-type">enum</span> <a href="/core/builtin#u32"><span class="doc-builtin">u32</span></a> {
+	Read, 
+	Write, 
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Map_File_Flags"><span><a class="doc-id-link" href="#Map_File_Flags">Map_File_Flags<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/file.odin#L18"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Map_File_Flags :: <span class="keyword-type">distinct</span> <span class="keyword-type">bit_set</span>[<a class="code-typename" href="/core/mem/virtual/#Map_File_Flag">Map_File_Flag</a>; <a href="/core/builtin#u32"><span class="doc-builtin">u32</span></a>]</pre>
+</div>
+<h5>Related Procedures With Parameters</h5>
+<ul>
+<li><a href="/core/mem/virtual/#map_file_from_file_descriptor">map_file_from_file_descriptor</a></li>
+<li><a href="/core/mem/virtual/#map_file_from_path">map_file_from_path</a></li>
+<li><a href="/core/mem/virtual/#map_file">map_file</a>&nbsp;<em>(procedure groups)</em></li>
 </ul>
 </div>
 <div class="pkg-entity">
@@ -709,6 +755,18 @@ A static arena contains a single <code>Memory_Block</code> allocated with virtua
 </div>
 </div>
 <div class="pkg-entity">
+<h3 id="map_file_from_file_descriptor"><span><a class="doc-id-link" href="#map_file_from_file_descriptor">map_file_from_file_descriptor<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/file.odin#L35"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">map_file_from_file_descriptor :: <span class="keyword-type">proc</span>(fd: <a href="/core/builtin#uintptr"><span class="doc-builtin">uintptr</span></a>, flags: <a class="code-typename" href="/core/mem/virtual/#Map_File_Flags">Map_File_Flags</a>) -> (data: []<a href="/core/builtin#u8"><span class="doc-builtin">u8</span></a>, error: <a class="code-typename" href="/core/mem/virtual/#Map_File_Error">Map_File_Error</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="map_file_from_path"><span><a class="doc-id-link" href="#map_file_from_path">map_file_from_path<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/file.odin#L25"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">map_file_from_path :: <span class="keyword-type">proc</span>(filename: <a href="/core/builtin#string"><span class="doc-builtin">string</span></a>, flags: <a class="code-typename" href="/core/mem/virtual/#Map_File_Flags">Map_File_Flags</a>) -> (data: []<a href="/core/builtin#u8"><span class="doc-builtin">u8</span></a>, error: <a class="code-typename" href="/core/mem/virtual/#Map_File_Error">Map_File_Error</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
 <h3 id="memory_block_alloc"><span><a class="doc-id-link" href="#memory_block_alloc">memory_block_alloc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/virtual.odin#L71"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">memory_block_alloc :: <span class="keyword-type">proc</span>(committed, reserved: <a href="/core/builtin#uint"><span class="doc-builtin">uint</span></a>, alignment: <a href="/core/builtin#uint"><span class="doc-builtin">uint</span></a> = 0, flags: <a class="code-typename" href="/core/mem/virtual/#Memory_Block_Flags">Memory_Block_Flags</a> = {}) -> (block: ^<a class="code-typename" href="/core/mem/virtual/#Memory_Block">Memory_Block</a>, err: runtime.<a class="code-typename" href="/core/runtime/#Allocator_Error">Allocator_Error</a>) {…}</pre>
@@ -773,16 +831,27 @@ A static arena contains a single <code>Memory_Block</code> allocated with virtua
 <p>Ability to bootstrap allocate a struct with an arena within the struct itself using the static variant strategy.</p>
 </details>
 </div>
+<div class="pkg-entity">
+<h3 id="map_file"><span><a class="doc-id-link" href="#map_file">map_file<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/file.odin#L20"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">map_file :: proc{
+	<a class="code-procedure" href="/core/mem/virtual/#map_file_from_path">map_file_from_path</a>,
+	<a class="code-procedure" href="/core/mem/virtual/#map_file_from_file_descriptor">map_file_from_file_descriptor</a>,
+}
+</pre>
+</div>
+</div>
 </section>
 <h2 id="pkg-source-files">Source Files</h2>
 <ul>
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/arena.odin">arena.odin</a></li>
+<li><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/file.odin">file.odin</a></li>
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/virtual.odin">virtual.odin</a></li>
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/virtual_platform.odin">virtual_platform.odin</a></li>
 <li><em>(hidden platform specific files)</em></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2024-01 (vendor "odin") Windows_amd64 @ 2024-01-17 21:09:09.997889200 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2024-01 (vendor "odin") Windows_amd64 @ 2024-01-18 21:09:22.926403100 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
@@ -792,6 +861,9 @@ A static arena contains a single <code>Memory_Block</code> allocated with virtua
 <li><a href="#Arena">Arena</a></li>
 <li><a href="#Arena_Kind">Arena_Kind</a></li>
 <li><a href="#Arena_Temp">Arena_Temp</a></li>
+<li><a href="#Map_File_Error">Map_File_Error</a></li>
+<li><a href="#Map_File_Flag">Map_File_Flag</a></li>
+<li><a href="#Map_File_Flags">Map_File_Flags</a></li>
 <li><a href="#Memory_Block">Memory_Block</a></li>
 <li><a href="#Memory_Block_Flag">Memory_Block_Flag</a></li>
 <li><a href="#Memory_Block_Flags">Memory_Block_Flags</a></li>
@@ -832,6 +904,8 @@ A static arena contains a single <code>Memory_Block</code> allocated with virtua
 <li><a href="#arena_temp_ignore">arena_temp_ignore</a></li>
 <li><a href="#commit">commit</a></li>
 <li><a href="#decommit">decommit</a></li>
+<li><a href="#map_file_from_file_descriptor">map_file_from_file_descriptor</a></li>
+<li><a href="#map_file_from_path">map_file_from_path</a></li>
 <li><a href="#memory_block_alloc">memory_block_alloc</a></li>
 <li><a href="#memory_block_dealloc">memory_block_dealloc</a></li>
 <li><a href="#protect">protect</a></li>
@@ -843,6 +917,7 @@ A static arena contains a single <code>Memory_Block</code> allocated with virtua
 <li><a href="#pkg-Procedure Groups">Procedure Groups</a><ul>
 <li><a href="#arena_growing_bootstrap_new">arena_growing_bootstrap_new</a></li>
 <li><a href="#arena_static_bootstrap_new">arena_static_bootstrap_new</a></li>
+<li><a href="#map_file">map_file</a></li>
 </ul>
 </li>
 <li><a href="#pkg-source-files">Source Files</a></ul>
