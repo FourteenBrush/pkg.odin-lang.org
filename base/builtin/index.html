@@ -87,7 +87,7 @@
 <div>
 <details class="doc-index" id="doc-index-Constants" aria-labelledby="#doc-index-Constants-header">
 <summary id="#doc-index-Constants-header">
-Constants (10)</summary>
+Constants (21)</summary>
 <ul>
 <li><a href="#nil">nil</a></li>
 <li><a href="#false">false</a></li>
@@ -95,10 +95,21 @@ Constants (10)</summary>
 <li><a href="#ODIN_OS">ODIN_OS</a></li>
 <li><a href="#ODIN_ARCH">ODIN_ARCH</a></li>
 <li><a href="#ODIN_ENDIAN">ODIN_ENDIAN</a></li>
+<li><a href="#ODIN_BUILD_MODE">ODIN_BUILD_MODE</a></li>
+<li><a href="#ODIN_ERROR_POS_STYLE">ODIN_ERROR_POS_STYLE</a></li>
+<li><a href="#ODIN_PLATFORM_SUBTARGET">ODIN_PLATFORM_SUBTARGET</a></li>
+<li><a href="#ODIN_WINDOWS_SUBSYSTEM">ODIN_WINDOWS_SUBSYSTEM</a></li>
 <li><a href="#ODIN_VENDOR">ODIN_VENDOR</a></li>
 <li><a href="#ODIN_VERSION">ODIN_VERSION</a></li>
 <li><a href="#ODIN_ROOT">ODIN_ROOT</a></li>
 <li><a href="#ODIN_DEBUG">ODIN_DEBUG</a></li>
+<li><a href="#ODIN_DISABLE_ASSERT">ODIN_DISABLE_ASSERT</a></li>
+<li><a href="#ODIN_DEFAULT_TO_NIL_ALLOCATOR">ODIN_DEFAULT_TO_NIL_ALLOCATOR</a></li>
+<li><a href="#ODIN_DEFAULT_TO_PANIC_ALLOCATOR">ODIN_DEFAULT_TO_PANIC_ALLOCATOR</a></li>
+<li><a href="#ODIN_NO_CRT">ODIN_NO_CRT</a></li>
+<li><a href="#ODIN_NO_ENTRY_POINT">ODIN_NO_ENTRY_POINT</a></li>
+<li><a href="#ODIN_NO_RTTI">ODIN_NO_RTTI</a></li>
+<li><a href="#ODIN_COMPILE_TIMESTAMP">ODIN_COMPILE_TIMESTAMP</a></li>
 </ul>
 </details>
 </div>
@@ -381,6 +392,63 @@ Procedure Groups (19)</summary>
 </details>
 </div>
 <div class="pkg-entity">
+<h3 id="ODIN_BUILD_MODE"><span><a class="doc-id-link" href="#ODIN_BUILD_MODE">ODIN_BUILD_MODE<span class="a-hidden">&nbsp;¶</span></a></span></h3>
+<div>
+<pre class="doc-code">ODIN_BUILD_MODE : runtime.<a href="/base/runtime#Odin_Build_Mode_Type">Odin_Build_Mode_Type</a> : …</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>An enum value specifying the "build-mode".</p>
+<p>// Defined internally by the compiler</p>
+<pre>Odin_Build_Mode_Type :: enum int {
+	Executable,
+	Dynamic,
+	Object,
+	Assembly,
+	LLVM_IR,
+}
+</pre>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="ODIN_ERROR_POS_STYLE"><span><a class="doc-id-link" href="#ODIN_ERROR_POS_STYLE">ODIN_ERROR_POS_STYLE<span class="a-hidden">&nbsp;¶</span></a></span></h3>
+<div>
+<pre class="doc-code">ODIN_ERROR_POS_STYLE : runtime.<a href="/base/runtime#Odin_Error_Pos_Style_Type">Odin_Error_Pos_Style_Type</a> : …</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>An enum value specifying whether errors should be stylized in the default (MSVC-like) style or a UNIX (GCC-like) style.</p>
+<p><span class="doc-list">Default = `path(1:2)</span>
+<span class="doc-list">Unix = `path:1:2:</span></p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="ODIN_PLATFORM_SUBTARGET"><span><a class="doc-id-link" href="#ODIN_PLATFORM_SUBTARGET">ODIN_PLATFORM_SUBTARGET<span class="a-hidden">&nbsp;¶</span></a></span></h3>
+<div>
+<pre class="doc-code">ODIN_PLATFORM_SUBTARGET : runtime.<a href="/base/runtime#Odin_Platform_Subtarget_Type">Odin_Platform_Subtarget_Type</a> : …</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>An enum value specifying the selected subtarget type, only useful for Darwin targets.</p>
+<p>// Defined internally by the compiler</p>
+<pre>Odin_Platform_Subtarget_Type :: enum int {
+	Default,
+	iOS,
+}
+</pre>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="ODIN_WINDOWS_SUBSYSTEM"><span><a class="doc-id-link" href="#ODIN_WINDOWS_SUBSYSTEM">ODIN_WINDOWS_SUBSYSTEM<span class="a-hidden">&nbsp;¶</span></a></span></h3>
+<div>
+<pre class="doc-code">ODIN_WINDOWS_SUBSYSTEM :: … <span class="comment">// untyped string</span></pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>A string specifying the current Windows subsystem, only useful on Windows targets.</p>
+</details>
+</div>
+<div class="pkg-entity">
 <h3 id="ODIN_VENDOR"><span><a class="doc-id-link" href="#ODIN_VENDOR">ODIN_VENDOR<span class="a-hidden">&nbsp;¶</span></a></span></h3>
 <div>
 <pre class="doc-code">ODIN_VENDOR :: … <span class="comment">// untyped string</span></pre>
@@ -418,6 +486,76 @@ Procedure Groups (19)</summary>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
 <p>Equal to <code>true</code> if the <code>-debug</code> flag has been set during compilation, otherwise <code>false</code>.</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="ODIN_DISABLE_ASSERT"><span><a class="doc-id-link" href="#ODIN_DISABLE_ASSERT">ODIN_DISABLE_ASSERT<span class="a-hidden">&nbsp;¶</span></a></span></h3>
+<div>
+<pre class="doc-code">ODIN_DISABLE_ASSERT :: … <span class="comment">// untyped boolean</span></pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Equal to <code>true</code> if the <code>-disable-assert</code> flag has been set during compilation, otherwise <code>false</code>.</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="ODIN_DEFAULT_TO_NIL_ALLOCATOR"><span><a class="doc-id-link" href="#ODIN_DEFAULT_TO_NIL_ALLOCATOR">ODIN_DEFAULT_TO_NIL_ALLOCATOR<span class="a-hidden">&nbsp;¶</span></a></span></h3>
+<div>
+<pre class="doc-code">ODIN_DEFAULT_TO_NIL_ALLOCATOR :: … <span class="comment">// untyped boolean</span></pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Equal to <code>true</code> if the <code>-default-to-nil-allocator</code> flag has been set during compilation or whether the current target defaults to the "nil allocator", otherwise <code>false</code>.</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="ODIN_DEFAULT_TO_PANIC_ALLOCATOR"><span><a class="doc-id-link" href="#ODIN_DEFAULT_TO_PANIC_ALLOCATOR">ODIN_DEFAULT_TO_PANIC_ALLOCATOR<span class="a-hidden">&nbsp;¶</span></a></span></h3>
+<div>
+<pre class="doc-code">ODIN_DEFAULT_TO_PANIC_ALLOCATOR :: … <span class="comment">// untyped boolean</span></pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Equal to <code>true</code> if the <code>-default-to-panic-allocator</code> flag has been set during compilation or whether the current target defaults to the "panic allocator", otherwise <code>false</code>.</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="ODIN_NO_CRT"><span><a class="doc-id-link" href="#ODIN_NO_CRT">ODIN_NO_CRT<span class="a-hidden">&nbsp;¶</span></a></span></h3>
+<div>
+<pre class="doc-code">ODIN_NO_CRT :: … <span class="comment">// untyped boolean</span></pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Equal to <code>true</code> if the <code>-no-crt</code> flag has been set during compilation (disallowing the C Run-Time library), otherwise <code>false</code>.</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="ODIN_NO_ENTRY_POINT"><span><a class="doc-id-link" href="#ODIN_NO_ENTRY_POINT">ODIN_NO_ENTRY_POINT<span class="a-hidden">&nbsp;¶</span></a></span></h3>
+<div>
+<pre class="doc-code">ODIN_NO_ENTRY_POINT :: … <span class="comment">// untyped boolean</span></pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Equal to <code>true</code> if the <code>-no-entry-point</code> flag has been set during compilation, otherwise <code>false</code>.</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="ODIN_NO_RTTI"><span><a class="doc-id-link" href="#ODIN_NO_RTTI">ODIN_NO_RTTI<span class="a-hidden">&nbsp;¶</span></a></span></h3>
+<div>
+<pre class="doc-code">ODIN_NO_RTTI :: … <span class="comment">// untyped boolean</span></pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Equal to <code>true</code> if the <code>-no-rtti</code> flag has been set during compilation (disabling Odin's Run-Time Type Information, only allowed on freestanding targets), otherwise <code>false</code>.</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="ODIN_COMPILE_TIMESTAMP"><span><a class="doc-id-link" href="#ODIN_COMPILE_TIMESTAMP">ODIN_COMPILE_TIMESTAMP<span class="a-hidden">&nbsp;¶</span></a></span></h3>
+<div>
+<pre class="doc-code">ODIN_COMPILE_TIMESTAMP :: … <span class="comment">// untyped integer</span></pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Equal to the UNIX timestamp in nanoseconds at the time of the program's compilation.</p>
 </details>
 </div>
 <h2 id="pkg-Types" class="pkg-header">Types</h2>
@@ -2071,10 +2209,21 @@ Make uses the specified allocator, default is context.allocator.</p>
 <li><a href="#ODIN_OS">ODIN_OS</a></li>
 <li><a href="#ODIN_ARCH">ODIN_ARCH</a></li>
 <li><a href="#ODIN_ENDIAN">ODIN_ENDIAN</a></li>
+<li><a href="#ODIN_BUILD_MODE">ODIN_BUILD_MODE</a></li>
+<li><a href="#ODIN_ERROR_POS_STYLE">ODIN_ERROR_POS_STYLE</a></li>
+<li><a href="#ODIN_PLATFORM_SUBTARGET">ODIN_PLATFORM_SUBTARGET</a></li>
+<li><a href="#ODIN_WINDOWS_SUBSYSTEM">ODIN_WINDOWS_SUBSYSTEM</a></li>
 <li><a href="#ODIN_VENDOR">ODIN_VENDOR</a></li>
 <li><a href="#ODIN_VERSION">ODIN_VERSION</a></li>
 <li><a href="#ODIN_ROOT">ODIN_ROOT</a></li>
 <li><a href="#ODIN_DEBUG">ODIN_DEBUG</a></li>
+<li><a href="#ODIN_DISABLE_ASSERT">ODIN_DISABLE_ASSERT</a></li>
+<li><a href="#ODIN_DEFAULT_TO_NIL_ALLOCATOR">ODIN_DEFAULT_TO_NIL_ALLOCATOR</a></li>
+<li><a href="#ODIN_DEFAULT_TO_PANIC_ALLOCATOR">ODIN_DEFAULT_TO_PANIC_ALLOCATOR</a></li>
+<li><a href="#ODIN_NO_CRT">ODIN_NO_CRT</a></li>
+<li><a href="#ODIN_NO_ENTRY_POINT">ODIN_NO_ENTRY_POINT</a></li>
+<li><a href="#ODIN_NO_RTTI">ODIN_NO_RTTI</a></li>
+<li><a href="#ODIN_COMPILE_TIMESTAMP">ODIN_COMPILE_TIMESTAMP</a></li>
 </ul>
 </li>
 <li>
