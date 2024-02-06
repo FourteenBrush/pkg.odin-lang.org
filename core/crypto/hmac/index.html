@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>package crypto/chacha20poly1305 - pkg.odin-lang.org</title>	<link rel="stylesheet" type="text/css" href="https://odin-lang.org/scss/custom.min.css">
+	<title>package crypto/hmac - pkg.odin-lang.org</title>	<link rel="stylesheet" type="text/css" href="https://odin-lang.org/scss/custom.min.css">
 	<link rel=stylesheet href="//odin-lang.org/lib/highlight/styles/github-dark.min.css">
 	<script src="//odin-lang.org/lib/highlight/highlight.min.js"></script>
 
@@ -74,9 +74,9 @@
 <li><a href="/core/crypto/blake2b">blake2b</a></li>
 <li><a href="/core/crypto/blake2s">blake2s</a></li>
 <li><a href="/core/crypto/chacha20">chacha20</a></li>
-<li><a class="active" href="/core/crypto/chacha20poly1305">chacha20poly1305</a></li>
+<li><a href="/core/crypto/chacha20poly1305">chacha20poly1305</a></li>
 <li><a href="/core/crypto/hash">hash</a></li>
-<li><a href="/core/crypto/hmac">hmac</a></li>
+<li><a class="active" href="/core/crypto/hmac">hmac</a></li>
 <li><a href="/core/crypto/legacy/keccak">legacy/keccak</a></li>
 <li><a href="/core/crypto/legacy/md5">legacy/md5</a></li>
 <li><a href="/core/crypto/legacy/sha1">legacy/sha1</a></li>
@@ -209,10 +209,10 @@
 <ol class="breadcrumb">
 <li class="breadcrumb-item"><a href="/core">core</a></li>
 <li class="breadcrumb-item"><a href="/core/crypto">crypto</a></li>
-<li class="breadcrumb-item active" aria-current="page"><a href="/core/crypto/chacha20poly1305">chacha20poly1305</a></li>
+<li class="breadcrumb-item active" aria-current="page"><a href="/core/crypto/hmac">hmac</a></li>
 </ol>
 </nav>
-<h1>package core:crypto/chacha20poly1305<div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/chacha20poly1305"><em>Source</em></a></div></h1>
+<h1>package core:crypto/hmac<div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/hmac"><em>Source</em></a></div></h1>
 
 		<div class="odin-search-wrapper">
 			<input type="search" id="odin-search" class="odin-search-package" autocomplete="off" spellcheck="false" placeholder="Fuzzy Search...">
@@ -234,24 +234,28 @@
 </div>
 <ul id="odin-search-results"></ul>
 <div id="pkg-top">
+<h2>Overview</h2>
+<div id="pkg-overview">
+<p>package hmac implements the HMAC MAC algorithm.</p>
+<p>See:
+<span class="doc-list">https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.198-1.pdf</span></p>
+</div>
 <div id="pkg-index">
 <h2>Index</h2>
 <div>
 <details class="doc-index" id="doc-index-Types" aria-labelledby="#doc-index-Types-header">
 <summary id="#doc-index-Types-header">
-Types (0)</summary>
-<p class="pkg-empty-section">This section is empty.</p>
+Types (1)</summary>
+<ul>
+<li><a href="#Context">Context</a></li>
+</ul>
 </details>
 </div>
 <div>
 <details class="doc-index" id="doc-index-Constants" aria-labelledby="#doc-index-Constants-header">
 <summary id="#doc-index-Constants-header">
-Constants (3)</summary>
-<ul>
-<li><a href="#KEY_SIZE">KEY_SIZE</a></li>
-<li><a href="#NONCE_SIZE">NONCE_SIZE</a></li>
-<li><a href="#TAG_SIZE">TAG_SIZE</a></li>
-</ul>
+Constants (0)</summary>
+<p class="pkg-empty-section">This section is empty.</p>
 </details>
 </div>
 <div>
@@ -264,10 +268,16 @@ Variables (0)</summary>
 <div>
 <details class="doc-index" id="doc-index-Procedures" aria-labelledby="#doc-index-Procedures-header">
 <summary id="#doc-index-Procedures-header">
-Procedures (2)</summary>
+Procedures (8)</summary>
 <ul>
-<li><a href="#decrypt">decrypt</a></li>
-<li><a href="#encrypt">encrypt</a></li>
+<li><a href="#algorithm">algorithm</a></li>
+<li><a href="#final">final</a></li>
+<li><a href="#init">init</a></li>
+<li><a href="#reset">reset</a></li>
+<li><a href="#sum">sum</a></li>
+<li><a href="#tag_size">tag_size</a></li>
+<li><a href="#update">update</a></li>
+<li><a href="#verify">verify</a></li>
 </ul>
 </details>
 </div>
@@ -282,75 +292,156 @@ Procedure Groups (0)</summary>
 </div>
 <section class="documentation">
 <h2 id="pkg-Types" class="pkg-header">Types</h2>
-<p class="pkg-empty-section">This section is empty.</p>
+<div class="pkg-entity">
+<h3 id="Context"><span><a class="doc-id-link" href="#Context">Context<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/hmac/hmac.odin#L38"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Context :: <span class="keyword-type">struct</span> {
+	_o_hash:         crypto_hash.<a class="code-typename" href="/core/crypto/hash/#Context">Context</a>,
+	<span class="comment">// H(k ^ ipad) (not finalized)</span>
+	_i_hash:         crypto_hash.<a class="code-typename" href="/core/crypto/hash/#Context">Context</a>,
+	<span class="comment">// H(k ^ opad) (not finalized)</span>
+	_tag_sz:         <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>,
+	_is_initialized: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>,
+}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Context is a concrete instantiation of HMAC with a specific hash
+algorithm.</p>
+</details>
+<h5>Related Procedures With Parameters</h5>
+<ul>
+<li><a href="/core/crypto/hmac/#algorithm">algorithm</a></li>
+<li><a href="/core/crypto/hmac/#final">final</a></li>
+<li><a href="/core/crypto/hmac/#init">init</a></li>
+<li><a href="/core/crypto/hmac/#reset">reset</a></li>
+<li><a href="/core/crypto/hmac/#tag_size">tag_size</a></li>
+<li><a href="/core/crypto/hmac/#update">update</a></li>
+</ul>
+</div>
 <h2 id="pkg-Constants" class="pkg-header">Constants</h2>
-<div class="pkg-entity">
-<h3 id="KEY_SIZE"><span><a class="doc-id-link" href="#KEY_SIZE">KEY_SIZE<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/chacha20poly1305/chacha20poly1305.odin#L9"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">KEY_SIZE :: chacha20.KEY_SIZE</pre>
-</div>
-</div>
-<div class="pkg-entity">
-<h3 id="NONCE_SIZE"><span><a class="doc-id-link" href="#NONCE_SIZE">NONCE_SIZE<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/chacha20poly1305/chacha20poly1305.odin#L10"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">NONCE_SIZE :: chacha20.NONCE_SIZE</pre>
-</div>
-</div>
-<div class="pkg-entity">
-<h3 id="TAG_SIZE"><span><a class="doc-id-link" href="#TAG_SIZE">TAG_SIZE<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/chacha20poly1305/chacha20poly1305.odin#L11"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">TAG_SIZE :: poly1305.TAG_SIZE</pre>
-</div>
-</div>
+<p class="pkg-empty-section">This section is empty.</p>
 <h2 id="pkg-Variables" class="pkg-header">Variables</h2>
 <p class="pkg-empty-section">This section is empty.</p>
 <h2 id="pkg-Procedures" class="pkg-header">Procedures</h2>
 <div class="pkg-entity">
-<h3 id="decrypt"><span><a class="doc-id-link" href="#decrypt">decrypt<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/chacha20poly1305/chacha20poly1305.odin#L98"><em>Source</em></a></div></h3>
+<h3 id="algorithm"><span><a class="doc-id-link" href="#algorithm">algorithm<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/hmac/hmac.odin#L95"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">decrypt :: <span class="keyword-type">proc</span>(
-	plaintext, tag, key, nonce, aad, 
-	ciphertext:                      []<a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a>, 
-) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> {…}</pre>
+<pre class="doc-code">algorithm :: <span class="keyword-type">proc</span>(ctx: ^<a class="code-typename" href="/core/crypto/hmac/#Context">Context</a>) -> crypto_hash.<a class="code-typename" href="/core/crypto/hash/#Algorithm">Algorithm</a> {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>algorithm returns the Algorithm used by a Context instance.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="encrypt"><span><a class="doc-id-link" href="#encrypt">encrypt<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/chacha20poly1305/chacha20poly1305.odin#L52"><em>Source</em></a></div></h3>
+<h3 id="final"><span><a class="doc-id-link" href="#final">final<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/hmac/hmac.odin#L66"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">encrypt :: <span class="keyword-type">proc</span>(
-	ciphertext, tag, key, nonce, aad, 
-	plaintext:                        []<a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a>, 
-) {…}</pre>
+<pre class="doc-code">final :: <span class="keyword-type">proc</span>(ctx: ^<a class="code-typename" href="/core/crypto/hmac/#Context">Context</a>, dst: []<a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>final finalizes the Context, writes the tag to dst, and calls
+reset on the Context.</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="init"><span><a class="doc-id-link" href="#init">init<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/hmac/hmac.odin#L46"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">init :: <span class="keyword-type">proc</span>(ctx: ^<a class="code-typename" href="/core/crypto/hmac/#Context">Context</a>, algorithm: crypto_hash.<a class="code-typename" href="/core/crypto/hash/#Algorithm">Algorithm</a>, key: []<a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>init initializes a Context with a specific hash Algorithm and key.</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="reset"><span><a class="doc-id-link" href="#reset">reset<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/hmac/hmac.odin#L83"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">reset :: <span class="keyword-type">proc</span>(ctx: ^<a class="code-typename" href="/core/crypto/hmac/#Context">Context</a>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>reset sanitizes the Context.  The Context must be re-initialized to
+be used again.</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="sum"><span><a class="doc-id-link" href="#sum">sum<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/hmac/hmac.odin#L16"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">sum :: <span class="keyword-type">proc</span>(algorithm: crypto_hash.<a class="code-typename" href="/core/crypto/hash/#Algorithm">Algorithm</a>, dst, msg, key: []<a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>sum will compute the HMAC with the specified algorithm and key
+over msg, and write the computed digest to dst.  It requires that
+the dst buffer is the tag size.</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="tag_size"><span><a class="doc-id-link" href="#tag_size">tag_size<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/hmac/hmac.odin#L102"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">tag_size :: <span class="keyword-type">proc</span>(ctx: ^<a class="code-typename" href="/core/crypto/hmac/#Context">Context</a>) -> <a href="/base/builtin#int"><span class="doc-builtin">int</span></a> {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>tag_size returns the tag size of a Context instance in bytes.</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="update"><span><a class="doc-id-link" href="#update">update<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/hmac/hmac.odin#L58"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">update :: <span class="keyword-type">proc</span>(ctx: ^<a class="code-typename" href="/core/crypto/hmac/#Context">Context</a>, data: []<a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>update adds more data to the Context.</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="verify"><span><a class="doc-id-link" href="#verify">verify<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/hmac/hmac.odin#L27"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">verify :: <span class="keyword-type">proc</span>(algorithm: crypto_hash.<a class="code-typename" href="/core/crypto/hash/#Algorithm">Algorithm</a>, tag, msg, key: []<a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a>) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>verify will verify the HMAC tag computed with the specified algorithm
+and key over msg and return true iff the tag is valid.  It requires
+that the tag is correctly sized.</p>
+</details>
 </div>
 <h2 id="pkg-Procedure Groups" class="pkg-header">Procedure Groups</h2>
 <p class="pkg-empty-section">This section is empty.</p>
 </section>
 <h2 id="pkg-source-files">Source Files</h2>
 <ul>
-<li><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/chacha20poly1305/chacha20poly1305.odin">chacha20poly1305.odin</a></li>
+<li><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/hmac/hmac.odin">hmac.odin</a></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2024-02 (vendor "odin") Windows_amd64 @ 2024-02-06 21:08:25.139627700 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2024-02 (vendor "odin") Windows_amd64 @ 2024-02-06 21:08:25.003199200 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
 <ul>
-<li><a href="#pkg-Constants">Constants</a><ul>
-<li><a href="#KEY_SIZE">KEY_SIZE</a></li>
-<li><a href="#NONCE_SIZE">NONCE_SIZE</a></li>
-<li><a href="#TAG_SIZE">TAG_SIZE</a></li>
+<li><a href="#pkg-overview">Overview</a><li><a href="#pkg-Types">Types</a><ul>
+<li><a href="#Context">Context</a></li>
 </ul>
 </li>
 <li><a href="#pkg-Procedures">Procedures</a><ul>
-<li><a href="#decrypt">decrypt</a></li>
-<li><a href="#encrypt">encrypt</a></li>
+<li><a href="#algorithm">algorithm</a></li>
+<li><a href="#final">final</a></li>
+<li><a href="#init">init</a></li>
+<li><a href="#reset">reset</a></li>
+<li><a href="#sum">sum</a></li>
+<li><a href="#tag_size">tag_size</a></li>
+<li><a href="#update">update</a></li>
+<li><a href="#verify">verify</a></li>
 </ul>
 </li>
 <li><a href="#pkg-source-files">Source Files</a></ul>
 </nav>
 </div></div>
-<script type="text/javascript">var odin_pkg_name = "chacha20poly1305";</script>
+<script type="text/javascript">var odin_pkg_name = "hmac";</script>
 </div>
 
 </div>
