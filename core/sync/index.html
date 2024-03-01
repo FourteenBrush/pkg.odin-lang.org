@@ -919,6 +919,10 @@ The zero value for a Recursive_Mutex is an unlocked mutex</p>
 <li><a href="/core/sync/#recursive_mutex_lock">recursive_mutex_lock</a></li>
 <li><a href="/core/sync/#recursive_mutex_try_lock">recursive_mutex_try_lock</a></li>
 <li><a href="/core/sync/#recursive_mutex_unlock">recursive_mutex_unlock</a></li>
+<li><a href="/core/sync/#guard">guard</a>&nbsp;<em>(procedure groups)</em></li>
+<li><a href="/core/sync/#lock">lock</a>&nbsp;<em>(procedure groups)</em></li>
+<li><a href="/core/sync/#try_lock">try_lock</a>&nbsp;<em>(procedure groups)</em></li>
+<li><a href="/core/sync/#unlock">unlock</a>&nbsp;<em>(procedure groups)</em></li>
 </ul>
 </div>
 <div class="pkg-entity">
@@ -1842,7 +1846,7 @@ If the mutex is already locked for reading or writing, the mutex blocks until th
 </div>
 <h2 id="pkg-Procedure Groups" class="pkg-header">Procedure Groups</h2>
 <div class="pkg-entity">
-<h3 id="broadcast"><span><a class="doc-id-link" href="#broadcast">broadcast<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync_util.odin#L114"><em>Source</em></a></div></h3>
+<h3 id="broadcast"><span><a class="doc-id-link" href="#broadcast">broadcast<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync_util.odin#L118"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">broadcast :: <span class="keyword-type">proc</span>{
 	<a class="code-procedure" href="/core/sync/#cond_broadcast">cond_broadcast</a>,
@@ -1858,6 +1862,7 @@ If the mutex is already locked for reading or writing, the mutex blocks until th
 <pre class="doc-code">guard :: <span class="keyword-type">proc</span>{
 	<a class="code-procedure" href="/core/sync/#mutex_guard">mutex_guard</a>,
 	<a class="code-procedure" href="/core/sync/#rw_mutex_guard">rw_mutex_guard</a>,
+	<a class="code-procedure" href="/core/sync/#recursive_mutex_guard">recursive_mutex_guard</a>,
 	<a class="code-procedure" href="/core/sync/#ticket_mutex_guard">ticket_mutex_guard</a>,
 	<a class="code-procedure" href="/core/sync/#benaphore_guard">benaphore_guard</a>,
 	<a class="code-procedure" href="/core/sync/#recursive_benaphore_guard">recursive_benaphore_guard</a>,
@@ -1877,11 +1882,12 @@ If the mutex is already locked for reading or writing, the mutex blocks until th
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="lock"><span><a class="doc-id-link" href="#lock">lock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync_util.odin#L31"><em>Source</em></a></div></h3>
+<h3 id="lock"><span><a class="doc-id-link" href="#lock">lock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync_util.odin#L32"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">lock :: <span class="keyword-type">proc</span>{
 	<a class="code-procedure" href="/core/sync/#mutex_lock">mutex_lock</a>,
 	<a class="code-procedure" href="/core/sync/#rw_mutex_lock">rw_mutex_lock</a>,
+	<a class="code-procedure" href="/core/sync/#recursive_mutex_lock">recursive_mutex_lock</a>,
 	<a class="code-procedure" href="/core/sync/#ticket_mutex_lock">ticket_mutex_lock</a>,
 	<a class="code-procedure" href="/core/sync/#benaphore_lock">benaphore_lock</a>,
 	<a class="code-procedure" href="/core/sync/#recursive_benaphore_lock">recursive_benaphore_lock</a>,
@@ -1913,7 +1919,7 @@ If the mutex is already locked for reading or writing, the mutex blocks until th
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="post"><span><a class="doc-id-link" href="#post">post<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync_util.odin#L103"><em>Source</em></a></div></h3>
+<h3 id="post"><span><a class="doc-id-link" href="#post">post<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync_util.odin#L107"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">post :: <span class="keyword-type">proc</span>{
 	<a class="code-procedure" href="/core/sync/#sema_post">sema_post</a>,
@@ -1923,7 +1929,7 @@ If the mutex is already locked for reading or writing, the mutex blocks until th
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="shared_guard"><span><a class="doc-id-link" href="#shared_guard">shared_guard<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync_util.odin#L25"><em>Source</em></a></div></h3>
+<h3 id="shared_guard"><span><a class="doc-id-link" href="#shared_guard">shared_guard<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync_util.odin#L26"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">shared_guard :: <span class="keyword-type">proc</span>{
 	<a class="code-procedure" href="/core/sync/#rw_mutex_shared_guard">rw_mutex_shared_guard</a>,
@@ -1941,7 +1947,7 @@ If the mutex is already locked for reading or writing, the mutex blocks until th
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="shared_lock"><span><a class="doc-id-link" href="#shared_lock">shared_lock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync_util.odin#L66"><em>Source</em></a></div></h3>
+<h3 id="shared_lock"><span><a class="doc-id-link" href="#shared_lock">shared_lock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync_util.odin#L70"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">shared_lock :: <span class="keyword-type">proc</span>{
 	<a class="code-procedure" href="/core/sync/#rw_mutex_shared_lock">rw_mutex_shared_lock</a>,
@@ -1955,7 +1961,7 @@ If the mutex is already locked for reading or writing, the mutex blocks until th
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="shared_unlock"><span><a class="doc-id-link" href="#shared_unlock">shared_unlock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync_util.odin#L72"><em>Source</em></a></div></h3>
+<h3 id="shared_unlock"><span><a class="doc-id-link" href="#shared_unlock">shared_unlock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync_util.odin#L76"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">shared_unlock :: <span class="keyword-type">proc</span>{
 	<a class="code-procedure" href="/core/sync/#rw_mutex_shared_unlock">rw_mutex_shared_unlock</a>,
@@ -1969,7 +1975,7 @@ If the mutex is already locked for reading or writing, the mutex blocks until th
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="signal"><span><a class="doc-id-link" href="#signal">signal<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync_util.odin#L108"><em>Source</em></a></div></h3>
+<h3 id="signal"><span><a class="doc-id-link" href="#signal">signal<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync_util.odin#L112"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">signal :: <span class="keyword-type">proc</span>{
 	<a class="code-procedure" href="/core/sync/#cond_signal">cond_signal</a>,
@@ -1980,11 +1986,12 @@ If the mutex is already locked for reading or writing, the mutex blocks until th
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="try_lock"><span><a class="doc-id-link" href="#try_lock">try_lock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync_util.odin#L55"><em>Source</em></a></div></h3>
+<h3 id="try_lock"><span><a class="doc-id-link" href="#try_lock">try_lock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync_util.odin#L58"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">try_lock :: <span class="keyword-type">proc</span>{
 	<a class="code-procedure" href="/core/sync/#mutex_try_lock">mutex_try_lock</a>,
 	<a class="code-procedure" href="/core/sync/#rw_mutex_try_lock">rw_mutex_try_lock</a>,
+	<a class="code-procedure" href="/core/sync/#recursive_mutex_try_lock">recursive_mutex_try_lock</a>,
 	<a class="code-procedure" href="/core/sync/#benaphore_try_lock">benaphore_try_lock</a>,
 	<a class="code-procedure" href="/core/sync/#recursive_benaphore_try_lock">recursive_benaphore_try_lock</a>,
 	<a class="code-procedure" href="/core/sync/#atomic_mutex_try_lock">atomic_mutex_try_lock</a>,
@@ -1999,7 +2006,7 @@ If the mutex is already locked for reading or writing, the mutex blocks until th
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="try_shared_lock"><span><a class="doc-id-link" href="#try_shared_lock">try_shared_lock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync_util.odin#L78"><em>Source</em></a></div></h3>
+<h3 id="try_shared_lock"><span><a class="doc-id-link" href="#try_shared_lock">try_shared_lock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync_util.odin#L82"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">try_shared_lock :: <span class="keyword-type">proc</span>{
 	<a class="code-procedure" href="/core/sync/#rw_mutex_try_shared_lock">rw_mutex_try_shared_lock</a>,
@@ -2013,11 +2020,12 @@ If the mutex is already locked for reading or writing, the mutex blocks until th
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="unlock"><span><a class="doc-id-link" href="#unlock">unlock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync_util.odin#L43"><em>Source</em></a></div></h3>
+<h3 id="unlock"><span><a class="doc-id-link" href="#unlock">unlock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync_util.odin#L45"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">unlock :: <span class="keyword-type">proc</span>{
 	<a class="code-procedure" href="/core/sync/#mutex_unlock">mutex_unlock</a>,
 	<a class="code-procedure" href="/core/sync/#rw_mutex_unlock">rw_mutex_unlock</a>,
+	<a class="code-procedure" href="/core/sync/#recursive_mutex_unlock">recursive_mutex_unlock</a>,
 	<a class="code-procedure" href="/core/sync/#ticket_mutex_unlock">ticket_mutex_unlock</a>,
 	<a class="code-procedure" href="/core/sync/#benaphore_unlock">benaphore_unlock</a>,
 	<a class="code-procedure" href="/core/sync/#recursive_benaphore_unlock">recursive_benaphore_unlock</a>,
@@ -2033,7 +2041,7 @@ If the mutex is already locked for reading or writing, the mutex blocks until th
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="wait"><span><a class="doc-id-link" href="#wait">wait<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync_util.odin#L85"><em>Source</em></a></div></h3>
+<h3 id="wait"><span><a class="doc-id-link" href="#wait">wait<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync_util.odin#L89"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">wait :: <span class="keyword-type">proc</span>{
 	<a class="code-procedure" href="/core/sync/#cond_wait">cond_wait</a>,
@@ -2047,7 +2055,7 @@ If the mutex is already locked for reading or writing, the mutex blocks until th
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="wait_with_timeout"><span><a class="doc-id-link" href="#wait_with_timeout">wait_with_timeout<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync_util.odin#L94"><em>Source</em></a></div></h3>
+<h3 id="wait_with_timeout"><span><a class="doc-id-link" href="#wait_with_timeout">wait_with_timeout<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/sync_util.odin#L98"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">wait_with_timeout :: <span class="keyword-type">proc</span>{
 	<a class="code-procedure" href="/core/sync/#cond_wait_with_timeout">cond_wait_with_timeout</a>,
@@ -2072,7 +2080,7 @@ If the mutex is already locked for reading or writing, the mutex blocks until th
 <li><em>(hidden platform specific files)</em></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2024-02 (vendor "odin") Windows_amd64 @ 2024-02-29 21:10:27.192502400 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2024-03 (vendor "odin") Windows_amd64 @ 2024-03-01 21:10:24.294184700 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
