@@ -77,15 +77,19 @@
 <li><a class="active" href="/core/crypto/chacha20">chacha20</a></li>
 <li><a href="/core/crypto/chacha20poly1305">chacha20poly1305</a></li>
 <li><a href="/core/crypto/hash">hash</a></li>
+<li><a href="/core/crypto/hkdf">hkdf</a></li>
 <li><a href="/core/crypto/hmac">hmac</a></li>
+<li><a href="/core/crypto/kmac">kmac</a></li>
 <li><a href="/core/crypto/legacy/keccak">legacy/keccak</a></li>
 <li><a href="/core/crypto/legacy/md5">legacy/md5</a></li>
 <li><a href="/core/crypto/legacy/sha1">legacy/sha1</a></li>
+<li><a href="/core/crypto/pbkdf2">pbkdf2</a></li>
 <li><a href="/core/crypto/poly1305">poly1305</a></li>
 <li><a href="/core/crypto/sha2">sha2</a></li>
 <li><a href="/core/crypto/sha3">sha3</a></li>
 <li><a href="/core/crypto/shake">shake</a></li>
 <li><a href="/core/crypto/sm3">sm3</a></li>
+<li><a href="/core/crypto/tuplehash">tuplehash</a></li>
 <li><a href="/core/crypto/x25519">x25519</a></li>
 </ul>
 
@@ -235,6 +239,13 @@
 </div>
 <ul id="odin-search-results"></ul>
 <div id="pkg-top">
+<h2>Overview</h2>
+<div id="pkg-overview">
+<p>package chacha20 implements the ChaCha20 and XChaCha20 stream ciphers.</p>
+<p>See:
+<span class="doc-list">https://datatracker.ietf.org/doc/html/rfc8439</span>
+<span class="doc-list">https://datatracker.ietf.org/doc/draft-irtf-cfrg-xchacha/03/</span></p>
+</div>
 <div id="pkg-index">
 <h2>Index</h2>
 <div>
@@ -289,7 +300,7 @@ Procedure Groups (0)</summary>
 <section class="documentation">
 <h2 id="pkg-Types" class="pkg-header">Types</h2>
 <div class="pkg-entity">
-<h3 id="Context"><span><a class="doc-id-link" href="#Context">Context<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/chacha20/chacha20.odin#L30"><em>Source</em></a></div></h3>
+<h3 id="Context"><span><a class="doc-id-link" href="#Context">Context<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/chacha20/chacha20.odin#L41"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Context :: <span class="keyword-type">struct</span> {
 	_s:              [16]<a href="/base/builtin#u32"><span class="doc-builtin">u32</span></a>,
@@ -299,6 +310,10 @@ Procedure Groups (0)</summary>
 	_is_initialized: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>,
 }</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Context is a ChaCha20 or XChaCha20 instance.</p>
+</details>
 <h5>Related Procedures With Parameters</h5>
 <ul>
 <li><a href="/core/crypto/chacha20/#init">init</a></li>
@@ -310,55 +325,91 @@ Procedure Groups (0)</summary>
 </div>
 <h2 id="pkg-Constants" class="pkg-header">Constants</h2>
 <div class="pkg-entity">
-<h3 id="KEY_SIZE"><span><a class="doc-id-link" href="#KEY_SIZE">KEY_SIZE<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/chacha20/chacha20.odin#L7"><em>Source</em></a></div></h3>
+<h3 id="KEY_SIZE"><span><a class="doc-id-link" href="#KEY_SIZE">KEY_SIZE<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/chacha20/chacha20.odin#L15"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">KEY_SIZE :: 32</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>KEY_SIZE is the (X)ChaCha20 key size in bytes.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="NONCE_SIZE"><span><a class="doc-id-link" href="#NONCE_SIZE">NONCE_SIZE<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/chacha20/chacha20.odin#L8"><em>Source</em></a></div></h3>
+<h3 id="NONCE_SIZE"><span><a class="doc-id-link" href="#NONCE_SIZE">NONCE_SIZE<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/chacha20/chacha20.odin#L17"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">NONCE_SIZE :: 12</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>NONCE_SIZE is the ChaCha20 nonce size in bytes.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="XNONCE_SIZE"><span><a class="doc-id-link" href="#XNONCE_SIZE">XNONCE_SIZE<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/chacha20/chacha20.odin#L9"><em>Source</em></a></div></h3>
+<h3 id="XNONCE_SIZE"><span><a class="doc-id-link" href="#XNONCE_SIZE">XNONCE_SIZE<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/chacha20/chacha20.odin#L19"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">XNONCE_SIZE :: 24</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>XNONCE_SIZE is the XChaCha20 nonce size in bytes.</p>
+</details>
 </div>
 <h2 id="pkg-Variables" class="pkg-header">Variables</h2>
 <p class="pkg-empty-section">This section is empty.</p>
 <h2 id="pkg-Procedures" class="pkg-header">Procedures</h2>
 <div class="pkg-entity">
-<h3 id="init"><span><a class="doc-id-link" href="#init">init<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/chacha20/chacha20.odin#L40"><em>Source</em></a></div></h3>
+<h3 id="init"><span><a class="doc-id-link" href="#init">init<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/chacha20/chacha20.odin#L51"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">init :: <span class="keyword-type">proc</span>(ctx: ^<a class="code-typename" href="/core/crypto/chacha20/#Context">Context</a>, key, nonce: []<a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>init inititializes a Context for ChaCha20 or XChaCha20 with the provided
+key and nonce.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="keystream_bytes"><span><a class="doc-id-link" href="#keystream_bytes">keystream_bytes<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/chacha20/chacha20.odin#L150"><em>Source</em></a></div></h3>
+<h3 id="keystream_bytes"><span><a class="doc-id-link" href="#keystream_bytes">keystream_bytes<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/chacha20/chacha20.odin#L166"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">keystream_bytes :: <span class="keyword-type">proc</span>(ctx: ^<a class="code-typename" href="/core/crypto/chacha20/#Context">Context</a>, dst: []<a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>keystream_bytes fills dst with the raw (X)ChaCha20 keystream output.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="reset"><span><a class="doc-id-link" href="#reset">reset<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/chacha20/chacha20.odin#L183"><em>Source</em></a></div></h3>
+<h3 id="reset"><span><a class="doc-id-link" href="#reset">reset<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/chacha20/chacha20.odin#L201"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">reset :: <span class="keyword-type">proc</span>(ctx: ^<a class="code-typename" href="/core/crypto/chacha20/#Context">Context</a>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>reset sanitizes the Context.  The Context must be re-initialized to
+be used again.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="seek"><span><a class="doc-id-link" href="#seek">seek<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/chacha20/chacha20.odin#L92"><em>Source</em></a></div></h3>
+<h3 id="seek"><span><a class="doc-id-link" href="#seek">seek<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/chacha20/chacha20.odin#L104"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">seek :: <span class="keyword-type">proc</span>(ctx: ^<a class="code-typename" href="/core/crypto/chacha20/#Context">Context</a>, block_nr: <a href="/base/builtin#u64"><span class="doc-builtin">u64</span></a>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>seek seeks the (X)ChaCha20 stream counter to the specified block.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="xor_bytes"><span><a class="doc-id-link" href="#xor_bytes">xor_bytes<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/chacha20/chacha20.odin#L106"><em>Source</em></a></div></h3>
+<h3 id="xor_bytes"><span><a class="doc-id-link" href="#xor_bytes">xor_bytes<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/chacha20/chacha20.odin#L121"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">xor_bytes :: <span class="keyword-type">proc</span>(ctx: ^<a class="code-typename" href="/core/crypto/chacha20/#Context">Context</a>, dst, src: []<a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>xor_bytes XORs each byte in src with bytes taken from the (X)ChaCha20
+keystream, and writes the resulting output to dst.  Dst and src MUST
+alias exactly or not at all.</p>
+</details>
 </div>
 <h2 id="pkg-Procedure Groups" class="pkg-header">Procedure Groups</h2>
 <p class="pkg-empty-section">This section is empty.</p>
@@ -368,12 +419,12 @@ Procedure Groups (0)</summary>
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/chacha20/chacha20.odin">chacha20.odin</a></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2024-03 (vendor "odin") Windows_amd64 @ 2024-03-05 21:09:54.044173300 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2024-03 (vendor "odin") Windows_amd64 @ 2024-03-06 21:09:30.129608800 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
 <ul>
-<li><a href="#pkg-Types">Types</a><ul>
+<li><a href="#pkg-overview">Overview</a><li><a href="#pkg-Types">Types</a><ul>
 <li><a href="#Context">Context</a></li>
 </ul>
 </li>

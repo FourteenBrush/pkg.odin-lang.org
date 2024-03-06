@@ -77,15 +77,19 @@
 <li><a href="/core/crypto/chacha20">chacha20</a></li>
 <li><a href="/core/crypto/chacha20poly1305">chacha20poly1305</a></li>
 <li><a href="/core/crypto/hash">hash</a></li>
+<li><a href="/core/crypto/hkdf">hkdf</a></li>
 <li><a href="/core/crypto/hmac">hmac</a></li>
+<li><a href="/core/crypto/kmac">kmac</a></li>
 <li><a href="/core/crypto/legacy/keccak">legacy/keccak</a></li>
 <li><a href="/core/crypto/legacy/md5">legacy/md5</a></li>
 <li><a href="/core/crypto/legacy/sha1">legacy/sha1</a></li>
+<li><a href="/core/crypto/pbkdf2">pbkdf2</a></li>
 <li><a href="/core/crypto/poly1305">poly1305</a></li>
 <li><a href="/core/crypto/sha2">sha2</a></li>
 <li><a href="/core/crypto/sha3">sha3</a></li>
 <li><a href="/core/crypto/shake">shake</a></li>
 <li><a href="/core/crypto/sm3">sm3</a></li>
+<li><a href="/core/crypto/tuplehash">tuplehash</a></li>
 <li><a href="/core/crypto/x25519">x25519</a></li>
 </ul>
 
@@ -281,7 +285,7 @@ Variables (1)</summary>
 <div>
 <details class="doc-index" id="doc-index-Procedures" aria-labelledby="#doc-index-Procedures-header">
 <summary id="#doc-index-Procedures-header">
-Procedures (29)</summary>
+Procedures (34)</summary>
 <ul>
 <li><a href="#alloc_from_memory_block">alloc_from_memory_block</a></li>
 <li><a href="#arena_alloc">arena_alloc</a></li>
@@ -304,10 +308,15 @@ Procedures (29)</summary>
 <li><a href="#arena_temp_ignore">arena_temp_ignore</a></li>
 <li><a href="#commit">commit</a></li>
 <li><a href="#decommit">decommit</a></li>
+<li><a href="#make_aligned">make_aligned</a></li>
+<li><a href="#make_multi_pointer">make_multi_pointer</a></li>
+<li><a href="#make_slice">make_slice</a></li>
 <li><a href="#map_file_from_file_descriptor">map_file_from_file_descriptor</a></li>
 <li><a href="#map_file_from_path">map_file_from_path</a></li>
 <li><a href="#memory_block_alloc">memory_block_alloc</a></li>
 <li><a href="#memory_block_dealloc">memory_block_dealloc</a></li>
+<li><a href="#new">new</a></li>
+<li><a href="#new_aligned">new_aligned</a></li>
 <li><a href="#protect">protect</a></li>
 <li><a href="#release">release</a></li>
 <li><a href="#reserve">reserve</a></li>
@@ -318,10 +327,11 @@ Procedures (29)</summary>
 <div>
 <details class="doc-index" id="doc-index-Procedure Groups" aria-labelledby="#doc-index-Procedure Groups-header">
 <summary id="#doc-index-Procedure Groups-header">
-Procedure Groups (3)</summary>
+Procedure Groups (4)</summary>
 <ul>
 <li><a href="#arena_growing_bootstrap_new">arena_growing_bootstrap_new</a></li>
 <li><a href="#arena_static_bootstrap_new">arena_static_bootstrap_new</a></li>
+<li><a href="#make">make</a></li>
 <li><a href="#map_file">map_file</a></li>
 </ul>
 </details>
@@ -370,6 +380,12 @@ Buffer: A single `Memory_Block` created from a user provided []byte.
 <li><a href="/core/mem/virtual/#arena_init_static">arena_init_static</a></li>
 <li><a href="/core/mem/virtual/#arena_static_reset_to">arena_static_reset_to</a></li>
 <li><a href="/core/mem/virtual/#arena_temp_begin">arena_temp_begin</a></li>
+<li><a href="/core/mem/virtual/#make_aligned">make_aligned</a></li>
+<li><a href="/core/mem/virtual/#make_multi_pointer">make_multi_pointer</a></li>
+<li><a href="/core/mem/virtual/#make_slice">make_slice</a></li>
+<li><a href="/core/mem/virtual/#new">new</a></li>
+<li><a href="/core/mem/virtual/#new_aligned">new_aligned</a></li>
+<li><a href="/core/mem/virtual/#make">make</a>&nbsp;<em>(procedure groups)</em></li>
 </ul>
 </div>
 <div class="pkg-entity">
@@ -756,6 +772,43 @@ A static arena contains a single <code>Memory_Block</code> allocated with virtua
 </div>
 </div>
 <div class="pkg-entity">
+<h3 id="make_aligned"><span><a class="doc-id-link" href="#make_aligned">make_aligned<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/arena_util.odin#L37"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">make_aligned :: <span class="keyword-type">proc</span>(arena: ^<a class="code-typename" href="/core/mem/virtual/#Arena">Arena</a>, $T: <span class="keyword-type">typeid</span>/[]T, <span class="keyword-type">#any_int</span> len: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, alignment: <a href="/base/builtin#uint"><span class="doc-builtin">uint</span></a>, loc := <a href="/base/runtime/#Source_Code_Location">#caller_location</a>) -> (T, runtime.<a class="code-typename" href="/base/runtime/#Allocator_Error">Allocator_Error</a>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p><code>make_aligned</code> allocates and initializes a slice. Like <code>new</code>, the second argument is a type, not a value.
+Unlike <code>new</code>, <code>make</code>'s return value is the same as the type of its argument, not a pointer to it.</p>
+<p>Note: Prefer using the procedure group <code>make</code>.</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="make_multi_pointer"><span><a class="doc-id-link" href="#make_multi_pointer">make_multi_pointer<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/arena_util.odin#L55"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">make_multi_pointer :: <span class="keyword-type">proc</span>(arena: ^<a class="code-typename" href="/core/mem/virtual/#Arena">Arena</a>, $T: <span class="keyword-type">typeid</span>/[^]T, <span class="keyword-type">#any_int</span> len: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, loc := <a href="/base/runtime/#Source_Code_Location">#caller_location</a>) -> ($/[^]T, runtime.<a class="code-typename" href="/base/runtime/#Allocator_Error">Allocator_Error</a>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p><code>make_multi_pointer</code> allocates and initializes a dynamic array. Like <code>new</code>, the second argument is a type, not a value.
+Unlike <code>new</code>, <code>make</code>'s return value is the same as the type of its argument, not a pointer to it.</p>
+<p>This is "similar" to doing <code>raw_data(make([]E, len, allocator))</code>.</p>
+<p>Note: Prefer using the procedure group <code>make</code>.</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="make_slice"><span><a class="doc-id-link" href="#make_slice">make_slice<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/arena_util.odin#L28"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">make_slice :: <span class="keyword-type">proc</span>(arena: ^<a class="code-typename" href="/core/mem/virtual/#Arena">Arena</a>, $T: <span class="keyword-type">typeid</span>/[]T, <span class="keyword-type">#any_int</span> len: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, loc := <a href="/base/runtime/#Source_Code_Location">#caller_location</a>) -> (T, runtime.<a class="code-typename" href="/base/runtime/#Allocator_Error">Allocator_Error</a>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p><code>make_slice</code> allocates and initializes a slice. Like <code>new</code>, the second argument is a type, not a value.
+Unlike <code>new</code>, <code>make</code>'s return value is the same as the type of its argument, not a pointer to it.</p>
+<p>Note: Prefer using the procedure group <code>make</code>.</p>
+</details>
+</div>
+<div class="pkg-entity">
 <h3 id="map_file_from_file_descriptor"><span><a class="doc-id-link" href="#map_file_from_file_descriptor">map_file_from_file_descriptor<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/file.odin#L35"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">map_file_from_file_descriptor :: <span class="keyword-type">proc</span>(fd: <a href="/base/builtin#uintptr"><span class="doc-builtin">uintptr</span></a>, flags: <a class="code-typename" href="/core/mem/virtual/#Map_File_Flags">Map_File_Flags</a>) -> (data: []<a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a>, error: <a class="code-typename" href="/core/mem/virtual/#Map_File_Error">Map_File_Error</a>) {…}</pre>
@@ -778,6 +831,29 @@ A static arena contains a single <code>Memory_Block</code> allocated with virtua
 <div>
 <pre class="doc-code">memory_block_dealloc :: <span class="keyword-type">proc</span>(block_to_free: ^<a class="code-typename" href="/core/mem/virtual/#Memory_Block">Memory_Block</a>) {…}</pre>
 </div>
+</div>
+<div class="pkg-entity">
+<h3 id="new"><span><a class="doc-id-link" href="#new">new<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/arena_util.odin#L9"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">new :: <span class="keyword-type">proc</span>(arena: ^<a class="code-typename" href="/core/mem/virtual/#Arena">Arena</a>, $T: <a href="/base/builtin#typeid"><span class="doc-builtin">typeid</span></a>, loc := <a href="/base/runtime/#Source_Code_Location">#caller_location</a>) -> (ptr: ^<a href="/base/builtin#typeid"><span class="doc-builtin">typeid</span></a>, err: runtime.<a class="code-typename" href="/base/runtime/#Allocator_Error">Allocator_Error</a>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>The <code>new</code> procedure allocates memory for a type <code>T</code> from a <code>virtual.Arena</code>. The second argument is a type,
+not a value, and the value return is a pointer to a newly allocated value of that type using the specified allocator.</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="new_aligned"><span><a class="doc-id-link" href="#new_aligned">new_aligned<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/arena_util.odin#L17"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">new_aligned :: <span class="keyword-type">proc</span>(arena: ^<a class="code-typename" href="/core/mem/virtual/#Arena">Arena</a>, $T: <a href="/base/builtin#typeid"><span class="doc-builtin">typeid</span></a>, alignment: <a href="/base/builtin#uint"><span class="doc-builtin">uint</span></a>, loc := <a href="/base/runtime/#Source_Code_Location">#caller_location</a>) -> (ptr: ^<a href="/base/builtin#typeid"><span class="doc-builtin">typeid</span></a>, err: runtime.<a class="code-typename" href="/base/runtime/#Allocator_Error">Allocator_Error</a>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>The <code>new_aligned</code> procedure allocates memory for a type <code>T</code> from a <code>virtual.Arena</code> with a specified <code>alignment</code>.
+The second argument is a type, not a value, and the value return is a pointer to a newly allocated value of
+that type using the specified allocator.</p>
+</details>
 </div>
 <div class="pkg-entity">
 <h3 id="protect"><span><a class="doc-id-link" href="#protect">protect<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/virtual.odin#L44"><em>Source</em></a></div></h3>
@@ -833,6 +909,16 @@ A static arena contains a single <code>Memory_Block</code> allocated with virtua
 </details>
 </div>
 <div class="pkg-entity">
+<h3 id="make"><span><a class="doc-id-link" href="#make">make<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/arena_util.odin#L64"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">make :: <span class="keyword-type">proc</span>{
+	<a class="code-procedure" href="/core/mem/virtual/#make_slice">make_slice</a>,
+	<a class="code-procedure" href="/core/mem/virtual/#make_multi_pointer">make_multi_pointer</a>,
+}
+</pre>
+</div>
+</div>
+<div class="pkg-entity">
 <h3 id="map_file"><span><a class="doc-id-link" href="#map_file">map_file<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/file.odin#L20"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">map_file :: <span class="keyword-type">proc</span>{
@@ -846,13 +932,14 @@ A static arena contains a single <code>Memory_Block</code> allocated with virtua
 <h2 id="pkg-source-files">Source Files</h2>
 <ul>
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/arena.odin">arena.odin</a></li>
+<li><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/arena_util.odin">arena_util.odin</a></li>
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/file.odin">file.odin</a></li>
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/virtual.odin">virtual.odin</a></li>
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/virtual/virtual_platform.odin">virtual_platform.odin</a></li>
 <li><em>(hidden platform specific files)</em></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2024-03 (vendor "odin") Windows_amd64 @ 2024-03-05 21:09:54.083151800 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2024-03 (vendor "odin") Windows_amd64 @ 2024-03-06 21:09:30.231673400 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
@@ -905,10 +992,15 @@ A static arena contains a single <code>Memory_Block</code> allocated with virtua
 <li><a href="#arena_temp_ignore">arena_temp_ignore</a></li>
 <li><a href="#commit">commit</a></li>
 <li><a href="#decommit">decommit</a></li>
+<li><a href="#make_aligned">make_aligned</a></li>
+<li><a href="#make_multi_pointer">make_multi_pointer</a></li>
+<li><a href="#make_slice">make_slice</a></li>
 <li><a href="#map_file_from_file_descriptor">map_file_from_file_descriptor</a></li>
 <li><a href="#map_file_from_path">map_file_from_path</a></li>
 <li><a href="#memory_block_alloc">memory_block_alloc</a></li>
 <li><a href="#memory_block_dealloc">memory_block_dealloc</a></li>
+<li><a href="#new">new</a></li>
+<li><a href="#new_aligned">new_aligned</a></li>
 <li><a href="#protect">protect</a></li>
 <li><a href="#release">release</a></li>
 <li><a href="#reserve">reserve</a></li>
@@ -918,6 +1010,7 @@ A static arena contains a single <code>Memory_Block</code> allocated with virtua
 <li><a href="#pkg-Procedure Groups">Procedure Groups</a><ul>
 <li><a href="#arena_growing_bootstrap_new">arena_growing_bootstrap_new</a></li>
 <li><a href="#arena_static_bootstrap_new">arena_static_bootstrap_new</a></li>
+<li><a href="#make">make</a></li>
 <li><a href="#map_file">map_file</a></li>
 </ul>
 </li>
