@@ -230,7 +230,7 @@ Variables (4)</summary>
 <div>
 <details class="doc-index" id="doc-index-Procedures" aria-labelledby="#doc-index-Procedures-header">
 <summary id="#doc-index-Procedures-header">
-Procedures (268)</summary>
+Procedures (271)</summary>
 <ul>
 <li><a href="#DEFAULT_TEMP_ALLOCATOR_TEMP_GUARD">DEFAULT_TEMP_ALLOCATOR_TEMP_GUARD</a></li>
 <li><a href="#abs_complex128">abs_complex128</a></li>
@@ -335,6 +335,7 @@ Procedures (268)</summary>
 <li><a href="#inject_at_elem">inject_at_elem</a></li>
 <li><a href="#inject_at_elem_string">inject_at_elem_string</a></li>
 <li><a href="#inject_at_elems">inject_at_elems</a></li>
+<li><a href="#into_dynamic_soa">into_dynamic_soa</a></li>
 <li><a href="#is_power_of_two_int">is_power_of_two_int</a></li>
 <li><a href="#is_power_of_two_uintptr">is_power_of_two_uintptr</a></li>
 <li><a href="#make_aligned">make_aligned</a></li>
@@ -422,6 +423,7 @@ Procedures (268)</summary>
 <li><a href="#non_zero_reserve_dynamic_array">non_zero_reserve_dynamic_array</a></li>
 <li><a href="#non_zero_resize_dynamic_array">non_zero_resize_dynamic_array</a></li>
 <li><a href="#ordered_remove">ordered_remove</a></li>
+<li><a href="#ordered_remove_soa">ordered_remove_soa</a></li>
 <li><a href="#panic">panic</a></li>
 <li><a href="#panic_allocator">panic_allocator</a></li>
 <li><a href="#panic_allocator_proc">panic_allocator_proc</a></li>
@@ -500,6 +502,7 @@ Procedures (268)</summary>
 <li><a href="#umodti3">umodti3</a></li>
 <li><a href="#unimplemented">unimplemented</a></li>
 <li><a href="#unordered_remove">unordered_remove</a></li>
+<li><a href="#unordered_remove_soa">unordered_remove_soa</a></li>
 </ul>
 </details>
 </div>
@@ -1443,6 +1446,7 @@ ODIN_SANITIZER_FLAGS // is a constant
 <li><a href="/base/runtime/#non_zero_reserve_dynamic_array">non_zero_reserve_dynamic_array</a></li>
 <li><a href="/base/runtime/#non_zero_resize_dynamic_array">non_zero_resize_dynamic_array</a></li>
 <li><a href="/base/runtime/#ordered_remove">ordered_remove</a></li>
+<li><a href="/base/runtime/#ordered_remove_soa">ordered_remove_soa</a></li>
 <li><a href="/base/runtime/#panic">panic</a></li>
 <li><a href="/base/runtime/#panic_allocator_proc">panic_allocator_proc</a></li>
 <li><a href="/base/runtime/#pop">pop</a></li>
@@ -1460,6 +1464,7 @@ ODIN_SANITIZER_FLAGS // is a constant
 <li><a href="/base/runtime/#slice_expr_error_lo_hi_loc">slice_expr_error_lo_hi_loc</a></li>
 <li><a href="/base/runtime/#unimplemented">unimplemented</a></li>
 <li><a href="/base/runtime/#unordered_remove">unordered_remove</a></li>
+<li><a href="/base/runtime/#unordered_remove_soa">unordered_remove_soa</a></li>
 <li><a href="/base/runtime/#append">append</a>&nbsp;<em>(procedure groups)</em></li>
 <li><a href="/base/runtime/#append_soa">append_soa</a>&nbsp;<em>(procedure groups)</em></li>
 <li><a href="/base/runtime/#assign_at">assign_at</a>&nbsp;<em>(procedure groups)</em></li>
@@ -2787,6 +2792,16 @@ If m is nil, or there is no such element, this procedure is a no-op</p>
 </div>
 </div>
 <div class="pkg-entity">
+<h3 id="into_dynamic_soa"><span><a class="doc-id-link" href="#into_dynamic_soa">into_dynamic_soa<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/base/runtime/core_builtin_soa.odin#L432"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">into_dynamic_soa :: <span class="keyword-type">proc</span>(array: $T/<span class="directive">#soa</span>[]$T) -> <span class="directive">#soa</span>[<span class="keyword">dynamic</span>]$T {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Converts soa slice into a soa dynamic array without cloning or allocating memory</p>
+</details>
+</div>
+<div class="pkg-entity">
 <h3 id="is_power_of_two_int"><span><a class="doc-id-link" href="#is_power_of_two_int">is_power_of_two_int<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/base/runtime/internal.odin#L25"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">is_power_of_two_int :: <span class="keyword-type">proc</span> "contextless" (x: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> {…}</pre>
@@ -3468,6 +3483,19 @@ Note: If the index is out of bounds, this procedure will panic.</p>
 </details>
 </div>
 <div class="pkg-entity">
+<h3 id="ordered_remove_soa"><span><a class="doc-id-link" href="#ordered_remove_soa">ordered_remove_soa<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/base/runtime/core_builtin_soa.odin#L496"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">ordered_remove_soa :: <span class="keyword-type">proc</span>(array: ^$T/<span class="directive">#soa</span>[<span class="keyword">dynamic</span>]$T, index: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, loc := <a href="/base/runtime/#Source_Code_Location">#caller_location</a>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p><code>ordered_remove_soa</code> removed the element at the specified <code>index</code> whilst keeping the order of the other elements.</p>
+<p>Note: This is an O(N) operation.
+Note: If you the elements do not have to remain in their order, prefer <code>unordered_remove_soa</code>.
+Note: If the index is out of bounds, this procedure will panic.</p>
+</details>
+</div>
+<div class="pkg-entity">
 <h3 id="panic"><span><a class="doc-id-link" href="#panic">panic<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/base/runtime/core_builtin.odin#L882"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">panic :: <span class="keyword-type">proc</span>(message: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>, loc := <a href="/base/runtime/#Source_Code_Location">#caller_location</a>) -> ! {…}</pre>
@@ -4020,6 +4048,20 @@ Note: If you the elements to remain in their order, use <code>ordered_remove</co
 Note: If the index is out of bounds, this procedure will panic.</p>
 </details>
 </div>
+<div class="pkg-entity">
+<h3 id="unordered_remove_soa"><span><a class="doc-id-link" href="#unordered_remove_soa">unordered_remove_soa<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/base/runtime/core_builtin_soa.odin#L463"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">unordered_remove_soa :: <span class="keyword-type">proc</span>(array: ^$T/<span class="directive">#soa</span>[<span class="keyword">dynamic</span>]$T, index: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, loc := <a href="/base/runtime/#Source_Code_Location">#caller_location</a>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p><code>unordered_remove_soa</code> removed the element at the specified <code>index</code>. It does so by replacing the current end value
+with the old value, and reducing the length of the dynamic array by 1.</p>
+<p>Note: This is an O(1) operation.
+Note: If you the elements to remain in their order, use <code>ordered_remove_soa</code>.
+Note: If the index is out of bounds, this procedure will panic.</p>
+</details>
+</div>
 <h2 id="pkg-Procedure Groups" class="pkg-header">Procedure Groups</h2>
 <div class="pkg-entity">
 <h3 id="append"><span><a class="doc-id-link" href="#append">append<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/base/runtime/core_builtin.odin#L543"><em>Source</em></a></div></h3>
@@ -4303,7 +4345,7 @@ Make uses the specified allocator, default is context.allocator.</p>
 <li><em>(hidden platform specific files)</em></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2024-03 (vendor "odin") Windows_amd64 @ 2024-03-08 21:10:08.916224400 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2024-03 (vendor "odin") Windows_amd64 @ 2024-03-09 21:09:58.263678500 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
@@ -4525,6 +4567,7 @@ Make uses the specified allocator, default is context.allocator.</p>
 <li><a href="#inject_at_elem">inject_at_elem</a></li>
 <li><a href="#inject_at_elem_string">inject_at_elem_string</a></li>
 <li><a href="#inject_at_elems">inject_at_elems</a></li>
+<li><a href="#into_dynamic_soa">into_dynamic_soa</a></li>
 <li><a href="#is_power_of_two_int">is_power_of_two_int</a></li>
 <li><a href="#is_power_of_two_uintptr">is_power_of_two_uintptr</a></li>
 <li><a href="#make_aligned">make_aligned</a></li>
@@ -4612,6 +4655,7 @@ Make uses the specified allocator, default is context.allocator.</p>
 <li><a href="#non_zero_reserve_dynamic_array">non_zero_reserve_dynamic_array</a></li>
 <li><a href="#non_zero_resize_dynamic_array">non_zero_resize_dynamic_array</a></li>
 <li><a href="#ordered_remove">ordered_remove</a></li>
+<li><a href="#ordered_remove_soa">ordered_remove_soa</a></li>
 <li><a href="#panic">panic</a></li>
 <li><a href="#panic_allocator">panic_allocator</a></li>
 <li><a href="#panic_allocator_proc">panic_allocator_proc</a></li>
@@ -4690,6 +4734,7 @@ Make uses the specified allocator, default is context.allocator.</p>
 <li><a href="#umodti3">umodti3</a></li>
 <li><a href="#unimplemented">unimplemented</a></li>
 <li><a href="#unordered_remove">unordered_remove</a></li>
+<li><a href="#unordered_remove_soa">unordered_remove_soa</a></li>
 </ul>
 </li>
 <li><a href="#pkg-Procedure Groups">Procedure Groups</a><ul>
