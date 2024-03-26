@@ -9,6 +9,15 @@
 
 	<script>hljs.registerLanguage("odin",function(a){return{aliases:["odin","odinlang","odin-lang"],keywords:{keyword:"auto_cast bit_set break case cast context continue defer distinct do dynamic else enum fallthrough for foreign if import in map not_in or_else or_return package proc return struct switch transmute type_of typeid union using when where",literal:"true false nil",built_in:"abs align_of cap clamp complex conj expand_to_tuple imag jmag kmag len max min offset_of quaternion real size_of soa_unzip soa_zip swizzle type_info_of type_of typeid_of"},illegal:"</",contains:[a.C_LINE_COMMENT_MODE,a.C_BLOCK_COMMENT_MODE,{className:"string",variants:[a.QUOTE_STRING_MODE,{begin:"'",end:"[^\\\\]'"},{begin:"`",end:"`"}]},{className:"number",variants:[{begin:a.C_NUMBER_RE+"[ijk]",relevance:1},a.C_NUMBER_MODE]}]}})</script>
 	<script>hljs.highlightAll()</script>
+	<script>
+	    function toggleDarkMode() {
+	        if (document.body.classList.toggle("dark-mode")) {
+	            window.localStorage.setItem("theme", "dark");
+	        } else {
+	            window.localStorage.setItem("theme", "light");
+	        }
+	    }
+	</script>
 	<link rel="stylesheet" type="text/css" href="https://odin-lang.org/css/style.css">
 
 	<link rel="stylesheet" type="text/css" href="/style.css">
@@ -259,13 +268,13 @@ Procedures (93)</summary>
 <li><a href="/base/runtime">runtime</a>.<a href="#non_zero_resize_dynamic_array">non_zero_resize_dynamic_array</a></li>
 <li><a href="/base/runtime">runtime</a>.<a href="#map_insert">map_insert</a></li>
 <li><a href="/base/runtime">runtime</a>.<a href="#map_upsert">map_upsert</a></li>
+<li><a href="/base/runtime">runtime</a>.<a href="#raw_soa_footer_slice">raw_soa_footer_slice</a></li>
+<li><a href="/base/runtime">runtime</a>.<a href="#raw_soa_footer_dynamic_array">raw_soa_footer_dynamic_array</a></li>
 <li><a href="/base/runtime">runtime</a>.<a href="#card">card</a></li>
+<li><a href="/base/runtime">runtime</a>.<a href="#make_soa_aligned">make_soa_aligned</a></li>
 <li><a href="/base/runtime">runtime</a>.<a href="#assert">assert</a></li>
 <li><a href="/base/runtime">runtime</a>.<a href="#panic">panic</a></li>
 <li><a href="/base/runtime">runtime</a>.<a href="#unimplemented">unimplemented</a></li>
-<li><a href="/base/runtime">runtime</a>.<a href="#raw_soa_footer_slice">raw_soa_footer_slice</a></li>
-<li><a href="/base/runtime">runtime</a>.<a href="#raw_soa_footer_dynamic_array">raw_soa_footer_dynamic_array</a></li>
-<li><a href="/base/runtime">runtime</a>.<a href="#make_soa_aligned">make_soa_aligned</a></li>
 <li><a href="/base/runtime">runtime</a>.<a href="#make_soa_slice">make_soa_slice</a></li>
 <li><a href="/base/runtime">runtime</a>.<a href="#make_soa_dynamic_array">make_soa_dynamic_array</a></li>
 <li><a href="/base/runtime">runtime</a>.<a href="#make_soa_dynamic_array_len">make_soa_dynamic_array_len</a></li>
@@ -1872,9 +1881,27 @@ If m is nil, or there is no such element, this procedure is a no-op</p>
 </details>
 </div>
 <div class="pkg-entity">
+<h3 id="raw_soa_footer_slice"><span><a class="doc-id-link" href="#raw_soa_footer_slice">raw_soa_footer_slice<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/base/runtime/core_builtin_soa.odin#L54"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">raw_soa_footer_slice :: <span class="keyword-type">proc</span>(array: ^$T/<span class="directive">#soa</span>[]$T) -> (footer: ^<a class="code-typename" href="/base/runtime/#Raw_SOA_Footer_Slice">Raw_SOA_Footer_Slice</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="raw_soa_footer_dynamic_array"><span><a class="doc-id-link" href="#raw_soa_footer_dynamic_array">raw_soa_footer_dynamic_array<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/base/runtime/core_builtin_soa.odin#L63"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">raw_soa_footer_dynamic_array :: <span class="keyword-type">proc</span>(array: ^$T/<span class="directive">#soa</span>[<span class="keyword">dynamic</span>]$T) -> (footer: ^<a class="code-typename" href="/base/runtime/#Raw_SOA_Footer_Dynamic_Array">Raw_SOA_Footer_Dynamic_Array</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
 <h3 id="card"><span><a class="doc-id-link" href="#card">card<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/base/runtime/core_builtin.odin#L848"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">card :: <span class="keyword-type">proc</span> "contextless" (s: $S/<span class="keyword-type">bit_set</span>[$T]) -> <a href="/base/builtin#int"><span class="doc-builtin">int</span></a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="make_soa_aligned"><span><a class="doc-id-link" href="#make_soa_aligned">make_soa_aligned<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/base/runtime/core_builtin_soa.odin#L84"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">make_soa_aligned :: <span class="keyword-type">proc</span>($T: <span class="keyword-type">typeid</span>/<span class="directive">#soa</span>[]T, length: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, alignment: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, allocator := <a href="/base/runtime/#Context">context.allocator</a>, loc := <a href="/base/runtime/#Source_Code_Location">#caller_location</a>) -> (array: T, err: <a class="code-typename" href="/base/runtime/#Allocator_Error">Allocator_Error</a>) <span class="directive">#optional_ok</span> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -1893,24 +1920,6 @@ If m is nil, or there is no such element, this procedure is a no-op</p>
 <h3 id="unimplemented"><span><a class="doc-id-link" href="#unimplemented">unimplemented<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/base/runtime/core_builtin.odin#L896"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">unimplemented :: <span class="keyword-type">proc</span>(message: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>, loc := <a href="/base/runtime/#Source_Code_Location">#caller_location</a>) -> ! {…}</pre>
-</div>
-</div>
-<div class="pkg-entity">
-<h3 id="raw_soa_footer_slice"><span><a class="doc-id-link" href="#raw_soa_footer_slice">raw_soa_footer_slice<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/base/runtime/core_builtin_soa.odin#L54"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">raw_soa_footer_slice :: <span class="keyword-type">proc</span>(array: ^$T/<span class="directive">#soa</span>[]$T) -> (footer: ^<a class="code-typename" href="/base/runtime/#Raw_SOA_Footer_Slice">Raw_SOA_Footer_Slice</a>) {…}</pre>
-</div>
-</div>
-<div class="pkg-entity">
-<h3 id="raw_soa_footer_dynamic_array"><span><a class="doc-id-link" href="#raw_soa_footer_dynamic_array">raw_soa_footer_dynamic_array<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/base/runtime/core_builtin_soa.odin#L63"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">raw_soa_footer_dynamic_array :: <span class="keyword-type">proc</span>(array: ^$T/<span class="directive">#soa</span>[<span class="keyword">dynamic</span>]$T) -> (footer: ^<a class="code-typename" href="/base/runtime/#Raw_SOA_Footer_Dynamic_Array">Raw_SOA_Footer_Dynamic_Array</a>) {…}</pre>
-</div>
-</div>
-<div class="pkg-entity">
-<h3 id="make_soa_aligned"><span><a class="doc-id-link" href="#make_soa_aligned">make_soa_aligned<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/base/runtime/core_builtin_soa.odin#L84"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">make_soa_aligned :: <span class="keyword-type">proc</span>($T: <span class="keyword-type">typeid</span>/<span class="directive">#soa</span>[]T, length: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, alignment: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, allocator := <a href="/base/runtime/#Context">context.allocator</a>, loc := <a href="/base/runtime/#Source_Code_Location">#caller_location</a>) -> (array: T, err: <a class="code-typename" href="/base/runtime/#Allocator_Error">Allocator_Error</a>) <span class="directive">#optional_ok</span> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
