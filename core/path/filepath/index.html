@@ -210,6 +210,17 @@
 </li>
 <li class="nav-item"><a href="/core/strings">strings</a></li>
 <li class="nav-item"><a href="/core/sync">sync</a></li>
+<li class="nav-item">sys<ul>
+<li><a href="/core/sys/darwin">darwin</a></li>
+<li><a href="/core/sys/haiku">haiku</a></li>
+<li><a href="/core/sys/info">info</a></li>
+<li><a href="/core/sys/linux">linux</a></li>
+<li><a href="/core/sys/unix">unix</a></li>
+<li><a href="/core/sys/valgrind">valgrind</a></li>
+<li><a href="/core/sys/windows">windows</a></li>
+</ul>
+
+</li>
 <li class="nav-item"><a href="/core/testing">testing</a></li>
 <li class="nav-item">text<ul>
 <li><a href="/core/text/edit">edit</a></li>
@@ -388,7 +399,16 @@ and the procedure can decide how to handle that error (and walk will not descend
 In the case of an error, the info argument will be 0
 If an error is returned, processing stops
 The sole exception is if 'skip_dir' is returned as true:</p>
-<pre>when 'skip_dir' is invoked on a directory. 'walk' skips directory contents
+<pre>Walk_Proc is the type of the procedure called for each file or directory visited by 'walk'
+The 'path' parameter contains the parameter to walk as a prefix (this is the same as info.fullpath except on 'root')
+The 'info' parameter is the os.File_Info for the named path
+
+If there was a problem walking to the file or directory named by path, the incoming error will describe the problem
+and the procedure can decide how to handle that error (and walk will not descend into that directory)
+In the case of an error, the info argument will be 0
+If an error is returned, processing stops
+The sole exception is if 'skip_dir' is returned as true:
+when 'skip_dir' is invoked on a directory. 'walk' skips directory contents
 when 'skip_dir' is invoked on a non-directory. 'walk' skips the remaining files in the containing directory
 </pre>
 </details>
@@ -439,7 +459,9 @@ when 'skip_dir' is invoked on a non-directory. 'walk' skips the remaining files 
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
 <p>Gets the file name and extension from a path.</p>
-<pre>e.g.
+<pre>Gets the file name and extension from a path.
+
+e.g.
   'path/to/name.tar.gz' -&gt; 'name.tar.gz'
   'path/to/name.txt'    -&gt; 'name.txt'
   'path/to/name'        -&gt; 'name'
@@ -456,7 +478,8 @@ Returns "." if the path is an empty string.
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
 <p>Returns the shortest path name equivalent to <code>path</code> through solely lexical processing.</p>
-<pre>It applies the folliwng rules until none of them can be applied:
+<pre>Returns the shortest path name equivalent to `path` through solely lexical processing.
+It applies the folliwng rules until none of them can be applied:
 
 * Replace multiple separators with a single one
 * Remove each current directory (`.`) path name element
@@ -478,7 +501,8 @@ If the result of the path is an empty string, the returned path with be `"."`.
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
 <p>Returns all but the last element path, usually the path's directory. Once the final element has been removed,</p>
-<pre>`dir` calls `clean` on the path and trailing separators are removed. If the path consists purely of separators,
+<pre>Returns all but the last element path, usually the path's directory. Once the final element has been removed,
+`dir` calls `clean` on the path and trailing separators are removed. If the path consists purely of separators,
 then `"."` is returned.
 </pre>
 </details>
@@ -491,7 +515,9 @@ then `"."` is returned.
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
 <p>Gets the file extension from a path, including the dot.</p>
-<pre>The file extension is such that stem(path) + ext(path) = base(path).
+<pre>Gets the file extension from a path, including the dot.
+
+The file extension is such that stem(path) + ext(path) = base(path).
 
 Only the last dot is considered when splitting the file extension.
 See `long_ext`.
@@ -576,7 +602,9 @@ The pattern may describe hierarchical names such as /usr/*/bin (assuming '/' is 
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
 <p>Gets the file extension from a path, including the dot.</p>
-<pre>The long file extension is such that short_stem(path) + long_ext(path) = base(path).
+<pre>Gets the file extension from a path, including the dot.
+
+The long file extension is such that short_stem(path) + long_ext(path) = base(path).
 
 The first dot is used to split off the file extension, unlike `ext` which uses the last dot.
 
@@ -598,7 +626,9 @@ Returns an empty string if there is a trailing path separator.
 <summary class="hideme"><span>&nbsp;</span></summary>
 <p>match states whether "name" matches the shell pattern
 Pattern syntax is:</p>
-<pre>pattern:
+<pre>match states whether "name" matches the shell pattern
+Pattern syntax is:
+pattern:
 	{term}
 term:
 	'*'	        matches any sequence of non-/ characters
@@ -613,6 +643,10 @@ character-range
 	'\\' c          matches character c
 	lo '-' hi       matches character c for lo &lt;= c &lt;= hi
 
+match requires that the pattern matches the entirety of the name, not just a substring
+The only possible error returned is .Syntax_Error
+
+NOTE(bill): This is effectively the shell pattern matching system found
 </pre>
 <p>match requires that the pattern matches the entirety of the name, not just a substring
 The only possible error returned is .Syntax_Error</p>
@@ -627,7 +661,9 @@ The only possible error returned is .Syntax_Error</p>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
 <p>Returns a relative path that is lexically equivalent to the <code>target_path</code> when joined with the <code>base_path</code> with an OS specific separator.</p>
-<pre>e.g. `join(base_path, rel(base_path, target_path))` is equivalent to `target_path`
+<pre>Returns a relative path that is lexically equivalent to the `target_path` when joined with the `base_path` with an OS specific separator.
+
+e.g. `join(base_path, rel(base_path, target_path))` is equivalent to `target_path`
 
 On failure, the `Relative_Error` will be state it cannot compute the necessary relative path.
 </pre>
@@ -641,7 +677,9 @@ On failure, the `Relative_Error` will be state it cannot compute the necessary r
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
 <p>Gets the name of a file from a path.</p>
-<pre>The short stem is such that short_stem(path) + long_ext(path) = base(path).
+<pre>Gets the name of a file from a path.
+
+The short stem is such that short_stem(path) + long_ext(path) = base(path).
 
 The first dot is used to split off the file extension, unlike `stem` which uses the last dot.
 
@@ -687,7 +725,9 @@ Separators within pairs of double-quotes will be ignored and stripped, e.g. <cod
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
 <p>Gets the name of a file from a path.</p>
-<pre>The stem of a file is such that stem(path) + ext(path) = base(path).
+<pre>Gets the name of a file from a path.
+
+The stem of a file is such that stem(path) + ext(path) = base(path).
 
 Only the last dot is considered when splitting the file extension.
 See `short_stem`.
@@ -719,7 +759,9 @@ Returns an empty string if there's a trailing path separator.
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
 <p>Returns leading volume name.</p>
-<pre>e.g.
+<pre>Returns leading volume name.
+
+e.g.
   "C:\foo\bar\baz" will return "C:" on Windows.
   Everything else will be "".
 </pre>
@@ -761,7 +803,7 @@ NOTE: os.File_Info uses the 'context.temp_allocator' to allocate, and will delet
 <li><em>(hidden platform specific files)</em></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2024-04 (vendor "odin") Windows_amd64 @ 2024-04-02 21:08:52.353545700 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2024-04 (vendor "odin") Windows_amd64 @ 2024-04-03 19:04:59.970188700 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">

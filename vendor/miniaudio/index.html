@@ -3355,36 +3355,207 @@ callback will be fired with a consistent frame count.</p>
 <p>Parameters
 ----------
 pDevice (in)</p>
-<pre>A pointer to the relevant device.
+<pre>The callback for processing audio data from the device.
 
-</pre>
-<p>pOutput (out)</p>
-<pre>A pointer to the output buffer that will receive audio data that will later be played back through the speakers. This will be non-null for a playback or
+The data callback is fired by miniaudio whenever the device needs to have more data delivered to a playback device, or when a capture device has some data
+available. This is called as soon as the backend asks for more data which means it may be called with inconsistent frame counts. You cannot assume the
+callback will be fired with a consistent frame count.
+
+
+Parameters
+----------
+pDevice (in)
+A pointer to the relevant device.
+
+pOutput (out)
+A pointer to the output buffer that will receive audio data that will later be played back through the speakers. This will be non-null for a playback or
 full-duplex device and null for a capture and loopback device.
 
-</pre>
-<p>pInput (in)</p>
-<pre>A pointer to the buffer containing input data from a recording device. This will be non-null for a capture, full-duplex or loopback device and null for a
+pInput (in)
+A pointer to the buffer containing input data from a recording device. This will be non-null for a capture, full-duplex or loopback device and null for a
 playback device.
 
-</pre>
-<p>frameCount (in)</p>
-<pre>The number of PCM frames to process. Note that this will not necessarily be equal to what you requested when you initialized the device. The
+frameCount (in)
+The number of PCM frames to process. Note that this will not necessarily be equal to what you requested when you initialized the device. The
 `periodSizeInFrames` and `periodSizeInMilliseconds` members of the device config are just hints, and are not necessarily exactly what you'll get. You must
 not assume this will always be the same value each time the callback is fired.
 
 
-</pre>
-<p>Remarks
+Remarks
 -------
 You cannot stop and start the device from inside the callback or else you'll get a deadlock. You must also not uninitialize the device from inside the
-callback. The following APIs cannot be called from inside the callback:</p>
-<pre>ma_device_init()
+callback. The following APIs cannot be called from inside the callback:
+
+ma_device_init()
 ma_device_init_ex()
 ma_device_uninit()
 ma_device_start()
 ma_device_stop()
 
+The proper way to stop the device is to call `ma_device_stop()` from a different thread, normally the main application thread.
+</pre>
+<p>pOutput (out)</p>
+<pre>The callback for processing audio data from the device.
+
+The data callback is fired by miniaudio whenever the device needs to have more data delivered to a playback device, or when a capture device has some data
+available. This is called as soon as the backend asks for more data which means it may be called with inconsistent frame counts. You cannot assume the
+callback will be fired with a consistent frame count.
+
+
+Parameters
+----------
+pDevice (in)
+A pointer to the relevant device.
+
+pOutput (out)
+A pointer to the output buffer that will receive audio data that will later be played back through the speakers. This will be non-null for a playback or
+full-duplex device and null for a capture and loopback device.
+
+pInput (in)
+A pointer to the buffer containing input data from a recording device. This will be non-null for a capture, full-duplex or loopback device and null for a
+playback device.
+
+frameCount (in)
+The number of PCM frames to process. Note that this will not necessarily be equal to what you requested when you initialized the device. The
+`periodSizeInFrames` and `periodSizeInMilliseconds` members of the device config are just hints, and are not necessarily exactly what you'll get. You must
+not assume this will always be the same value each time the callback is fired.
+
+
+Remarks
+-------
+You cannot stop and start the device from inside the callback or else you'll get a deadlock. You must also not uninitialize the device from inside the
+callback. The following APIs cannot be called from inside the callback:
+
+ma_device_init()
+ma_device_init_ex()
+ma_device_uninit()
+ma_device_start()
+ma_device_stop()
+
+The proper way to stop the device is to call `ma_device_stop()` from a different thread, normally the main application thread.
+</pre>
+<p>pInput (in)</p>
+<pre>The callback for processing audio data from the device.
+
+The data callback is fired by miniaudio whenever the device needs to have more data delivered to a playback device, or when a capture device has some data
+available. This is called as soon as the backend asks for more data which means it may be called with inconsistent frame counts. You cannot assume the
+callback will be fired with a consistent frame count.
+
+
+Parameters
+----------
+pDevice (in)
+A pointer to the relevant device.
+
+pOutput (out)
+A pointer to the output buffer that will receive audio data that will later be played back through the speakers. This will be non-null for a playback or
+full-duplex device and null for a capture and loopback device.
+
+pInput (in)
+A pointer to the buffer containing input data from a recording device. This will be non-null for a capture, full-duplex or loopback device and null for a
+playback device.
+
+frameCount (in)
+The number of PCM frames to process. Note that this will not necessarily be equal to what you requested when you initialized the device. The
+`periodSizeInFrames` and `periodSizeInMilliseconds` members of the device config are just hints, and are not necessarily exactly what you'll get. You must
+not assume this will always be the same value each time the callback is fired.
+
+
+Remarks
+-------
+You cannot stop and start the device from inside the callback or else you'll get a deadlock. You must also not uninitialize the device from inside the
+callback. The following APIs cannot be called from inside the callback:
+
+ma_device_init()
+ma_device_init_ex()
+ma_device_uninit()
+ma_device_start()
+ma_device_stop()
+
+The proper way to stop the device is to call `ma_device_stop()` from a different thread, normally the main application thread.
+</pre>
+<p>frameCount (in)</p>
+<pre>The callback for processing audio data from the device.
+
+The data callback is fired by miniaudio whenever the device needs to have more data delivered to a playback device, or when a capture device has some data
+available. This is called as soon as the backend asks for more data which means it may be called with inconsistent frame counts. You cannot assume the
+callback will be fired with a consistent frame count.
+
+
+Parameters
+----------
+pDevice (in)
+A pointer to the relevant device.
+
+pOutput (out)
+A pointer to the output buffer that will receive audio data that will later be played back through the speakers. This will be non-null for a playback or
+full-duplex device and null for a capture and loopback device.
+
+pInput (in)
+A pointer to the buffer containing input data from a recording device. This will be non-null for a capture, full-duplex or loopback device and null for a
+playback device.
+
+frameCount (in)
+The number of PCM frames to process. Note that this will not necessarily be equal to what you requested when you initialized the device. The
+`periodSizeInFrames` and `periodSizeInMilliseconds` members of the device config are just hints, and are not necessarily exactly what you'll get. You must
+not assume this will always be the same value each time the callback is fired.
+
+
+Remarks
+-------
+You cannot stop and start the device from inside the callback or else you'll get a deadlock. You must also not uninitialize the device from inside the
+callback. The following APIs cannot be called from inside the callback:
+
+ma_device_init()
+ma_device_init_ex()
+ma_device_uninit()
+ma_device_start()
+ma_device_stop()
+
+The proper way to stop the device is to call `ma_device_stop()` from a different thread, normally the main application thread.
+</pre>
+<p>Remarks
+-------
+You cannot stop and start the device from inside the callback or else you'll get a deadlock. You must also not uninitialize the device from inside the
+callback. The following APIs cannot be called from inside the callback:</p>
+<pre>The callback for processing audio data from the device.
+
+The data callback is fired by miniaudio whenever the device needs to have more data delivered to a playback device, or when a capture device has some data
+available. This is called as soon as the backend asks for more data which means it may be called with inconsistent frame counts. You cannot assume the
+callback will be fired with a consistent frame count.
+
+
+Parameters
+----------
+pDevice (in)
+A pointer to the relevant device.
+
+pOutput (out)
+A pointer to the output buffer that will receive audio data that will later be played back through the speakers. This will be non-null for a playback or
+full-duplex device and null for a capture and loopback device.
+
+pInput (in)
+A pointer to the buffer containing input data from a recording device. This will be non-null for a capture, full-duplex or loopback device and null for a
+playback device.
+
+frameCount (in)
+The number of PCM frames to process. Note that this will not necessarily be equal to what you requested when you initialized the device. The
+`periodSizeInFrames` and `periodSizeInMilliseconds` members of the device config are just hints, and are not necessarily exactly what you'll get. You must
+not assume this will always be the same value each time the callback is fired.
+
+
+Remarks
+-------
+You cannot stop and start the device from inside the callback or else you'll get a deadlock. You must also not uninitialize the device from inside the
+callback. The following APIs cannot be called from inside the callback:
+
+ma_device_init()
+ma_device_init_ex()
+ma_device_uninit()
+ma_device_start()
+ma_device_stop()
+
+The proper way to stop the device is to call `ma_device_stop()` from a different thread, normally the main application thread.
 </pre>
 <p>The proper way to stop the device is to call <code>ma_device_stop()</code> from a different thread, normally the main application thread.</p>
 </details>
@@ -4072,21 +4243,84 @@ in frames. The internal sample rate of the capture device is also needed in orde
 <p>Parameters
 ----------
 pContext (in)</p>
-<pre>A pointer to the context performing the enumeration.
+<pre>The callback for handling device enumeration. This is fired from `ma_context_enumerate_devices()`.
 
-</pre>
-<p>deviceType (in)</p>
-<pre>The type of the device being enumerated. This will always be either `ma_device_type_playback` or `ma_device_type_capture`.
 
-</pre>
-<p>pInfo (in)</p>
-<pre>A pointer to a `ma_device_info` containing the ID and name of the enumerated device. Note that this will not include detailed information about the device,
+Parameters
+----------
+pContext (in)
+A pointer to the context performing the enumeration.
+
+deviceType (in)
+The type of the device being enumerated. This will always be either `ma_device_type_playback` or `ma_device_type_capture`.
+
+pInfo (in)
+A pointer to a `ma_device_info` containing the ID and name of the enumerated device. Note that this will not include detailed information about the device,
 only basic information (ID and name). The reason for this is that it would otherwise require opening the backend device to probe for the information which
 is too inefficient.
 
+pUserData (in)
+The user data pointer passed into `ma_context_enumerate_devices()`.
+</pre>
+<p>deviceType (in)</p>
+<pre>The callback for handling device enumeration. This is fired from `ma_context_enumerate_devices()`.
+
+
+Parameters
+----------
+pContext (in)
+A pointer to the context performing the enumeration.
+
+deviceType (in)
+The type of the device being enumerated. This will always be either `ma_device_type_playback` or `ma_device_type_capture`.
+
+pInfo (in)
+A pointer to a `ma_device_info` containing the ID and name of the enumerated device. Note that this will not include detailed information about the device,
+only basic information (ID and name). The reason for this is that it would otherwise require opening the backend device to probe for the information which
+is too inefficient.
+
+pUserData (in)
+The user data pointer passed into `ma_context_enumerate_devices()`.
+</pre>
+<p>pInfo (in)</p>
+<pre>The callback for handling device enumeration. This is fired from `ma_context_enumerate_devices()`.
+
+
+Parameters
+----------
+pContext (in)
+A pointer to the context performing the enumeration.
+
+deviceType (in)
+The type of the device being enumerated. This will always be either `ma_device_type_playback` or `ma_device_type_capture`.
+
+pInfo (in)
+A pointer to a `ma_device_info` containing the ID and name of the enumerated device. Note that this will not include detailed information about the device,
+only basic information (ID and name). The reason for this is that it would otherwise require opening the backend device to probe for the information which
+is too inefficient.
+
+pUserData (in)
+The user data pointer passed into `ma_context_enumerate_devices()`.
 </pre>
 <p>pUserData (in)</p>
-<pre>The user data pointer passed into `ma_context_enumerate_devices()`.
+<pre>The callback for handling device enumeration. This is fired from `ma_context_enumerate_devices()`.
+
+
+Parameters
+----------
+pContext (in)
+A pointer to the context performing the enumeration.
+
+deviceType (in)
+The type of the device being enumerated. This will always be either `ma_device_type_playback` or `ma_device_type_capture`.
+
+pInfo (in)
+A pointer to a `ma_device_info` containing the ID and name of the enumerated device. Note that this will not include detailed information about the device,
+only basic information (ID and name). The reason for this is that it would otherwise require opening the backend device to probe for the information which
+is too inefficient.
+
+pUserData (in)
+The user data pointer passed into `ma_context_enumerate_devices()`.
 </pre>
 </details>
 <h5>Related Procedures With Parameters</h5>
@@ -7344,7 +7578,16 @@ The idea of the slot allocator is for it to be used in conjunction with a fixed 
 as the insertion point for an object.</p>
 <p>Slots are reference counted to help mitigate the ABA problem in the lock-free queue we use for tracking jobs.</p>
 <p>The slot index is stored in the low 32 bits. The reference counter is stored in the high 32 bits:</p>
-<pre>	+-----------------+-----------------+
+<pre>Slot Allocator
+--------------
+The idea of the slot allocator is for it to be used in conjunction with a fixed sized buffer. You use the slot allocator to allocator an index that can be used
+as the insertion point for an object.
+
+Slots are reference counted to help mitigate the ABA problem in the lock-free queue we use for tracking jobs.
+
+The slot index is stored in the low 32 bits. The reference counter is stored in the high 32 bits:
+
+	+-----------------+-----------------+
 	| 32 Bits         | 32 Bits         |
 	+-----------------+-----------------+
 	| Reference Count | Slot Index      |
@@ -9047,7 +9290,9 @@ appropriate for a given situation.</p>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
 <p>Calculates an appropriate buffer size from a descriptor, native sample rate and performance profile.</p>
-<pre>This function is used by backends for helping determine an appropriately sized buffer to use with
+<pre>Calculates an appropriate buffer size from a descriptor, native sample rate and performance profile.
+
+This function is used by backends for helping determine an appropriately sized buffer to use with
 the device depending on the values of `periodSizeInFrames` and `periodSizeInMilliseconds` in the
 `pDescriptor` object. Since buffer size calculations based on time depends on the sample rate, a
 best guess at the device's native sample rate is also required which is where `nativeSampleRate`
@@ -9189,7 +9434,9 @@ is also zero, `MA_DEFAULT_SAMPLE_RATE` will be used instead.
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
 <p>Helper for determining whether or not a channel is present in the given channel map.</p>
-<pre>The channel map buffer must have a capacity of at least `channels`.
+<pre>Helper for determining whether or not a channel is present in the given channel map.
+
+The channel map buffer must have a capacity of at least `channels`.
 </pre>
 </details>
 </div>
@@ -9201,7 +9448,9 @@ is also zero, `MA_DEFAULT_SAMPLE_RATE` will be used instead.
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
 <p>Copies a channel map.</p>
-<pre>Both input and output channel map buffers must have a capacity of at at least `channels`.
+<pre>Copies a channel map.
+
+Both input and output channel map buffers must have a capacity of at at least `channels`.
 </pre>
 </details>
 </div>
@@ -9213,7 +9462,9 @@ is also zero, `MA_DEFAULT_SAMPLE_RATE` will be used instead.
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
 <p>Copies a channel map if one is specified, otherwise copies the default channel map.</p>
-<pre>The output buffer must have a capacity of at least `channels`. If not NULL, the input channel map must also have a capacity of at least `channels`.
+<pre>Copies a channel map if one is specified, otherwise copies the default channel map.
+
+The output buffer must have a capacity of at least `channels`. If not NULL, the input channel map must also have a capacity of at least `channels`.
 </pre>
 </details>
 </div>
@@ -9225,7 +9476,8 @@ is also zero, `MA_DEFAULT_SAMPLE_RATE` will be used instead.
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
 <p>Find a channel position in the given channel map. Returns MA_TRUE if the channel is found; MA_FALSE otherwise. The</p>
-<pre>index of the channel is output to `pChannelIndex`.
+<pre>Find a channel position in the given channel map. Returns MA_TRUE if the channel is found; MA_FALSE otherwise. The
+index of the channel is output to `pChannelIndex`.
 
 The channel map buffer must have a capacity of at least `channels`.
 </pre>
@@ -9239,7 +9491,9 @@ The channel map buffer must have a capacity of at least `channels`.
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
 <p>Retrieves the channel position of the specified channel in the given channel map.</p>
-<pre>The pChannelMap parameter can be null, in which case miniaudio's default channel map will be assumed.
+<pre>Retrieves the channel position of the specified channel in the given channel map.
+
+The pChannelMap parameter can be null, in which case miniaudio's default channel map will be assumed.
 </pre>
 </details>
 </div>
@@ -9251,7 +9505,9 @@ The channel map buffer must have a capacity of at least `channels`.
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
 <p>Initializes a blank channel map.</p>
-<pre>When a blank channel map is specified anywhere it indicates that the native channel map should be used.
+<pre>Initializes a blank channel map.
+
+When a blank channel map is specified anywhere it indicates that the native channel map should be used.
 </pre>
 </details>
 </div>
@@ -9263,7 +9519,9 @@ The channel map buffer must have a capacity of at least `channels`.
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
 <p>Helper for retrieving a standard channel map.</p>
-<pre>The output channel map buffer must have a capacity of at least `channelMapCap`.
+<pre>Helper for retrieving a standard channel map.
+
+The output channel map buffer must have a capacity of at least `channelMapCap`.
 </pre>
 </details>
 </div>
@@ -9275,7 +9533,9 @@ The channel map buffer must have a capacity of at least `channels`.
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
 <p>Helper for determining if a channel map is blank (all channels set to MA_CHANNEL_NONE).</p>
-<pre>The channel map buffer must have a capacity of at least `channels`.
+<pre>Helper for determining if a channel map is blank (all channels set to MA_CHANNEL_NONE).
+
+The channel map buffer must have a capacity of at least `channels`.
 </pre>
 </details>
 </div>
@@ -9287,7 +9547,9 @@ The channel map buffer must have a capacity of at least `channels`.
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
 <p>Helper for comparing two channel maps for equality.</p>
-<pre>This assumes the channel count is the same between the two.
+<pre>Helper for comparing two channel maps for equality.
+
+This assumes the channel count is the same between the two.
 
 Both channels map buffers must have a capacity of at least `channels`.
 </pre>
@@ -9301,7 +9563,9 @@ Both channels map buffers must have a capacity of at least `channels`.
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
 <p>Determines whether or not a channel map is valid.</p>
-<pre>A blank channel map is valid (all channels set to MA_CHANNEL_NONE). The way a blank channel map is handled is context specific, but
+<pre>Determines whether or not a channel map is valid.
+
+A blank channel map is valid (all channels set to MA_CHANNEL_NONE). The way a blank channel map is handled is context specific, but
 is usually treated as a passthrough.
 
 Invalid channel maps:
@@ -9320,7 +9584,9 @@ The channel map buffer must have a capacity of at least `channels`.
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
 <p>Generates a string representing the given channel map.</p>
-<pre>This is for printing and debugging purposes, not serialization/deserialization.
+<pre>Generates a string representing the given channel map.
+
+This is for printing and debugging purposes, not serialization/deserialization.
 
 Returns the length of the string, not including the null terminator.
 </pre>
@@ -9384,7 +9650,10 @@ Returns the length of the string, not including the null terminator.
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
 <p>Initializes a <code>ma_context_config</code> object.</p>
-<pre>Return Value
+<pre>Initializes a `ma_context_config` object.
+
+
+Return Value
 ------------
 A `ma_context_config` initialized to defaults.
 
@@ -9411,7 +9680,9 @@ ma_context_init()
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
 <p>Enumerates over every device (both playback and capture).</p>
-<pre>This is a lower-level enumeration function to the easier to use `ma_context_get_devices()`. Use `ma_context_enumerate_devices()` if you would rather not incur
+<pre>Enumerates over every device (both playback and capture).
+
+This is a lower-level enumeration function to the easier to use `ma_context_get_devices()`. Use `ma_context_enumerate_devices()` if you would rather not incur
 an internal heap allocation, or it simply suits your code better.
 
 Note that this only retrieves the ID and name/description of the device. The reason for only retrieving basic information is that it would otherwise require
@@ -9483,7 +9754,10 @@ ma_context_get_devices()
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
 <p>Retrieves information about a device of the given type, with the specified ID and share mode.</p>
-<pre>Parameters
+<pre>Retrieves information about a device of the given type, with the specified ID and share mode.
+
+
+Parameters
 ----------
 pContext (in)
 		A pointer to the context performing the query.
@@ -9529,7 +9803,9 @@ This leaves pDeviceInfo unmodified in the result of an error.
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
 <p>Retrieves basic information about every active playback and/or capture device.</p>
-<pre>This function will allocate memory internally for the device lists and return a pointer to them through the `ppPlaybackDeviceInfos` and `ppCaptureDeviceInfos`
+<pre>Retrieves basic information about every active playback and/or capture device.
+
+This function will allocate memory internally for the device lists and return a pointer to them through the `ppPlaybackDeviceInfos` and `ppCaptureDeviceInfos`
 parameters. If you do not want to incur the overhead of these allocations consider using `ma_context_enumerate_devices()` which will instead use a callback.
 
 
@@ -9585,7 +9861,10 @@ ma_context_get_devices()
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
 <p>Retrieves a pointer to the log object associated with this context.</p>
-<pre>Remarks
+<pre>Retrieves a pointer to the log object associated with this context.
+
+
+Remarks
 -------
 Pass the returned pointer to `ma_log_post()`, `ma_log_postv()` or `ma_log_postf()` to post a log
 message.
@@ -9606,7 +9885,9 @@ NULL will be returned.
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
 <p>Initializes a context.</p>
-<pre>The context is used for selecting and initializing an appropriate backend and to represent the backend at a more global level than that of an individual
+<pre>Initializes a context.
+
+The context is used for selecting and initializing an appropriate backend and to represent the backend at a more global level than that of an individual
 device. There is one context to many devices, and a device is created from a context. A context is required to enumerate devices.
 
 
@@ -9823,7 +10104,10 @@ ma_context_uninit()
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
 <p>Determines if the given context supports loopback mode.</p>
-<pre>Parameters
+<pre>Determines if the given context supports loopback mode.
+
+
+Parameters
 ----------
 pContext (in)
     A pointer to the context getting queried.
@@ -9843,7 +10127,9 @@ MA_TRUE if the context supports loopback mode; MA_FALSE otherwise.
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
 <p>Retrieves the size of the ma_context object.</p>
-<pre>This is mainly for the purpose of bindings to know how much memory to allocate.
+<pre>Retrieves the size of the ma_context object.
+
+This is mainly for the purpose of bindings to know how much memory to allocate.
 </pre>
 </details>
 </div>
@@ -9855,7 +10141,10 @@ MA_TRUE if the context supports loopback mode; MA_FALSE otherwise.
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
 <p>Uninitializes a context.</p>
-<pre>Return Value
+<pre>Uninitializes a context.
+
+
+Return Value
 ------------
 MA_SUCCESS if successful; any other error code otherwise.
 
@@ -9895,7 +10184,8 @@ ma_context_init()
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
 <p>High-level helper for doing a full format conversion in one go. Returns the number of output frames. Call this with pOut set to NULL to</p>
-<pre>determine the required size of the output buffer. frameCountOut should be set to the capacity of pOut. If pOut is NULL, frameCountOut is
+<pre>High-level helper for doing a full format conversion in one go. Returns the number of output frames. Call this with pOut set to NULL to
+determine the required size of the output buffer. frameCountOut should be set to the capacity of pOut. If pOut is NULL, frameCountOut is
 ignored.
 
 A return value of 0 indicates an error.
@@ -10004,7 +10294,9 @@ This function is useful for one-off bulk conversions, but if you're streaming da
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
 <p>Helper for applying a volume factor to samples.</p>
-<pre>Note that the source and destination buffers can be the same, in which case it'll perform the operation in-place.
+<pre>Helper for applying a volume factor to samples.
+
+Note that the source and destination buffers can be the same, in which case it'll perform the operation in-place.
 </pre>
 </details>
 </div>
@@ -10320,7 +10612,8 @@ This function is useful for one-off bulk conversions, but if you're streaming da
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
 <p>Helper for opening and decoding a file into a heap allocated block of memory. Free the returned pointer with ma_free(). On input,</p>
-<pre>pConfig should be set to what you want. On output it will be set to what you got.
+<pre>Helper for opening and decoding a file into a heap allocated block of memory. Free the returned pointer with ma_free(). On input,
+pConfig should be set to what you want. On output it will be set to what you got.
 </pre>
 </details>
 </div>
@@ -10350,7 +10643,9 @@ This function is useful for one-off bulk conversions, but if you're streaming da
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
 <p>Retrieves the number of frames that can be read before reaching the end.</p>
-<pre>This calls `ma_decoder_get_length_in_pcm_frames()` so you need to be aware of the rules for that function, in
+<pre>Retrieves the number of frames that can be read before reaching the end.
+
+This calls `ma_decoder_get_length_in_pcm_frames()` so you need to be aware of the rules for that function, in
 particular ensuring you do not call it on streams of an undefined length, such as internet radio.
 
 If the total length of the decoder cannot be retrieved, such as with Vorbis decoders, `MA_NOT_IMPLEMENTED` will be
@@ -10392,7 +10687,9 @@ returned.
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
 <p>Retrieves the length of the decoder in PCM frames.</p>
-<pre>Do not call this on streams of an undefined length, such as internet radio.
+<pre>Retrieves the length of the decoder in PCM frames.
+
+Do not call this on streams of an undefined length, such as internet radio.
 
 If the length is unknown or an error occurs, 0 will be returned.
 
@@ -10449,7 +10746,9 @@ This function is not thread safe without your own synchronization.
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
 <p>Reads PCM frames from the given decoder.</p>
-<pre>This is not thread safe without your own synchronization.
+<pre>Reads PCM frames from the given decoder.
+
+This is not thread safe without your own synchronization.
 </pre>
 </details>
 </div>
@@ -10461,7 +10760,9 @@ This function is not thread safe without your own synchronization.
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
 <p>Seeks to a PCM frame based on it's absolute index.</p>
-<pre>This is not thread safe without your own synchronization.
+<pre>Seeks to a PCM frame based on it's absolute index.
+
+This is not thread safe without your own synchronization.
 </pre>
 </details>
 </div>
@@ -10619,7 +10920,10 @@ This function is not thread safe without your own synchronization.
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
 <p>Initializes a device config with default settings.</p>
-<pre>Parameters
+<pre>Initializes a device config with default settings.
+
+
+Parameters
 ----------
 deviceType (in)
 		The type of the device this config is being initialized for. This must set to one of the following:
@@ -10699,7 +11003,10 @@ ma_device_init_ex()
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
 <p>Retrieves information about the device.</p>
-<pre>Parameters
+<pre>Retrieves information about the device.
+
+
+Parameters
 ----------
 pDevice (in)
 		A pointer to the device whose information is being retrieved.
@@ -10748,7 +11055,10 @@ which may or may not be safe.
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
 <p>Retrieves the master volume factor for the device.</p>
-<pre>Parameters
+<pre>Retrieves the master volume factor for the device.
+
+
+Parameters
 ----------
 pDevice (in)
 		A pointer to the device whose volume factor is being retrieved.
@@ -10795,7 +11105,10 @@ ma_device_get_master_volume_gain_db()
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
 <p>Retrieves the master gain in decibels.</p>
-<pre>Parameters
+<pre>Retrieves the master gain in decibels.
+
+
+Parameters
 ----------
 pDevice (in)
 		A pointer to the device whose gain is being retrieved.
@@ -10842,7 +11155,10 @@ ma_device_get_master_volume()
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
 <p>Retrieves the name of the device.</p>
-<pre>Parameters
+<pre>Retrieves the name of the device.
+
+
+Parameters
 ----------
 pDevice (in)
 		A pointer to the device whose information is being retrieved.
@@ -10898,7 +11214,10 @@ This is implemented in terms of `ma_device_get_info()`.
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
 <p>Retrieves the state of the device.</p>
-<pre>Parameters
+<pre>Retrieves the state of the device.
+
+
+Parameters
 ----------
 pDevice (in)
 		A pointer to the device whose state is being retrieved.
@@ -10956,7 +11275,10 @@ synchronization.
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
 <p>Called from the data callback of asynchronous backends to allow miniaudio to process the data and fire the miniaudio data callback.</p>
-<pre>Parameters
+<pre>Called from the data callback of asynchronous backends to allow miniaudio to process the data and fire the miniaudio data callback.
+
+
+Parameters
 ----------
 pDevice (in)
 		A pointer to device whose processing the data callback.
@@ -11007,7 +11329,9 @@ callback.
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
 <p>Initializes a device.</p>
-<pre>A device represents a physical audio device. The idea is you send or receive audio data from the device to either play it back through a speaker, or capture it
+<pre>Initializes a device.
+
+A device represents a physical audio device. The idea is you send or receive audio data from the device to either play it back through a speaker, or capture it
 from a microphone. Whether or not you should send or receive data from the device (or both) depends on the type of device you are initializing which can be
 playback, capture, full-duplex or loopback. (Note that loopback mode is only supported on select backends.) Sending and receiving audio data to and from the
 device is done via a callback which is fired by miniaudio at periodic time intervals.
@@ -11094,20 +11418,676 @@ then be set directly on the structure. Below are the members of the `ma_device_c
 				callback will write to every sample in the output buffer, or if you are doing your own clearing.
 
 		noClip
-</pre>
-<p>        			When set to true, the contents of the output buffer are left alone after returning and it will be left up to the backend itself to decide whether or
-        			not to clip. When set to false (default), the contents of the output buffer passed into the data callback will be clipped after returning. This only</p>
-<pre>				applies when the playback sample format is f32.
+        			When set to true, the contents of the output buffer are left alone after returning and it will be left up to the backend itself to decide whether or
+        			not to clip. When set to false (default), the contents of the output buffer passed into the data callback will be clipped after returning. This only
+				applies when the playback sample format is f32.
 
 		noDisableDenormals
 				By default, miniaudio will disable denormals when the data callback is called. Setting this to true will prevent the disabling of denormals.
 
 		noFixedSizedCallback
+        			Allows miniaudio to fire the data callback with any frame count. When this is set to false (the default), the data callback will be fired with a
+        			consistent frame count as specified by `periodSizeInFrames` or `periodSizeInMilliseconds`. When set to true, miniaudio will fire the callback with
+        			whatever the backend requests, which could be anything.
+
+		dataCallback
+				The callback to fire whenever data is ready to be delivered to or from the device.
+
+		notificationCallback
+				The callback to fire when something has changed with the device, such as whether or not it has been started or stopped.
+
+		pUserData
+				The user data pointer to use with the device. You can access this directly from the device object like `device.pUserData`.
+
+		resampling.algorithm
+				The resampling algorithm to use when miniaudio needs to perform resampling between the rate specified by `sampleRate` and the device's native rate. The
+				default value is `ma_resample_algorithm_linear`, and the quality can be configured with `resampling.linear.lpfOrder`.
+
+		resampling.pBackendVTable
+				A pointer to an optional vtable that can be used for plugging in a custom resampler.
+
+		resampling.pBackendUserData
+				A pointer that will passed to callbacks in pBackendVTable.
+
+		resampling.linear.lpfOrder
+				The linear resampler applies a low-pass filter as part of it's processing for anti-aliasing. This setting controls the order of the filter. The higher
+				the value, the better the quality, in general. Setting this to 0 will disable low-pass filtering altogether. The maximum value is
+				`MA_MAX_FILTER_ORDER`. The default value is `min(4, MA_MAX_FILTER_ORDER)`.
+
+		playback.pDeviceID
+				A pointer to a `ma_device_id` structure containing the ID of the playback device to initialize. Setting this NULL (default) will use the system's
+				default playback device. Retrieve the device ID from the `ma_device_info` structure, which can be retrieved using device enumeration.
+
+		playback.format
+				The sample format to use for playback. When set to `ma_format_unknown` the device's native format will be used. This can be retrieved after
+				initialization from the device object directly with `device.playback.format`.
+
+		playback.channels
+				The number of channels to use for playback. When set to 0 the device's native channel count will be used. This can be retrieved after initialization
+				from the device object directly with `device.playback.channels`.
+
+		playback.pChannelMap
+				The channel map to use for playback. When left empty, the device's native channel map will be used. This can be retrieved after initialization from the
+				device object direct with `device.playback.pChannelMap`. When set, the buffer should contain `channels` items.
+
+		playback.shareMode
+				The preferred share mode to use for playback. Can be either `ma_share_mode_shared` (default) or `ma_share_mode_exclusive`. Note that if you specify
+				exclusive mode, but it's not supported by the backend, initialization will fail. You can then fall back to shared mode if desired by changing this to
+				ma_share_mode_shared and reinitializing.
+
+		capture.pDeviceID
+				A pointer to a `ma_device_id` structure containing the ID of the capture device to initialize. Setting this NULL (default) will use the system's
+				default capture device. Retrieve the device ID from the `ma_device_info` structure, which can be retrieved using device enumeration.
+
+		capture.format
+				The sample format to use for capture. When set to `ma_format_unknown` the device's native format will be used. This can be retrieved after
+				initialization from the device object directly with `device.capture.format`.
+
+		capture.channels
+				The number of channels to use for capture. When set to 0 the device's native channel count will be used. This can be retrieved after initialization
+				from the device object directly with `device.capture.channels`.
+
+		capture.pChannelMap
+				The channel map to use for capture. When left empty, the device's native channel map will be used. This can be retrieved after initialization from the
+				device object direct with `device.capture.pChannelMap`. When set, the buffer should contain `channels` items.
+
+		capture.shareMode
+				The preferred share mode to use for capture. Can be either `ma_share_mode_shared` (default) or `ma_share_mode_exclusive`. Note that if you specify
+				exclusive mode, but it's not supported by the backend, initialization will fail. You can then fall back to shared mode if desired by changing this to
+				ma_share_mode_shared and reinitializing.
+
+		wasapi.noAutoConvertSRC
+				WASAPI only. When set to true, disables WASAPI's automatic resampling and forces the use of miniaudio's resampler. Defaults to false.
+
+		wasapi.noDefaultQualitySRC
+				WASAPI only. Only used when `wasapi.noAutoConvertSRC` is set to false. When set to true, disables the use of `AUDCLNT_STREAMFLAGS_SRC_DEFAULT_QUALITY`.
+				You should usually leave this set to false, which is the default.
+
+		wasapi.noAutoStreamRouting
+				WASAPI only. When set to true, disables automatic stream routing on the WASAPI backend. Defaults to false.
+
+		wasapi.noHardwareOffloading
+				WASAPI only. When set to true, disables the use of WASAPI's hardware offloading feature. Defaults to false.
+
+		alsa.noMMap
+				ALSA only. When set to true, disables MMap mode. Defaults to false.
+
+		alsa.noAutoFormat
+				ALSA only. When set to true, disables ALSA's automatic format conversion by including the SND_PCM_NO_AUTO_FORMAT flag. Defaults to false.
+
+		alsa.noAutoChannels
+				ALSA only. When set to true, disables ALSA's automatic channel conversion by including the SND_PCM_NO_AUTO_CHANNELS flag. Defaults to false.
+
+		alsa.noAutoResample
+				ALSA only. When set to true, disables ALSA's automatic resampling by including the SND_PCM_NO_AUTO_RESAMPLE flag. Defaults to false.
+
+		pulse.pStreamNamePlayback
+				PulseAudio only. Sets the stream name for playback.
+
+		pulse.pStreamNameCapture
+				PulseAudio only. Sets the stream name for capture.
+
+		coreaudio.allowNominalSampleRateChange
+				Core Audio only. Desktop only. When enabled, allows the sample rate of the device to be changed at the operating system level. This
+				is disabled by default in order to prevent intrusive changes to the user's system. This is useful if you want to use a sample rate
+				that is known to be natively supported by the hardware thereby avoiding the cost of resampling. When set to true, miniaudio will
+				find the closest match between the sample rate requested in the device config and the sample rates natively supported by the
+				hardware. When set to false, the sample rate currently set by the operating system will always be used.
+
+		opensl.streamType
+				OpenSL only. Explicitly sets the stream type. If left unset (`ma_opensl_stream_type_default`), the
+				stream type will be left unset. Think of this as the type of audio you're playing.
+
+		opensl.recordingPreset
+				OpenSL only. Explicitly sets the type of recording your program will be doing. When left
+				unset, the recording preset will be left unchanged.
+
+		aaudio.usage
+				AAudio only. Explicitly sets the nature of the audio the program will be consuming. When
+				left unset, the usage will be left unchanged.
+
+		aaudio.contentType
+				AAudio only. Sets the content type. When left unset, the content type will be left unchanged.
+
+		aaudio.inputPreset
+				AAudio only. Explicitly sets the type of recording your program will be doing. When left
+				unset, the input preset will be left unchanged.
+
+		aaudio.noAutoStartAfterReroute
+				AAudio only. Controls whether or not the device should be automatically restarted after a
+				stream reroute. When set to false (default) the device will be restarted automatically;
+				otherwise the device will be stopped.
+
+
+Once initialized, the device's config is immutable. If you need to change the config you will need to initialize a new device.
+
+After initializing the device it will be in a stopped state. To start it, use `ma_device_start()`.
+
+If both `periodSizeInFrames` and `periodSizeInMilliseconds` are set to zero, it will default to `MA_DEFAULT_PERIOD_SIZE_IN_MILLISECONDS_LOW_LATENCY` or
+`MA_DEFAULT_PERIOD_SIZE_IN_MILLISECONDS_CONSERVATIVE`, depending on whether or not `performanceProfile` is set to `ma_performance_profile_low_latency` or
+`ma_performance_profile_conservative`.
+
+If you request exclusive mode and the backend does not support it an error will be returned. For robustness, you may want to first try initializing the device
+in exclusive mode, and then fall back to shared mode if required. Alternatively you can just request shared mode (the default if you leave it unset in the
+config) which is the most reliable option. Some backends do not have a practical way of choosing whether or not the device should be exclusive or not (ALSA,
+for example) in which case it just acts as a hint. Unless you have special requirements you should try avoiding exclusive mode as it's intrusive to the user.
+Starting with Windows 10, miniaudio will use low-latency shared mode where possible which may make exclusive mode unnecessary.
+
+When sending or receiving data to/from a device, miniaudio will internally perform a format conversion to convert between the format specified by the config
+and the format used internally by the backend. If you pass in 0 for the sample format, channel count, sample rate _and_ channel map, data transmission will run
+on an optimized pass-through fast path. You can retrieve the format, channel count and sample rate by inspecting the `playback/capture.format`,
+`playback/capture.channels` and `sampleRate` members of the device object.
+
+When compiling for UWP you must ensure you call this function on the main UI thread because the operating system may need to present the user with a message
+asking for permissions. Please refer to the official documentation for ActivateAudioInterfaceAsync() for more information.
+
+ALSA Specific: When initializing the default device, requesting shared mode will try using the "dmix" device for playback and the "dsnoop" device for capture.
+If these fail it will try falling back to the "hw" device.
+
+
+Example 1 - Simple Initialization
+---------------------------------
+This example shows how to initialize a simple playback device using a standard configuration. If you are just needing to do simple playback from the default
+playback device this is usually all you need.
+
+```c
+ma_device_config config = ma_device_config_init(ma_device_type_playback);
+config.playback.format   = ma_format_f32;
+config.playback.channels = 2;
+config.sampleRate        = 48000;
+config.dataCallback      = ma_data_callback;
+config.pMyUserData       = pMyUserData;
+
+ma_device device;
+ma_result result = ma_device_init(NULL, &config, &device);
+if (result != MA_SUCCESS) {
+		// Error
+}
+```
+
+
+Example 2 - Advanced Initialization
+-----------------------------------
+This example shows how you might do some more advanced initialization. In this hypothetical example we want to control the latency by setting the buffer size
+and period count. We also want to allow the user to be able to choose which device to output from which means we need a context so we can perform device
+enumeration.
+
+```c
+ma_context context;
+ma_result result = ma_context_init(NULL, 0, NULL, &context);
+if (result != MA_SUCCESS) {
+		// Error
+}
+
+ma_device_info* pPlaybackDeviceInfos;
+ma_uint32 playbackDeviceCount;
+result = ma_context_get_devices(&context, &pPlaybackDeviceInfos, &playbackDeviceCount, NULL, NULL);
+if (result != MA_SUCCESS) {
+		// Error
+}
+
+// ... choose a device from pPlaybackDeviceInfos ...
+
+ma_device_config config = ma_device_config_init(ma_device_type_playback);
+config.playback.pDeviceID       = pMyChosenDeviceID;    // &lt;-- Get this from the `id` member of one of the `ma_device_info` objects returned by ma_context_get_devices().
+config.playback.format          = ma_format_f32;
+config.playback.channels        = 2;
+config.sampleRate               = 48000;
+config.dataCallback             = ma_data_callback;
+config.pUserData                = pMyUserData;
+config.periodSizeInMilliseconds = 10;
+config.periods                  = 3;
+
+ma_device device;
+result = ma_device_init(&context, &config, &device);
+if (result != MA_SUCCESS) {
+		// Error
+}
+```
+
+
+See Also
+--------
+ma_device_config_init()
+ma_device_uninit()
+ma_device_start()
+ma_context_init()
+ma_context_get_devices()
+ma_context_enumerate_devices()
+</pre>
+<p>        			When set to true, the contents of the output buffer are left alone after returning and it will be left up to the backend itself to decide whether or
+        			not to clip. When set to false (default), the contents of the output buffer passed into the data callback will be clipped after returning. This only</p>
+<pre>Initializes a device.
+
+A device represents a physical audio device. The idea is you send or receive audio data from the device to either play it back through a speaker, or capture it
+from a microphone. Whether or not you should send or receive data from the device (or both) depends on the type of device you are initializing which can be
+playback, capture, full-duplex or loopback. (Note that loopback mode is only supported on select backends.) Sending and receiving audio data to and from the
+device is done via a callback which is fired by miniaudio at periodic time intervals.
+
+The frequency at which data is delivered to and from a device depends on the size of it's period. The size of the period can be defined in terms of PCM frames
+or milliseconds, whichever is more convenient. Generally speaking, the smaller the period, the lower the latency at the expense of higher CPU usage and
+increased risk of glitching due to the more frequent and granular data deliver intervals. The size of a period will depend on your requirements, but
+miniaudio's defaults should work fine for most scenarios. If you're building a game you should leave this fairly small, whereas if you're building a simple
+media player you can make it larger. Note that the period size you request is actually just a hint - miniaudio will tell the backend what you want, but the
+backend is ultimately responsible for what it gives you. You cannot assume you will get exactly what you ask for.
+
+When delivering data to and from a device you need to make sure it's in the correct format which you can set through the device configuration. You just set the
+format that you want to use and miniaudio will perform all of the necessary conversion for you internally. When delivering data to and from the callback you
+can assume the format is the same as what you requested when you initialized the device. See Remarks for more details on miniaudio's data conversion pipeline.
+
+
+Parameters
+----------
+pContext (in, optional)
+		A pointer to the context that owns the device. This can be null, in which case it creates a default context internally.
+
+pConfig (in)
+		A pointer to the device configuration. Cannot be null. See remarks for details.
+
+pDevice (out)
+		A pointer to the device object being initialized.
+
+
+Return Value
+------------
+MA_SUCCESS if successful; any other error code otherwise.
+
+
+Thread Safety
+-------------
+Unsafe. It is not safe to call this function simultaneously for different devices because some backends depend on and mutate global state. The same applies to
+calling this at the same time as `ma_device_uninit()`.
+
+
+Callback Safety
+---------------
+Unsafe. It is not safe to call this inside any callback.
+
+
+Remarks
+-------
+Setting `pContext` to NULL will result in miniaudio creating a default context internally and is equivalent to passing in a context initialized like so:
+
+		```c
+		ma_context_init(NULL, 0, NULL, &context);
+		```
+
+Do not set `pContext` to NULL if you are needing to open multiple devices. You can, however, use NULL when initializing the first device, and then use
+device.pContext for the initialization of other devices.
+
+The device can be configured via the `pConfig` argument. The config object is initialized with `ma_device_config_init()`. Individual configuration settings can
+then be set directly on the structure. Below are the members of the `ma_device_config` object.
+
+		deviceType
+				Must be `ma_device_type_playback`, `ma_device_type_capture`, `ma_device_type_duplex` of `ma_device_type_loopback`.
+
+		sampleRate
+				The sample rate, in hertz. The most common sample rates are 48000 and 44100. Setting this to 0 will use the device's native sample rate.
+
+		periodSizeInFrames
+				The desired size of a period in PCM frames. If this is 0, `periodSizeInMilliseconds` will be used instead. If both are 0 the default buffer size will
+				be used depending on the selected performance profile. This value affects latency. See below for details.
+
+		periodSizeInMilliseconds
+				The desired size of a period in milliseconds. If this is 0, `periodSizeInFrames` will be used instead. If both are 0 the default buffer size will be
+				used depending on the selected performance profile. The value affects latency. See below for details.
+
+		periods
+				The number of periods making up the device's entire buffer. The total buffer size is `periodSizeInFrames` or `periodSizeInMilliseconds` multiplied by
+				this value. This is just a hint as backends will be the ones who ultimately decide how your periods will be configured.
+
+		performanceProfile
+				A hint to miniaudio as to the performance requirements of your program. Can be either `ma_performance_profile_low_latency` (default) or
+				`ma_performance_profile_conservative`. This mainly affects the size of default buffers and can usually be left at it's default value.
+
+		noPreSilencedOutputBuffer
+				When set to true, the contents of the output buffer passed into the data callback will be left undefined. When set to false (default), the contents of
+				the output buffer will be cleared the zero. You can use this to avoid the overhead of zeroing out the buffer if you can guarantee that your data
+				callback will write to every sample in the output buffer, or if you are doing your own clearing.
+
+		noClip
+        			When set to true, the contents of the output buffer are left alone after returning and it will be left up to the backend itself to decide whether or
+        			not to clip. When set to false (default), the contents of the output buffer passed into the data callback will be clipped after returning. This only
+				applies when the playback sample format is f32.
+
+		noDisableDenormals
+				By default, miniaudio will disable denormals when the data callback is called. Setting this to true will prevent the disabling of denormals.
+
+		noFixedSizedCallback
+        			Allows miniaudio to fire the data callback with any frame count. When this is set to false (the default), the data callback will be fired with a
+        			consistent frame count as specified by `periodSizeInFrames` or `periodSizeInMilliseconds`. When set to true, miniaudio will fire the callback with
+        			whatever the backend requests, which could be anything.
+
+		dataCallback
+				The callback to fire whenever data is ready to be delivered to or from the device.
+
+		notificationCallback
+				The callback to fire when something has changed with the device, such as whether or not it has been started or stopped.
+
+		pUserData
+				The user data pointer to use with the device. You can access this directly from the device object like `device.pUserData`.
+
+		resampling.algorithm
+				The resampling algorithm to use when miniaudio needs to perform resampling between the rate specified by `sampleRate` and the device's native rate. The
+				default value is `ma_resample_algorithm_linear`, and the quality can be configured with `resampling.linear.lpfOrder`.
+
+		resampling.pBackendVTable
+				A pointer to an optional vtable that can be used for plugging in a custom resampler.
+
+		resampling.pBackendUserData
+				A pointer that will passed to callbacks in pBackendVTable.
+
+		resampling.linear.lpfOrder
+				The linear resampler applies a low-pass filter as part of it's processing for anti-aliasing. This setting controls the order of the filter. The higher
+				the value, the better the quality, in general. Setting this to 0 will disable low-pass filtering altogether. The maximum value is
+				`MA_MAX_FILTER_ORDER`. The default value is `min(4, MA_MAX_FILTER_ORDER)`.
+
+		playback.pDeviceID
+				A pointer to a `ma_device_id` structure containing the ID of the playback device to initialize. Setting this NULL (default) will use the system's
+				default playback device. Retrieve the device ID from the `ma_device_info` structure, which can be retrieved using device enumeration.
+
+		playback.format
+				The sample format to use for playback. When set to `ma_format_unknown` the device's native format will be used. This can be retrieved after
+				initialization from the device object directly with `device.playback.format`.
+
+		playback.channels
+				The number of channels to use for playback. When set to 0 the device's native channel count will be used. This can be retrieved after initialization
+				from the device object directly with `device.playback.channels`.
+
+		playback.pChannelMap
+				The channel map to use for playback. When left empty, the device's native channel map will be used. This can be retrieved after initialization from the
+				device object direct with `device.playback.pChannelMap`. When set, the buffer should contain `channels` items.
+
+		playback.shareMode
+				The preferred share mode to use for playback. Can be either `ma_share_mode_shared` (default) or `ma_share_mode_exclusive`. Note that if you specify
+				exclusive mode, but it's not supported by the backend, initialization will fail. You can then fall back to shared mode if desired by changing this to
+				ma_share_mode_shared and reinitializing.
+
+		capture.pDeviceID
+				A pointer to a `ma_device_id` structure containing the ID of the capture device to initialize. Setting this NULL (default) will use the system's
+				default capture device. Retrieve the device ID from the `ma_device_info` structure, which can be retrieved using device enumeration.
+
+		capture.format
+				The sample format to use for capture. When set to `ma_format_unknown` the device's native format will be used. This can be retrieved after
+				initialization from the device object directly with `device.capture.format`.
+
+		capture.channels
+				The number of channels to use for capture. When set to 0 the device's native channel count will be used. This can be retrieved after initialization
+				from the device object directly with `device.capture.channels`.
+
+		capture.pChannelMap
+				The channel map to use for capture. When left empty, the device's native channel map will be used. This can be retrieved after initialization from the
+				device object direct with `device.capture.pChannelMap`. When set, the buffer should contain `channels` items.
+
+		capture.shareMode
+				The preferred share mode to use for capture. Can be either `ma_share_mode_shared` (default) or `ma_share_mode_exclusive`. Note that if you specify
+				exclusive mode, but it's not supported by the backend, initialization will fail. You can then fall back to shared mode if desired by changing this to
+				ma_share_mode_shared and reinitializing.
+
+		wasapi.noAutoConvertSRC
+				WASAPI only. When set to true, disables WASAPI's automatic resampling and forces the use of miniaudio's resampler. Defaults to false.
+
+		wasapi.noDefaultQualitySRC
+				WASAPI only. Only used when `wasapi.noAutoConvertSRC` is set to false. When set to true, disables the use of `AUDCLNT_STREAMFLAGS_SRC_DEFAULT_QUALITY`.
+				You should usually leave this set to false, which is the default.
+
+		wasapi.noAutoStreamRouting
+				WASAPI only. When set to true, disables automatic stream routing on the WASAPI backend. Defaults to false.
+
+		wasapi.noHardwareOffloading
+				WASAPI only. When set to true, disables the use of WASAPI's hardware offloading feature. Defaults to false.
+
+		alsa.noMMap
+				ALSA only. When set to true, disables MMap mode. Defaults to false.
+
+		alsa.noAutoFormat
+				ALSA only. When set to true, disables ALSA's automatic format conversion by including the SND_PCM_NO_AUTO_FORMAT flag. Defaults to false.
+
+		alsa.noAutoChannels
+				ALSA only. When set to true, disables ALSA's automatic channel conversion by including the SND_PCM_NO_AUTO_CHANNELS flag. Defaults to false.
+
+		alsa.noAutoResample
+				ALSA only. When set to true, disables ALSA's automatic resampling by including the SND_PCM_NO_AUTO_RESAMPLE flag. Defaults to false.
+
+		pulse.pStreamNamePlayback
+				PulseAudio only. Sets the stream name for playback.
+
+		pulse.pStreamNameCapture
+				PulseAudio only. Sets the stream name for capture.
+
+		coreaudio.allowNominalSampleRateChange
+				Core Audio only. Desktop only. When enabled, allows the sample rate of the device to be changed at the operating system level. This
+				is disabled by default in order to prevent intrusive changes to the user's system. This is useful if you want to use a sample rate
+				that is known to be natively supported by the hardware thereby avoiding the cost of resampling. When set to true, miniaudio will
+				find the closest match between the sample rate requested in the device config and the sample rates natively supported by the
+				hardware. When set to false, the sample rate currently set by the operating system will always be used.
+
+		opensl.streamType
+				OpenSL only. Explicitly sets the stream type. If left unset (`ma_opensl_stream_type_default`), the
+				stream type will be left unset. Think of this as the type of audio you're playing.
+
+		opensl.recordingPreset
+				OpenSL only. Explicitly sets the type of recording your program will be doing. When left
+				unset, the recording preset will be left unchanged.
+
+		aaudio.usage
+				AAudio only. Explicitly sets the nature of the audio the program will be consuming. When
+				left unset, the usage will be left unchanged.
+
+		aaudio.contentType
+				AAudio only. Sets the content type. When left unset, the content type will be left unchanged.
+
+		aaudio.inputPreset
+				AAudio only. Explicitly sets the type of recording your program will be doing. When left
+				unset, the input preset will be left unchanged.
+
+		aaudio.noAutoStartAfterReroute
+				AAudio only. Controls whether or not the device should be automatically restarted after a
+				stream reroute. When set to false (default) the device will be restarted automatically;
+				otherwise the device will be stopped.
+
+
+Once initialized, the device's config is immutable. If you need to change the config you will need to initialize a new device.
+
+After initializing the device it will be in a stopped state. To start it, use `ma_device_start()`.
+
+If both `periodSizeInFrames` and `periodSizeInMilliseconds` are set to zero, it will default to `MA_DEFAULT_PERIOD_SIZE_IN_MILLISECONDS_LOW_LATENCY` or
+`MA_DEFAULT_PERIOD_SIZE_IN_MILLISECONDS_CONSERVATIVE`, depending on whether or not `performanceProfile` is set to `ma_performance_profile_low_latency` or
+`ma_performance_profile_conservative`.
+
+If you request exclusive mode and the backend does not support it an error will be returned. For robustness, you may want to first try initializing the device
+in exclusive mode, and then fall back to shared mode if required. Alternatively you can just request shared mode (the default if you leave it unset in the
+config) which is the most reliable option. Some backends do not have a practical way of choosing whether or not the device should be exclusive or not (ALSA,
+for example) in which case it just acts as a hint. Unless you have special requirements you should try avoiding exclusive mode as it's intrusive to the user.
+Starting with Windows 10, miniaudio will use low-latency shared mode where possible which may make exclusive mode unnecessary.
+
+When sending or receiving data to/from a device, miniaudio will internally perform a format conversion to convert between the format specified by the config
+and the format used internally by the backend. If you pass in 0 for the sample format, channel count, sample rate _and_ channel map, data transmission will run
+on an optimized pass-through fast path. You can retrieve the format, channel count and sample rate by inspecting the `playback/capture.format`,
+`playback/capture.channels` and `sampleRate` members of the device object.
+
+When compiling for UWP you must ensure you call this function on the main UI thread because the operating system may need to present the user with a message
+asking for permissions. Please refer to the official documentation for ActivateAudioInterfaceAsync() for more information.
+
+ALSA Specific: When initializing the default device, requesting shared mode will try using the "dmix" device for playback and the "dsnoop" device for capture.
+If these fail it will try falling back to the "hw" device.
+
+
+Example 1 - Simple Initialization
+---------------------------------
+This example shows how to initialize a simple playback device using a standard configuration. If you are just needing to do simple playback from the default
+playback device this is usually all you need.
+
+```c
+ma_device_config config = ma_device_config_init(ma_device_type_playback);
+config.playback.format   = ma_format_f32;
+config.playback.channels = 2;
+config.sampleRate        = 48000;
+config.dataCallback      = ma_data_callback;
+config.pMyUserData       = pMyUserData;
+
+ma_device device;
+ma_result result = ma_device_init(NULL, &config, &device);
+if (result != MA_SUCCESS) {
+		// Error
+}
+```
+
+
+Example 2 - Advanced Initialization
+-----------------------------------
+This example shows how you might do some more advanced initialization. In this hypothetical example we want to control the latency by setting the buffer size
+and period count. We also want to allow the user to be able to choose which device to output from which means we need a context so we can perform device
+enumeration.
+
+```c
+ma_context context;
+ma_result result = ma_context_init(NULL, 0, NULL, &context);
+if (result != MA_SUCCESS) {
+		// Error
+}
+
+ma_device_info* pPlaybackDeviceInfos;
+ma_uint32 playbackDeviceCount;
+result = ma_context_get_devices(&context, &pPlaybackDeviceInfos, &playbackDeviceCount, NULL, NULL);
+if (result != MA_SUCCESS) {
+		// Error
+}
+
+// ... choose a device from pPlaybackDeviceInfos ...
+
+ma_device_config config = ma_device_config_init(ma_device_type_playback);
+config.playback.pDeviceID       = pMyChosenDeviceID;    // &lt;-- Get this from the `id` member of one of the `ma_device_info` objects returned by ma_context_get_devices().
+config.playback.format          = ma_format_f32;
+config.playback.channels        = 2;
+config.sampleRate               = 48000;
+config.dataCallback             = ma_data_callback;
+config.pUserData                = pMyUserData;
+config.periodSizeInMilliseconds = 10;
+config.periods                  = 3;
+
+ma_device device;
+result = ma_device_init(&context, &config, &device);
+if (result != MA_SUCCESS) {
+		// Error
+}
+```
+
+
+See Also
+--------
+ma_device_config_init()
+ma_device_uninit()
+ma_device_start()
+ma_context_init()
+ma_context_get_devices()
+ma_context_enumerate_devices()
 </pre>
 <p>        			Allows miniaudio to fire the data callback with any frame count. When this is set to false (the default), the data callback will be fired with a
         			consistent frame count as specified by <code>periodSizeInFrames</code> or <code>periodSizeInMilliseconds</code>. When set to true, miniaudio will fire the callback with
         			whatever the backend requests, which could be anything.</p>
-<pre>		dataCallback
+<pre>Initializes a device.
+
+A device represents a physical audio device. The idea is you send or receive audio data from the device to either play it back through a speaker, or capture it
+from a microphone. Whether or not you should send or receive data from the device (or both) depends on the type of device you are initializing which can be
+playback, capture, full-duplex or loopback. (Note that loopback mode is only supported on select backends.) Sending and receiving audio data to and from the
+device is done via a callback which is fired by miniaudio at periodic time intervals.
+
+The frequency at which data is delivered to and from a device depends on the size of it's period. The size of the period can be defined in terms of PCM frames
+or milliseconds, whichever is more convenient. Generally speaking, the smaller the period, the lower the latency at the expense of higher CPU usage and
+increased risk of glitching due to the more frequent and granular data deliver intervals. The size of a period will depend on your requirements, but
+miniaudio's defaults should work fine for most scenarios. If you're building a game you should leave this fairly small, whereas if you're building a simple
+media player you can make it larger. Note that the period size you request is actually just a hint - miniaudio will tell the backend what you want, but the
+backend is ultimately responsible for what it gives you. You cannot assume you will get exactly what you ask for.
+
+When delivering data to and from a device you need to make sure it's in the correct format which you can set through the device configuration. You just set the
+format that you want to use and miniaudio will perform all of the necessary conversion for you internally. When delivering data to and from the callback you
+can assume the format is the same as what you requested when you initialized the device. See Remarks for more details on miniaudio's data conversion pipeline.
+
+
+Parameters
+----------
+pContext (in, optional)
+		A pointer to the context that owns the device. This can be null, in which case it creates a default context internally.
+
+pConfig (in)
+		A pointer to the device configuration. Cannot be null. See remarks for details.
+
+pDevice (out)
+		A pointer to the device object being initialized.
+
+
+Return Value
+------------
+MA_SUCCESS if successful; any other error code otherwise.
+
+
+Thread Safety
+-------------
+Unsafe. It is not safe to call this function simultaneously for different devices because some backends depend on and mutate global state. The same applies to
+calling this at the same time as `ma_device_uninit()`.
+
+
+Callback Safety
+---------------
+Unsafe. It is not safe to call this inside any callback.
+
+
+Remarks
+-------
+Setting `pContext` to NULL will result in miniaudio creating a default context internally and is equivalent to passing in a context initialized like so:
+
+		```c
+		ma_context_init(NULL, 0, NULL, &context);
+		```
+
+Do not set `pContext` to NULL if you are needing to open multiple devices. You can, however, use NULL when initializing the first device, and then use
+device.pContext for the initialization of other devices.
+
+The device can be configured via the `pConfig` argument. The config object is initialized with `ma_device_config_init()`. Individual configuration settings can
+then be set directly on the structure. Below are the members of the `ma_device_config` object.
+
+		deviceType
+				Must be `ma_device_type_playback`, `ma_device_type_capture`, `ma_device_type_duplex` of `ma_device_type_loopback`.
+
+		sampleRate
+				The sample rate, in hertz. The most common sample rates are 48000 and 44100. Setting this to 0 will use the device's native sample rate.
+
+		periodSizeInFrames
+				The desired size of a period in PCM frames. If this is 0, `periodSizeInMilliseconds` will be used instead. If both are 0 the default buffer size will
+				be used depending on the selected performance profile. This value affects latency. See below for details.
+
+		periodSizeInMilliseconds
+				The desired size of a period in milliseconds. If this is 0, `periodSizeInFrames` will be used instead. If both are 0 the default buffer size will be
+				used depending on the selected performance profile. The value affects latency. See below for details.
+
+		periods
+				The number of periods making up the device's entire buffer. The total buffer size is `periodSizeInFrames` or `periodSizeInMilliseconds` multiplied by
+				this value. This is just a hint as backends will be the ones who ultimately decide how your periods will be configured.
+
+		performanceProfile
+				A hint to miniaudio as to the performance requirements of your program. Can be either `ma_performance_profile_low_latency` (default) or
+				`ma_performance_profile_conservative`. This mainly affects the size of default buffers and can usually be left at it's default value.
+
+		noPreSilencedOutputBuffer
+				When set to true, the contents of the output buffer passed into the data callback will be left undefined. When set to false (default), the contents of
+				the output buffer will be cleared the zero. You can use this to avoid the overhead of zeroing out the buffer if you can guarantee that your data
+				callback will write to every sample in the output buffer, or if you are doing your own clearing.
+
+		noClip
+        			When set to true, the contents of the output buffer are left alone after returning and it will be left up to the backend itself to decide whether or
+        			not to clip. When set to false (default), the contents of the output buffer passed into the data callback will be clipped after returning. This only
+				applies when the playback sample format is f32.
+
+		noDisableDenormals
+				By default, miniaudio will disable denormals when the data callback is called. Setting this to true will prevent the disabling of denormals.
+
+		noFixedSizedCallback
+        			Allows miniaudio to fire the data callback with any frame count. When this is set to false (the default), the data callback will be fired with a
+        			consistent frame count as specified by `periodSizeInFrames` or `periodSizeInMilliseconds`. When set to true, miniaudio will fire the callback with
+        			whatever the backend requests, which could be anything.
+
+		dataCallback
 				The callback to fire whenever data is ready to be delivered to or from the device.
 
 		notificationCallback
@@ -11342,7 +12322,9 @@ ma_context_enumerate_devices()
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
 <p>Initializes a device without a context, with extra parameters for controlling the configuration of the internal self-managed context.</p>
-<pre>This is the same as `ma_device_init()`, only instead of a context being passed in, the parameters from `ma_context_init()` are passed in instead. This function
+<pre>Initializes a device without a context, with extra parameters for controlling the configuration of the internal self-managed context.
+
+This is the same as `ma_device_init()`, only instead of a context being passed in, the parameters from `ma_context_init()` are passed in instead. This function
 allows you to configure the internally created context.
 
 
@@ -11405,7 +12387,10 @@ ma_context_init()
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
 <p>Determines whether or not the device is started.</p>
-<pre>Parameters
+<pre>Determines whether or not the device is started.
+
+
+Parameters
 ----------
 pDevice (in)
 		A pointer to the device whose start state is being retrieved.
@@ -11472,7 +12457,9 @@ ma_device_stop()
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
 <p>Performs post backend initialization routines for setting up internal data conversion.</p>
-<pre>This should be called whenever the backend is initialized. The only time this should be called from
+<pre>Performs post backend initialization routines for setting up internal data conversion.
+
+This should be called whenever the backend is initialized. The only time this should be called from
 outside of miniaudio is if you're implementing a custom backend, and you would only do it if you
 are reinitializing the backend due to rerouting or reinitializing for some reason.
 
@@ -11525,7 +12512,9 @@ only do it if you're manually performing rerouting or reinitialization.
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
 <p>Sets the master volume factor for the device.</p>
-<pre>The volume factor must be between 0 (silence) and 1 (full volume). Use `ma_device_set_master_volume_db()` to use decibel notation, where 0 is full volume and
+<pre>Sets the master volume factor for the device.
+
+The volume factor must be between 0 (silence) and 1 (full volume). Use `ma_device_set_master_volume_db()` to use decibel notation, where 0 is full volume and
 values less than 0 decreases the volume.
 
 
@@ -11578,7 +12567,9 @@ ma_device_get_master_volume_db()
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
 <p>Sets the master volume for the device as gain in decibels.</p>
-<pre>A gain of 0 is full volume, whereas a gain of &lt; 0 will decrease the volume.
+<pre>Sets the master volume for the device as gain in decibels.
+
+A gain of 0 is full volume, whereas a gain of &lt; 0 will decrease the volume.
 
 
 Parameters
@@ -11630,7 +12621,9 @@ ma_device_get_master_volume()
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
 <p>Starts the device. For playback devices this begins playback. For capture devices it begins recording.</p>
-<pre>Use `ma_device_stop()` to stop the device.
+<pre>Starts the device. For playback devices this begins playback. For capture devices it begins recording.
+
+Use `ma_device_stop()` to stop the device.
 
 
 Parameters
@@ -11678,7 +12671,9 @@ ma_device_stop()
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
 <p>Stops the device. For playback devices this stops playback. For capture devices it stops recording.</p>
-<pre>Use `ma_device_start()` to start the device again.
+<pre>Stops the device. For playback devices this stops playback. For capture devices it stops recording.
+
+Use `ma_device_start()` to start the device again.
 
 
 Parameters
@@ -11729,7 +12724,9 @@ ma_device_start()
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
 <p>Uninitializes a device.</p>
-<pre>This will explicitly stop the device. You do not need to call `ma_device_stop()` beforehand, but it's harmless if you do.
+<pre>Uninitializes a device.
+
+This will explicitly stop the device. You do not need to call `ma_device_stop()` beforehand, but it's harmless if you do.
 
 
 Parameters
@@ -12323,7 +13320,9 @@ ma_device_stop()
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
 <p>Retrieves the size of a sample in bytes for the given format.</p>
-<pre>This API is efficient and is implemented using a lookup table.
+<pre>Retrieves the size of a sample in bytes for the given format.
+
+This API is efficient and is implemented using a lookup table.
 
 Thread Safety: SAFE
   This API is pure.
@@ -12338,7 +13337,10 @@ Thread Safety: SAFE
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
 <p>Retrieves compile-time enabled backends.</p>
-<pre>Parameters
+<pre>Retrieves compile-time enabled backends.
+
+
+Parameters
 ----------
 pBackends (out, optional)
 		A pointer to the buffer that will receive the enabled backends. Set to NULL to retrieve the backend count. Setting
@@ -13201,7 +14203,9 @@ ma_is_backend_enabled()
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
 <p>Mixes the specified number of frames in floating point format with a volume factor.</p>
-<pre>This will run on an optimized path when the volume is equal to 1.
+<pre>Mixes the specified number of frames in floating point format with a volume factor.
+
+This will run on an optimized path when the volume is equal to 1.
 </pre>
 </details>
 </div>
@@ -13223,7 +14227,9 @@ ma_is_backend_enabled()
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
 <p>Creates a mutex.</p>
-<pre>A mutex must be created from a valid context. A mutex is initially unlocked.
+<pre>Creates a mutex.
+
+A mutex must be created from a valid context. A mutex is initially unlocked.
 </pre>
 </details>
 </div>
@@ -14290,7 +15296,8 @@ ma_is_backend_enabled()
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
 <p>Calculates the number of whole output frames that would be output after fully reading and consuming the specified number of</p>
-<pre>input frames.
+<pre>Calculates the number of whole output frames that would be output after fully reading and consuming the specified number of
+input frames.
 </pre>
 </details>
 </div>
@@ -14328,7 +15335,8 @@ ma_is_backend_enabled()
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
 <p>Calculates the number of whole input frames that would need to be read from the client in order to output the specified</p>
-<pre>number of output frames.
+<pre>Calculates the number of whole input frames that would need to be read from the client in order to output the specified
+number of output frames.
 
 The returned value does not include cached input frames. It only returns the number of extra frames that would need to be
 read from the input buffer in order to output the specified number of output frames.
@@ -14359,7 +15367,9 @@ read from the input buffer in order to output the specified number of output fra
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
 <p>Converts the given input data.</p>
-<pre>Both the input and output frames must be in the format specified in the config when the resampler was initialized.
+<pre>Converts the given input data.
+
+Both the input and output frames must be in the format specified in the config when the resampler was initialized.
 
 On input, [pFrameCountOut] contains the number of output frames to process. On output it contains the number of output frames that
 were actually processed, which may be less than the requested amount which will happen if there's not enough input data. You can use
@@ -14408,7 +15418,9 @@ It is an error for both [pFrameCountOut] and [pFrameCountIn] to be NULL.
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
 <p>Sets the input and output sample rate as a ratio.</p>
-<pre>The ration is in/out.
+<pre>Sets the input and output sample rate as a ratio.
+
+The ration is in/out.
 </pre>
 </details>
 </div>
@@ -14943,7 +15955,9 @@ It is an error for both [pFrameCountOut] and [pFrameCountIn] to be NULL.
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
 <p>Copies silent frames into the given buffer.</p>
-<pre>Remarks
+<pre>Copies silent frames into the given buffer.
+
+Remarks
 -------
 For all formats except `ma_format_u8`, the output buffer will be filled with 0. For `ma_format_u8` it will be filled with 128. The reason for this is that it
 makes more sense for the purpose of mixing to initialize it to the center point.
@@ -16407,7 +17421,7 @@ makes more sense for the purpose of mixing to initialize it to the center point.
 <li><em>(hidden platform specific files)</em></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2024-04 (vendor "odin") Windows_amd64 @ 2024-04-02 21:08:52.655468200 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2024-04 (vendor "odin") Windows_amd64 @ 2024-04-03 19:05:00.659881100 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">

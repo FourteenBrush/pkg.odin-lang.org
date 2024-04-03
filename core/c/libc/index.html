@@ -210,6 +210,17 @@
 </li>
 <li class="nav-item"><a href="/core/strings">strings</a></li>
 <li class="nav-item"><a href="/core/sync">sync</a></li>
+<li class="nav-item">sys<ul>
+<li><a href="/core/sys/darwin">darwin</a></li>
+<li><a href="/core/sys/haiku">haiku</a></li>
+<li><a href="/core/sys/info">info</a></li>
+<li><a href="/core/sys/linux">linux</a></li>
+<li><a href="/core/sys/unix">unix</a></li>
+<li><a href="/core/sys/valgrind">valgrind</a></li>
+<li><a href="/core/sys/windows">windows</a></li>
+</ul>
+
+</li>
 <li class="nav-item"><a href="/core/testing">testing</a></li>
 <li class="nav-item">text<ul>
 <li><a href="/core/text/edit">edit</a></li>
@@ -2831,11 +2842,33 @@ which means libc does not export standard functions for them.</p>
 Similarly, it does not allow the failure order to be stronger than success
 order. Since consume and acquire are both monotonic, we can count them as
 one, for a total of three memory orders that are relevant in compare exchange.</p>
-<pre>relaxed, acquire (consume), seq_cst.
+<pre>C does not allow failure memory order to be order_release or acq_rel.
+Similarly, it does not allow the failure order to be stronger than success
+order. Since consume and acquire are both monotonic, we can count them as
+one, for a total of three memory orders that are relevant in compare exchange.
+relaxed, acquire (consume), seq_cst.
+The requirement that the failure order cannot be stronger than success limits
+the valid combinations for the failure order to this table:
+[success = seq_cst, failure = seq_cst] =&gt; _
+[success = acquire, failure = seq_cst] =&gt; acq
+[success = release, failure = seq_cst] =&gt; rel
+[success = acq_rel, failure = seq_cst] =&gt; acqrel
+[success = relaxed, failure = relaxed] =&gt; relaxed
+[success = seq_cst, failure = relaxed] =&gt; failrelaxed
+[success = seq_cst, failure = acquire] =&gt; failacq
+[success = acquire, failure = relaxed] =&gt; acq_failrelaxed
+[success = acq_rel, failure = relaxed] =&gt; acqrel_failrelaxed
 </pre>
 <p>The requirement that the failure order cannot be stronger than success limits
 the valid combinations for the failure order to this table:</p>
-<pre>[success = seq_cst, failure = seq_cst] =&gt; _
+<pre>C does not allow failure memory order to be order_release or acq_rel.
+Similarly, it does not allow the failure order to be stronger than success
+order. Since consume and acquire are both monotonic, we can count them as
+one, for a total of three memory orders that are relevant in compare exchange.
+relaxed, acquire (consume), seq_cst.
+The requirement that the failure order cannot be stronger than success limits
+the valid combinations for the failure order to this table:
+[success = seq_cst, failure = seq_cst] =&gt; _
 [success = acquire, failure = seq_cst] =&gt; acq
 [success = release, failure = seq_cst] =&gt; rel
 [success = acq_rel, failure = seq_cst] =&gt; acqrel
@@ -6111,7 +6144,7 @@ they only differ by their return type.</p>
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/c/libc/wctype.odin">wctype.odin</a></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2024-04 (vendor "odin") Windows_amd64 @ 2024-04-02 21:08:52.435829300 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2024-04 (vendor "odin") Windows_amd64 @ 2024-04-03 19:04:59.780628800 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
