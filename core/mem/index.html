@@ -286,59 +286,11 @@ package foo</p>
 <p>import "core:mem"
 import "core:fmt"</p>
 <p>_main :: proc() {</p>
-<pre>package mem implements various types of allocators.
-
-
-An example of how to use the `Tracking_Allocator` to track subsequent allocations
-in your program and report leaks and bad frees:
-
-```odin
-package foo
-
-import "core:mem"
-import "core:fmt"
-
-_main :: proc() {
-do stuff
-}
-
-main :: proc() {
-track: mem.Tracking_Allocator
-mem.tracking_allocator_init(&track, context.allocator)
-defer mem.tracking_allocator_destroy(&track)
-context.allocator = mem.tracking_allocator(&track)
-
-_main()
-
-for _, leak in track.allocation_map {
-	fmt.printf("%v leaked %m\n", leak.location, leak.size)
-}
-for bad_free in track.bad_free_array {
-	fmt.printf("%v allocation %p was freed badly\n", bad_free.location, bad_free.memory)
-}
-}
-```
+<pre>do stuff
 </pre>
 <p>}</p>
 <p>main :: proc() {</p>
-<pre>package mem implements various types of allocators.
-
-
-An example of how to use the `Tracking_Allocator` to track subsequent allocations
-in your program and report leaks and bad frees:
-
-```odin
-package foo
-
-import "core:mem"
-import "core:fmt"
-
-_main :: proc() {
-do stuff
-}
-
-main :: proc() {
-track: mem.Tracking_Allocator
+<pre>track: mem.Tracking_Allocator
 mem.tracking_allocator_init(&track, context.allocator)
 defer mem.tracking_allocator_destroy(&track)
 context.allocator = mem.tracking_allocator(&track)
@@ -351,8 +303,6 @@ for _, leak in track.allocation_map {
 for bad_free in track.bad_free_array {
 	fmt.printf("%v allocation %p was freed badly\n", bad_free.location, bad_free.memory)
 }
-}
-```
 </pre>
 <p>}
 <code></code>`</p>
@@ -602,13 +552,11 @@ Procedure Groups (2)</summary>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
 <p>Allocator_Error :: enum byte {</p>
-<pre>Allocator_Error :: enum byte {
-None                 = 0,
+<pre>None                 = 0,
 Out_Of_Memory        = 1,
 Invalid_Pointer      = 2,
 Invalid_Argument     = 3,
 Mode_Not_Implemented = 4,
-}
 </pre>
 <p>}</p>
 </details>
@@ -1856,7 +1804,7 @@ Mode_Not_Implemented = 4,
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/tracking_allocator.odin">tracking_allocator.odin</a></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2024-04 (vendor "odin") Windows_amd64 @ 2024-04-07 21:09:19.066785900 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2024-04 (vendor "odin") Windows_amd64 @ 2024-04-08 14:56:56.878310500 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
