@@ -99,6 +99,7 @@
 <li><a href="/core/crypto/blake2s">blake2s</a></li>
 <li><a href="/core/crypto/chacha20">chacha20</a></li>
 <li><a href="/core/crypto/chacha20poly1305">chacha20poly1305</a></li>
+<li><a href="/core/crypto/ed25519">ed25519</a></li>
 <li><a href="/core/crypto/hash">hash</a></li>
 <li><a href="/core/crypto/hkdf">hkdf</a></li>
 <li><a href="/core/crypto/hmac">hmac</a></li>
@@ -108,6 +109,7 @@
 <li><a href="/core/crypto/legacy/sha1">legacy/sha1</a></li>
 <li><a href="/core/crypto/pbkdf2">pbkdf2</a></li>
 <li><a href="/core/crypto/poly1305">poly1305</a></li>
+<li><a href="/core/crypto/ristretto255">ristretto255</a></li>
 <li><a href="/core/crypto/sha2">sha2</a></li>
 <li><a href="/core/crypto/sha3">sha3</a></li>
 <li><a href="/core/crypto/shake">shake</a></li>
@@ -277,6 +279,11 @@
 </div>
 <ul id="odin-search-results"></ul>
 <div id="pkg-top">
+<h2>Overview</h2>
+<div id="pkg-overview">
+<p>package crypto implements a selection of cryptography algorithms and useful
+helper routines.</p>
+</div>
 <div id="pkg-index">
 <h2>Index</h2>
 <div>
@@ -303,10 +310,11 @@ Variables (0)</summary>
 <div>
 <details class="doc-index" id="doc-index-Procedures" aria-labelledby="#doc-index-Procedures-header">
 <summary id="#doc-index-Procedures-header">
-Procedures (3)</summary>
+Procedures (4)</summary>
 <ul>
 <li><a href="#compare_byte_ptrs_constant_time">compare_byte_ptrs_constant_time</a></li>
 <li><a href="#compare_constant_time">compare_constant_time</a></li>
+<li><a href="#has_rand_bytes">has_rand_bytes</a></li>
 <li><a href="#rand_bytes">rand_bytes</a></li>
 </ul>
 </details>
@@ -329,7 +337,7 @@ Procedure Groups (0)</summary>
 <p class="pkg-empty-section">This section is empty.</p>
 <h2 id="pkg-Procedures" class="pkg-header">Procedures</h2>
 <div class="pkg-entity">
-<h3 id="compare_byte_ptrs_constant_time"><span><a class="doc-id-link" href="#compare_byte_ptrs_constant_time">compare_byte_ptrs_constant_time<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/crypto.odin#L30"><em>Source</em></a></div></h3>
+<h3 id="compare_byte_ptrs_constant_time"><span><a class="doc-id-link" href="#compare_byte_ptrs_constant_time">compare_byte_ptrs_constant_time<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/crypto.odin#L34"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">compare_byte_ptrs_constant_time :: <span class="keyword-type">proc</span> "contextless" (a, b: ^<a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a>, n: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>) -> <a href="/base/builtin#int"><span class="doc-builtin">int</span></a> {…}</pre>
 </div>
@@ -342,7 +350,7 @@ contents of the memory being compared.</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="compare_constant_time"><span><a class="doc-id-link" href="#compare_constant_time">compare_constant_time<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/crypto.odin#L10"><em>Source</em></a></div></h3>
+<h3 id="compare_constant_time"><span><a class="doc-id-link" href="#compare_constant_time">compare_constant_time<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/crypto.odin#L14"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">compare_constant_time :: <span class="keyword-type">proc</span> "contextless" (a, b: []<a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a>) -> <a href="/base/builtin#int"><span class="doc-builtin">int</span></a> {…}</pre>
 </div>
@@ -355,7 +363,18 @@ If the length of the two slices is different, it will early-return 0.</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="rand_bytes"><span><a class="doc-id-link" href="#rand_bytes">rand_bytes<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/crypto.odin#L48"><em>Source</em></a></div></h3>
+<h3 id="has_rand_bytes"><span><a class="doc-id-link" href="#has_rand_bytes">has_rand_bytes<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/crypto.odin#L61"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">has_rand_bytes :: <span class="keyword-type">proc</span>() -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>has_rand_bytes returns true iff the target has support for accessing the
+system entropty source.</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="rand_bytes"><span><a class="doc-id-link" href="#rand_bytes">rand_bytes<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/crypto.odin#L52"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">rand_bytes :: <span class="keyword-type">proc</span>(dst: []<a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a>) {…}</pre>
 </div>
@@ -376,14 +395,15 @@ as catastrophic, resulting in a panic.</p>
 <li><em>(hidden platform specific files)</em></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2024-04 (vendor "odin") Windows_amd64 @ 2024-04-09 21:09:53.634440600 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2024-04 (vendor "odin") Windows_amd64 @ 2024-04-10 21:09:45.364774800 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
 <ul>
-<li><a href="#pkg-Procedures">Procedures</a><ul>
+<li><a href="#pkg-overview">Overview</a><li><a href="#pkg-Procedures">Procedures</a><ul>
 <li><a href="#compare_byte_ptrs_constant_time">compare_byte_ptrs_constant_time</a></li>
 <li><a href="#compare_constant_time">compare_constant_time</a></li>
+<li><a href="#has_rand_bytes">has_rand_bytes</a></li>
 <li><a href="#rand_bytes">rand_bytes</a></li>
 </ul>
 </li>

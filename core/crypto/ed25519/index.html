@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>package encoding/base64 - pkg.odin-lang.org</title>	<link rel="stylesheet" type="text/css" href="https://odin-lang.org/scss/custom.min.css">
+	<title>package crypto/ed25519 - pkg.odin-lang.org</title>	<link rel="stylesheet" type="text/css" href="https://odin-lang.org/scss/custom.min.css">
 	<link rel=stylesheet href="//odin-lang.org/lib/highlight/styles/github-dark.min.css">
 	<script src="//odin-lang.org/lib/highlight/highlight.min.js"></script>
 
@@ -99,7 +99,7 @@
 <li><a href="/core/crypto/blake2s">blake2s</a></li>
 <li><a href="/core/crypto/chacha20">chacha20</a></li>
 <li><a href="/core/crypto/chacha20poly1305">chacha20poly1305</a></li>
-<li><a href="/core/crypto/ed25519">ed25519</a></li>
+<li><a class="active" href="/core/crypto/ed25519">ed25519</a></li>
 <li><a href="/core/crypto/hash">hash</a></li>
 <li><a href="/core/crypto/hkdf">hkdf</a></li>
 <li><a href="/core/crypto/hmac">hmac</a></li>
@@ -127,7 +127,7 @@
 <li class="nav-item"><a href="/core/dynlib">dynlib</a></li>
 <li class="nav-item">encoding<ul>
 <li><a href="/core/encoding/base32">base32</a></li>
-<li><a class="active" href="/core/encoding/base64">base64</a></li>
+<li><a href="/core/encoding/base64">base64</a></li>
 <li><a href="/core/encoding/csv">csv</a></li>
 <li><a href="/core/encoding/endian">endian</a></li>
 <li><a href="/core/encoding/entity">entity</a></li>
@@ -254,11 +254,11 @@
 <nav class="pkg-breadcrumb" aria-label="breadcrumb">
 <ol class="breadcrumb">
 <li class="breadcrumb-item"><a href="/core">core</a></li>
-<li class="breadcrumb-item">encoding</li>
-<li class="breadcrumb-item active" aria-current="page"><a href="/core/encoding/base64">base64</a></li>
+<li class="breadcrumb-item"><a href="/core/crypto">crypto</a></li>
+<li class="breadcrumb-item active" aria-current="page"><a href="/core/crypto/ed25519">ed25519</a></li>
 </ol>
 </nav>
-<h1>package core:encoding/base64<div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/base64"><em>Source</em></a></div></h1>
+<h1>package core:crypto/ed25519<div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/ed25519"><em>Source</em></a></div></h1>
 
 		<div class="odin-search-wrapper">
 			<input type="search" id="odin-search" class="odin-search-package" autocomplete="off" spellcheck="false" placeholder="Fuzzy Search...">
@@ -280,41 +280,58 @@
 </div>
 <ul id="odin-search-results"></ul>
 <div id="pkg-top">
+<h2>Overview</h2>
+<div id="pkg-overview">
+<p>package ed25519 implements the Ed25519 EdDSA signature algorithm.</p>
+<p>See:
+<span class="doc-list">https://datatracker.ietf.org/doc/html/rfc8032</span>
+<span class="doc-list">https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.186-5.pdf</span>
+<span class="doc-list">https://eprint.iacr.org/2020/1244.pdf</span></p>
+</div>
 <div id="pkg-index">
 <h2>Index</h2>
 <div>
 <details class="doc-index" id="doc-index-Types" aria-labelledby="#doc-index-Types-header">
 <summary id="#doc-index-Types-header">
-Types (0)</summary>
-<p class="pkg-empty-section">This section is empty.</p>
+Types (2)</summary>
+<ul>
+<li><a href="#Private_Key">Private_Key</a></li>
+<li><a href="#Public_Key">Public_Key</a></li>
+</ul>
 </details>
 </div>
 <div>
 <details class="doc-index" id="doc-index-Constants" aria-labelledby="#doc-index-Constants-header">
 <summary id="#doc-index-Constants-header">
-Constants (1)</summary>
+Constants (3)</summary>
 <ul>
-<li><a href="#PADDING">PADDING</a></li>
+<li><a href="#PRIVATE_KEY_SIZE">PRIVATE_KEY_SIZE</a></li>
+<li><a href="#PUBLIC_KEY_SIZE">PUBLIC_KEY_SIZE</a></li>
+<li><a href="#SIGNATURE_SIZE">SIGNATURE_SIZE</a></li>
 </ul>
 </details>
 </div>
 <div>
 <details class="doc-index" id="doc-index-Variables" aria-labelledby="#doc-index-Variables-header">
 <summary id="#doc-index-Variables-header">
-Variables (2)</summary>
-<ul>
-<li><a href="#DEC_TABLE">DEC_TABLE</a></li>
-<li><a href="#ENC_TABLE">ENC_TABLE</a></li>
-</ul>
+Variables (0)</summary>
+<p class="pkg-empty-section">This section is empty.</p>
 </details>
 </div>
 <div>
 <details class="doc-index" id="doc-index-Procedures" aria-labelledby="#doc-index-Procedures-header">
 <summary id="#doc-index-Procedures-header">
-Procedures (2)</summary>
+Procedures (9)</summary>
 <ul>
-<li><a href="#decode">decode</a></li>
-<li><a href="#encode">encode</a></li>
+<li><a href="#private_key_bytes">private_key_bytes</a></li>
+<li><a href="#private_key_clear">private_key_clear</a></li>
+<li><a href="#private_key_set_bytes">private_key_set_bytes</a></li>
+<li><a href="#public_key_bytes">public_key_bytes</a></li>
+<li><a href="#public_key_equal">public_key_equal</a></li>
+<li><a href="#public_key_set_bytes">public_key_set_bytes</a></li>
+<li><a href="#public_key_set_priv">public_key_set_priv</a></li>
+<li><a href="#sign">sign</a></li>
+<li><a href="#verify">verify</a></li>
 </ul>
 </details>
 </div>
@@ -329,71 +346,231 @@ Procedure Groups (0)</summary>
 </div>
 <section class="documentation">
 <h2 id="pkg-Types" class="pkg-header">Types</h2>
-<p class="pkg-empty-section">This section is empty.</p>
+<div class="pkg-entity">
+<h3 id="Private_Key"><span><a class="doc-id-link" href="#Private_Key">Private_Key<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/ed25519/ed25519.odin#L27"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Private_Key :: <span class="keyword-type">struct</span> {
+	<span class="comment">// WARNING: All of the members are to be treated as internal (ie:</span>
+	<span class="comment">// the Private_Key structure is intended to be opaque).  There are</span>
+	<span class="comment">// subtle vulnerabilities that can be introduced if the internal</span>
+	<span class="comment">// values are allowed to be altered.</span>
+	<span class="comment">// </span>
+	<span class="comment">// See: https://github.com/MystenLabs/ed25519-unsafe-libs</span>
+	_b:              [32]<a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a>,
+	_s:              field_scalar25519.<a class="code-typename" href="//#Montgomery_Domain_Field_Element">Montgomery_Domain_Field_Element</a>,
+	_nonce:          [32]<a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a>,
+	_pub_key:        <a class="code-typename" href="/core/crypto/ed25519/#Public_Key">Public_Key</a>,
+	_is_initialized: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>,
+}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Private_Key is an Ed25519 private key.</p>
+</details>
+<h5>Related Procedures With Parameters</h5>
+<ul>
+<li><a href="/core/crypto/ed25519/#private_key_bytes">private_key_bytes</a></li>
+<li><a href="/core/crypto/ed25519/#private_key_clear">private_key_clear</a></li>
+<li><a href="/core/crypto/ed25519/#private_key_set_bytes">private_key_set_bytes</a></li>
+<li><a href="/core/crypto/ed25519/#public_key_set_priv">public_key_set_priv</a></li>
+<li><a href="/core/crypto/ed25519/#sign">sign</a></li>
+</ul>
+</div>
+<div class="pkg-entity">
+<h3 id="Public_Key"><span><a class="doc-id-link" href="#Public_Key">Public_Key<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/ed25519/ed25519.odin#L42"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Public_Key :: <span class="keyword-type">struct</span> {
+	<span class="comment">// WARNING: All of the members are to be treated as internal (ie:</span>
+	<span class="comment">// the Public_Key structure is intended to be opaque).</span>
+	_b:              [32]<a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a>,
+	_neg_A:          _edwards25519.<a class="code-typename" href="//#Group_Element">Group_Element</a>,
+	_is_valid:       <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>,
+	_is_initialized: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>,
+}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Public_Key is an Ed25519 public key.</p>
+</details>
+<h5>Related Procedures With Parameters</h5>
+<ul>
+<li><a href="/core/crypto/ed25519/#public_key_bytes">public_key_bytes</a></li>
+<li><a href="/core/crypto/ed25519/#public_key_equal">public_key_equal</a></li>
+<li><a href="/core/crypto/ed25519/#public_key_set_bytes">public_key_set_bytes</a></li>
+<li><a href="/core/crypto/ed25519/#public_key_set_priv">public_key_set_priv</a></li>
+<li><a href="/core/crypto/ed25519/#verify">verify</a></li>
+</ul>
+</div>
 <h2 id="pkg-Constants" class="pkg-header">Constants</h2>
 <div class="pkg-entity">
-<h3 id="PADDING"><span><a class="doc-id-link" href="#PADDING">PADDING<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/base64/base64.odin#L21"><em>Source</em></a></div></h3>
+<h3 id="PRIVATE_KEY_SIZE"><span><a class="doc-id-link" href="#PRIVATE_KEY_SIZE">PRIVATE_KEY_SIZE<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/ed25519/ed25519.odin#L17"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">PADDING :: '='</pre>
+<pre class="doc-code">PRIVATE_KEY_SIZE :: 32</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>PRIVATE_KEY_SIZE is the byte-encoded private key size.</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="PUBLIC_KEY_SIZE"><span><a class="doc-id-link" href="#PUBLIC_KEY_SIZE">PUBLIC_KEY_SIZE<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/ed25519/ed25519.odin#L19"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">PUBLIC_KEY_SIZE :: 32</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>PUBLIC_KEY_SIZE is the byte-encoded public key size.</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="SIGNATURE_SIZE"><span><a class="doc-id-link" href="#SIGNATURE_SIZE">SIGNATURE_SIZE<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/ed25519/ed25519.odin#L21"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">SIGNATURE_SIZE :: 64</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>SIGNATURE_SIZE is the byte-encoded signature size.</p>
+</details>
 </div>
 <h2 id="pkg-Variables" class="pkg-header">Variables</h2>
-<div class="pkg-entity">
-<h3 id="DEC_TABLE"><span><a class="doc-id-link" href="#DEC_TABLE">DEC_TABLE<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/base64/base64.odin#L23"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">DEC_TABLE: [128]<a href="/base/builtin#int"><span class="doc-builtin">int</span></a> = …</pre>
-</div>
-</div>
-<div class="pkg-entity">
-<h3 id="ENC_TABLE"><span><a class="doc-id-link" href="#ENC_TABLE">ENC_TABLE<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/base64/base64.odin#L10"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">ENC_TABLE: [64]<a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a> = …</pre>
-</div>
-</div>
+<p class="pkg-empty-section">This section is empty.</p>
 <h2 id="pkg-Procedures" class="pkg-header">Procedures</h2>
 <div class="pkg-entity">
-<h3 id="decode"><span><a class="doc-id-link" href="#decode">decode<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/base64/base64.odin#L69"><em>Source</em></a></div></h3>
+<h3 id="private_key_bytes"><span><a class="doc-id-link" href="#private_key_bytes">private_key_bytes<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/ed25519/ed25519.odin#L83"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">decode :: <span class="keyword-type">proc</span>(data: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>, DEC_TBL: [128]<a href="/base/builtin#int"><span class="doc-builtin">int</span></a> = DEC_TABLE, allocator := <a href="/base/runtime/#Context">context.allocator</a>) -> []<a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a> {…}</pre>
+<pre class="doc-code">private_key_bytes :: <span class="keyword-type">proc</span>(priv_key: ^<a class="code-typename" href="/core/crypto/ed25519/#Private_Key">Private_Key</a>, dst: []<a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>private_key_bytes sets dst to byte-encoding of priv_key.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="encode"><span><a class="doc-id-link" href="#encode">encode<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/base64/base64.odin#L42"><em>Source</em></a></div></h3>
+<h3 id="private_key_clear"><span><a class="doc-id-link" href="#private_key_clear">private_key_clear<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/ed25519/ed25519.odin#L95"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">encode :: <span class="keyword-type">proc</span>(data: []<a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a>, ENC_TBL: [64]<a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a> = ENC_TABLE, allocator := <a href="/base/runtime/#Context">context.allocator</a>) -> <a href="/base/builtin#string"><span class="doc-builtin">string</span></a> {…}</pre>
+<pre class="doc-code">private_key_clear :: <span class="keyword-type">proc</span> "contextless" (priv_key: ^<a class="code-typename" href="/core/crypto/ed25519/#Private_Key">Private_Key</a>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>private_key_clear clears priv_key to the uninitialized state.</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="private_key_set_bytes"><span><a class="doc-id-link" href="#private_key_set_bytes">private_key_set_bytes<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/ed25519/ed25519.odin#L53"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">private_key_set_bytes :: <span class="keyword-type">proc</span>(priv_key: ^<a class="code-typename" href="/core/crypto/ed25519/#Private_Key">Private_Key</a>, b: []<a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a>) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>private_key_set_bytes decodes a byte-encoded private key, and returns
+true iff the operation was successful.</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="public_key_bytes"><span><a class="doc-id-link" href="#public_key_bytes">public_key_bytes<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/ed25519/ed25519.odin#L193"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">public_key_bytes :: <span class="keyword-type">proc</span>(pub_key: ^<a class="code-typename" href="/core/crypto/ed25519/#Public_Key">Public_Key</a>, dst: []<a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>public_key_bytes sets dst to byte-encoding of pub_key.</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="public_key_equal"><span><a class="doc-id-link" href="#public_key_equal">public_key_equal<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/ed25519/ed25519.odin#L205"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">public_key_equal :: <span class="keyword-type">proc</span>(pub_key, other: ^<a class="code-typename" href="/core/crypto/ed25519/#Public_Key">Public_Key</a>) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>public_key_equal returns true iff pub_key is equal to other.</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="public_key_set_bytes"><span><a class="doc-id-link" href="#public_key_set_bytes">public_key_set_bytes<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/ed25519/ed25519.odin#L161"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">public_key_set_bytes :: <span class="keyword-type">proc</span> "contextless" (pub_key: ^<a class="code-typename" href="/core/crypto/ed25519/#Public_Key">Public_Key</a>, b: []<a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a>) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>public_key_set_bytes decodes a byte-encoded public key, and returns
+true iff the operation was successful.</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="public_key_set_priv"><span><a class="doc-id-link" href="#public_key_set_priv">public_key_set_priv<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/ed25519/ed25519.odin#L180"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">public_key_set_priv :: <span class="keyword-type">proc</span>(pub_key: ^<a class="code-typename" href="/core/crypto/ed25519/#Public_Key">Public_Key</a>, priv_key: ^<a class="code-typename" href="/core/crypto/ed25519/#Private_Key">Private_Key</a>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>public_key_set_priv sets pub_key to the public component of priv_key.</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="sign"><span><a class="doc-id-link" href="#sign">sign<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/ed25519/ed25519.odin#L100"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">sign :: <span class="keyword-type">proc</span>(priv_key: ^<a class="code-typename" href="/core/crypto/ed25519/#Private_Key">Private_Key</a>, msg, sig: []<a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>sign writes the signature by priv_key over msg to sig.</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="verify"><span><a class="doc-id-link" href="#verify">verify<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/ed25519/ed25519.odin#L219"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">verify :: <span class="keyword-type">proc</span>(pub_key: ^<a class="code-typename" href="/core/crypto/ed25519/#Public_Key">Public_Key</a>, msg, sig: []<a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a>, allow_small_order_A: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> = false) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>verify returns true iff sig is a valid signature by pub_key over msg.</p>
+<p>The optional <code>allow_small_order_A</code> parameter will make this
+implementation strictly compatible with FIPS 186-5, at the expense of
+SBS-security.  Doing so is NOT recommended, and the disallowed
+public keys all have a known discrete-log.</p>
+</details>
 </div>
 <h2 id="pkg-Procedure Groups" class="pkg-header">Procedure Groups</h2>
 <p class="pkg-empty-section">This section is empty.</p>
 </section>
 <h2 id="pkg-source-files">Source Files</h2>
 <ul>
-<li><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/base64/base64.odin">base64.odin</a></li>
+<li><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/ed25519/ed25519.odin">ed25519.odin</a></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2024-04 (vendor "odin") Windows_amd64 @ 2024-04-10 21:09:45.381676000 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2024-04 (vendor "odin") Windows_amd64 @ 2024-04-10 21:09:45.367900200 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
 <ul>
-<li><a href="#pkg-Constants">Constants</a><ul>
-<li><a href="#PADDING">PADDING</a></li>
+<li><a href="#pkg-overview">Overview</a><li><a href="#pkg-Types">Types</a><ul>
+<li><a href="#Private_Key">Private_Key</a></li>
+<li><a href="#Public_Key">Public_Key</a></li>
 </ul>
 </li>
-<li><a href="#pkg-Variables">Variables</a><ul>
-<li><a href="#DEC_TABLE">DEC_TABLE</a></li>
-<li><a href="#ENC_TABLE">ENC_TABLE</a></li>
+<li><a href="#pkg-Constants">Constants</a><ul>
+<li><a href="#PRIVATE_KEY_SIZE">PRIVATE_KEY_SIZE</a></li>
+<li><a href="#PUBLIC_KEY_SIZE">PUBLIC_KEY_SIZE</a></li>
+<li><a href="#SIGNATURE_SIZE">SIGNATURE_SIZE</a></li>
 </ul>
 </li>
 <li><a href="#pkg-Procedures">Procedures</a><ul>
-<li><a href="#decode">decode</a></li>
-<li><a href="#encode">encode</a></li>
+<li><a href="#private_key_bytes">private_key_bytes</a></li>
+<li><a href="#private_key_clear">private_key_clear</a></li>
+<li><a href="#private_key_set_bytes">private_key_set_bytes</a></li>
+<li><a href="#public_key_bytes">public_key_bytes</a></li>
+<li><a href="#public_key_equal">public_key_equal</a></li>
+<li><a href="#public_key_set_bytes">public_key_set_bytes</a></li>
+<li><a href="#public_key_set_priv">public_key_set_priv</a></li>
+<li><a href="#sign">sign</a></li>
+<li><a href="#verify">verify</a></li>
 </ul>
 </li>
 <li><a href="#pkg-source-files">Source Files</a></ul>
 </nav>
 </div></div>
-<script type="text/javascript">var odin_pkg_name = "base64";</script>
+<script type="text/javascript">var odin_pkg_name = "ed25519";</script>
 </div>
 
 </div>
