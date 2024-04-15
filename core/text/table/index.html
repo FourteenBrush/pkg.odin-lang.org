@@ -128,6 +128,7 @@
 <li class="nav-item">encoding<ul>
 <li><a href="/core/encoding/base32">base32</a></li>
 <li><a href="/core/encoding/base64">base64</a></li>
+<li><a href="/core/encoding/cbor">cbor</a></li>
 <li><a href="/core/encoding/csv">csv</a></li>
 <li><a href="/core/encoding/endian">endian</a></li>
 <li><a href="/core/encoding/entity">entity</a></li>
@@ -280,6 +281,92 @@
 </div>
 <ul id="odin-search-results"></ul>
 <div id="pkg-top">
+<h2>Overview</h2>
+<div id="pkg-overview">
+<p>The package <code>table</code> implements ASCII/markdown/HTML/custom rendering of tables.</p>
+<p><b>Custom rendering example:</b></p>
+<pre>tbl := init(&Table{})
+padding(tbl, 0, 1)
+row(tbl, "A_LONG_ENUM", "= 54,", "// A comment about A_LONG_ENUM")
+row(tbl, "AN_EVEN_LONGER_ENUM", "= 1,", "// A comment about AN_EVEN_LONGER_ENUM")
+build(tbl)
+for row in 0..&lt;tbl.nr_rows {
+	for col in 0..&lt;tbl.nr_cols {
+		write_table_cell(stdio_writer(), tbl, row, col)
+	}
+	io.write_byte(stdio_writer(), '\n')
+}
+
+</pre>
+<p>This outputs:</p>
+<pre>A_LONG_ENUM         = 54, // A comment about A_LONG_ENUM
+AN_EVEN_LONGER_ENUM = 1,  // A comment about AN_EVEN_LONGER_ENUM
+
+</pre>
+<p><b>ASCII rendering example:</b></p>
+<pre>tbl := init(&Table{})
+defer destroy(tbl)
+
+caption(tbl, "This is a table caption and it is very long")
+
+padding(tbl, 1, 1) // Left/right padding of cells
+
+header(tbl, "AAAAAAAAA", "B")
+header(tbl, "C") // Appends to previous header row. Same as if done header("AAAAAAAAA", "B", "C") from start.
+
+// Create a row with two values. Since there are three columns the third
+// value will become the empty string.
+//
+// NOTE: header() is not allowed anymore after this.
+row(tbl, 123, "foo")
+
+// Use `format()` if you need custom formatting. This will allocate into
+// the arena specified at init.
+row(tbl,
+    format(tbl, "%09d", 5),
+    format(tbl, "%.6f", 6.28318530717958647692528676655900576))
+
+// A row with zero values is allowed as long as a previous row or header
+// exist. The value and alignment of each cell can then be set
+// individually.
+row(tbl)
+	set_cell_value_and_alignment(tbl, last_row(tbl), 0, "a", .Center)
+	set_cell_value(tbl, last_row(tbl), 1, "bbb")
+	set_cell_value(tbl, last_row(tbl), 2, "c")
+
+// Headers are regular cells, too. Use header_row() as row index to modify
+// header cells.
+set_cell_alignment(tbl, header_row(tbl), 1, .Center) // Sets alignment of 'B' column to Center.
+set_cell_alignment(tbl, header_row(tbl), 2, .Right) // Sets alignment of 'C' column to Right.
+
+build(tbl)
+
+write_ascii_table(stdio_writer(), tbl)
+write_markdown_table(stdio_writer(), tbl)
+
+</pre>
+<p>This outputs:</p>
+<pre>+-----------------------------------------------+
+|  This is a table caption and it is very long  |
++------------------+-----------------+----------+
+| AAAAAAAAA        |        B        |        C |
++------------------+-----------------+----------+
+| 123              | foo             |          |
+| 000000005        | 6.283185        |          |
+|        a         | bbb             | c        |
++------------------+-----------------+----------+
+
+</pre>
+<p>and</p>
+<pre>|    AAAAAAAAA     |        B        |    C     |
+|:-----------------|:---------------:|---------:|
+| 123              | foo             |          |
+| 000000005        | 6.283185        |          |
+| a                | bbb             | c        |
+
+</pre>
+<p>respectively.</p>
+</div>
 <div id="pkg-index">
 <h2>Index</h2>
 <div>
@@ -615,12 +702,12 @@ Procedure Groups (1)</summary>
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/text/table/utility.odin">utility.odin</a></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2024-04 (vendor "odin") Windows_amd64 @ 2024-04-14 22:48:43.690427800 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2024-04 (vendor "odin") Windows_amd64 @ 2024-04-15 21:11:26.611377500 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
 <ul>
-<li><a href="#pkg-Types">Types</a><ul>
+<li><a href="#pkg-overview">Overview</a><li><a href="#pkg-Types">Types</a><ul>
 <li><a href="#Cell">Cell</a></li>
 <li><a href="#Cell_Alignment">Cell_Alignment</a></li>
 <li><a href="#Table">Table</a></li>

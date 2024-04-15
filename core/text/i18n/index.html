@@ -128,6 +128,7 @@
 <li class="nav-item">encoding<ul>
 <li><a href="/core/encoding/base32">base32</a></li>
 <li><a href="/core/encoding/base64">base64</a></li>
+<li><a href="/core/encoding/cbor">cbor</a></li>
 <li><a href="/core/encoding/csv">csv</a></li>
 <li><a href="/core/encoding/endian">endian</a></li>
 <li><a href="/core/encoding/entity">entity</a></li>
@@ -280,6 +281,102 @@
 </div>
 <ul id="odin-search-results"></ul>
 <div id="pkg-top">
+<h2>Overview</h2>
+<div id="pkg-overview">
+<p>The <code>i18n</code> package is flexible and easy to use.</p>
+<p>It has one call to get a translation: <code>get</code>, which the user can alias into something like <code>T</code>.</p>
+<p><code>get</code>, referred to as <code>T</code> here, has a few different signatures.
+All of them will return the key if the entry can't be found in the active translation catalog.</p>
+<p><span class="doc-list"><code>T(key)</code>              returns the translation of <code>key</code>.</span>
+<span class="doc-list"><code>T(key, n)</code>           returns a pluralized translation of <code>key</code> according to value <code>n</code>.</span></p>
+<p><span class="doc-list"><code>T(section, key)</code>     returns the translation of <code>key</code> in <code>section</code>.</span>
+<span class="doc-list"><code>T(section, key, n)</code>  returns a pluralized translation of <code>key</code> in <code>section</code> according to value <code>n</code>.</span></p>
+<p>By default lookup take place in the global <code>i18n.ACTIVE</code> catalog for ease of use.
+If you want to override which translation to use, for example in a language preview dialog, you can use the following:</p>
+<p><span class="doc-list"><code>T(key, n, catalog)</code>           returns the pluralized version of <code>key</code> from explictly supplied catalog.</span>
+<span class="doc-list"><code>T(section, key, n, catalog)</code>  returns the pluralized version of <code>key</code> in <code>section</code> from explictly supplied catalog.</span></p>
+<p>If a catalog has translation contexts or sections, then omitting it in the above calls looks up in section "".</p>
+<p>The default pluralization rule is n != 1, which is to say that passing n == 1 (or not passing n) returns the singular form.
+Passing n != 1 returns plural form 1.</p>
+<p>Should a language not conform to this rule, you can pass a pluralizer procedure to the catalog parser.
+This is a procedure that maps an integer to an integer, taking a value and returning which plural slot should be used.</p>
+<p>You can also assign it to a loaded catalog after parsing, of course.</p>
+<details open class="code-example">
+<summary><b>Example:</b></summary>
+<pre><code class="hljs language-odin" data-lang="odin">import "core:fmt"
+import "core:text/i18n"
+
+T :: i18n.get
+
+mo :: proc() {
+	using fmt
+
+	err: i18n.Error
+
+	/*
+		Parse MO file and set it as the active translation so we can omit `get`'s "catalog" parameter.
+	*/
+	i18n.ACTIVE, err = i18n.parse_mo(#load("translations/nl_NL.mo"))
+	defer i18n.destroy()
+
+	if err != .None { return }
+
+	/*
+		These are in the .MO catalog.
+	*/
+	println("-----")
+	println(T(""))
+	println("-----")
+	println(T("There are 69,105 leaves here."))
+	println("-----")
+	println(T("Hellope, World!"))
+	println("-----")
+	// We pass 1 into `T` to get the singular format string, then 1 again into printf.
+	printf(T("There is %d leaf.\n", 1), 1)
+	// We pass 42 into `T` to get the plural format string, then 42 again into printf.
+	printf(T("There is %d leaf.\n", 42), 42)
+
+	/*
+		This isn't in the translation catalog, so the key is passed back untranslated.
+	*/
+	println("-----")
+	println(T("Come visit us on Discord!"))
+}
+
+qt :: proc() {
+	using fmt
+
+	err: i18n.Error
+
+	/*
+		Parse QT file and set it as the active translation so we can omit `get`'s "catalog" parameter.
+	*/
+	i18n.ACTIVE, err = i18n.parse_qt(#load("translations/nl_NL-qt-ts.ts"))
+	defer i18n.destroy()
+
+	if err != .None {
+		return
+	}
+
+	/*
+		These are in the .TS catalog. As you can see they have sections.
+	*/
+	println("--- Page section ---")
+	println("Page:Text for translation =", T("Page", "Text for translation"))
+	println("-----")
+	println("Page:Also text to translate =", T("Page", "Also text to translate"))
+	println("-----")
+	println("--- installscript section ---")
+	println("installscript:99 bottles of beer on the wall =", T("installscript", "99 bottles of beer on the wall"))
+	println("-----")
+	println("--- apple_count section ---")
+	println("apple_count:%d apple(s) =")
+	println("\t 1  =", T("apple_count", "%d apple(s)", 1))
+	println("\t 42 =", T("apple_count", "%d apple(s)", 42))
+}
+</code></pre>
+</details>
+</div>
 <div id="pkg-index">
 <h2>Index</h2>
 <div>
@@ -638,17 +735,18 @@ If a file format parser doesn't (yet) support plural slots, each of the slots wi
 </section>
 <h2 id="pkg-source-files">Source Files</h2>
 <ul>
+<li><a href="https://github.com/odin-lang/Odin/tree/master/core/text/i18n/doc.odin">doc.odin</a></li>
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/text/i18n/gettext.odin">gettext.odin</a></li>
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/text/i18n/i18n.odin">i18n.odin</a></li>
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/text/i18n/qt_linguist.odin">qt_linguist.odin</a></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2024-04 (vendor "odin") Windows_amd64 @ 2024-04-14 22:48:43.686995900 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2024-04 (vendor "odin") Windows_amd64 @ 2024-04-15 21:11:26.607822700 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
 <ul>
-<li><a href="#pkg-Types">Types</a><ul>
+<li><a href="#pkg-overview">Overview</a><li><a href="#pkg-Types">Types</a><ul>
 <li><a href="#Error">Error</a></li>
 <li><a href="#Parse_Options">Parse_Options</a></li>
 <li><a href="#Section">Section</a></li>
