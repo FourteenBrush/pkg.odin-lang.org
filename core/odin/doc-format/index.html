@@ -89,12 +89,14 @@
 <li><a href="/core/container/lru">lru</a></li>
 <li><a href="/core/container/priority_queue">priority_queue</a></li>
 <li><a href="/core/container/queue">queue</a></li>
+<li><a href="/core/container/rbtree">rbtree</a></li>
 <li><a href="/core/container/small_array">small_array</a></li>
 <li><a href="/core/container/topological_sort">topological_sort</a></li>
 </ul>
 
 </li>
 <li class="nav-item"><a href="/core/crypto">crypto</a><ul>
+<li><a href="/core/crypto/aes">aes</a></li>
 <li><a href="/core/crypto/blake2b">blake2b</a></li>
 <li><a href="/core/crypto/blake2s">blake2s</a></li>
 <li><a href="/core/crypto/chacha20">chacha20</a></li>
@@ -126,6 +128,7 @@
 </li>
 <li class="nav-item"><a href="/core/dynlib">dynlib</a></li>
 <li class="nav-item">encoding<ul>
+<li><a href="/core/encoding/ansi">ansi</a></li>
 <li><a href="/core/encoding/base32">base32</a></li>
 <li><a href="/core/encoding/base64">base64</a></li>
 <li><a href="/core/encoding/cbor">cbor</a></li>
@@ -179,9 +182,7 @@
 <li class="nav-item">odin<ul>
 <li><a href="/core/odin/ast">ast</a></li>
 <li><a class="active" href="/core/odin/doc-format">doc-format</a></li>
-<li><a href="/core/odin/format">format</a></li>
 <li><a href="/core/odin/parser">parser</a></li>
-<li><a href="/core/odin/printer">printer</a></li>
 <li><a href="/core/odin/tokenizer">tokenizer</a></li>
 </ul>
 
@@ -212,14 +213,17 @@
 
 </li>
 <li class="nav-item"><a href="/core/strings">strings</a></li>
-<li class="nav-item"><a href="/core/sync">sync</a></li>
+<li class="nav-item"><a href="/core/sync">sync</a><ul>
+<li><a href="/core/sync/chan">chan</a></li>
+</ul>
+
+</li>
 <li class="nav-item">sys<ul>
 <li><a href="/core/sys/darwin">darwin</a></li>
 <li><a href="/core/sys/darwin/Foundation">darwin/Foundation</a></li>
 <li><a href="/core/sys/haiku">haiku</a></li>
 <li><a href="/core/sys/info">info</a></li>
 <li><a href="/core/sys/linux">linux</a></li>
-<li><a href="/core/sys/unix">unix</a></li>
 <li><a href="/core/sys/valgrind">valgrind</a></li>
 <li><a href="/core/sys/windows">windows</a></li>
 </ul>
@@ -415,11 +419,11 @@ Procedure Groups (0)</summary>
 	<span class="comment">// .Variable</span>
 	<span class="comment">// .Procedure</span>
 	link_name:         <a class="code-typename" href="/core/odin/doc-format/#String">String</a>,
-	attributes:        <a class="code-typename" href="/core/odin/doc-format/#Array">Array</a>($T=Attribute),
+	attributes:        <a class="code-typename" href="/core/odin/doc-format/#Array">Array</a>($T),
 	<span class="comment">// Used by: .Proc_Group</span>
-	grouped_entities:  <a class="code-typename" href="/core/odin/doc-format/#Array">Array</a>($T=Entity_Index),
+	grouped_entities:  <a class="code-typename" href="/core/odin/doc-format/#Array">Array</a>($T),
 	<span class="comment">// May used by: .Procedure</span>
-	where_clauses:     <a class="code-typename" href="/core/odin/doc-format/#Array">Array</a>($T=String),
+	where_clauses:     <a class="code-typename" href="/core/odin/doc-format/#Array">Array</a>($T),
 }</pre>
 </div>
 </div>
@@ -497,10 +501,10 @@ Procedure Groups (0)</summary>
 <pre class="doc-code">Header :: <span class="keyword-type">struct</span> {
 	<span class="keyword-type">using</span> base: <a class="code-typename" href="/core/odin/doc-format/#Header_Base">Header_Base</a>,
 	<span class="comment">// NOTE: These arrays reserve the zero element as a sentinel value</span>
-	files:    <a class="code-typename" href="/core/odin/doc-format/#Array">Array</a>($T=File),
-	pkgs:     <a class="code-typename" href="/core/odin/doc-format/#Array">Array</a>($T=Pkg),
-	entities: <a class="code-typename" href="/core/odin/doc-format/#Array">Array</a>($T=Entity),
-	types:    <a class="code-typename" href="/core/odin/doc-format/#Array">Array</a>($T=Type),
+	files:    <a class="code-typename" href="/core/odin/doc-format/#Array">Array</a>($T),
+	pkgs:     <a class="code-typename" href="/core/odin/doc-format/#Array">Array</a>($T),
+	entities: <a class="code-typename" href="/core/odin/doc-format/#Array">Array</a>($T),
+	types:    <a class="code-typename" href="/core/odin/doc-format/#Array">Array</a>($T),
 }</pre>
 </div>
 <h5>Related Procedures With Returns</h5>
@@ -542,8 +546,8 @@ Procedure Groups (0)</summary>
 	name:     <a class="code-typename" href="/core/odin/doc-format/#String">String</a>,
 	flags:    <a class="code-typename" href="/core/odin/doc-format/#Pkg_Flags">Pkg_Flags</a>,
 	docs:     <a class="code-typename" href="/core/odin/doc-format/#String">String</a>,
-	files:    <a class="code-typename" href="/core/odin/doc-format/#Array">Array</a>($T=File_Index),
-	entries:  <a class="code-typename" href="/core/odin/doc-format/#Array">Array</a>($T=Scope_Entry),
+	files:    <a class="code-typename" href="/core/odin/doc-format/#Array">Array</a>($T),
+	entries:  <a class="code-typename" href="/core/odin/doc-format/#Array">Array</a>($T),
 }</pre>
 </div>
 </div>
@@ -672,19 +676,19 @@ Procedure Groups (0)</summary>
 	<span class="comment">// .Matrix             - 1 type:    0=element</span>
 	<span class="comment">// .Soa_Pointer        - 1 type:    0=element</span>
 	<span class="comment">// .Bit_Field          - 1 type:    0=backing type</span>
-	types:              <a class="code-typename" href="/core/odin/doc-format/#Array">Array</a>($T=Type_Index),
+	types:              <a class="code-typename" href="/core/odin/doc-format/#Array">Array</a>($T),
 	<span class="comment">// Used by:</span>
 	<span class="comment">// .Named  - 1 field for the definition</span>
 	<span class="comment">// .Struct - fields</span>
 	<span class="comment">// .Enum   - fields</span>
 	<span class="comment">// .Tuple  - parameters (procedures only)</span>
-	entities:           <a class="code-typename" href="/core/odin/doc-format/#Array">Array</a>($T=Entity_Index),
+	entities:           <a class="code-typename" href="/core/odin/doc-format/#Array">Array</a>($T),
 	<span class="comment">// Used By: .Struct, .Union</span>
 	polymorphic_params: <a class="code-typename" href="/core/odin/doc-format/#Type_Index">Type_Index</a>,
 	<span class="comment">// Used By: .Struct, .Union</span>
-	where_clauses:      <a class="code-typename" href="/core/odin/doc-format/#Array">Array</a>($T=String),
+	where_clauses:      <a class="code-typename" href="/core/odin/doc-format/#Array">Array</a>($T),
 	<span class="comment">// Used By: .Struct</span>
-	tags:               <a class="code-typename" href="/core/odin/doc-format/#Array">Array</a>($T=String),
+	tags:               <a class="code-typename" href="/core/odin/doc-format/#Array">Array</a>($T),
 }</pre>
 </div>
 </div>
@@ -889,7 +893,7 @@ Procedure Groups (0)</summary>
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/doc-format/doc_format.odin">doc_format.odin</a></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2024-04 (vendor "odin") Windows_amd64 @ 2024-04-26 21:08:58.612241500 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2024-06 (vendor "odin") Windows_amd64 @ 2024-06-17 21:40:01.208364700 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">

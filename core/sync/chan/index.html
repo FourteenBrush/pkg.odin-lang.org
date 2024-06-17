@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>package sync/chan - pkg.odin-lang.org</title>	<link rel="stylesheet" type="text/css" href="https://odin-lang.org/scss/custom.min.css">
+	<link rel=stylesheet href="//odin-lang.org/lib/highlight/styles/github-dark.min.css">
+	<script src="//odin-lang.org/lib/highlight/highlight.min.js"></script>
+
+	<script>hljs.registerLanguage("odin",function(a){return{aliases:["odin","odinlang","odin-lang"],keywords:{keyword:"auto_cast bit_set break case cast context continue defer distinct do dynamic else enum fallthrough for foreign if import in map not_in or_else or_return package proc return struct switch transmute type_of typeid union using when where",literal:"true false nil",built_in:"abs align_of cap clamp complex conj expand_to_tuple imag jmag kmag len max min offset_of quaternion real size_of soa_unzip soa_zip swizzle type_info_of type_of typeid_of"},illegal:"</",contains:[a.C_LINE_COMMENT_MODE,a.C_BLOCK_COMMENT_MODE,{className:"string",variants:[a.QUOTE_STRING_MODE,{begin:"'",end:"[^\\\\]'"},{begin:"`",end:"`"}]},{className:"number",variants:[{begin:a.C_NUMBER_RE+"[ijk]",relevance:1},a.C_NUMBER_MODE]}]}})</script>
+	<script>hljs.highlightAll()</script>
+	<script>
+		function toggleDarkMode() {
+			if (document.body.classList.toggle("dark-mode")) {
+				window.localStorage.setItem("theme", "dark");
+			} else {
+				window.localStorage.setItem("theme", "light");
+			}
+		}
+	</script>
+	<link rel="stylesheet" type="text/css" href="https://odin-lang.org/css/style.css">
+
+	<link rel="stylesheet" type="text/css" href="/style.css">
+
+	</style>
+</head>
+<body>
+<header class="sticky-top">
+	<nav class="navbar navbar-expand-lg navbar-dark bg-primary odin-menu">
+		<div class="container">
+			<a class="navbar-brand" href="https://odin-lang.org/">
+			<img src="https://odin-lang.org/logo.svg" height="30" alt="Odin"></a>
+			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#odin-navbar-content" aria-controls="odin-navbar-content" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+			<div class="collapse navbar-collapse" id="odin-navbar-content">
+			<ul class="navbar-nav ms-md-auto">
+				<li class="nav-item"><a class="nav-link" href="https://odin-lang.org/">Home</a></li>
+				<li class="nav-item"><a class="nav-link" href="https://odin-lang.org/docs">Docs</a></li>
+				<li class="nav-item"><a class="nav-link active" href="/">Packages</a></li>
+				<li class="nav-item"><a class="nav-link" href="https://odin-lang.org/news">News</a></li>
+				<li class="nav-item"><a class="nav-link" href="https://odin-lang.org/showcase">Showcase</a></li>
+				<li class="nav-item"><a class="nav-link" href="https://odin-lang.org/community">Community</a></li>
+				<li class="nav-item"><a class="nav-link" href="https://github.com/odin-lang/Odin" target="_blank">GitHub</a></li>
+				<li class="nav-item">
+					<a
+						class="nav-link btn-dark-mode"
+						onclick="toggleDarkMode();"
+						title="Toggle Light/Dark Mode"
+					>
+						<span class="dark-mode-appearance">Appearance:</span>
+						<svg fill="white" id="dark-mode-icon" viewBox="0 0 384 512"><path d="M223.5 32C100 32 0 132.3 0 256S100 480 223.5 480c60.6 0 115.5-24.2 155.8-63.4c5-4.9 6.3-12.5 3.1-18.7s-10.1-9.7-17-8.5c-9.8 1.7-19.8 2.6-30.1 2.6c-96.9 0-175.5-78.8-175.5-176c0-65.8 36-123.1 89.3-153.3c6.1-3.5 9.2-10.5 7.7-17.3s-7.3-11.9-14.3-12.5c-6.3-.5-12.6-.8-19-.8z"/></svg>
+						<svg fill="white" id="light-mode-icon" viewBox="0 0 16 16">
+						  <path d="M8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8M8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0m0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13m8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5M3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8m10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0m-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0m9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707M4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708"/>
+						</svg>
+					</button>
+					</a>
+				</li>
+			</ul>
+		</div>
+		</div>
+	</nav>
+</header>
+<main>
+<div class="container full-width">
+<div class="row odin-main my-4" id="pkg">
+<nav id="pkg-sidebar" class="col-lg-2 odin-sidebar-border navbar-light sticky-top odin-below-navbar">
+<div class="py-3">
+<h4><a style="text-transform: capitalize; color: inherit;" href="/core">core Library</a></h4>
+<ul>
+<li class="nav-item"><a href="/core/bufio">bufio</a></li>
+<li class="nav-item"><a href="/core/bytes">bytes</a></li>
+<li class="nav-item"><a href="/core/c">c</a><ul>
+<li><a href="/core/c/frontend/preprocessor">frontend/preprocessor</a></li>
+<li><a href="/core/c/frontend/tokenizer">frontend/tokenizer</a></li>
+<li><a href="/core/c/libc">libc</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/compress">compress</a><ul>
+<li><a href="/core/compress/gzip">gzip</a></li>
+<li><a href="/core/compress/shoco">shoco</a></li>
+<li><a href="/core/compress/zlib">zlib</a></li>
+</ul>
+
+</li>
+<li class="nav-item">container<ul>
+<li><a href="/core/container/avl">avl</a></li>
+<li><a href="/core/container/bit_array">bit_array</a></li>
+<li><a href="/core/container/intrusive/list">intrusive/list</a></li>
+<li><a href="/core/container/lru">lru</a></li>
+<li><a href="/core/container/priority_queue">priority_queue</a></li>
+<li><a href="/core/container/queue">queue</a></li>
+<li><a href="/core/container/rbtree">rbtree</a></li>
+<li><a href="/core/container/small_array">small_array</a></li>
+<li><a href="/core/container/topological_sort">topological_sort</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/crypto">crypto</a><ul>
+<li><a href="/core/crypto/aes">aes</a></li>
+<li><a href="/core/crypto/blake2b">blake2b</a></li>
+<li><a href="/core/crypto/blake2s">blake2s</a></li>
+<li><a href="/core/crypto/chacha20">chacha20</a></li>
+<li><a href="/core/crypto/chacha20poly1305">chacha20poly1305</a></li>
+<li><a href="/core/crypto/ed25519">ed25519</a></li>
+<li><a href="/core/crypto/hash">hash</a></li>
+<li><a href="/core/crypto/hkdf">hkdf</a></li>
+<li><a href="/core/crypto/hmac">hmac</a></li>
+<li><a href="/core/crypto/kmac">kmac</a></li>
+<li><a href="/core/crypto/legacy/keccak">legacy/keccak</a></li>
+<li><a href="/core/crypto/legacy/md5">legacy/md5</a></li>
+<li><a href="/core/crypto/legacy/sha1">legacy/sha1</a></li>
+<li><a href="/core/crypto/pbkdf2">pbkdf2</a></li>
+<li><a href="/core/crypto/poly1305">poly1305</a></li>
+<li><a href="/core/crypto/ristretto255">ristretto255</a></li>
+<li><a href="/core/crypto/sha2">sha2</a></li>
+<li><a href="/core/crypto/sha3">sha3</a></li>
+<li><a href="/core/crypto/shake">shake</a></li>
+<li><a href="/core/crypto/sm3">sm3</a></li>
+<li><a href="/core/crypto/tuplehash">tuplehash</a></li>
+<li><a href="/core/crypto/x25519">x25519</a></li>
+</ul>
+
+</li>
+<li class="nav-item">debug<ul>
+<li><a href="/core/debug/pe">pe</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/dynlib">dynlib</a></li>
+<li class="nav-item">encoding<ul>
+<li><a href="/core/encoding/ansi">ansi</a></li>
+<li><a href="/core/encoding/base32">base32</a></li>
+<li><a href="/core/encoding/base64">base64</a></li>
+<li><a href="/core/encoding/cbor">cbor</a></li>
+<li><a href="/core/encoding/csv">csv</a></li>
+<li><a href="/core/encoding/endian">endian</a></li>
+<li><a href="/core/encoding/entity">entity</a></li>
+<li><a href="/core/encoding/hex">hex</a></li>
+<li><a href="/core/encoding/hxa">hxa</a></li>
+<li><a href="/core/encoding/json">json</a></li>
+<li><a href="/core/encoding/varint">varint</a></li>
+<li><a href="/core/encoding/xml">xml</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/fmt">fmt</a></li>
+<li class="nav-item"><a href="/core/hash">hash</a><ul>
+<li><a href="/core/hash/xxhash">xxhash</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/image">image</a><ul>
+<li><a href="/core/image/netpbm">netpbm</a></li>
+<li><a href="/core/image/png">png</a></li>
+<li><a href="/core/image/qoi">qoi</a></li>
+<li><a href="/core/image/tga">tga</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/io">io</a></li>
+<li class="nav-item"><a href="/core/log">log</a></li>
+<li class="nav-item"><a href="/core/math">math</a><ul>
+<li><a href="/core/math/big">big</a></li>
+<li><a href="/core/math/bits">bits</a></li>
+<li><a href="/core/math/cmplx">cmplx</a></li>
+<li><a href="/core/math/ease">ease</a></li>
+<li><a href="/core/math/fixed">fixed</a></li>
+<li><a href="/core/math/linalg">linalg</a></li>
+<li><a href="/core/math/linalg/glsl">linalg/glsl</a></li>
+<li><a href="/core/math/linalg/hlsl">linalg/hlsl</a></li>
+<li><a href="/core/math/noise">noise</a></li>
+<li><a href="/core/math/rand">rand</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/mem">mem</a><ul>
+<li><a href="/core/mem/virtual">virtual</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/net">net</a></li>
+<li class="nav-item">odin<ul>
+<li><a href="/core/odin/ast">ast</a></li>
+<li><a href="/core/odin/doc-format">doc-format</a></li>
+<li><a href="/core/odin/parser">parser</a></li>
+<li><a href="/core/odin/tokenizer">tokenizer</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/os">os</a></li>
+<li class="nav-item">path<ul>
+<li><a href="/core/path/filepath">filepath</a></li>
+<li><a href="/core/path/slashpath">slashpath</a></li>
+</ul>
+
+</li>
+<li class="nav-item">prof<ul>
+<li><a href="/core/prof/spall">spall</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/reflect">reflect</a></li>
+<li class="nav-item"><a href="/core/simd">simd</a></li>
+<li class="nav-item"><a href="/core/slice">slice</a><ul>
+<li><a href="/core/slice/heap">heap</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/sort">sort</a></li>
+<li class="nav-item"><a href="/core/strconv">strconv</a><ul>
+<li><a href="/core/strconv/decimal">decimal</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/strings">strings</a></li>
+<li class="nav-item"><a href="/core/sync">sync</a><ul>
+<li><a class="active" href="/core/sync/chan">chan</a></li>
+</ul>
+
+</li>
+<li class="nav-item">sys<ul>
+<li><a href="/core/sys/darwin">darwin</a></li>
+<li><a href="/core/sys/darwin/Foundation">darwin/Foundation</a></li>
+<li><a href="/core/sys/haiku">haiku</a></li>
+<li><a href="/core/sys/info">info</a></li>
+<li><a href="/core/sys/linux">linux</a></li>
+<li><a href="/core/sys/valgrind">valgrind</a></li>
+<li><a href="/core/sys/windows">windows</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/testing">testing</a></li>
+<li class="nav-item">text<ul>
+<li><a href="/core/text/edit">edit</a></li>
+<li><a href="/core/text/i18n">i18n</a></li>
+<li><a href="/core/text/match">match</a></li>
+<li><a href="/core/text/scanner">scanner</a></li>
+<li><a href="/core/text/table">table</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/thread">thread</a></li>
+<li class="nav-item"><a href="/core/time">time</a><ul>
+<li><a href="/core/time/datetime">datetime</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/unicode">unicode</a><ul>
+<li><a href="/core/unicode/utf16">utf16</a></li>
+<li><a href="/core/unicode/utf8">utf8</a></li>
+<li><a href="/core/unicode/utf8/utf8string">utf8/utf8string</a></li>
+</ul>
+
+</li>
+</ul>
+</div>
+</nav>
+<article class="col-lg-8 p-4 documentation odin-article">
+<nav class="pkg-breadcrumb" aria-label="breadcrumb">
+<ol class="breadcrumb">
+<li class="breadcrumb-item"><a href="/core">core</a></li>
+<li class="breadcrumb-item"><a href="/core/sync">sync</a></li>
+<li class="breadcrumb-item active" aria-current="page"><a href="/core/sync/chan">chan</a></li>
+</ol>
+</nav>
+<h1>package core:sync/chan<div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/chan"><em>Source</em></a></div></h1>
+
+		<div class="odin-search-wrapper">
+			<input type="search" id="odin-search" class="odin-search-package" autocomplete="off" spellcheck="false" placeholder="Fuzzy Search...">
+			<div class="odin-search-shortcut">
+				<div class="odin-search-key key-macos">⌘K</div>
+				<div class="odin-search-key key-windows">Ctrl+K</div>
+				<span class="odin-search-or">or</span>
+				<div class="odin-search-key">/</div>
+			</div>
+		</div>
+	
+<div id="odin-search-info">
+<div id="odin-search-time"></div>
+
+		<div id="odin-search-options">
+			<input type="checkbox" id="odin-search-filter" name="odin-search-filter">
+			<label for="odin-search-filter">Filter Results</label>
+		</div>
+</div>
+<ul id="odin-search-results"></ul>
+<div id="pkg-top">
+<div id="pkg-index">
+<h2>Index</h2>
+<div>
+<details class="doc-index" id="doc-index-Types" aria-labelledby="#doc-index-Types-header">
+<summary id="#doc-index-Types-header">
+Types (4)</summary>
+<ul>
+<li><a href="#Chan">Chan</a></li>
+<li><a href="#Direction">Direction</a></li>
+<li><a href="#Raw_Chan">Raw_Chan</a></li>
+<li><a href="#Raw_Queue">Raw_Queue</a></li>
+</ul>
+</details>
+</div>
+<div>
+<details class="doc-index" id="doc-index-Constants" aria-labelledby="#doc-index-Constants-header">
+<summary id="#doc-index-Constants-header">
+Constants (0)</summary>
+<p class="pkg-empty-section">This section is empty.</p>
+</details>
+</div>
+<div>
+<details class="doc-index" id="doc-index-Variables" aria-labelledby="#doc-index-Variables-header">
+<summary id="#doc-index-Variables-header">
+Variables (0)</summary>
+<p class="pkg-empty-section">This section is empty.</p>
+</details>
+</div>
+<div>
+<details class="doc-index" id="doc-index-Procedures" aria-labelledby="#doc-index-Procedures-header">
+<summary id="#doc-index-Procedures-header">
+Procedures (27)</summary>
+<ul>
+<li><a href="#as_recv">as_recv</a></li>
+<li><a href="#as_send">as_send</a></li>
+<li><a href="#can_recv">can_recv</a></li>
+<li><a href="#can_send">can_send</a></li>
+<li><a href="#cap">cap</a></li>
+<li><a href="#close">close</a></li>
+<li><a href="#create_buffered">create_buffered</a></li>
+<li><a href="#create_raw_buffered">create_raw_buffered</a></li>
+<li><a href="#create_raw_unbuffered">create_raw_unbuffered</a></li>
+<li><a href="#create_unbuffered">create_unbuffered</a></li>
+<li><a href="#destroy">destroy</a></li>
+<li><a href="#is_buffered">is_buffered</a></li>
+<li><a href="#is_closed">is_closed</a></li>
+<li><a href="#is_unbuffered">is_unbuffered</a></li>
+<li><a href="#len">len</a></li>
+<li><a href="#raw_queue_init">raw_queue_init</a></li>
+<li><a href="#raw_queue_pop">raw_queue_pop</a></li>
+<li><a href="#raw_queue_push">raw_queue_push</a></li>
+<li><a href="#recv">recv</a></li>
+<li><a href="#recv_raw">recv_raw</a></li>
+<li><a href="#select_raw">select_raw</a></li>
+<li><a href="#send">send</a></li>
+<li><a href="#send_raw">send_raw</a></li>
+<li><a href="#try_recv">try_recv</a></li>
+<li><a href="#try_recv_raw">try_recv_raw</a></li>
+<li><a href="#try_send">try_send</a></li>
+<li><a href="#try_send_raw">try_send_raw</a></li>
+</ul>
+</details>
+</div>
+<div>
+<details class="doc-index" id="doc-index-Procedure Groups" aria-labelledby="#doc-index-Procedure Groups-header">
+<summary id="#doc-index-Procedure Groups-header">
+Procedure Groups (2)</summary>
+<ul>
+<li><a href="#create">create</a></li>
+<li><a href="#create_raw">create_raw</a></li>
+</ul>
+</details>
+</div>
+</div>
+</div>
+<section class="documentation">
+<h2 id="pkg-Types" class="pkg-header">Types</h2>
+<div class="pkg-entity">
+<h3 id="Chan"><span><a class="doc-id-link" href="#Chan">Chan<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/chan/chan.odin#L16"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Chan :: <span class="keyword-type">struct</span>($T: <span class="keyword-type">typeid</span>, $D: <a class="code-typename" href="/core/sync/chan/#Direction">Direction</a> = Direction.Both) {}</pre>
+</div>
+<h5>Related Procedures With Parameters</h5>
+<ul>
+<li><a href="/core/sync/chan/#as_recv">as_recv</a></li>
+<li><a href="/core/sync/chan/#as_send">as_send</a></li>
+<li><a href="/core/sync/chan/#create_buffered">create_buffered</a></li>
+<li><a href="/core/sync/chan/#create_unbuffered">create_unbuffered</a></li>
+<li><a href="/core/sync/chan/#recv">recv</a></li>
+<li><a href="/core/sync/chan/#send">send</a></li>
+<li><a href="/core/sync/chan/#try_recv">try_recv</a></li>
+<li><a href="/core/sync/chan/#try_send">try_send</a></li>
+<li><a href="/core/sync/chan/#create">create</a>&nbsp;<em>(procedure groups)</em></li>
+</ul>
+</div>
+<div class="pkg-entity">
+<h3 id="Direction"><span><a class="doc-id-link" href="#Direction">Direction<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/chan/chan.odin#L10"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Direction :: <span class="keyword-type">enum</span> <a href="/base/builtin#int"><span class="doc-builtin">int</span></a> {
+	Send = -1, 
+	Both = 0, 
+	Recv = 1, 
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Raw_Chan"><span><a class="doc-id-link" href="#Raw_Chan">Raw_Chan<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/chan/chan.odin#L20"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Raw_Chan :: <span class="keyword-type">struct</span> {
+	<span class="comment">// Shared</span>
+	allocator:       runtime.<a class="code-typename" href="/base/runtime/#Allocator">Allocator</a>,
+	allocation_size: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>,
+	msg_size:        <a href="/base/builtin#u16"><span class="doc-builtin">u16</span></a>,
+	closed:          <a href="/base/builtin#b16"><span class="doc-builtin">b16</span></a>,
+	<span class="comment">// atomic</span>
+	mutex:           sync.<a class="code-typename" href="/core/sync/#Mutex">Mutex</a>,
+	r_cond:          sync.<a class="code-typename" href="/core/sync/#Cond">Cond</a>,
+	w_cond:          sync.<a class="code-typename" href="/core/sync/#Cond">Cond</a>,
+	r_waiting:       <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>,
+	<span class="comment">// atomic</span>
+	w_waiting:       <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>,
+	<span class="comment">// Buffered</span>
+	queue:           ^<a class="code-typename" href="/core/sync/chan/#Raw_Queue">Raw_Queue</a>,
+	<span class="comment">// Unbuffered</span>
+	r_mutex:         sync.<a class="code-typename" href="/core/sync/#Mutex">Mutex</a>,
+	w_mutex:         sync.<a class="code-typename" href="/core/sync/#Mutex">Mutex</a>,
+	unbuffered_data: <a href="/base/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>,
+}</pre>
+</div>
+<h5>Related Procedures With Parameters</h5>
+<ul>
+<li><a href="/core/sync/chan/#can_recv">can_recv</a></li>
+<li><a href="/core/sync/chan/#can_send">can_send</a></li>
+<li><a href="/core/sync/chan/#cap">cap</a></li>
+<li><a href="/core/sync/chan/#close">close</a></li>
+<li><a href="/core/sync/chan/#destroy">destroy</a></li>
+<li><a href="/core/sync/chan/#is_buffered">is_buffered</a></li>
+<li><a href="/core/sync/chan/#is_closed">is_closed</a></li>
+<li><a href="/core/sync/chan/#is_unbuffered">is_unbuffered</a></li>
+<li><a href="/core/sync/chan/#len">len</a></li>
+<li><a href="/core/sync/chan/#recv_raw">recv_raw</a></li>
+<li><a href="/core/sync/chan/#send_raw">send_raw</a></li>
+<li><a href="/core/sync/chan/#try_recv_raw">try_recv_raw</a></li>
+<li><a href="/core/sync/chan/#try_send_raw">try_send_raw</a></li>
+</ul>
+<h5>Related Procedures With Returns</h5>
+<ul>
+<li><a href="/core/sync/chan/#create_raw_buffered">create_raw_buffered</a></li>
+<li><a href="/core/sync/chan/#create_raw_unbuffered">create_raw_unbuffered</a></li>
+<li><a href="/core/sync/chan/#create_raw">create_raw</a>&nbsp;<em>(procedure groups)</em></li>
+</ul>
+</div>
+<div class="pkg-entity">
+<h3 id="Raw_Queue"><span><a class="doc-id-link" href="#Raw_Queue">Raw_Queue<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/chan/chan.odin#L375"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Raw_Queue :: <span class="keyword-type">struct</span> {
+	data: [^]<a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a>,
+	len:  <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>,
+	cap:  <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>,
+	next: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>,
+	size: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>,
+}</pre>
+</div>
+<h5>Related Procedures With Parameters</h5>
+<ul>
+<li><a href="/core/sync/chan/#raw_queue_init">raw_queue_init</a></li>
+<li><a href="/core/sync/chan/#raw_queue_pop">raw_queue_pop</a></li>
+<li><a href="/core/sync/chan/#raw_queue_push">raw_queue_push</a></li>
+</ul>
+</div>
+<h2 id="pkg-Constants" class="pkg-header">Constants</h2>
+<p class="pkg-empty-section">This section is empty.</p>
+<h2 id="pkg-Variables" class="pkg-header">Variables</h2>
+<p class="pkg-empty-section">This section is empty.</p>
+<h2 id="pkg-Procedures" class="pkg-header">Procedures</h2>
+<div class="pkg-entity">
+<h3 id="as_recv"><span><a class="doc-id-link" href="#as_recv">as_recv<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/chan/chan.odin#L128"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">as_recv :: <span class="keyword-type">proc</span> "contextless" (c: $C/<a class="code-typename" href="/core/sync/chan/#Chan">Chan</a>($T, $D=0)) -> (r: <a class="code-typename" href="/core/sync/chan/#Chan">Chan</a>($T, $D=0)) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="as_send"><span><a class="doc-id-link" href="#as_send">as_send<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/chan/chan.odin#L124"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">as_send :: <span class="keyword-type">proc</span> "contextless" (c: $C/<a class="code-typename" href="/core/sync/chan/#Chan">Chan</a>($T, $D=0)) -> (s: <a class="code-typename" href="/core/sync/chan/#Chan">Chan</a>($T, $D=0)) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="can_recv"><span><a class="doc-id-link" href="#can_recv">can_recv<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/chan/chan.odin#L423"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">can_recv :: <span class="keyword-type">proc</span> "contextless" (c: ^<a class="code-typename" href="/core/sync/chan/#Raw_Chan">Raw_Chan</a>) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="can_send"><span><a class="doc-id-link" href="#can_send">can_send<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/chan/chan.odin#L433"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">can_send :: <span class="keyword-type">proc</span> "contextless" (c: ^<a class="code-typename" href="/core/sync/chan/#Raw_Chan">Raw_Chan</a>) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="cap"><span><a class="doc-id-link" href="#cap">cap<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/chan/chan.odin#L341"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">cap :: <span class="keyword-type">proc</span> "contextless" (c: ^<a class="code-typename" href="/core/sync/chan/#Raw_Chan">Raw_Chan</a>) -> <a href="/base/builtin#int"><span class="doc-builtin">int</span></a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="close"><span><a class="doc-id-link" href="#close">close<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/chan/chan.odin#L349"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">close :: <span class="keyword-type">proc</span> "contextless" (c: ^<a class="code-typename" href="/core/sync/chan/#Raw_Chan">Raw_Chan</a>) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="create_buffered"><span><a class="doc-id-link" href="#create_buffered">create_buffered<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/chan/chan.odin#L55"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">create_buffered :: <span class="keyword-type">proc</span>($C: <span class="keyword-type">typeid</span>/<a class="code-typename" href="/core/sync/chan/#Chan">Chan</a>($T, $D=0), <span class="keyword-type">#any_int</span> cap: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, allocator: runtime.<a class="code-typename" href="/base/runtime/#Allocator">Allocator</a>) -> (c: $/<a class="code-typename" href="/core/sync/chan/#Chan">Chan</a>($T, $D=0), err: runtime.<a class="code-typename" href="/base/runtime/#Allocator_Error">Allocator_Error</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="create_raw_buffered"><span><a class="doc-id-link" href="#create_raw_buffered">create_raw_buffered<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/chan/chan.odin#L86"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">create_raw_buffered :: <span class="keyword-type">proc</span>(<span class="keyword-type">#any_int</span> msg_size, <span class="keyword-type">#any_int</span> msg_alignment: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, <span class="keyword-type">#any_int</span> cap: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, allocator: runtime.<a class="code-typename" href="/base/runtime/#Allocator">Allocator</a>) -> (c: ^<a class="code-typename" href="/core/sync/chan/#Raw_Chan">Raw_Chan</a>, err: runtime.<a class="code-typename" href="/base/runtime/#Allocator_Error">Allocator_Error</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="create_raw_unbuffered"><span><a class="doc-id-link" href="#create_raw_unbuffered">create_raw_unbuffered<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/chan/chan.odin#L67"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">create_raw_unbuffered :: <span class="keyword-type">proc</span>(<span class="keyword-type">#any_int</span> msg_size, <span class="keyword-type">#any_int</span> msg_alignment: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, allocator: runtime.<a class="code-typename" href="/base/runtime/#Allocator">Allocator</a>) -> (c: ^<a class="code-typename" href="/core/sync/chan/#Raw_Chan">Raw_Chan</a>, err: runtime.<a class="code-typename" href="/base/runtime/#Allocator_Error">Allocator_Error</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="create_unbuffered"><span><a class="doc-id-link" href="#create_unbuffered">create_unbuffered<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/chan/chan.odin#L48"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">create_unbuffered :: <span class="keyword-type">proc</span>($C: <span class="keyword-type">typeid</span>/<a class="code-typename" href="/core/sync/chan/#Chan">Chan</a>($T, $D=0), allocator: runtime.<a class="code-typename" href="/base/runtime/#Allocator">Allocator</a>) -> (c: $/<a class="code-typename" href="/core/sync/chan/#Chan">Chan</a>($T, $D=0), err: runtime.<a class="code-typename" href="/base/runtime/#Allocator_Error">Allocator_Error</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="destroy"><span><a class="doc-id-link" href="#destroy">destroy<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/chan/chan.odin#L115"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">destroy :: <span class="keyword-type">proc</span>(c: ^<a class="code-typename" href="/core/sync/chan/#Raw_Chan">Raw_Chan</a>) -> (err: runtime.<a class="code-typename" href="/base/runtime/#Allocator_Error">Allocator_Error</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="is_buffered"><span><a class="doc-id-link" href="#is_buffered">is_buffered<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/chan/chan.odin#L322"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">is_buffered :: <span class="keyword-type">proc</span> "contextless" (c: ^<a class="code-typename" href="/core/sync/chan/#Raw_Chan">Raw_Chan</a>) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="is_closed"><span><a class="doc-id-link" href="#is_closed">is_closed<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/chan/chan.odin#L364"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">is_closed :: <span class="keyword-type">proc</span> "contextless" (c: ^<a class="code-typename" href="/core/sync/chan/#Raw_Chan">Raw_Chan</a>) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="is_unbuffered"><span><a class="doc-id-link" href="#is_unbuffered">is_unbuffered<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/chan/chan.odin#L327"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">is_unbuffered :: <span class="keyword-type">proc</span> "contextless" (c: ^<a class="code-typename" href="/core/sync/chan/#Raw_Chan">Raw_Chan</a>) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="len"><span><a class="doc-id-link" href="#len">len<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/chan/chan.odin#L332"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">len :: <span class="keyword-type">proc</span> "contextless" (c: ^<a class="code-typename" href="/core/sync/chan/#Raw_Chan">Raw_Chan</a>) -> <a href="/base/builtin#int"><span class="doc-builtin">int</span></a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="raw_queue_init"><span><a class="doc-id-link" href="#raw_queue_init">raw_queue_init<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/chan/chan.odin#L383"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">raw_queue_init :: <span class="keyword-type">proc</span> "contextless" (q: ^<a class="code-typename" href="/core/sync/chan/#Raw_Queue">Raw_Queue</a>, data: <a href="/base/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>, cap: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, size: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="raw_queue_pop"><span><a class="doc-id-link" href="#raw_queue_pop">raw_queue_pop<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/chan/chan.odin#L409"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">raw_queue_pop :: <span class="keyword-type">proc</span> "contextless" (q: ^<a class="code-typename" href="/core/sync/chan/#Raw_Queue">Raw_Queue</a>) -> (data: <a href="/base/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="raw_queue_push"><span><a class="doc-id-link" href="#raw_queue_push">raw_queue_push<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/chan/chan.odin#L393"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">raw_queue_push :: <span class="keyword-type">proc</span> "contextless" (q: ^<a class="code-typename" href="/core/sync/chan/#Raw_Queue">Raw_Queue</a>, data: <a href="/base/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="recv"><span><a class="doc-id-link" href="#recv">recv<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/chan/chan.odin#L147"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">recv :: <span class="keyword-type">proc</span> "contextless" (c: $C/<a class="code-typename" href="/core/sync/chan/#Chan">Chan</a>($T, $D=0)) -> (data: $T, ok: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="recv_raw"><span><a class="doc-id-link" href="#recv_raw">recv_raw<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/chan/chan.odin#L197"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">recv_raw :: <span class="keyword-type">proc</span> "contextless" (c: ^<a class="code-typename" href="/core/sync/chan/#Raw_Chan">Raw_Chan</a>, msg_out: <a href="/base/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>) -> (ok: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="select_raw"><span><a class="doc-id-link" href="#select_raw">select_raw<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/chan/chan.odin#L445"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">select_raw :: <span class="keyword-type">proc</span>(recvs: []^<a class="code-typename" href="/core/sync/chan/#Raw_Chan">Raw_Chan</a>, sends: []^<a class="code-typename" href="/core/sync/chan/#Raw_Chan">Raw_Chan</a>, send_msgs: []<a href="/base/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>, recv_out: <a href="/base/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>) -> (select_idx: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, ok: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="send"><span><a class="doc-id-link" href="#send">send<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/chan/chan.odin#L133"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">send :: <span class="keyword-type">proc</span> "contextless" (c: $C/<a class="code-typename" href="/core/sync/chan/#Chan">Chan</a>($T, $D=0), data: $T) -> (ok: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="send_raw"><span><a class="doc-id-link" href="#send_raw">send_raw<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/chan/chan.odin#L161"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">send_raw :: <span class="keyword-type">proc</span> "contextless" (c: ^<a class="code-typename" href="/core/sync/chan/#Raw_Chan">Raw_Chan</a>, msg_in: <a href="/base/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>) -> (ok: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="try_recv"><span><a class="doc-id-link" href="#try_recv">try_recv<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/chan/chan.odin#L154"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">try_recv :: <span class="keyword-type">proc</span> "contextless" (c: $C/<a class="code-typename" href="/core/sync/chan/#Chan">Chan</a>($T, $D=0)) -> (data: $T, ok: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="try_recv_raw"><span><a class="doc-id-link" href="#try_recv_raw">try_recv_raw<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/chan/chan.odin#L282"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">try_recv_raw :: <span class="keyword-type">proc</span> "contextless" (c: ^<a class="code-typename" href="/core/sync/chan/#Raw_Chan">Raw_Chan</a>, msg_out: <a href="/base/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="try_send"><span><a class="doc-id-link" href="#try_send">try_send<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/chan/chan.odin#L140"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">try_send :: <span class="keyword-type">proc</span> "contextless" (c: $C/<a class="code-typename" href="/core/sync/chan/#Chan">Chan</a>($T, $D=0), data: $T) -> (ok: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="try_send_raw"><span><a class="doc-id-link" href="#try_send_raw">try_send_raw<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/chan/chan.odin#L248"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">try_send_raw :: <span class="keyword-type">proc</span> "contextless" (c: ^<a class="code-typename" href="/core/sync/chan/#Raw_Chan">Raw_Chan</a>, msg_in: <a href="/base/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>) -> (ok: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>) {…}</pre>
+</div>
+</div>
+<h2 id="pkg-Procedure Groups" class="pkg-header">Procedure Groups</h2>
+<div class="pkg-entity">
+<h3 id="create"><span><a class="doc-id-link" href="#create">create<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/chan/chan.odin#L42"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">create :: <span class="keyword-type">proc</span>{
+	<a class="code-procedure" href="/core/sync/chan/#create_unbuffered">create_unbuffered</a>,
+	<a class="code-procedure" href="/core/sync/chan/#create_buffered">create_buffered</a>,
+}
+</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="create_raw"><span><a class="doc-id-link" href="#create_raw">create_raw<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/chan/chan.odin#L61"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">create_raw :: <span class="keyword-type">proc</span>{
+	<a class="code-procedure" href="/core/sync/chan/#create_raw_unbuffered">create_raw_unbuffered</a>,
+	<a class="code-procedure" href="/core/sync/chan/#create_raw_buffered">create_raw_buffered</a>,
+}
+</pre>
+</div>
+</div>
+</section>
+<h2 id="pkg-source-files">Source Files</h2>
+<ul>
+<li><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/chan/chan.odin">chan.odin</a></li>
+</ul>
+<h2 id="pkg-generation-information">Generation Information</h2>
+<p>Generated with <code>odin version dev-2024-06 (vendor "odin") Windows_amd64 @ 2024-06-17 21:40:01.241747400 +0000 UTC</code></p>
+</article>
+<div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
+<nav id="TableOfContents">
+<ul>
+<li><a href="#pkg-Types">Types</a><ul>
+<li><a href="#Chan">Chan</a></li>
+<li><a href="#Direction">Direction</a></li>
+<li><a href="#Raw_Chan">Raw_Chan</a></li>
+<li><a href="#Raw_Queue">Raw_Queue</a></li>
+</ul>
+</li>
+<li><a href="#pkg-Procedures">Procedures</a><ul>
+<li><a href="#as_recv">as_recv</a></li>
+<li><a href="#as_send">as_send</a></li>
+<li><a href="#can_recv">can_recv</a></li>
+<li><a href="#can_send">can_send</a></li>
+<li><a href="#cap">cap</a></li>
+<li><a href="#close">close</a></li>
+<li><a href="#create_buffered">create_buffered</a></li>
+<li><a href="#create_raw_buffered">create_raw_buffered</a></li>
+<li><a href="#create_raw_unbuffered">create_raw_unbuffered</a></li>
+<li><a href="#create_unbuffered">create_unbuffered</a></li>
+<li><a href="#destroy">destroy</a></li>
+<li><a href="#is_buffered">is_buffered</a></li>
+<li><a href="#is_closed">is_closed</a></li>
+<li><a href="#is_unbuffered">is_unbuffered</a></li>
+<li><a href="#len">len</a></li>
+<li><a href="#raw_queue_init">raw_queue_init</a></li>
+<li><a href="#raw_queue_pop">raw_queue_pop</a></li>
+<li><a href="#raw_queue_push">raw_queue_push</a></li>
+<li><a href="#recv">recv</a></li>
+<li><a href="#recv_raw">recv_raw</a></li>
+<li><a href="#select_raw">select_raw</a></li>
+<li><a href="#send">send</a></li>
+<li><a href="#send_raw">send_raw</a></li>
+<li><a href="#try_recv">try_recv</a></li>
+<li><a href="#try_recv_raw">try_recv_raw</a></li>
+<li><a href="#try_send">try_send</a></li>
+<li><a href="#try_send_raw">try_send_raw</a></li>
+</ul>
+</li>
+<li><a href="#pkg-Procedure Groups">Procedure Groups</a><ul>
+<li><a href="#create">create</a></li>
+<li><a href="#create_raw">create_raw</a></li>
+</ul>
+</li>
+<li><a href="#pkg-source-files">Source Files</a></ul>
+</nav>
+</div></div>
+<script type="text/javascript">var odin_pkg_name = "sync_chan";</script>
+</div>
+
+</div>
+</main>
+
+<footer class="odin-footer">
+	<div class="container pb-5 pt-5">
+		<div class="row g-4">
+		<div class="col">
+		<a class="navbar-brand" href="https://odin-lang.org">
+		<img class="mb-3" src="https://odin-lang.org/logo.svg" height="30" alt="Odin"></a>
+		<p>
+		The Data-Oriented Language for Sane Software Development.
+		</p>
+		</div>
+		<nav class="col-md-auto">
+			<h4 class="fw-normal">Resources</h4>
+			<ul class="list-unstyled">
+			<li><a href="https://odin-lang.org/docs" class="link-light">Docs</a></li>
+			<li><a href="https://pkg.odin-lang.org/" class="link-light">Packages</a></li>
+			<li><a href="https://odin-lang.org/news" class="link-light">News</a></li>
+			</ul>
+		</nav>
+		<nav class="col-md-auto">
+			<h4 class="fw-normal">Community</h4>
+			<ul class="list-unstyled">
+			<li><a href="https://github.com/odin-lang/Odin" target="_blank" class="link-light">GitHub</a></li>
+			<li><a href="https://discord.com/invite/sVBPHEv" target="_blank" class="link-light">Discord</a></li>
+			<li><a href="https://www.twitch.tv/ginger_bill" target="_blank" class="link-light">Twitch</a></li>
+			<li><a href="https://www.youtube.com/channel/UCUSck1dOH7VKmG4lRW7tZXg" target="_blank" class="link-light">YouTube</a></li>
+			</ul>
+		</nav>
+		<nav class="col-md-auto">
+			<h4 class="fw-normal">Contribute</h4>
+			<ul class="list-unstyled">
+			<li><a href="https://github.com/odin-lang/Odin/issues" target="_blank" class="link-light">Issues</a></li>
+			<li><a href="https://www.patreon.com/gingerbill" target="_blank" class="link-light">Donate</a></li>
+			</ul>
+			</nav>
+		</div>
+		<div class="mt-4 text-muted">© 2016–2023 Ginger Bill</div>
+	</div>
+</footer>
+
+<script src="https://odin-lang.org/lib/bootstrap/js/bootstrap.min.js"></script>
+<script src="https://odin-lang.org/js/script.js"></script>
+<script src="/pkg-data.js"></script>
+<script src="/search.js"></script>
+</body>
+</html>

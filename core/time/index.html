@@ -89,12 +89,14 @@
 <li><a href="/core/container/lru">lru</a></li>
 <li><a href="/core/container/priority_queue">priority_queue</a></li>
 <li><a href="/core/container/queue">queue</a></li>
+<li><a href="/core/container/rbtree">rbtree</a></li>
 <li><a href="/core/container/small_array">small_array</a></li>
 <li><a href="/core/container/topological_sort">topological_sort</a></li>
 </ul>
 
 </li>
 <li class="nav-item"><a href="/core/crypto">crypto</a><ul>
+<li><a href="/core/crypto/aes">aes</a></li>
 <li><a href="/core/crypto/blake2b">blake2b</a></li>
 <li><a href="/core/crypto/blake2s">blake2s</a></li>
 <li><a href="/core/crypto/chacha20">chacha20</a></li>
@@ -126,6 +128,7 @@
 </li>
 <li class="nav-item"><a href="/core/dynlib">dynlib</a></li>
 <li class="nav-item">encoding<ul>
+<li><a href="/core/encoding/ansi">ansi</a></li>
 <li><a href="/core/encoding/base32">base32</a></li>
 <li><a href="/core/encoding/base64">base64</a></li>
 <li><a href="/core/encoding/cbor">cbor</a></li>
@@ -179,9 +182,7 @@
 <li class="nav-item">odin<ul>
 <li><a href="/core/odin/ast">ast</a></li>
 <li><a href="/core/odin/doc-format">doc-format</a></li>
-<li><a href="/core/odin/format">format</a></li>
 <li><a href="/core/odin/parser">parser</a></li>
-<li><a href="/core/odin/printer">printer</a></li>
 <li><a href="/core/odin/tokenizer">tokenizer</a></li>
 </ul>
 
@@ -212,14 +213,17 @@
 
 </li>
 <li class="nav-item"><a href="/core/strings">strings</a></li>
-<li class="nav-item"><a href="/core/sync">sync</a></li>
+<li class="nav-item"><a href="/core/sync">sync</a><ul>
+<li><a href="/core/sync/chan">chan</a></li>
+</ul>
+
+</li>
 <li class="nav-item">sys<ul>
 <li><a href="/core/sys/darwin">darwin</a></li>
 <li><a href="/core/sys/darwin/Foundation">darwin/Foundation</a></li>
 <li><a href="/core/sys/haiku">haiku</a></li>
 <li><a href="/core/sys/info">info</a></li>
 <li><a href="/core/sys/linux">linux</a></li>
-<li><a href="/core/sys/unix">unix</a></li>
 <li><a href="/core/sys/valgrind">valgrind</a></li>
 <li><a href="/core/sys/windows">windows</a></li>
 </ul>
@@ -343,7 +347,7 @@ Variables (1)</summary>
 <div>
 <details class="doc-index" id="doc-index-Procedures" aria-labelledby="#doc-index-Procedures-header">
 <summary id="#doc-index-Procedures-header">
-Procedures (47)</summary>
+Procedures (50)</summary>
 <ul>
 <li><a href="#SCOPED_TICK_DURATION">SCOPED_TICK_DURATION</a></li>
 <li><a href="#accurate_sleep">accurate_sleep</a></li>
@@ -367,6 +371,9 @@ Procedures (47)</summary>
 <li><a href="#duration_truncate">duration_truncate</a></li>
 <li><a href="#has_invariant_tsc">has_invariant_tsc</a></li>
 <li><a href="#is_leap_year">is_leap_year</a></li>
+<li><a href="#iso8601_to_components">iso8601_to_components</a></li>
+<li><a href="#iso8601_to_time_and_offset">iso8601_to_time_and_offset</a></li>
+<li><a href="#iso8601_to_time_utc">iso8601_to_time_utc</a></li>
 <li><a href="#month">month</a></li>
 <li><a href="#now">now</a></li>
 <li><a href="#read_cycle_counter">read_cycle_counter</a></li>
@@ -580,6 +587,8 @@ Procedure Groups (2)</summary>
 <ul>
 <li><a href="/core/time/#components_to_time">components_to_time</a></li>
 <li><a href="/core/time/#compound_to_time">compound_to_time</a></li>
+<li><a href="/core/time/#iso8601_to_time_and_offset">iso8601_to_time_and_offset</a></li>
+<li><a href="/core/time/#iso8601_to_time_utc">iso8601_to_time_utc</a></li>
 <li><a href="/core/time/#now">now</a></li>
 <li><a href="/core/time/#rfc3339_to_time_and_offset">rfc3339_to_time_and_offset</a></li>
 <li><a href="/core/time/#rfc3339_to_time_utc">rfc3339_to_time_utc</a></li>
@@ -633,19 +642,19 @@ Procedure Groups (2)</summary>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="DAYS_PER_100_YEARS"><span><a class="doc-id-link" href="#DAYS_PER_100_YEARS">DAYS_PER_100_YEARS<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L414"><em>Source</em></a></div></h3>
+<h3 id="DAYS_PER_100_YEARS"><span><a class="doc-id-link" href="#DAYS_PER_100_YEARS">DAYS_PER_100_YEARS<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L415"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">DAYS_PER_100_YEARS :: 365 * 100 + 24</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="DAYS_PER_400_YEARS"><span><a class="doc-id-link" href="#DAYS_PER_400_YEARS">DAYS_PER_400_YEARS<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L413"><em>Source</em></a></div></h3>
+<h3 id="DAYS_PER_400_YEARS"><span><a class="doc-id-link" href="#DAYS_PER_400_YEARS">DAYS_PER_400_YEARS<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L414"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">DAYS_PER_400_YEARS :: 365 * 400 + 97</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="DAYS_PER_4_YEARS"><span><a class="doc-id-link" href="#DAYS_PER_4_YEARS">DAYS_PER_4_YEARS<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L415"><em>Source</em></a></div></h3>
+<h3 id="DAYS_PER_4_YEARS"><span><a class="doc-id-link" href="#DAYS_PER_4_YEARS">DAYS_PER_4_YEARS<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L416"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">DAYS_PER_4_YEARS :: 365 * 4 + 1</pre>
 </div>
@@ -717,25 +726,25 @@ Procedure Groups (2)</summary>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="SECONDS_PER_DAY"><span><a class="doc-id-link" href="#SECONDS_PER_DAY">SECONDS_PER_DAY<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L411"><em>Source</em></a></div></h3>
+<h3 id="SECONDS_PER_DAY"><span><a class="doc-id-link" href="#SECONDS_PER_DAY">SECONDS_PER_DAY<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L412"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">SECONDS_PER_DAY :: 24 * SECONDS_PER_HOUR</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="SECONDS_PER_HOUR"><span><a class="doc-id-link" href="#SECONDS_PER_HOUR">SECONDS_PER_HOUR<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L410"><em>Source</em></a></div></h3>
+<h3 id="SECONDS_PER_HOUR"><span><a class="doc-id-link" href="#SECONDS_PER_HOUR">SECONDS_PER_HOUR<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L411"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">SECONDS_PER_HOUR :: 60 * SECONDS_PER_MINUTE</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="SECONDS_PER_MINUTE"><span><a class="doc-id-link" href="#SECONDS_PER_MINUTE">SECONDS_PER_MINUTE<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L409"><em>Source</em></a></div></h3>
+<h3 id="SECONDS_PER_MINUTE"><span><a class="doc-id-link" href="#SECONDS_PER_MINUTE">SECONDS_PER_MINUTE<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L410"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">SECONDS_PER_MINUTE :: 60</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="SECONDS_PER_WEEK"><span><a class="doc-id-link" href="#SECONDS_PER_WEEK">SECONDS_PER_WEEK<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L412"><em>Source</em></a></div></h3>
+<h3 id="SECONDS_PER_WEEK"><span><a class="doc-id-link" href="#SECONDS_PER_WEEK">SECONDS_PER_WEEK<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L413"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">SECONDS_PER_WEEK :: 7 * SECONDS_PER_DAY</pre>
 </div>
@@ -766,9 +775,10 @@ Procedure Groups (2)</summary>
 </div>
 <h2 id="pkg-Variables" class="pkg-header">Variables</h2>
 <div class="pkg-entity">
-<h3 id="days_before"><span><a class="doc-id-link" href="#days_before">days_before<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L392"><em>Source</em></a></div></h3>
+<h3 id="days_before"><span><a class="doc-id-link" href="#days_before">days_before<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L393"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">days_before: [13]<a href="/base/builtin#i32"><span class="doc-builtin">i32</span></a> = …</pre>
+<pre class="doc-code">@(rodata)
+days_before: [13]<a href="/base/builtin#i32"><span class="doc-builtin">i32</span></a> = …</pre>
 </div>
 </div>
 <h2 id="pkg-Procedures" class="pkg-header">Procedures</h2>
@@ -915,6 +925,45 @@ Additionally your program should call <code>windows.timeEndPeriod(1)</code> once
 <div>
 <pre class="doc-code">is_leap_year :: <span class="keyword-type">proc</span> "contextless" (year: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>) -> (leap: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>) {…}</pre>
 </div>
+</div>
+<div class="pkg-entity">
+<h3 id="iso8601_to_components"><span><a class="doc-id-link" href="#iso8601_to_components">iso8601_to_components<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/iso8601.odin#L43"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">iso8601_to_components :: <span class="keyword-type">proc</span>(iso_datetime: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>) -> (res: datetime.<a class="code-typename" href="/core/time/datetime/#DateTime">DateTime</a>, utc_offset: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, is_leap: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>, consumed: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Parses an ISO 8601 string and returns Time and a UTC offset in minutes.
+e.g. 1985-04-12T23:20:50.52Z
+Performs no validation on whether components are valid, e.g. it'll return hour = 25 if that's what it's given</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="iso8601_to_time_and_offset"><span><a class="doc-id-link" href="#iso8601_to_time_and_offset">iso8601_to_time_and_offset<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/iso8601.odin#L23"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">iso8601_to_time_and_offset :: <span class="keyword-type">proc</span>(iso_datetime: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>, is_leap: ^<a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> = nil) -> (res: <a class="code-typename" href="/core/time/#Time">Time</a>, utc_offset: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, consumed: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Parses an ISO 8601 string and returns Time and a UTC offset in minutes.
+e.g. 1985-04-12T23:20:50.52Z
+Note: Only 4-digit years are accepted.
+Optional pointer to boolean <code>is_leap</code> will return <code>true</code> if the moment was a leap second.
+Leap seconds are smeared into 23:59:59.</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="iso8601_to_time_utc"><span><a class="doc-id-link" href="#iso8601_to_time_utc">iso8601_to_time_utc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/iso8601.odin#L10"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">iso8601_to_time_utc :: <span class="keyword-type">proc</span>(iso_datetime: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>, is_leap: ^<a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> = nil) -> (res: <a class="code-typename" href="/core/time/#Time">Time</a>, consumed: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Parses an ISO 8601 string and returns Time in UTC, with any UTC offset applied to it.
+Only 4-digit years are accepted.
+Optional pointer to boolean <code>is_leap</code> will return <code>true</code> if the moment was a leap second.
+Leap seconds are smeared into 23:59:59.</p>
+</details>
 </div>
 <div class="pkg-entity">
 <h3 id="month"><span><a class="doc-id-link" href="#month">month<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L166"><em>Source</em></a></div></h3>
@@ -1112,13 +1161,14 @@ Leap seconds are smeared into 23:59:59.</p>
 </section>
 <h2 id="pkg-source-files">Source Files</h2>
 <ul>
+<li><a href="https://github.com/odin-lang/Odin/tree/master/core/time/iso8601.odin">iso8601.odin</a></li>
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/time/perf.odin">perf.odin</a></li>
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/time/rfc3339.odin">rfc3339.odin</a></li>
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin">time.odin</a></li>
 <li><em>(hidden platform specific files)</em></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2024-04 (vendor "odin") Windows_amd64 @ 2024-04-26 21:08:59.123591300 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2024-06 (vendor "odin") Windows_amd64 @ 2024-06-17 21:40:01.704637200 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
@@ -1189,6 +1239,9 @@ Leap seconds are smeared into 23:59:59.</p>
 <li><a href="#duration_truncate">duration_truncate</a></li>
 <li><a href="#has_invariant_tsc">has_invariant_tsc</a></li>
 <li><a href="#is_leap_year">is_leap_year</a></li>
+<li><a href="#iso8601_to_components">iso8601_to_components</a></li>
+<li><a href="#iso8601_to_time_and_offset">iso8601_to_time_and_offset</a></li>
+<li><a href="#iso8601_to_time_utc">iso8601_to_time_utc</a></li>
 <li><a href="#month">month</a></li>
 <li><a href="#now">now</a></li>
 <li><a href="#read_cycle_counter">read_cycle_counter</a></li>

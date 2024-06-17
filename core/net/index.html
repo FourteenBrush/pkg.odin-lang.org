@@ -89,12 +89,14 @@
 <li><a href="/core/container/lru">lru</a></li>
 <li><a href="/core/container/priority_queue">priority_queue</a></li>
 <li><a href="/core/container/queue">queue</a></li>
+<li><a href="/core/container/rbtree">rbtree</a></li>
 <li><a href="/core/container/small_array">small_array</a></li>
 <li><a href="/core/container/topological_sort">topological_sort</a></li>
 </ul>
 
 </li>
 <li class="nav-item"><a href="/core/crypto">crypto</a><ul>
+<li><a href="/core/crypto/aes">aes</a></li>
 <li><a href="/core/crypto/blake2b">blake2b</a></li>
 <li><a href="/core/crypto/blake2s">blake2s</a></li>
 <li><a href="/core/crypto/chacha20">chacha20</a></li>
@@ -126,6 +128,7 @@
 </li>
 <li class="nav-item"><a href="/core/dynlib">dynlib</a></li>
 <li class="nav-item">encoding<ul>
+<li><a href="/core/encoding/ansi">ansi</a></li>
 <li><a href="/core/encoding/base32">base32</a></li>
 <li><a href="/core/encoding/base64">base64</a></li>
 <li><a href="/core/encoding/cbor">cbor</a></li>
@@ -179,9 +182,7 @@
 <li class="nav-item">odin<ul>
 <li><a href="/core/odin/ast">ast</a></li>
 <li><a href="/core/odin/doc-format">doc-format</a></li>
-<li><a href="/core/odin/format">format</a></li>
 <li><a href="/core/odin/parser">parser</a></li>
-<li><a href="/core/odin/printer">printer</a></li>
 <li><a href="/core/odin/tokenizer">tokenizer</a></li>
 </ul>
 
@@ -212,14 +213,17 @@
 
 </li>
 <li class="nav-item"><a href="/core/strings">strings</a></li>
-<li class="nav-item"><a href="/core/sync">sync</a></li>
+<li class="nav-item"><a href="/core/sync">sync</a><ul>
+<li><a href="/core/sync/chan">chan</a></li>
+</ul>
+
+</li>
 <li class="nav-item">sys<ul>
 <li><a href="/core/sys/darwin">darwin</a></li>
 <li><a href="/core/sys/darwin/Foundation">darwin/Foundation</a></li>
 <li><a href="/core/sys/haiku">haiku</a></li>
 <li><a href="/core/sys/info">info</a></li>
 <li><a href="/core/sys/linux">linux</a></li>
-<li><a href="/core/sys/unix">unix</a></li>
 <li><a href="/core/sys/valgrind">valgrind</a></li>
 <li><a href="/core/sys/windows">windows</a></li>
 </ul>
@@ -389,10 +393,12 @@ Types (61)</summary>
 <div>
 <details class="doc-index" id="doc-index-Constants" aria-labelledby="#doc-index-Constants-header">
 <summary id="#doc-index-Constants-header">
-Constants (10)</summary>
+Constants (12)</summary>
 <ul>
 <li><a href="#DEFAULT_DIGIT_BASES">DEFAULT_DIGIT_BASES</a></li>
 <li><a href="#DEFAULT_DNS_CONFIGURATION">DEFAULT_DNS_CONFIGURATION</a></li>
+<li><a href="#IP4_Loopback">IP4_Loopback</a></li>
+<li><a href="#IP6_Loopback">IP6_Loopback</a></li>
 <li><a href="#IPv6_MAX_STRING_LENGTH">IPv6_MAX_STRING_LENGTH</a></li>
 <li><a href="#IPv6_MIN_COLONS">IPv6_MIN_COLONS</a></li>
 <li><a href="#IPv6_MIN_STRING_LENGTH">IPv6_MIN_STRING_LENGTH</a></li>
@@ -407,12 +413,10 @@ Constants (10)</summary>
 <div>
 <details class="doc-index" id="doc-index-Variables" aria-labelledby="#doc-index-Variables-header">
 <summary id="#doc-index-Variables-header">
-Variables (6)</summary>
+Variables (4)</summary>
 <ul>
 <li><a href="#IP4_Any">IP4_Any</a></li>
-<li><a href="#IP4_Loopback">IP4_Loopback</a></li>
 <li><a href="#IP6_Any">IP6_Any</a></li>
-<li><a href="#IP6_Loopback">IP6_Loopback</a></li>
 <li><a href="#default_tcp_options">default_tcp_options</a></li>
 <li><a href="#dns_configuration">dns_configuration</a></li>
 </ul>
@@ -1037,6 +1041,10 @@ These can be used for any purpose.
 <ul>
 <li><a href="/core/net/#parse_ip4_address">parse_ip4_address</a></li>
 </ul>
+<h5>Related Constants</h5>
+<ul>
+<li><a href="/core/net/#IP4_Loopback">IP4_Loopback</a></li>
+</ul>
 </div>
 <div class="pkg-entity">
 <h3 id="IP6_Address"><span><a class="doc-id-link" href="#IP6_Address">IP6_Address<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/net/common.odin#L137"><em>Source</em></a></div></h3>
@@ -1047,6 +1055,10 @@ These can be used for any purpose.
 <ul>
 <li><a href="/core/net/#parse_ip6_address">parse_ip6_address</a></li>
 </ul>
+<h5>Related Constants</h5>
+<ul>
+<li><a href="/core/net/#IP6_Loopback">IP6_Loopback</a></li>
+</ul>
 </div>
 <div class="pkg-entity">
 <h3 id="Lease"><span><a class="doc-id-link" href="#Lease">Lease<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/net/common.odin#L199"><em>Source</em></a></div></h3>
@@ -1055,13 +1067,13 @@ These can be used for any purpose.
 	address:             <a class="code-typename" href="/core/net/#Address">Address</a>,
 	netmask:             <a class="code-typename" href="/core/net/#Netmask">Netmask</a>,
 	lifetime:            <span class="keyword-type">struct</span> {
-		valid:     <a href="/base/builtin#u32"><span class="doc-builtin">u32</span></a>,
-		preferred: <a href="/base/builtin#u32"><span class="doc-builtin">u32</span></a>,
-		lease:     <a href="/base/builtin#u32"><span class="doc-builtin">u32</span></a>,
+		valid:     ,
+		preferred: ,
+		lease:     ,
 	},
 	origin:              <span class="keyword-type">struct</span> {
-		prefix: <a class="code-typename" href="/core/net/#Prefix_Origin">Prefix_Origin</a>,
-		suffix: <a class="code-typename" href="/core/net/#Suffix_Origin">Suffix_Origin</a>,
+		prefix: ,
+		suffix: ,
 	},
 	address_duplication: <a class="code-typename" href="/core/net/#Address_Duplication">Address_Duplication</a>,
 }</pre>
@@ -1208,9 +1220,9 @@ These can be used for any purpose.
 	dhcp_v6:          <a class="code-typename" href="/core/net/#Address">Address</a>,
 	tunnel_type:      <a class="code-typename" href="/core/net/#Tunnel_Type">Tunnel_Type</a>,
 	link:             <span class="keyword-type">struct</span> {
-		state:          <span class="keyword-type">bit_set</span>[<a class="code-typename" href="/core/net/#Link_States">Link_States</a>; <a href="/base/builtin#u32"><span class="doc-builtin">u32</span></a>],
-		transmit_speed: <a href="/base/builtin#u64"><span class="doc-builtin">u64</span></a>,
-		receive_speed:  <a href="/base/builtin#u64"><span class="doc-builtin">u64</span></a>,
+		state:          ,
+		transmit_speed: ,
+		receive_speed:  ,
 	},
 }</pre>
 </div>
@@ -1605,6 +1617,18 @@ TODO: verify once more what errors to actually expose</p>
 </div>
 </div>
 <div class="pkg-entity">
+<h3 id="IP4_Loopback"><span><a class="doc-id-link" href="#IP4_Loopback">IP4_Loopback<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/net/common.odin#L140"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">IP4_Loopback :: IP4_Address{127, 0, 0, 1}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="IP6_Loopback"><span><a class="doc-id-link" href="#IP6_Loopback">IP6_Loopback<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/net/common.odin#L141"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">IP6_Loopback :: IP6_Address{0, 0, 0, 0, 0, 0, 0, 1}</pre>
+</div>
+</div>
+<div class="pkg-entity">
 <h3 id="IPv6_MAX_STRING_LENGTH"><span><a class="doc-id-link" href="#IPv6_MAX_STRING_LENGTH">IPv6_MAX_STRING_LENGTH<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/net/addr.odin#L146"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">IPv6_MAX_STRING_LENGTH :: 45</pre>
@@ -1670,21 +1694,9 @@ and at most 9 (using `::` for a trailing or leading 0)
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="IP4_Loopback"><span><a class="doc-id-link" href="#IP4_Loopback">IP4_Loopback<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/net/common.odin#L140"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">IP4_Loopback: <a class="code-typename" href="/core/net/#IP4_Address">IP4_Address</a> = …</pre>
-</div>
-</div>
-<div class="pkg-entity">
 <h3 id="IP6_Any"><span><a class="doc-id-link" href="#IP6_Any">IP6_Any<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/net/common.odin#L144"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">IP6_Any: <a class="code-typename" href="/core/net/#IP6_Address">IP6_Address</a> = …</pre>
-</div>
-</div>
-<div class="pkg-entity">
-<h3 id="IP6_Loopback"><span><a class="doc-id-link" href="#IP6_Loopback">IP6_Loopback<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/net/common.odin#L141"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">IP6_Loopback: <a class="code-typename" href="/core/net/#IP6_Address">IP6_Address</a> = …</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -2146,7 +2158,7 @@ Numbers will otherwise be considered to be in base 10.
 <div class="pkg-entity">
 <h3 id="recv_any"><span><a class="doc-id-link" href="#recv_any">recv_any<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/net/socket.odin#L157"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">recv_any :: <span class="keyword-type">proc</span>(socket: <a class="code-typename" href="/core/net/#Any_Socket">Any_Socket</a>, buf: []<a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a>) -> (bytes_read: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, remote_endpoint: runtime.<a class="code-typename" href="/base/runtime/#Maybe">Maybe</a>($T=Endpoint), err: <a class="code-typename" href="/core/net/#Network_Error">Network_Error</a>) {…}</pre>
+<pre class="doc-code">recv_any :: <span class="keyword-type">proc</span>(socket: <a class="code-typename" href="/core/net/#Any_Socket">Any_Socket</a>, buf: []<a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a>) -> (bytes_read: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, remote_endpoint: runtime.<a class="code-typename" href="/base/runtime/#Maybe">Maybe</a>($T), err: <a class="code-typename" href="/core/net/#Network_Error">Network_Error</a>) {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -2215,7 +2227,7 @@ back an endpoint in both cases.
 <div class="pkg-entity">
 <h3 id="send_any"><span><a class="doc-id-link" href="#send_any">send_any<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/net/socket.odin#L192"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">send_any :: <span class="keyword-type">proc</span>(socket: <a class="code-typename" href="/core/net/#Any_Socket">Any_Socket</a>, buf: []<a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a>, to: runtime.<a class="code-typename" href="/base/runtime/#Maybe">Maybe</a>($T=Endpoint) = nil) -> (bytes_written: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, err: <a class="code-typename" href="/core/net/#Network_Error">Network_Error</a>) {…}</pre>
+<pre class="doc-code">send_any :: <span class="keyword-type">proc</span>(socket: <a class="code-typename" href="/core/net/#Any_Socket">Any_Socket</a>, buf: []<a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a>, to: runtime.<a class="code-typename" href="/base/runtime/#Maybe">Maybe</a>($T) = nil) -> (bytes_written: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, err: <a class="code-typename" href="/core/net/#Network_Error">Network_Error</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -2358,7 +2370,7 @@ Returns ok=false if port is not a number.</p>
 <li><em>(hidden platform specific files)</em></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2024-04 (vendor "odin") Windows_amd64 @ 2024-04-26 21:08:58.603405600 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2024-06 (vendor "odin") Windows_amd64 @ 2024-06-17 21:40:01.199783800 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
@@ -2430,6 +2442,8 @@ Returns ok=false if port is not a number.</p>
 <li><a href="#pkg-Constants">Constants</a><ul>
 <li><a href="#DEFAULT_DIGIT_BASES">DEFAULT_DIGIT_BASES</a></li>
 <li><a href="#DEFAULT_DNS_CONFIGURATION">DEFAULT_DNS_CONFIGURATION</a></li>
+<li><a href="#IP4_Loopback">IP4_Loopback</a></li>
+<li><a href="#IP6_Loopback">IP6_Loopback</a></li>
 <li><a href="#IPv6_MAX_STRING_LENGTH">IPv6_MAX_STRING_LENGTH</a></li>
 <li><a href="#IPv6_MIN_COLONS">IPv6_MIN_COLONS</a></li>
 <li><a href="#IPv6_MIN_STRING_LENGTH">IPv6_MIN_STRING_LENGTH</a></li>
@@ -2442,9 +2456,7 @@ Returns ok=false if port is not a number.</p>
 </li>
 <li><a href="#pkg-Variables">Variables</a><ul>
 <li><a href="#IP4_Any">IP4_Any</a></li>
-<li><a href="#IP4_Loopback">IP4_Loopback</a></li>
 <li><a href="#IP6_Any">IP6_Any</a></li>
-<li><a href="#IP6_Loopback">IP6_Loopback</a></li>
 <li><a href="#default_tcp_options">default_tcp_options</a></li>
 <li><a href="#dns_configuration">dns_configuration</a></li>
 </ul>

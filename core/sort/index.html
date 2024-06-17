@@ -89,12 +89,14 @@
 <li><a href="/core/container/lru">lru</a></li>
 <li><a href="/core/container/priority_queue">priority_queue</a></li>
 <li><a href="/core/container/queue">queue</a></li>
+<li><a href="/core/container/rbtree">rbtree</a></li>
 <li><a href="/core/container/small_array">small_array</a></li>
 <li><a href="/core/container/topological_sort">topological_sort</a></li>
 </ul>
 
 </li>
 <li class="nav-item"><a href="/core/crypto">crypto</a><ul>
+<li><a href="/core/crypto/aes">aes</a></li>
 <li><a href="/core/crypto/blake2b">blake2b</a></li>
 <li><a href="/core/crypto/blake2s">blake2s</a></li>
 <li><a href="/core/crypto/chacha20">chacha20</a></li>
@@ -126,6 +128,7 @@
 </li>
 <li class="nav-item"><a href="/core/dynlib">dynlib</a></li>
 <li class="nav-item">encoding<ul>
+<li><a href="/core/encoding/ansi">ansi</a></li>
 <li><a href="/core/encoding/base32">base32</a></li>
 <li><a href="/core/encoding/base64">base64</a></li>
 <li><a href="/core/encoding/cbor">cbor</a></li>
@@ -179,9 +182,7 @@
 <li class="nav-item">odin<ul>
 <li><a href="/core/odin/ast">ast</a></li>
 <li><a href="/core/odin/doc-format">doc-format</a></li>
-<li><a href="/core/odin/format">format</a></li>
 <li><a href="/core/odin/parser">parser</a></li>
-<li><a href="/core/odin/printer">printer</a></li>
 <li><a href="/core/odin/tokenizer">tokenizer</a></li>
 </ul>
 
@@ -212,14 +213,17 @@
 
 </li>
 <li class="nav-item"><a href="/core/strings">strings</a></li>
-<li class="nav-item"><a href="/core/sync">sync</a></li>
+<li class="nav-item"><a href="/core/sync">sync</a><ul>
+<li><a href="/core/sync/chan">chan</a></li>
+</ul>
+
+</li>
 <li class="nav-item">sys<ul>
 <li><a href="/core/sys/darwin">darwin</a></li>
 <li><a href="/core/sys/darwin/Foundation">darwin/Foundation</a></li>
 <li><a href="/core/sys/haiku">haiku</a></li>
 <li><a href="/core/sys/info">info</a></li>
 <li><a href="/core/sys/linux">linux</a></li>
-<li><a href="/core/sys/unix">unix</a></li>
 <li><a href="/core/sys/valgrind">valgrind</a></li>
 <li><a href="/core/sys/windows">windows</a></li>
 </ul>
@@ -361,8 +365,8 @@ Procedure Groups (0)</summary>
 <div>
 <pre class="doc-code">Interface :: <span class="keyword-type">struct</span> {
 	len:        <span class="keyword-type">proc</span>(it: <a class="code-typename" href="/core/sort/#Interface">Interface</a>) -> <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>,
-	less:       <span class="keyword-type">proc</span>(it: <a class="code-typename" href="/core/sort/#Interface">Interface</a>, i, j: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>,
-	swap:       <span class="keyword-type">proc</span>(it: <a class="code-typename" href="/core/sort/#Interface">Interface</a>, i, j: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>),
+	less:       <span class="keyword-type">proc</span>(it: , i, j: ) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>,
+	swap:       <span class="keyword-type">proc</span>(it: , i, j: ),
 	collection: <a href="/base/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>,
 }</pre>
 </div>
@@ -400,7 +404,7 @@ Procedure Groups (0)</summary>
 <div class="pkg-entity">
 <h3 id="bubble_sort_proc"><span><a class="doc-id-link" href="#bubble_sort_proc">bubble_sort_proc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sort/sort.odin#L302"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">bubble_sort_proc :: <span class="keyword-type">proc</span>(array: $T/[]$T, f: <span class="keyword-type">proc</span>(_: $T, _: $T) -> <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>) {…}</pre>
+<pre class="doc-code">bubble_sort_proc :: <span class="keyword-type">proc</span>(array: $T/[]$T, f: <span class="keyword-type">proc</span>(_: , _: ) -> <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -496,7 +500,7 @@ Procedure Groups (0)</summary>
 <div class="pkg-entity">
 <h3 id="heap_sort_proc"><span><a class="doc-id-link" href="#heap_sort_proc">heap_sort_proc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sort/sort.odin#L509"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">heap_sort_proc :: <span class="keyword-type">proc</span>(array: $T/[]$T, f: <span class="keyword-type">proc</span>(_: $T, _: $T) -> <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>) {…}</pre>
+<pre class="doc-code">heap_sort_proc :: <span class="keyword-type">proc</span>(array: $T/[]$T, f: <span class="keyword-type">proc</span>(_: , _: ) -> <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -514,7 +518,7 @@ Procedure Groups (0)</summary>
 <div class="pkg-entity">
 <h3 id="merge_sort_proc"><span><a class="doc-id-link" href="#merge_sort_proc">merge_sort_proc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sort/sort.odin#L424"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">merge_sort_proc :: <span class="keyword-type">proc</span>(array: $T/[]$T, f: <span class="keyword-type">proc</span>(_: $T, _: $T) -> <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>) {…}</pre>
+<pre class="doc-code">merge_sort_proc :: <span class="keyword-type">proc</span>(array: $T/[]$T, f: <span class="keyword-type">proc</span>(_: , _: ) -> <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -526,7 +530,7 @@ Procedure Groups (0)</summary>
 <div class="pkg-entity">
 <h3 id="quick_sort_proc"><span><a class="doc-id-link" href="#quick_sort_proc">quick_sort_proc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sort/sort.odin#L359"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">quick_sort_proc :: <span class="keyword-type">proc</span>(array: $T/[]$T, f: <span class="keyword-type">proc</span>(_: $T, _: $T) -> <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>) {…}</pre>
+<pre class="doc-code">quick_sort_proc :: <span class="keyword-type">proc</span>(array: $T/[]$T, f: <span class="keyword-type">proc</span>(_: , _: ) -> <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -590,7 +594,7 @@ This sort is not guaranteed to be stable</p>
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/sort/sort.odin">sort.odin</a></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2024-04 (vendor "odin") Windows_amd64 @ 2024-04-26 21:08:58.632110400 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2024-06 (vendor "odin") Windows_amd64 @ 2024-06-17 21:40:01.226618200 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">

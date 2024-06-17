@@ -89,12 +89,14 @@
 <li><a href="/core/container/lru">lru</a></li>
 <li><a href="/core/container/priority_queue">priority_queue</a></li>
 <li><a href="/core/container/queue">queue</a></li>
+<li><a href="/core/container/rbtree">rbtree</a></li>
 <li><a href="/core/container/small_array">small_array</a></li>
 <li><a href="/core/container/topological_sort">topological_sort</a></li>
 </ul>
 
 </li>
 <li class="nav-item"><a href="/core/crypto">crypto</a><ul>
+<li><a href="/core/crypto/aes">aes</a></li>
 <li><a href="/core/crypto/blake2b">blake2b</a></li>
 <li><a href="/core/crypto/blake2s">blake2s</a></li>
 <li><a href="/core/crypto/chacha20">chacha20</a></li>
@@ -126,6 +128,7 @@
 </li>
 <li class="nav-item"><a href="/core/dynlib">dynlib</a></li>
 <li class="nav-item">encoding<ul>
+<li><a href="/core/encoding/ansi">ansi</a></li>
 <li><a href="/core/encoding/base32">base32</a></li>
 <li><a href="/core/encoding/base64">base64</a></li>
 <li><a href="/core/encoding/cbor">cbor</a></li>
@@ -179,9 +182,7 @@
 <li class="nav-item">odin<ul>
 <li><a href="/core/odin/ast">ast</a></li>
 <li><a href="/core/odin/doc-format">doc-format</a></li>
-<li><a href="/core/odin/format">format</a></li>
 <li><a href="/core/odin/parser">parser</a></li>
-<li><a href="/core/odin/printer">printer</a></li>
 <li><a href="/core/odin/tokenizer">tokenizer</a></li>
 </ul>
 
@@ -212,14 +213,17 @@
 
 </li>
 <li class="nav-item"><a href="/core/strings">strings</a></li>
-<li class="nav-item"><a href="/core/sync">sync</a></li>
+<li class="nav-item"><a href="/core/sync">sync</a><ul>
+<li><a href="/core/sync/chan">chan</a></li>
+</ul>
+
+</li>
 <li class="nav-item">sys<ul>
 <li><a href="/core/sys/darwin">darwin</a></li>
 <li><a href="/core/sys/darwin/Foundation">darwin/Foundation</a></li>
 <li><a href="/core/sys/haiku">haiku</a></li>
 <li><a href="/core/sys/info">info</a></li>
 <li><a href="/core/sys/linux">linux</a></li>
-<li><a href="/core/sys/unix">unix</a></li>
 <li><a href="/core/sys/valgrind">valgrind</a></li>
 <li><a href="/core/sys/windows">windows</a></li>
 </ul>
@@ -316,7 +320,7 @@ for bad_free in track.bad_free_array {
 <div>
 <details class="doc-index" id="doc-index-Types" aria-labelledby="#doc-index-Types-header">
 <summary id="#doc-index-Types-header">
-Types (34)</summary>
+Types (40)</summary>
 <ul>
 <li><a href="#Allocator">Allocator</a></li>
 <li><a href="#Allocator_Error">Allocator_Error</a></li>
@@ -333,6 +337,7 @@ Types (34)</summary>
 <li><a href="#Mutex_Allocator">Mutex_Allocator</a></li>
 <li><a href="#Raw_Any">Raw_Any</a></li>
 <li><a href="#Raw_Complex128">Raw_Complex128</a></li>
+<li><a href="#Raw_Complex32">Raw_Complex32</a></li>
 <li><a href="#Raw_Complex64">Raw_Complex64</a></li>
 <li><a href="#Raw_Cstring">Raw_Cstring</a></li>
 <li><a href="#Raw_Dynamic_Array">Raw_Dynamic_Array</a></li>
@@ -341,9 +346,14 @@ Types (34)</summary>
 <li><a href="#Raw_Quaternion128_Vector_Scalar">Raw_Quaternion128_Vector_Scalar</a></li>
 <li><a href="#Raw_Quaternion256">Raw_Quaternion256</a></li>
 <li><a href="#Raw_Quaternion256_Vector_Scalar">Raw_Quaternion256_Vector_Scalar</a></li>
+<li><a href="#Raw_Quaternion64">Raw_Quaternion64</a></li>
+<li><a href="#Raw_Quaternion64_Vector_Scalar">Raw_Quaternion64_Vector_Scalar</a></li>
 <li><a href="#Raw_Slice">Raw_Slice</a></li>
 <li><a href="#Raw_Soa_Pointer">Raw_Soa_Pointer</a></li>
 <li><a href="#Raw_String">Raw_String</a></li>
+<li><a href="#Rollback_Stack">Rollback_Stack</a></li>
+<li><a href="#Rollback_Stack_Block">Rollback_Stack_Block</a></li>
+<li><a href="#Rollback_Stack_Header">Rollback_Stack_Header</a></li>
 <li><a href="#Scratch_Allocator">Scratch_Allocator</a></li>
 <li><a href="#Small_Stack">Small_Stack</a></li>
 <li><a href="#Small_Stack_Allocation_Header">Small_Stack_Allocation_Header</a></li>
@@ -358,7 +368,7 @@ Types (34)</summary>
 <div>
 <details class="doc-index" id="doc-index-Constants" aria-labelledby="#doc-index-Constants-header">
 <summary id="#doc-index-Constants-header">
-Constants (11)</summary>
+Constants (13)</summary>
 <ul>
 <li><a href="#Byte">Byte</a></li>
 <li><a href="#DEFAULT_ALIGNMENT">DEFAULT_ALIGNMENT</a></li>
@@ -370,6 +380,8 @@ Constants (11)</summary>
 <li><a href="#Kilobyte">Kilobyte</a></li>
 <li><a href="#Megabyte">Megabyte</a></li>
 <li><a href="#Petabyte">Petabyte</a></li>
+<li><a href="#ROLLBACK_STACK_DEFAULT_BLOCK_SIZE">ROLLBACK_STACK_DEFAULT_BLOCK_SIZE</a></li>
+<li><a href="#ROLLBACK_STACK_MAX_HEAD_BLOCK_SIZE">ROLLBACK_STACK_MAX_HEAD_BLOCK_SIZE</a></li>
 <li><a href="#Terabyte">Terabyte</a></li>
 </ul>
 </details>
@@ -384,7 +396,7 @@ Variables (0)</summary>
 <div>
 <details class="doc-index" id="doc-index-Procedures" aria-labelledby="#doc-index-Procedures-header">
 <summary id="#doc-index-Procedures-header">
-Procedures (117)</summary>
+Procedures (123)</summary>
 <ul>
 <li><a href="#align_backward">align_backward</a></li>
 <li><a href="#align_backward_int">align_backward_int</a></li>
@@ -478,6 +490,11 @@ Procedures (117)</summary>
 <li><a href="#reinterpret_copy">reinterpret_copy</a></li>
 <li><a href="#resize">resize</a></li>
 <li><a href="#resize_bytes">resize_bytes</a></li>
+<li><a href="#rollback_stack_allocator">rollback_stack_allocator</a></li>
+<li><a href="#rollback_stack_allocator_proc">rollback_stack_allocator_proc</a></li>
+<li><a href="#rollback_stack_destroy">rollback_stack_destroy</a></li>
+<li><a href="#rollback_stack_init_buffered">rollback_stack_init_buffered</a></li>
+<li><a href="#rollback_stack_init_dynamic">rollback_stack_init_dynamic</a></li>
 <li><a href="#scratch_allocator">scratch_allocator</a></li>
 <li><a href="#scratch_allocator_destroy">scratch_allocator_destroy</a></li>
 <li><a href="#scratch_allocator_init">scratch_allocator_init</a></li>
@@ -499,6 +516,7 @@ Procedures (117)</summary>
 <li><a href="#tracking_allocator_destroy">tracking_allocator_destroy</a></li>
 <li><a href="#tracking_allocator_init">tracking_allocator_init</a></li>
 <li><a href="#tracking_allocator_proc">tracking_allocator_proc</a></li>
+<li><a href="#tracking_allocator_reset">tracking_allocator_reset</a></li>
 <li><a href="#zero">zero</a></li>
 <li><a href="#zero_explicit">zero_explicit</a></li>
 <li><a href="#zero_item">zero_item</a></li>
@@ -509,10 +527,11 @@ Procedures (117)</summary>
 <div>
 <details class="doc-index" id="doc-index-Procedure Groups" aria-labelledby="#doc-index-Procedure Groups-header">
 <summary id="#doc-index-Procedure Groups-header">
-Procedure Groups (2)</summary>
+Procedure Groups (3)</summary>
 <ul>
 <li><a href="#delete">delete</a></li>
 <li><a href="#make">make</a></li>
+<li><a href="#rollback_stack_init">rollback_stack_init</a></li>
 </ul>
 </details>
 </div>
@@ -698,21 +717,21 @@ Mode_Not_Implemented = 4,
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="Raw_Complex128"><span><a class="doc-id-link" href="#Raw_Complex128">Raw_Complex128<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/raw.odin#L15"><em>Source</em></a></div></h3>
+<h3 id="Raw_Complex128"><span><a class="doc-id-link" href="#Raw_Complex128">Raw_Complex128<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/raw.odin#L16"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">Raw_Complex128 :: <span class="keyword-type">struct</span> {
-	real: <a href="/base/builtin#f64"><span class="doc-builtin">f64</span></a>,
-	imag: <a href="/base/builtin#f64"><span class="doc-builtin">f64</span></a>,
-}</pre>
+<pre class="doc-code">Raw_Complex128 :: runtime.<a class="code-typename" href="/base/runtime/#Raw_Complex128">Raw_Complex128</a></pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="Raw_Complex64"><span><a class="doc-id-link" href="#Raw_Complex64">Raw_Complex64<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/raw.odin#L14"><em>Source</em></a></div></h3>
+<h3 id="Raw_Complex32"><span><a class="doc-id-link" href="#Raw_Complex32">Raw_Complex32<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/raw.odin#L14"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">Raw_Complex64 :: <span class="keyword-type">struct</span> {
-	real: <a href="/base/builtin#f32"><span class="doc-builtin">f32</span></a>,
-	imag: <a href="/base/builtin#f32"><span class="doc-builtin">f32</span></a>,
-}</pre>
+<pre class="doc-code">Raw_Complex32 :: runtime.<a class="code-typename" href="/base/runtime/#Raw_Complex32">Raw_Complex32</a></pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Raw_Complex64"><span><a class="doc-id-link" href="#Raw_Complex64">Raw_Complex64<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/raw.odin#L15"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Raw_Complex64 :: runtime.<a class="code-typename" href="/base/runtime/#Raw_Complex64">Raw_Complex64</a></pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -734,43 +753,39 @@ Mode_Not_Implemented = 4,
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="Raw_Quaternion128"><span><a class="doc-id-link" href="#Raw_Quaternion128">Raw_Quaternion128<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/raw.odin#L16"><em>Source</em></a></div></h3>
+<h3 id="Raw_Quaternion128"><span><a class="doc-id-link" href="#Raw_Quaternion128">Raw_Quaternion128<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/raw.odin#L18"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">Raw_Quaternion128 :: <span class="keyword-type">struct</span> {
-	imag: <a href="/base/builtin#f32"><span class="doc-builtin">f32</span></a>,
-	jmag: <a href="/base/builtin#f32"><span class="doc-builtin">f32</span></a>,
-	kmag: <a href="/base/builtin#f32"><span class="doc-builtin">f32</span></a>,
-	real: <a href="/base/builtin#f32"><span class="doc-builtin">f32</span></a>,
-}</pre>
+<pre class="doc-code">Raw_Quaternion128 :: runtime.<a class="code-typename" href="/base/runtime/#Raw_Quaternion128">Raw_Quaternion128</a></pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="Raw_Quaternion128_Vector_Scalar"><span><a class="doc-id-link" href="#Raw_Quaternion128_Vector_Scalar">Raw_Quaternion128_Vector_Scalar<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/raw.odin#L18"><em>Source</em></a></div></h3>
+<h3 id="Raw_Quaternion128_Vector_Scalar"><span><a class="doc-id-link" href="#Raw_Quaternion128_Vector_Scalar">Raw_Quaternion128_Vector_Scalar<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/raw.odin#L21"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">Raw_Quaternion128_Vector_Scalar :: <span class="keyword-type">struct</span> {
-	vector: [3]<a href="/base/builtin#f32"><span class="doc-builtin">f32</span></a>,
-	scalar: <a href="/base/builtin#f32"><span class="doc-builtin">f32</span></a>,
-}</pre>
+<pre class="doc-code">Raw_Quaternion128_Vector_Scalar :: runtime.<a class="code-typename" href="/base/runtime/#Raw_Quaternion128_Vector_Scalar">Raw_Quaternion128_Vector_Scalar</a></pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="Raw_Quaternion256"><span><a class="doc-id-link" href="#Raw_Quaternion256">Raw_Quaternion256<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/raw.odin#L17"><em>Source</em></a></div></h3>
+<h3 id="Raw_Quaternion256"><span><a class="doc-id-link" href="#Raw_Quaternion256">Raw_Quaternion256<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/raw.odin#L19"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">Raw_Quaternion256 :: <span class="keyword-type">struct</span> {
-	imag: <a href="/base/builtin#f64"><span class="doc-builtin">f64</span></a>,
-	jmag: <a href="/base/builtin#f64"><span class="doc-builtin">f64</span></a>,
-	kmag: <a href="/base/builtin#f64"><span class="doc-builtin">f64</span></a>,
-	real: <a href="/base/builtin#f64"><span class="doc-builtin">f64</span></a>,
-}</pre>
+<pre class="doc-code">Raw_Quaternion256 :: runtime.<a class="code-typename" href="/base/runtime/#Raw_Quaternion256">Raw_Quaternion256</a></pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="Raw_Quaternion256_Vector_Scalar"><span><a class="doc-id-link" href="#Raw_Quaternion256_Vector_Scalar">Raw_Quaternion256_Vector_Scalar<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/raw.odin#L19"><em>Source</em></a></div></h3>
+<h3 id="Raw_Quaternion256_Vector_Scalar"><span><a class="doc-id-link" href="#Raw_Quaternion256_Vector_Scalar">Raw_Quaternion256_Vector_Scalar<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/raw.odin#L22"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">Raw_Quaternion256_Vector_Scalar :: <span class="keyword-type">struct</span> {
-	vector: [3]<a href="/base/builtin#f64"><span class="doc-builtin">f64</span></a>,
-	scalar: <a href="/base/builtin#f64"><span class="doc-builtin">f64</span></a>,
-}</pre>
+<pre class="doc-code">Raw_Quaternion256_Vector_Scalar :: runtime.<a class="code-typename" href="/base/runtime/#Raw_Quaternion256_Vector_Scalar">Raw_Quaternion256_Vector_Scalar</a></pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Raw_Quaternion64"><span><a class="doc-id-link" href="#Raw_Quaternion64">Raw_Quaternion64<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/raw.odin#L17"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Raw_Quaternion64 :: runtime.<a class="code-typename" href="/base/runtime/#Raw_Quaternion64">Raw_Quaternion64</a></pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Raw_Quaternion64_Vector_Scalar"><span><a class="doc-id-link" href="#Raw_Quaternion64_Vector_Scalar">Raw_Quaternion64_Vector_Scalar<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/raw.odin#L20"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Raw_Quaternion64_Vector_Scalar :: runtime.<a class="code-typename" href="/base/runtime/#Raw_Quaternion64_Vector_Scalar">Raw_Quaternion64_Vector_Scalar</a></pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -789,6 +804,45 @@ Mode_Not_Implemented = 4,
 <h3 id="Raw_String"><span><a class="doc-id-link" href="#Raw_String">Raw_String<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/raw.odin#L7"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Raw_String :: runtime.<a class="code-typename" href="/base/runtime/#Raw_String">Raw_String</a></pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Rollback_Stack"><span><a class="doc-id-link" href="#Rollback_Stack">Rollback_Stack<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/rollback_stack_allocator.odin#L57"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Rollback_Stack :: <span class="keyword-type">struct</span> {
+	head:            ^<a class="code-typename" href="/core/mem/#Rollback_Stack_Block">Rollback_Stack_Block</a>,
+	block_size:      <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>,
+	block_allocator: runtime.<a class="code-typename" href="/base/runtime/#Allocator">Allocator</a>,
+}</pre>
+</div>
+<h5>Related Procedures With Parameters</h5>
+<ul>
+<li><a href="/core/mem/#rollback_stack_allocator">rollback_stack_allocator</a></li>
+<li><a href="/core/mem/#rollback_stack_destroy">rollback_stack_destroy</a></li>
+<li><a href="/core/mem/#rollback_stack_init_buffered">rollback_stack_init_buffered</a></li>
+<li><a href="/core/mem/#rollback_stack_init_dynamic">rollback_stack_init_dynamic</a></li>
+<li><a href="/core/mem/#rollback_stack_init">rollback_stack_init</a>&nbsp;<em>(procedure groups)</em></li>
+</ul>
+</div>
+<div class="pkg-entity">
+<h3 id="Rollback_Stack_Block"><span><a class="doc-id-link" href="#Rollback_Stack_Block">Rollback_Stack_Block<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/rollback_stack_allocator.odin#L50"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Rollback_Stack_Block :: <span class="keyword-type">struct</span> {
+	next_block: ^<a class="code-typename" href="/core/mem/#Rollback_Stack_Block">Rollback_Stack_Block</a>,
+	last_alloc: <a href="/base/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>,
+	offset:     <a href="/base/builtin#uintptr"><span class="doc-builtin">uintptr</span></a>,
+	buffer:     []<a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a>,
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Rollback_Stack_Header"><span><a class="doc-id-link" href="#Rollback_Stack_Header">Rollback_Stack_Header<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/rollback_stack_allocator.odin#L44"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Rollback_Stack_Header :: <span class="keyword-type">distinct</span> <span class="keyword-type">bit_field</span>&nbsp;<a href="/base/builtin#u64"><span class="doc-builtin">u64</span></a> {
+	prev_offset: <a href="/base/builtin#uintptr"><span class="doc-builtin">uintptr</span></a> | 32,
+	is_free:     <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> | 1,
+	prev_ptr:    <a href="/base/builtin#uintptr"><span class="doc-builtin">uintptr</span></a> | 31,
+}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -871,11 +925,17 @@ Mode_Not_Implemented = 4,
 <h3 id="Tracking_Allocator"><span><a class="doc-id-link" href="#Tracking_Allocator">Tracking_Allocator<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/tracking_allocator.odin#L19"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Tracking_Allocator :: <span class="keyword-type">struct</span> {
-	backing:           runtime.<a class="code-typename" href="/base/runtime/#Allocator">Allocator</a>,
-	allocation_map:    <span class="keyword-type">map</span>[<a href="/base/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>]<a class="code-typename" href="/core/mem/#Tracking_Allocator_Entry">Tracking_Allocator_Entry</a>,
-	bad_free_array:    [<span class="keyword">dynamic</span>]<a class="code-typename" href="/core/mem/#Tracking_Allocator_Bad_Free_Entry">Tracking_Allocator_Bad_Free_Entry</a>,
-	mutex:             sync.<a class="code-typename" href="/core/sync/#Mutex">Mutex</a>,
-	clear_on_free_all: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>,
+	backing:                  runtime.<a class="code-typename" href="/base/runtime/#Allocator">Allocator</a>,
+	allocation_map:           <span class="keyword-type">map</span>[<a href="/base/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>]<a class="code-typename" href="/core/mem/#Tracking_Allocator_Entry">Tracking_Allocator_Entry</a>,
+	bad_free_array:           [<span class="keyword">dynamic</span>]<a class="code-typename" href="/core/mem/#Tracking_Allocator_Bad_Free_Entry">Tracking_Allocator_Bad_Free_Entry</a>,
+	mutex:                    sync.<a class="code-typename" href="/core/sync/#Mutex">Mutex</a>,
+	clear_on_free_all:        <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>,
+	total_memory_allocated:   <a href="/base/builtin#i64"><span class="doc-builtin">i64</span></a>,
+	total_allocation_count:   <a href="/base/builtin#i64"><span class="doc-builtin">i64</span></a>,
+	total_memory_freed:       <a href="/base/builtin#i64"><span class="doc-builtin">i64</span></a>,
+	total_free_count:         <a href="/base/builtin#i64"><span class="doc-builtin">i64</span></a>,
+	peak_memory_allocated:    <a href="/base/builtin#i64"><span class="doc-builtin">i64</span></a>,
+	current_memory_allocated: <a href="/base/builtin#i64"><span class="doc-builtin">i64</span></a>,
 }</pre>
 </div>
 <h5>Related Procedures With Parameters</h5>
@@ -884,6 +944,7 @@ Mode_Not_Implemented = 4,
 <li><a href="/core/mem/#tracking_allocator_clear">tracking_allocator_clear</a></li>
 <li><a href="/core/mem/#tracking_allocator_destroy">tracking_allocator_destroy</a></li>
 <li><a href="/core/mem/#tracking_allocator_init">tracking_allocator_init</a></li>
+<li><a href="/core/mem/#tracking_allocator_reset">tracking_allocator_reset</a></li>
 </ul>
 </div>
 <div class="pkg-entity">
@@ -968,6 +1029,26 @@ Mode_Not_Implemented = 4,
 <div>
 <pre class="doc-code">Petabyte :: runtime.Petabyte</pre>
 </div>
+</div>
+<div class="pkg-entity">
+<h3 id="ROLLBACK_STACK_DEFAULT_BLOCK_SIZE"><span><a class="doc-id-link" href="#ROLLBACK_STACK_DEFAULT_BLOCK_SIZE">ROLLBACK_STACK_DEFAULT_BLOCK_SIZE<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/rollback_stack_allocator.odin#L33"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">ROLLBACK_STACK_DEFAULT_BLOCK_SIZE :: 4 * Megabyte</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="ROLLBACK_STACK_MAX_HEAD_BLOCK_SIZE"><span><a class="doc-id-link" href="#ROLLBACK_STACK_MAX_HEAD_BLOCK_SIZE">ROLLBACK_STACK_MAX_HEAD_BLOCK_SIZE<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/rollback_stack_allocator.odin#L41"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">ROLLBACK_STACK_MAX_HEAD_BLOCK_SIZE :: 2 * Gigabyte</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>This limitation is due to the size of <code>prev_ptr</code>, but it is only for the
+head block; any allocation in excess of the allocator's <code>block_size</code> is
+valid, so long as the block allocator can handle it.</p>
+<p>This is because allocations over the block size are not split up if the item
+within is freed; they are immediately returned to the block allocator.</p>
+</details>
 </div>
 <div class="pkg-entity">
 <h3 id="Terabyte"><span><a class="doc-id-link" href="#Terabyte">Terabyte<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/mem.odin#L10"><em>Source</em></a></div></h3>
@@ -1402,7 +1483,7 @@ Mode_Not_Implemented = 4,
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="make_any"><span><a class="doc-id-link" href="#make_any">make_any<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/raw.odin#L21"><em>Source</em></a></div></h3>
+<h3 id="make_any"><span><a class="doc-id-link" href="#make_any">make_any<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/raw.odin#L24"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">make_any :: <span class="keyword-type">proc</span> "contextless" (data: <a href="/base/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>, id: <a href="/base/builtin#typeid"><span class="doc-builtin">typeid</span></a>) -> <a href="/base/builtin#any"><span class="doc-builtin">any</span></a> {…}</pre>
 </div>
@@ -1591,6 +1672,43 @@ Mode_Not_Implemented = 4,
 </div>
 </div>
 <div class="pkg-entity">
+<h3 id="rollback_stack_allocator"><span><a class="doc-id-link" href="#rollback_stack_allocator">rollback_stack_allocator<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/rollback_stack_allocator.odin#L289"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">rollback_stack_allocator :: <span class="keyword-type">proc</span>(stack: ^<a class="code-typename" href="/core/mem/#Rollback_Stack">Rollback_Stack</a>) -> runtime.<a class="code-typename" href="/base/runtime/#Allocator">Allocator</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="rollback_stack_allocator_proc"><span><a class="doc-id-link" href="#rollback_stack_allocator_proc">rollback_stack_allocator_proc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/rollback_stack_allocator.odin#L297"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">rollback_stack_allocator_proc :: <span class="keyword-type">proc</span>(
+	allocator_data:  <a href="/base/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>, 
+	mode:            runtime.<a class="code-typename" href="/base/runtime/#Allocator_Mode">Allocator_Mode</a>, 
+	size, alignment: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, 
+	old_memory:      <a href="/base/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>, 
+	old_size:        <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, 
+	location := <a href="/base/runtime/#Source_Code_Location">#caller_location</a>, 
+) -> (result: []<a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a>, err: runtime.<a class="code-typename" href="/base/runtime/#Allocator_Error">Allocator_Error</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="rollback_stack_destroy"><span><a class="doc-id-link" href="#rollback_stack_destroy">rollback_stack_destroy<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/rollback_stack_allocator.odin#L280"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">rollback_stack_destroy :: <span class="keyword-type">proc</span>(stack: ^<a class="code-typename" href="/core/mem/#Rollback_Stack">Rollback_Stack</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="rollback_stack_init_buffered"><span><a class="doc-id-link" href="#rollback_stack_init_buffered">rollback_stack_init_buffered<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/rollback_stack_allocator.odin#L239"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">rollback_stack_init_buffered :: <span class="keyword-type">proc</span>(stack: ^<a class="code-typename" href="/core/mem/#Rollback_Stack">Rollback_Stack</a>, buffer: []<a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a>, location := <a href="/base/runtime/#Source_Code_Location">#caller_location</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="rollback_stack_init_dynamic"><span><a class="doc-id-link" href="#rollback_stack_init_dynamic">rollback_stack_init_dynamic<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/rollback_stack_allocator.odin#L252"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">rollback_stack_init_dynamic :: <span class="keyword-type">proc</span>(stack: ^<a class="code-typename" href="/core/mem/#Rollback_Stack">Rollback_Stack</a>, block_size: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a> = ROLLBACK_STACK_DEFAULT_BLOCK_SIZE, block_allocator := <a href="/base/runtime/#Context">context.allocator</a>, location := <a href="/base/runtime/#Source_Code_Location">#caller_location</a>) -> runtime.<a class="code-typename" href="/base/runtime/#Allocator_Error">Allocator_Error</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
 <h3 id="scratch_allocator"><span><a class="doc-id-link" href="#scratch_allocator">scratch_allocator<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/allocators.odin#L295"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">scratch_allocator :: <span class="keyword-type">proc</span>(allocator: ^<a class="code-typename" href="/core/mem/#Scratch_Allocator">Scratch_Allocator</a>) -> runtime.<a class="code-typename" href="/base/runtime/#Allocator">Allocator</a> {…}</pre>
@@ -1708,31 +1826,35 @@ Mode_Not_Implemented = 4,
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="tracking_allocator"><span><a class="doc-id-link" href="#tracking_allocator">tracking_allocator<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/tracking_allocator.odin#L52"><em>Source</em></a></div></h3>
+<h3 id="tracking_allocator"><span><a class="doc-id-link" href="#tracking_allocator">tracking_allocator<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/tracking_allocator.odin#L74"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">tracking_allocator :: <span class="keyword-type">proc</span>(data: ^<a class="code-typename" href="/core/mem/#Tracking_Allocator">Tracking_Allocator</a>) -> runtime.<a class="code-typename" href="/base/runtime/#Allocator">Allocator</a> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="tracking_allocator_clear"><span><a class="doc-id-link" href="#tracking_allocator_clear">tracking_allocator_clear<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/tracking_allocator.odin#L43"><em>Source</em></a></div></h3>
+<h3 id="tracking_allocator_clear"><span><a class="doc-id-link" href="#tracking_allocator_clear">tracking_allocator_clear<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/tracking_allocator.odin#L51"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">tracking_allocator_clear :: <span class="keyword-type">proc</span>(t: ^<a class="code-typename" href="/core/mem/#Tracking_Allocator">Tracking_Allocator</a>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Clear only the current allocation data while keeping the totals intact.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="tracking_allocator_destroy"><span><a class="doc-id-link" href="#tracking_allocator_destroy">tracking_allocator_destroy<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/tracking_allocator.odin#L37"><em>Source</em></a></div></h3>
+<h3 id="tracking_allocator_destroy"><span><a class="doc-id-link" href="#tracking_allocator_destroy">tracking_allocator_destroy<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/tracking_allocator.odin#L44"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">tracking_allocator_destroy :: <span class="keyword-type">proc</span>(t: ^<a class="code-typename" href="/core/mem/#Tracking_Allocator">Tracking_Allocator</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="tracking_allocator_init"><span><a class="doc-id-link" href="#tracking_allocator_init">tracking_allocator_init<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/tracking_allocator.odin#L27"><em>Source</em></a></div></h3>
+<h3 id="tracking_allocator_init"><span><a class="doc-id-link" href="#tracking_allocator_init">tracking_allocator_init<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/tracking_allocator.odin#L34"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">tracking_allocator_init :: <span class="keyword-type">proc</span>(t: ^<a class="code-typename" href="/core/mem/#Tracking_Allocator">Tracking_Allocator</a>, backing_allocator: runtime.<a class="code-typename" href="/base/runtime/#Allocator">Allocator</a>, internals_allocator := <a href="/base/runtime/#Context">context.allocator</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="tracking_allocator_proc"><span><a class="doc-id-link" href="#tracking_allocator_proc">tracking_allocator_proc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/tracking_allocator.odin#L59"><em>Source</em></a></div></h3>
+<h3 id="tracking_allocator_proc"><span><a class="doc-id-link" href="#tracking_allocator_proc">tracking_allocator_proc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/tracking_allocator.odin#L81"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">tracking_allocator_proc :: <span class="keyword-type">proc</span>(
 	allocator_data:  <a href="/base/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>, 
@@ -1743,6 +1865,16 @@ Mode_Not_Implemented = 4,
 	loc := <a href="/base/runtime/#Source_Code_Location">#caller_location</a>, 
 ) -> (result: []<a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a>, err: runtime.<a class="code-typename" href="/base/runtime/#Allocator_Error">Allocator_Error</a>) {…}</pre>
 </div>
+</div>
+<div class="pkg-entity">
+<h3 id="tracking_allocator_reset"><span><a class="doc-id-link" href="#tracking_allocator_reset">tracking_allocator_reset<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/tracking_allocator.odin#L60"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">tracking_allocator_reset :: <span class="keyword-type">proc</span>(t: ^<a class="code-typename" href="/core/mem/#Tracking_Allocator">Tracking_Allocator</a>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Reset all of a Tracking Allocator's allocation data back to zero.</p>
+</details>
 </div>
 <div class="pkg-entity">
 <h3 id="zero"><span><a class="doc-id-link" href="#zero">zero<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/mem.odin#L17"><em>Source</em></a></div></h3>
@@ -1796,6 +1928,16 @@ Mode_Not_Implemented = 4,
 </pre>
 </div>
 </div>
+<div class="pkg-entity">
+<h3 id="rollback_stack_init"><span><a class="doc-id-link" href="#rollback_stack_init">rollback_stack_init<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/rollback_stack_allocator.odin#L275"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">rollback_stack_init :: <span class="keyword-type">proc</span>{
+	<a class="code-procedure" href="/core/mem/#rollback_stack_init_buffered">rollback_stack_init_buffered</a>,
+	<a class="code-procedure" href="/core/mem/#rollback_stack_init_dynamic">rollback_stack_init_dynamic</a>,
+}
+</pre>
+</div>
+</div>
 </section>
 <h2 id="pkg-source-files">Source Files</h2>
 <ul>
@@ -1805,10 +1947,11 @@ Mode_Not_Implemented = 4,
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/mem.odin">mem.odin</a></li>
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/mutex_allocator.odin">mutex_allocator.odin</a></li>
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/raw.odin">raw.odin</a></li>
+<li><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/rollback_stack_allocator.odin">rollback_stack_allocator.odin</a></li>
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/tracking_allocator.odin">tracking_allocator.odin</a></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2024-04 (vendor "odin") Windows_amd64 @ 2024-04-26 21:08:58.595155800 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2024-06 (vendor "odin") Windows_amd64 @ 2024-06-17 21:40:01.191979200 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
@@ -1829,6 +1972,7 @@ Mode_Not_Implemented = 4,
 <li><a href="#Mutex_Allocator">Mutex_Allocator</a></li>
 <li><a href="#Raw_Any">Raw_Any</a></li>
 <li><a href="#Raw_Complex128">Raw_Complex128</a></li>
+<li><a href="#Raw_Complex32">Raw_Complex32</a></li>
 <li><a href="#Raw_Complex64">Raw_Complex64</a></li>
 <li><a href="#Raw_Cstring">Raw_Cstring</a></li>
 <li><a href="#Raw_Dynamic_Array">Raw_Dynamic_Array</a></li>
@@ -1837,9 +1981,14 @@ Mode_Not_Implemented = 4,
 <li><a href="#Raw_Quaternion128_Vector_Scalar">Raw_Quaternion128_Vector_Scalar</a></li>
 <li><a href="#Raw_Quaternion256">Raw_Quaternion256</a></li>
 <li><a href="#Raw_Quaternion256_Vector_Scalar">Raw_Quaternion256_Vector_Scalar</a></li>
+<li><a href="#Raw_Quaternion64">Raw_Quaternion64</a></li>
+<li><a href="#Raw_Quaternion64_Vector_Scalar">Raw_Quaternion64_Vector_Scalar</a></li>
 <li><a href="#Raw_Slice">Raw_Slice</a></li>
 <li><a href="#Raw_Soa_Pointer">Raw_Soa_Pointer</a></li>
 <li><a href="#Raw_String">Raw_String</a></li>
+<li><a href="#Rollback_Stack">Rollback_Stack</a></li>
+<li><a href="#Rollback_Stack_Block">Rollback_Stack_Block</a></li>
+<li><a href="#Rollback_Stack_Header">Rollback_Stack_Header</a></li>
 <li><a href="#Scratch_Allocator">Scratch_Allocator</a></li>
 <li><a href="#Small_Stack">Small_Stack</a></li>
 <li><a href="#Small_Stack_Allocation_Header">Small_Stack_Allocation_Header</a></li>
@@ -1861,6 +2010,8 @@ Mode_Not_Implemented = 4,
 <li><a href="#Kilobyte">Kilobyte</a></li>
 <li><a href="#Megabyte">Megabyte</a></li>
 <li><a href="#Petabyte">Petabyte</a></li>
+<li><a href="#ROLLBACK_STACK_DEFAULT_BLOCK_SIZE">ROLLBACK_STACK_DEFAULT_BLOCK_SIZE</a></li>
+<li><a href="#ROLLBACK_STACK_MAX_HEAD_BLOCK_SIZE">ROLLBACK_STACK_MAX_HEAD_BLOCK_SIZE</a></li>
 <li><a href="#Terabyte">Terabyte</a></li>
 </ul>
 </li>
@@ -1957,6 +2108,11 @@ Mode_Not_Implemented = 4,
 <li><a href="#reinterpret_copy">reinterpret_copy</a></li>
 <li><a href="#resize">resize</a></li>
 <li><a href="#resize_bytes">resize_bytes</a></li>
+<li><a href="#rollback_stack_allocator">rollback_stack_allocator</a></li>
+<li><a href="#rollback_stack_allocator_proc">rollback_stack_allocator_proc</a></li>
+<li><a href="#rollback_stack_destroy">rollback_stack_destroy</a></li>
+<li><a href="#rollback_stack_init_buffered">rollback_stack_init_buffered</a></li>
+<li><a href="#rollback_stack_init_dynamic">rollback_stack_init_dynamic</a></li>
 <li><a href="#scratch_allocator">scratch_allocator</a></li>
 <li><a href="#scratch_allocator_destroy">scratch_allocator_destroy</a></li>
 <li><a href="#scratch_allocator_init">scratch_allocator_init</a></li>
@@ -1978,6 +2134,7 @@ Mode_Not_Implemented = 4,
 <li><a href="#tracking_allocator_destroy">tracking_allocator_destroy</a></li>
 <li><a href="#tracking_allocator_init">tracking_allocator_init</a></li>
 <li><a href="#tracking_allocator_proc">tracking_allocator_proc</a></li>
+<li><a href="#tracking_allocator_reset">tracking_allocator_reset</a></li>
 <li><a href="#zero">zero</a></li>
 <li><a href="#zero_explicit">zero_explicit</a></li>
 <li><a href="#zero_item">zero_item</a></li>
@@ -1987,6 +2144,7 @@ Mode_Not_Implemented = 4,
 <li><a href="#pkg-Procedure Groups">Procedure Groups</a><ul>
 <li><a href="#delete">delete</a></li>
 <li><a href="#make">make</a></li>
+<li><a href="#rollback_stack_init">rollback_stack_init</a></li>
 </ul>
 </li>
 <li><a href="#pkg-source-files">Source Files</a></ul>

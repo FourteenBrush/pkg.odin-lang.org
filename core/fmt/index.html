@@ -89,12 +89,14 @@
 <li><a href="/core/container/lru">lru</a></li>
 <li><a href="/core/container/priority_queue">priority_queue</a></li>
 <li><a href="/core/container/queue">queue</a></li>
+<li><a href="/core/container/rbtree">rbtree</a></li>
 <li><a href="/core/container/small_array">small_array</a></li>
 <li><a href="/core/container/topological_sort">topological_sort</a></li>
 </ul>
 
 </li>
 <li class="nav-item"><a href="/core/crypto">crypto</a><ul>
+<li><a href="/core/crypto/aes">aes</a></li>
 <li><a href="/core/crypto/blake2b">blake2b</a></li>
 <li><a href="/core/crypto/blake2s">blake2s</a></li>
 <li><a href="/core/crypto/chacha20">chacha20</a></li>
@@ -126,6 +128,7 @@
 </li>
 <li class="nav-item"><a href="/core/dynlib">dynlib</a></li>
 <li class="nav-item">encoding<ul>
+<li><a href="/core/encoding/ansi">ansi</a></li>
 <li><a href="/core/encoding/base32">base32</a></li>
 <li><a href="/core/encoding/base64">base64</a></li>
 <li><a href="/core/encoding/cbor">cbor</a></li>
@@ -179,9 +182,7 @@
 <li class="nav-item">odin<ul>
 <li><a href="/core/odin/ast">ast</a></li>
 <li><a href="/core/odin/doc-format">doc-format</a></li>
-<li><a href="/core/odin/format">format</a></li>
 <li><a href="/core/odin/parser">parser</a></li>
-<li><a href="/core/odin/printer">printer</a></li>
 <li><a href="/core/odin/tokenizer">tokenizer</a></li>
 </ul>
 
@@ -212,14 +213,17 @@
 
 </li>
 <li class="nav-item"><a href="/core/strings">strings</a></li>
-<li class="nav-item"><a href="/core/sync">sync</a></li>
+<li class="nav-item"><a href="/core/sync">sync</a><ul>
+<li><a href="/core/sync/chan">chan</a></li>
+</ul>
+
+</li>
 <li class="nav-item">sys<ul>
 <li><a href="/core/sys/darwin">darwin</a></li>
 <li><a href="/core/sys/darwin/Foundation">darwin/Foundation</a></li>
 <li><a href="/core/sys/haiku">haiku</a></li>
 <li><a href="/core/sys/info">info</a></li>
 <li><a href="/core/sys/linux">linux</a></li>
-<li><a href="/core/sys/unix">unix</a></li>
 <li><a href="/core/sys/valgrind">valgrind</a></li>
 <li><a href="/core/sys/windows">windows</a></li>
 </ul>
@@ -282,13 +286,14 @@
 <div id="pkg-top">
 <h2>Overview</h2>
 <div id="pkg-overview">
-<p>package fmt implemented formatted I/O with procedures similar to C's printf and Python's format.
+<p>package fmt implements formatted I/O with procedures similar to C's printf and Python's format.
 The format 'verbs' are derived from C's but simpler.</p>
 <p>Printing</p>
 <p>The verbs:</p>
 <p>General:</p>
 <pre>%v     the value in a default format
 %#v    an expanded format of %v with newlines and indentation
+%w     an Odin-syntax representation of the value
 %T     an Odin-syntax representation of the type of the value
 %%     a literal percent sign; consumes no value
 {{     a literal open brace; consumes no value
@@ -316,6 +321,8 @@ The format 'verbs' are derived from C's but simpler.</p>
 %E    scientific notation, e.g. -1.23456E+78
 %f    decimal point but no exponent, e.g. 123.456
 %F    synonym for %f
+%g    synonym for %f with default maximum precision
+%G    synonym for %g
 %h    hexadecimal (lower-case) representation with 0h prefix (0h01234abcd)
 %H    hexadecimal (upper-case) representation with 0H prefix (0h01234ABCD)
 %m    number of bytes in the best unit of measurement, e.g. 123.45mib
@@ -350,9 +357,9 @@ bit sets           {key0 = elem0, key1 = elem1, ...}
 pointer to above:  &{}, &[], &map[]
 
 </pre>
-<p>Width is specified by an optional decimal number immediately preceding the verb.
+<p>Width is specified by an optional decimal number immediately after the '%'.
 If not present, the width is whatever is necessary to represent the value.
-Precision is specified after the (optional) width followed by a period followed by a decimal number.
+Precision is specified after the (optional) width by a period followed by a decimal number.
 If no period is present, a default precision is used.
 A period with no following number specifies a precision of 0.</p>
 <p>Examples:</p>
@@ -364,7 +371,7 @@ A period with no following number specifies a precision of 0.</p>
 
 </pre>
 <p>Width and precision are measured in units of Unicode code points (runes).
-n.b. C's printf uses units of bytes</p>
+n.b. C's printf uses units of bytes.</p>
 <p>Other flags:</p>
 <pre>+      always print a sign for numeric values
 -      pad with spaces on the right rather the left (left-justify the field)
@@ -380,7 +387,7 @@ n.b. C's printf uses units of bytes</p>
 
 
 </pre>
-<p>Flags are ignored by verbs that don't expect them</p>
+<p>Flags are ignored by verbs that don't expect them.</p>
 <p>For each printf-like procedure, there is a print function that takes no
 format, and is equivalent to doing %v for every value and inserts a separator
 between each value (default is a single space).
@@ -389,21 +396,22 @@ Another procedure println which has the same functionality as print but appends 
 <p>In printf-like procedures, the default behaviour is for each formatting verb to format successive
 arguments passed in the call. However, the notation [n] immediately before the verb indicates that
 the nth zero-index argument is to be formatted instead.
-The same notation before an '*' for a width or precision selecting the argument index holding the value.
-Python-like syntax with argument indices differs for the selecting the argument index: {N:v}</p>
+The same notation before an '*' for a width or precision specifier selects the argument index
+holding the value.
+Python-like syntax with argument indices differs for selecting the argument index: {n:v}</p>
 <p>Examples:</p>
-<pre>fmt.printf("%[1]d %[0]d\n", 13, 37); // C-like syntax
-fmt.printf("{1:d} {0:d}\n", 13, 37); // Python-like syntax
+<pre>fmt.printfln("%[1]d %[0]d", 13, 37) // C-like syntax
+fmt.printfln("{1:d} {0:d}", 13, 37) // Python-like syntax
 </pre>
 <p>prints "37 13", whilst:</p>
-<pre>fmt.printf("%[2]*.[1]*[0]f\n",  17.0, 2, 6); // C-like syntax
-fmt.printf("%{0:[2]*.[1]*f}\n", 17.0, 2, 6); // Python-like syntax
+<pre>fmt.printfln("%*[2].*[1][0]f", 17.0, 2, 6) // C-like syntax
+fmt.printfln("{0:*[2].*[1]f}", 17.0, 2, 6) // Python-like syntax
 </pre>
-<p>equivalent to:</p>
-<pre>fmt.printf("%6.2f\n",   17.0, 2, 6); // C-like syntax
-fmt.printf("{:6.2f}\n", 17.0, 2, 6); // Python-like syntax
+<p>is equivalent to:</p>
+<pre>fmt.printfln("%6.2f",   17.0) // C-like syntax
+fmt.printfln("{:6.2f}", 17.0) // Python-like syntax
 </pre>
-<p>prints "17.00"</p>
+<p>and prints "17.00".</p>
 <p>Format errors:</p>
 <p>If an invalid argument is given for a verb, such as providing a string to %d, the generated string
 will contain a description of the problem. For example:</p>
@@ -429,9 +437,10 @@ Missing close brace when using Python-like formatting syntax:
 <div>
 <details class="doc-index" id="doc-index-Types" aria-labelledby="#doc-index-Types-header">
 <summary id="#doc-index-Types-header">
-Types (3)</summary>
+Types (4)</summary>
 <ul>
 <li><a href="#Info">Info</a></li>
+<li><a href="#Info_State">Info_State</a></li>
 <li><a href="#Register_User_Formatter_Error">Register_User_Formatter_Error</a></li>
 <li><a href="#User_Formatter">User_Formatter</a></li>
 </ul>
@@ -545,31 +554,18 @@ Procedure Groups (0)</summary>
 <section class="documentation">
 <h2 id="pkg-Types" class="pkg-header">Types</h2>
 <div class="pkg-entity">
-<h3 id="Info"><span><a class="doc-id-link" href="#Info">Info<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L15"><em>Source</em></a></div></h3>
+<h3 id="Info"><span><a class="doc-id-link" href="#Info">Info<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L16"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Info :: <span class="keyword-type">struct</span> {
-	minus:                  <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>,
-	plus:                   <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>,
-	space:                  <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>,
-	zero:                   <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>,
-	hash:                   <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>,
-	width_set:              <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>,
-	prec_set:               <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>,
-	width:                  <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>,
-	prec:                   <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>,
-	indent:                 <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>,
-	reordered:              <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>,
-	good_arg_index:         <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>,
-	ignore_user_formatters: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>,
-	in_bad:                 <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>,
-	writer:                 io.<a class="code-typename" href="/core/io/#Stream">Stream</a>,
-	arg:                    <a href="/base/builtin#any"><span class="doc-builtin">any</span></a>,
+	<span class="keyword-type">using</span> state:         <a class="code-typename" href="/core/fmt/#Info_State">Info_State</a>,
+	writer:              io.<a class="code-typename" href="/core/io/#Stream">Stream</a>,
+	arg:                 <a href="/base/builtin#any"><span class="doc-builtin">any</span></a>,
 	<span class="comment">// Temporary</span>
-	indirection_level:      <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>,
-	record_level:           <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>,
-	optional_len:           runtime.<a class="code-typename" href="/base/runtime/#Maybe">Maybe</a>($T=int),
-	use_nul_termination:    <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>,
-	n:                      <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>,
+	indirection_level:   <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>,
+	record_level:        <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>,
+	optional_len:        runtime.<a class="code-typename" href="/base/runtime/#Maybe">Maybe</a>($T),
+	use_nul_termination: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>,
+	n:                   <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>,
 }</pre>
 </div>
 <details class="odin-doc-toggle" open>
@@ -607,7 +603,26 @@ Procedure Groups (0)</summary>
 </ul>
 </div>
 <div class="pkg-entity">
-<h3 id="Register_User_Formatter_Error"><span><a class="doc-id-link" href="#Register_User_Formatter_Error">Register_User_Formatter_Error<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L72"><em>Source</em></a></div></h3>
+<h3 id="Info_State"><span><a class="doc-id-link" href="#Info_State">Info_State<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L30"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Info_State :: <span class="keyword-type">struct</span> {
+	minus:                  <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>,
+	plus:                   <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>,
+	space:                  <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>,
+	zero:                   <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>,
+	hash:                   <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>,
+	width_set:              <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>,
+	prec_set:               <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>,
+	ignore_user_formatters: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>,
+	in_bad:                 <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>,
+	width:                  <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>,
+	prec:                   <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>,
+	indent:                 <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>,
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Register_User_Formatter_Error"><span><a class="doc-id-link" href="#Register_User_Formatter_Error">Register_User_Formatter_Error<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L76"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Register_User_Formatter_Error :: <span class="keyword-type">enum</span> <a href="/base/builtin#int"><span class="doc-builtin">int</span></a> {
 	None, 
@@ -621,7 +636,7 @@ Procedure Groups (0)</summary>
 </ul>
 </div>
 <div class="pkg-entity">
-<h3 id="User_Formatter"><span><a class="doc-id-link" href="#User_Formatter">User_Formatter<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L45"><em>Source</em></a></div></h3>
+<h3 id="User_Formatter"><span><a class="doc-id-link" href="#User_Formatter">User_Formatter<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L49"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">User_Formatter :: <span class="keyword-type">proc</span>(fi: ^<a class="code-typename" href="/core/fmt/#Info">Info</a>, arg: <a href="/base/builtin#any"><span class="doc-builtin">any</span></a>, verb: <a href="/base/builtin#rune"><span class="doc-builtin">rune</span></a>) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a></pre>
 </div>
@@ -640,7 +655,7 @@ Procedure Groups (0)</summary>
 <p class="pkg-empty-section">This section is empty.</p>
 <h2 id="pkg-Procedures" class="pkg-header">Procedures</h2>
 <div class="pkg-entity">
-<h3 id="aprint"><span><a class="doc-id-link" href="#aprint">aprint<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L123"><em>Source</em></a></div></h3>
+<h3 id="aprint"><span><a class="doc-id-link" href="#aprint">aprint<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L128"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">aprint :: <span class="keyword-type">proc</span>(<span class="keyword-type">..</span> args: ..<a href="/base/builtin#any"><span class="doc-builtin">any</span></a>, sep: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a> = " ", allocator := <a href="/base/runtime/#Context">context.allocator</a>) -> <a href="/base/builtin#string"><span class="doc-builtin">string</span></a> {…}</pre>
 </div>
@@ -658,7 +673,7 @@ Returns: A formatted string.
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="aprintf"><span><a class="doc-id-link" href="#aprintf">aprintf<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L156"><em>Source</em></a></div></h3>
+<h3 id="aprintf"><span><a class="doc-id-link" href="#aprintf">aprintf<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L161"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">aprintf :: <span class="keyword-type">proc</span>(fmt: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>, <span class="keyword-type">..</span> args: ..<a href="/base/builtin#any"><span class="doc-builtin">any</span></a>, allocator := <a href="/base/runtime/#Context">context.allocator</a>, newline: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> = false) -> <a href="/base/builtin#string"><span class="doc-builtin">string</span></a> {…}</pre>
 </div>
@@ -677,7 +692,7 @@ Returns: A formatted string. The returned string must be freed accordingly.
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="aprintfln"><span><a class="doc-id-link" href="#aprintfln">aprintfln<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L172"><em>Source</em></a></div></h3>
+<h3 id="aprintfln"><span><a class="doc-id-link" href="#aprintfln">aprintfln<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L177"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">aprintfln :: <span class="keyword-type">proc</span>(fmt: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>, <span class="keyword-type">..</span> args: ..<a href="/base/builtin#any"><span class="doc-builtin">any</span></a>, allocator := <a href="/base/runtime/#Context">context.allocator</a>) -> <a href="/base/builtin#string"><span class="doc-builtin">string</span></a> {…}</pre>
 </div>
@@ -695,7 +710,7 @@ Returns: A formatted string. The returned string must be freed accordingly.
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="aprintln"><span><a class="doc-id-link" href="#aprintln">aprintln<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L139"><em>Source</em></a></div></h3>
+<h3 id="aprintln"><span><a class="doc-id-link" href="#aprintln">aprintln<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L144"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">aprintln :: <span class="keyword-type">proc</span>(<span class="keyword-type">..</span> args: ..<a href="/base/builtin#any"><span class="doc-builtin">any</span></a>, sep: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a> = " ", allocator := <a href="/base/runtime/#Context">context.allocator</a>) -> <a href="/base/builtin#string"><span class="doc-builtin">string</span></a> {…}</pre>
 </div>
@@ -713,7 +728,7 @@ Returns: A formatted string with a newline character at the end.
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="assertf"><span><a class="doc-id-link" href="#assertf">assertf<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L298"><em>Source</em></a></div></h3>
+<h3 id="assertf"><span><a class="doc-id-link" href="#assertf">assertf<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L304"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">assertf :: <span class="keyword-type">proc</span>(condition: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>, fmt: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>, <span class="keyword-type">..</span> args: ..<a href="/base/builtin#any"><span class="doc-builtin">any</span></a>, loc := <a href="/base/runtime/#Source_Code_Location">#caller_location</a>) {…}</pre>
 </div>
@@ -727,7 +742,7 @@ Returns: A formatted string with a newline character at the end.
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="bprint"><span><a class="doc-id-link" href="#bprint">bprint<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L246"><em>Source</em></a></div></h3>
+<h3 id="bprint"><span><a class="doc-id-link" href="#bprint">bprint<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L252"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">bprint :: <span class="keyword-type">proc</span>(buf: []<a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a>, <span class="keyword-type">..</span> args: ..<a href="/base/builtin#any"><span class="doc-builtin">any</span></a>, sep: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a> = " ") -> <a href="/base/builtin#string"><span class="doc-builtin">string</span></a> {…}</pre>
 </div>
@@ -741,7 +756,7 @@ Returns: A formatted string with a newline character at the end.
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="bprintf"><span><a class="doc-id-link" href="#bprintf">bprintf<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L273"><em>Source</em></a></div></h3>
+<h3 id="bprintf"><span><a class="doc-id-link" href="#bprintf">bprintf<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L279"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">bprintf :: <span class="keyword-type">proc</span>(buf: []<a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a>, fmt: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>, <span class="keyword-type">..</span> args: ..<a href="/base/builtin#any"><span class="doc-builtin">any</span></a>, newline: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> = false) -> <a href="/base/builtin#string"><span class="doc-builtin">string</span></a> {…}</pre>
 </div>
@@ -756,7 +771,7 @@ Returns: A formatted string with a newline character at the end.
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="bprintfln"><span><a class="doc-id-link" href="#bprintfln">bprintfln<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L286"><em>Source</em></a></div></h3>
+<h3 id="bprintfln"><span><a class="doc-id-link" href="#bprintfln">bprintfln<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L292"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">bprintfln :: <span class="keyword-type">proc</span>(buf: []<a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a>, fmt: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>, <span class="keyword-type">..</span> args: ..<a href="/base/builtin#any"><span class="doc-builtin">any</span></a>) -> <a href="/base/builtin#string"><span class="doc-builtin">string</span></a> {…}</pre>
 </div>
@@ -770,7 +785,7 @@ Returns: A formatted string with a newline character at the end.
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="bprintln"><span><a class="doc-id-link" href="#bprintln">bprintln<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L259"><em>Source</em></a></div></h3>
+<h3 id="bprintln"><span><a class="doc-id-link" href="#bprintln">bprintln<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L265"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">bprintln :: <span class="keyword-type">proc</span>(buf: []<a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a>, <span class="keyword-type">..</span> args: ..<a href="/base/builtin#any"><span class="doc-builtin">any</span></a>, sep: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a> = " ") -> <a href="/base/builtin#string"><span class="doc-builtin">string</span></a> {…}</pre>
 </div>
@@ -784,7 +799,7 @@ Returns: A formatted string with a newline character at the end.
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="caprintf"><span><a class="doc-id-link" href="#caprintf">caprintf<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L342"><em>Source</em></a></div></h3>
+<h3 id="caprintf"><span><a class="doc-id-link" href="#caprintf">caprintf<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L349"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">caprintf :: <span class="keyword-type">proc</span>(format: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>, <span class="keyword-type">..</span> args: ..<a href="/base/builtin#any"><span class="doc-builtin">any</span></a>, newline: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> = false) -> <a href="/base/builtin#cstring"><span class="doc-builtin">cstring</span></a> {…}</pre>
 </div>
@@ -799,7 +814,7 @@ Returns: A formatted string with a newline character at the end.
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="caprintfln"><span><a class="doc-id-link" href="#caprintfln">caprintfln<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L360"><em>Source</em></a></div></h3>
+<h3 id="caprintfln"><span><a class="doc-id-link" href="#caprintfln">caprintfln<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L368"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">caprintfln :: <span class="keyword-type">proc</span>(format: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>, <span class="keyword-type">..</span> args: ..<a href="/base/builtin#any"><span class="doc-builtin">any</span></a>) -> <a href="/base/builtin#cstring"><span class="doc-builtin">cstring</span></a> {…}</pre>
 </div>
@@ -813,7 +828,7 @@ Returns: A formatted string with a newline character at the end.
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="ctprintf"><span><a class="doc-id-link" href="#ctprintf">ctprintf<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L374"><em>Source</em></a></div></h3>
+<h3 id="ctprintf"><span><a class="doc-id-link" href="#ctprintf">ctprintf<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L383"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">ctprintf :: <span class="keyword-type">proc</span>(format: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>, <span class="keyword-type">..</span> args: ..<a href="/base/builtin#any"><span class="doc-builtin">any</span></a>, newline: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> = false) -> <a href="/base/builtin#cstring"><span class="doc-builtin">cstring</span></a> {…}</pre>
 </div>
@@ -828,7 +843,7 @@ Returns: A formatted string with a newline character at the end.
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="ctprintfln"><span><a class="doc-id-link" href="#ctprintfln">ctprintfln<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L392"><em>Source</em></a></div></h3>
+<h3 id="ctprintfln"><span><a class="doc-id-link" href="#ctprintfln">ctprintfln<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L402"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">ctprintfln :: <span class="keyword-type">proc</span>(format: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>, <span class="keyword-type">..</span> args: ..<a href="/base/builtin#any"><span class="doc-builtin">any</span></a>) -> <a href="/base/builtin#cstring"><span class="doc-builtin">cstring</span></a> {…}</pre>
 </div>
@@ -842,7 +857,7 @@ Returns: A formatted string with a newline character at the end.
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="enum_value_to_string"><span><a class="doc-id-link" href="#enum_value_to_string">enum_value_to_string<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L1511"><em>Source</em></a></div></h3>
+<h3 id="enum_value_to_string"><span><a class="doc-id-link" href="#enum_value_to_string">enum_value_to_string<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L1536"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">enum_value_to_string :: <span class="keyword-type">proc</span>(val: <a href="/base/builtin#any"><span class="doc-builtin">any</span></a>) -> (<a href="/base/builtin#string"><span class="doc-builtin">string</span></a>, <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>) {…}</pre>
 </div>
@@ -854,7 +869,7 @@ Returns: A formatted string with a newline character at the end.
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="eprint"><span><a class="doc-id-link" href="#eprint">eprint<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt_os.odin#L78"><em>Source</em></a></div></h3>
+<h3 id="eprint"><span><a class="doc-id-link" href="#eprint">eprint<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt_os.odin#L79"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">eprint :: <span class="keyword-type">proc</span>(<span class="keyword-type">..</span> args: ..<a href="/base/builtin#any"><span class="doc-builtin">any</span></a>, sep: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a> = " ", flush: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> = true) -> <a href="/base/builtin#int"><span class="doc-builtin">int</span></a> {…}</pre>
 </div>
@@ -864,7 +879,7 @@ Returns: A formatted string with a newline character at the end.
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="eprintf"><span><a class="doc-id-link" href="#eprintf">eprintf<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt_os.odin#L82"><em>Source</em></a></div></h3>
+<h3 id="eprintf"><span><a class="doc-id-link" href="#eprintf">eprintf<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt_os.odin#L83"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">eprintf :: <span class="keyword-type">proc</span>(fmt: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>, <span class="keyword-type">..</span> args: ..<a href="/base/builtin#any"><span class="doc-builtin">any</span></a>, flush: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> = true) -> <a href="/base/builtin#int"><span class="doc-builtin">int</span></a> {…}</pre>
 </div>
@@ -874,7 +889,7 @@ Returns: A formatted string with a newline character at the end.
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="eprintfln"><span><a class="doc-id-link" href="#eprintfln">eprintfln<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt_os.odin#L84"><em>Source</em></a></div></h3>
+<h3 id="eprintfln"><span><a class="doc-id-link" href="#eprintfln">eprintfln<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt_os.odin#L85"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">eprintfln :: <span class="keyword-type">proc</span>(fmt: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>, <span class="keyword-type">..</span> args: ..<a href="/base/builtin#any"><span class="doc-builtin">any</span></a>, flush: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> = true) -> <a href="/base/builtin#int"><span class="doc-builtin">int</span></a> {…}</pre>
 </div>
@@ -884,7 +899,7 @@ Returns: A formatted string with a newline character at the end.
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="eprintln"><span><a class="doc-id-link" href="#eprintln">eprintln<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt_os.odin#L80"><em>Source</em></a></div></h3>
+<h3 id="eprintln"><span><a class="doc-id-link" href="#eprintln">eprintln<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt_os.odin#L81"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">eprintln :: <span class="keyword-type">proc</span>(<span class="keyword-type">..</span> args: ..<a href="/base/builtin#any"><span class="doc-builtin">any</span></a>, sep: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a> = " ", flush: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> = true) -> <a href="/base/builtin#int"><span class="doc-builtin">int</span></a> {…}</pre>
 </div>
@@ -894,7 +909,7 @@ Returns: A formatted string with a newline character at the end.
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="fmt_arg"><span><a class="doc-id-link" href="#fmt_arg">fmt_arg<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L2974"><em>Source</em></a></div></h3>
+<h3 id="fmt_arg"><span><a class="doc-id-link" href="#fmt_arg">fmt_arg<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L3074"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">fmt_arg :: <span class="keyword-type">proc</span>(fi: ^<a class="code-typename" href="/core/fmt/#Info">Info</a>, arg: <a href="/base/builtin#any"><span class="doc-builtin">any</span></a>, verb: <a href="/base/builtin#rune"><span class="doc-builtin">rune</span></a>) {…}</pre>
 </div>
@@ -908,7 +923,7 @@ Returns: A formatted string with a newline character at the end.
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="fmt_array"><span><a class="doc-id-link" href="#fmt_array">fmt_array<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L2091"><em>Source</em></a></div></h3>
+<h3 id="fmt_array"><span><a class="doc-id-link" href="#fmt_array">fmt_array<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L2175"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">fmt_array :: <span class="keyword-type">proc</span>(
 	fi:        ^<a class="code-typename" href="/core/fmt/#Info">Info</a>, 
@@ -931,7 +946,7 @@ Returns: A formatted string with a newline character at the end.
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="fmt_array_nul_terminated"><span><a class="doc-id-link" href="#fmt_array_nul_terminated">fmt_array_nul_terminated<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L2073"><em>Source</em></a></div></h3>
+<h3 id="fmt_array_nul_terminated"><span><a class="doc-id-link" href="#fmt_array_nul_terminated">fmt_array_nul_terminated<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L2157"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">fmt_array_nul_terminated :: <span class="keyword-type">proc</span>(
 	fi:        ^<a class="code-typename" href="/core/fmt/#Info">Info</a>, 
@@ -954,7 +969,7 @@ Returns: A formatted string with a newline character at the end.
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="fmt_bad_verb"><span><a class="doc-id-link" href="#fmt_bad_verb">fmt_bad_verb<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L949"><em>Source</em></a></div></h3>
+<h3 id="fmt_bad_verb"><span><a class="doc-id-link" href="#fmt_bad_verb">fmt_bad_verb<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L927"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">fmt_bad_verb :: <span class="keyword-type">proc</span>(fi: ^<a class="code-typename" href="/core/fmt/#Info">Info</a>, verb: <a href="/base/builtin#rune"><span class="doc-builtin">rune</span></a>) {…}</pre>
 </div>
@@ -966,13 +981,13 @@ Returns: A formatted string with a newline character at the end.
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="fmt_bit_field"><span><a class="doc-id-link" href="#fmt_bit_field">fmt_bit_field<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L2457"><em>Source</em></a></div></h3>
+<h3 id="fmt_bit_field"><span><a class="doc-id-link" href="#fmt_bit_field">fmt_bit_field<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L2541"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">fmt_bit_field :: <span class="keyword-type">proc</span>(fi: ^<a class="code-typename" href="/core/fmt/#Info">Info</a>, v: <a href="/base/builtin#any"><span class="doc-builtin">any</span></a>, verb: <a href="/base/builtin#rune"><span class="doc-builtin">rune</span></a>, info: runtime.<a class="code-typename" href="/base/runtime/#Type_Info_Bit_Field">Type_Info_Bit_Field</a>, type_name: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="fmt_bit_set"><span><a class="doc-id-link" href="#fmt_bit_set">fmt_bit_set<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L1620"><em>Source</em></a></div></h3>
+<h3 id="fmt_bit_set"><span><a class="doc-id-link" href="#fmt_bit_set">fmt_bit_set<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L1645"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">fmt_bit_set :: <span class="keyword-type">proc</span>(fi: ^<a class="code-typename" href="/core/fmt/#Info">Info</a>, v: <a href="/base/builtin#any"><span class="doc-builtin">any</span></a>, name: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a> = "", verb: <a href="/base/builtin#rune"><span class="doc-builtin">rune</span></a> = 'v') {…}</pre>
 </div>
@@ -986,7 +1001,7 @@ Returns: A formatted string with a newline character at the end.
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="fmt_bool"><span><a class="doc-id-link" href="#fmt_bool">fmt_bool<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L973"><em>Source</em></a></div></h3>
+<h3 id="fmt_bool"><span><a class="doc-id-link" href="#fmt_bool">fmt_bool<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L951"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">fmt_bool :: <span class="keyword-type">proc</span>(fi: ^<a class="code-typename" href="/core/fmt/#Info">Info</a>, b: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>, verb: <a href="/base/builtin#rune"><span class="doc-builtin">rune</span></a>) {…}</pre>
 </div>
@@ -999,7 +1014,7 @@ Returns: A formatted string with a newline character at the end.
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="fmt_complex"><span><a class="doc-id-link" href="#fmt_complex">fmt_complex<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L2911"><em>Source</em></a></div></h3>
+<h3 id="fmt_complex"><span><a class="doc-id-link" href="#fmt_complex">fmt_complex<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L3011"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">fmt_complex :: <span class="keyword-type">proc</span>(fi: ^<a class="code-typename" href="/core/fmt/#Info">Info</a>, c: <a href="/base/builtin#complex128"><span class="doc-builtin">complex128</span></a>, bits: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, verb: <a href="/base/builtin#rune"><span class="doc-builtin">rune</span></a>) {…}</pre>
 </div>
@@ -1013,7 +1028,7 @@ Returns: A formatted string with a newline character at the end.
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="fmt_cstring"><span><a class="doc-id-link" href="#fmt_cstring">fmt_cstring<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L1459"><em>Source</em></a></div></h3>
+<h3 id="fmt_cstring"><span><a class="doc-id-link" href="#fmt_cstring">fmt_cstring<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L1484"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">fmt_cstring :: <span class="keyword-type">proc</span>(fi: ^<a class="code-typename" href="/core/fmt/#Info">Info</a>, s: <a href="/base/builtin#cstring"><span class="doc-builtin">cstring</span></a>, verb: <a href="/base/builtin#rune"><span class="doc-builtin">rune</span></a>) {…}</pre>
 </div>
@@ -1026,7 +1041,7 @@ Returns: A formatted string with a newline character at the end.
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="fmt_enum"><span><a class="doc-id-link" href="#fmt_enum">fmt_enum<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L1542"><em>Source</em></a></div></h3>
+<h3 id="fmt_enum"><span><a class="doc-id-link" href="#fmt_enum">fmt_enum<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L1567"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">fmt_enum :: <span class="keyword-type">proc</span>(fi: ^<a class="code-typename" href="/core/fmt/#Info">Info</a>, v: <a href="/base/builtin#any"><span class="doc-builtin">any</span></a>, verb: <a href="/base/builtin#rune"><span class="doc-builtin">rune</span></a>) {…}</pre>
 </div>
@@ -1039,7 +1054,7 @@ Returns: A formatted string with a newline character at the end.
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="fmt_float"><span><a class="doc-id-link" href="#fmt_float">fmt_float<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L1354"><em>Source</em></a></div></h3>
+<h3 id="fmt_float"><span><a class="doc-id-link" href="#fmt_float">fmt_float<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L1379"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">fmt_float :: <span class="keyword-type">proc</span>(fi: ^<a class="code-typename" href="/core/fmt/#Info">Info</a>, v: <a href="/base/builtin#f64"><span class="doc-builtin">f64</span></a>, bit_size: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, verb: <a href="/base/builtin#rune"><span class="doc-builtin">rune</span></a>) {…}</pre>
 </div>
@@ -1053,7 +1068,7 @@ Returns: A formatted string with a newline character at the end.
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="fmt_int"><span><a class="doc-id-link" href="#fmt_int">fmt_int<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L1227"><em>Source</em></a></div></h3>
+<h3 id="fmt_int"><span><a class="doc-id-link" href="#fmt_int">fmt_int<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L1252"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">fmt_int :: <span class="keyword-type">proc</span>(fi: ^<a class="code-typename" href="/core/fmt/#Info">Info</a>, u: <a href="/base/builtin#u64"><span class="doc-builtin">u64</span></a>, is_signed: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>, bit_size: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, verb: <a href="/base/builtin#rune"><span class="doc-builtin">rune</span></a>) {…}</pre>
 </div>
@@ -1068,7 +1083,7 @@ Returns: A formatted string with a newline character at the end.
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="fmt_int_128"><span><a class="doc-id-link" href="#fmt_int_128">fmt_int_128<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L1263"><em>Source</em></a></div></h3>
+<h3 id="fmt_int_128"><span><a class="doc-id-link" href="#fmt_int_128">fmt_int_128<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L1288"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">fmt_int_128 :: <span class="keyword-type">proc</span>(fi: ^<a class="code-typename" href="/core/fmt/#Info">Info</a>, u: <a href="/base/builtin#u128"><span class="doc-builtin">u128</span></a>, is_signed: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>, bit_size: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, verb: <a href="/base/builtin#rune"><span class="doc-builtin">rune</span></a>) {…}</pre>
 </div>
@@ -1083,7 +1098,7 @@ Returns: A formatted string with a newline character at the end.
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="fmt_matrix"><span><a class="doc-id-link" href="#fmt_matrix">fmt_matrix<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L2401"><em>Source</em></a></div></h3>
+<h3 id="fmt_matrix"><span><a class="doc-id-link" href="#fmt_matrix">fmt_matrix<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L2484"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">fmt_matrix :: <span class="keyword-type">proc</span>(fi: ^<a class="code-typename" href="/core/fmt/#Info">Info</a>, v: <a href="/base/builtin#any"><span class="doc-builtin">any</span></a>, verb: <a href="/base/builtin#rune"><span class="doc-builtin">rune</span></a>, info: runtime.<a class="code-typename" href="/base/runtime/#Type_Info_Matrix">Type_Info_Matrix</a>) {…}</pre>
 </div>
@@ -1097,7 +1112,7 @@ Returns: A formatted string with a newline character at the end.
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="fmt_named"><span><a class="doc-id-link" href="#fmt_named">fmt_named<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L2155"><em>Source</em></a></div></h3>
+<h3 id="fmt_named"><span><a class="doc-id-link" href="#fmt_named">fmt_named<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L2239"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">fmt_named :: <span class="keyword-type">proc</span>(fi: ^<a class="code-typename" href="/core/fmt/#Info">Info</a>, v: <a href="/base/builtin#any"><span class="doc-builtin">any</span></a>, verb: <a href="/base/builtin#rune"><span class="doc-builtin">rune</span></a>, info: runtime.<a class="code-typename" href="/base/runtime/#Type_Info_Named">Type_Info_Named</a>) {…}</pre>
 </div>
@@ -1112,7 +1127,7 @@ Returns: A formatted string with a newline character at the end.
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="fmt_pointer"><span><a class="doc-id-link" href="#fmt_pointer">fmt_pointer<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L1469"><em>Source</em></a></div></h3>
+<h3 id="fmt_pointer"><span><a class="doc-id-link" href="#fmt_pointer">fmt_pointer<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L1494"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">fmt_pointer :: <span class="keyword-type">proc</span>(fi: ^<a class="code-typename" href="/core/fmt/#Info">Info</a>, p: <a href="/base/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>, verb: <a href="/base/builtin#rune"><span class="doc-builtin">rune</span></a>) {…}</pre>
 </div>
@@ -1125,7 +1140,7 @@ Returns: A formatted string with a newline character at the end.
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="fmt_quaternion"><span><a class="doc-id-link" href="#fmt_quaternion">fmt_quaternion<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L2935"><em>Source</em></a></div></h3>
+<h3 id="fmt_quaternion"><span><a class="doc-id-link" href="#fmt_quaternion">fmt_quaternion<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L3035"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">fmt_quaternion :: <span class="keyword-type">proc</span>(fi: ^<a class="code-typename" href="/core/fmt/#Info">Info</a>, q: <a href="/base/builtin#quaternion256"><span class="doc-builtin">quaternion256</span></a>, bits: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, verb: <a href="/base/builtin#rune"><span class="doc-builtin">rune</span></a>) {…}</pre>
 </div>
@@ -1139,7 +1154,7 @@ Returns: A formatted string with a newline character at the end.
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="fmt_rune"><span><a class="doc-id-link" href="#fmt_rune">fmt_rune<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L1208"><em>Source</em></a></div></h3>
+<h3 id="fmt_rune"><span><a class="doc-id-link" href="#fmt_rune">fmt_rune<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L1233"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">fmt_rune :: <span class="keyword-type">proc</span>(fi: ^<a class="code-typename" href="/core/fmt/#Info">Info</a>, r: <a href="/base/builtin#rune"><span class="doc-builtin">rune</span></a>, verb: <a href="/base/builtin#rune"><span class="doc-builtin">rune</span></a>) {…}</pre>
 </div>
@@ -1152,7 +1167,7 @@ Returns: A formatted string with a newline character at the end.
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="fmt_soa_pointer"><span><a class="doc-id-link" href="#fmt_soa_pointer">fmt_soa_pointer<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L1496"><em>Source</em></a></div></h3>
+<h3 id="fmt_soa_pointer"><span><a class="doc-id-link" href="#fmt_soa_pointer">fmt_soa_pointer<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L1521"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">fmt_soa_pointer :: <span class="keyword-type">proc</span>(fi: ^<a class="code-typename" href="/core/fmt/#Info">Info</a>, p: runtime.<a class="code-typename" href="/base/runtime/#Raw_Soa_Pointer">Raw_Soa_Pointer</a>, verb: <a href="/base/builtin#rune"><span class="doc-builtin">rune</span></a>) {…}</pre>
 </div>
@@ -1165,7 +1180,7 @@ Returns: A formatted string with a newline character at the end.
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="fmt_string"><span><a class="doc-id-link" href="#fmt_string">fmt_string<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L1395"><em>Source</em></a></div></h3>
+<h3 id="fmt_string"><span><a class="doc-id-link" href="#fmt_string">fmt_string<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L1420"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">fmt_string :: <span class="keyword-type">proc</span>(fi: ^<a class="code-typename" href="/core/fmt/#Info">Info</a>, s: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>, verb: <a href="/base/builtin#rune"><span class="doc-builtin">rune</span></a>) {…}</pre>
 </div>
@@ -1178,7 +1193,7 @@ Returns: A formatted string with a newline character at the end.
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="fmt_struct"><span><a class="doc-id-link" href="#fmt_struct">fmt_struct<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L1874"><em>Source</em></a></div></h3>
+<h3 id="fmt_struct"><span><a class="doc-id-link" href="#fmt_struct">fmt_struct<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L1947"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">fmt_struct :: <span class="keyword-type">proc</span>(fi: ^<a class="code-typename" href="/core/fmt/#Info">Info</a>, v: <a href="/base/builtin#any"><span class="doc-builtin">any</span></a>, the_verb: <a href="/base/builtin#rune"><span class="doc-builtin">rune</span></a>, info: runtime.<a class="code-typename" href="/base/runtime/#Type_Info_Struct">Type_Info_Struct</a>, type_name: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>) {…}</pre>
 </div>
@@ -1193,7 +1208,7 @@ Returns: A formatted string with a newline character at the end.
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="fmt_union"><span><a class="doc-id-link" href="#fmt_union">fmt_union<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L2348"><em>Source</em></a></div></h3>
+<h3 id="fmt_union"><span><a class="doc-id-link" href="#fmt_union">fmt_union<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L2431"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">fmt_union :: <span class="keyword-type">proc</span>(fi: ^<a class="code-typename" href="/core/fmt/#Info">Info</a>, v: <a href="/base/builtin#any"><span class="doc-builtin">any</span></a>, verb: <a href="/base/builtin#rune"><span class="doc-builtin">rune</span></a>, info: runtime.<a class="code-typename" href="/base/runtime/#Type_Info_Union">Type_Info_Union</a>, type_size: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>) {…}</pre>
 </div>
@@ -1208,7 +1223,7 @@ Returns: A formatted string with a newline character at the end.
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="fmt_value"><span><a class="doc-id-link" href="#fmt_value">fmt_value<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L2555"><em>Source</em></a></div></h3>
+<h3 id="fmt_value"><span><a class="doc-id-link" href="#fmt_value">fmt_value<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L2642"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">fmt_value :: <span class="keyword-type">proc</span>(fi: ^<a class="code-typename" href="/core/fmt/#Info">Info</a>, v: <a href="/base/builtin#any"><span class="doc-builtin">any</span></a>, verb: <a href="/base/builtin#rune"><span class="doc-builtin">rune</span></a>) {…}</pre>
 </div>
@@ -1222,7 +1237,7 @@ Returns: A formatted string with a newline character at the end.
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="fmt_write_array"><span><a class="doc-id-link" href="#fmt_write_array">fmt_write_array<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L1760"><em>Source</em></a></div></h3>
+<h3 id="fmt_write_array"><span><a class="doc-id-link" href="#fmt_write_array">fmt_write_array<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L1795"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">fmt_write_array :: <span class="keyword-type">proc</span>(
 	fi:         ^<a class="code-typename" href="/core/fmt/#Info">Info</a>, 
@@ -1245,7 +1260,7 @@ Returns: A formatted string with a newline character at the end.
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="fmt_write_indent"><span><a class="doc-id-link" href="#fmt_write_indent">fmt_write_indent<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L1745"><em>Source</em></a></div></h3>
+<h3 id="fmt_write_indent"><span><a class="doc-id-link" href="#fmt_write_indent">fmt_write_indent<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L1780"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">fmt_write_indent :: <span class="keyword-type">proc</span>(fi: ^<a class="code-typename" href="/core/fmt/#Info">Info</a>) {…}</pre>
 </div>
@@ -1256,7 +1271,7 @@ Returns: A formatted string with a newline character at the end.
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="fmt_write_padding"><span><a class="doc-id-link" href="#fmt_write_padding">fmt_write_padding<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L987"><em>Source</em></a></div></h3>
+<h3 id="fmt_write_padding"><span><a class="doc-id-link" href="#fmt_write_padding">fmt_write_padding<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L965"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">fmt_write_padding :: <span class="keyword-type">proc</span>(fi: ^<a class="code-typename" href="/core/fmt/#Info">Info</a>, width: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>) {…}</pre>
 </div>
@@ -1268,7 +1283,7 @@ Returns: A formatted string with a newline character at the end.
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="fprint"><span><a class="doc-id-link" href="#fprint">fprint<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt_os.odin#L11"><em>Source</em></a></div></h3>
+<h3 id="fprint"><span><a class="doc-id-link" href="#fprint">fprint<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt_os.odin#L12"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">fprint :: <span class="keyword-type">proc</span>(fd: os.<a class="code-typename" href="/core/os/#Handle">Handle</a>, <span class="keyword-type">..</span> args: ..<a href="/base/builtin#any"><span class="doc-builtin">any</span></a>, sep: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a> = " ", flush: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> = true) -> <a href="/base/builtin#int"><span class="doc-builtin">int</span></a> {…}</pre>
 </div>
@@ -1278,19 +1293,19 @@ Returns: A formatted string with a newline character at the end.
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="fprint_type"><span><a class="doc-id-link" href="#fprint_type">fprint_type<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt_os.odin#L47"><em>Source</em></a></div></h3>
+<h3 id="fprint_type"><span><a class="doc-id-link" href="#fprint_type">fprint_type<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt_os.odin#L48"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">fprint_type :: <span class="keyword-type">proc</span>(fd: os.<a class="code-typename" href="/core/os/#Handle">Handle</a>, info: ^runtime.<a class="code-typename" href="/base/runtime/#Type_Info">Type_Info</a>, flush: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> = true) -> (n: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, err: io.<a class="code-typename" href="/core/io/#Error">Error</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="fprint_typeid"><span><a class="doc-id-link" href="#fprint_typeid">fprint_typeid<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt_os.odin#L57"><em>Source</em></a></div></h3>
+<h3 id="fprint_typeid"><span><a class="doc-id-link" href="#fprint_typeid">fprint_typeid<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt_os.odin#L58"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">fprint_typeid :: <span class="keyword-type">proc</span>(fd: os.<a class="code-typename" href="/core/os/#Handle">Handle</a>, id: <a href="/base/builtin#typeid"><span class="doc-builtin">typeid</span></a>, flush: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> = true) -> (n: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, err: io.<a class="code-typename" href="/core/io/#Error">Error</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="fprintf"><span><a class="doc-id-link" href="#fprintf">fprintf<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt_os.odin#L33"><em>Source</em></a></div></h3>
+<h3 id="fprintf"><span><a class="doc-id-link" href="#fprintf">fprintf<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt_os.odin#L34"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">fprintf :: <span class="keyword-type">proc</span>(fd: os.<a class="code-typename" href="/core/os/#Handle">Handle</a>, fmt: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>, <span class="keyword-type">..</span> args: ..<a href="/base/builtin#any"><span class="doc-builtin">any</span></a>, flush: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> = true, newline: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> = false) -> <a href="/base/builtin#int"><span class="doc-builtin">int</span></a> {…}</pre>
 </div>
@@ -1300,7 +1315,7 @@ Returns: A formatted string with a newline character at the end.
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="fprintfln"><span><a class="doc-id-link" href="#fprintfln">fprintfln<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt_os.odin#L44"><em>Source</em></a></div></h3>
+<h3 id="fprintfln"><span><a class="doc-id-link" href="#fprintfln">fprintfln<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt_os.odin#L45"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">fprintfln :: <span class="keyword-type">proc</span>(fd: os.<a class="code-typename" href="/core/os/#Handle">Handle</a>, fmt: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>, <span class="keyword-type">..</span> args: ..<a href="/base/builtin#any"><span class="doc-builtin">any</span></a>, flush: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> = true) -> <a href="/base/builtin#int"><span class="doc-builtin">int</span></a> {…}</pre>
 </div>
@@ -1310,7 +1325,7 @@ Returns: A formatted string with a newline character at the end.
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="fprintln"><span><a class="doc-id-link" href="#fprintln">fprintln<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt_os.odin#L22"><em>Source</em></a></div></h3>
+<h3 id="fprintln"><span><a class="doc-id-link" href="#fprintln">fprintln<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt_os.odin#L23"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">fprintln :: <span class="keyword-type">proc</span>(fd: os.<a class="code-typename" href="/core/os/#Handle">Handle</a>, <span class="keyword-type">..</span> args: ..<a href="/base/builtin#any"><span class="doc-builtin">any</span></a>, sep: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a> = " ", flush: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> = true) -> <a href="/base/builtin#int"><span class="doc-builtin">int</span></a> {…}</pre>
 </div>
@@ -1320,7 +1335,7 @@ Returns: A formatted string with a newline character at the end.
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="int_from_arg"><span><a class="doc-id-link" href="#int_from_arg">int_from_arg<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L929"><em>Source</em></a></div></h3>
+<h3 id="int_from_arg"><span><a class="doc-id-link" href="#int_from_arg">int_from_arg<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L907"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">int_from_arg :: <span class="keyword-type">proc</span>(args: []<a href="/base/builtin#any"><span class="doc-builtin">any</span></a>, arg_index: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>) -> (<a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>) {…}</pre>
 </div>
@@ -1335,7 +1350,7 @@ Returns: A formatted string with a newline character at the end.
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="panicf"><span><a class="doc-id-link" href="#panicf">panicf<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L323"><em>Source</em></a></div></h3>
+<h3 id="panicf"><span><a class="doc-id-link" href="#panicf">panicf<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L329"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">panicf :: <span class="keyword-type">proc</span>(fmt: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>, <span class="keyword-type">..</span> args: ..<a href="/base/builtin#any"><span class="doc-builtin">any</span></a>, loc := <a href="/base/runtime/#Source_Code_Location">#caller_location</a>) -> ! {…}</pre>
 </div>
@@ -1348,7 +1363,7 @@ Returns: A formatted string with a newline character at the end.
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="print"><span><a class="doc-id-link" href="#print">print<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt_os.odin#L69"><em>Source</em></a></div></h3>
+<h3 id="print"><span><a class="doc-id-link" href="#print">print<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt_os.odin#L70"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">print :: <span class="keyword-type">proc</span>(<span class="keyword-type">..</span> args: ..<a href="/base/builtin#any"><span class="doc-builtin">any</span></a>, sep: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a> = " ", flush: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> = true) -> <a href="/base/builtin#int"><span class="doc-builtin">int</span></a> {…}</pre>
 </div>
@@ -1358,7 +1373,7 @@ Returns: A formatted string with a newline character at the end.
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="printf"><span><a class="doc-id-link" href="#printf">printf<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt_os.odin#L73"><em>Source</em></a></div></h3>
+<h3 id="printf"><span><a class="doc-id-link" href="#printf">printf<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt_os.odin#L74"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">printf :: <span class="keyword-type">proc</span>(fmt: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>, <span class="keyword-type">..</span> args: ..<a href="/base/builtin#any"><span class="doc-builtin">any</span></a>, flush: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> = true) -> <a href="/base/builtin#int"><span class="doc-builtin">int</span></a> {…}</pre>
 </div>
@@ -1368,7 +1383,7 @@ Returns: A formatted string with a newline character at the end.
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="printfln"><span><a class="doc-id-link" href="#printfln">printfln<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt_os.odin#L75"><em>Source</em></a></div></h3>
+<h3 id="printfln"><span><a class="doc-id-link" href="#printfln">printfln<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt_os.odin#L76"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">printfln :: <span class="keyword-type">proc</span>(fmt: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>, <span class="keyword-type">..</span> args: ..<a href="/base/builtin#any"><span class="doc-builtin">any</span></a>, flush: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> = true) -> <a href="/base/builtin#int"><span class="doc-builtin">int</span></a> {…}</pre>
 </div>
@@ -1378,7 +1393,7 @@ Returns: A formatted string with a newline character at the end.
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="println"><span><a class="doc-id-link" href="#println">println<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt_os.odin#L71"><em>Source</em></a></div></h3>
+<h3 id="println"><span><a class="doc-id-link" href="#println">println<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt_os.odin#L72"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">println :: <span class="keyword-type">proc</span>(<span class="keyword-type">..</span> args: ..<a href="/base/builtin#any"><span class="doc-builtin">any</span></a>, sep: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a> = " ", flush: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> = true) -> <a href="/base/builtin#int"><span class="doc-builtin">int</span></a> {…}</pre>
 </div>
@@ -1388,7 +1403,7 @@ Returns: A formatted string with a newline character at the end.
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="register_user_formatter"><span><a class="doc-id-link" href="#register_user_formatter">register_user_formatter<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L103"><em>Source</em></a></div></h3>
+<h3 id="register_user_formatter"><span><a class="doc-id-link" href="#register_user_formatter">register_user_formatter<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L107"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">register_user_formatter :: <span class="keyword-type">proc</span>(id: <a href="/base/builtin#typeid"><span class="doc-builtin">typeid</span></a>, formatter: <a class="code-typename" href="/core/fmt/#User_Formatter">User_Formatter</a>) -> <a class="code-typename" href="/core/fmt/#Register_User_Formatter_Error">Register_User_Formatter_Error</a> {…}</pre>
 </div>
@@ -1402,7 +1417,7 @@ Returns: A formatted string with a newline character at the end.
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="sbprint"><span><a class="doc-id-link" href="#sbprint">sbprint<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L404"><em>Source</em></a></div></h3>
+<h3 id="sbprint"><span><a class="doc-id-link" href="#sbprint">sbprint<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L414"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">sbprint :: <span class="keyword-type">proc</span>(buf: ^strings.<a class="code-typename" href="/core/strings/#Builder">Builder</a>, <span class="keyword-type">..</span> args: ..<a href="/base/builtin#any"><span class="doc-builtin">any</span></a>, sep: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a> = " ") -> <a href="/base/builtin#string"><span class="doc-builtin">string</span></a> {…}</pre>
 </div>
@@ -1416,7 +1431,7 @@ Returns: A formatted string with a newline character at the end.
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="sbprintf"><span><a class="doc-id-link" href="#sbprintf">sbprintf<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L431"><em>Source</em></a></div></h3>
+<h3 id="sbprintf"><span><a class="doc-id-link" href="#sbprintf">sbprintf<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L441"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">sbprintf :: <span class="keyword-type">proc</span>(buf: ^strings.<a class="code-typename" href="/core/strings/#Builder">Builder</a>, fmt: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>, <span class="keyword-type">..</span> args: ..<a href="/base/builtin#any"><span class="doc-builtin">any</span></a>, newline: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> = false) -> <a href="/base/builtin#string"><span class="doc-builtin">string</span></a> {…}</pre>
 </div>
@@ -1431,7 +1446,7 @@ Returns: A formatted string with a newline character at the end.
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="sbprintfln"><span><a class="doc-id-link" href="#sbprintfln">sbprintfln<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L443"><em>Source</em></a></div></h3>
+<h3 id="sbprintfln"><span><a class="doc-id-link" href="#sbprintfln">sbprintfln<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L453"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">sbprintfln :: <span class="keyword-type">proc</span>(buf: ^strings.<a class="code-typename" href="/core/strings/#Builder">Builder</a>, format: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>, <span class="keyword-type">..</span> args: ..<a href="/base/builtin#any"><span class="doc-builtin">any</span></a>) -> <a href="/base/builtin#string"><span class="doc-builtin">string</span></a> {…}</pre>
 </div>
@@ -1444,7 +1459,7 @@ Returns: A formatted string with a newline character at the end.
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="sbprintln"><span><a class="doc-id-link" href="#sbprintln">sbprintln<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L417"><em>Source</em></a></div></h3>
+<h3 id="sbprintln"><span><a class="doc-id-link" href="#sbprintln">sbprintln<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L427"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">sbprintln :: <span class="keyword-type">proc</span>(buf: ^strings.<a class="code-typename" href="/core/strings/#Builder">Builder</a>, <span class="keyword-type">..</span> args: ..<a href="/base/builtin#any"><span class="doc-builtin">any</span></a>, sep: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a> = " ") -> <a href="/base/builtin#string"><span class="doc-builtin">string</span></a> {…}</pre>
 </div>
@@ -1458,7 +1473,7 @@ Returns: A formatted string with a newline character at the end.
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="set_user_formatters"><span><a class="doc-id-link" href="#set_user_formatters">set_user_formatters<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L89"><em>Source</em></a></div></h3>
+<h3 id="set_user_formatters"><span><a class="doc-id-link" href="#set_user_formatters">set_user_formatters<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L93"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">set_user_formatters :: <span class="keyword-type">proc</span>(m: ^<span class="keyword-type">map</span>[<a href="/base/builtin#typeid"><span class="doc-builtin">typeid</span></a>]<a class="code-typename" href="/core/fmt/#User_Formatter">User_Formatter</a>) {…}</pre>
 </div>
@@ -1470,7 +1485,7 @@ Returns: A formatted string with a newline character at the end.
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="stored_enum_value_to_string"><span><a class="doc-id-link" href="#stored_enum_value_to_string">stored_enum_value_to_string<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L1585"><em>Source</em></a></div></h3>
+<h3 id="stored_enum_value_to_string"><span><a class="doc-id-link" href="#stored_enum_value_to_string">stored_enum_value_to_string<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L1610"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">stored_enum_value_to_string :: <span class="keyword-type">proc</span>(enum_type: ^runtime.<a class="code-typename" href="/base/runtime/#Type_Info">Type_Info</a>, ev: runtime.<a class="code-typename" href="/base/runtime/#Type_Info_Enum_Value">Type_Info_Enum_Value</a>, offset: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a> = 0) -> (<a href="/base/builtin#string"><span class="doc-builtin">string</span></a>, <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>) {…}</pre>
 </div>
@@ -1484,7 +1499,7 @@ Returns: A formatted string with a newline character at the end.
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="string_to_enum_value"><span><a class="doc-id-link" href="#string_to_enum_value">string_to_enum_value<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L1522"><em>Source</em></a></div></h3>
+<h3 id="string_to_enum_value"><span><a class="doc-id-link" href="#string_to_enum_value">string_to_enum_value<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L1547"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">string_to_enum_value :: <span class="keyword-type">proc</span>($T: <a href="/base/builtin#typeid"><span class="doc-builtin">typeid</span></a>, s: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>) -> (<a href="/base/builtin#typeid"><span class="doc-builtin">typeid</span></a>, <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>) {…}</pre>
 </div>
@@ -1498,7 +1513,7 @@ Inputs:
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="tprint"><span><a class="doc-id-link" href="#tprint">tprint<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L185"><em>Source</em></a></div></h3>
+<h3 id="tprint"><span><a class="doc-id-link" href="#tprint">tprint<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L191"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">tprint :: <span class="keyword-type">proc</span>(<span class="keyword-type">..</span> args: ..<a href="/base/builtin#any"><span class="doc-builtin">any</span></a>, sep: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a> = " ") -> <a href="/base/builtin#string"><span class="doc-builtin">string</span></a> {…}</pre>
 </div>
@@ -1516,7 +1531,7 @@ Returns: A formatted string.
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="tprintf"><span><a class="doc-id-link" href="#tprintf">tprintf<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L218"><em>Source</em></a></div></h3>
+<h3 id="tprintf"><span><a class="doc-id-link" href="#tprintf">tprintf<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L224"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">tprintf :: <span class="keyword-type">proc</span>(fmt: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>, <span class="keyword-type">..</span> args: ..<a href="/base/builtin#any"><span class="doc-builtin">any</span></a>, newline: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> = false) -> <a href="/base/builtin#string"><span class="doc-builtin">string</span></a> {…}</pre>
 </div>
@@ -1535,7 +1550,7 @@ Returns: A formatted string.
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="tprintfln"><span><a class="doc-id-link" href="#tprintfln">tprintfln<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L234"><em>Source</em></a></div></h3>
+<h3 id="tprintfln"><span><a class="doc-id-link" href="#tprintfln">tprintfln<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L240"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">tprintfln :: <span class="keyword-type">proc</span>(fmt: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>, <span class="keyword-type">..</span> args: ..<a href="/base/builtin#any"><span class="doc-builtin">any</span></a>) -> <a href="/base/builtin#string"><span class="doc-builtin">string</span></a> {…}</pre>
 </div>
@@ -1553,7 +1568,7 @@ Returns: A formatted string.
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="tprintln"><span><a class="doc-id-link" href="#tprintln">tprintln<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L201"><em>Source</em></a></div></h3>
+<h3 id="tprintln"><span><a class="doc-id-link" href="#tprintln">tprintln<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L207"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">tprintln :: <span class="keyword-type">proc</span>(<span class="keyword-type">..</span> args: ..<a href="/base/builtin#any"><span class="doc-builtin">any</span></a>, sep: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a> = " ") -> <a href="/base/builtin#string"><span class="doc-builtin">string</span></a> {…}</pre>
 </div>
@@ -1571,7 +1586,7 @@ Returns: A formatted string with a newline character at the end.
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="wprint"><span><a class="doc-id-link" href="#wprint">wprint<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L455"><em>Source</em></a></div></h3>
+<h3 id="wprint"><span><a class="doc-id-link" href="#wprint">wprint<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L465"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">wprint :: <span class="keyword-type">proc</span>(w: io.<a class="code-typename" href="/core/io/#Stream">Stream</a>, <span class="keyword-type">..</span> args: ..<a href="/base/builtin#any"><span class="doc-builtin">any</span></a>, sep: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a> = " ", flush: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> = true) -> <a href="/base/builtin#int"><span class="doc-builtin">int</span></a> {…}</pre>
 </div>
@@ -1585,7 +1600,7 @@ Returns: A formatted string with a newline character at the end.
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="wprint_type"><span><a class="doc-id-link" href="#wprint_type">wprint_type<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L822"><em>Source</em></a></div></h3>
+<h3 id="wprint_type"><span><a class="doc-id-link" href="#wprint_type">wprint_type<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L804"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">wprint_type :: <span class="keyword-type">proc</span>(w: io.<a class="code-typename" href="/core/io/#Stream">Stream</a>, info: ^runtime.<a class="code-typename" href="/base/runtime/#Type_Info">Type_Info</a>, flush: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> = true) -> (<a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, io.<a class="code-typename" href="/core/io/#Error">Error</a>) {…}</pre>
 </div>
@@ -1598,7 +1613,7 @@ Returns: A formatted string with a newline character at the end.
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="wprint_typeid"><span><a class="doc-id-link" href="#wprint_typeid">wprint_typeid<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L837"><em>Source</em></a></div></h3>
+<h3 id="wprint_typeid"><span><a class="doc-id-link" href="#wprint_typeid">wprint_typeid<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L819"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">wprint_typeid :: <span class="keyword-type">proc</span>(w: io.<a class="code-typename" href="/core/io/#Stream">Stream</a>, id: <a href="/base/builtin#typeid"><span class="doc-builtin">typeid</span></a>, flush: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> = true) -> (<a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, io.<a class="code-typename" href="/core/io/#Error">Error</a>) {…}</pre>
 </div>
@@ -1611,7 +1626,7 @@ Returns: A formatted string with a newline character at the end.
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="wprintf"><span><a class="doc-id-link" href="#wprintf">wprintf<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L523"><em>Source</em></a></div></h3>
+<h3 id="wprintf"><span><a class="doc-id-link" href="#wprintf">wprintf<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L533"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">wprintf :: <span class="keyword-type">proc</span>(w: io.<a class="code-typename" href="/core/io/#Stream">Stream</a>, fmt: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>, <span class="keyword-type">..</span> args: ..<a href="/base/builtin#any"><span class="doc-builtin">any</span></a>, flush: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> = true, newline: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> = false) -> <a href="/base/builtin#int"><span class="doc-builtin">int</span></a> {…}</pre>
 </div>
@@ -1626,7 +1641,7 @@ Returns: A formatted string with a newline character at the end.
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="wprintfln"><span><a class="doc-id-link" href="#wprintfln">wprintfln<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L811"><em>Source</em></a></div></h3>
+<h3 id="wprintfln"><span><a class="doc-id-link" href="#wprintfln">wprintfln<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L793"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">wprintfln :: <span class="keyword-type">proc</span>(w: io.<a class="code-typename" href="/core/io/#Stream">Stream</a>, format: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>, <span class="keyword-type">..</span> args: ..<a href="/base/builtin#any"><span class="doc-builtin">any</span></a>, flush: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> = true) -> <a href="/base/builtin#int"><span class="doc-builtin">int</span></a> {…}</pre>
 </div>
@@ -1639,7 +1654,7 @@ Returns: A formatted string with a newline character at the end.
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="wprintln"><span><a class="doc-id-link" href="#wprintln">wprintln<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L496"><em>Source</em></a></div></h3>
+<h3 id="wprintln"><span><a class="doc-id-link" href="#wprintln">wprintln<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt.odin#L506"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">wprintln :: <span class="keyword-type">proc</span>(w: io.<a class="code-typename" href="/core/io/#Stream">Stream</a>, <span class="keyword-type">..</span> args: ..<a href="/base/builtin#any"><span class="doc-builtin">any</span></a>, sep: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a> = " ", flush: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> = true) -> <a href="/base/builtin#int"><span class="doc-builtin">int</span></a> {…}</pre>
 </div>
@@ -1662,13 +1677,14 @@ Returns: A formatted string with a newline character at the end.
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/fmt/fmt_os.odin">fmt_os.odin</a></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2024-04 (vendor "odin") Windows_amd64 @ 2024-04-26 21:08:58.381532200 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2024-06 (vendor "odin") Windows_amd64 @ 2024-06-17 21:40:00.995532900 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
 <ul>
 <li><a href="#pkg-overview">Overview</a><li><a href="#pkg-Types">Types</a><ul>
 <li><a href="#Info">Info</a></li>
+<li><a href="#Info_State">Info_State</a></li>
 <li><a href="#Register_User_Formatter_Error">Register_User_Formatter_Error</a></li>
 <li><a href="#User_Formatter">User_Formatter</a></li>
 </ul>

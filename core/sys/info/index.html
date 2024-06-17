@@ -89,12 +89,14 @@
 <li><a href="/core/container/lru">lru</a></li>
 <li><a href="/core/container/priority_queue">priority_queue</a></li>
 <li><a href="/core/container/queue">queue</a></li>
+<li><a href="/core/container/rbtree">rbtree</a></li>
 <li><a href="/core/container/small_array">small_array</a></li>
 <li><a href="/core/container/topological_sort">topological_sort</a></li>
 </ul>
 
 </li>
 <li class="nav-item"><a href="/core/crypto">crypto</a><ul>
+<li><a href="/core/crypto/aes">aes</a></li>
 <li><a href="/core/crypto/blake2b">blake2b</a></li>
 <li><a href="/core/crypto/blake2s">blake2s</a></li>
 <li><a href="/core/crypto/chacha20">chacha20</a></li>
@@ -126,6 +128,7 @@
 </li>
 <li class="nav-item"><a href="/core/dynlib">dynlib</a></li>
 <li class="nav-item">encoding<ul>
+<li><a href="/core/encoding/ansi">ansi</a></li>
 <li><a href="/core/encoding/base32">base32</a></li>
 <li><a href="/core/encoding/base64">base64</a></li>
 <li><a href="/core/encoding/cbor">cbor</a></li>
@@ -179,9 +182,7 @@
 <li class="nav-item">odin<ul>
 <li><a href="/core/odin/ast">ast</a></li>
 <li><a href="/core/odin/doc-format">doc-format</a></li>
-<li><a href="/core/odin/format">format</a></li>
 <li><a href="/core/odin/parser">parser</a></li>
-<li><a href="/core/odin/printer">printer</a></li>
 <li><a href="/core/odin/tokenizer">tokenizer</a></li>
 </ul>
 
@@ -212,14 +213,17 @@
 
 </li>
 <li class="nav-item"><a href="/core/strings">strings</a></li>
-<li class="nav-item"><a href="/core/sync">sync</a></li>
+<li class="nav-item"><a href="/core/sync">sync</a><ul>
+<li><a href="/core/sync/chan">chan</a></li>
+</ul>
+
+</li>
 <li class="nav-item">sys<ul>
 <li><a href="/core/sys/darwin">darwin</a></li>
 <li><a href="/core/sys/darwin/Foundation">darwin/Foundation</a></li>
 <li><a href="/core/sys/haiku">haiku</a></li>
 <li><a class="active" href="/core/sys/info">info</a></li>
 <li><a href="/core/sys/linux">linux</a></li>
-<li><a href="/core/sys/unix">unix</a></li>
 <li><a href="/core/sys/valgrind">valgrind</a></li>
 <li><a href="/core/sys/windows">windows</a></li>
 </ul>
@@ -308,11 +312,11 @@ OS:    OS_Version{
 	as_string = "Windows 10 Professional (version: 20H2), build: 19042.1466",
 }
 CPU:   AMD Ryzen 7 1800X Eight-Core Processor
-RAM:   65469 MiB
+RAM:   64.0 GiB
 GPU #0:
 	Vendor: Advanced Micro Devices, Inc.
 	Model:  Radeon RX Vega
-	VRAM:   8176 MiB
+	VRAM:   8.0 GiB
 
 </pre>
 <p><span class="doc-list">Example macOS output:</span></p>
@@ -330,7 +334,7 @@ OS:   OS_Version{
 		as_string = "macOS Monterey 12.4 (build 21F79, kernel 21.5.0)",
 }
 CPU:  Intel(R) Core(TM) i5-7360U CPU @ 2.30GHz
-RAM:  8192 MiB
+RAM:  8.0 GiB
 </pre>
 <details open class="code-example">
 <summary><b>Example:</b></summary>
@@ -338,18 +342,21 @@ RAM:  8192 MiB
 import si "core:sys/info"
 
 main :: proc() {
-	fmt.printf("Odin:  %v\n",     ODIN_VERSION)
-	fmt.printf("OS:    %v\n",     si.os_version.as_string)
-	fmt.printf("OS:    %#v\n",    si.os_version)
-	fmt.printf("CPU:   %v\n",     si.cpu_name)
-	fmt.printf("RAM:   %v MiB\n", si.ram.total_ram / 1024 / 1024)
+	fmt.printfln("Odin:  %v",    ODIN_VERSION)
+	fmt.printfln("OS:    %v",    si.os_version.as_string)
+	fmt.printfln("OS:    %#v",   si.os_version)
+	fmt.printfln("CPU:   %v",    si.cpu_name)
+	fmt.printfln("RAM:   %#.1M", si.ram.total_ram)
+
+	// fmt.printfln("Features: %v",      si.cpu_features)
+	// fmt.printfln("MacOS version: %v", si.macos_version)
 
 	fmt.println()
 	for gpu, i in si.gpus {
-		fmt.printf("GPU #%v:\n", i)
-		fmt.printf("\tVendor: %v\n",     gpu.vendor_name)
-		fmt.printf("\tModel:  %v\n",     gpu.model_name)
-		fmt.printf("\tVRAM:   %v MiB\n", gpu.total_ram / 1024 / 1024)
+		fmt.printfln("GPU #%v:", i)
+		fmt.printfln("\tVendor: %v",    gpu.vendor_name)
+		fmt.printfln("\tModel:  %v",    gpu.model_name)
+		fmt.printfln("\tVRAM:   %#.1M", gpu.total_ram)
 	}
 }
 </code></pre>
@@ -360,7 +367,7 @@ main :: proc() {
 <div>
 <details class="doc-index" id="doc-index-Types" aria-labelledby="#doc-index-Types-header">
 <summary id="#doc-index-Types-header">
-Types (6)</summary>
+Types (7)</summary>
 <ul>
 <li><a href="#CPU_Feature">CPU_Feature</a></li>
 <li><a href="#CPU_Features">CPU_Features</a></li>
@@ -368,6 +375,7 @@ Types (6)</summary>
 <li><a href="#OS_Version">OS_Version</a></li>
 <li><a href="#OS_Version_Platform">OS_Version_Platform</a></li>
 <li><a href="#RAM">RAM</a></li>
+<li><a href="#Version">Version</a></li>
 </ul>
 </details>
 </div>
@@ -381,11 +389,12 @@ Constants (0)</summary>
 <div>
 <details class="doc-index" id="doc-index-Variables" aria-labelledby="#doc-index-Variables-header">
 <summary id="#doc-index-Variables-header">
-Variables (5)</summary>
+Variables (6)</summary>
 <ul>
 <li><a href="#cpu_features">cpu_features</a></li>
 <li><a href="#cpu_name">cpu_name</a></li>
 <li><a href="#gpus">gpus</a></li>
+<li><a href="#macos_version">macos_version</a></li>
 <li><a href="#os_version">os_version</a></li>
 <li><a href="#ram">ram</a></li>
 </ul>
@@ -394,10 +403,9 @@ Variables (5)</summary>
 <div>
 <details class="doc-index" id="doc-index-Procedures" aria-labelledby="#doc-index-Procedures-header">
 <summary id="#doc-index-Procedures-header">
-Procedures (3)</summary>
+Procedures (2)</summary>
 <ul>
 <li><a href="#cpuid">cpuid</a></li>
-<li><a href="#init_ram">init_ram</a></li>
 <li><a href="#xgetbv">xgetbv</a></li>
 </ul>
 </details>
@@ -445,7 +453,7 @@ Procedure Groups (0)</summary>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="GPU"><span><a class="doc-id-link" href="#GPU">GPU<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/info/sysinfo.odin#L41"><em>Source</em></a></div></h3>
+<h3 id="GPU"><span><a class="doc-id-link" href="#GPU">GPU<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/info/sysinfo.odin#L46"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">GPU :: <span class="keyword-type">struct</span> {
 	vendor_name: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>,
@@ -455,13 +463,11 @@ Procedure Groups (0)</summary>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="OS_Version"><span><a class="doc-id-link" href="#OS_Version">OS_Version<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/info/sysinfo.odin#L22"><em>Source</em></a></div></h3>
+<h3 id="OS_Version"><span><a class="doc-id-link" href="#OS_Version">OS_Version<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/info/sysinfo.odin#L29"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">OS_Version :: <span class="keyword-type">struct</span> {
 	platform:  <a class="code-typename" href="/core/sys/info/#OS_Version_Platform">OS_Version_Platform</a>,
-	major:     <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>,
-	minor:     <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>,
-	patch:     <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>,
+	<span class="keyword-type">using</span> _:   <a class="code-typename" href="/core/sys/info/#Version">Version</a>,
 	build:     [2]<a href="/base/builtin#int"><span class="doc-builtin">int</span></a>,
 	version:   <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>,
 	as_string: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>,
@@ -469,7 +475,7 @@ Procedure Groups (0)</summary>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="OS_Version_Platform"><span><a class="doc-id-link" href="#OS_Version_Platform">OS_Version_Platform<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/info/sysinfo.odin#L11"><em>Source</em></a></div></h3>
+<h3 id="OS_Version_Platform"><span><a class="doc-id-link" href="#OS_Version_Platform">OS_Version_Platform<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/info/sysinfo.odin#L14"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">OS_Version_Platform :: <span class="keyword-type">enum</span> <a href="/base/builtin#int"><span class="doc-builtin">int</span></a> {
 	Unknown, 
@@ -484,7 +490,7 @@ Procedure Groups (0)</summary>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="RAM"><span><a class="doc-id-link" href="#RAM">RAM<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/info/sysinfo.odin#L34"><em>Source</em></a></div></h3>
+<h3 id="RAM"><span><a class="doc-id-link" href="#RAM">RAM<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/info/sysinfo.odin#L39"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">RAM :: <span class="keyword-type">struct</span> {
 	total_ram:  <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>,
@@ -494,19 +500,29 @@ Procedure Groups (0)</summary>
 }</pre>
 </div>
 </div>
+<div class="pkg-entity">
+<h3 id="Version"><span><a class="doc-id-link" href="#Version">Version<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/info/sysinfo.odin#L25"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Version :: <span class="keyword-type">struct</span> {
+	major: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>,
+	minor: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>,
+	patch: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>,
+}</pre>
+</div>
+</div>
 <h2 id="pkg-Constants" class="pkg-header">Constants</h2>
 <p class="pkg-empty-section">This section is empty.</p>
 <h2 id="pkg-Variables" class="pkg-header">Variables</h2>
 <div class="pkg-entity">
 <h3 id="cpu_features"><span><a class="doc-id-link" href="#cpu_features">cpu_features<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/info/cpu_intel.odin#L35"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">cpu_features: runtime.<a class="code-typename" href="/base/runtime/#Maybe">Maybe</a>($T=CPU_Features)</pre>
+<pre class="doc-code">cpu_features: runtime.<a class="code-typename" href="/base/runtime/#Maybe">Maybe</a>($T)</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="cpu_name"><span><a class="doc-id-link" href="#cpu_name">cpu_name<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/info/cpu_intel.odin#L36"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">cpu_name: runtime.<a class="code-typename" href="/base/runtime/#Maybe">Maybe</a>($T=string)</pre>
+<pre class="doc-code">cpu_name: runtime.<a class="code-typename" href="/base/runtime/#Maybe">Maybe</a>($T)</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -514,6 +530,16 @@ Procedure Groups (0)</summary>
 <div>
 <pre class="doc-code">gpus: []<a class="code-typename" href="/core/sys/info/#GPU">GPU</a></pre>
 </div>
+</div>
+<div class="pkg-entity">
+<h3 id="macos_version"><span><a class="doc-id-link" href="#macos_version">macos_version<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/info/sysinfo.odin#L12"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">macos_version: <a class="code-typename" href="/core/sys/info/#Version">Version</a></pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Only on MacOS, contains the actual MacOS version, while the <code>os_version</code> contains the kernel version.</p>
+</details>
 </div>
 <div class="pkg-entity">
 <h3 id="os_version"><span><a class="doc-id-link" href="#os_version">os_version<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/info/sysinfo.odin#L7"><em>Source</em></a></div></h3>
@@ -539,12 +565,6 @@ Procedure Groups (0)</summary>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="init_ram"><span><a class="doc-id-link" href="#init_ram">init_ram<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/info/platform_windows.odin#L263"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">init_ram :: <span class="keyword-type">proc</span>() {…}</pre>
-</div>
-</div>
-<div class="pkg-entity">
 <h3 id="xgetbv"><span><a class="doc-id-link" href="#xgetbv">xgetbv<span class="a-hidden">&nbsp;¶</span></a></span></h3>
 <div>
 <pre class="doc-code">xgetbv :: <a href="/base/intrinsics#x86_xgetbv">intrinsics</a>.x86_xgetbv</pre>
@@ -565,7 +585,7 @@ Procedure Groups (0)</summary>
 <li><em>(hidden platform specific files)</em></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2024-04 (vendor "odin") Windows_amd64 @ 2024-04-26 21:08:58.692687400 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2024-06 (vendor "odin") Windows_amd64 @ 2024-06-17 21:40:01.283570900 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
@@ -577,19 +597,20 @@ Procedure Groups (0)</summary>
 <li><a href="#OS_Version">OS_Version</a></li>
 <li><a href="#OS_Version_Platform">OS_Version_Platform</a></li>
 <li><a href="#RAM">RAM</a></li>
+<li><a href="#Version">Version</a></li>
 </ul>
 </li>
 <li><a href="#pkg-Variables">Variables</a><ul>
 <li><a href="#cpu_features">cpu_features</a></li>
 <li><a href="#cpu_name">cpu_name</a></li>
 <li><a href="#gpus">gpus</a></li>
+<li><a href="#macos_version">macos_version</a></li>
 <li><a href="#os_version">os_version</a></li>
 <li><a href="#ram">ram</a></li>
 </ul>
 </li>
 <li><a href="#pkg-Procedures">Procedures</a><ul>
 <li><a href="#cpuid">cpuid</a></li>
-<li><a href="#init_ram">init_ram</a></li>
 <li><a href="#xgetbv">xgetbv</a></li>
 </ul>
 </li>

@@ -89,12 +89,14 @@
 <li><a href="/core/container/lru">lru</a></li>
 <li><a href="/core/container/priority_queue">priority_queue</a></li>
 <li><a href="/core/container/queue">queue</a></li>
+<li><a href="/core/container/rbtree">rbtree</a></li>
 <li><a href="/core/container/small_array">small_array</a></li>
 <li><a href="/core/container/topological_sort">topological_sort</a></li>
 </ul>
 
 </li>
 <li class="nav-item"><a href="/core/crypto">crypto</a><ul>
+<li><a href="/core/crypto/aes">aes</a></li>
 <li><a href="/core/crypto/blake2b">blake2b</a></li>
 <li><a href="/core/crypto/blake2s">blake2s</a></li>
 <li><a href="/core/crypto/chacha20">chacha20</a></li>
@@ -126,6 +128,7 @@
 </li>
 <li class="nav-item"><a href="/core/dynlib">dynlib</a></li>
 <li class="nav-item">encoding<ul>
+<li><a href="/core/encoding/ansi">ansi</a></li>
 <li><a href="/core/encoding/base32">base32</a></li>
 <li><a href="/core/encoding/base64">base64</a></li>
 <li><a href="/core/encoding/cbor">cbor</a></li>
@@ -179,9 +182,7 @@
 <li class="nav-item">odin<ul>
 <li><a href="/core/odin/ast">ast</a></li>
 <li><a href="/core/odin/doc-format">doc-format</a></li>
-<li><a href="/core/odin/format">format</a></li>
 <li><a href="/core/odin/parser">parser</a></li>
-<li><a href="/core/odin/printer">printer</a></li>
 <li><a href="/core/odin/tokenizer">tokenizer</a></li>
 </ul>
 
@@ -212,14 +213,17 @@
 
 </li>
 <li class="nav-item"><a href="/core/strings">strings</a></li>
-<li class="nav-item"><a href="/core/sync">sync</a></li>
+<li class="nav-item"><a href="/core/sync">sync</a><ul>
+<li><a href="/core/sync/chan">chan</a></li>
+</ul>
+
+</li>
 <li class="nav-item">sys<ul>
 <li><a href="/core/sys/darwin">darwin</a></li>
 <li><a class="active" href="/core/sys/darwin/Foundation">darwin/Foundation</a></li>
 <li><a href="/core/sys/haiku">haiku</a></li>
 <li><a href="/core/sys/info">info</a></li>
 <li><a href="/core/sys/linux">linux</a></li>
-<li><a href="/core/sys/unix">unix</a></li>
 <li><a href="/core/sys/valgrind">valgrind</a></li>
 <li><a href="/core/sys/windows">windows</a></li>
 </ul>
@@ -972,43 +976,43 @@ Procedure Groups (1)</summary>
 <div>
 <pre class="doc-code">ApplicationDelegateTemplate :: <span class="keyword-type">struct</span> {
 	<span class="comment">// Launching Applications</span>
-	applicationWillFinishLaunching:                              <span class="keyword-type">proc</span>(notification: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Notification">Notification</a>),
-	applicationDidFinishLaunching:                               <span class="keyword-type">proc</span>(notification: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Notification">Notification</a>),
+	applicationWillFinishLaunching:                              <span class="keyword-type">proc</span>(notification: ),
+	applicationDidFinishLaunching:                               <span class="keyword-type">proc</span>(notification: ),
 	<span class="comment">// Managing Active Status</span>
-	applicationWillBecomeActive:                                 <span class="keyword-type">proc</span>(notification: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Notification">Notification</a>),
-	applicationDidBecomeActive:                                  <span class="keyword-type">proc</span>(notification: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Notification">Notification</a>),
-	applicationWillResignActive:                                 <span class="keyword-type">proc</span>(notification: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Notification">Notification</a>),
-	applicationDidResignActive:                                  <span class="keyword-type">proc</span>(notification: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Notification">Notification</a>),
+	applicationWillBecomeActive:                                 <span class="keyword-type">proc</span>(notification: ),
+	applicationDidBecomeActive:                                  <span class="keyword-type">proc</span>(notification: ),
+	applicationWillResignActive:                                 <span class="keyword-type">proc</span>(notification: ),
+	applicationDidResignActive:                                  <span class="keyword-type">proc</span>(notification: ),
 	<span class="comment">// Terminating Applications</span>
-	applicationShouldTerminate:                                  <span class="keyword-type">proc</span>(sender: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Application">Application</a>) -> <a class="code-typename" href="/core/sys/darwin/Foundation/#ApplicationTerminateReply">ApplicationTerminateReply</a>,
-	applicationShouldTerminateAfterLastWindowClosed:             <span class="keyword-type">proc</span>(sender: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Application">Application</a>) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>,
-	applicationWillTerminate:                                    <span class="keyword-type">proc</span>(notification: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Notification">Notification</a>),
+	applicationShouldTerminate:                                  <span class="keyword-type">proc</span>(sender: ) -> ,
+	applicationShouldTerminateAfterLastWindowClosed:             <span class="keyword-type">proc</span>(sender: ) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>,
+	applicationWillTerminate:                                    <span class="keyword-type">proc</span>(notification: ),
 	<span class="comment">// Hiding Applications</span>
-	applicationWillHide:                                         <span class="keyword-type">proc</span>(notification: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Notification">Notification</a>),
-	applicationDidHide:                                          <span class="keyword-type">proc</span>(notification: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Notification">Notification</a>),
-	applicationWillUnhide:                                       <span class="keyword-type">proc</span>(notification: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Notification">Notification</a>),
-	applicationDidUnhide:                                        <span class="keyword-type">proc</span>(notification: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Notification">Notification</a>),
+	applicationWillHide:                                         <span class="keyword-type">proc</span>(notification: ),
+	applicationDidHide:                                          <span class="keyword-type">proc</span>(notification: ),
+	applicationWillUnhide:                                       <span class="keyword-type">proc</span>(notification: ),
+	applicationDidUnhide:                                        <span class="keyword-type">proc</span>(notification: ),
 	<span class="comment">// Managing Windows</span>
-	applicationWillUpdate:                                       <span class="keyword-type">proc</span>(notification: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Notification">Notification</a>),
-	applicationDidUpdate:                                        <span class="keyword-type">proc</span>(notification: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Notification">Notification</a>),
-	applicationShouldHandleReopenHasVisibleWindows:              <span class="keyword-type">proc</span>(sender: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Application">Application</a>, flag: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>,
+	applicationWillUpdate:                                       <span class="keyword-type">proc</span>(notification: ),
+	applicationDidUpdate:                                        <span class="keyword-type">proc</span>(notification: ),
+	applicationShouldHandleReopenHasVisibleWindows:              <span class="keyword-type">proc</span>(sender: , flag: ) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>,
 	<span class="comment">// Managing the Dock Menu</span>
-	applicationDockMenu:                                         <span class="keyword-type">proc</span>(sender: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Application">Application</a>) -> ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Menu">Menu</a>,
+	applicationDockMenu:                                         <span class="keyword-type">proc</span>(sender: ) -> ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Menu">Menu</a>,
 	<span class="comment">// Localizing Keyboard Shortcuts</span>
-	applicationShouldAutomaticallyLocalizeKeyEquivalents:        <span class="keyword-type">proc</span>(application: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Application">Application</a>) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>,
+	applicationShouldAutomaticallyLocalizeKeyEquivalents:        <span class="keyword-type">proc</span>(application: ) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>,
 	<span class="comment">// Displaying Errors</span>
-	applicationWillPresentError:                                 <span class="keyword-type">proc</span>(application: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Application">Application</a>, error: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Error">Error</a>) -> ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Error">Error</a>,
+	applicationWillPresentError:                                 <span class="keyword-type">proc</span>(application: , error: ) -> ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Error">Error</a>,
 	<span class="comment">// Managing the Screen</span>
-	applicationDidChangeScreenParameters:                        <span class="keyword-type">proc</span>(notification: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Notification">Notification</a>),
+	applicationDidChangeScreenParameters:                        <span class="keyword-type">proc</span>(notification: ),
 	<span class="comment">// Continuing User Activities</span>
-	applicationWillContinueUserActivityWithType:                 <span class="keyword-type">proc</span>(application: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Application">Application</a>, userActivityType: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#String">String</a>) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>,
-	applicationContinueUserActivityRestorationHandler:           <span class="keyword-type">proc</span>(application: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Application">Application</a>, userActivity: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#UserActivity">UserActivity</a>, restorationHandler: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Block">Block</a>) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>,
-	applicationDidFailToContinueUserActivityWithTypeError:       <span class="keyword-type">proc</span>(application: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Application">Application</a>, userActivityType: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#String">String</a>, error: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Error">Error</a>),
-	applicationDidUpdateUserActivity:                            <span class="keyword-type">proc</span>(application: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Application">Application</a>, userActivity: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#UserActivity">UserActivity</a>),
+	applicationWillContinueUserActivityWithType:                 <span class="keyword-type">proc</span>(application: , userActivityType: ) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>,
+	applicationContinueUserActivityRestorationHandler:           <span class="keyword-type">proc</span>(application: , userActivity: , restorationHandler: ) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>,
+	applicationDidFailToContinueUserActivityWithTypeError:       <span class="keyword-type">proc</span>(application: , userActivityType: , error: ),
+	applicationDidUpdateUserActivity:                            <span class="keyword-type">proc</span>(application: , userActivity: ),
 	<span class="comment">// Handling Push Notifications</span>
-	applicationDidRegisterForRemoteNotificationsWithDeviceToken: <span class="keyword-type">proc</span>(application: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Application">Application</a>, deviceToken: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Data">Data</a>),
-	applicationDidFailToRegisterForRemoteNotificationsWithError: <span class="keyword-type">proc</span>(application: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Application">Application</a>, error: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Error">Error</a>),
-	applicationDidReceiveRemoteNotification:                     <span class="keyword-type">proc</span>(application: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Application">Application</a>, userInfo: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Dictionary">Dictionary</a>),
+	applicationDidRegisterForRemoteNotificationsWithDeviceToken: <span class="keyword-type">proc</span>(application: , deviceToken: ),
+	applicationDidFailToRegisterForRemoteNotificationsWithError: <span class="keyword-type">proc</span>(application: , error: ),
+	applicationDidReceiveRemoteNotification:                     <span class="keyword-type">proc</span>(application: , userInfo: ),
 	<span class="comment">// Handling CloudKit Invitations</span>
 	<span class="comment">// TODO: if/when we have cloud kit bindings implement</span>
 	<span class="comment">// applicationUserDidAcceptCloudKitShareWithMetadata:        proc(application: ^Application, metadata: ^CKShareMetadata),</span>
@@ -1016,26 +1020,26 @@ Procedure Groups (1)</summary>
 	<span class="comment">// TODO: if/when we have siri kit bindings implement</span>
 	<span class="comment">// applicationHandlerForIntent:                              proc(application: ^Application, intent: ^INIntent) -&gt; id,</span>
 	<span class="comment">// Opening Files</span>
-	applicationOpenURLs:                                         <span class="keyword-type">proc</span>(application: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Application">Application</a>, urls: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Array">Array</a>),
-	applicationOpenFile:                                         <span class="keyword-type">proc</span>(sender: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Application">Application</a>, filename: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#String">String</a>) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>,
-	applicationOpenFileWithoutUI:                                <span class="keyword-type">proc</span>(sender: ^.<a class="code-typename" href="//#objc_object">objc_object</a>, filename: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#String">String</a>) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>,
-	applicationOpenTempFile:                                     <span class="keyword-type">proc</span>(sender: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Application">Application</a>, filename: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#String">String</a>) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>,
-	applicationOpenFiles:                                        <span class="keyword-type">proc</span>(sender: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Application">Application</a>, filenames: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Array">Array</a>),
-	applicationShouldOpenUntitledFile:                           <span class="keyword-type">proc</span>(sender: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Application">Application</a>) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>,
-	applicationOpenUntitledFile:                                 <span class="keyword-type">proc</span>(sender: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Application">Application</a>) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>,
+	applicationOpenURLs:                                         <span class="keyword-type">proc</span>(application: , urls: ),
+	applicationOpenFile:                                         <span class="keyword-type">proc</span>(sender: , filename: ) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>,
+	applicationOpenFileWithoutUI:                                <span class="keyword-type">proc</span>(sender: , filename: ) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>,
+	applicationOpenTempFile:                                     <span class="keyword-type">proc</span>(sender: , filename: ) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>,
+	applicationOpenFiles:                                        <span class="keyword-type">proc</span>(sender: , filenames: ),
+	applicationShouldOpenUntitledFile:                           <span class="keyword-type">proc</span>(sender: ) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>,
+	applicationOpenUntitledFile:                                 <span class="keyword-type">proc</span>(sender: ) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>,
 	<span class="comment">// Printing</span>
-	applicationPrintFile:                                        <span class="keyword-type">proc</span>(sender: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Application">Application</a>, filename: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#String">String</a>) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>,
-	applicationPrintFilesWithSettingsShowPrintPanels:            <span class="keyword-type">proc</span>(application: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Application">Application</a>, fileNames: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Array">Array</a>, printSettings: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Dictionary">Dictionary</a>, showPrintPanels: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>) -> <a class="code-typename" href="/core/sys/darwin/Foundation/#ApplicationPrintReply">ApplicationPrintReply</a>,
+	applicationPrintFile:                                        <span class="keyword-type">proc</span>(sender: , filename: ) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>,
+	applicationPrintFilesWithSettingsShowPrintPanels:            <span class="keyword-type">proc</span>(application: , fileNames: , printSettings: , showPrintPanels: ) -> ,
 	<span class="comment">// Restoring Application State</span>
-	applicationSupportsSecureRestorableState:                    <span class="keyword-type">proc</span>(app: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Application">Application</a>) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>,
-	applicationProtectedDataDidBecomeAvailable:                  <span class="keyword-type">proc</span>(notification: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Notification">Notification</a>),
-	applicationProtectedDataWillBecomeUnavailable:               <span class="keyword-type">proc</span>(notification: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Notification">Notification</a>),
-	applicationWillEncodeRestorableState:                        <span class="keyword-type">proc</span>(app: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Application">Application</a>, coder: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Coder">Coder</a>),
-	applicationDidDecodeRestorableState:                         <span class="keyword-type">proc</span>(app: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Application">Application</a>, coder: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Coder">Coder</a>),
+	applicationSupportsSecureRestorableState:                    <span class="keyword-type">proc</span>(app: ) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>,
+	applicationProtectedDataDidBecomeAvailable:                  <span class="keyword-type">proc</span>(notification: ),
+	applicationProtectedDataWillBecomeUnavailable:               <span class="keyword-type">proc</span>(notification: ),
+	applicationWillEncodeRestorableState:                        <span class="keyword-type">proc</span>(app: , coder: ),
+	applicationDidDecodeRestorableState:                         <span class="keyword-type">proc</span>(app: , coder: ),
 	<span class="comment">// Handling Changes to the Occlusion State</span>
-	applicationDidChangeOcclusionState:                          <span class="keyword-type">proc</span>(notification: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Notification">Notification</a>),
+	applicationDidChangeOcclusionState:                          <span class="keyword-type">proc</span>(notification: ),
 	<span class="comment">// Scripting Your App</span>
-	applicationDelegateHandlesKey:                               <span class="keyword-type">proc</span>(sender: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Application">Application</a>, key: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#String">String</a>) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>,
+	applicationDelegateHandlesKey:                               <span class="keyword-type">proc</span>(sender: , key: ) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>,
 }</pre>
 </div>
 <h5>Related Procedures With Parameters</h5>
@@ -1111,7 +1115,7 @@ Procedure Groups (1)</summary>
 <h3 id="Array"><span><a class="doc-id-link" href="#Array">Array<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/Foundation/NSArray.odin#L6"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Array :: <span class="keyword-type">struct</span> {
-	<span class="keyword-type">using</span> _: <a class="code-typename" href="/core/sys/darwin/Foundation/#Copying">Copying</a>($T=Array),
+	<span class="keyword-type">using</span> _: <a class="code-typename" href="/core/sys/darwin/Foundation/#Copying">Copying</a>($T),
 }</pre>
 </div>
 <div>
@@ -1124,19 +1128,6 @@ Procedure Groups (1)</summary>
 <li><a href="/core/sys/darwin/Foundation/#Array_initWithObjects">initWithObjects</a></li>
 <li><a href="/core/sys/darwin/Foundation/#Array_object">object</a></li>
 <li><a href="/core/sys/darwin/Foundation/#Array_objectAs">objectAs</a></li>
-</ul>
-<h6>Methods Inherited From <a href="/core/sys/darwin/Foundation/#Object">Object</a></h6>
-<ul>
-<li><a href="/core/sys/darwin/Foundation/#autorelease">autorelease</a></li>
-<li><a href="/core/sys/darwin/Foundation/#class">class</a></li>
-<li><a href="/core/sys/darwin/Foundation/#copy">copy</a></li>
-<li><a href="/core/sys/darwin/Foundation/#debugDescription">debugDescription</a></li>
-<li><a href="/core/sys/darwin/Foundation/#description">description</a></li>
-<li><a href="/core/sys/darwin/Foundation/#hash">hash</a></li>
-<li><a href="/core/sys/darwin/Foundation/#isEqual">isEqual</a></li>
-<li><a href="/core/sys/darwin/Foundation/#release">release</a></li>
-<li><a href="/core/sys/darwin/Foundation/#retain">retain</a></li>
-<li><a href="/core/sys/darwin/Foundation/#retainCount">retainCount</a></li>
 </ul>
 </div>
 </div>
@@ -1416,7 +1407,7 @@ Procedure Groups (1)</summary>
 <h3 id="Condition"><span><a class="doc-id-link" href="#Condition">Condition<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/Foundation/NSLock.odin#L13"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Condition :: <span class="keyword-type">struct</span> {
-	<span class="keyword-type">using</span> _: <a class="code-typename" href="/core/sys/darwin/Foundation/#Locking">Locking</a>($T=Condition),
+	<span class="keyword-type">using</span> _: <a class="code-typename" href="/core/sys/darwin/Foundation/#Locking">Locking</a>($T),
 }</pre>
 </div>
 <div>
@@ -1430,19 +1421,6 @@ Procedure Groups (1)</summary>
 <li><a href="/core/sys/darwin/Foundation/#Condition_unlock">unlock</a></li>
 <li><a href="/core/sys/darwin/Foundation/#Condition_wait">wait</a></li>
 <li><a href="/core/sys/darwin/Foundation/#Condition_waitUntilDate">waitUntilDate</a></li>
-</ul>
-<h6>Methods Inherited From <a href="/core/sys/darwin/Foundation/#Object">Object</a></h6>
-<ul>
-<li><a href="/core/sys/darwin/Foundation/#autorelease">autorelease</a></li>
-<li><a href="/core/sys/darwin/Foundation/#class">class</a></li>
-<li><a href="/core/sys/darwin/Foundation/#copy">copy</a></li>
-<li><a href="/core/sys/darwin/Foundation/#debugDescription">debugDescription</a></li>
-<li><a href="/core/sys/darwin/Foundation/#description">description</a></li>
-<li><a href="/core/sys/darwin/Foundation/#hash">hash</a></li>
-<li><a href="/core/sys/darwin/Foundation/#isEqual">isEqual</a></li>
-<li><a href="/core/sys/darwin/Foundation/#release">release</a></li>
-<li><a href="/core/sys/darwin/Foundation/#retain">retain</a></li>
-<li><a href="/core/sys/darwin/Foundation/#retainCount">retainCount</a></li>
 </ul>
 </div>
 </div>
@@ -1458,7 +1436,7 @@ Procedure Groups (1)</summary>
 <h3 id="Data"><span><a class="doc-id-link" href="#Data">Data<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/Foundation/NSData.odin#L4"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Data :: <span class="keyword-type">struct</span> {
-	<span class="keyword-type">using</span> _: <a class="code-typename" href="/core/sys/darwin/Foundation/#Copying">Copying</a>($T=Data),
+	<span class="keyword-type">using</span> _: <a class="code-typename" href="/core/sys/darwin/Foundation/#Copying">Copying</a>($T),
 }</pre>
 </div>
 <div>
@@ -1469,26 +1447,13 @@ Procedure Groups (1)</summary>
 <li><a href="/core/sys/darwin/Foundation/#Data_length">length</a></li>
 <li><a href="/core/sys/darwin/Foundation/#Data_mutableBytes">mutableBytes</a></li>
 </ul>
-<h6>Methods Inherited From <a href="/core/sys/darwin/Foundation/#Object">Object</a></h6>
-<ul>
-<li><a href="/core/sys/darwin/Foundation/#autorelease">autorelease</a></li>
-<li><a href="/core/sys/darwin/Foundation/#class">class</a></li>
-<li><a href="/core/sys/darwin/Foundation/#copy">copy</a></li>
-<li><a href="/core/sys/darwin/Foundation/#debugDescription">debugDescription</a></li>
-<li><a href="/core/sys/darwin/Foundation/#description">description</a></li>
-<li><a href="/core/sys/darwin/Foundation/#hash">hash</a></li>
-<li><a href="/core/sys/darwin/Foundation/#isEqual">isEqual</a></li>
-<li><a href="/core/sys/darwin/Foundation/#release">release</a></li>
-<li><a href="/core/sys/darwin/Foundation/#retain">retain</a></li>
-<li><a href="/core/sys/darwin/Foundation/#retainCount">retainCount</a></li>
-</ul>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="Date"><span><a class="doc-id-link" href="#Date">Date<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/Foundation/NSDate.odin#L4"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Date :: <span class="keyword-type">struct</span> {
-	<span class="keyword-type">using</span> _: <a class="code-typename" href="/core/sys/darwin/Foundation/#Copying">Copying</a>($T=Date),
+	<span class="keyword-type">using</span> _: <a class="code-typename" href="/core/sys/darwin/Foundation/#Copying">Copying</a>($T),
 }</pre>
 </div>
 <div>
@@ -1497,19 +1462,6 @@ Procedure Groups (1)</summary>
 <li><a href="/core/sys/darwin/Foundation/#Date_alloc">alloc</a>&nbsp;<em>(class method)</em></li>
 <li><a href="/core/sys/darwin/Foundation/#Date_dateWithTimeIntervalSinceNow">dateWithTimeIntervalSinceNow</a></li>
 <li><a href="/core/sys/darwin/Foundation/#Date_init">init</a></li>
-</ul>
-<h6>Methods Inherited From <a href="/core/sys/darwin/Foundation/#Object">Object</a></h6>
-<ul>
-<li><a href="/core/sys/darwin/Foundation/#autorelease">autorelease</a></li>
-<li><a href="/core/sys/darwin/Foundation/#class">class</a></li>
-<li><a href="/core/sys/darwin/Foundation/#copy">copy</a></li>
-<li><a href="/core/sys/darwin/Foundation/#debugDescription">debugDescription</a></li>
-<li><a href="/core/sys/darwin/Foundation/#description">description</a></li>
-<li><a href="/core/sys/darwin/Foundation/#hash">hash</a></li>
-<li><a href="/core/sys/darwin/Foundation/#isEqual">isEqual</a></li>
-<li><a href="/core/sys/darwin/Foundation/#release">release</a></li>
-<li><a href="/core/sys/darwin/Foundation/#retain">retain</a></li>
-<li><a href="/core/sys/darwin/Foundation/#retainCount">retainCount</a></li>
 </ul>
 </div>
 </div>
@@ -1531,7 +1483,7 @@ Procedure Groups (1)</summary>
 <h3 id="Dictionary"><span><a class="doc-id-link" href="#Dictionary">Dictionary<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/Foundation/NSDictionary.odin#L4"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Dictionary :: <span class="keyword-type">struct</span> {
-	<span class="keyword-type">using</span> _: <a class="code-typename" href="/core/sys/darwin/Foundation/#Copying">Copying</a>($T=Dictionary),
+	<span class="keyword-type">using</span> _: <a class="code-typename" href="/core/sys/darwin/Foundation/#Copying">Copying</a>($T),
 }</pre>
 </div>
 <div>
@@ -1547,19 +1499,6 @@ Procedure Groups (1)</summary>
 <li><a href="/core/sys/darwin/Foundation/#Dictionary_keyEnumerator">keyEnumerator</a></li>
 <li><a href="/core/sys/darwin/Foundation/#Dictionary_objectForKey">objectForKey</a></li>
 </ul>
-<h6>Methods Inherited From <a href="/core/sys/darwin/Foundation/#Object">Object</a></h6>
-<ul>
-<li><a href="/core/sys/darwin/Foundation/#autorelease">autorelease</a></li>
-<li><a href="/core/sys/darwin/Foundation/#class">class</a></li>
-<li><a href="/core/sys/darwin/Foundation/#copy">copy</a></li>
-<li><a href="/core/sys/darwin/Foundation/#debugDescription">debugDescription</a></li>
-<li><a href="/core/sys/darwin/Foundation/#description">description</a></li>
-<li><a href="/core/sys/darwin/Foundation/#hash">hash</a></li>
-<li><a href="/core/sys/darwin/Foundation/#isEqual">isEqual</a></li>
-<li><a href="/core/sys/darwin/Foundation/#release">release</a></li>
-<li><a href="/core/sys/darwin/Foundation/#retain">retain</a></li>
-<li><a href="/core/sys/darwin/Foundation/#retainCount">retainCount</a></li>
-</ul>
 </div>
 </div>
 <div class="pkg-entity">
@@ -1574,7 +1513,7 @@ Procedure Groups (1)</summary>
 <h3 id="Error"><span><a class="doc-id-link" href="#Error">Error<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/Foundation/NSError.odin#L32"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Error :: <span class="keyword-type">struct</span> {
-	<span class="keyword-type">using</span> _: <a class="code-typename" href="/core/sys/darwin/Foundation/#Copying">Copying</a>($T=Error),
+	<span class="keyword-type">using</span> _: <a class="code-typename" href="/core/sys/darwin/Foundation/#Copying">Copying</a>($T),
 }</pre>
 </div>
 <div>
@@ -1591,19 +1530,6 @@ Procedure Groups (1)</summary>
 <li><a href="/core/sys/darwin/Foundation/#Error_localizedRecoveryOptions">localizedRecoveryOptions</a></li>
 <li><a href="/core/sys/darwin/Foundation/#Error_localizedRecoverySuggestion">localizedRecoverySuggestion</a></li>
 <li><a href="/core/sys/darwin/Foundation/#Error_userInfo">userInfo</a></li>
-</ul>
-<h6>Methods Inherited From <a href="/core/sys/darwin/Foundation/#Object">Object</a></h6>
-<ul>
-<li><a href="/core/sys/darwin/Foundation/#autorelease">autorelease</a></li>
-<li><a href="/core/sys/darwin/Foundation/#class">class</a></li>
-<li><a href="/core/sys/darwin/Foundation/#copy">copy</a></li>
-<li><a href="/core/sys/darwin/Foundation/#debugDescription">debugDescription</a></li>
-<li><a href="/core/sys/darwin/Foundation/#description">description</a></li>
-<li><a href="/core/sys/darwin/Foundation/#hash">hash</a></li>
-<li><a href="/core/sys/darwin/Foundation/#isEqual">isEqual</a></li>
-<li><a href="/core/sys/darwin/Foundation/#release">release</a></li>
-<li><a href="/core/sys/darwin/Foundation/#retain">retain</a></li>
-<li><a href="/core/sys/darwin/Foundation/#retainCount">retainCount</a></li>
 </ul>
 </div>
 </div>
@@ -2142,7 +2068,7 @@ Procedure Groups (1)</summary>
 <h3 id="Number"><span><a class="doc-id-link" href="#Number">Number<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/Foundation/NSNumber.odin#L66"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Number :: <span class="keyword-type">struct</span> {
-	<span class="keyword-type">using</span> _: <a class="code-typename" href="/core/sys/darwin/Foundation/#Copying">Copying</a>($T=Number),
+	<span class="keyword-type">using</span> _: <a class="code-typename" href="/core/sys/darwin/Foundation/#Copying">Copying</a>($T),
 	<span class="keyword-type">using</span> _: <a class="code-typename" href="/core/sys/darwin/Foundation/#Value">Value</a>,
 }</pre>
 </div>
@@ -2208,19 +2134,6 @@ Procedure Groups (1)</summary>
 <li><a href="/core/sys/darwin/Foundation/#Value_pointerValue">pointerValue</a></li>
 <li><a href="/core/sys/darwin/Foundation/#Value_valueWithBytes">valueWithBytes</a>&nbsp;<em>(class method)</em></li>
 <li><a href="/core/sys/darwin/Foundation/#Value_valueWithPointer">valueWithPointer</a>&nbsp;<em>(class method)</em></li>
-</ul>
-<h6>Methods Inherited From <a href="/core/sys/darwin/Foundation/#Object">Object</a></h6>
-<ul>
-<li><a href="/core/sys/darwin/Foundation/#autorelease">autorelease</a></li>
-<li><a href="/core/sys/darwin/Foundation/#class">class</a></li>
-<li><a href="/core/sys/darwin/Foundation/#copy">copy</a></li>
-<li><a href="/core/sys/darwin/Foundation/#debugDescription">debugDescription</a></li>
-<li><a href="/core/sys/darwin/Foundation/#description">description</a></li>
-<li><a href="/core/sys/darwin/Foundation/#hash">hash</a></li>
-<li><a href="/core/sys/darwin/Foundation/#isEqual">isEqual</a></li>
-<li><a href="/core/sys/darwin/Foundation/#release">release</a></li>
-<li><a href="/core/sys/darwin/Foundation/#retain">retain</a></li>
-<li><a href="/core/sys/darwin/Foundation/#retainCount">retainCount</a></li>
 </ul>
 </div>
 </div>
@@ -2638,7 +2551,7 @@ Procedure Groups (1)</summary>
 <h3 id="Set"><span><a class="doc-id-link" href="#Set">Set<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/Foundation/NSSet.odin#L4"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Set :: <span class="keyword-type">struct</span> {
-	<span class="keyword-type">using</span> _: <a class="code-typename" href="/core/sys/darwin/Foundation/#Copying">Copying</a>($T=Set),
+	<span class="keyword-type">using</span> _: <a class="code-typename" href="/core/sys/darwin/Foundation/#Copying">Copying</a>($T),
 }</pre>
 </div>
 <div>
@@ -2648,19 +2561,6 @@ Procedure Groups (1)</summary>
 <li><a href="/core/sys/darwin/Foundation/#Set_init">init</a></li>
 <li><a href="/core/sys/darwin/Foundation/#Set_initWithCoder">initWithCoder</a></li>
 <li><a href="/core/sys/darwin/Foundation/#Set_initWithObjects">initWithObjects</a></li>
-</ul>
-<h6>Methods Inherited From <a href="/core/sys/darwin/Foundation/#Object">Object</a></h6>
-<ul>
-<li><a href="/core/sys/darwin/Foundation/#autorelease">autorelease</a></li>
-<li><a href="/core/sys/darwin/Foundation/#class">class</a></li>
-<li><a href="/core/sys/darwin/Foundation/#copy">copy</a></li>
-<li><a href="/core/sys/darwin/Foundation/#debugDescription">debugDescription</a></li>
-<li><a href="/core/sys/darwin/Foundation/#description">description</a></li>
-<li><a href="/core/sys/darwin/Foundation/#hash">hash</a></li>
-<li><a href="/core/sys/darwin/Foundation/#isEqual">isEqual</a></li>
-<li><a href="/core/sys/darwin/Foundation/#release">release</a></li>
-<li><a href="/core/sys/darwin/Foundation/#retain">retain</a></li>
-<li><a href="/core/sys/darwin/Foundation/#retainCount">retainCount</a></li>
 </ul>
 </div>
 </div>
@@ -2677,7 +2577,7 @@ Procedure Groups (1)</summary>
 <h3 id="String"><span><a class="doc-id-link" href="#String">String<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/Foundation/NSString.odin#L6"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">String :: <span class="keyword-type">struct</span> {
-	<span class="keyword-type">using</span> _: <a class="code-typename" href="/core/sys/darwin/Foundation/#Copying">Copying</a>($T=String),
+	<span class="keyword-type">using</span> _: <a class="code-typename" href="/core/sys/darwin/Foundation/#Copying">Copying</a>($T),
 }</pre>
 </div>
 <div>
@@ -2698,19 +2598,6 @@ Procedure Groups (1)</summary>
 <li><a href="/core/sys/darwin/Foundation/#String_maximumLengthOfBytesUsingEncoding">maximumLengthOfBytesUsingEncoding</a></li>
 <li><a href="/core/sys/darwin/Foundation/#String_odinString">odinString</a></li>
 <li><a href="/core/sys/darwin/Foundation/#String_rangeOfString">rangeOfString</a></li>
-</ul>
-<h6>Methods Inherited From <a href="/core/sys/darwin/Foundation/#Object">Object</a></h6>
-<ul>
-<li><a href="/core/sys/darwin/Foundation/#autorelease">autorelease</a></li>
-<li><a href="/core/sys/darwin/Foundation/#class">class</a></li>
-<li><a href="/core/sys/darwin/Foundation/#copy">copy</a></li>
-<li><a href="/core/sys/darwin/Foundation/#debugDescription">debugDescription</a></li>
-<li><a href="/core/sys/darwin/Foundation/#description">description</a></li>
-<li><a href="/core/sys/darwin/Foundation/#hash">hash</a></li>
-<li><a href="/core/sys/darwin/Foundation/#isEqual">isEqual</a></li>
-<li><a href="/core/sys/darwin/Foundation/#release">release</a></li>
-<li><a href="/core/sys/darwin/Foundation/#retain">retain</a></li>
-<li><a href="/core/sys/darwin/Foundation/#retainCount">retainCount</a></li>
 </ul>
 </div>
 </div>
@@ -2845,7 +2732,7 @@ Procedure Groups (1)</summary>
 <h3 id="URL"><span><a class="doc-id-link" href="#URL">URL<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/Foundation/NSURL.odin#L4"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">URL :: <span class="keyword-type">struct</span> {
-	<span class="keyword-type">using</span> _: <a class="code-typename" href="/core/sys/darwin/Foundation/#Copying">Copying</a>($T=URL),
+	<span class="keyword-type">using</span> _: <a class="code-typename" href="/core/sys/darwin/Foundation/#Copying">Copying</a>($T),
 }</pre>
 </div>
 <div>
@@ -2856,19 +2743,6 @@ Procedure Groups (1)</summary>
 <li><a href="/core/sys/darwin/Foundation/#URL_init">init</a></li>
 <li><a href="/core/sys/darwin/Foundation/#URL_initFileURLWithPath">initFileURLWithPath</a></li>
 <li><a href="/core/sys/darwin/Foundation/#URL_initWithString">initWithString</a></li>
-</ul>
-<h6>Methods Inherited From <a href="/core/sys/darwin/Foundation/#Object">Object</a></h6>
-<ul>
-<li><a href="/core/sys/darwin/Foundation/#autorelease">autorelease</a></li>
-<li><a href="/core/sys/darwin/Foundation/#class">class</a></li>
-<li><a href="/core/sys/darwin/Foundation/#copy">copy</a></li>
-<li><a href="/core/sys/darwin/Foundation/#debugDescription">debugDescription</a></li>
-<li><a href="/core/sys/darwin/Foundation/#description">description</a></li>
-<li><a href="/core/sys/darwin/Foundation/#hash">hash</a></li>
-<li><a href="/core/sys/darwin/Foundation/#isEqual">isEqual</a></li>
-<li><a href="/core/sys/darwin/Foundation/#release">release</a></li>
-<li><a href="/core/sys/darwin/Foundation/#retain">retain</a></li>
-<li><a href="/core/sys/darwin/Foundation/#retainCount">retainCount</a></li>
 </ul>
 </div>
 </div>
@@ -2953,7 +2827,7 @@ Procedure Groups (1)</summary>
 <h3 id="Value"><span><a class="doc-id-link" href="#Value">Value<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/Foundation/NSNumber.odin#L11"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Value :: <span class="keyword-type">struct</span> {
-	<span class="keyword-type">using</span> _: <a class="code-typename" href="/core/sys/darwin/Foundation/#Copying">Copying</a>($T=Value),
+	<span class="keyword-type">using</span> _: <a class="code-typename" href="/core/sys/darwin/Foundation/#Copying">Copying</a>($T),
 }</pre>
 </div>
 <div>
@@ -2969,19 +2843,6 @@ Procedure Groups (1)</summary>
 <li><a href="/core/sys/darwin/Foundation/#Value_pointerValue">pointerValue</a></li>
 <li><a href="/core/sys/darwin/Foundation/#Value_valueWithBytes">valueWithBytes</a>&nbsp;<em>(class method)</em></li>
 <li><a href="/core/sys/darwin/Foundation/#Value_valueWithPointer">valueWithPointer</a>&nbsp;<em>(class method)</em></li>
-</ul>
-<h6>Methods Inherited From <a href="/core/sys/darwin/Foundation/#Object">Object</a></h6>
-<ul>
-<li><a href="/core/sys/darwin/Foundation/#autorelease">autorelease</a></li>
-<li><a href="/core/sys/darwin/Foundation/#class">class</a></li>
-<li><a href="/core/sys/darwin/Foundation/#copy">copy</a></li>
-<li><a href="/core/sys/darwin/Foundation/#debugDescription">debugDescription</a></li>
-<li><a href="/core/sys/darwin/Foundation/#description">description</a></li>
-<li><a href="/core/sys/darwin/Foundation/#hash">hash</a></li>
-<li><a href="/core/sys/darwin/Foundation/#isEqual">isEqual</a></li>
-<li><a href="/core/sys/darwin/Foundation/#release">release</a></li>
-<li><a href="/core/sys/darwin/Foundation/#retain">retain</a></li>
-<li><a href="/core/sys/darwin/Foundation/#retainCount">retainCount</a></li>
 </ul>
 </div>
 </div>
@@ -3121,75 +2982,75 @@ Procedure Groups (1)</summary>
 <div>
 <pre class="doc-code">WindowDelegateTemplate :: <span class="keyword-type">struct</span> {
 	<span class="comment">// Managing Sheets</span>
-	windowWillPositionSheetUsingRect:                                    <span class="keyword-type">proc</span>(window: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Window">Window</a>, sheet: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Window">Window</a>, rect: <a class="code-typename" href="/core/sys/darwin/Foundation/#Rect">Rect</a>) -> <a class="code-typename" href="/core/sys/darwin/Foundation/#Rect">Rect</a>,
-	windowWillBeginSheet:                                                <span class="keyword-type">proc</span>(notification: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Notification">Notification</a>),
-	windowDidEndSheet:                                                   <span class="keyword-type">proc</span>(notification: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Notification">Notification</a>),
+	windowWillPositionSheetUsingRect:                                    <span class="keyword-type">proc</span>(window: , sheet: , rect: ) -> <a class="code-typename" href="/core/sys/darwin/Foundation/#Rect">Rect</a>,
+	windowWillBeginSheet:                                                <span class="keyword-type">proc</span>(notification: ),
+	windowDidEndSheet:                                                   <span class="keyword-type">proc</span>(notification: ),
 	<span class="comment">// Sizing Windows</span>
-	windowWillResizeToSize:                                              <span class="keyword-type">proc</span>(sender: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Window">Window</a>, frameSize: <a class="code-typename" href="/core/sys/darwin/Foundation/#Size">Size</a>) -> <a class="code-typename" href="/core/sys/darwin/Foundation/#Size">Size</a>,
-	windowDidResize:                                                     <span class="keyword-type">proc</span>(notification: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Notification">Notification</a>),
-	windowWillStartLiveResize:                                           <span class="keyword-type">proc</span>(noitifcation: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Notification">Notification</a>),
-	windowDidEndLiveResize:                                              <span class="keyword-type">proc</span>(notification: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Notification">Notification</a>),
+	windowWillResizeToSize:                                              <span class="keyword-type">proc</span>(sender: , frameSize: ) -> <a class="code-typename" href="/core/sys/darwin/Foundation/#Size">Size</a>,
+	windowDidResize:                                                     <span class="keyword-type">proc</span>(notification: ),
+	windowWillStartLiveResize:                                           <span class="keyword-type">proc</span>(noitifcation: ),
+	windowDidEndLiveResize:                                              <span class="keyword-type">proc</span>(notification: ),
 	<span class="comment">// Minimizing Windows</span>
-	windowWillMiniaturize:                                               <span class="keyword-type">proc</span>(notification: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Notification">Notification</a>),
-	windowDidMiniaturize:                                                <span class="keyword-type">proc</span>(notification: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Notification">Notification</a>),
-	windowDidDeminiaturize:                                              <span class="keyword-type">proc</span>(notification: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Notification">Notification</a>),
+	windowWillMiniaturize:                                               <span class="keyword-type">proc</span>(notification: ),
+	windowDidMiniaturize:                                                <span class="keyword-type">proc</span>(notification: ),
+	windowDidDeminiaturize:                                              <span class="keyword-type">proc</span>(notification: ),
 	<span class="comment">// Zooming window</span>
-	windowWillUseStandardFrameDefaultFrame:                              <span class="keyword-type">proc</span>(window: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Window">Window</a>, newFrame: <a class="code-typename" href="/core/sys/darwin/Foundation/#Rect">Rect</a>) -> <a class="code-typename" href="/core/sys/darwin/Foundation/#Rect">Rect</a>,
-	windowShouldZoomToFrame:                                             <span class="keyword-type">proc</span>(window: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Window">Window</a>, newFrame: <a class="code-typename" href="/core/sys/darwin/Foundation/#Rect">Rect</a>) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>,
+	windowWillUseStandardFrameDefaultFrame:                              <span class="keyword-type">proc</span>(window: , newFrame: ) -> <a class="code-typename" href="/core/sys/darwin/Foundation/#Rect">Rect</a>,
+	windowShouldZoomToFrame:                                             <span class="keyword-type">proc</span>(window: , newFrame: ) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>,
 	<span class="comment">// Managing Full-Screen Presentation</span>
-	windowWillUseFullScreenContentSize:                                  <span class="keyword-type">proc</span>(window: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Window">Window</a>, proposedSize: <a class="code-typename" href="/core/sys/darwin/Foundation/#Size">Size</a>) -> <a class="code-typename" href="/core/sys/darwin/Foundation/#Size">Size</a>,
-	windowWillUseFullScreenPresentationOptions:                          <span class="keyword-type">proc</span>(window: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Window">Window</a>, proposedOptions: <a class="code-typename" href="/core/sys/darwin/Foundation/#ApplicationPresentationOptions">ApplicationPresentationOptions</a>) -> <a class="code-typename" href="/core/sys/darwin/Foundation/#ApplicationPresentationOptions">ApplicationPresentationOptions</a>,
-	windowWillEnterFullScreen:                                           <span class="keyword-type">proc</span>(notification: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Notification">Notification</a>),
-	windowDidEnterFullScreen:                                            <span class="keyword-type">proc</span>(notification: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Notification">Notification</a>),
-	windowWillExitFullScreen:                                            <span class="keyword-type">proc</span>(notification: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Notification">Notification</a>),
-	windowDidExitFullScreen:                                             <span class="keyword-type">proc</span>(notification: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Notification">Notification</a>),
+	windowWillUseFullScreenContentSize:                                  <span class="keyword-type">proc</span>(window: , proposedSize: ) -> <a class="code-typename" href="/core/sys/darwin/Foundation/#Size">Size</a>,
+	windowWillUseFullScreenPresentationOptions:                          <span class="keyword-type">proc</span>(window: , proposedOptions: ) -> ,
+	windowWillEnterFullScreen:                                           <span class="keyword-type">proc</span>(notification: ),
+	windowDidEnterFullScreen:                                            <span class="keyword-type">proc</span>(notification: ),
+	windowWillExitFullScreen:                                            <span class="keyword-type">proc</span>(notification: ),
+	windowDidExitFullScreen:                                             <span class="keyword-type">proc</span>(notification: ),
 	<span class="comment">// Custom Full-Screen Presentation Animations</span>
-	customWindowsToEnterFullScreenForWindow:                             <span class="keyword-type">proc</span>(window: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Window">Window</a>) -> ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Array">Array</a>,
-	customWindowsToEnterFullScreenForWindowOnScreen:                     <span class="keyword-type">proc</span>(window: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Window">Window</a>, screen: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Screen">Screen</a>) -> ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Array">Array</a>,
-	windowStartCustomAnimationToEnterFullScreenWithDuration:             <span class="keyword-type">proc</span>(window: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Window">Window</a>, duration: <a class="code-typename" href="/core/sys/darwin/Foundation/#TimeInterval">TimeInterval</a>),
-	windowStartCustomAnimationToEnterFullScreenOnScreenWithDuration:     <span class="keyword-type">proc</span>(window: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Window">Window</a>, screen: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Screen">Screen</a>, duration: <a class="code-typename" href="/core/sys/darwin/Foundation/#TimeInterval">TimeInterval</a>),
-	windowDidFailToEnterFullScreen:                                      <span class="keyword-type">proc</span>(window: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Window">Window</a>),
-	customWindowsToExitFullScreenForWindow:                              <span class="keyword-type">proc</span>(window: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Window">Window</a>) -> ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Array">Array</a>,
-	windowStartCustomAnimationToExitFullScreenWithDuration:              <span class="keyword-type">proc</span>(window: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Window">Window</a>, duration: <a class="code-typename" href="/core/sys/darwin/Foundation/#TimeInterval">TimeInterval</a>),
-	windowDidFailToExitFullScreen:                                       <span class="keyword-type">proc</span>(window: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Window">Window</a>),
+	customWindowsToEnterFullScreenForWindow:                             <span class="keyword-type">proc</span>(window: ) -> ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Array">Array</a>,
+	customWindowsToEnterFullScreenForWindowOnScreen:                     <span class="keyword-type">proc</span>(window: , screen: ) -> ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Array">Array</a>,
+	windowStartCustomAnimationToEnterFullScreenWithDuration:             <span class="keyword-type">proc</span>(window: , duration: ),
+	windowStartCustomAnimationToEnterFullScreenOnScreenWithDuration:     <span class="keyword-type">proc</span>(window: , screen: , duration: ),
+	windowDidFailToEnterFullScreen:                                      <span class="keyword-type">proc</span>(window: ),
+	customWindowsToExitFullScreenForWindow:                              <span class="keyword-type">proc</span>(window: ) -> ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Array">Array</a>,
+	windowStartCustomAnimationToExitFullScreenWithDuration:              <span class="keyword-type">proc</span>(window: , duration: ),
+	windowDidFailToExitFullScreen:                                       <span class="keyword-type">proc</span>(window: ),
 	<span class="comment">// Moving Windows</span>
-	windowWillMove:                                                      <span class="keyword-type">proc</span>(notification: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Notification">Notification</a>),
-	windowDidMove:                                                       <span class="keyword-type">proc</span>(notification: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Notification">Notification</a>),
-	windowDidChangeScreen:                                               <span class="keyword-type">proc</span>(notification: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Notification">Notification</a>),
-	windowDidChangeScreenProfile:                                        <span class="keyword-type">proc</span>(notification: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Notification">Notification</a>),
-	windowDidChangeBackingProperties:                                    <span class="keyword-type">proc</span>(notification: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Notification">Notification</a>),
+	windowWillMove:                                                      <span class="keyword-type">proc</span>(notification: ),
+	windowDidMove:                                                       <span class="keyword-type">proc</span>(notification: ),
+	windowDidChangeScreen:                                               <span class="keyword-type">proc</span>(notification: ),
+	windowDidChangeScreenProfile:                                        <span class="keyword-type">proc</span>(notification: ),
+	windowDidChangeBackingProperties:                                    <span class="keyword-type">proc</span>(notification: ),
 	<span class="comment">// Closing Windows</span>
-	windowShouldClose:                                                   <span class="keyword-type">proc</span>(sender: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Window">Window</a>) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>,
-	windowWillClose:                                                     <span class="keyword-type">proc</span>(notification: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Notification">Notification</a>),
+	windowShouldClose:                                                   <span class="keyword-type">proc</span>(sender: ) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>,
+	windowWillClose:                                                     <span class="keyword-type">proc</span>(notification: ),
 	<span class="comment">// Managing Key Status</span>
-	windowDidBecomeKey:                                                  <span class="keyword-type">proc</span>(notification: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Notification">Notification</a>),
-	windowDidResignKey:                                                  <span class="keyword-type">proc</span>(notification: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Notification">Notification</a>),
+	windowDidBecomeKey:                                                  <span class="keyword-type">proc</span>(notification: ),
+	windowDidResignKey:                                                  <span class="keyword-type">proc</span>(notification: ),
 	<span class="comment">// Managing Main Status</span>
-	windowDidBecomeMain:                                                 <span class="keyword-type">proc</span>(notification: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Notification">Notification</a>),
-	windowDidResignMain:                                                 <span class="keyword-type">proc</span>(notification: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Notification">Notification</a>),
+	windowDidBecomeMain:                                                 <span class="keyword-type">proc</span>(notification: ),
+	windowDidResignMain:                                                 <span class="keyword-type">proc</span>(notification: ),
 	<span class="comment">// Managing Field Editors</span>
-	windowWillReturnFieldEditorToObject:                                 <span class="keyword-type">proc</span>(sender: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Window">Window</a>, client: ^.<a class="code-typename" href="//#objc_object">objc_object</a>) -> ^.<a class="code-typename" href="//#objc_object">objc_object</a>,
+	windowWillReturnFieldEditorToObject:                                 <span class="keyword-type">proc</span>(sender: , client: ) -> ^.<a class="code-typename" href="//#objc_object">objc_object</a>,
 	<span class="comment">// Updating Windows</span>
-	windowDidUpdate:                                                     <span class="keyword-type">proc</span>(notification: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Notification">Notification</a>),
+	windowDidUpdate:                                                     <span class="keyword-type">proc</span>(notification: ),
 	<span class="comment">// Exposing Windows</span>
-	windowDidExpose:                                                     <span class="keyword-type">proc</span>(notification: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Notification">Notification</a>),
+	windowDidExpose:                                                     <span class="keyword-type">proc</span>(notification: ),
 	<span class="comment">// Managing Occlusion State</span>
-	windowDidChangeOcclusionState:                                       <span class="keyword-type">proc</span>(notification: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Notification">Notification</a>),
+	windowDidChangeOcclusionState:                                       <span class="keyword-type">proc</span>(notification: ),
 	<span class="comment">// Dragging Windows</span>
-	windowShouldDragDocumentWithEventFromWithPasteboard:                 <span class="keyword-type">proc</span>(window: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Window">Window</a>, event: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Event">Event</a>, dragImageLocation: <a class="code-typename" href="/core/sys/darwin/Foundation/#Point">Point</a>, pasteboard: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Pasteboard">Pasteboard</a>) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>,
+	windowShouldDragDocumentWithEventFromWithPasteboard:                 <span class="keyword-type">proc</span>(window: , event: , dragImageLocation: , pasteboard: ) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>,
 	<span class="comment">// Getting the Undo Manager</span>
-	windowWillReturnUndoManager:                                         <span class="keyword-type">proc</span>(window: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Window">Window</a>) -> ^<a class="code-typename" href="/core/sys/darwin/Foundation/#UndoManager">UndoManager</a>,
+	windowWillReturnUndoManager:                                         <span class="keyword-type">proc</span>(window: ) -> ,
 	<span class="comment">// Managing Titles</span>
-	windowShouldPopUpDocumentPathMenu:                                   <span class="keyword-type">proc</span>(window: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Window">Window</a>, menu: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Menu">Menu</a>) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>,
+	windowShouldPopUpDocumentPathMenu:                                   <span class="keyword-type">proc</span>(window: , menu: ) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>,
 	<span class="comment">// Managing Restorable State</span>
-	windowWillEncodeRestorableState:                                     <span class="keyword-type">proc</span>(window: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Window">Window</a>, state: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Coder">Coder</a>),
-	windowDidEncodeRestorableState:                                      <span class="keyword-type">proc</span>(window: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Window">Window</a>, state: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Coder">Coder</a>),
+	windowWillEncodeRestorableState:                                     <span class="keyword-type">proc</span>(window: , state: ),
+	windowDidEncodeRestorableState:                                      <span class="keyword-type">proc</span>(window: , state: ),
 	<span class="comment">// Managing Presentation in Version Browsers</span>
-	windowWillResizeForVersionBrowserWithMaxPreferredSizeMaxAllowedSize: <span class="keyword-type">proc</span>(window: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Window">Window</a>, maxPreferredFrameSize: <a class="code-typename" href="/core/sys/darwin/Foundation/#Size">Size</a>, maxAllowedFrameSize: <a class="code-typename" href="/core/sys/darwin/Foundation/#Size">Size</a>) -> <a class="code-typename" href="/core/sys/darwin/Foundation/#Size">Size</a>,
-	windowWillEnterVersionBrowser:                                       <span class="keyword-type">proc</span>(notification: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Notification">Notification</a>),
-	windowDidEnterVersionBrowser:                                        <span class="keyword-type">proc</span>(notification: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Notification">Notification</a>),
-	windowWillExitVersionBrowser:                                        <span class="keyword-type">proc</span>(notification: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Notification">Notification</a>),
-	windowDidExitVersionBrowser:                                         <span class="keyword-type">proc</span>(notification: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Notification">Notification</a>),
+	windowWillResizeForVersionBrowserWithMaxPreferredSizeMaxAllowedSize: <span class="keyword-type">proc</span>(window: , maxPreferredFrameSize: , maxAllowedFrameSize: ) -> <a class="code-typename" href="/core/sys/darwin/Foundation/#Size">Size</a>,
+	windowWillEnterVersionBrowser:                                       <span class="keyword-type">proc</span>(notification: ),
+	windowDidEnterVersionBrowser:                                        <span class="keyword-type">proc</span>(notification: ),
+	windowWillExitVersionBrowser:                                        <span class="keyword-type">proc</span>(notification: ),
+	windowDidExitVersionBrowser:                                         <span class="keyword-type">proc</span>(notification: ),
 }</pre>
 </div>
 <h5>Related Procedures With Parameters</h5>
@@ -4483,8 +4344,8 @@ res0, res1 := <a href="#Block">Block</a>.<a href="#Block_createGlobal">createGlo
 <pre class="doc-code">Block_createGlobalWithParam :: <span class="keyword-type">proc</span>(
 	user_data: <a href="/base/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>, 
 	user_proc: <span class="keyword-type">proc</span> "c" (
-	user_data: <a href="/base/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>, 
-	t:         $T, 
+	user_data: , 
+	t:         , 
 ), 
 	allocator := <a href="/base/runtime/#Context">context.allocator</a>, 
 ) -> (^<a class="code-typename" href="/core/sys/darwin/Foundation/#Block">Block</a>, runtime.<a class="code-typename" href="/base/runtime/#Allocator_Error">Allocator_Error</a>) <span class="directive">#optional_ok</span> {…}</pre>
@@ -4538,8 +4399,8 @@ res := <a href="#Block">Block</a>.<a href="#Block_createLocal">createLocal</a>(
 <pre class="doc-code">Block_createLocalWithParam :: <span class="keyword-type">proc</span>(
 	user_data: <a href="/base/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>, 
 	user_proc: <span class="keyword-type">proc</span> "c" (
-	user_data: <a href="/base/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>, 
-	t:         $T, 
+	user_data: , 
+	t:         , 
 ), 
 ) -> ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Block">Block</a> {…}</pre>
 <div>
@@ -6303,7 +6164,7 @@ res := self-><a href="#Dictionary_initWithObjects">initWithObjects</a>(
 <pre class="doc-code">Dictionary_keyEnumerator :: <span class="keyword-type">proc</span> "c" (
 	self:    ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Dictionary">Dictionary</a>, 
 	$KeyType: <a href="/base/builtin#typeid"><span class="doc-builtin">typeid</span></a>, 
-) -> (enumerator: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Enumerator">Enumerator</a>($T=typeid)) {…}</pre>
+) -> (enumerator: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Enumerator">Enumerator</a>($T)) {…}</pre>
 <div>
 <h5>Objective-C Method Information</h5>
 <ul>
@@ -10615,7 +10476,7 @@ self-><a href="#Window_setTitlebarAppearsTransparent">setTitlebarAppearsTranspar
 <pre class="doc-code">application_delegate_register_and_alloc :: <span class="keyword-type">proc</span>(
 	template:         <a class="code-typename" href="/core/sys/darwin/Foundation/#ApplicationDelegateTemplate">ApplicationDelegateTemplate</a>, 
 	class_name:       <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>, 
-	delegate_context: runtime.<a class="code-typename" href="/base/runtime/#Maybe">Maybe</a>($T=Context), 
+	delegate_context: runtime.<a class="code-typename" href="/base/runtime/#Maybe">Maybe</a>($T), 
 ) -> ^<a class="code-typename" href="/core/sys/darwin/Foundation/#ApplicationDelegate">ApplicationDelegate</a> {…}</pre>
 </div>
 </div>
@@ -10984,7 +10845,7 @@ res := self-><a href="#tilt">tilt</a>()
 <pre class="doc-code">window_delegate_register_and_alloc :: <span class="keyword-type">proc</span>(
 	template:         <a class="code-typename" href="/core/sys/darwin/Foundation/#WindowDelegateTemplate">WindowDelegateTemplate</a>, 
 	class_name:       <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>, 
-	delegate_context: runtime.<a class="code-typename" href="/base/runtime/#Maybe">Maybe</a>($T=Context), 
+	delegate_context: runtime.<a class="code-typename" href="/base/runtime/#Maybe">Maybe</a>($T), 
 ) -> ^<a class="code-typename" href="/core/sys/darwin/Foundation/#WindowDelegate">WindowDelegate</a> {…}</pre>
 </div>
 </div>
@@ -11071,7 +10932,7 @@ res := <a href="#Number">Number</a>.<a href="#Number_numberWithBool">number</a>(
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/Foundation/objc.odin">objc.odin</a></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2024-04 (vendor "odin") Windows_amd64 @ 2024-04-26 21:08:58.685372500 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2024-06 (vendor "odin") Windows_amd64 @ 2024-06-17 21:40:01.276654200 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">

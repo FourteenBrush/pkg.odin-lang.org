@@ -89,12 +89,14 @@
 <li><a href="/core/container/lru">lru</a></li>
 <li><a href="/core/container/priority_queue">priority_queue</a></li>
 <li><a href="/core/container/queue">queue</a></li>
+<li><a href="/core/container/rbtree">rbtree</a></li>
 <li><a href="/core/container/small_array">small_array</a></li>
 <li><a href="/core/container/topological_sort">topological_sort</a></li>
 </ul>
 
 </li>
 <li class="nav-item"><a href="/core/crypto">crypto</a><ul>
+<li><a href="/core/crypto/aes">aes</a></li>
 <li><a href="/core/crypto/blake2b">blake2b</a></li>
 <li><a href="/core/crypto/blake2s">blake2s</a></li>
 <li><a href="/core/crypto/chacha20">chacha20</a></li>
@@ -126,6 +128,7 @@
 </li>
 <li class="nav-item"><a href="/core/dynlib">dynlib</a></li>
 <li class="nav-item">encoding<ul>
+<li><a href="/core/encoding/ansi">ansi</a></li>
 <li><a href="/core/encoding/base32">base32</a></li>
 <li><a href="/core/encoding/base64">base64</a></li>
 <li><a href="/core/encoding/cbor">cbor</a></li>
@@ -179,9 +182,7 @@
 <li class="nav-item">odin<ul>
 <li><a href="/core/odin/ast">ast</a></li>
 <li><a href="/core/odin/doc-format">doc-format</a></li>
-<li><a href="/core/odin/format">format</a></li>
 <li><a href="/core/odin/parser">parser</a></li>
-<li><a href="/core/odin/printer">printer</a></li>
 <li><a href="/core/odin/tokenizer">tokenizer</a></li>
 </ul>
 
@@ -212,14 +213,17 @@
 
 </li>
 <li class="nav-item"><a href="/core/strings">strings</a></li>
-<li class="nav-item"><a href="/core/sync">sync</a></li>
+<li class="nav-item"><a href="/core/sync">sync</a><ul>
+<li><a href="/core/sync/chan">chan</a></li>
+</ul>
+
+</li>
 <li class="nav-item">sys<ul>
 <li><a href="/core/sys/darwin">darwin</a></li>
 <li><a href="/core/sys/darwin/Foundation">darwin/Foundation</a></li>
 <li><a href="/core/sys/haiku">haiku</a></li>
 <li><a href="/core/sys/info">info</a></li>
 <li><a href="/core/sys/linux">linux</a></li>
-<li><a href="/core/sys/unix">unix</a></li>
 <li><a href="/core/sys/valgrind">valgrind</a></li>
 <li><a href="/core/sys/windows">windows</a></li>
 </ul>
@@ -340,16 +344,17 @@ Procedure Groups (0)</summary>
 <section class="documentation">
 <h2 id="pkg-Types" class="pkg-header">Types</h2>
 <div class="pkg-entity">
-<h3 id="Internal_Cleanup"><span><a class="doc-id-link" href="#Internal_Cleanup">Internal_Cleanup<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/testing/testing.odin#L22"><em>Source</em></a></div></h3>
+<h3 id="Internal_Cleanup"><span><a class="doc-id-link" href="#Internal_Cleanup">Internal_Cleanup<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/testing/testing.odin#L23"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Internal_Cleanup :: <span class="keyword-type">struct</span> {
 	procedure: <span class="keyword-type">proc</span>(_: <a href="/base/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>),
 	user_data: <a href="/base/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>,
+	ctx:       runtime.<a class="code-typename" href="/base/runtime/#Context">Context</a>,
 }</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="Internal_Test"><span><a class="doc-id-link" href="#Internal_Test">Internal_Test<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/testing/testing.odin#L15"><em>Source</em></a></div></h3>
+<h3 id="Internal_Test"><span><a class="doc-id-link" href="#Internal_Test">Internal_Test<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/testing/testing.odin#L16"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Internal_Test :: <span class="keyword-type">struct</span> {
 	pkg:  <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>,
@@ -363,13 +368,26 @@ Procedure Groups (0)</summary>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="T"><span><a class="doc-id-link" href="#T">T<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/testing/testing.odin#L27"><em>Source</em></a></div></h3>
+<h3 id="T"><span><a class="doc-id-link" href="#T">T<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/testing/testing.odin#L29"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">T :: <span class="keyword-type">struct</span> {
-	error_count: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>,
-	w:           io.<a class="code-typename" href="/core/io/#Stream">Stream</a>,
-	cleanups:    [<span class="keyword">dynamic</span>]<a class="code-typename" href="/core/testing/#Internal_Cleanup">Internal_Cleanup</a>,
-	_fail_now:   <span class="keyword-type">proc</span>() -> !,
+	error_count:      <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>,
+	<span class="comment">// If your test needs to perform random operations, it's advised to use</span>
+	<span class="comment">// this value to seed a local random number generator rather than relying</span>
+	<span class="comment">// on the non-thread-safe global one.</span>
+	<span class="comment">// </span>
+	<span class="comment">// This way, your results will be deterministic.</span>
+	<span class="comment">// </span>
+	<span class="comment">// This value is chosen at startup of the test runner, logged, and may be</span>
+	<span class="comment">// specified by the user. It is the same for all tests of a single run.</span>
+	seed:             <a href="/base/builtin#u64"><span class="doc-builtin">u64</span></a>,
+	channel:          sync_chan.Chan($T, $D=0),
+	cleanups:         [<span class="keyword">dynamic</span>]<a class="code-typename" href="/core/testing/#Internal_Cleanup">Internal_Cleanup</a>,
+	<span class="comment">// This allocator is shared between the test runner and its threads for</span>
+	<span class="comment">// cloning log strings, so they can outlive the lifetime of individual</span>
+	<span class="comment">// tests during channel transmission.</span>
+	_log_allocator:   runtime.<a class="code-typename" href="/base/runtime/#Allocator">Allocator</a>,
+	_fail_now_called: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>,
 }</pre>
 </div>
 <h5>Related Procedures With Parameters</h5>
@@ -389,7 +407,7 @@ Procedure Groups (0)</summary>
 </ul>
 </div>
 <div class="pkg-entity">
-<h3 id="Test_Signature"><span><a class="doc-id-link" href="#Test_Signature">Test_Signature<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/testing/testing.odin#L12"><em>Source</em></a></div></h3>
+<h3 id="Test_Signature"><span><a class="doc-id-link" href="#Test_Signature">Test_Signature<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/testing/testing.odin#L13"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Test_Signature :: <span class="keyword-type">proc</span>(_: ^<a class="code-typename" href="/core/testing/#T">T</a>)</pre>
 </div>
@@ -404,78 +422,94 @@ Procedure Groups (0)</summary>
 <p class="pkg-empty-section">This section is empty.</p>
 <h2 id="pkg-Procedures" class="pkg-header">Procedures</h2>
 <div class="pkg-entity">
-<h3 id="cleanup"><span><a class="doc-id-link" href="#cleanup">cleanup<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/testing/testing.odin#L84"><em>Source</em></a></div></h3>
+<h3 id="cleanup"><span><a class="doc-id-link" href="#cleanup">cleanup<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/testing/testing.odin#L113"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">cleanup :: <span class="keyword-type">proc</span>(t: ^<a class="code-typename" href="/core/testing/#T">T</a>, procedure: <span class="keyword-type">proc</span>(_: <a href="/base/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>), user_data: <a href="/base/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>) {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>cleanup registers a procedure and user_data, which will be called when the test, and all its subtests, complete
-cleanup procedures will be called in LIFO (last added, first called) order.</p>
+<p>cleanup registers a procedure and user_data, which will be called when the test, and all its subtests, complete.
+Cleanup procedures will be called in LIFO (last added, first called) order.</p>
+<p>Each procedure will use a copy of the context at the time of registering,
+and if the test failed due to a timeout, failed assertion, panic, bounds-checking error,
+memory access violation, or any other signal-based fault, this procedure will
+run with greater privilege in the test runner's main thread.</p>
+<p>That means that any cleanup procedure absolutely must not fail in the same way,
+or it will take down the entire test runner with it. This is for when you
+need something to run no matter what, if a test failed.</p>
+<p>For almost every usual case, <code>defer</code> should be preferable and sufficient.</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="error"><span><a class="doc-id-link" href="#error">error<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/testing/testing.odin#L38"><em>Source</em></a></div></h3>
+<h3 id="error"><span><a class="doc-id-link" href="#error">error<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/testing/testing.odin#L56"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">error :: <span class="keyword-type">proc</span>(t: ^<a class="code-typename" href="/core/testing/#T">T</a>, <span class="keyword-type">..</span> args: ..<a href="/base/builtin#any"><span class="doc-builtin">any</span></a>, loc := <a href="/base/runtime/#Source_Code_Location">#caller_location</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="errorf"><span><a class="doc-id-link" href="#errorf">errorf<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/testing/testing.odin#L44"><em>Source</em></a></div></h3>
+<h3 id="errorf"><span><a class="doc-id-link" href="#errorf">errorf<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/testing/testing.odin#L61"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">errorf :: <span class="keyword-type">proc</span>(t: ^<a class="code-typename" href="/core/testing/#T">T</a>, format: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>, <span class="keyword-type">..</span> args: ..<a href="/base/builtin#any"><span class="doc-builtin">any</span></a>, loc := <a href="/base/runtime/#Source_Code_Location">#caller_location</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="expect"><span><a class="doc-id-link" href="#expect">expect<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/testing/testing.odin#L88"><em>Source</em></a></div></h3>
+<h3 id="expect"><span><a class="doc-id-link" href="#expect">expect<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/testing/testing.odin#L117"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">expect :: <span class="keyword-type">proc</span>(t: ^<a class="code-typename" href="/core/testing/#T">T</a>, ok: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>, msg: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a> = "", loc := <a href="/base/runtime/#Source_Code_Location">#caller_location</a>) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="expect_value"><span><a class="doc-id-link" href="#expect_value">expect_value<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/testing/testing.odin#L102"><em>Source</em></a></div></h3>
+<h3 id="expect_value"><span><a class="doc-id-link" href="#expect_value">expect_value<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/testing/testing.odin#L131"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">expect_value :: <span class="keyword-type">proc</span>(t: ^<a class="code-typename" href="/core/testing/#T">T</a>, value, expected: $T, loc := <a href="/base/runtime/#Source_Code_Location">#caller_location</a>) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="expectf"><span><a class="doc-id-link" href="#expectf">expectf<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/testing/testing.odin#L95"><em>Source</em></a></div></h3>
+<h3 id="expectf"><span><a class="doc-id-link" href="#expectf">expectf<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/testing/testing.odin#L124"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">expectf :: <span class="keyword-type">proc</span>(t: ^<a class="code-typename" href="/core/testing/#T">T</a>, ok: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>, format: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>, <span class="keyword-type">..</span> args: ..<a href="/base/builtin#any"><span class="doc-builtin">any</span></a>, loc := <a href="/base/runtime/#Source_Code_Location">#caller_location</a>) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="fail"><span><a class="doc-id-link" href="#fail">fail<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/testing/testing.odin#L51"><em>Source</em></a></div></h3>
+<h3 id="fail"><span><a class="doc-id-link" href="#fail">fail<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/testing/testing.odin#L65"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">fail :: <span class="keyword-type">proc</span>(t: ^<a class="code-typename" href="/core/testing/#T">T</a>, loc := <a href="/base/runtime/#Source_Code_Location">#caller_location</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="fail_now"><span><a class="doc-id-link" href="#fail_now">fail_now<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/testing/testing.odin#L56"><em>Source</em></a></div></h3>
+<h3 id="fail_now"><span><a class="doc-id-link" href="#fail_now">fail_now<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/testing/testing.odin#L75"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">fail_now :: <span class="keyword-type">proc</span>(t: ^<a class="code-typename" href="/core/testing/#T">T</a>, msg: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a> = "", loc := <a href="/base/runtime/#Source_Code_Location">#caller_location</a>) {…}</pre>
+<pre class="doc-code">fail_now :: <span class="keyword-type">proc</span>(t: ^<a class="code-typename" href="/core/testing/#T">T</a>, msg: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a> = "", loc := <a href="/base/runtime/#Source_Code_Location">#caller_location</a>) -> ! {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>fail_now will cause a test to immediately fail and abort, much in the same
+way a failed assertion or panic call will stop a thread.</p>
+<p>It is for when you absolutely need a test to fail without calling any of its
+deferred statements. It will be cleaner than a regular assert or panic,
+as the test runner will know to expect the signal this procedure will raise.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="failed"><span><a class="doc-id-link" href="#failed">failed<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/testing/testing.odin#L68"><em>Source</em></a></div></h3>
+<h3 id="failed"><span><a class="doc-id-link" href="#failed">failed<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/testing/testing.odin#L85"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">failed :: <span class="keyword-type">proc</span>(t: ^<a class="code-typename" href="/core/testing/#T">T</a>) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="log"><span><a class="doc-id-link" href="#log">log<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/testing/testing.odin#L72"><em>Source</em></a></div></h3>
+<h3 id="log"><span><a class="doc-id-link" href="#log">log<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/testing/testing.odin#L90"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">log :: <span class="keyword-type">proc</span>(t: ^<a class="code-typename" href="/core/testing/#T">T</a>, <span class="keyword-type">..</span> args: ..<a href="/base/builtin#any"><span class="doc-builtin">any</span></a>, loc := <a href="/base/runtime/#Source_Code_Location">#caller_location</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="logf"><span><a class="doc-id-link" href="#logf">logf<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/testing/testing.odin#L76"><em>Source</em></a></div></h3>
+<h3 id="logf"><span><a class="doc-id-link" href="#logf">logf<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/testing/testing.odin#L95"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">logf :: <span class="keyword-type">proc</span>(t: ^<a class="code-typename" href="/core/testing/#T">T</a>, format: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>, <span class="keyword-type">..</span> args: ..<a href="/base/builtin#any"><span class="doc-builtin">any</span></a>, loc := <a href="/base/runtime/#Source_Code_Location">#caller_location</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="set_fail_timeout"><span><a class="doc-id-link" href="#set_fail_timeout">set_fail_timeout<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/testing/testing.odin#L111"><em>Source</em></a></div></h3>
+<h3 id="set_fail_timeout"><span><a class="doc-id-link" href="#set_fail_timeout">set_fail_timeout<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/testing/testing.odin#L140"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">set_fail_timeout :: <span class="keyword-type">proc</span>(t: ^<a class="code-typename" href="/core/testing/#T">T</a>, duration: time.<a class="code-typename" href="/core/time/#Duration">Duration</a>, loc := <a href="/base/runtime/#Source_Code_Location">#caller_location</a>) {…}</pre>
 </div>
@@ -485,12 +519,16 @@ cleanup procedures will be called in LIFO (last added, first called) order.</p>
 </section>
 <h2 id="pkg-source-files">Source Files</h2>
 <ul>
+<li><a href="https://github.com/odin-lang/Odin/tree/master/core/testing/events.odin">events.odin</a></li>
+<li><a href="https://github.com/odin-lang/Odin/tree/master/core/testing/logging.odin">logging.odin</a></li>
+<li><a href="https://github.com/odin-lang/Odin/tree/master/core/testing/reporting.odin">reporting.odin</a></li>
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/testing/runner.odin">runner.odin</a></li>
+<li><a href="https://github.com/odin-lang/Odin/tree/master/core/testing/signal_handler.odin">signal_handler.odin</a></li>
+<li><a href="https://github.com/odin-lang/Odin/tree/master/core/testing/signal_handler_libc.odin">signal_handler_libc.odin</a></li>
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/testing/testing.odin">testing.odin</a></li>
-<li><em>(hidden platform specific files)</em></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2024-04 (vendor "odin") Windows_amd64 @ 2024-04-26 21:08:59.114102900 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2024-06 (vendor "odin") Windows_amd64 @ 2024-06-17 21:40:01.695554400 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">

@@ -1,0 +1,1493 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>package encoding/ansi - pkg.odin-lang.org</title>	<link rel="stylesheet" type="text/css" href="https://odin-lang.org/scss/custom.min.css">
+	<link rel=stylesheet href="//odin-lang.org/lib/highlight/styles/github-dark.min.css">
+	<script src="//odin-lang.org/lib/highlight/highlight.min.js"></script>
+
+	<script>hljs.registerLanguage("odin",function(a){return{aliases:["odin","odinlang","odin-lang"],keywords:{keyword:"auto_cast bit_set break case cast context continue defer distinct do dynamic else enum fallthrough for foreign if import in map not_in or_else or_return package proc return struct switch transmute type_of typeid union using when where",literal:"true false nil",built_in:"abs align_of cap clamp complex conj expand_to_tuple imag jmag kmag len max min offset_of quaternion real size_of soa_unzip soa_zip swizzle type_info_of type_of typeid_of"},illegal:"</",contains:[a.C_LINE_COMMENT_MODE,a.C_BLOCK_COMMENT_MODE,{className:"string",variants:[a.QUOTE_STRING_MODE,{begin:"'",end:"[^\\\\]'"},{begin:"`",end:"`"}]},{className:"number",variants:[{begin:a.C_NUMBER_RE+"[ijk]",relevance:1},a.C_NUMBER_MODE]}]}})</script>
+	<script>hljs.highlightAll()</script>
+	<script>
+		function toggleDarkMode() {
+			if (document.body.classList.toggle("dark-mode")) {
+				window.localStorage.setItem("theme", "dark");
+			} else {
+				window.localStorage.setItem("theme", "light");
+			}
+		}
+	</script>
+	<link rel="stylesheet" type="text/css" href="https://odin-lang.org/css/style.css">
+
+	<link rel="stylesheet" type="text/css" href="/style.css">
+
+	</style>
+</head>
+<body>
+<header class="sticky-top">
+	<nav class="navbar navbar-expand-lg navbar-dark bg-primary odin-menu">
+		<div class="container">
+			<a class="navbar-brand" href="https://odin-lang.org/">
+			<img src="https://odin-lang.org/logo.svg" height="30" alt="Odin"></a>
+			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#odin-navbar-content" aria-controls="odin-navbar-content" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+			<div class="collapse navbar-collapse" id="odin-navbar-content">
+			<ul class="navbar-nav ms-md-auto">
+				<li class="nav-item"><a class="nav-link" href="https://odin-lang.org/">Home</a></li>
+				<li class="nav-item"><a class="nav-link" href="https://odin-lang.org/docs">Docs</a></li>
+				<li class="nav-item"><a class="nav-link active" href="/">Packages</a></li>
+				<li class="nav-item"><a class="nav-link" href="https://odin-lang.org/news">News</a></li>
+				<li class="nav-item"><a class="nav-link" href="https://odin-lang.org/showcase">Showcase</a></li>
+				<li class="nav-item"><a class="nav-link" href="https://odin-lang.org/community">Community</a></li>
+				<li class="nav-item"><a class="nav-link" href="https://github.com/odin-lang/Odin" target="_blank">GitHub</a></li>
+				<li class="nav-item">
+					<a
+						class="nav-link btn-dark-mode"
+						onclick="toggleDarkMode();"
+						title="Toggle Light/Dark Mode"
+					>
+						<span class="dark-mode-appearance">Appearance:</span>
+						<svg fill="white" id="dark-mode-icon" viewBox="0 0 384 512"><path d="M223.5 32C100 32 0 132.3 0 256S100 480 223.5 480c60.6 0 115.5-24.2 155.8-63.4c5-4.9 6.3-12.5 3.1-18.7s-10.1-9.7-17-8.5c-9.8 1.7-19.8 2.6-30.1 2.6c-96.9 0-175.5-78.8-175.5-176c0-65.8 36-123.1 89.3-153.3c6.1-3.5 9.2-10.5 7.7-17.3s-7.3-11.9-14.3-12.5c-6.3-.5-12.6-.8-19-.8z"/></svg>
+						<svg fill="white" id="light-mode-icon" viewBox="0 0 16 16">
+						  <path d="M8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8M8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0m0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13m8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5M3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8m10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0m-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0m9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707M4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708"/>
+						</svg>
+					</button>
+					</a>
+				</li>
+			</ul>
+		</div>
+		</div>
+	</nav>
+</header>
+<main>
+<div class="container full-width">
+<div class="row odin-main my-4" id="pkg">
+<nav id="pkg-sidebar" class="col-lg-2 odin-sidebar-border navbar-light sticky-top odin-below-navbar">
+<div class="py-3">
+<h4><a style="text-transform: capitalize; color: inherit;" href="/core">core Library</a></h4>
+<ul>
+<li class="nav-item"><a href="/core/bufio">bufio</a></li>
+<li class="nav-item"><a href="/core/bytes">bytes</a></li>
+<li class="nav-item"><a href="/core/c">c</a><ul>
+<li><a href="/core/c/frontend/preprocessor">frontend/preprocessor</a></li>
+<li><a href="/core/c/frontend/tokenizer">frontend/tokenizer</a></li>
+<li><a href="/core/c/libc">libc</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/compress">compress</a><ul>
+<li><a href="/core/compress/gzip">gzip</a></li>
+<li><a href="/core/compress/shoco">shoco</a></li>
+<li><a href="/core/compress/zlib">zlib</a></li>
+</ul>
+
+</li>
+<li class="nav-item">container<ul>
+<li><a href="/core/container/avl">avl</a></li>
+<li><a href="/core/container/bit_array">bit_array</a></li>
+<li><a href="/core/container/intrusive/list">intrusive/list</a></li>
+<li><a href="/core/container/lru">lru</a></li>
+<li><a href="/core/container/priority_queue">priority_queue</a></li>
+<li><a href="/core/container/queue">queue</a></li>
+<li><a href="/core/container/rbtree">rbtree</a></li>
+<li><a href="/core/container/small_array">small_array</a></li>
+<li><a href="/core/container/topological_sort">topological_sort</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/crypto">crypto</a><ul>
+<li><a href="/core/crypto/aes">aes</a></li>
+<li><a href="/core/crypto/blake2b">blake2b</a></li>
+<li><a href="/core/crypto/blake2s">blake2s</a></li>
+<li><a href="/core/crypto/chacha20">chacha20</a></li>
+<li><a href="/core/crypto/chacha20poly1305">chacha20poly1305</a></li>
+<li><a href="/core/crypto/ed25519">ed25519</a></li>
+<li><a href="/core/crypto/hash">hash</a></li>
+<li><a href="/core/crypto/hkdf">hkdf</a></li>
+<li><a href="/core/crypto/hmac">hmac</a></li>
+<li><a href="/core/crypto/kmac">kmac</a></li>
+<li><a href="/core/crypto/legacy/keccak">legacy/keccak</a></li>
+<li><a href="/core/crypto/legacy/md5">legacy/md5</a></li>
+<li><a href="/core/crypto/legacy/sha1">legacy/sha1</a></li>
+<li><a href="/core/crypto/pbkdf2">pbkdf2</a></li>
+<li><a href="/core/crypto/poly1305">poly1305</a></li>
+<li><a href="/core/crypto/ristretto255">ristretto255</a></li>
+<li><a href="/core/crypto/sha2">sha2</a></li>
+<li><a href="/core/crypto/sha3">sha3</a></li>
+<li><a href="/core/crypto/shake">shake</a></li>
+<li><a href="/core/crypto/sm3">sm3</a></li>
+<li><a href="/core/crypto/tuplehash">tuplehash</a></li>
+<li><a href="/core/crypto/x25519">x25519</a></li>
+</ul>
+
+</li>
+<li class="nav-item">debug<ul>
+<li><a href="/core/debug/pe">pe</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/dynlib">dynlib</a></li>
+<li class="nav-item">encoding<ul>
+<li><a class="active" href="/core/encoding/ansi">ansi</a></li>
+<li><a href="/core/encoding/base32">base32</a></li>
+<li><a href="/core/encoding/base64">base64</a></li>
+<li><a href="/core/encoding/cbor">cbor</a></li>
+<li><a href="/core/encoding/csv">csv</a></li>
+<li><a href="/core/encoding/endian">endian</a></li>
+<li><a href="/core/encoding/entity">entity</a></li>
+<li><a href="/core/encoding/hex">hex</a></li>
+<li><a href="/core/encoding/hxa">hxa</a></li>
+<li><a href="/core/encoding/json">json</a></li>
+<li><a href="/core/encoding/varint">varint</a></li>
+<li><a href="/core/encoding/xml">xml</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/fmt">fmt</a></li>
+<li class="nav-item"><a href="/core/hash">hash</a><ul>
+<li><a href="/core/hash/xxhash">xxhash</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/image">image</a><ul>
+<li><a href="/core/image/netpbm">netpbm</a></li>
+<li><a href="/core/image/png">png</a></li>
+<li><a href="/core/image/qoi">qoi</a></li>
+<li><a href="/core/image/tga">tga</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/io">io</a></li>
+<li class="nav-item"><a href="/core/log">log</a></li>
+<li class="nav-item"><a href="/core/math">math</a><ul>
+<li><a href="/core/math/big">big</a></li>
+<li><a href="/core/math/bits">bits</a></li>
+<li><a href="/core/math/cmplx">cmplx</a></li>
+<li><a href="/core/math/ease">ease</a></li>
+<li><a href="/core/math/fixed">fixed</a></li>
+<li><a href="/core/math/linalg">linalg</a></li>
+<li><a href="/core/math/linalg/glsl">linalg/glsl</a></li>
+<li><a href="/core/math/linalg/hlsl">linalg/hlsl</a></li>
+<li><a href="/core/math/noise">noise</a></li>
+<li><a href="/core/math/rand">rand</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/mem">mem</a><ul>
+<li><a href="/core/mem/virtual">virtual</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/net">net</a></li>
+<li class="nav-item">odin<ul>
+<li><a href="/core/odin/ast">ast</a></li>
+<li><a href="/core/odin/doc-format">doc-format</a></li>
+<li><a href="/core/odin/parser">parser</a></li>
+<li><a href="/core/odin/tokenizer">tokenizer</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/os">os</a></li>
+<li class="nav-item">path<ul>
+<li><a href="/core/path/filepath">filepath</a></li>
+<li><a href="/core/path/slashpath">slashpath</a></li>
+</ul>
+
+</li>
+<li class="nav-item">prof<ul>
+<li><a href="/core/prof/spall">spall</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/reflect">reflect</a></li>
+<li class="nav-item"><a href="/core/simd">simd</a></li>
+<li class="nav-item"><a href="/core/slice">slice</a><ul>
+<li><a href="/core/slice/heap">heap</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/sort">sort</a></li>
+<li class="nav-item"><a href="/core/strconv">strconv</a><ul>
+<li><a href="/core/strconv/decimal">decimal</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/strings">strings</a></li>
+<li class="nav-item"><a href="/core/sync">sync</a><ul>
+<li><a href="/core/sync/chan">chan</a></li>
+</ul>
+
+</li>
+<li class="nav-item">sys<ul>
+<li><a href="/core/sys/darwin">darwin</a></li>
+<li><a href="/core/sys/darwin/Foundation">darwin/Foundation</a></li>
+<li><a href="/core/sys/haiku">haiku</a></li>
+<li><a href="/core/sys/info">info</a></li>
+<li><a href="/core/sys/linux">linux</a></li>
+<li><a href="/core/sys/valgrind">valgrind</a></li>
+<li><a href="/core/sys/windows">windows</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/testing">testing</a></li>
+<li class="nav-item">text<ul>
+<li><a href="/core/text/edit">edit</a></li>
+<li><a href="/core/text/i18n">i18n</a></li>
+<li><a href="/core/text/match">match</a></li>
+<li><a href="/core/text/scanner">scanner</a></li>
+<li><a href="/core/text/table">table</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/thread">thread</a></li>
+<li class="nav-item"><a href="/core/time">time</a><ul>
+<li><a href="/core/time/datetime">datetime</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/unicode">unicode</a><ul>
+<li><a href="/core/unicode/utf16">utf16</a></li>
+<li><a href="/core/unicode/utf8">utf8</a></li>
+<li><a href="/core/unicode/utf8/utf8string">utf8/utf8string</a></li>
+</ul>
+
+</li>
+</ul>
+</div>
+</nav>
+<article class="col-lg-8 p-4 documentation odin-article">
+<nav class="pkg-breadcrumb" aria-label="breadcrumb">
+<ol class="breadcrumb">
+<li class="breadcrumb-item"><a href="/core">core</a></li>
+<li class="breadcrumb-item">encoding</li>
+<li class="breadcrumb-item active" aria-current="page"><a href="/core/encoding/ansi">ansi</a></li>
+</ol>
+</nav>
+<h1>package core:encoding/ansi<div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi"><em>Source</em></a></div></h1>
+
+		<div class="odin-search-wrapper">
+			<input type="search" id="odin-search" class="odin-search-package" autocomplete="off" spellcheck="false" placeholder="Fuzzy Search...">
+			<div class="odin-search-shortcut">
+				<div class="odin-search-key key-macos">⌘K</div>
+				<div class="odin-search-key key-windows">Ctrl+K</div>
+				<span class="odin-search-or">or</span>
+				<div class="odin-search-key">/</div>
+			</div>
+		</div>
+	
+<div id="odin-search-info">
+<div id="odin-search-time"></div>
+
+		<div id="odin-search-options">
+			<input type="checkbox" id="odin-search-filter" name="odin-search-filter">
+			<label for="odin-search-filter">Filter Results</label>
+		</div>
+</div>
+<ul id="odin-search-results"></ul>
+<div id="pkg-top">
+<h2>Overview</h2>
+<div id="pkg-overview">
+<p>package ansi implements constant references to many widely-supported ANSI
+escape codes, primarily used in terminal emulators for enhanced graphics, such
+as colors, text styling, and animated displays.</p>
+<p>For example, you can print out a line of cyan text like this:</p>
+<pre>fmt.println(ansi.CSI + ansi.FG_CYAN + ansi.SGR + "Hellope!" + ansi.CSI + ansi.RESET + ansi.SGR)
+
+</pre>
+<p>Multiple SGR (Select Graphic Rendition) codes can be joined by semicolons:</p>
+<pre>fmt.println(ansi.CSI + ansi.BOLD + ";" + ansi.FG_BLUE + ansi.SGR + "Hellope!" + ansi.CSI + ansi.RESET + ansi.SGR)
+
+</pre>
+<p>If your terminal supports 24-bit true color mode, you can also do this:</p>
+<pre>fmt.println(ansi.CSI + ansi.FG_COLOR_24_BIT + ";0;255;255" + ansi.SGR + "Hellope!" + ansi.CSI + ansi.RESET + ansi.SGR)
+
+</pre>
+<p>For more information, see:</p>
+<pre>1. https://en.wikipedia.org/wiki/ANSI_escape_code
+2. https://www.vt100.net/docs/vt102-ug/chapter5.html
+3. https://invisible-island.net/xterm/ctlseqs/ctlseqs.html
+</pre>
+</div>
+<div id="pkg-index">
+<h2>Index</h2>
+<div>
+<details class="doc-index" id="doc-index-Types" aria-labelledby="#doc-index-Types-header">
+<summary id="#doc-index-Types-header">
+Types (0)</summary>
+<p class="pkg-empty-section">This section is empty.</p>
+</details>
+</div>
+<div>
+<details class="doc-index" id="doc-index-Constants" aria-labelledby="#doc-index-Constants-header">
+<summary id="#doc-index-Constants-header">
+Constants (110)</summary>
+<ul>
+<li><a href="#AUX_OFF">AUX_OFF</a></li>
+<li><a href="#AUX_ON">AUX_ON</a></li>
+<li><a href="#BEL">BEL</a></li>
+<li><a href="#BG_BLACK">BG_BLACK</a></li>
+<li><a href="#BG_BLUE">BG_BLUE</a></li>
+<li><a href="#BG_BRIGHT_BLACK">BG_BRIGHT_BLACK</a></li>
+<li><a href="#BG_BRIGHT_BLUE">BG_BRIGHT_BLUE</a></li>
+<li><a href="#BG_BRIGHT_CYAN">BG_BRIGHT_CYAN</a></li>
+<li><a href="#BG_BRIGHT_GREEN">BG_BRIGHT_GREEN</a></li>
+<li><a href="#BG_BRIGHT_MAGENTA">BG_BRIGHT_MAGENTA</a></li>
+<li><a href="#BG_BRIGHT_RED">BG_BRIGHT_RED</a></li>
+<li><a href="#BG_BRIGHT_WHITE">BG_BRIGHT_WHITE</a></li>
+<li><a href="#BG_BRIGHT_YELLOW">BG_BRIGHT_YELLOW</a></li>
+<li><a href="#BG_COLOR">BG_COLOR</a></li>
+<li><a href="#BG_COLOR_24_BIT">BG_COLOR_24_BIT</a></li>
+<li><a href="#BG_COLOR_8_BIT">BG_COLOR_8_BIT</a></li>
+<li><a href="#BG_CYAN">BG_CYAN</a></li>
+<li><a href="#BG_DEFAULT">BG_DEFAULT</a></li>
+<li><a href="#BG_GREEN">BG_GREEN</a></li>
+<li><a href="#BG_MAGENTA">BG_MAGENTA</a></li>
+<li><a href="#BG_RED">BG_RED</a></li>
+<li><a href="#BG_WHITE">BG_WHITE</a></li>
+<li><a href="#BG_YELLOW">BG_YELLOW</a></li>
+<li><a href="#BLINK_RAPID">BLINK_RAPID</a></li>
+<li><a href="#BLINK_SLOW">BLINK_SLOW</a></li>
+<li><a href="#BOLD">BOLD</a></li>
+<li><a href="#BS">BS</a></li>
+<li><a href="#CHA">CHA</a></li>
+<li><a href="#CLIPBOARD">CLIPBOARD</a></li>
+<li><a href="#CNL">CNL</a></li>
+<li><a href="#CPL">CPL</a></li>
+<li><a href="#CSI">CSI</a></li>
+<li><a href="#CUB">CUB</a></li>
+<li><a href="#CUD">CUD</a></li>
+<li><a href="#CUF">CUF</a></li>
+<li><a href="#CUP">CUP</a></li>
+<li><a href="#CUU">CUU</a></li>
+<li><a href="#DECAWM_OFF">DECAWM_OFF</a></li>
+<li><a href="#DECAWM_ON">DECAWM_ON</a></li>
+<li><a href="#DECRC">DECRC</a></li>
+<li><a href="#DECSC">DECSC</a></li>
+<li><a href="#DECTCEM_HIDE">DECTCEM_HIDE</a></li>
+<li><a href="#DECTCEM_SHOW">DECTCEM_SHOW</a></li>
+<li><a href="#DSR">DSR</a></li>
+<li><a href="#ED">ED</a></li>
+<li><a href="#EL">EL</a></li>
+<li><a href="#ENCIRCLED">ENCIRCLED</a></li>
+<li><a href="#ESC">ESC</a></li>
+<li><a href="#FAINT">FAINT</a></li>
+<li><a href="#FG_BLACK">FG_BLACK</a></li>
+<li><a href="#FG_BLUE">FG_BLUE</a></li>
+<li><a href="#FG_BRIGHT_BLACK">FG_BRIGHT_BLACK</a></li>
+<li><a href="#FG_BRIGHT_BLUE">FG_BRIGHT_BLUE</a></li>
+<li><a href="#FG_BRIGHT_CYAN">FG_BRIGHT_CYAN</a></li>
+<li><a href="#FG_BRIGHT_GREEN">FG_BRIGHT_GREEN</a></li>
+<li><a href="#FG_BRIGHT_MAGENTA">FG_BRIGHT_MAGENTA</a></li>
+<li><a href="#FG_BRIGHT_RED">FG_BRIGHT_RED</a></li>
+<li><a href="#FG_BRIGHT_WHITE">FG_BRIGHT_WHITE</a></li>
+<li><a href="#FG_BRIGHT_YELLOW">FG_BRIGHT_YELLOW</a></li>
+<li><a href="#FG_COLOR">FG_COLOR</a></li>
+<li><a href="#FG_COLOR_24_BIT">FG_COLOR_24_BIT</a></li>
+<li><a href="#FG_COLOR_8_BIT">FG_COLOR_8_BIT</a></li>
+<li><a href="#FG_CYAN">FG_CYAN</a></li>
+<li><a href="#FG_DEFAULT">FG_DEFAULT</a></li>
+<li><a href="#FG_GREEN">FG_GREEN</a></li>
+<li><a href="#FG_MAGENTA">FG_MAGENTA</a></li>
+<li><a href="#FG_RED">FG_RED</a></li>
+<li><a href="#FG_WHITE">FG_WHITE</a></li>
+<li><a href="#FG_YELLOW">FG_YELLOW</a></li>
+<li><a href="#FONT_ALT1">FONT_ALT1</a></li>
+<li><a href="#FONT_ALT2">FONT_ALT2</a></li>
+<li><a href="#FONT_ALT3">FONT_ALT3</a></li>
+<li><a href="#FONT_ALT4">FONT_ALT4</a></li>
+<li><a href="#FONT_ALT5">FONT_ALT5</a></li>
+<li><a href="#FONT_ALT6">FONT_ALT6</a></li>
+<li><a href="#FONT_ALT7">FONT_ALT7</a></li>
+<li><a href="#FONT_ALT8">FONT_ALT8</a></li>
+<li><a href="#FONT_ALT9">FONT_ALT9</a></li>
+<li><a href="#FONT_FRAKTUR">FONT_FRAKTUR</a></li>
+<li><a href="#FONT_PRIMARY">FONT_PRIMARY</a></li>
+<li><a href="#FRAMED">FRAMED</a></li>
+<li><a href="#HIDE">HIDE</a></li>
+<li><a href="#HVP">HVP</a></li>
+<li><a href="#HYPERLINK">HYPERLINK</a></li>
+<li><a href="#INVERT">INVERT</a></li>
+<li><a href="#ITALIC">ITALIC</a></li>
+<li><a href="#NO_BLINK">NO_BLINK</a></li>
+<li><a href="#NO_BOLD_FAINT">NO_BOLD_FAINT</a></li>
+<li><a href="#NO_FRAME_ENCIRCLE">NO_FRAME_ENCIRCLE</a></li>
+<li><a href="#NO_HIDE">NO_HIDE</a></li>
+<li><a href="#NO_ITALIC_BLACKLETTER">NO_ITALIC_BLACKLETTER</a></li>
+<li><a href="#NO_OVERLINE">NO_OVERLINE</a></li>
+<li><a href="#NO_PROPORTIONAL_SPACING">NO_PROPORTIONAL_SPACING</a></li>
+<li><a href="#NO_REVERSE">NO_REVERSE</a></li>
+<li><a href="#NO_STRIKE">NO_STRIKE</a></li>
+<li><a href="#NO_UNDERLINE">NO_UNDERLINE</a></li>
+<li><a href="#OSC">OSC</a></li>
+<li><a href="#OVERLINED">OVERLINED</a></li>
+<li><a href="#PROPORTIONAL_SPACING">PROPORTIONAL_SPACING</a></li>
+<li><a href="#RCP">RCP</a></li>
+<li><a href="#RESET">RESET</a></li>
+<li><a href="#SCP">SCP</a></li>
+<li><a href="#SD">SD</a></li>
+<li><a href="#SGR">SGR</a></li>
+<li><a href="#ST">ST</a></li>
+<li><a href="#STRIKE">STRIKE</a></li>
+<li><a href="#SU">SU</a></li>
+<li><a href="#UNDERLINE">UNDERLINE</a></li>
+<li><a href="#UNDERLINE_DOUBLE">UNDERLINE_DOUBLE</a></li>
+<li><a href="#WINDOW_TITLE">WINDOW_TITLE</a></li>
+</ul>
+</details>
+</div>
+<div>
+<details class="doc-index" id="doc-index-Variables" aria-labelledby="#doc-index-Variables-header">
+<summary id="#doc-index-Variables-header">
+Variables (0)</summary>
+<p class="pkg-empty-section">This section is empty.</p>
+</details>
+</div>
+<div>
+<details class="doc-index" id="doc-index-Procedures" aria-labelledby="#doc-index-Procedures-header">
+<summary id="#doc-index-Procedures-header">
+Procedures (0)</summary>
+<p class="pkg-empty-section">This section is empty.</p>
+</details>
+</div>
+<div>
+<details class="doc-index" id="doc-index-Procedure Groups" aria-labelledby="#doc-index-Procedure Groups-header">
+<summary id="#doc-index-Procedure Groups-header">
+Procedure Groups (0)</summary>
+<p class="pkg-empty-section">This section is empty.</p>
+</details>
+</div>
+</div>
+</div>
+<section class="documentation">
+<h2 id="pkg-Types" class="pkg-header">Types</h2>
+<p class="pkg-empty-section">This section is empty.</p>
+<h2 id="pkg-Constants" class="pkg-header">Constants</h2>
+<div class="pkg-entity">
+<h3 id="AUX_OFF"><span><a class="doc-id-link" href="#AUX_OFF">AUX_OFF<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L30"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">AUX_OFF :: "4i"</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>AUX Port Off</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="AUX_ON"><span><a class="doc-id-link" href="#AUX_ON">AUX_ON<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L29"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">AUX_ON :: "5i"</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>AUX Port On</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="BEL"><span><a class="doc-id-link" href="#BEL">BEL<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L3"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">BEL :: "\a"</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Bell</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="BG_BLACK"><span><a class="doc-id-link" href="#BG_BLACK">BG_BLACK<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L88"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">BG_BLACK :: "40"</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="BG_BLUE"><span><a class="doc-id-link" href="#BG_BLUE">BG_BLUE<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L92"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">BG_BLUE :: "44"</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="BG_BRIGHT_BLACK"><span><a class="doc-id-link" href="#BG_BRIGHT_BLACK">BG_BRIGHT_BLACK<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L119"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">BG_BRIGHT_BLACK :: "100"</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Also known as grey.</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="BG_BRIGHT_BLUE"><span><a class="doc-id-link" href="#BG_BRIGHT_BLUE">BG_BRIGHT_BLUE<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L123"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">BG_BRIGHT_BLUE :: "104"</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="BG_BRIGHT_CYAN"><span><a class="doc-id-link" href="#BG_BRIGHT_CYAN">BG_BRIGHT_CYAN<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L125"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">BG_BRIGHT_CYAN :: "106"</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="BG_BRIGHT_GREEN"><span><a class="doc-id-link" href="#BG_BRIGHT_GREEN">BG_BRIGHT_GREEN<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L121"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">BG_BRIGHT_GREEN :: "102"</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="BG_BRIGHT_MAGENTA"><span><a class="doc-id-link" href="#BG_BRIGHT_MAGENTA">BG_BRIGHT_MAGENTA<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L124"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">BG_BRIGHT_MAGENTA :: "105"</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="BG_BRIGHT_RED"><span><a class="doc-id-link" href="#BG_BRIGHT_RED">BG_BRIGHT_RED<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L120"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">BG_BRIGHT_RED :: "101"</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="BG_BRIGHT_WHITE"><span><a class="doc-id-link" href="#BG_BRIGHT_WHITE">BG_BRIGHT_WHITE<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L126"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">BG_BRIGHT_WHITE :: "107"</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="BG_BRIGHT_YELLOW"><span><a class="doc-id-link" href="#BG_BRIGHT_YELLOW">BG_BRIGHT_YELLOW<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L122"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">BG_BRIGHT_YELLOW :: "103"</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="BG_COLOR"><span><a class="doc-id-link" href="#BG_COLOR">BG_COLOR<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L96"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">BG_COLOR :: "48"</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="BG_COLOR_24_BIT"><span><a class="doc-id-link" href="#BG_COLOR_24_BIT">BG_COLOR_24_BIT<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L98"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">BG_COLOR_24_BIT :: "48;2"</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Followed by ";r;g;b" where r,g,b are in 0..=255</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="BG_COLOR_8_BIT"><span><a class="doc-id-link" href="#BG_COLOR_8_BIT">BG_COLOR_8_BIT<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L97"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">BG_COLOR_8_BIT :: "48;5"</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Followed by ";n" where n is in 0..=255</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="BG_CYAN"><span><a class="doc-id-link" href="#BG_CYAN">BG_CYAN<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L94"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">BG_CYAN :: "46"</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="BG_DEFAULT"><span><a class="doc-id-link" href="#BG_DEFAULT">BG_DEFAULT<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L99"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">BG_DEFAULT :: "49"</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="BG_GREEN"><span><a class="doc-id-link" href="#BG_GREEN">BG_GREEN<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L90"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">BG_GREEN :: "42"</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="BG_MAGENTA"><span><a class="doc-id-link" href="#BG_MAGENTA">BG_MAGENTA<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L93"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">BG_MAGENTA :: "45"</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="BG_RED"><span><a class="doc-id-link" href="#BG_RED">BG_RED<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L89"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">BG_RED :: "41"</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="BG_WHITE"><span><a class="doc-id-link" href="#BG_WHITE">BG_WHITE<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L95"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">BG_WHITE :: "47"</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="BG_YELLOW"><span><a class="doc-id-link" href="#BG_YELLOW">BG_YELLOW<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L91"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">BG_YELLOW :: "43"</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="BLINK_RAPID"><span><a class="doc-id-link" href="#BLINK_RAPID">BLINK_RAPID<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L50"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">BLINK_RAPID :: "6"</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Not widely supported.</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="BLINK_SLOW"><span><a class="doc-id-link" href="#BLINK_SLOW">BLINK_SLOW<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L49"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">BLINK_SLOW :: "5"</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="BOLD"><span><a class="doc-id-link" href="#BOLD">BOLD<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L45"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">BOLD :: "1"</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="BS"><span><a class="doc-id-link" href="#BS">BS<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L4"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">BS :: "\b"</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Backspace</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="CHA"><span><a class="doc-id-link" href="#CHA">CHA<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L21"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">CHA :: "G"</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Cursor Horizontal Absolute</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="CLIPBOARD"><span><a class="doc-id-link" href="#CLIPBOARD">CLIPBOARD<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L137"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">CLIPBOARD :: "52"</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Followed by ";c;&lt;Base64-encoded string&gt;" ST.</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="CNL"><span><a class="doc-id-link" href="#CNL">CNL<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L19"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">CNL :: "E"</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Cursor Next Line</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="CPL"><span><a class="doc-id-link" href="#CPL">CPL<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L20"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">CPL :: "F"</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Cursor Previous Line</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="CSI"><span><a class="doc-id-link" href="#CSI">CSI<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L9"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">CSI :: ESC + "["</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Control Sequence Introducer</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="CUB"><span><a class="doc-id-link" href="#CUB">CUB<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L18"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">CUB :: "D"</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Cursor Back</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="CUD"><span><a class="doc-id-link" href="#CUD">CUD<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L16"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">CUD :: "B"</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Cursor Down</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="CUF"><span><a class="doc-id-link" href="#CUF">CUF<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L17"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">CUF :: "C"</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Cursor Forward</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="CUP"><span><a class="doc-id-link" href="#CUP">CUP<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L22"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">CUP :: "H"</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Cursor Position</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="CUU"><span><a class="doc-id-link" href="#CUU">CUU<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L15"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">CUU :: "A"</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Cursor Up</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="DECAWM_OFF"><span><a class="doc-id-link" href="#DECAWM_OFF">DECAWM_OFF<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L38"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">DECAWM_OFF :: "?7l"</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Auto Wrap Mode (Disabled)</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="DECAWM_ON"><span><a class="doc-id-link" href="#DECAWM_ON">DECAWM_ON<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L37"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">DECAWM_ON :: "?7h"</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Auto Wrap Mode (Enabled)</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="DECRC"><span><a class="doc-id-link" href="#DECRC">DECRC<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L131"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">DECRC :: ESC + "8"</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>DEC Restore Cursor</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="DECSC"><span><a class="doc-id-link" href="#DECSC">DECSC<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L130"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">DECSC :: ESC + "7"</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>DEC Save Cursor</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="DECTCEM_HIDE"><span><a class="doc-id-link" href="#DECTCEM_HIDE">DECTCEM_HIDE<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L40"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">DECTCEM_HIDE :: "?25l"</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Text Cursor Enable Mode (Invisible)</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="DECTCEM_SHOW"><span><a class="doc-id-link" href="#DECTCEM_SHOW">DECTCEM_SHOW<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L39"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">DECTCEM_SHOW :: "?25h"</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Text Cursor Enable Mode (Visible)</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="DSR"><span><a class="doc-id-link" href="#DSR">DSR<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L31"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">DSR :: "6n"</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Device Status Report</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="ED"><span><a class="doc-id-link" href="#ED">ED<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L23"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">ED :: "J"</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Erase in Display</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="EL"><span><a class="doc-id-link" href="#EL">EL<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L24"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">EL :: "K"</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Erase in Line</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="ENCIRCLED"><span><a class="doc-id-link" href="#ENCIRCLED">ENCIRCLED<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L103"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">ENCIRCLED :: "52"</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="ESC"><span><a class="doc-id-link" href="#ESC">ESC<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L5"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">ESC :: "\e"</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Escape</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="FAINT"><span><a class="doc-id-link" href="#FAINT">FAINT<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L46"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">FAINT :: "2"</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="FG_BLACK"><span><a class="doc-id-link" href="#FG_BLACK">FG_BLACK<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L75"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">FG_BLACK :: "30"</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="FG_BLUE"><span><a class="doc-id-link" href="#FG_BLUE">FG_BLUE<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L79"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">FG_BLUE :: "34"</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="FG_BRIGHT_BLACK"><span><a class="doc-id-link" href="#FG_BRIGHT_BLACK">FG_BRIGHT_BLACK<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L110"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">FG_BRIGHT_BLACK :: "90"</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Also known as grey.</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="FG_BRIGHT_BLUE"><span><a class="doc-id-link" href="#FG_BRIGHT_BLUE">FG_BRIGHT_BLUE<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L114"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">FG_BRIGHT_BLUE :: "94"</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="FG_BRIGHT_CYAN"><span><a class="doc-id-link" href="#FG_BRIGHT_CYAN">FG_BRIGHT_CYAN<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L116"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">FG_BRIGHT_CYAN :: "96"</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="FG_BRIGHT_GREEN"><span><a class="doc-id-link" href="#FG_BRIGHT_GREEN">FG_BRIGHT_GREEN<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L112"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">FG_BRIGHT_GREEN :: "92"</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="FG_BRIGHT_MAGENTA"><span><a class="doc-id-link" href="#FG_BRIGHT_MAGENTA">FG_BRIGHT_MAGENTA<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L115"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">FG_BRIGHT_MAGENTA :: "95"</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="FG_BRIGHT_RED"><span><a class="doc-id-link" href="#FG_BRIGHT_RED">FG_BRIGHT_RED<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L111"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">FG_BRIGHT_RED :: "91"</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="FG_BRIGHT_WHITE"><span><a class="doc-id-link" href="#FG_BRIGHT_WHITE">FG_BRIGHT_WHITE<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L117"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">FG_BRIGHT_WHITE :: "97"</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="FG_BRIGHT_YELLOW"><span><a class="doc-id-link" href="#FG_BRIGHT_YELLOW">FG_BRIGHT_YELLOW<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L113"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">FG_BRIGHT_YELLOW :: "93"</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="FG_COLOR"><span><a class="doc-id-link" href="#FG_COLOR">FG_COLOR<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L83"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">FG_COLOR :: "38"</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="FG_COLOR_24_BIT"><span><a class="doc-id-link" href="#FG_COLOR_24_BIT">FG_COLOR_24_BIT<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L85"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">FG_COLOR_24_BIT :: "38;2"</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Followed by ";r;g;b" where r,g,b are in 0..=255</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="FG_COLOR_8_BIT"><span><a class="doc-id-link" href="#FG_COLOR_8_BIT">FG_COLOR_8_BIT<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L84"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">FG_COLOR_8_BIT :: "38;5"</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Followed by ";n" where n is in 0..=255</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="FG_CYAN"><span><a class="doc-id-link" href="#FG_CYAN">FG_CYAN<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L81"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">FG_CYAN :: "36"</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="FG_DEFAULT"><span><a class="doc-id-link" href="#FG_DEFAULT">FG_DEFAULT<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L86"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">FG_DEFAULT :: "39"</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="FG_GREEN"><span><a class="doc-id-link" href="#FG_GREEN">FG_GREEN<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L77"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">FG_GREEN :: "32"</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="FG_MAGENTA"><span><a class="doc-id-link" href="#FG_MAGENTA">FG_MAGENTA<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L80"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">FG_MAGENTA :: "35"</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="FG_RED"><span><a class="doc-id-link" href="#FG_RED">FG_RED<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L76"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">FG_RED :: "31"</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="FG_WHITE"><span><a class="doc-id-link" href="#FG_WHITE">FG_WHITE<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L82"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">FG_WHITE :: "37"</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="FG_YELLOW"><span><a class="doc-id-link" href="#FG_YELLOW">FG_YELLOW<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L78"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">FG_YELLOW :: "33"</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="FONT_ALT1"><span><a class="doc-id-link" href="#FONT_ALT1">FONT_ALT1<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L55"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">FONT_ALT1 :: "11"</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="FONT_ALT2"><span><a class="doc-id-link" href="#FONT_ALT2">FONT_ALT2<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L56"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">FONT_ALT2 :: "12"</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="FONT_ALT3"><span><a class="doc-id-link" href="#FONT_ALT3">FONT_ALT3<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L57"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">FONT_ALT3 :: "13"</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="FONT_ALT4"><span><a class="doc-id-link" href="#FONT_ALT4">FONT_ALT4<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L58"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">FONT_ALT4 :: "14"</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="FONT_ALT5"><span><a class="doc-id-link" href="#FONT_ALT5">FONT_ALT5<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L59"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">FONT_ALT5 :: "15"</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="FONT_ALT6"><span><a class="doc-id-link" href="#FONT_ALT6">FONT_ALT6<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L60"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">FONT_ALT6 :: "16"</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="FONT_ALT7"><span><a class="doc-id-link" href="#FONT_ALT7">FONT_ALT7<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L61"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">FONT_ALT7 :: "17"</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="FONT_ALT8"><span><a class="doc-id-link" href="#FONT_ALT8">FONT_ALT8<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L62"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">FONT_ALT8 :: "18"</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="FONT_ALT9"><span><a class="doc-id-link" href="#FONT_ALT9">FONT_ALT9<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L63"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">FONT_ALT9 :: "19"</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="FONT_FRAKTUR"><span><a class="doc-id-link" href="#FONT_FRAKTUR">FONT_FRAKTUR<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L64"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">FONT_FRAKTUR :: "20"</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Rarely supported.</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="FONT_PRIMARY"><span><a class="doc-id-link" href="#FONT_PRIMARY">FONT_PRIMARY<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L54"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">FONT_PRIMARY :: "10"</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="FRAMED"><span><a class="doc-id-link" href="#FRAMED">FRAMED<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L102"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">FRAMED :: "51"</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="HIDE"><span><a class="doc-id-link" href="#HIDE">HIDE<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L52"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">HIDE :: "8"</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Not widely supported.</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="HVP"><span><a class="doc-id-link" href="#HVP">HVP<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L27"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">HVP :: "f"</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Horizontal Vertical Position</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="HYPERLINK"><span><a class="doc-id-link" href="#HYPERLINK">HYPERLINK<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L136"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">HYPERLINK :: "8"</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Followed by ";[params];&lt;URI&gt;" ST. Closed by OSC HYPERLINK ";;" ST.</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="INVERT"><span><a class="doc-id-link" href="#INVERT">INVERT<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L51"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">INVERT :: "7"</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Also known as reverse video.</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="ITALIC"><span><a class="doc-id-link" href="#ITALIC">ITALIC<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L47"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">ITALIC :: "3"</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Not widely supported.</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="NO_BLINK"><span><a class="doc-id-link" href="#NO_BLINK">NO_BLINK<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L69"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">NO_BLINK :: "25"</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="NO_BOLD_FAINT"><span><a class="doc-id-link" href="#NO_BOLD_FAINT">NO_BOLD_FAINT<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L66"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">NO_BOLD_FAINT :: "22"</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="NO_FRAME_ENCIRCLE"><span><a class="doc-id-link" href="#NO_FRAME_ENCIRCLE">NO_FRAME_ENCIRCLE<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L105"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">NO_FRAME_ENCIRCLE :: "54"</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="NO_HIDE"><span><a class="doc-id-link" href="#NO_HIDE">NO_HIDE<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L72"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">NO_HIDE :: "28"</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="NO_ITALIC_BLACKLETTER"><span><a class="doc-id-link" href="#NO_ITALIC_BLACKLETTER">NO_ITALIC_BLACKLETTER<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L67"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">NO_ITALIC_BLACKLETTER :: "23"</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="NO_OVERLINE"><span><a class="doc-id-link" href="#NO_OVERLINE">NO_OVERLINE<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L106"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">NO_OVERLINE :: "55"</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="NO_PROPORTIONAL_SPACING"><span><a class="doc-id-link" href="#NO_PROPORTIONAL_SPACING">NO_PROPORTIONAL_SPACING<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L101"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">NO_PROPORTIONAL_SPACING :: "50"</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="NO_REVERSE"><span><a class="doc-id-link" href="#NO_REVERSE">NO_REVERSE<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L71"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">NO_REVERSE :: "27"</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="NO_STRIKE"><span><a class="doc-id-link" href="#NO_STRIKE">NO_STRIKE<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L73"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">NO_STRIKE :: "29"</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="NO_UNDERLINE"><span><a class="doc-id-link" href="#NO_UNDERLINE">NO_UNDERLINE<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L68"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">NO_UNDERLINE :: "24"</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="OSC"><span><a class="doc-id-link" href="#OSC">OSC<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L10"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">OSC :: ESC + "]"</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Operating System Command</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="OVERLINED"><span><a class="doc-id-link" href="#OVERLINED">OVERLINED<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L104"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">OVERLINED :: "53"</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="PROPORTIONAL_SPACING"><span><a class="doc-id-link" href="#PROPORTIONAL_SPACING">PROPORTIONAL_SPACING<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L70"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">PROPORTIONAL_SPACING :: "26"</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="RCP"><span><a class="doc-id-link" href="#RCP">RCP<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L36"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">RCP :: "u"</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Restore Saved Cursor Position</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="RESET"><span><a class="doc-id-link" href="#RESET">RESET<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L44"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">RESET :: "0"</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="SCP"><span><a class="doc-id-link" href="#SCP">SCP<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L35"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">SCP :: "s"</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Save Current Cursor Position</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="SD"><span><a class="doc-id-link" href="#SD">SD<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L26"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">SD :: "T"</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Scroll Down</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="SGR"><span><a class="doc-id-link" href="#SGR">SGR<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L28"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">SGR :: "m"</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Select Graphic Rendition</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="ST"><span><a class="doc-id-link" href="#ST">ST<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L11"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">ST :: ESC + "\\"</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>String Terminator</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="STRIKE"><span><a class="doc-id-link" href="#STRIKE">STRIKE<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L53"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">STRIKE :: "9"</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="SU"><span><a class="doc-id-link" href="#SU">SU<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L25"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">SU :: "S"</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Scroll Up</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="UNDERLINE"><span><a class="doc-id-link" href="#UNDERLINE">UNDERLINE<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L48"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">UNDERLINE :: "4"</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="UNDERLINE_DOUBLE"><span><a class="doc-id-link" href="#UNDERLINE_DOUBLE">UNDERLINE_DOUBLE<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L65"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">UNDERLINE_DOUBLE :: "21"</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>May be interpreted as "disable bold."</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="WINDOW_TITLE"><span><a class="doc-id-link" href="#WINDOW_TITLE">WINDOW_TITLE<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin#L135"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">WINDOW_TITLE :: "2"</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Followed by ";&lt;text&gt;" ST.</p>
+</details>
+</div>
+<h2 id="pkg-Variables" class="pkg-header">Variables</h2>
+<p class="pkg-empty-section">This section is empty.</p>
+<h2 id="pkg-Procedures" class="pkg-header">Procedures</h2>
+<p class="pkg-empty-section">This section is empty.</p>
+<h2 id="pkg-Procedure Groups" class="pkg-header">Procedure Groups</h2>
+<p class="pkg-empty-section">This section is empty.</p>
+</section>
+<h2 id="pkg-source-files">Source Files</h2>
+<ul>
+<li><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/ansi.odin">ansi.odin</a></li>
+<li><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ansi/doc.odin">doc.odin</a></li>
+</ul>
+<h2 id="pkg-generation-information">Generation Information</h2>
+<p>Generated with <code>odin version dev-2024-06 (vendor "odin") Windows_amd64 @ 2024-06-17 21:40:00.977508400 +0000 UTC</code></p>
+</article>
+<div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
+<nav id="TableOfContents">
+<ul>
+<li><a href="#pkg-overview">Overview</a><li><a href="#pkg-Constants">Constants</a><ul>
+<li><a href="#AUX_OFF">AUX_OFF</a></li>
+<li><a href="#AUX_ON">AUX_ON</a></li>
+<li><a href="#BEL">BEL</a></li>
+<li><a href="#BG_BLACK">BG_BLACK</a></li>
+<li><a href="#BG_BLUE">BG_BLUE</a></li>
+<li><a href="#BG_BRIGHT_BLACK">BG_BRIGHT_BLACK</a></li>
+<li><a href="#BG_BRIGHT_BLUE">BG_BRIGHT_BLUE</a></li>
+<li><a href="#BG_BRIGHT_CYAN">BG_BRIGHT_CYAN</a></li>
+<li><a href="#BG_BRIGHT_GREEN">BG_BRIGHT_GREEN</a></li>
+<li><a href="#BG_BRIGHT_MAGENTA">BG_BRIGHT_MAGENTA</a></li>
+<li><a href="#BG_BRIGHT_RED">BG_BRIGHT_RED</a></li>
+<li><a href="#BG_BRIGHT_WHITE">BG_BRIGHT_WHITE</a></li>
+<li><a href="#BG_BRIGHT_YELLOW">BG_BRIGHT_YELLOW</a></li>
+<li><a href="#BG_COLOR">BG_COLOR</a></li>
+<li><a href="#BG_COLOR_24_BIT">BG_COLOR_24_BIT</a></li>
+<li><a href="#BG_COLOR_8_BIT">BG_COLOR_8_BIT</a></li>
+<li><a href="#BG_CYAN">BG_CYAN</a></li>
+<li><a href="#BG_DEFAULT">BG_DEFAULT</a></li>
+<li><a href="#BG_GREEN">BG_GREEN</a></li>
+<li><a href="#BG_MAGENTA">BG_MAGENTA</a></li>
+<li><a href="#BG_RED">BG_RED</a></li>
+<li><a href="#BG_WHITE">BG_WHITE</a></li>
+<li><a href="#BG_YELLOW">BG_YELLOW</a></li>
+<li><a href="#BLINK_RAPID">BLINK_RAPID</a></li>
+<li><a href="#BLINK_SLOW">BLINK_SLOW</a></li>
+<li><a href="#BOLD">BOLD</a></li>
+<li><a href="#BS">BS</a></li>
+<li><a href="#CHA">CHA</a></li>
+<li><a href="#CLIPBOARD">CLIPBOARD</a></li>
+<li><a href="#CNL">CNL</a></li>
+<li><a href="#CPL">CPL</a></li>
+<li><a href="#CSI">CSI</a></li>
+<li><a href="#CUB">CUB</a></li>
+<li><a href="#CUD">CUD</a></li>
+<li><a href="#CUF">CUF</a></li>
+<li><a href="#CUP">CUP</a></li>
+<li><a href="#CUU">CUU</a></li>
+<li><a href="#DECAWM_OFF">DECAWM_OFF</a></li>
+<li><a href="#DECAWM_ON">DECAWM_ON</a></li>
+<li><a href="#DECRC">DECRC</a></li>
+<li><a href="#DECSC">DECSC</a></li>
+<li><a href="#DECTCEM_HIDE">DECTCEM_HIDE</a></li>
+<li><a href="#DECTCEM_SHOW">DECTCEM_SHOW</a></li>
+<li><a href="#DSR">DSR</a></li>
+<li><a href="#ED">ED</a></li>
+<li><a href="#EL">EL</a></li>
+<li><a href="#ENCIRCLED">ENCIRCLED</a></li>
+<li><a href="#ESC">ESC</a></li>
+<li><a href="#FAINT">FAINT</a></li>
+<li><a href="#FG_BLACK">FG_BLACK</a></li>
+<li><a href="#FG_BLUE">FG_BLUE</a></li>
+<li><a href="#FG_BRIGHT_BLACK">FG_BRIGHT_BLACK</a></li>
+<li><a href="#FG_BRIGHT_BLUE">FG_BRIGHT_BLUE</a></li>
+<li><a href="#FG_BRIGHT_CYAN">FG_BRIGHT_CYAN</a></li>
+<li><a href="#FG_BRIGHT_GREEN">FG_BRIGHT_GREEN</a></li>
+<li><a href="#FG_BRIGHT_MAGENTA">FG_BRIGHT_MAGENTA</a></li>
+<li><a href="#FG_BRIGHT_RED">FG_BRIGHT_RED</a></li>
+<li><a href="#FG_BRIGHT_WHITE">FG_BRIGHT_WHITE</a></li>
+<li><a href="#FG_BRIGHT_YELLOW">FG_BRIGHT_YELLOW</a></li>
+<li><a href="#FG_COLOR">FG_COLOR</a></li>
+<li><a href="#FG_COLOR_24_BIT">FG_COLOR_24_BIT</a></li>
+<li><a href="#FG_COLOR_8_BIT">FG_COLOR_8_BIT</a></li>
+<li><a href="#FG_CYAN">FG_CYAN</a></li>
+<li><a href="#FG_DEFAULT">FG_DEFAULT</a></li>
+<li><a href="#FG_GREEN">FG_GREEN</a></li>
+<li><a href="#FG_MAGENTA">FG_MAGENTA</a></li>
+<li><a href="#FG_RED">FG_RED</a></li>
+<li><a href="#FG_WHITE">FG_WHITE</a></li>
+<li><a href="#FG_YELLOW">FG_YELLOW</a></li>
+<li><a href="#FONT_ALT1">FONT_ALT1</a></li>
+<li><a href="#FONT_ALT2">FONT_ALT2</a></li>
+<li><a href="#FONT_ALT3">FONT_ALT3</a></li>
+<li><a href="#FONT_ALT4">FONT_ALT4</a></li>
+<li><a href="#FONT_ALT5">FONT_ALT5</a></li>
+<li><a href="#FONT_ALT6">FONT_ALT6</a></li>
+<li><a href="#FONT_ALT7">FONT_ALT7</a></li>
+<li><a href="#FONT_ALT8">FONT_ALT8</a></li>
+<li><a href="#FONT_ALT9">FONT_ALT9</a></li>
+<li><a href="#FONT_FRAKTUR">FONT_FRAKTUR</a></li>
+<li><a href="#FONT_PRIMARY">FONT_PRIMARY</a></li>
+<li><a href="#FRAMED">FRAMED</a></li>
+<li><a href="#HIDE">HIDE</a></li>
+<li><a href="#HVP">HVP</a></li>
+<li><a href="#HYPERLINK">HYPERLINK</a></li>
+<li><a href="#INVERT">INVERT</a></li>
+<li><a href="#ITALIC">ITALIC</a></li>
+<li><a href="#NO_BLINK">NO_BLINK</a></li>
+<li><a href="#NO_BOLD_FAINT">NO_BOLD_FAINT</a></li>
+<li><a href="#NO_FRAME_ENCIRCLE">NO_FRAME_ENCIRCLE</a></li>
+<li><a href="#NO_HIDE">NO_HIDE</a></li>
+<li><a href="#NO_ITALIC_BLACKLETTER">NO_ITALIC_BLACKLETTER</a></li>
+<li><a href="#NO_OVERLINE">NO_OVERLINE</a></li>
+<li><a href="#NO_PROPORTIONAL_SPACING">NO_PROPORTIONAL_SPACING</a></li>
+<li><a href="#NO_REVERSE">NO_REVERSE</a></li>
+<li><a href="#NO_STRIKE">NO_STRIKE</a></li>
+<li><a href="#NO_UNDERLINE">NO_UNDERLINE</a></li>
+<li><a href="#OSC">OSC</a></li>
+<li><a href="#OVERLINED">OVERLINED</a></li>
+<li><a href="#PROPORTIONAL_SPACING">PROPORTIONAL_SPACING</a></li>
+<li><a href="#RCP">RCP</a></li>
+<li><a href="#RESET">RESET</a></li>
+<li><a href="#SCP">SCP</a></li>
+<li><a href="#SD">SD</a></li>
+<li><a href="#SGR">SGR</a></li>
+<li><a href="#ST">ST</a></li>
+<li><a href="#STRIKE">STRIKE</a></li>
+<li><a href="#SU">SU</a></li>
+<li><a href="#UNDERLINE">UNDERLINE</a></li>
+<li><a href="#UNDERLINE_DOUBLE">UNDERLINE_DOUBLE</a></li>
+<li><a href="#WINDOW_TITLE">WINDOW_TITLE</a></li>
+</ul>
+</li>
+<li><a href="#pkg-source-files">Source Files</a></ul>
+</nav>
+</div></div>
+<script type="text/javascript">var odin_pkg_name = "ansi";</script>
+</div>
+
+</div>
+</main>
+
+<footer class="odin-footer">
+	<div class="container pb-5 pt-5">
+		<div class="row g-4">
+		<div class="col">
+		<a class="navbar-brand" href="https://odin-lang.org">
+		<img class="mb-3" src="https://odin-lang.org/logo.svg" height="30" alt="Odin"></a>
+		<p>
+		The Data-Oriented Language for Sane Software Development.
+		</p>
+		</div>
+		<nav class="col-md-auto">
+			<h4 class="fw-normal">Resources</h4>
+			<ul class="list-unstyled">
+			<li><a href="https://odin-lang.org/docs" class="link-light">Docs</a></li>
+			<li><a href="https://pkg.odin-lang.org/" class="link-light">Packages</a></li>
+			<li><a href="https://odin-lang.org/news" class="link-light">News</a></li>
+			</ul>
+		</nav>
+		<nav class="col-md-auto">
+			<h4 class="fw-normal">Community</h4>
+			<ul class="list-unstyled">
+			<li><a href="https://github.com/odin-lang/Odin" target="_blank" class="link-light">GitHub</a></li>
+			<li><a href="https://discord.com/invite/sVBPHEv" target="_blank" class="link-light">Discord</a></li>
+			<li><a href="https://www.twitch.tv/ginger_bill" target="_blank" class="link-light">Twitch</a></li>
+			<li><a href="https://www.youtube.com/channel/UCUSck1dOH7VKmG4lRW7tZXg" target="_blank" class="link-light">YouTube</a></li>
+			</ul>
+		</nav>
+		<nav class="col-md-auto">
+			<h4 class="fw-normal">Contribute</h4>
+			<ul class="list-unstyled">
+			<li><a href="https://github.com/odin-lang/Odin/issues" target="_blank" class="link-light">Issues</a></li>
+			<li><a href="https://www.patreon.com/gingerbill" target="_blank" class="link-light">Donate</a></li>
+			</ul>
+			</nav>
+		</div>
+		<div class="mt-4 text-muted">© 2016–2023 Ginger Bill</div>
+	</div>
+</footer>
+
+<script src="https://odin-lang.org/lib/bootstrap/js/bootstrap.min.js"></script>
+<script src="https://odin-lang.org/js/script.js"></script>
+<script src="/pkg-data.js"></script>
+<script src="/search.js"></script>
+</body>
+</html>

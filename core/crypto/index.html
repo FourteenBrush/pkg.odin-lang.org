@@ -89,12 +89,14 @@
 <li><a href="/core/container/lru">lru</a></li>
 <li><a href="/core/container/priority_queue">priority_queue</a></li>
 <li><a href="/core/container/queue">queue</a></li>
+<li><a href="/core/container/rbtree">rbtree</a></li>
 <li><a href="/core/container/small_array">small_array</a></li>
 <li><a href="/core/container/topological_sort">topological_sort</a></li>
 </ul>
 
 </li>
 <li class="nav-item"><a class="active" href="/core/crypto">crypto</a><ul>
+<li><a href="/core/crypto/aes">aes</a></li>
 <li><a href="/core/crypto/blake2b">blake2b</a></li>
 <li><a href="/core/crypto/blake2s">blake2s</a></li>
 <li><a href="/core/crypto/chacha20">chacha20</a></li>
@@ -126,6 +128,7 @@
 </li>
 <li class="nav-item"><a href="/core/dynlib">dynlib</a></li>
 <li class="nav-item">encoding<ul>
+<li><a href="/core/encoding/ansi">ansi</a></li>
 <li><a href="/core/encoding/base32">base32</a></li>
 <li><a href="/core/encoding/base64">base64</a></li>
 <li><a href="/core/encoding/cbor">cbor</a></li>
@@ -179,9 +182,7 @@
 <li class="nav-item">odin<ul>
 <li><a href="/core/odin/ast">ast</a></li>
 <li><a href="/core/odin/doc-format">doc-format</a></li>
-<li><a href="/core/odin/format">format</a></li>
 <li><a href="/core/odin/parser">parser</a></li>
-<li><a href="/core/odin/printer">printer</a></li>
 <li><a href="/core/odin/tokenizer">tokenizer</a></li>
 </ul>
 
@@ -212,14 +213,17 @@
 
 </li>
 <li class="nav-item"><a href="/core/strings">strings</a></li>
-<li class="nav-item"><a href="/core/sync">sync</a></li>
+<li class="nav-item"><a href="/core/sync">sync</a><ul>
+<li><a href="/core/sync/chan">chan</a></li>
+</ul>
+
+</li>
 <li class="nav-item">sys<ul>
 <li><a href="/core/sys/darwin">darwin</a></li>
 <li><a href="/core/sys/darwin/Foundation">darwin/Foundation</a></li>
 <li><a href="/core/sys/haiku">haiku</a></li>
 <li><a href="/core/sys/info">info</a></li>
 <li><a href="/core/sys/linux">linux</a></li>
-<li><a href="/core/sys/unix">unix</a></li>
 <li><a href="/core/sys/valgrind">valgrind</a></li>
 <li><a href="/core/sys/windows">windows</a></li>
 </ul>
@@ -297,8 +301,10 @@ Types (0)</summary>
 <div>
 <details class="doc-index" id="doc-index-Constants" aria-labelledby="#doc-index-Constants-header">
 <summary id="#doc-index-Constants-header">
-Constants (0)</summary>
-<p class="pkg-empty-section">This section is empty.</p>
+Constants (1)</summary>
+<ul>
+<li><a href="#HAS_RAND_BYTES">HAS_RAND_BYTES</a></li>
+</ul>
 </details>
 </div>
 <div>
@@ -315,8 +321,8 @@ Procedures (4)</summary>
 <ul>
 <li><a href="#compare_byte_ptrs_constant_time">compare_byte_ptrs_constant_time</a></li>
 <li><a href="#compare_constant_time">compare_constant_time</a></li>
-<li><a href="#has_rand_bytes">has_rand_bytes</a></li>
 <li><a href="#rand_bytes">rand_bytes</a></li>
+<li><a href="#random_generator">random_generator</a></li>
 </ul>
 </details>
 </div>
@@ -333,12 +339,17 @@ Procedure Groups (0)</summary>
 <h2 id="pkg-Types" class="pkg-header">Types</h2>
 <p class="pkg-empty-section">This section is empty.</p>
 <h2 id="pkg-Constants" class="pkg-header">Constants</h2>
-<p class="pkg-empty-section">This section is empty.</p>
+<div class="pkg-entity">
+<h3 id="HAS_RAND_BYTES"><span><a class="doc-id-link" href="#HAS_RAND_BYTES">HAS_RAND_BYTES<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/rand_windows.odin#L7"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">HAS_RAND_BYTES :: true</pre>
+</div>
+</div>
 <h2 id="pkg-Variables" class="pkg-header">Variables</h2>
 <p class="pkg-empty-section">This section is empty.</p>
 <h2 id="pkg-Procedures" class="pkg-header">Procedures</h2>
 <div class="pkg-entity">
-<h3 id="compare_byte_ptrs_constant_time"><span><a class="doc-id-link" href="#compare_byte_ptrs_constant_time">compare_byte_ptrs_constant_time<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/crypto.odin#L34"><em>Source</em></a></div></h3>
+<h3 id="compare_byte_ptrs_constant_time"><span><a class="doc-id-link" href="#compare_byte_ptrs_constant_time">compare_byte_ptrs_constant_time<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/crypto.odin#L35"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">compare_byte_ptrs_constant_time :: <span class="keyword-type">proc</span> "contextless" (a, b: ^<a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a>, n: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>) -> <a href="/base/builtin#int"><span class="doc-builtin">int</span></a> {…}</pre>
 </div>
@@ -351,7 +362,7 @@ contents of the memory being compared.</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="compare_constant_time"><span><a class="doc-id-link" href="#compare_constant_time">compare_constant_time<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/crypto.odin#L14"><em>Source</em></a></div></h3>
+<h3 id="compare_constant_time"><span><a class="doc-id-link" href="#compare_constant_time">compare_constant_time<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/crypto.odin#L15"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">compare_constant_time :: <span class="keyword-type">proc</span> "contextless" (a, b: []<a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a>) -> <a href="/base/builtin#int"><span class="doc-builtin">int</span></a> {…}</pre>
 </div>
@@ -364,18 +375,7 @@ If the length of the two slices is different, it will early-return 0.</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="has_rand_bytes"><span><a class="doc-id-link" href="#has_rand_bytes">has_rand_bytes<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/crypto.odin#L61"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">has_rand_bytes :: <span class="keyword-type">proc</span>() -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> {…}</pre>
-</div>
-<details class="odin-doc-toggle" open>
-<summary class="hideme"><span>&nbsp;</span></summary>
-<p>has_rand_bytes returns true iff the target has support for accessing the
-system entropty source.</p>
-</details>
-</div>
-<div class="pkg-entity">
-<h3 id="rand_bytes"><span><a class="doc-id-link" href="#rand_bytes">rand_bytes<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/crypto.odin#L52"><em>Source</em></a></div></h3>
+<h3 id="rand_bytes"><span><a class="doc-id-link" href="#rand_bytes">rand_bytes<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/crypto.odin#L56"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">rand_bytes :: <span class="keyword-type">proc</span>(dst: []<a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a>) {…}</pre>
 </div>
@@ -385,7 +385,15 @@ system entropty source.</p>
 the system entropy source.  This routine will block if the system entropy
 source is not ready yet.  All system entropy source failures are treated
 as catastrophic, resulting in a panic.</p>
+<p>Support for the system entropy source can be checked with the
+<code>HAS_RAND_BYTES</code> boolean constant.</p>
 </details>
+</div>
+<div class="pkg-entity">
+<h3 id="random_generator"><span><a class="doc-id-link" href="#random_generator">random_generator<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/crypto.odin#L64"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">random_generator :: <span class="keyword-type">proc</span>() -> runtime.<a class="code-typename" href="/base/runtime/#Random_Generator">Random_Generator</a> {…}</pre>
+</div>
 </div>
 <h2 id="pkg-Procedure Groups" class="pkg-header">Procedure Groups</h2>
 <p class="pkg-empty-section">This section is empty.</p>
@@ -396,16 +404,20 @@ as catastrophic, resulting in a panic.</p>
 <li><em>(hidden platform specific files)</em></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2024-04 (vendor "odin") Windows_amd64 @ 2024-04-26 21:08:58.348187500 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2024-06 (vendor "odin") Windows_amd64 @ 2024-06-17 21:40:00.960930000 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
 <ul>
-<li><a href="#pkg-overview">Overview</a><li><a href="#pkg-Procedures">Procedures</a><ul>
+<li><a href="#pkg-overview">Overview</a><li><a href="#pkg-Constants">Constants</a><ul>
+<li><a href="#HAS_RAND_BYTES">HAS_RAND_BYTES</a></li>
+</ul>
+</li>
+<li><a href="#pkg-Procedures">Procedures</a><ul>
 <li><a href="#compare_byte_ptrs_constant_time">compare_byte_ptrs_constant_time</a></li>
 <li><a href="#compare_constant_time">compare_constant_time</a></li>
-<li><a href="#has_rand_bytes">has_rand_bytes</a></li>
 <li><a href="#rand_bytes">rand_bytes</a></li>
+<li><a href="#random_generator">random_generator</a></li>
 </ul>
 </li>
 <li><a href="#pkg-source-files">Source Files</a></ul>

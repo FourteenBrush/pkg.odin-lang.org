@@ -89,12 +89,14 @@
 <li><a href="/core/container/lru">lru</a></li>
 <li><a href="/core/container/priority_queue">priority_queue</a></li>
 <li><a href="/core/container/queue">queue</a></li>
+<li><a href="/core/container/rbtree">rbtree</a></li>
 <li><a href="/core/container/small_array">small_array</a></li>
 <li><a href="/core/container/topological_sort">topological_sort</a></li>
 </ul>
 
 </li>
 <li class="nav-item"><a href="/core/crypto">crypto</a><ul>
+<li><a href="/core/crypto/aes">aes</a></li>
 <li><a href="/core/crypto/blake2b">blake2b</a></li>
 <li><a href="/core/crypto/blake2s">blake2s</a></li>
 <li><a href="/core/crypto/chacha20">chacha20</a></li>
@@ -126,6 +128,7 @@
 </li>
 <li class="nav-item"><a href="/core/dynlib">dynlib</a></li>
 <li class="nav-item">encoding<ul>
+<li><a href="/core/encoding/ansi">ansi</a></li>
 <li><a href="/core/encoding/base32">base32</a></li>
 <li><a href="/core/encoding/base64">base64</a></li>
 <li><a href="/core/encoding/cbor">cbor</a></li>
@@ -179,9 +182,7 @@
 <li class="nav-item">odin<ul>
 <li><a href="/core/odin/ast">ast</a></li>
 <li><a href="/core/odin/doc-format">doc-format</a></li>
-<li><a href="/core/odin/format">format</a></li>
 <li><a href="/core/odin/parser">parser</a></li>
-<li><a href="/core/odin/printer">printer</a></li>
 <li><a href="/core/odin/tokenizer">tokenizer</a></li>
 </ul>
 
@@ -212,14 +213,17 @@
 
 </li>
 <li class="nav-item"><a href="/core/strings">strings</a></li>
-<li class="nav-item"><a href="/core/sync">sync</a></li>
+<li class="nav-item"><a href="/core/sync">sync</a><ul>
+<li><a href="/core/sync/chan">chan</a></li>
+</ul>
+
+</li>
 <li class="nav-item">sys<ul>
 <li><a href="/core/sys/darwin">darwin</a></li>
 <li><a href="/core/sys/darwin/Foundation">darwin/Foundation</a></li>
 <li><a href="/core/sys/haiku">haiku</a></li>
 <li><a href="/core/sys/info">info</a></li>
 <li><a href="/core/sys/linux">linux</a></li>
-<li><a href="/core/sys/unix">unix</a></li>
 <li><a href="/core/sys/valgrind">valgrind</a></li>
 <li><a href="/core/sys/windows">windows</a></li>
 </ul>
@@ -352,7 +356,7 @@ Variables (19)</summary>
 <div>
 <details class="doc-index" id="doc-index-Procedures" aria-labelledby="#doc-index-Procedures-header">
 <summary id="#doc-index-Procedures-header">
-Procedures (315)</summary>
+Procedures (320)</summary>
 <ul>
 <li><a href="#assert_if_nil_int">assert_if_nil_int</a></li>
 <li><a href="#assert_if_nil_rat">assert_if_nil_rat</a></li>
@@ -360,6 +364,8 @@ Procedures (315)</summary>
 <li><a href="#clamp">clamp</a></li>
 <li><a href="#clear_if_uninitialized_multi">clear_if_uninitialized_multi</a></li>
 <li><a href="#clear_if_uninitialized_single">clear_if_uninitialized_single</a></li>
+<li><a href="#combinations_with_repetition">combinations_with_repetition</a></li>
+<li><a href="#combinations_without_repetition">combinations_without_repetition</a></li>
 <li><a href="#copy_digits">copy_digits</a></li>
 <li><a href="#count_bits">count_bits</a></li>
 <li><a href="#destroy_constants">destroy_constants</a></li>
@@ -627,6 +633,8 @@ Procedures (315)</summary>
 <li><a href="#internal_small_pow">internal_small_pow</a></li>
 <li><a href="#internal_sqr">internal_sqr</a></li>
 <li><a href="#number_of_rabin_miller_trials">number_of_rabin_miller_trials</a></li>
+<li><a href="#permutations_with_repetition">permutations_with_repetition</a></li>
+<li><a href="#permutations_without_repetition">permutations_without_repetition</a></li>
 <li><a href="#platform_abs">platform_abs</a></li>
 <li><a href="#platform_count_lsb">platform_count_lsb</a></li>
 <li><a href="#platform_int_is_power_of_two">platform_int_is_power_of_two</a></li>
@@ -668,6 +676,7 @@ Procedures (315)</summary>
 <li><a href="#rat_to_f64">rat_to_f64</a></li>
 <li><a href="#shrink">shrink</a></li>
 <li><a href="#small_pow">small_pow</a></li>
+<li><a href="#string_to_int">string_to_int</a></li>
 <li><a href="#zero_unused">zero_unused</a></li>
 </ul>
 </details>
@@ -1000,6 +1009,8 @@ Procedure Groups (188)</summary>
 <li><a href="/core/math/big/#clamp">clamp</a></li>
 <li><a href="/core/math/big/#clear_if_uninitialized_multi">clear_if_uninitialized_multi</a></li>
 <li><a href="/core/math/big/#clear_if_uninitialized_single">clear_if_uninitialized_single</a></li>
+<li><a href="/core/math/big/#combinations_with_repetition">combinations_with_repetition</a></li>
+<li><a href="/core/math/big/#combinations_without_repetition">combinations_without_repetition</a></li>
 <li><a href="/core/math/big/#copy_digits">copy_digits</a></li>
 <li><a href="/core/math/big/#count_bits">count_bits</a></li>
 <li><a href="/core/math/big/#digit_log">digit_log</a></li>
@@ -1209,6 +1220,7 @@ Procedure Groups (188)</summary>
 <li><a href="/core/math/big/#internal_rat_norm">internal_rat_norm</a></li>
 <li><a href="/core/math/big/#internal_rat_to_float">internal_rat_to_float</a></li>
 <li><a href="/core/math/big/#internal_sqr">internal_sqr</a></li>
+<li><a href="/core/math/big/#permutations_without_repetition">permutations_without_repetition</a></li>
 <li><a href="/core/math/big/#power_of_two">power_of_two</a></li>
 <li><a href="/core/math/big/#radix_size">radix_size</a></li>
 <li><a href="/core/math/big/#rat_abs">rat_abs</a></li>
@@ -1423,6 +1435,8 @@ Procedure Groups (188)</summary>
 <li><a href="/core/math/big/#assert_initialized">assert_initialized</a></li>
 <li><a href="/core/math/big/#clamp">clamp</a></li>
 <li><a href="/core/math/big/#clear_if_uninitialized_single">clear_if_uninitialized_single</a></li>
+<li><a href="/core/math/big/#combinations_with_repetition">combinations_with_repetition</a></li>
+<li><a href="/core/math/big/#combinations_without_repetition">combinations_without_repetition</a></li>
 <li><a href="/core/math/big/#copy_digits">copy_digits</a></li>
 <li><a href="/core/math/big/#count_bits">count_bits</a></li>
 <li><a href="/core/math/big/#error_if_immutable_single">error_if_immutable_single</a></li>
@@ -1658,6 +1672,7 @@ Procedure Groups (188)</summary>
 <li><a href="/core/math/big/#internal_prime_fermat">internal_prime_fermat</a></li>
 <li><a href="/core/math/big/#internal_random_prime">internal_random_prime</a></li>
 <li><a href="/core/math/big/#internal_sqr">internal_sqr</a></li>
+<li><a href="/core/math/big/#permutations_without_repetition">permutations_without_repetition</a></li>
 <li><a href="/core/math/big/#power_of_two">power_of_two</a></li>
 <li><a href="/core/math/big/#radix_size">radix_size</a></li>
 <li><a href="/core/math/big/#rat_add_int">rat_add_int</a></li>
@@ -2017,7 +2032,7 @@ Procedure Groups (188)</summary>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="RADIX_TABLE_REVERSE_SIZE"><span><a class="doc-id-link" href="#RADIX_TABLE_REVERSE_SIZE">RADIX_TABLE_REVERSE_SIZE<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/radix.odin#L593"><em>Source</em></a></div></h3>
+<h3 id="RADIX_TABLE_REVERSE_SIZE"><span><a class="doc-id-link" href="#RADIX_TABLE_REVERSE_SIZE">RADIX_TABLE_REVERSE_SIZE<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/radix.odin#L594"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">RADIX_TABLE_REVERSE_SIZE :: 80</pre>
 </div>
@@ -2140,7 +2155,7 @@ Procedure Groups (188)</summary>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="RADIX_TABLE"><span><a class="doc-id-link" href="#RADIX_TABLE">RADIX_TABLE<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/radix.odin#L582"><em>Source</em></a></div></h3>
+<h3 id="RADIX_TABLE"><span><a class="doc-id-link" href="#RADIX_TABLE">RADIX_TABLE<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/radix.odin#L583"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">RADIX_TABLE: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a> = …</pre>
 </div>
@@ -2150,7 +2165,7 @@ Procedure Groups (188)</summary>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="RADIX_TABLE_REVERSE"><span><a class="doc-id-link" href="#RADIX_TABLE_REVERSE">RADIX_TABLE_REVERSE<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/radix.odin#L583"><em>Source</em></a></div></h3>
+<h3 id="RADIX_TABLE_REVERSE"><span><a class="doc-id-link" href="#RADIX_TABLE_REVERSE">RADIX_TABLE_REVERSE<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/radix.odin#L584"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">RADIX_TABLE_REVERSE: [80]<a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a> = …</pre>
 </div>
@@ -2235,6 +2250,30 @@ Typically very fast.  Also fixes the sign if there are no more leading digits.
 <div>
 <pre class="doc-code">clear_if_uninitialized_single :: <span class="keyword-type">proc</span>(arg: ^<a class="code-typename" href="/core/math/big/#Int">Int</a>, allocator := <a href="/base/runtime/#Context">context.allocator</a>) -> (err: <a class="code-typename" href="/core/math/big/#Error">Error</a>) {…}</pre>
 </div>
+</div>
+<div class="pkg-entity">
+<h3 id="combinations_with_repetition"><span><a class="doc-id-link" href="#combinations_with_repetition">combinations_with_repetition<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/combinatorics.odin#L34"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">combinations_with_repetition :: <span class="keyword-type">proc</span>(dest: ^<a class="code-typename" href="/core/math/big/#Int">Int</a>, n, r: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>) -> (error: <a class="code-typename" href="/core/math/big/#Error">Error</a>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>With <code>n</code> items, calculate how many ways that <code>r</code> of them can be chosen.</p>
+<pre>Also known as the multiset coefficient or (n multichoose k).
+</pre>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="combinations_without_repetition"><span><a class="doc-id-link" href="#combinations_without_repetition">combinations_without_repetition<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/combinatorics.odin#L46"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">combinations_without_repetition :: <span class="keyword-type">proc</span>(dest: ^<a class="code-typename" href="/core/math/big/#Int">Int</a>, n, r: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>) -> (error: <a class="code-typename" href="/core/math/big/#Error">Error</a>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>With <code>n</code> items, calculate how many ways that <code>r</code> of them can be chosen without any repeats.</p>
+<pre>Also known as the binomial coefficient or (n choose k).
+</pre>
+</details>
 </div>
 <div class="pkg-entity">
 <h3 id="copy_digits"><span><a class="doc-id-link" href="#copy_digits">copy_digits<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/helpers.odin#L446"><em>Source</em></a></div></h3>
@@ -3168,13 +3207,13 @@ denominator &lt; remainder &lt;= 0 if denominator &lt; 0
 <div class="pkg-entity">
 <h3 id="int_random"><span><a class="doc-id-link" href="#int_random">int_random<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/helpers.odin#L377"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">int_random :: <span class="keyword-type">proc</span>(dest: ^<a class="code-typename" href="/core/math/big/#Int">Int</a>, bits: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, r: ^rand.<a class="code-typename" href="/core/math/rand/#Rand">Rand</a> = nil, allocator := <a href="/base/runtime/#Context">context.allocator</a>) -> (err: <a class="code-typename" href="/core/math/big/#Error">Error</a>) {…}</pre>
+<pre class="doc-code">int_random :: <span class="keyword-type">proc</span>(dest: ^<a class="code-typename" href="/core/math/big/#Int">Int</a>, bits: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, allocator := <a href="/base/runtime/#Context">context.allocator</a>) -> (err: <a class="code-typename" href="/core/math/big/#Error">Error</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="int_random_digit"><span><a class="doc-id-link" href="#int_random_digit">int_random_digit<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/helpers.odin#L365"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">int_random_digit :: <span class="keyword-type">proc</span>(r: ^rand.<a class="code-typename" href="/core/math/rand/#Rand">Rand</a> = nil) -> (res: <a class="code-typename" href="/core/math/big/#DIGIT">DIGIT</a>) {…}</pre>
+<pre class="doc-code">int_random_digit :: <span class="keyword-type">proc</span>() -> (res: <a class="code-typename" href="/core/math/big/#DIGIT">DIGIT</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -3402,7 +3441,7 @@ This helper swaps completely.
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="internal_assert_initialized"><span><a class="doc-id-link" href="#internal_assert_initialized">internal_assert_initialized<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2857"><em>Source</em></a></div></h3>
+<h3 id="internal_assert_initialized"><span><a class="doc-id-link" href="#internal_assert_initialized">internal_assert_initialized<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2862"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">internal_assert_initialized :: <span class="keyword-type">proc</span>(a: ^<a class="code-typename" href="/core/math/big/#Int">Int</a>, loc := <a href="/base/runtime/#Source_Code_Location">#caller_location</a>) {…}</pre>
 </div>
@@ -3412,7 +3451,7 @@ This helper swaps completely.
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="internal_clamp"><span><a class="doc-id-link" href="#internal_clamp">internal_clamp<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2917"><em>Source</em></a></div></h3>
+<h3 id="internal_clamp"><span><a class="doc-id-link" href="#internal_clamp">internal_clamp<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2922"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">internal_clamp :: <span class="keyword-type">proc</span>(a: ^<a class="code-typename" href="/core/math/big/#Int">Int</a>) -> (err: <a class="code-typename" href="/core/math/big/#Error">Error</a>) {…}</pre>
 </div>
@@ -3425,13 +3464,13 @@ Typically very fast.  Also fixes the sign if there are no more leading digits.
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="internal_clear_if_uninitialized_multi"><span><a class="doc-id-link" href="#internal_clear_if_uninitialized_multi">internal_clear_if_uninitialized_multi<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2870"><em>Source</em></a></div></h3>
+<h3 id="internal_clear_if_uninitialized_multi"><span><a class="doc-id-link" href="#internal_clear_if_uninitialized_multi">internal_clear_if_uninitialized_multi<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2875"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">internal_clear_if_uninitialized_multi :: <span class="keyword-type">proc</span>(<span class="keyword-type">..</span> args: ..^<a class="code-typename" href="/core/math/big/#Int">Int</a>, allocator := <a href="/base/runtime/#Context">context.allocator</a>) -> (err: <a class="code-typename" href="/core/math/big/#Error">Error</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="internal_clear_if_uninitialized_single"><span><a class="doc-id-link" href="#internal_clear_if_uninitialized_single">internal_clear_if_uninitialized_single<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2861"><em>Source</em></a></div></h3>
+<h3 id="internal_clear_if_uninitialized_single"><span><a class="doc-id-link" href="#internal_clear_if_uninitialized_single">internal_clear_if_uninitialized_single<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2866"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">internal_clear_if_uninitialized_single :: <span class="keyword-type">proc</span>(arg: ^<a class="code-typename" href="/core/math/big/#Int">Int</a>, allocator := <a href="/base/runtime/#Context">context.allocator</a>) -> (err: <a class="code-typename" href="/core/math/big/#Error">Error</a>) {…}</pre>
 </div>
@@ -3443,7 +3482,7 @@ Typically very fast.  Also fixes the sign if there are no more leading digits.
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="internal_count_bits"><span><a class="doc-id-link" href="#internal_count_bits">internal_count_bits<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2749"><em>Source</em></a></div></h3>
+<h3 id="internal_count_bits"><span><a class="doc-id-link" href="#internal_count_bits">internal_count_bits<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2754"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">internal_count_bits :: <span class="keyword-type">proc</span>(a: ^<a class="code-typename" href="/core/math/big/#Int">Int</a>) -> (count: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>) {…}</pre>
 </div>
@@ -3465,25 +3504,25 @@ Typically very fast.  Also fixes the sign if there are no more leading digits.
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="internal_error_if_immutable_multi"><span><a class="doc-id-link" href="#internal_error_if_immutable_multi">internal_error_if_immutable_multi<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2888"><em>Source</em></a></div></h3>
+<h3 id="internal_error_if_immutable_multi"><span><a class="doc-id-link" href="#internal_error_if_immutable_multi">internal_error_if_immutable_multi<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2893"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">internal_error_if_immutable_multi :: <span class="keyword-type">proc</span>(<span class="keyword-type">..</span> args: ..^<a class="code-typename" href="/core/math/big/#Int">Int</a>) -> (err: <a class="code-typename" href="/core/math/big/#Error">Error</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="internal_error_if_immutable_single"><span><a class="doc-id-link" href="#internal_error_if_immutable_single">internal_error_if_immutable_single<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2883"><em>Source</em></a></div></h3>
+<h3 id="internal_error_if_immutable_single"><span><a class="doc-id-link" href="#internal_error_if_immutable_single">internal_error_if_immutable_single<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2888"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">internal_error_if_immutable_single :: <span class="keyword-type">proc</span>(arg: ^<a class="code-typename" href="/core/math/big/#Int">Int</a>) -> (err: <a class="code-typename" href="/core/math/big/#Error">Error</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="internal_get_low_u32"><span><a class="doc-id-link" href="#internal_get_low_u32">internal_get_low_u32<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2310"><em>Source</em></a></div></h3>
+<h3 id="internal_get_low_u32"><span><a class="doc-id-link" href="#internal_get_low_u32">internal_get_low_u32<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2315"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">internal_get_low_u32 :: <span class="keyword-type">proc</span>(a: ^<a class="code-typename" href="/core/math/big/#Int">Int</a>) -> <a href="/base/builtin#u32"><span class="doc-builtin">u32</span></a> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="internal_get_low_u64"><span><a class="doc-id-link" href="#internal_get_low_u64">internal_get_low_u64<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2321"><em>Source</em></a></div></h3>
+<h3 id="internal_get_low_u64"><span><a class="doc-id-link" href="#internal_get_low_u64">internal_get_low_u64<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2326"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">internal_get_low_u64 :: <span class="keyword-type">proc</span>(a: ^<a class="code-typename" href="/core/math/big/#Int">Int</a>) -> <a href="/base/builtin#u64"><span class="doc-builtin">u64</span></a> {…}</pre>
 </div>
@@ -3561,7 +3600,7 @@ Typically very fast.  Also fixes the sign if there are no more leading digits.
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="internal_int_and"><span><a class="doc-id-link" href="#internal_int_and">internal_int_and<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2409"><em>Source</em></a></div></h3>
+<h3 id="internal_int_and"><span><a class="doc-id-link" href="#internal_int_and">internal_int_and<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2414"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">internal_int_and :: <span class="keyword-type">proc</span>(dest, a, b: ^<a class="code-typename" href="/core/math/big/#Int">Int</a>, allocator := <a href="/base/runtime/#Context">context.allocator</a>) -> (err: <a class="code-typename" href="/core/math/big/#Error">Error</a>) {…}</pre>
 </div>
@@ -3619,7 +3658,7 @@ Typically very fast.  Also fixes the sign if there are no more leading digits.
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="internal_int_clear"><span><a class="doc-id-link" href="#internal_int_clear">internal_int_clear<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2205"><em>Source</em></a></div></h3>
+<h3 id="internal_int_clear"><span><a class="doc-id-link" href="#internal_int_clear">internal_int_clear<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2210"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">internal_int_clear :: <span class="keyword-type">proc</span>(a: ^<a class="code-typename" href="/core/math/big/#Int">Int</a>, minimize: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> = false, allocator := <a href="/base/runtime/#Context">context.allocator</a>) -> (err: <a class="code-typename" href="/core/math/big/#Error">Error</a>) {…}</pre>
 </div>
@@ -3669,7 +3708,7 @@ Expects: `a` and `b` both to be valid `Int`s, i.e. initialized and not `nil`.
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="internal_int_complement"><span><a class="doc-id-link" href="#internal_int_complement">internal_int_complement<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2592"><em>Source</em></a></div></h3>
+<h3 id="internal_int_complement"><span><a class="doc-id-link" href="#internal_int_complement">internal_int_complement<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2597"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">internal_int_complement :: <span class="keyword-type">proc</span>(dest, src: ^<a class="code-typename" href="/core/math/big/#Int">Int</a>, allocator := <a href="/base/runtime/#Context">context.allocator</a>) -> (err: <a class="code-typename" href="/core/math/big/#Error">Error</a>) {…}</pre>
 </div>
@@ -3689,7 +3728,7 @@ Expects: `a` and `b` both to be valid `Int`s, i.e. initialized and not `nil`.
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="internal_int_count_lsb"><span><a class="doc-id-link" href="#internal_int_count_lsb">internal_int_count_lsb<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2772"><em>Source</em></a></div></h3>
+<h3 id="internal_int_count_lsb"><span><a class="doc-id-link" href="#internal_int_count_lsb">internal_int_count_lsb<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2777"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">internal_int_count_lsb :: <span class="keyword-type">proc</span>(a: ^<a class="code-typename" href="/core/math/big/#Int">Int</a>) -> (count: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, err: <a class="code-typename" href="/core/math/big/#Error">Error</a>) {…}</pre>
 </div>
@@ -3787,7 +3826,7 @@ Assumes `a` not to be `nil` and have been initialized.
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="internal_int_exponent_mod"><span><a class="doc-id-link" href="#internal_int_exponent_mod">internal_int_exponent_mod<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/prime.odin#L47"><em>Source</em></a></div></h3>
+<h3 id="internal_int_exponent_mod"><span><a class="doc-id-link" href="#internal_int_exponent_mod">internal_int_exponent_mod<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/prime.odin#L45"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">internal_int_exponent_mod :: <a class="code-procedure" href="/core/math/big/#internal_int_power_modulo">internal_int_power_modulo</a></pre>
 </div>
@@ -3803,7 +3842,7 @@ Assumes `res`, `G`, `X` and `P` to not be `nil` and for `G`, `X` and `P` to have
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="internal_int_extended_euclidean"><span><a class="doc-id-link" href="#internal_int_extended_euclidean">internal_int_extended_euclidean<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/prime.odin#L1305"><em>Source</em></a></div></h3>
+<h3 id="internal_int_extended_euclidean"><span><a class="doc-id-link" href="#internal_int_extended_euclidean">internal_int_extended_euclidean<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/prime.odin#L1300"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">internal_int_extended_euclidean :: <span class="keyword-type">proc</span>(
 	a, b, U1, U2, U3: ^<a class="code-typename" href="/core/math/big/#Int">Int</a>, 
@@ -3847,7 +3886,7 @@ Assumes `res`, `G`, `X` and `P` to not be `nil` and for `G`, `X` and `P` to have
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="internal_int_get"><span><a class="doc-id-link" href="#internal_int_get">internal_int_get<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2343"><em>Source</em></a></div></h3>
+<h3 id="internal_int_get"><span><a class="doc-id-link" href="#internal_int_get">internal_int_get<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2348"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">internal_int_get :: <span class="keyword-type">proc</span>(a: ^<a class="code-typename" href="/core/math/big/#Int">Int</a>, $T: <a href="/base/builtin#typeid"><span class="doc-builtin">typeid</span></a>) -> (res: <a href="/base/builtin#typeid"><span class="doc-builtin">typeid</span></a>, err: <a class="code-typename" href="/core/math/big/#Error">Error</a>) {…}</pre>
 </div>
@@ -3859,43 +3898,43 @@ Assumes `res`, `G`, `X` and `P` to not be `nil` and for `G`, `X` and `P` to have
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="internal_int_get_float"><span><a class="doc-id-link" href="#internal_int_get_float">internal_int_get_float<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2382"><em>Source</em></a></div></h3>
+<h3 id="internal_int_get_float"><span><a class="doc-id-link" href="#internal_int_get_float">internal_int_get_float<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2387"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">internal_int_get_float :: <span class="keyword-type">proc</span>(a: ^<a class="code-typename" href="/core/math/big/#Int">Int</a>) -> (res: <a href="/base/builtin#f64"><span class="doc-builtin">f64</span></a>, err: <a class="code-typename" href="/core/math/big/#Error">Error</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="internal_int_get_i128"><span><a class="doc-id-link" href="#internal_int_get_i128">internal_int_get_i128<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2285"><em>Source</em></a></div></h3>
+<h3 id="internal_int_get_i128"><span><a class="doc-id-link" href="#internal_int_get_i128">internal_int_get_i128<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2290"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">internal_int_get_i128 :: <span class="keyword-type">proc</span>(a: ^<a class="code-typename" href="/core/math/big/#Int">Int</a>) -> (res: <a href="/base/builtin#i128"><span class="doc-builtin">i128</span></a>, err: <a class="code-typename" href="/core/math/big/#Error">Error</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="internal_int_get_i32"><span><a class="doc-id-link" href="#internal_int_get_i32">internal_int_get_i32<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2305"><em>Source</em></a></div></h3>
+<h3 id="internal_int_get_i32"><span><a class="doc-id-link" href="#internal_int_get_i32">internal_int_get_i32<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2310"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">internal_int_get_i32 :: <span class="keyword-type">proc</span>(a: ^<a class="code-typename" href="/core/math/big/#Int">Int</a>) -> (res: <a href="/base/builtin#i32"><span class="doc-builtin">i32</span></a>, err: <a class="code-typename" href="/core/math/big/#Error">Error</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="internal_int_get_i64"><span><a class="doc-id-link" href="#internal_int_get_i64">internal_int_get_i64<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2295"><em>Source</em></a></div></h3>
+<h3 id="internal_int_get_i64"><span><a class="doc-id-link" href="#internal_int_get_i64">internal_int_get_i64<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2300"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">internal_int_get_i64 :: <span class="keyword-type">proc</span>(a: ^<a class="code-typename" href="/core/math/big/#Int">Int</a>) -> (res: <a href="/base/builtin#i64"><span class="doc-builtin">i64</span></a>, err: <a class="code-typename" href="/core/math/big/#Error">Error</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="internal_int_get_u128"><span><a class="doc-id-link" href="#internal_int_get_u128">internal_int_get_u128<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2280"><em>Source</em></a></div></h3>
+<h3 id="internal_int_get_u128"><span><a class="doc-id-link" href="#internal_int_get_u128">internal_int_get_u128<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2285"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">internal_int_get_u128 :: <span class="keyword-type">proc</span>(a: ^<a class="code-typename" href="/core/math/big/#Int">Int</a>) -> (res: <a href="/base/builtin#u128"><span class="doc-builtin">u128</span></a>, err: <a class="code-typename" href="/core/math/big/#Error">Error</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="internal_int_get_u32"><span><a class="doc-id-link" href="#internal_int_get_u32">internal_int_get_u32<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2300"><em>Source</em></a></div></h3>
+<h3 id="internal_int_get_u32"><span><a class="doc-id-link" href="#internal_int_get_u32">internal_int_get_u32<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2305"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">internal_int_get_u32 :: <span class="keyword-type">proc</span>(a: ^<a class="code-typename" href="/core/math/big/#Int">Int</a>) -> (res: <a href="/base/builtin#u32"><span class="doc-builtin">u32</span></a>, err: <a class="code-typename" href="/core/math/big/#Error">Error</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="internal_int_get_u64"><span><a class="doc-id-link" href="#internal_int_get_u64">internal_int_get_u64<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2290"><em>Source</em></a></div></h3>
+<h3 id="internal_int_get_u64"><span><a class="doc-id-link" href="#internal_int_get_u64">internal_int_get_u64<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2295"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">internal_int_get_u64 :: <span class="keyword-type">proc</span>(a: ^<a class="code-typename" href="/core/math/big/#Int">Int</a>) -> (res: <a href="/base/builtin#u64"><span class="doc-builtin">u64</span></a>, err: <a class="code-typename" href="/core/math/big/#Error">Error</a>) {…}</pre>
 </div>
@@ -3975,7 +4014,7 @@ Assumes `res`, `G`, `X` and `P` to not be `nil` and for `G`, `X` and `P` to have
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="internal_int_inf"><span><a class="doc-id-link" href="#internal_int_inf">internal_int_inf<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2237"><em>Source</em></a></div></h3>
+<h3 id="internal_int_inf"><span><a class="doc-id-link" href="#internal_int_inf">internal_int_inf<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2242"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">internal_int_inf :: <span class="keyword-type">proc</span>(a: ^<a class="code-typename" href="/core/math/big/#Int">Int</a>, minimize: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> = false, allocator := <a href="/base/runtime/#Context">context.allocator</a>) -> (err: <a class="code-typename" href="/core/math/big/#Error">Error</a>) {…}</pre>
 </div>
@@ -3985,7 +4024,7 @@ Assumes `res`, `G`, `X` and `P` to not be `nil` and for `G`, `X` and `P` to have
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="internal_int_init_multi"><span><a class="doc-id-link" href="#internal_int_init_multi">internal_int_init_multi<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2899"><em>Source</em></a></div></h3>
+<h3 id="internal_int_init_multi"><span><a class="doc-id-link" href="#internal_int_init_multi">internal_int_init_multi<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2904"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">internal_int_init_multi :: <span class="keyword-type">proc</span>(<span class="keyword-type">..</span> integers: ..^<a class="code-typename" href="/core/math/big/#Int">Int</a>, allocator := <a href="/base/runtime/#Context">context.allocator</a>) -> (err: <a class="code-typename" href="/core/math/big/#Error">Error</a>) {…}</pre>
 </div>
@@ -4087,9 +4126,9 @@ Assumes `res`, `G`, `X` and `P` to not be `nil` and for `G`, `X` and `P` to have
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="internal_int_is_prime"><span><a class="doc-id-link" href="#internal_int_is_prime">internal_int_is_prime<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/prime.odin#L318"><em>Source</em></a></div></h3>
+<h3 id="internal_int_is_prime"><span><a class="doc-id-link" href="#internal_int_is_prime">internal_int_is_prime<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/prime.odin#L316"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">internal_int_is_prime :: <span class="keyword-type">proc</span>(a: ^<a class="code-typename" href="/core/math/big/#Int">Int</a>, miller_rabin_trials: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a> = int(-1), miller_rabin_only: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> = USE_MILLER_RABIN_ONLY, r: ^rand.<a class="code-typename" href="/core/math/rand/#Rand">Rand</a> = nil, allocator := <a href="/base/runtime/#Context">context.allocator</a>) -> (is_prime: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>, err: <a class="code-typename" href="/core/math/big/#Error">Error</a>) {…}</pre>
+<pre class="doc-code">internal_int_is_prime :: <span class="keyword-type">proc</span>(a: ^<a class="code-typename" href="/core/math/big/#Int">Int</a>, miller_rabin_trials: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a> = int(-1), miller_rabin_only: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> = USE_MILLER_RABIN_ONLY, allocator := <a href="/base/runtime/#Context">context.allocator</a>) -> (is_prime: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>, err: <a class="code-typename" href="/core/math/big/#Error">Error</a>) {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -4141,7 +4180,7 @@ Assumes `a` not to be `nil` and to have been initialized.
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="internal_int_kronecker"><span><a class="doc-id-link" href="#internal_int_kronecker">internal_int_kronecker<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/prime.odin#L134"><em>Source</em></a></div></h3>
+<h3 id="internal_int_kronecker"><span><a class="doc-id-link" href="#internal_int_kronecker">internal_int_kronecker<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/prime.odin#L132"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">internal_int_kronecker :: <span class="keyword-type">proc</span>(a, p: ^<a class="code-typename" href="/core/math/big/#Int">Int</a>, allocator := <a href="/base/runtime/#Context">context.allocator</a>) -> (kronecker: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, err: <a class="code-typename" href="/core/math/big/#Error">Error</a>) {…}</pre>
 </div>
@@ -4170,7 +4209,7 @@ Assumes `a` and `p` to not be `nil` and to have been initialized.
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="internal_int_legendre"><span><a class="doc-id-link" href="#internal_int_legendre">internal_int_legendre<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/prime.odin#L134"><em>Source</em></a></div></h3>
+<h3 id="internal_int_legendre"><span><a class="doc-id-link" href="#internal_int_legendre">internal_int_legendre<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/prime.odin#L132"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">internal_int_legendre :: <a class="code-procedure" href="/core/math/big/#internal_int_kronecker">internal_int_kronecker</a></pre>
 </div>
@@ -4267,7 +4306,7 @@ Assumes `a` and `p` to not be `nil` and to have been initialized.
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="internal_int_minus_inf"><span><a class="doc-id-link" href="#internal_int_minus_inf">internal_int_minus_inf<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2245"><em>Source</em></a></div></h3>
+<h3 id="internal_int_minus_inf"><span><a class="doc-id-link" href="#internal_int_minus_inf">internal_int_minus_inf<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2250"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">internal_int_minus_inf :: <span class="keyword-type">proc</span>(a: ^<a class="code-typename" href="/core/math/big/#Int">Int</a>, minimize: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> = false, allocator := <a href="/base/runtime/#Context">context.allocator</a>) -> (err: <a class="code-typename" href="/core/math/big/#Error">Error</a>) {…}</pre>
 </div>
@@ -4277,7 +4316,7 @@ Assumes `a` and `p` to not be `nil` and to have been initialized.
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="internal_int_minus_one"><span><a class="doc-id-link" href="#internal_int_minus_one">internal_int_minus_one<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2229"><em>Source</em></a></div></h3>
+<h3 id="internal_int_minus_one"><span><a class="doc-id-link" href="#internal_int_minus_one">internal_int_minus_one<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2234"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">internal_int_minus_one :: <span class="keyword-type">proc</span>(a: ^<a class="code-typename" href="/core/math/big/#Int">Int</a>, minimize: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> = false, allocator := <a href="/base/runtime/#Context">context.allocator</a>) -> (err: <a class="code-typename" href="/core/math/big/#Error">Error</a>) {…}</pre>
 </div>
@@ -4367,7 +4406,7 @@ Asssumes quotient, numerator and denominator to have been initialized and not to
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="internal_int_nan"><span><a class="doc-id-link" href="#internal_int_nan">internal_int_nan<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2253"><em>Source</em></a></div></h3>
+<h3 id="internal_int_nan"><span><a class="doc-id-link" href="#internal_int_nan">internal_int_nan<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2258"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">internal_int_nan :: <span class="keyword-type">proc</span>(a: ^<a class="code-typename" href="/core/math/big/#Int">Int</a>, minimize: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> = false, allocator := <a href="/base/runtime/#Context">context.allocator</a>) -> (err: <a class="code-typename" href="/core/math/big/#Error">Error</a>) {…}</pre>
 </div>
@@ -4387,7 +4426,7 @@ Asssumes quotient, numerator and denominator to have been initialized and not to
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="internal_int_one"><span><a class="doc-id-link" href="#internal_int_one">internal_int_one<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2221"><em>Source</em></a></div></h3>
+<h3 id="internal_int_one"><span><a class="doc-id-link" href="#internal_int_one">internal_int_one<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2226"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">internal_int_one :: <span class="keyword-type">proc</span>(a: ^<a class="code-typename" href="/core/math/big/#Int">Int</a>, minimize: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> = false, allocator := <a href="/base/runtime/#Context">context.allocator</a>) -> (err: <a class="code-typename" href="/core/math/big/#Error">Error</a>) {…}</pre>
 </div>
@@ -4397,7 +4436,7 @@ Asssumes quotient, numerator and denominator to have been initialized and not to
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="internal_int_or"><span><a class="doc-id-link" href="#internal_int_or">internal_int_or<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2470"><em>Source</em></a></div></h3>
+<h3 id="internal_int_or"><span><a class="doc-id-link" href="#internal_int_or">internal_int_or<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2475"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">internal_int_or :: <span class="keyword-type">proc</span>(dest, a, b: ^<a class="code-typename" href="/core/math/big/#Int">Int</a>, allocator := <a href="/base/runtime/#Context">context.allocator</a>) -> (err: <a class="code-typename" href="/core/math/big/#Error">Error</a>) {…}</pre>
 </div>
@@ -4407,7 +4446,7 @@ Asssumes quotient, numerator and denominator to have been initialized and not to
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="internal_int_pack"><span><a class="doc-id-link" href="#internal_int_pack">internal_int_pack<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/radix.odin#L471"><em>Source</em></a></div></h3>
+<h3 id="internal_int_pack"><span><a class="doc-id-link" href="#internal_int_pack">internal_int_pack<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/radix.odin#L472"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">internal_int_pack :: <span class="keyword-type">proc</span>(a: ^<a class="code-typename" href="/core/math/big/#Int">Int</a>, buf: []$T, nails: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a> = 0, order: <a class="code-typename" href="/core/math/big/#Order">Order</a> = Order.LSB_First) -> (written: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, err: <a class="code-typename" href="/core/math/big/#Error">Error</a>) {…}</pre>
 </div>
@@ -4433,7 +4472,7 @@ Assumes `a` not to be `nil` and to have been initialized.
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="internal_int_pack_count"><span><a class="doc-id-link" href="#internal_int_pack_count">internal_int_pack_count<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/radix.odin#L441"><em>Source</em></a></div></h3>
+<h3 id="internal_int_pack_count"><span><a class="doc-id-link" href="#internal_int_pack_count">internal_int_pack_count<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/radix.odin#L442"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">internal_int_pack_count :: <span class="keyword-type">proc</span>(a: ^<a class="code-typename" href="/core/math/big/#Int">Int</a>, $T: <a href="/base/builtin#typeid"><span class="doc-builtin">typeid</span></a>, nails: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a> = 0) -> (size_needed: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>) {…}</pre>
 </div>
@@ -4469,7 +4508,7 @@ Assumes `a` not to be `nil` and to have been initialized.
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="internal_int_power_modulo"><span><a class="doc-id-link" href="#internal_int_power_modulo">internal_int_power_modulo<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/prime.odin#L47"><em>Source</em></a></div></h3>
+<h3 id="internal_int_power_modulo"><span><a class="doc-id-link" href="#internal_int_power_modulo">internal_int_power_modulo<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/prime.odin#L45"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">internal_int_power_modulo :: <span class="keyword-type">proc</span>(res, G, X, P: ^<a class="code-typename" href="/core/math/big/#Int">Int</a>, allocator := <a href="/base/runtime/#Context">context.allocator</a>) -> (err: <a class="code-typename" href="/core/math/big/#Error">Error</a>) {…}</pre>
 </div>
@@ -4485,13 +4524,13 @@ Assumes `res`, `G`, `X` and `P` to not be `nil` and for `G`, `X` and `P` to have
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="internal_int_power_of_two"><span><a class="doc-id-link" href="#internal_int_power_of_two">internal_int_power_of_two<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2258"><em>Source</em></a></div></h3>
+<h3 id="internal_int_power_of_two"><span><a class="doc-id-link" href="#internal_int_power_of_two">internal_int_power_of_two<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2263"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">internal_int_power_of_two :: <span class="keyword-type">proc</span>(a: ^<a class="code-typename" href="/core/math/big/#Int">Int</a>, power: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, allocator := <a href="/base/runtime/#Context">context.allocator</a>) -> (err: <a class="code-typename" href="/core/math/big/#Error">Error</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="internal_int_powmod"><span><a class="doc-id-link" href="#internal_int_powmod">internal_int_powmod<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/prime.odin#L47"><em>Source</em></a></div></h3>
+<h3 id="internal_int_powmod"><span><a class="doc-id-link" href="#internal_int_powmod">internal_int_powmod<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/prime.odin#L45"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">internal_int_powmod :: <a class="code-procedure" href="/core/math/big/#internal_int_power_modulo">internal_int_power_modulo</a></pre>
 </div>
@@ -4507,13 +4546,13 @@ Assumes `res`, `G`, `X` and `P` to not be `nil` and for `G`, `X` and `P` to have
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="internal_int_prime_frobenius_underwood"><span><a class="doc-id-link" href="#internal_int_prime_frobenius_underwood">internal_int_prime_frobenius_underwood<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/prime.odin#L514"><em>Source</em></a></div></h3>
+<h3 id="internal_int_prime_frobenius_underwood"><span><a class="doc-id-link" href="#internal_int_prime_frobenius_underwood">internal_int_prime_frobenius_underwood<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/prime.odin#L512"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">internal_int_prime_frobenius_underwood :: <span class="keyword-type">proc</span>(N: ^<a class="code-typename" href="/core/math/big/#Int">Int</a>, allocator := <a href="/base/runtime/#Context">context.allocator</a>) -> (result: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>, err: <a class="code-typename" href="/core/math/big/#Error">Error</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="internal_int_prime_is_divisible"><span><a class="doc-id-link" href="#internal_int_prime_is_divisible">internal_int_prime_is_divisible<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/prime.odin#L21"><em>Source</em></a></div></h3>
+<h3 id="internal_int_prime_is_divisible"><span><a class="doc-id-link" href="#internal_int_prime_is_divisible">internal_int_prime_is_divisible<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/prime.odin#L19"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">internal_int_prime_is_divisible :: <span class="keyword-type">proc</span>(a: ^<a class="code-typename" href="/core/math/big/#Int">Int</a>, allocator := <a href="/base/runtime/#Context">context.allocator</a>) -> (res: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>, err: <a class="code-typename" href="/core/math/big/#Error">Error</a>) {…}</pre>
 </div>
@@ -4525,7 +4564,7 @@ Assumes `res`, `G`, `X` and `P` to not be `nil` and for `G`, `X` and `P` to have
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="internal_int_prime_miller_rabin"><span><a class="doc-id-link" href="#internal_int_prime_miller_rabin">internal_int_prime_miller_rabin<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/prime.odin#L223"><em>Source</em></a></div></h3>
+<h3 id="internal_int_prime_miller_rabin"><span><a class="doc-id-link" href="#internal_int_prime_miller_rabin">internal_int_prime_miller_rabin<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/prime.odin#L221"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">internal_int_prime_miller_rabin :: <span class="keyword-type">proc</span>(a, b: ^<a class="code-typename" href="/core/math/big/#Int">Int</a>, allocator := <a href="/base/runtime/#Context">context.allocator</a>) -> (probably_prime: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>, err: <a class="code-typename" href="/core/math/big/#Error">Error</a>) {…}</pre>
 </div>
@@ -4540,7 +4579,7 @@ Assumes `a` and `b` not to be `nil` and to have been initialized.
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="internal_int_prime_next_prime"><span><a class="doc-id-link" href="#internal_int_prime_next_prime">internal_int_prime_next_prime<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/prime.odin#L1050"><em>Source</em></a></div></h3>
+<h3 id="internal_int_prime_next_prime"><span><a class="doc-id-link" href="#internal_int_prime_next_prime">internal_int_prime_next_prime<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/prime.odin#L1048"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">internal_int_prime_next_prime :: <span class="keyword-type">proc</span>(a: ^<a class="code-typename" href="/core/math/big/#Int">Int</a>, trials: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, bbs_style: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>, allocator := <a href="/base/runtime/#Context">context.allocator</a>) -> (err: <a class="code-typename" href="/core/math/big/#Error">Error</a>) {…}</pre>
 </div>
@@ -4553,7 +4592,7 @@ Assumes `a` and `b` not to be `nil` and to have been initialized.
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="internal_int_prime_strong_lucas_selfridge"><span><a class="doc-id-link" href="#internal_int_prime_strong_lucas_selfridge">internal_int_prime_strong_lucas_selfridge<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/prime.odin#L614"><em>Source</em></a></div></h3>
+<h3 id="internal_int_prime_strong_lucas_selfridge"><span><a class="doc-id-link" href="#internal_int_prime_strong_lucas_selfridge">internal_int_prime_strong_lucas_selfridge<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/prime.odin#L612"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">internal_int_prime_strong_lucas_selfridge :: <span class="keyword-type">proc</span>(a: ^<a class="code-typename" href="/core/math/big/#Int">Int</a>, allocator := <a href="/base/runtime/#Context">context.allocator</a>) -> (lucas_selfridge: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>, err: <a class="code-typename" href="/core/math/big/#Error">Error</a>) {…}</pre>
 </div>
@@ -4573,19 +4612,19 @@ The multi-line comments are made by Thomas R. Nicely and are copied verbatim.
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="internal_int_random"><span><a class="doc-id-link" href="#internal_int_random">internal_int_random<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2827"><em>Source</em></a></div></h3>
+<h3 id="internal_int_random"><span><a class="doc-id-link" href="#internal_int_random">internal_int_random<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2832"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">internal_int_random :: <span class="keyword-type">proc</span>(dest: ^<a class="code-typename" href="/core/math/big/#Int">Int</a>, bits: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, r: ^rand.<a class="code-typename" href="/core/math/rand/#Rand">Rand</a> = nil, allocator := <a href="/base/runtime/#Context">context.allocator</a>) -> (err: <a class="code-typename" href="/core/math/big/#Error">Error</a>) {…}</pre>
+<pre class="doc-code">internal_int_random :: <span class="keyword-type">proc</span>(dest: ^<a class="code-typename" href="/core/math/big/#Int">Int</a>, bits: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, allocator := <a href="/base/runtime/#Context">context.allocator</a>) -> (err: <a class="code-typename" href="/core/math/big/#Error">Error</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="internal_int_random_digit"><span><a class="doc-id-link" href="#internal_int_random_digit">internal_int_random_digit<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2815"><em>Source</em></a></div></h3>
+<h3 id="internal_int_random_digit"><span><a class="doc-id-link" href="#internal_int_random_digit">internal_int_random_digit<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2820"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">internal_int_random_digit :: <span class="keyword-type">proc</span>(r: ^rand.<a class="code-typename" href="/core/math/rand/#Rand">Rand</a> = nil) -> (res: <a class="code-typename" href="/core/math/big/#DIGIT">DIGIT</a>) {…}</pre>
+<pre class="doc-code">internal_int_random_digit :: <span class="keyword-type">proc</span>() -> (res: <a class="code-typename" href="/core/math/big/#DIGIT">DIGIT</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="internal_int_read_from_ascii_file"><span><a class="doc-id-link" href="#internal_int_read_from_ascii_file">internal_int_read_from_ascii_file<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/radix.odin#L390"><em>Source</em></a></div></h3>
+<h3 id="internal_int_read_from_ascii_file"><span><a class="doc-id-link" href="#internal_int_read_from_ascii_file">internal_int_read_from_ascii_file<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/radix.odin#L391"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">internal_int_read_from_ascii_file :: <span class="keyword-type">proc</span>(a: ^<a class="code-typename" href="/core/math/big/#Int">Int</a>, filename: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>, radix: <a href="/base/builtin#i8"><span class="doc-builtin">i8</span></a> = i8(10), allocator := <a href="/base/runtime/#Context">context.allocator</a>) -> (err: <a class="code-typename" href="/core/math/big/#Error">Error</a>) {…}</pre>
 </div>
@@ -4628,7 +4667,7 @@ Assumes `dest` and `src` not to be `nil` and have been initialized.
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="internal_int_shl"><span><a class="doc-id-link" href="#internal_int_shl">internal_int_shl<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2696"><em>Source</em></a></div></h3>
+<h3 id="internal_int_shl"><span><a class="doc-id-link" href="#internal_int_shl">internal_int_shl<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2701"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">internal_int_shl :: <span class="keyword-type">proc</span>(dest, src: ^<a class="code-typename" href="/core/math/big/#Int">Int</a>, bits: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, allocator := <a href="/base/runtime/#Context">context.allocator</a>) -> (err: <a class="code-typename" href="/core/math/big/#Error">Error</a>) {…}</pre>
 </div>
@@ -4650,7 +4689,7 @@ Assumes `dest` and `src` not to be `nil` and have been initialized.
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="internal_int_shr"><span><a class="doc-id-link" href="#internal_int_shr">internal_int_shr<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2672"><em>Source</em></a></div></h3>
+<h3 id="internal_int_shr"><span><a class="doc-id-link" href="#internal_int_shr">internal_int_shr<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2677"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">internal_int_shr :: <span class="keyword-type">proc</span>(dest, source: ^<a class="code-typename" href="/core/math/big/#Int">Int</a>, bits: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, allocator := <a href="/base/runtime/#Context">context.allocator</a>) -> (err: <a class="code-typename" href="/core/math/big/#Error">Error</a>) {…}</pre>
 </div>
@@ -4671,7 +4710,7 @@ We make no allocations here.
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="internal_int_shr_signed"><span><a class="doc-id-link" href="#internal_int_shr_signed">internal_int_shr_signed<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2680"><em>Source</em></a></div></h3>
+<h3 id="internal_int_shr_signed"><span><a class="doc-id-link" href="#internal_int_shr_signed">internal_int_shr_signed<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2685"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">internal_int_shr_signed :: <span class="keyword-type">proc</span>(dest, src: ^<a class="code-typename" href="/core/math/big/#Int">Int</a>, bits: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, allocator := <a href="/base/runtime/#Context">context.allocator</a>) -> (err: <a class="code-typename" href="/core/math/big/#Error">Error</a>) {…}</pre>
 </div>
@@ -4695,7 +4734,7 @@ Assumes `a` not to be `nil`, and to have already been initialized.
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="internal_int_shrmod"><span><a class="doc-id-link" href="#internal_int_shrmod">internal_int_shrmod<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2618"><em>Source</em></a></div></h3>
+<h3 id="internal_int_shrmod"><span><a class="doc-id-link" href="#internal_int_shrmod">internal_int_shrmod<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2623"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">internal_int_shrmod :: <span class="keyword-type">proc</span>(quotient, remainder, numerator: ^<a class="code-typename" href="/core/math/big/#Int">Int</a>, bits: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, allocator := <a href="/base/runtime/#Context">context.allocator</a>) -> (err: <a class="code-typename" href="/core/math/big/#Error">Error</a>) {…}</pre>
 </div>
@@ -4729,7 +4768,7 @@ Assumes `a` not to be `nil`, and to have already been initialized.
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="internal_int_sqrtmod_prime"><span><a class="doc-id-link" href="#internal_int_sqrtmod_prime">internal_int_sqrtmod_prime<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/prime.odin#L872"><em>Source</em></a></div></h3>
+<h3 id="internal_int_sqrtmod_prime"><span><a class="doc-id-link" href="#internal_int_sqrtmod_prime">internal_int_sqrtmod_prime<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/prime.odin#L870"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">internal_int_sqrtmod_prime :: <span class="keyword-type">proc</span>(res, n, prime: ^<a class="code-typename" href="/core/math/big/#Int">Int</a>, allocator := <a href="/base/runtime/#Context">context.allocator</a>) -> (err: <a class="code-typename" href="/core/math/big/#Error">Error</a>) {…}</pre>
 </div>
@@ -4811,13 +4850,13 @@ This helper swaps completely.
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="internal_int_unpack"><span><a class="doc-id-link" href="#internal_int_unpack">internal_int_unpack<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/radix.odin#L507"><em>Source</em></a></div></h3>
+<h3 id="internal_int_unpack"><span><a class="doc-id-link" href="#internal_int_unpack">internal_int_unpack<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/radix.odin#L508"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">internal_int_unpack :: <span class="keyword-type">proc</span>(a: ^<a class="code-typename" href="/core/math/big/#Int">Int</a>, buf: []$T, nails: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a> = 0, order: <a class="code-typename" href="/core/math/big/#Order">Order</a> = Order.LSB_First, allocator := <a href="/base/runtime/#Context">context.allocator</a>) -> (err: <a class="code-typename" href="/core/math/big/#Error">Error</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="internal_int_write_to_ascii_file"><span><a class="doc-id-link" href="#internal_int_write_to_ascii_file">internal_int_write_to_ascii_file<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/radix.odin#L413"><em>Source</em></a></div></h3>
+<h3 id="internal_int_write_to_ascii_file"><span><a class="doc-id-link" href="#internal_int_write_to_ascii_file">internal_int_write_to_ascii_file<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/radix.odin#L414"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">internal_int_write_to_ascii_file :: <span class="keyword-type">proc</span>(a: ^<a class="code-typename" href="/core/math/big/#Int">Int</a>, filename: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>, radix: <a href="/base/builtin#i8"><span class="doc-builtin">i8</span></a> = i8(10), allocator := <a href="/base/runtime/#Context">context.allocator</a>) -> (err: <a class="code-typename" href="/core/math/big/#Error">Error</a>) {…}</pre>
 </div>
@@ -4827,7 +4866,7 @@ This helper swaps completely.
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="internal_int_xor"><span><a class="doc-id-link" href="#internal_int_xor">internal_int_xor<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2531"><em>Source</em></a></div></h3>
+<h3 id="internal_int_xor"><span><a class="doc-id-link" href="#internal_int_xor">internal_int_xor<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2536"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">internal_int_xor :: <span class="keyword-type">proc</span>(dest, a, b: ^<a class="code-typename" href="/core/math/big/#Int">Int</a>, allocator := <a href="/base/runtime/#Context">context.allocator</a>) -> (err: <a class="code-typename" href="/core/math/big/#Error">Error</a>) {…}</pre>
 </div>
@@ -4837,7 +4876,7 @@ This helper swaps completely.
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="internal_int_zero_unused"><span><a class="doc-id-link" href="#internal_int_zero_unused">internal_int_zero_unused<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2926"><em>Source</em></a></div></h3>
+<h3 id="internal_int_zero_unused"><span><a class="doc-id-link" href="#internal_int_zero_unused">internal_int_zero_unused<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2931"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">internal_int_zero_unused :: <span class="keyword-type">proc</span>(dest: ^<a class="code-typename" href="/core/math/big/#Int">Int</a>, old_used: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a> = -1) {…}</pre>
 </div>
@@ -4849,13 +4888,13 @@ This helper swaps completely.
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="internal_platform_count_lsb"><span><a class="doc-id-link" href="#internal_platform_count_lsb">internal_platform_count_lsb<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2808"><em>Source</em></a></div></h3>
+<h3 id="internal_platform_count_lsb"><span><a class="doc-id-link" href="#internal_platform_count_lsb">internal_platform_count_lsb<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2813"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">internal_platform_count_lsb :: <span class="keyword-type">proc</span>(a: $T) -> (count: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="internal_prime_fermat"><span><a class="doc-id-link" href="#internal_prime_fermat">internal_prime_fermat<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/prime.odin#L846"><em>Source</em></a></div></h3>
+<h3 id="internal_prime_fermat"><span><a class="doc-id-link" href="#internal_prime_fermat">internal_prime_fermat<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/prime.odin#L844"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">internal_prime_fermat :: <span class="keyword-type">proc</span>(a, b: ^<a class="code-typename" href="/core/math/big/#Int">Int</a>, allocator := <a href="/base/runtime/#Context">context.allocator</a>) -> (fermat: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>, err: <a class="code-typename" href="/core/math/big/#Error">Error</a>) {…}</pre>
 </div>
@@ -4873,16 +4912,9 @@ Assumes `a` and `b` not to be `nil` and to have been initialized.
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="internal_random_prime"><span><a class="doc-id-link" href="#internal_random_prime">internal_random_prime<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/prime.odin#L1186"><em>Source</em></a></div></h3>
+<h3 id="internal_random_prime"><span><a class="doc-id-link" href="#internal_random_prime">internal_random_prime<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/prime.odin#L1184"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">internal_random_prime :: <span class="keyword-type">proc</span>(
-	a:            ^<a class="code-typename" href="/core/math/big/#Int">Int</a>, 
-	size_in_bits: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, 
-	trials:       <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, 
-	flags:        <span class="keyword-type">bit_set</span>[<a class="code-typename" href="/core/math/big/#Primality_Flag">Primality_Flag</a>; <a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a>] = Primality_Flags{}, 
-	r:            ^rand.<a class="code-typename" href="/core/math/rand/#Rand">Rand</a> = nil, 
-	allocator := <a href="/base/runtime/#Context">context.allocator</a>, 
-) -> (err: <a class="code-typename" href="/core/math/big/#Error">Error</a>) {…}</pre>
+<pre class="doc-code">internal_random_prime :: <span class="keyword-type">proc</span>(a: ^<a class="code-typename" href="/core/math/big/#Int">Int</a>, size_in_bits: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, trials: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, flags: <span class="keyword-type">bit_set</span>[<a class="code-typename" href="/core/math/big/#Primality_Flag">Primality_Flag</a>; <a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a>] = Primality_Flags{}, allocator := <a href="/base/runtime/#Context">context.allocator</a>) -> (err: <a class="code-typename" href="/core/math/big/#Error">Error</a>) {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -4939,13 +4971,33 @@ This is possibly the mother of all prime generation functions, muahahahahaha!
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="number_of_rabin_miller_trials"><span><a class="doc-id-link" href="#number_of_rabin_miller_trials">number_of_rabin_miller_trials<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/prime.odin#L1388"><em>Source</em></a></div></h3>
+<h3 id="number_of_rabin_miller_trials"><span><a class="doc-id-link" href="#number_of_rabin_miller_trials">number_of_rabin_miller_trials<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/prime.odin#L1383"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">number_of_rabin_miller_trials :: <span class="keyword-type">proc</span>(bit_size: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>) -> (number_of_trials: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>) {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
 <p>Returns the number of Rabin-Miller trials needed for a given bit size.</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="permutations_with_repetition"><span><a class="doc-id-link" href="#permutations_with_repetition">permutations_with_repetition<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/public.odin#L424"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">permutations_with_repetition :: <a class="code-procedure" href="/core/math/big/#int_pow_int">int_pow_int</a></pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Calculate <code>dest = base^power</code> using a square-multiply algorithm.</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="permutations_without_repetition"><span><a class="doc-id-link" href="#permutations_without_repetition">permutations_without_repetition<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/combinatorics.odin#L11"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">permutations_without_repetition :: <span class="keyword-type">proc</span>(dest: ^<a class="code-typename" href="/core/math/big/#Int">Int</a>, n, r: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>) -> (error: <a class="code-typename" href="/core/math/big/#Error">Error</a>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>With <code>n</code> items, calculate how many ways that <code>r</code> of them can be ordered without any repeats.</p>
 </details>
 </div>
 <div class="pkg-entity">
@@ -4973,7 +5025,7 @@ This is possibly the mother of all prime generation functions, muahahahahaha!
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="radix_size"><span><a class="doc-id-link" href="#radix_size">radix_size<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/radix.odin#L322"><em>Source</em></a></div></h3>
+<h3 id="radix_size"><span><a class="doc-id-link" href="#radix_size">radix_size<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/radix.odin#L323"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">radix_size :: <span class="keyword-type">proc</span>(a: ^<a class="code-typename" href="/core/math/big/#Int">Int</a>, radix: <a href="/base/builtin#i8"><span class="doc-builtin">i8</span></a> = i8(10), zero_terminate: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> = false, allocator := <a href="/base/runtime/#Context">context.allocator</a>) -> (size: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, err: <a class="code-typename" href="/core/math/big/#Error">Error</a>) {…}</pre>
 </div>
@@ -5201,6 +5253,16 @@ This is possibly the mother of all prime generation functions, muahahahahaha!
 <div>
 <pre class="doc-code">small_pow :: <span class="keyword-type">proc</span>(base: <a class="code-typename" href="/core/math/big/#_WORD">_WORD</a>, exponent: <a class="code-typename" href="/core/math/big/#_WORD">_WORD</a>) -> (result: <a class="code-typename" href="/core/math/big/#_WORD">_WORD</a>) {…}</pre>
 </div>
+</div>
+<div class="pkg-entity">
+<h3 id="string_to_int"><span><a class="doc-id-link" href="#string_to_int">string_to_int<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/radix.odin#L234"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">string_to_int :: <a class="code-procedure" href="/core/math/big/#int_atoi">int_atoi</a></pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Read a string [ASCII] in a given radix.</p>
+</details>
 </div>
 <div class="pkg-entity">
 <h3 id="zero_unused"><span><a class="doc-id-link" href="#zero_unused">zero_unused<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/helpers.odin#L395"><em>Source</em></a></div></h3>
@@ -5737,7 +5799,7 @@ This is possibly the mother of all prime generation functions, muahahahahaha!
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="internal_and"><span><a class="doc-id-link" href="#internal_and">internal_and<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2465"><em>Source</em></a></div></h3>
+<h3 id="internal_and"><span><a class="doc-id-link" href="#internal_and">internal_and<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2470"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">internal_and :: <span class="keyword-type">proc</span>{
 	<a class="code-procedure" href="/core/math/big/#internal_int_and">internal_int_and</a>,
@@ -5746,7 +5808,7 @@ This is possibly the mother of all prime generation functions, muahahahahaha!
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="internal_clear"><span><a class="doc-id-link" href="#internal_clear">internal_clear<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2215"><em>Source</em></a></div></h3>
+<h3 id="internal_clear"><span><a class="doc-id-link" href="#internal_clear">internal_clear<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2220"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">internal_clear :: <span class="keyword-type">proc</span>{
 	<a class="code-procedure" href="/core/math/big/#internal_int_clear">internal_int_clear</a>,
@@ -5755,7 +5817,7 @@ This is possibly the mother of all prime generation functions, muahahahahaha!
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="internal_clear_if_uninitialized"><span><a class="doc-id-link" href="#internal_clear_if_uninitialized">internal_clear_if_uninitialized<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2881"><em>Source</em></a></div></h3>
+<h3 id="internal_clear_if_uninitialized"><span><a class="doc-id-link" href="#internal_clear_if_uninitialized">internal_clear_if_uninitialized<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2886"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">internal_clear_if_uninitialized :: <span class="keyword-type">proc</span>{
 	<a class="code-procedure" href="/core/math/big/#internal_clear_if_uninitialized_single">internal_clear_if_uninitialized_single</a>,
@@ -5821,7 +5883,7 @@ This is possibly the mother of all prime generation functions, muahahahahaha!
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="internal_complement"><span><a class="doc-id-link" href="#internal_complement">internal_complement<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2612"><em>Source</em></a></div></h3>
+<h3 id="internal_complement"><span><a class="doc-id-link" href="#internal_complement">internal_complement<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2617"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">internal_complement :: <span class="keyword-type">proc</span>{
 	<a class="code-procedure" href="/core/math/big/#internal_int_complement">internal_int_complement</a>,
@@ -5839,7 +5901,7 @@ This is possibly the mother of all prime generation functions, muahahahahaha!
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="internal_count_lsb"><span><a class="doc-id-link" href="#internal_count_lsb">internal_count_lsb<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2813"><em>Source</em></a></div></h3>
+<h3 id="internal_count_lsb"><span><a class="doc-id-link" href="#internal_count_lsb">internal_count_lsb<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2818"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">internal_count_lsb :: <span class="keyword-type">proc</span>{
 	<a class="code-procedure" href="/core/math/big/#internal_int_count_lsb">internal_int_count_lsb</a>,
@@ -5925,7 +5987,7 @@ This is possibly the mother of all prime generation functions, muahahahahaha!
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="internal_error_if_immutable"><span><a class="doc-id-link" href="#internal_error_if_immutable">internal_error_if_immutable<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2894"><em>Source</em></a></div></h3>
+<h3 id="internal_error_if_immutable"><span><a class="doc-id-link" href="#internal_error_if_immutable">internal_error_if_immutable<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2899"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">internal_error_if_immutable :: <span class="keyword-type">proc</span>{
 	<a class="code-procedure" href="/core/math/big/#internal_error_if_immutable_single">internal_error_if_immutable_single</a>,
@@ -5946,7 +6008,7 @@ This is possibly the mother of all prime generation functions, muahahahahaha!
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="internal_get"><span><a class="doc-id-link" href="#internal_get">internal_get<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2380"><em>Source</em></a></div></h3>
+<h3 id="internal_get"><span><a class="doc-id-link" href="#internal_get">internal_get<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2385"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">internal_get :: <span class="keyword-type">proc</span>{
 	<a class="code-procedure" href="/core/math/big/#internal_int_get">internal_int_get</a>,
@@ -5955,7 +6017,7 @@ This is possibly the mother of all prime generation functions, muahahahahaha!
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="internal_get_i128"><span><a class="doc-id-link" href="#internal_get_i128">internal_get_i128<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2288"><em>Source</em></a></div></h3>
+<h3 id="internal_get_i128"><span><a class="doc-id-link" href="#internal_get_i128">internal_get_i128<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2293"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">internal_get_i128 :: <span class="keyword-type">proc</span>{
 	<a class="code-procedure" href="/core/math/big/#internal_int_get_i128">internal_int_get_i128</a>,
@@ -5964,7 +6026,7 @@ This is possibly the mother of all prime generation functions, muahahahahaha!
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="internal_get_i32"><span><a class="doc-id-link" href="#internal_get_i32">internal_get_i32<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2308"><em>Source</em></a></div></h3>
+<h3 id="internal_get_i32"><span><a class="doc-id-link" href="#internal_get_i32">internal_get_i32<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2313"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">internal_get_i32 :: <span class="keyword-type">proc</span>{
 	<a class="code-procedure" href="/core/math/big/#internal_int_get_i32">internal_int_get_i32</a>,
@@ -5973,7 +6035,7 @@ This is possibly the mother of all prime generation functions, muahahahahaha!
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="internal_get_i64"><span><a class="doc-id-link" href="#internal_get_i64">internal_get_i64<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2298"><em>Source</em></a></div></h3>
+<h3 id="internal_get_i64"><span><a class="doc-id-link" href="#internal_get_i64">internal_get_i64<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2303"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">internal_get_i64 :: <span class="keyword-type">proc</span>{
 	<a class="code-procedure" href="/core/math/big/#internal_int_get_i64">internal_int_get_i64</a>,
@@ -5982,7 +6044,7 @@ This is possibly the mother of all prime generation functions, muahahahahaha!
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="internal_get_u128"><span><a class="doc-id-link" href="#internal_get_u128">internal_get_u128<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2283"><em>Source</em></a></div></h3>
+<h3 id="internal_get_u128"><span><a class="doc-id-link" href="#internal_get_u128">internal_get_u128<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2288"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">internal_get_u128 :: <span class="keyword-type">proc</span>{
 	<a class="code-procedure" href="/core/math/big/#internal_int_get_u128">internal_int_get_u128</a>,
@@ -5991,7 +6053,7 @@ This is possibly the mother of all prime generation functions, muahahahahaha!
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="internal_get_u32"><span><a class="doc-id-link" href="#internal_get_u32">internal_get_u32<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2303"><em>Source</em></a></div></h3>
+<h3 id="internal_get_u32"><span><a class="doc-id-link" href="#internal_get_u32">internal_get_u32<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2308"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">internal_get_u32 :: <span class="keyword-type">proc</span>{
 	<a class="code-procedure" href="/core/math/big/#internal_int_get_u32">internal_int_get_u32</a>,
@@ -6000,7 +6062,7 @@ This is possibly the mother of all prime generation functions, muahahahahaha!
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="internal_get_u64"><span><a class="doc-id-link" href="#internal_get_u64">internal_get_u64<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2293"><em>Source</em></a></div></h3>
+<h3 id="internal_get_u64"><span><a class="doc-id-link" href="#internal_get_u64">internal_get_u64<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2298"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">internal_get_u64 :: <span class="keyword-type">proc</span>{
 	<a class="code-procedure" href="/core/math/big/#internal_int_get_u64">internal_int_get_u64</a>,
@@ -6047,7 +6109,7 @@ This is possibly the mother of all prime generation functions, muahahahahaha!
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="internal_grow"><span><a class="doc-id-link" href="#internal_grow">internal_grow<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2199"><em>Source</em></a></div></h3>
+<h3 id="internal_grow"><span><a class="doc-id-link" href="#internal_grow">internal_grow<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2204"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">internal_grow :: <span class="keyword-type">proc</span>{
 	<a class="code-procedure" href="/core/math/big/#internal_int_grow">internal_int_grow</a>,
@@ -6103,7 +6165,7 @@ This is possibly the mother of all prime generation functions, muahahahahaha!
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="internal_inf"><span><a class="doc-id-link" href="#internal_inf">internal_inf<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2240"><em>Source</em></a></div></h3>
+<h3 id="internal_inf"><span><a class="doc-id-link" href="#internal_inf">internal_inf<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2245"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">internal_inf :: <span class="keyword-type">proc</span>{
 	<a class="code-procedure" href="/core/math/big/#internal_int_inf">internal_int_inf</a>,
@@ -6112,7 +6174,7 @@ This is possibly the mother of all prime generation functions, muahahahahaha!
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="internal_init_multi"><span><a class="doc-id-link" href="#internal_init_multi">internal_init_multi<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2909"><em>Source</em></a></div></h3>
+<h3 id="internal_init_multi"><span><a class="doc-id-link" href="#internal_init_multi">internal_init_multi<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2914"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">internal_init_multi :: <span class="keyword-type">proc</span>{
 	<a class="code-procedure" href="/core/math/big/#internal_int_init_multi">internal_int_init_multi</a>,
@@ -6280,7 +6342,7 @@ This is possibly the mother of all prime generation functions, muahahahahaha!
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="internal_minus_inf"><span><a class="doc-id-link" href="#internal_minus_inf">internal_minus_inf<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2248"><em>Source</em></a></div></h3>
+<h3 id="internal_minus_inf"><span><a class="doc-id-link" href="#internal_minus_inf">internal_minus_inf<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2253"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">internal_minus_inf :: <span class="keyword-type">proc</span>{
 	<a class="code-procedure" href="/core/math/big/#internal_int_inf">internal_int_inf</a>,
@@ -6289,7 +6351,7 @@ This is possibly the mother of all prime generation functions, muahahahahaha!
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="internal_minus_one"><span><a class="doc-id-link" href="#internal_minus_one">internal_minus_one<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2232"><em>Source</em></a></div></h3>
+<h3 id="internal_minus_one"><span><a class="doc-id-link" href="#internal_minus_one">internal_minus_one<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2237"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">internal_minus_one :: <span class="keyword-type">proc</span>{
 	<a class="code-procedure" href="/core/math/big/#internal_int_minus_one">internal_int_minus_one</a>,
@@ -6328,7 +6390,7 @@ This is possibly the mother of all prime generation functions, muahahahahaha!
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="internal_nan"><span><a class="doc-id-link" href="#internal_nan">internal_nan<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2256"><em>Source</em></a></div></h3>
+<h3 id="internal_nan"><span><a class="doc-id-link" href="#internal_nan">internal_nan<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2261"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">internal_nan :: <span class="keyword-type">proc</span>{
 	<a class="code-procedure" href="/core/math/big/#internal_int_nan">internal_int_nan</a>,
@@ -6346,7 +6408,7 @@ This is possibly the mother of all prime generation functions, muahahahahaha!
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="internal_one"><span><a class="doc-id-link" href="#internal_one">internal_one<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2224"><em>Source</em></a></div></h3>
+<h3 id="internal_one"><span><a class="doc-id-link" href="#internal_one">internal_one<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2229"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">internal_one :: <span class="keyword-type">proc</span>{
 	<a class="code-procedure" href="/core/math/big/#internal_int_one">internal_int_one</a>,
@@ -6355,7 +6417,7 @@ This is possibly the mother of all prime generation functions, muahahahahaha!
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="internal_or"><span><a class="doc-id-link" href="#internal_or">internal_or<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2526"><em>Source</em></a></div></h3>
+<h3 id="internal_or"><span><a class="doc-id-link" href="#internal_or">internal_or<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2531"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">internal_or :: <span class="keyword-type">proc</span>{
 	<a class="code-procedure" href="/core/math/big/#internal_int_or">internal_int_or</a>,
@@ -6374,7 +6436,7 @@ This is possibly the mother of all prime generation functions, muahahahahaha!
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="internal_powmod"><span><a class="doc-id-link" href="#internal_powmod">internal_powmod<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/prime.odin#L117"><em>Source</em></a></div></h3>
+<h3 id="internal_powmod"><span><a class="doc-id-link" href="#internal_powmod">internal_powmod<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/prime.odin#L115"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">internal_powmod :: <span class="keyword-type">proc</span>{
 	<a class="code-procedure" href="/core/math/big/#internal_int_power_modulo">internal_int_power_modulo</a>,
@@ -6383,7 +6445,7 @@ This is possibly the mother of all prime generation functions, muahahahahaha!
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="internal_random"><span><a class="doc-id-link" href="#internal_random">internal_random<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2852"><em>Source</em></a></div></h3>
+<h3 id="internal_random"><span><a class="doc-id-link" href="#internal_random">internal_random<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2857"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">internal_random :: <span class="keyword-type">proc</span>{
 	<a class="code-procedure" href="/core/math/big/#internal_int_random">internal_int_random</a>,
@@ -6412,7 +6474,7 @@ This is possibly the mother of all prime generation functions, muahahahahaha!
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="internal_shl"><span><a class="doc-id-link" href="#internal_shl">internal_shl<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2743"><em>Source</em></a></div></h3>
+<h3 id="internal_shl"><span><a class="doc-id-link" href="#internal_shl">internal_shl<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2748"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">internal_shl :: <span class="keyword-type">proc</span>{
 	<a class="code-procedure" href="/core/math/big/#internal_int_shl">internal_int_shl</a>,
@@ -6421,7 +6483,7 @@ This is possibly the mother of all prime generation functions, muahahahahaha!
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="internal_shr"><span><a class="doc-id-link" href="#internal_shr">internal_shr<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2675"><em>Source</em></a></div></h3>
+<h3 id="internal_shr"><span><a class="doc-id-link" href="#internal_shr">internal_shr<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2680"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">internal_shr :: <span class="keyword-type">proc</span>{
 	<a class="code-procedure" href="/core/math/big/#internal_int_shr">internal_int_shr</a>,
@@ -6430,7 +6492,7 @@ This is possibly the mother of all prime generation functions, muahahahahaha!
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="internal_shr_signed"><span><a class="doc-id-link" href="#internal_shr_signed">internal_shr_signed<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2691"><em>Source</em></a></div></h3>
+<h3 id="internal_shr_signed"><span><a class="doc-id-link" href="#internal_shr_signed">internal_shr_signed<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2696"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">internal_shr_signed :: <span class="keyword-type">proc</span>{
 	<a class="code-procedure" href="/core/math/big/#internal_int_shr_signed">internal_int_shr_signed</a>,
@@ -6448,7 +6510,7 @@ This is possibly the mother of all prime generation functions, muahahahahaha!
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="internal_shrmod"><span><a class="doc-id-link" href="#internal_shrmod">internal_shrmod<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2670"><em>Source</em></a></div></h3>
+<h3 id="internal_shrmod"><span><a class="doc-id-link" href="#internal_shrmod">internal_shrmod<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2675"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">internal_shrmod :: <span class="keyword-type">proc</span>{
 	<a class="code-procedure" href="/core/math/big/#internal_int_shrmod">internal_int_shrmod</a>,
@@ -6513,7 +6575,7 @@ This is possibly the mother of all prime generation functions, muahahahahaha!
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="internal_xor"><span><a class="doc-id-link" href="#internal_xor">internal_xor<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2587"><em>Source</em></a></div></h3>
+<h3 id="internal_xor"><span><a class="doc-id-link" href="#internal_xor">internal_xor<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2592"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">internal_xor :: <span class="keyword-type">proc</span>{
 	<a class="code-procedure" href="/core/math/big/#internal_int_xor">internal_int_xor</a>,
@@ -6522,7 +6584,7 @@ This is possibly the mother of all prime generation functions, muahahahahaha!
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="internal_zero"><span><a class="doc-id-link" href="#internal_zero">internal_zero<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2216"><em>Source</em></a></div></h3>
+<h3 id="internal_zero"><span><a class="doc-id-link" href="#internal_zero">internal_zero<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2221"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">internal_zero :: <span class="keyword-type">proc</span>{
 	<a class="code-procedure" href="/core/math/big/#internal_int_clear">internal_int_clear</a>,
@@ -6531,7 +6593,7 @@ This is possibly the mother of all prime generation functions, muahahahahaha!
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="internal_zero_unused"><span><a class="doc-id-link" href="#internal_zero_unused">internal_zero_unused<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2944"><em>Source</em></a></div></h3>
+<h3 id="internal_zero_unused"><span><a class="doc-id-link" href="#internal_zero_unused">internal_zero_unused<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/internal.odin#L2949"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">internal_zero_unused :: <span class="keyword-type">proc</span>{
 	<a class="code-procedure" href="/core/math/big/#internal_int_zero_unused">internal_int_zero_unused</a>,
@@ -7009,6 +7071,7 @@ This is possibly the mother of all prime generation functions, muahahahahaha!
 <h2 id="pkg-source-files">Source Files</h2>
 <ul>
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/api.odin">api.odin</a></li>
+<li><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/combinatorics.odin">combinatorics.odin</a></li>
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/common.odin">common.odin</a></li>
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/doc.odin">doc.odin</a></li>
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/helpers.odin">helpers.odin</a></li>
@@ -7021,7 +7084,7 @@ This is possibly the mother of all prime generation functions, muahahahahaha!
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/math/big/rat.odin">rat.odin</a></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2024-04 (vendor "odin") Windows_amd64 @ 2024-04-26 21:08:58.424479700 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2024-06 (vendor "odin") Windows_amd64 @ 2024-06-17 21:40:01.036016400 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
@@ -7078,6 +7141,8 @@ This is possibly the mother of all prime generation functions, muahahahahaha!
 <li><a href="#clamp">clamp</a></li>
 <li><a href="#clear_if_uninitialized_multi">clear_if_uninitialized_multi</a></li>
 <li><a href="#clear_if_uninitialized_single">clear_if_uninitialized_single</a></li>
+<li><a href="#combinations_with_repetition">combinations_with_repetition</a></li>
+<li><a href="#combinations_without_repetition">combinations_without_repetition</a></li>
 <li><a href="#copy_digits">copy_digits</a></li>
 <li><a href="#count_bits">count_bits</a></li>
 <li><a href="#destroy_constants">destroy_constants</a></li>
@@ -7345,6 +7410,8 @@ This is possibly the mother of all prime generation functions, muahahahahaha!
 <li><a href="#internal_small_pow">internal_small_pow</a></li>
 <li><a href="#internal_sqr">internal_sqr</a></li>
 <li><a href="#number_of_rabin_miller_trials">number_of_rabin_miller_trials</a></li>
+<li><a href="#permutations_with_repetition">permutations_with_repetition</a></li>
+<li><a href="#permutations_without_repetition">permutations_without_repetition</a></li>
 <li><a href="#platform_abs">platform_abs</a></li>
 <li><a href="#platform_count_lsb">platform_count_lsb</a></li>
 <li><a href="#platform_int_is_power_of_two">platform_int_is_power_of_two</a></li>
@@ -7386,6 +7453,7 @@ This is possibly the mother of all prime generation functions, muahahahahaha!
 <li><a href="#rat_to_f64">rat_to_f64</a></li>
 <li><a href="#shrink">shrink</a></li>
 <li><a href="#small_pow">small_pow</a></li>
+<li><a href="#string_to_int">string_to_int</a></li>
 <li><a href="#zero_unused">zero_unused</a></li>
 </ul>
 </li>

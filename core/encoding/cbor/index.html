@@ -89,12 +89,14 @@
 <li><a href="/core/container/lru">lru</a></li>
 <li><a href="/core/container/priority_queue">priority_queue</a></li>
 <li><a href="/core/container/queue">queue</a></li>
+<li><a href="/core/container/rbtree">rbtree</a></li>
 <li><a href="/core/container/small_array">small_array</a></li>
 <li><a href="/core/container/topological_sort">topological_sort</a></li>
 </ul>
 
 </li>
 <li class="nav-item"><a href="/core/crypto">crypto</a><ul>
+<li><a href="/core/crypto/aes">aes</a></li>
 <li><a href="/core/crypto/blake2b">blake2b</a></li>
 <li><a href="/core/crypto/blake2s">blake2s</a></li>
 <li><a href="/core/crypto/chacha20">chacha20</a></li>
@@ -126,6 +128,7 @@
 </li>
 <li class="nav-item"><a href="/core/dynlib">dynlib</a></li>
 <li class="nav-item">encoding<ul>
+<li><a href="/core/encoding/ansi">ansi</a></li>
 <li><a href="/core/encoding/base32">base32</a></li>
 <li><a href="/core/encoding/base64">base64</a></li>
 <li><a class="active" href="/core/encoding/cbor">cbor</a></li>
@@ -179,9 +182,7 @@
 <li class="nav-item">odin<ul>
 <li><a href="/core/odin/ast">ast</a></li>
 <li><a href="/core/odin/doc-format">doc-format</a></li>
-<li><a href="/core/odin/format">format</a></li>
 <li><a href="/core/odin/parser">parser</a></li>
-<li><a href="/core/odin/printer">printer</a></li>
 <li><a href="/core/odin/tokenizer">tokenizer</a></li>
 </ul>
 
@@ -212,14 +213,17 @@
 
 </li>
 <li class="nav-item"><a href="/core/strings">strings</a></li>
-<li class="nav-item"><a href="/core/sync">sync</a></li>
+<li class="nav-item"><a href="/core/sync">sync</a><ul>
+<li><a href="/core/sync/chan">chan</a></li>
+</ul>
+
+</li>
 <li class="nav-item">sys<ul>
 <li><a href="/core/sys/darwin">darwin</a></li>
 <li><a href="/core/sys/darwin/Foundation">darwin/Foundation</a></li>
 <li><a href="/core/sys/haiku">haiku</a></li>
 <li><a href="/core/sys/info">info</a></li>
 <li><a href="/core/sys/linux">linux</a></li>
-<li><a href="/core/sys/unix">unix</a></li>
 <li><a href="/core/sys/valgrind">valgrind</a></li>
 <li><a href="/core/sys/windows">windows</a></li>
 </ul>
@@ -834,7 +838,7 @@ Higher 3 bits is for the major type and lower 5 bits for the additional informat
 	runtime.<a class="code-typename" href="/base/runtime/#Allocator_Error">Allocator_Error</a>, 
 	<a class="code-typename" href="/core/encoding/cbor/#Encode_Data_Error">Encode_Data_Error</a>, 
 	<a class="code-typename" href="/core/encoding/cbor/#Marshal_Data_Error">Marshal_Data_Error</a>, 
-	runtime.<a class="code-typename" href="/base/runtime/#Maybe">Maybe</a>($T=Unsupported_Type_Error), 
+	runtime.<a class="code-typename" href="/base/runtime/#Maybe">Maybe</a>($T), 
 }</pre>
 </div>
 <h5>Related Procedures With Returns</h5>
@@ -994,7 +998,7 @@ Higher 3 bits is for the major type and lower 5 bits for the additional informat
 	runtime.<a class="code-typename" href="/base/runtime/#Allocator_Error">Allocator_Error</a>, 
 	<a class="code-typename" href="/core/encoding/cbor/#Decode_Data_Error">Decode_Data_Error</a>, 
 	<a class="code-typename" href="/core/encoding/cbor/#Unmarshal_Data_Error">Unmarshal_Data_Error</a>, 
-	runtime.<a class="code-typename" href="/base/runtime/#Maybe">Maybe</a>($T=Unsupported_Type_Error), 
+	runtime.<a class="code-typename" href="/base/runtime/#Maybe">Maybe</a>($T), 
 }</pre>
 </div>
 <h5>Related Procedures With Returns</h5>
@@ -1245,9 +1249,9 @@ These fields use this tag by default, no struct tag required.</p>
 <p class="pkg-empty-section">This section is empty.</p>
 <h2 id="pkg-Procedures" class="pkg-header">Procedures</h2>
 <div class="pkg-entity">
-<h3 id="decode_from_decoder"><span><a class="doc-id-link" href="#decode_from_decoder">decode_from_decoder<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/cbor/coding.odin#L115"><em>Source</em></a></div></h3>
+<h3 id="decode_from_decoder"><span><a class="doc-id-link" href="#decode_from_decoder">decode_from_decoder<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/cbor/coding.odin#L116"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">decode_from_decoder :: <span class="keyword-type">proc</span>(d: <a class="code-typename" href="/core/encoding/cbor/#Decoder">Decoder</a>, allocator := <a href="/base/runtime/#Context">context.allocator</a>) -> (v: <a class="code-typename" href="/core/encoding/cbor/#Value">Value</a>, err: <a class="code-typename" href="/core/encoding/cbor/#Decode_Error">Decode_Error</a>) {…}</pre>
+<pre class="doc-code">decode_from_decoder :: <span class="keyword-type">proc</span>(d: <a class="code-typename" href="/core/encoding/cbor/#Decoder">Decoder</a>, allocator := <a href="/base/runtime/#Context">context.allocator</a>, loc := <a href="/base/runtime/#Source_Code_Location">#caller_location</a>) -> (v: <a class="code-typename" href="/core/encoding/cbor/#Value">Value</a>, err: <a class="code-typename" href="/core/encoding/cbor/#Decode_Error">Decode_Error</a>) {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -1258,7 +1262,7 @@ See docs on the proc group <code>decode</code> for more information.</p>
 <div class="pkg-entity">
 <h3 id="decode_from_reader"><span><a class="doc-id-link" href="#decode_from_reader">decode_from_reader<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/cbor/coding.odin#L106"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">decode_from_reader :: <span class="keyword-type">proc</span>(r: io.<a class="code-typename" href="/core/io/#Stream">Stream</a>, flags: <span class="keyword-type">bit_set</span>[<a class="code-typename" href="/core/encoding/cbor/#Decoder_Flag">Decoder_Flag</a>] = {}, allocator := <a href="/base/runtime/#Context">context.allocator</a>) -> (v: <a class="code-typename" href="/core/encoding/cbor/#Value">Value</a>, err: <a class="code-typename" href="/core/encoding/cbor/#Decode_Error">Decode_Error</a>) {…}</pre>
+<pre class="doc-code">decode_from_reader :: <span class="keyword-type">proc</span>(r: io.<a class="code-typename" href="/core/io/#Stream">Stream</a>, flags: <span class="keyword-type">bit_set</span>[<a class="code-typename" href="/core/encoding/cbor/#Decoder_Flag">Decoder_Flag</a>] = {}, allocator := <a href="/base/runtime/#Context">context.allocator</a>, loc := <a href="/base/runtime/#Source_Code_Location">#caller_location</a>) -> (v: <a class="code-typename" href="/core/encoding/cbor/#Value">Value</a>, err: <a class="code-typename" href="/core/encoding/cbor/#Decode_Error">Decode_Error</a>) {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -1269,7 +1273,7 @@ See docs on the proc group <code>decode</code> for more information.</p>
 <div class="pkg-entity">
 <h3 id="decode_from_string"><span><a class="doc-id-link" href="#decode_from_string">decode_from_string<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/cbor/coding.odin#L98"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">decode_from_string :: <span class="keyword-type">proc</span>(s: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>, flags: <span class="keyword-type">bit_set</span>[<a class="code-typename" href="/core/encoding/cbor/#Decoder_Flag">Decoder_Flag</a>] = {}, allocator := <a href="/base/runtime/#Context">context.allocator</a>) -> (v: <a class="code-typename" href="/core/encoding/cbor/#Value">Value</a>, err: <a class="code-typename" href="/core/encoding/cbor/#Decode_Error">Decode_Error</a>) {…}</pre>
+<pre class="doc-code">decode_from_string :: <span class="keyword-type">proc</span>(s: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>, flags: <span class="keyword-type">bit_set</span>[<a class="code-typename" href="/core/encoding/cbor/#Decoder_Flag">Decoder_Flag</a>] = {}, allocator := <a href="/base/runtime/#Context">context.allocator</a>, loc := <a href="/base/runtime/#Source_Code_Location">#caller_location</a>) -> (v: <a class="code-typename" href="/core/encoding/cbor/#Value">Value</a>, err: <a class="code-typename" href="/core/encoding/cbor/#Decode_Error">Decode_Error</a>) {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -1306,9 +1310,9 @@ See docs on the proc group <code>decode</code> for more information.</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="encode_into_builder"><span><a class="doc-id-link" href="#encode_into_builder">encode_into_builder<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/cbor/coding.odin#L214"><em>Source</em></a></div></h3>
+<h3 id="encode_into_builder"><span><a class="doc-id-link" href="#encode_into_builder">encode_into_builder<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/cbor/coding.odin#L215"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">encode_into_builder :: <span class="keyword-type">proc</span>(b: ^strings.<a class="code-typename" href="/core/strings/#Builder">Builder</a>, v: <a class="code-typename" href="/core/encoding/cbor/#Value">Value</a>, flags: <span class="keyword-type">bit_set</span>[<a class="code-typename" href="/core/encoding/cbor/#Encoder_Flag">Encoder_Flag</a>] = ENCODE_SMALL, temp_allocator := <a href="/base/runtime/#Context">context.temp_allocator</a>) -> <a class="code-typename" href="/core/encoding/cbor/#Encode_Error">Encode_Error</a> {…}</pre>
+<pre class="doc-code">encode_into_builder :: <span class="keyword-type">proc</span>(b: ^strings.<a class="code-typename" href="/core/strings/#Builder">Builder</a>, v: <a class="code-typename" href="/core/encoding/cbor/#Value">Value</a>, flags: <span class="keyword-type">bit_set</span>[<a class="code-typename" href="/core/encoding/cbor/#Encoder_Flag">Encoder_Flag</a>] = ENCODE_SMALL, temp_allocator := <a href="/base/runtime/#Context">context.temp_allocator</a>, loc := <a href="/base/runtime/#Source_Code_Location">#caller_location</a>) -> <a class="code-typename" href="/core/encoding/cbor/#Encode_Error">Encode_Error</a> {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -1317,9 +1321,9 @@ See the docs on the proc group <code>encode_into</code> for more info.</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="encode_into_bytes"><span><a class="doc-id-link" href="#encode_into_bytes">encode_into_bytes<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/cbor/coding.odin#L206"><em>Source</em></a></div></h3>
+<h3 id="encode_into_bytes"><span><a class="doc-id-link" href="#encode_into_bytes">encode_into_bytes<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/cbor/coding.odin#L207"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">encode_into_bytes :: <span class="keyword-type">proc</span>(v: <a class="code-typename" href="/core/encoding/cbor/#Value">Value</a>, flags: <span class="keyword-type">bit_set</span>[<a class="code-typename" href="/core/encoding/cbor/#Encoder_Flag">Encoder_Flag</a>] = ENCODE_SMALL, allocator := <a href="/base/runtime/#Context">context.allocator</a>, temp_allocator := <a href="/base/runtime/#Context">context.temp_allocator</a>) -> (data: []<a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a>, err: <a class="code-typename" href="/core/encoding/cbor/#Encode_Error">Encode_Error</a>) {…}</pre>
+<pre class="doc-code">encode_into_bytes :: <span class="keyword-type">proc</span>(v: <a class="code-typename" href="/core/encoding/cbor/#Value">Value</a>, flags: <span class="keyword-type">bit_set</span>[<a class="code-typename" href="/core/encoding/cbor/#Encoder_Flag">Encoder_Flag</a>] = ENCODE_SMALL, allocator := <a href="/base/runtime/#Context">context.allocator</a>, temp_allocator := <a href="/base/runtime/#Context">context.temp_allocator</a>, loc := <a href="/base/runtime/#Source_Code_Location">#caller_location</a>) -> (data: []<a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a>, err: <a class="code-typename" href="/core/encoding/cbor/#Encode_Error">Encode_Error</a>) {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -1328,9 +1332,9 @@ See the docs on the proc group <code>encode_into</code> for more info.</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="encode_into_encoder"><span><a class="doc-id-link" href="#encode_into_encoder">encode_into_encoder<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/cbor/coding.odin#L226"><em>Source</em></a></div></h3>
+<h3 id="encode_into_encoder"><span><a class="doc-id-link" href="#encode_into_encoder">encode_into_encoder<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/cbor/coding.odin#L227"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">encode_into_encoder :: <span class="keyword-type">proc</span>(e: <a class="code-typename" href="/core/encoding/cbor/#Encoder">Encoder</a>, v: <a class="code-typename" href="/core/encoding/cbor/#Value">Value</a>) -> <a class="code-typename" href="/core/encoding/cbor/#Encode_Error">Encode_Error</a> {…}</pre>
+<pre class="doc-code">encode_into_encoder :: <span class="keyword-type">proc</span>(e: <a class="code-typename" href="/core/encoding/cbor/#Encoder">Encoder</a>, v: <a class="code-typename" href="/core/encoding/cbor/#Value">Value</a>, loc := <a href="/base/runtime/#Source_Code_Location">#caller_location</a>) -> <a class="code-typename" href="/core/encoding/cbor/#Encode_Error">Encode_Error</a> {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -1339,9 +1343,9 @@ See the docs on the proc group <code>encode_into</code> for more info.</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="encode_into_writer"><span><a class="doc-id-link" href="#encode_into_writer">encode_into_writer<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/cbor/coding.odin#L220"><em>Source</em></a></div></h3>
+<h3 id="encode_into_writer"><span><a class="doc-id-link" href="#encode_into_writer">encode_into_writer<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/cbor/coding.odin#L221"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">encode_into_writer :: <span class="keyword-type">proc</span>(w: io.<a class="code-typename" href="/core/io/#Stream">Stream</a>, v: <a class="code-typename" href="/core/encoding/cbor/#Value">Value</a>, flags: <span class="keyword-type">bit_set</span>[<a class="code-typename" href="/core/encoding/cbor/#Encoder_Flag">Encoder_Flag</a>] = ENCODE_SMALL, temp_allocator := <a href="/base/runtime/#Context">context.temp_allocator</a>) -> <a class="code-typename" href="/core/encoding/cbor/#Encode_Error">Encode_Error</a> {…}</pre>
+<pre class="doc-code">encode_into_writer :: <span class="keyword-type">proc</span>(w: io.<a class="code-typename" href="/core/io/#Stream">Stream</a>, v: <a class="code-typename" href="/core/encoding/cbor/#Value">Value</a>, flags: <span class="keyword-type">bit_set</span>[<a class="code-typename" href="/core/encoding/cbor/#Encoder_Flag">Encoder_Flag</a>] = ENCODE_SMALL, temp_allocator := <a href="/base/runtime/#Context">context.temp_allocator</a>, loc := <a href="/base/runtime/#Source_Code_Location">#caller_location</a>) -> <a class="code-typename" href="/core/encoding/cbor/#Encode_Error">Encode_Error</a> {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -1350,19 +1354,19 @@ See the docs on the proc group <code>encode_into</code> for more info.</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="encode_stream_begin"><span><a class="doc-id-link" href="#encode_stream_begin">encode_stream_begin<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/cbor/coding.odin#L740"><em>Source</em></a></div></h3>
+<h3 id="encode_stream_begin"><span><a class="doc-id-link" href="#encode_stream_begin">encode_stream_begin<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/cbor/coding.odin#L741"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">encode_stream_begin :: <span class="keyword-type">proc</span>(w: io.<a class="code-typename" href="/core/io/#Stream">Stream</a>, major: <a class="code-typename" href="/core/encoding/cbor/#Major">Major</a>) -> (err: io.<a class="code-typename" href="/core/io/#Error">Error</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="encode_stream_end"><span><a class="doc-id-link" href="#encode_stream_end">encode_stream_end<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/cbor/coding.odin#L748"><em>Source</em></a></div></h3>
+<h3 id="encode_stream_end"><span><a class="doc-id-link" href="#encode_stream_end">encode_stream_end<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/cbor/coding.odin#L749"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">encode_stream_end :: <span class="keyword-type">proc</span>(w: io.<a class="code-typename" href="/core/io/#Stream">Stream</a>) -> io.<a class="code-typename" href="/core/io/#Error">Error</a> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="encode_stream_map_entry"><span><a class="doc-id-link" href="#encode_stream_map_entry">encode_stream_map_entry<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/cbor/coding.odin#L758"><em>Source</em></a></div></h3>
+<h3 id="encode_stream_map_entry"><span><a class="doc-id-link" href="#encode_stream_map_entry">encode_stream_map_entry<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/cbor/coding.odin#L759"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">encode_stream_map_entry :: <span class="keyword-type">proc</span>(e: <a class="code-typename" href="/core/encoding/cbor/#Encoder">Encoder</a>, key: <a class="code-typename" href="/core/encoding/cbor/#Value">Value</a>, val: <a class="code-typename" href="/core/encoding/cbor/#Value">Value</a>) -> <a class="code-typename" href="/core/encoding/cbor/#Encode_Error">Encode_Error</a> {…}</pre>
 </div>
@@ -1393,7 +1397,7 @@ See the docs on the proc group <code>encode_into</code> for more info.</p>
 <div class="pkg-entity">
 <h3 id="marshal_into_builder"><span><a class="doc-id-link" href="#marshal_into_builder">marshal_into_builder<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/cbor/marshal.odin#L66"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">marshal_into_builder :: <span class="keyword-type">proc</span>(b: ^strings.<a class="code-typename" href="/core/strings/#Builder">Builder</a>, v: <a href="/base/builtin#any"><span class="doc-builtin">any</span></a>, flags: <span class="keyword-type">bit_set</span>[<a class="code-typename" href="/core/encoding/cbor/#Encoder_Flag">Encoder_Flag</a>] = ENCODE_SMALL, temp_allocator := <a href="/base/runtime/#Context">context.temp_allocator</a>) -> <a class="code-typename" href="/core/encoding/cbor/#Marshal_Error">Marshal_Error</a> {…}</pre>
+<pre class="doc-code">marshal_into_builder :: <span class="keyword-type">proc</span>(b: ^strings.<a class="code-typename" href="/core/strings/#Builder">Builder</a>, v: <a href="/base/builtin#any"><span class="doc-builtin">any</span></a>, flags: <span class="keyword-type">bit_set</span>[<a class="code-typename" href="/core/encoding/cbor/#Encoder_Flag">Encoder_Flag</a>] = ENCODE_SMALL, temp_allocator := <a href="/base/runtime/#Context">context.temp_allocator</a>, loc := <a href="/base/runtime/#Source_Code_Location">#caller_location</a>) -> <a class="code-typename" href="/core/encoding/cbor/#Marshal_Error">Marshal_Error</a> {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -1404,7 +1408,7 @@ See docs on the <code>marshal_into</code> proc group for more info.</p>
 <div class="pkg-entity">
 <h3 id="marshal_into_bytes"><span><a class="doc-id-link" href="#marshal_into_bytes">marshal_into_bytes<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/cbor/marshal.odin#L48"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">marshal_into_bytes :: <span class="keyword-type">proc</span>(v: <a href="/base/builtin#any"><span class="doc-builtin">any</span></a>, flags: <span class="keyword-type">bit_set</span>[<a class="code-typename" href="/core/encoding/cbor/#Encoder_Flag">Encoder_Flag</a>] = ENCODE_SMALL, allocator := <a href="/base/runtime/#Context">context.allocator</a>, temp_allocator := <a href="/base/runtime/#Context">context.temp_allocator</a>) -> (bytes: []<a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a>, err: <a class="code-typename" href="/core/encoding/cbor/#Marshal_Error">Marshal_Error</a>) {…}</pre>
+<pre class="doc-code">marshal_into_bytes :: <span class="keyword-type">proc</span>(v: <a href="/base/builtin#any"><span class="doc-builtin">any</span></a>, flags: <span class="keyword-type">bit_set</span>[<a class="code-typename" href="/core/encoding/cbor/#Encoder_Flag">Encoder_Flag</a>] = ENCODE_SMALL, allocator := <a href="/base/runtime/#Context">context.allocator</a>, temp_allocator := <a href="/base/runtime/#Context">context.temp_allocator</a>, loc := <a href="/base/runtime/#Source_Code_Location">#caller_location</a>) -> (bytes: []<a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a>, err: <a class="code-typename" href="/core/encoding/cbor/#Marshal_Error">Marshal_Error</a>) {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -1415,7 +1419,7 @@ See docs on the <code>marshal_into</code> proc group for more info.</p>
 <div class="pkg-entity">
 <h3 id="marshal_into_encoder"><span><a class="doc-id-link" href="#marshal_into_encoder">marshal_into_encoder<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/cbor/marshal.odin#L79"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">marshal_into_encoder :: <span class="keyword-type">proc</span>(e: <a class="code-typename" href="/core/encoding/cbor/#Encoder">Encoder</a>, v: <a href="/base/builtin#any"><span class="doc-builtin">any</span></a>) -> (err: <a class="code-typename" href="/core/encoding/cbor/#Marshal_Error">Marshal_Error</a>) {…}</pre>
+<pre class="doc-code">marshal_into_encoder :: <span class="keyword-type">proc</span>(e: <a class="code-typename" href="/core/encoding/cbor/#Encoder">Encoder</a>, v: <a href="/base/builtin#any"><span class="doc-builtin">any</span></a>, loc := <a href="/base/runtime/#Source_Code_Location">#caller_location</a>) -> (err: <a class="code-typename" href="/core/encoding/cbor/#Marshal_Error">Marshal_Error</a>) {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -1426,7 +1430,7 @@ See docs on the <code>marshal_into</code> proc group for more info.</p>
 <div class="pkg-entity">
 <h3 id="marshal_into_writer"><span><a class="doc-id-link" href="#marshal_into_writer">marshal_into_writer<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/cbor/marshal.odin#L72"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">marshal_into_writer :: <span class="keyword-type">proc</span>(w: io.<a class="code-typename" href="/core/io/#Stream">Stream</a>, v: <a href="/base/builtin#any"><span class="doc-builtin">any</span></a>, flags: <span class="keyword-type">bit_set</span>[<a class="code-typename" href="/core/encoding/cbor/#Encoder_Flag">Encoder_Flag</a>] = ENCODE_SMALL, temp_allocator := <a href="/base/runtime/#Context">context.temp_allocator</a>) -> <a class="code-typename" href="/core/encoding/cbor/#Marshal_Error">Marshal_Error</a> {…}</pre>
+<pre class="doc-code">marshal_into_writer :: <span class="keyword-type">proc</span>(w: io.<a class="code-typename" href="/core/io/#Stream">Stream</a>, v: <a href="/base/builtin#any"><span class="doc-builtin">any</span></a>, flags: <span class="keyword-type">bit_set</span>[<a class="code-typename" href="/core/encoding/cbor/#Encoder_Flag">Encoder_Flag</a>] = ENCODE_SMALL, temp_allocator := <a href="/base/runtime/#Context">context.temp_allocator</a>, loc := <a href="/base/runtime/#Source_Code_Location">#caller_location</a>) -> <a class="code-typename" href="/core/encoding/cbor/#Marshal_Error">Marshal_Error</a> {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -1493,7 +1497,7 @@ This is done by default and can be controlled with the <code>CBOR_INITIALIZE_DEF
 <div class="pkg-entity">
 <h3 id="to_diagnostic_format_string"><span><a class="doc-id-link" href="#to_diagnostic_format_string">to_diagnostic_format_string<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/cbor/cbor.odin#L323"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">to_diagnostic_format_string :: <span class="keyword-type">proc</span>(val: <a class="code-typename" href="/core/encoding/cbor/#Value">Value</a>, padding: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a> = 0, allocator := <a href="/base/runtime/#Context">context.allocator</a>) -> (<a href="/base/builtin#string"><span class="doc-builtin">string</span></a>, runtime.<a class="code-typename" href="/base/runtime/#Allocator_Error">Allocator_Error</a>) <span class="directive">#optional_ok</span> {…}</pre>
+<pre class="doc-code">to_diagnostic_format_string :: <span class="keyword-type">proc</span>(val: <a class="code-typename" href="/core/encoding/cbor/#Value">Value</a>, padding: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a> = 0, allocator := <a href="/base/runtime/#Context">context.allocator</a>, loc := <a href="/base/runtime/#Source_Code_Location">#caller_location</a>) -> (<a href="/base/builtin#string"><span class="doc-builtin">string</span></a>, runtime.<a class="code-typename" href="/base/runtime/#Allocator_Error">Allocator_Error</a>) <span class="directive">#optional_ok</span> {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -1528,19 +1532,33 @@ See docs on the proc group <code>diagnose</code> for more info.</p>
 <div class="pkg-entity">
 <h3 id="unmarshal_from_decoder"><span><a class="doc-id-link" href="#unmarshal_from_decoder">unmarshal_from_decoder<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/cbor/unmarshal.odin#L54"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">unmarshal_from_decoder :: <span class="keyword-type">proc</span>(d: <a class="code-typename" href="/core/encoding/cbor/#Decoder">Decoder</a>, ptr: ^$T, allocator := <a href="/base/runtime/#Context">context.allocator</a>, temp_allocator := <a href="/base/runtime/#Context">context.temp_allocator</a>) -> (err: <a class="code-typename" href="/core/encoding/cbor/#Unmarshal_Error">Unmarshal_Error</a>) {…}</pre>
+<pre class="doc-code">unmarshal_from_decoder :: <span class="keyword-type">proc</span>(d: <a class="code-typename" href="/core/encoding/cbor/#Decoder">Decoder</a>, ptr: ^$T, allocator := <a href="/base/runtime/#Context">context.allocator</a>, temp_allocator := <a href="/base/runtime/#Context">context.temp_allocator</a>, loc := <a href="/base/runtime/#Source_Code_Location">#caller_location</a>) -> (err: <a class="code-typename" href="/core/encoding/cbor/#Unmarshal_Error">Unmarshal_Error</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="unmarshal_from_reader"><span><a class="doc-id-link" href="#unmarshal_from_reader">unmarshal_from_reader<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/cbor/unmarshal.odin#L34"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">unmarshal_from_reader :: <span class="keyword-type">proc</span>(r: io.<a class="code-typename" href="/core/io/#Stream">Stream</a>, ptr: ^$T, flags: <span class="keyword-type">bit_set</span>[<a class="code-typename" href="/core/encoding/cbor/#Decoder_Flag">Decoder_Flag</a>] = Decoder_Flags{}, allocator := <a href="/base/runtime/#Context">context.allocator</a>, temp_allocator := <a href="/base/runtime/#Context">context.temp_allocator</a>) -> (err: <a class="code-typename" href="/core/encoding/cbor/#Unmarshal_Error">Unmarshal_Error</a>) {…}</pre>
+<pre class="doc-code">unmarshal_from_reader :: <span class="keyword-type">proc</span>(
+	r:              io.<a class="code-typename" href="/core/io/#Stream">Stream</a>, 
+	ptr:            ^$T, 
+	flags:          <span class="keyword-type">bit_set</span>[<a class="code-typename" href="/core/encoding/cbor/#Decoder_Flag">Decoder_Flag</a>] = Decoder_Flags{}, 
+	allocator := <a href="/base/runtime/#Context">context.allocator</a>, 
+	temp_allocator := <a href="/base/runtime/#Context">context.temp_allocator</a>, 
+	loc := <a href="/base/runtime/#Source_Code_Location">#caller_location</a>, 
+) -> (err: <a class="code-typename" href="/core/encoding/cbor/#Unmarshal_Error">Unmarshal_Error</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="unmarshal_from_string"><span><a class="doc-id-link" href="#unmarshal_from_string">unmarshal_from_string<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/cbor/unmarshal.odin#L43"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">unmarshal_from_string :: <span class="keyword-type">proc</span>(s: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>, ptr: ^$T, flags: <span class="keyword-type">bit_set</span>[<a class="code-typename" href="/core/encoding/cbor/#Decoder_Flag">Decoder_Flag</a>] = Decoder_Flags{}, allocator := <a href="/base/runtime/#Context">context.allocator</a>, temp_allocator := <a href="/base/runtime/#Context">context.temp_allocator</a>) -> (err: <a class="code-typename" href="/core/encoding/cbor/#Unmarshal_Error">Unmarshal_Error</a>) {…}</pre>
+<pre class="doc-code">unmarshal_from_string :: <span class="keyword-type">proc</span>(
+	s:              <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>, 
+	ptr:            ^$T, 
+	flags:          <span class="keyword-type">bit_set</span>[<a class="code-typename" href="/core/encoding/cbor/#Decoder_Flag">Decoder_Flag</a>] = Decoder_Flags{}, 
+	allocator := <a href="/base/runtime/#Context">context.allocator</a>, 
+	temp_allocator := <a href="/base/runtime/#Context">context.temp_allocator</a>, 
+	loc := <a href="/base/runtime/#Source_Code_Location">#caller_location</a>, 
+) -> (err: <a class="code-typename" href="/core/encoding/cbor/#Unmarshal_Error">Unmarshal_Error</a>) {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -1585,7 +1603,7 @@ an input.</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="encode"><span><a class="doc-id-link" href="#encode">encode<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/cbor/coding.odin#L202"><em>Source</em></a></div></h3>
+<h3 id="encode"><span><a class="doc-id-link" href="#encode">encode<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/cbor/coding.odin#L203"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">encode :: <span class="keyword-type">proc</span>{
 	<a class="code-procedure" href="/core/encoding/cbor/#encode_into_bytes">encode_into_bytes</a>,
@@ -1597,7 +1615,7 @@ an input.</p>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="encode_into"><span><a class="doc-id-link" href="#encode_into">encode_into<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/cbor/coding.odin#L196"><em>Source</em></a></div></h3>
+<h3 id="encode_into"><span><a class="doc-id-link" href="#encode_into">encode_into<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/cbor/coding.odin#L197"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">encode_into :: <span class="keyword-type">proc</span>{
 	<a class="code-procedure" href="/core/encoding/cbor/#encode_into_bytes">encode_into_bytes</a>,
@@ -1626,7 +1644,7 @@ allocations until the end.</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="encode_stream_array_item"><span><a class="doc-id-link" href="#encode_stream_array_item">encode_stream_array_item<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/cbor/coding.odin#L756"><em>Source</em></a></div></h3>
+<h3 id="encode_stream_array_item"><span><a class="doc-id-link" href="#encode_stream_array_item">encode_stream_array_item<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/cbor/coding.odin#L757"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">encode_stream_array_item :: <span class="keyword-type">proc</span>{
 	<a class="code-procedure" href="/core/encoding/cbor/#encode_into_bytes">encode_into_bytes</a>,
@@ -1763,7 +1781,7 @@ an input.</p>
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/cbor/unmarshal.odin">unmarshal.odin</a></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2024-04 (vendor "odin") Windows_amd64 @ 2024-04-26 21:08:58.368836800 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2024-06 (vendor "odin") Windows_amd64 @ 2024-06-17 21:40:00.983180200 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">

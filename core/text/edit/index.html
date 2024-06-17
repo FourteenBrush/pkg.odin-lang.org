@@ -89,12 +89,14 @@
 <li><a href="/core/container/lru">lru</a></li>
 <li><a href="/core/container/priority_queue">priority_queue</a></li>
 <li><a href="/core/container/queue">queue</a></li>
+<li><a href="/core/container/rbtree">rbtree</a></li>
 <li><a href="/core/container/small_array">small_array</a></li>
 <li><a href="/core/container/topological_sort">topological_sort</a></li>
 </ul>
 
 </li>
 <li class="nav-item"><a href="/core/crypto">crypto</a><ul>
+<li><a href="/core/crypto/aes">aes</a></li>
 <li><a href="/core/crypto/blake2b">blake2b</a></li>
 <li><a href="/core/crypto/blake2s">blake2s</a></li>
 <li><a href="/core/crypto/chacha20">chacha20</a></li>
@@ -126,6 +128,7 @@
 </li>
 <li class="nav-item"><a href="/core/dynlib">dynlib</a></li>
 <li class="nav-item">encoding<ul>
+<li><a href="/core/encoding/ansi">ansi</a></li>
 <li><a href="/core/encoding/base32">base32</a></li>
 <li><a href="/core/encoding/base64">base64</a></li>
 <li><a href="/core/encoding/cbor">cbor</a></li>
@@ -179,9 +182,7 @@
 <li class="nav-item">odin<ul>
 <li><a href="/core/odin/ast">ast</a></li>
 <li><a href="/core/odin/doc-format">doc-format</a></li>
-<li><a href="/core/odin/format">format</a></li>
 <li><a href="/core/odin/parser">parser</a></li>
-<li><a href="/core/odin/printer">printer</a></li>
 <li><a href="/core/odin/tokenizer">tokenizer</a></li>
 </ul>
 
@@ -212,14 +213,17 @@
 
 </li>
 <li class="nav-item"><a href="/core/strings">strings</a></li>
-<li class="nav-item"><a href="/core/sync">sync</a></li>
+<li class="nav-item"><a href="/core/sync">sync</a><ul>
+<li><a href="/core/sync/chan">chan</a></li>
+</ul>
+
+</li>
 <li class="nav-item">sys<ul>
 <li><a href="/core/sys/darwin">darwin</a></li>
 <li><a href="/core/sys/darwin/Foundation">darwin/Foundation</a></li>
 <li><a href="/core/sys/haiku">haiku</a></li>
 <li><a href="/core/sys/info">info</a></li>
 <li><a href="/core/sys/linux">linux</a></li>
-<li><a href="/core/sys/unix">unix</a></li>
 <li><a href="/core/sys/valgrind">valgrind</a></li>
 <li><a href="/core/sys/windows">windows</a></li>
 </ul>
@@ -316,7 +320,7 @@ Variables (0)</summary>
 <div>
 <details class="doc-index" id="doc-index-Procedures" aria-labelledby="#doc-index-Procedures-header">
 <summary id="#doc-index-Procedures-header">
-Procedures (28)</summary>
+Procedures (29)</summary>
 <ul>
 <li><a href="#begin">begin</a></li>
 <li><a href="#clear_all">clear_all</a></li>
@@ -332,6 +336,7 @@ Procedures (28)</summary>
 <li><a href="#input_runes">input_runes</a></li>
 <li><a href="#input_text">input_text</a></li>
 <li><a href="#insert">insert</a></li>
+<li><a href="#is_continuation_byte">is_continuation_byte</a></li>
 <li><a href="#move_to">move_to</a></li>
 <li><a href="#paste">paste</a></li>
 <li><a href="#perform_command">perform_command</a></li>
@@ -361,7 +366,7 @@ Procedure Groups (0)</summary>
 <section class="documentation">
 <h2 id="pkg-Types" class="pkg-header">Types</h2>
 <div class="pkg-entity">
-<h3 id="Command"><span><a class="doc-id-link" href="#Command">Command<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/edit/text_edit.odin#L401"><em>Source</em></a></div></h3>
+<h3 id="Command"><span><a class="doc-id-link" href="#Command">Command<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/edit/text_edit.odin#L418"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Command :: <span class="keyword-type">enum</span> <a href="/base/builtin#u32"><span class="doc-builtin">u32</span></a> {
 	None, 
@@ -404,7 +409,7 @@ Procedure Groups (0)</summary>
 </ul>
 </div>
 <div class="pkg-entity">
-<h3 id="Command_Set"><span><a class="doc-id-link" href="#Command_Set">Command_Set<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/edit/text_edit.odin#L399"><em>Source</em></a></div></h3>
+<h3 id="Command_Set"><span><a class="doc-id-link" href="#Command_Set">Command_Set<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/edit/text_edit.odin#L416"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Command_Set :: <span class="keyword-type">distinct</span> <span class="keyword-type">bit_set</span>[<a class="code-typename" href="/core/text/edit/#Command">Command</a>; <a href="/base/builtin#u32"><span class="doc-builtin">u32</span></a>]</pre>
 </div>
@@ -435,8 +440,8 @@ Procedure Groups (0)</summary>
 	last_edit_time:      time.<a class="code-typename" href="/core/time/#Tick">Tick</a>,
 	undo_timeout:        time.<a class="code-typename" href="/core/time/#Duration">Duration</a>,
 	<span class="comment">// Set these if you want cut/copy/paste functionality</span>
-	set_clipboard:       <span class="keyword-type">proc</span>(user_data: <a href="/base/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>, text: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>) -> (ok: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>),
-	get_clipboard:       <span class="keyword-type">proc</span>(user_data: <a href="/base/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>) -> (text: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>, ok: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>),
+	set_clipboard:       <span class="keyword-type">proc</span>(user_data: , text: ) -> (ok: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>),
+	get_clipboard:       <span class="keyword-type">proc</span>(user_data: <a href="/base/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>) -> (text: , ok: ),
 	clipboard_user_data: <a href="/base/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>,
 }</pre>
 </div>
@@ -516,7 +521,7 @@ Procedure Groups (0)</summary>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="MULTILINE_COMMANDS"><span><a class="doc-id-link" href="#MULTILINE_COMMANDS">MULTILINE_COMMANDS<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/edit/text_edit.odin#L436"><em>Source</em></a></div></h3>
+<h3 id="MULTILINE_COMMANDS"><span><a class="doc-id-link" href="#MULTILINE_COMMANDS">MULTILINE_COMMANDS<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/edit/text_edit.odin#L453"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">MULTILINE_COMMANDS :: Command_Set{.New_Line, .Up, .Down, .Select_Up, .Select_Down}</pre>
 </div>
@@ -546,7 +551,7 @@ clear builder&selection and the undo|redo stacks</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="copy"><span><a class="doc-id-link" href="#copy">copy<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/edit/text_edit.odin#L382"><em>Source</em></a></div></h3>
+<h3 id="copy"><span><a class="doc-id-link" href="#copy">copy<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/edit/text_edit.odin#L399"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">copy :: <span class="keyword-type">proc</span>(s: ^<a class="code-typename" href="/core/text/edit/#State">State</a>) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> {…}</pre>
 </div>
@@ -557,7 +562,7 @@ State.set_clipboard needs to be assigned</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="current_selected_text"><span><a class="doc-id-link" href="#current_selected_text">current_selected_text<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/edit/text_edit.odin#L363"><em>Source</em></a></div></h3>
+<h3 id="current_selected_text"><span><a class="doc-id-link" href="#current_selected_text">current_selected_text<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/edit/text_edit.odin#L380"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">current_selected_text :: <span class="keyword-type">proc</span>(s: ^<a class="code-typename" href="/core/text/edit/#State">State</a>) -> <a href="/base/builtin#string"><span class="doc-builtin">string</span></a> {…}</pre>
 </div>
@@ -567,7 +572,7 @@ State.set_clipboard needs to be assigned</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="cut"><span><a class="doc-id-link" href="#cut">cut<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/edit/text_edit.odin#L372"><em>Source</em></a></div></h3>
+<h3 id="cut"><span><a class="doc-id-link" href="#cut">cut<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/edit/text_edit.odin#L389"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">cut :: <span class="keyword-type">proc</span>(s: ^<a class="code-typename" href="/core/text/edit/#State">State</a>) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> {…}</pre>
 </div>
@@ -577,7 +582,7 @@ State.set_clipboard needs to be assigned</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="delete_to"><span><a class="doc-id-link" href="#delete_to">delete_to<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/edit/text_edit.odin#L350"><em>Source</em></a></div></h3>
+<h3 id="delete_to"><span><a class="doc-id-link" href="#delete_to">delete_to<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/edit/text_edit.odin#L367"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">delete_to :: <span class="keyword-type">proc</span>(s: ^<a class="code-typename" href="/core/text/edit/#State">State</a>, t: <a class="code-typename" href="/core/text/edit/#Translation">Translation</a>) {…}</pre>
 </div>
@@ -607,7 +612,7 @@ State.set_clipboard needs to be assigned</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="has_selection"><span><a class="doc-id-link" href="#has_selection">has_selection<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/edit/text_edit.odin#L244"><em>Source</em></a></div></h3>
+<h3 id="has_selection"><span><a class="doc-id-link" href="#has_selection">has_selection<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/edit/text_edit.odin#L260"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">has_selection :: <span class="keyword-type">proc</span>(s: ^<a class="code-typename" href="/core/text/edit/#State">State</a>) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> {…}</pre>
 </div>
@@ -629,7 +634,7 @@ State.set_clipboard needs to be assigned</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="input_rune"><span><a class="doc-id-link" href="#input_rune">input_rune<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/edit/text_edit.odin#L216"><em>Source</em></a></div></h3>
+<h3 id="input_rune"><span><a class="doc-id-link" href="#input_rune">input_rune<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/edit/text_edit.odin#L220"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">input_rune :: <span class="keyword-type">proc</span>(s: ^<a class="code-typename" href="/core/text/edit/#State">State</a>, r: <a href="/base/builtin#rune"><span class="doc-builtin">rune</span></a>) {…}</pre>
 </div>
@@ -639,7 +644,7 @@ State.set_clipboard needs to be assigned</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="input_runes"><span><a class="doc-id-link" href="#input_runes">input_runes<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/edit/text_edit.odin#L199"><em>Source</em></a></div></h3>
+<h3 id="input_runes"><span><a class="doc-id-link" href="#input_runes">input_runes<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/edit/text_edit.odin#L200"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">input_runes :: <span class="keyword-type">proc</span>(s: ^<a class="code-typename" href="/core/text/edit/#State">State</a>, text: []<a href="/base/builtin#rune"><span class="doc-builtin">rune</span></a>) {…}</pre>
 </div>
@@ -651,7 +656,7 @@ State.set_clipboard needs to be assigned</p>
 <div class="pkg-entity">
 <h3 id="input_text"><span><a class="doc-id-link" href="#input_text">input_text<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/edit/text_edit.odin#L186"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">input_text :: <span class="keyword-type">proc</span>(s: ^<a class="code-typename" href="/core/text/edit/#State">State</a>, text: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>) {…}</pre>
+<pre class="doc-code">input_text :: <span class="keyword-type">proc</span>(s: ^<a class="code-typename" href="/core/text/edit/#State">State</a>, text: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>) -> <a href="/base/builtin#int"><span class="doc-builtin">int</span></a> {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -659,9 +664,9 @@ State.set_clipboard needs to be assigned</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="insert"><span><a class="doc-id-link" href="#insert">insert<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/edit/text_edit.odin#L228"><em>Source</em></a></div></h3>
+<h3 id="insert"><span><a class="doc-id-link" href="#insert">insert<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/edit/text_edit.odin#L232"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">insert :: <span class="keyword-type">proc</span>(s: ^<a class="code-typename" href="/core/text/edit/#State">State</a>, at: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, text: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>) {…}</pre>
+<pre class="doc-code">insert :: <span class="keyword-type">proc</span>(s: ^<a class="code-typename" href="/core/text/edit/#State">State</a>, at: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, text: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>) -> <a href="/base/builtin#int"><span class="doc-builtin">int</span></a> {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -669,7 +674,13 @@ State.set_clipboard needs to be assigned</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="move_to"><span><a class="doc-id-link" href="#move_to">move_to<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/edit/text_edit.odin#L331"><em>Source</em></a></div></h3>
+<h3 id="is_continuation_byte"><span><a class="doc-id-link" href="#is_continuation_byte">is_continuation_byte<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/edit/text_edit.odin#L282"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">is_continuation_byte :: <span class="keyword-type">proc</span>(b: <a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a>) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="move_to"><span><a class="doc-id-link" href="#move_to">move_to<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/edit/text_edit.odin#L348"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">move_to :: <span class="keyword-type">proc</span>(s: ^<a class="code-typename" href="/core/text/edit/#State">State</a>, t: <a class="code-typename" href="/core/text/edit/#Translation">Translation</a>) {…}</pre>
 </div>
@@ -679,7 +690,7 @@ State.set_clipboard needs to be assigned</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="paste"><span><a class="doc-id-link" href="#paste">paste<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/edit/text_edit.odin#L391"><em>Source</em></a></div></h3>
+<h3 id="paste"><span><a class="doc-id-link" href="#paste">paste<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/edit/text_edit.odin#L408"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">paste :: <span class="keyword-type">proc</span>(s: ^<a class="code-typename" href="/core/text/edit/#State">State</a>) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> {…}</pre>
 </div>
@@ -690,13 +701,13 @@ State.get_clipboard needs to be assigned</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="perform_command"><span><a class="doc-id-link" href="#perform_command">perform_command<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/edit/text_edit.odin#L438"><em>Source</em></a></div></h3>
+<h3 id="perform_command"><span><a class="doc-id-link" href="#perform_command">perform_command<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/edit/text_edit.odin#L455"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">perform_command :: <span class="keyword-type">proc</span>(s: ^<a class="code-typename" href="/core/text/edit/#State">State</a>, cmd: <a class="code-typename" href="/core/text/edit/#Command">Command</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="remove"><span><a class="doc-id-link" href="#remove">remove<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/edit/text_edit.odin#L236"><em>Source</em></a></div></h3>
+<h3 id="remove"><span><a class="doc-id-link" href="#remove">remove<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/edit/text_edit.odin#L252"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">remove :: <span class="keyword-type">proc</span>(s: ^<a class="code-typename" href="/core/text/edit/#State">State</a>, lo, hi: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>) {…}</pre>
 </div>
@@ -706,7 +717,7 @@ State.get_clipboard needs to be assigned</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="select_to"><span><a class="doc-id-link" href="#select_to">select_to<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/edit/text_edit.odin#L345"><em>Source</em></a></div></h3>
+<h3 id="select_to"><span><a class="doc-id-link" href="#select_to">select_to<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/edit/text_edit.odin#L362"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">select_to :: <span class="keyword-type">proc</span>(s: ^<a class="code-typename" href="/core/text/edit/#State">State</a>, t: <a class="code-typename" href="/core/text/edit/#Translation">Translation</a>) {…}</pre>
 </div>
@@ -716,7 +727,7 @@ State.get_clipboard needs to be assigned</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="selection_delete"><span><a class="doc-id-link" href="#selection_delete">selection_delete<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/edit/text_edit.odin#L260"><em>Source</em></a></div></h3>
+<h3 id="selection_delete"><span><a class="doc-id-link" href="#selection_delete">selection_delete<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/edit/text_edit.odin#L276"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">selection_delete :: <span class="keyword-type">proc</span>(s: ^<a class="code-typename" href="/core/text/edit/#State">State</a>) {…}</pre>
 </div>
@@ -736,7 +747,7 @@ State.get_clipboard needs to be assigned</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="sorted_selection"><span><a class="doc-id-link" href="#sorted_selection">sorted_selection<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/edit/text_edit.odin#L251"><em>Source</em></a></div></h3>
+<h3 id="sorted_selection"><span><a class="doc-id-link" href="#sorted_selection">sorted_selection<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/edit/text_edit.odin#L267"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">sorted_selection :: <span class="keyword-type">proc</span>(s: ^<a class="code-typename" href="/core/text/edit/#State">State</a>) -> (lo, hi: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>) {…}</pre>
 </div>
@@ -748,7 +759,7 @@ useful when rendering and needing left-&gt;right</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="translate_position"><span><a class="doc-id-link" href="#translate_position">translate_position<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/edit/text_edit.odin#L267"><em>Source</em></a></div></h3>
+<h3 id="translate_position"><span><a class="doc-id-link" href="#translate_position">translate_position<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/edit/text_edit.odin#L287"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">translate_position :: <span class="keyword-type">proc</span>(s: ^<a class="code-typename" href="/core/text/edit/#State">State</a>, t: <a class="code-typename" href="/core/text/edit/#Translation">Translation</a>) -> <a href="/base/builtin#int"><span class="doc-builtin">int</span></a> {…}</pre>
 </div>
@@ -815,7 +826,7 @@ useful when rendering and needing left-&gt;right</p>
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/text/edit/text_edit.odin">text_edit.odin</a></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2024-04 (vendor "odin") Windows_amd64 @ 2024-04-26 21:08:59.115320200 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2024-06 (vendor "odin") Windows_amd64 @ 2024-06-17 21:40:01.696702200 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
@@ -848,6 +859,7 @@ useful when rendering and needing left-&gt;right</p>
 <li><a href="#input_runes">input_runes</a></li>
 <li><a href="#input_text">input_text</a></li>
 <li><a href="#insert">insert</a></li>
+<li><a href="#is_continuation_byte">is_continuation_byte</a></li>
 <li><a href="#move_to">move_to</a></li>
 <li><a href="#paste">paste</a></li>
 <li><a href="#perform_command">perform_command</a></li>

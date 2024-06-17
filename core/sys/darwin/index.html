@@ -89,12 +89,14 @@
 <li><a href="/core/container/lru">lru</a></li>
 <li><a href="/core/container/priority_queue">priority_queue</a></li>
 <li><a href="/core/container/queue">queue</a></li>
+<li><a href="/core/container/rbtree">rbtree</a></li>
 <li><a href="/core/container/small_array">small_array</a></li>
 <li><a href="/core/container/topological_sort">topological_sort</a></li>
 </ul>
 
 </li>
 <li class="nav-item"><a href="/core/crypto">crypto</a><ul>
+<li><a href="/core/crypto/aes">aes</a></li>
 <li><a href="/core/crypto/blake2b">blake2b</a></li>
 <li><a href="/core/crypto/blake2s">blake2s</a></li>
 <li><a href="/core/crypto/chacha20">chacha20</a></li>
@@ -126,6 +128,7 @@
 </li>
 <li class="nav-item"><a href="/core/dynlib">dynlib</a></li>
 <li class="nav-item">encoding<ul>
+<li><a href="/core/encoding/ansi">ansi</a></li>
 <li><a href="/core/encoding/base32">base32</a></li>
 <li><a href="/core/encoding/base64">base64</a></li>
 <li><a href="/core/encoding/cbor">cbor</a></li>
@@ -179,9 +182,7 @@
 <li class="nav-item">odin<ul>
 <li><a href="/core/odin/ast">ast</a></li>
 <li><a href="/core/odin/doc-format">doc-format</a></li>
-<li><a href="/core/odin/format">format</a></li>
 <li><a href="/core/odin/parser">parser</a></li>
-<li><a href="/core/odin/printer">printer</a></li>
 <li><a href="/core/odin/tokenizer">tokenizer</a></li>
 </ul>
 
@@ -212,14 +213,17 @@
 
 </li>
 <li class="nav-item"><a href="/core/strings">strings</a></li>
-<li class="nav-item"><a href="/core/sync">sync</a></li>
+<li class="nav-item"><a href="/core/sync">sync</a><ul>
+<li><a href="/core/sync/chan">chan</a></li>
+</ul>
+
+</li>
 <li class="nav-item">sys<ul>
 <li><a class="active" href="/core/sys/darwin">darwin</a></li>
 <li><a href="/core/sys/darwin/Foundation">darwin/Foundation</a></li>
 <li><a href="/core/sys/haiku">haiku</a></li>
 <li><a href="/core/sys/info">info</a></li>
 <li><a href="/core/sys/linux">linux</a></li>
-<li><a href="/core/sys/unix">unix</a></li>
 <li><a href="/core/sys/valgrind">valgrind</a></li>
 <li><a href="/core/sys/windows">windows</a></li>
 </ul>
@@ -1252,7 +1256,7 @@ Procedure Groups (0)</summary>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="os_clockid"><span><a class="doc-id-link" href="#os_clockid">os_clockid<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/sync.odin#L59"><em>Source</em></a></div></h3>
+<h3 id="os_clockid"><span><a class="doc-id-link" href="#os_clockid">os_clockid<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/sync.odin#L53"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">os_clockid :: <span class="keyword-type">enum</span> <a href="/base/builtin#u32"><span class="doc-builtin">u32</span></a> {
 	MACH_ABSOLUTE_TIME = 32, 
@@ -1268,8 +1272,6 @@ Procedure Groups (0)</summary>
 <h3 id="os_sync_wait_on_address_flag"><span><a class="doc-id-link" href="#os_sync_wait_on_address_flag">os_sync_wait_on_address_flag<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/sync.odin#L19"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">os_sync_wait_on_address_flag :: <span class="keyword-type">enum</span> <a href="/base/builtin#u32"><span class="doc-builtin">u32</span></a> {
-	<span class="comment">// This flag should be used as a default flag when no other flags listed below are required.</span>
-	NONE, 
 	<span class="comment">// This flag should be used when synchronizing among multiple processes by</span>
 	<span class="comment">// placing the @addr passed to os_sync_wait_on_address and its variants</span>
 	<span class="comment">// in a shared memory region.</span>
@@ -1281,22 +1283,26 @@ Procedure Groups (0)</summary>
 	<span class="comment">// This flag should not be used when synchronizing among multiple threads of</span>
 	<span class="comment">// a single process. It allows the kernel to perform performance optimizations</span>
 	<span class="comment">// as the @addr is local to the calling process.</span>
-	SHARED, 
+	SHARED = 0, 
 }</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="os_sync_wait_on_address_flags"><span><a class="doc-id-link" href="#os_sync_wait_on_address_flags">os_sync_wait_on_address_flags<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/sync.odin#L37"><em>Source</em></a></div></h3>
+<h3 id="os_sync_wait_on_address_flags"><span><a class="doc-id-link" href="#os_sync_wait_on_address_flags">os_sync_wait_on_address_flags<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/sync.odin#L34"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">os_sync_wait_on_address_flags :: <span class="keyword-type">bit_set</span>[<a class="code-typename" href="/core/sys/darwin/#os_sync_wait_on_address_flag">os_sync_wait_on_address_flag</a>; <a href="/base/builtin#u32"><span class="doc-builtin">u32</span></a>]</pre>
+<pre class="doc-code">os_sync_wait_on_address_flags :: <span class="keyword-type">distinct</span> <span class="keyword-type">bit_set</span>[<a class="code-typename" href="/core/sys/darwin/#os_sync_wait_on_address_flag">os_sync_wait_on_address_flag</a>; <a href="/base/builtin#u32"><span class="doc-builtin">u32</span></a>]</pre>
 </div>
+<h5>Related Procedures With Parameters</h5>
+<ul>
+<li><a href="/core/sys/darwin/#os_sync_wait_on_address">os_sync_wait_on_address</a></li>
+<li><a href="/core/sys/darwin/#os_sync_wait_on_address_with_deadline">os_sync_wait_on_address_with_deadline</a></li>
+<li><a href="/core/sys/darwin/#os_sync_wait_on_address_with_timeout">os_sync_wait_on_address_with_timeout</a></li>
+</ul>
 </div>
 <div class="pkg-entity">
-<h3 id="os_sync_wake_by_address_flag"><span><a class="doc-id-link" href="#os_sync_wake_by_address_flag">os_sync_wake_by_address_flag<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/sync.odin#L39"><em>Source</em></a></div></h3>
+<h3 id="os_sync_wake_by_address_flag"><span><a class="doc-id-link" href="#os_sync_wake_by_address_flag">os_sync_wake_by_address_flag<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/sync.odin#L36"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">os_sync_wake_by_address_flag :: <span class="keyword-type">enum</span> <a href="/base/builtin#u32"><span class="doc-builtin">u32</span></a> {
-	<span class="comment">// This flag should be used as a default flag when no other flags listed below are required.</span>
-	NONE, 
 	<span class="comment">// This flag should be used when synchronizing among multiple processes by</span>
 	<span class="comment">// placing the @addr passed to os_sync_wake_by_address_any and its variants</span>
 	<span class="comment">// in a shared memory region.</span>
@@ -1308,15 +1314,20 @@ Procedure Groups (0)</summary>
 	<span class="comment">// This flag should not be used when synchronizing among multiple threads of</span>
 	<span class="comment">// a single process. It allows the kernel to perform performance optimizations</span>
 	<span class="comment">// as the @addr is local the calling process.</span>
-	SHARED, 
+	SHARED = 0, 
 }</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="os_sync_wake_by_address_flags"><span><a class="doc-id-link" href="#os_sync_wake_by_address_flags">os_sync_wake_by_address_flags<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/sync.odin#L57"><em>Source</em></a></div></h3>
+<h3 id="os_sync_wake_by_address_flags"><span><a class="doc-id-link" href="#os_sync_wake_by_address_flags">os_sync_wake_by_address_flags<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/sync.odin#L51"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">os_sync_wake_by_address_flags :: <span class="keyword-type">bit_set</span>[<a class="code-typename" href="/core/sys/darwin/#os_sync_wake_by_address_flag">os_sync_wake_by_address_flag</a>; <a href="/base/builtin#u32"><span class="doc-builtin">u32</span></a>]</pre>
+<pre class="doc-code">os_sync_wake_by_address_flags :: <span class="keyword-type">distinct</span> <span class="keyword-type">bit_set</span>[<a class="code-typename" href="/core/sys/darwin/#os_sync_wake_by_address_flag">os_sync_wake_by_address_flag</a>; <a href="/base/builtin#u32"><span class="doc-builtin">u32</span></a>]</pre>
 </div>
+<h5>Related Procedures With Parameters</h5>
+<ul>
+<li><a href="/core/sys/darwin/#os_sync_wake_by_address_all">os_sync_wake_by_address_all</a></li>
+<li><a href="/core/sys/darwin/#os_sync_wake_by_address_any">os_sync_wake_by_address_any</a></li>
+</ul>
 </div>
 <div class="pkg-entity">
 <h3 id="pid_t"><span><a class="doc-id-link" href="#pid_t">pid_t<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/xnu_system_call_wrappers.odin#L146"><em>Source</em></a></div></h3>
@@ -2196,9 +2207,9 @@ See core/sys/unix/pthread_linux.odin/pthread_t.</p>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="os_sync_wait_on_address"><span><a class="doc-id-link" href="#os_sync_wait_on_address">os_sync_wait_on_address<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/sync.odin#L143"><em>Source</em></a></div></h3>
+<h3 id="os_sync_wait_on_address"><span><a class="doc-id-link" href="#os_sync_wait_on_address">os_sync_wait_on_address<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/sync.odin#L137"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">os_sync_wait_on_address :: <span class="keyword-type">proc</span> "c" (addr: <a href="/base/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>, value: <a href="/base/builtin#u64"><span class="doc-builtin">u64</span></a>, size: <a href="/base/builtin#uint"><span class="doc-builtin">uint</span></a>, flags: <span class="keyword-type">bit_set</span>[<a class="code-typename" href="/core/sys/darwin/#os_sync_wait_on_address_flag">os_sync_wait_on_address_flag</a>; <a href="/base/builtin#u32"><span class="doc-builtin">u32</span></a>]) -> <a href="/base/builtin#i32"><span class="doc-builtin">i32</span></a> ---</pre>
+<pre class="doc-code">os_sync_wait_on_address :: <span class="keyword-type">proc</span> "c" (addr: <a href="/base/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>, value: <a href="/base/builtin#u64"><span class="doc-builtin">u64</span></a>, size: <a href="/base/builtin#uint"><span class="doc-builtin">uint</span></a>, flags: <a class="code-typename" href="/core/sys/darwin/#os_sync_wait_on_address_flags">os_sync_wait_on_address_flags</a>) -> <a href="/base/builtin#i32"><span class="doc-builtin">i32</span></a> ---</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -2279,13 +2290,13 @@ if (current != expected) {
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="os_sync_wait_on_address_with_deadline"><span><a class="doc-id-link" href="#os_sync_wait_on_address_with_deadline">os_sync_wait_on_address_with_deadline<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/sync.odin#L194"><em>Source</em></a></div></h3>
+<h3 id="os_sync_wait_on_address_with_deadline"><span><a class="doc-id-link" href="#os_sync_wait_on_address_with_deadline">os_sync_wait_on_address_with_deadline<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/sync.odin#L188"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">os_sync_wait_on_address_with_deadline :: <span class="keyword-type">proc</span> "c" (
 	addr:     <a href="/base/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>, 
 	value:    <a href="/base/builtin#u64"><span class="doc-builtin">u64</span></a>, 
 	size:     <a href="/base/builtin#uint"><span class="doc-builtin">uint</span></a>, 
-	flags:    <span class="keyword-type">bit_set</span>[<a class="code-typename" href="/core/sys/darwin/#os_sync_wait_on_address_flag">os_sync_wait_on_address_flag</a>; <a href="/base/builtin#u32"><span class="doc-builtin">u32</span></a>], 
+	flags:    <a class="code-typename" href="/core/sys/darwin/#os_sync_wait_on_address_flags">os_sync_wait_on_address_flags</a>, 
 	clockid:  <a class="code-typename" href="/core/sys/darwin/#os_clockid">os_clockid</a>, 
 	deadline: <a href="/base/builtin#u64"><span class="doc-builtin">u64</span></a>, 
 ) -> <a href="/base/builtin#i32"><span class="doc-builtin">i32</span></a> ---</pre>
@@ -2330,13 +2341,13 @@ ETIMEDOUT	:	Deadline expired.</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="os_sync_wait_on_address_with_timeout"><span><a class="doc-id-link" href="#os_sync_wait_on_address_with_timeout">os_sync_wait_on_address_with_timeout<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/sync.odin#L247"><em>Source</em></a></div></h3>
+<h3 id="os_sync_wait_on_address_with_timeout"><span><a class="doc-id-link" href="#os_sync_wait_on_address_with_timeout">os_sync_wait_on_address_with_timeout<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/sync.odin#L241"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">os_sync_wait_on_address_with_timeout :: <span class="keyword-type">proc</span> "c" (
 	addr:       <a href="/base/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>, 
 	value:      <a href="/base/builtin#u64"><span class="doc-builtin">u64</span></a>, 
 	size:       <a href="/base/builtin#uint"><span class="doc-builtin">uint</span></a>, 
-	flags:      <span class="keyword-type">bit_set</span>[<a class="code-typename" href="/core/sys/darwin/#os_sync_wait_on_address_flag">os_sync_wait_on_address_flag</a>; <a href="/base/builtin#u32"><span class="doc-builtin">u32</span></a>], 
+	flags:      <a class="code-typename" href="/core/sys/darwin/#os_sync_wait_on_address_flags">os_sync_wait_on_address_flags</a>, 
 	clockid:    <a class="code-typename" href="/core/sys/darwin/#os_clockid">os_clockid</a>, 
 	timeout_ns: <a href="/base/builtin#u64"><span class="doc-builtin">u64</span></a>, 
 ) -> <a href="/base/builtin#i32"><span class="doc-builtin">i32</span></a> ---</pre>
@@ -2381,9 +2392,9 @@ ETIMEDOUT	:	Timeout expired.</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="os_sync_wake_by_address_all"><span><a class="doc-id-link" href="#os_sync_wake_by_address_all">os_sync_wake_by_address_all<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/sync.odin#L308"><em>Source</em></a></div></h3>
+<h3 id="os_sync_wake_by_address_all"><span><a class="doc-id-link" href="#os_sync_wake_by_address_all">os_sync_wake_by_address_all<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/sync.odin#L302"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">os_sync_wake_by_address_all :: <span class="keyword-type">proc</span> "c" (addr: <a href="/base/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>, size: <a href="/base/builtin#uint"><span class="doc-builtin">uint</span></a>, flags: <span class="keyword-type">bit_set</span>[<a class="code-typename" href="/core/sys/darwin/#os_sync_wait_on_address_flag">os_sync_wait_on_address_flag</a>; <a href="/base/builtin#u32"><span class="doc-builtin">u32</span></a>]) -> <a href="/base/builtin#i32"><span class="doc-builtin">i32</span></a> ---</pre>
+<pre class="doc-code">os_sync_wake_by_address_all :: <span class="keyword-type">proc</span> "c" (addr: <a href="/base/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>, size: <a href="/base/builtin#uint"><span class="doc-builtin">uint</span></a>, flags: <a class="code-typename" href="/core/sys/darwin/#os_sync_wake_by_address_flags">os_sync_wake_by_address_flags</a>) -> <a href="/base/builtin#i32"><span class="doc-builtin">i32</span></a> ---</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -2405,9 +2416,9 @@ In the event of an error, returns -1 with errno set to indicate the error.</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="os_sync_wake_by_address_any"><span><a class="doc-id-link" href="#os_sync_wake_by_address_any">os_sync_wake_by_address_any<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/sync.odin#L286"><em>Source</em></a></div></h3>
+<h3 id="os_sync_wake_by_address_any"><span><a class="doc-id-link" href="#os_sync_wake_by_address_any">os_sync_wake_by_address_any<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/sync.odin#L280"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">os_sync_wake_by_address_any :: <span class="keyword-type">proc</span> "c" (addr: <a href="/base/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>, size: <a href="/base/builtin#uint"><span class="doc-builtin">uint</span></a>, flags: <span class="keyword-type">bit_set</span>[<a class="code-typename" href="/core/sys/darwin/#os_sync_wait_on_address_flag">os_sync_wait_on_address_flag</a>; <a href="/base/builtin#u32"><span class="doc-builtin">u32</span></a>]) -> <a href="/base/builtin#i32"><span class="doc-builtin">i32</span></a> ---</pre>
+<pre class="doc-code">os_sync_wake_by_address_any :: <span class="keyword-type">proc</span> "c" (addr: <a href="/base/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>, size: <a href="/base/builtin#uint"><span class="doc-builtin">uint</span></a>, flags: <a class="code-typename" href="/core/sys/darwin/#os_sync_wake_by_address_flags">os_sync_wake_by_address_flags</a>) -> <a href="/base/builtin#i32"><span class="doc-builtin">i32</span></a> ---</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -2819,19 +2830,19 @@ EINVAL	:	The operation associated with existing kernel state</p>
 <h3 id="syscall_sysctl"><span><a class="doc-id-link" href="#syscall_sysctl">syscall_sysctl<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/xnu_system_call_wrappers.odin#L340"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">syscall_sysctl :: <span class="keyword-type">proc</span> "contextless" (
-	name:    ^<a href="/base/builtin#i32"><span class="doc-builtin">i32</span></a>, 
-	namelen: <a href="/base/builtin#u32"><span class="doc-builtin">u32</span></a>, 
+	name:    [^]<a href="/base/builtin#i32"><span class="doc-builtin">i32</span></a>, 
+	namelen: <a href="/base/builtin#uint"><span class="doc-builtin">uint</span></a>, 
 	oldp:    <a href="/base/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>, 
-	oldlenp: ^<a href="/base/builtin#i64"><span class="doc-builtin">i64</span></a>, 
-	newp:    ^<a href="/base/builtin#i8"><span class="doc-builtin">i8</span></a>, 
-	newlen:  <a href="/base/builtin#i64"><span class="doc-builtin">i64</span></a>, 
+	oldlenp: ^<a href="/base/builtin#uint"><span class="doc-builtin">uint</span></a>, 
+	newp:    <a href="/base/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>, 
+	newlen:  <a href="/base/builtin#uint"><span class="doc-builtin">uint</span></a>, 
 ) -> <a href="/base/builtin#i32"><span class="doc-builtin">i32</span></a> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="syscall_sysctlbyname"><span><a class="doc-id-link" href="#syscall_sysctlbyname">syscall_sysctlbyname<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/xnu_system_call_wrappers.odin#L393"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">syscall_sysctlbyname :: <span class="keyword-type">proc</span> "contextless" (name: <a href="/base/builtin#cstring"><span class="doc-builtin">cstring</span></a>, oldp: <a href="/base/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>, oldlenp: ^<a href="/base/builtin#i64"><span class="doc-builtin">i64</span></a>, newp: <a href="/base/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>, newlen: <a href="/base/builtin#i64"><span class="doc-builtin">i64</span></a>) -> <a href="/base/builtin#i32"><span class="doc-builtin">i32</span></a> {…}</pre>
+<pre class="doc-code">syscall_sysctlbyname :: <span class="keyword-type">proc</span> "contextless" (name: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>, oldp: <a href="/base/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>, oldlenp: ^<a href="/base/builtin#uint"><span class="doc-builtin">uint</span></a>, newp: <a href="/base/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>, newlen: <a href="/base/builtin#uint"><span class="doc-builtin">uint</span></a>) -> <a href="/base/builtin#i32"><span class="doc-builtin">i32</span></a> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -2871,7 +2882,7 @@ EINVAL	:	The operation associated with existing kernel state</p>
 <li><em>(hidden platform specific files)</em></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2024-04 (vendor "odin") Windows_amd64 @ 2024-04-26 21:08:58.651230000 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2024-06 (vendor "odin") Windows_amd64 @ 2024-06-17 21:40:01.246250500 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
