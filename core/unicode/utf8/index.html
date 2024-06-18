@@ -143,6 +143,7 @@
 </ul>
 
 </li>
+<li class="nav-item"><a href="/core/flags">flags</a></li>
 <li class="nav-item"><a href="/core/fmt">fmt</a></li>
 <li class="nav-item"><a href="/core/hash">hash</a><ul>
 <li><a href="/core/hash/xxhash">xxhash</a></li>
@@ -290,16 +291,17 @@
 <div>
 <details class="doc-index" id="doc-index-Types" aria-labelledby="#doc-index-Types-header">
 <summary id="#doc-index-Types-header">
-Types (1)</summary>
+Types (2)</summary>
 <ul>
 <li><a href="#Accept_Range">Accept_Range</a></li>
+<li><a href="#Grapheme">Grapheme</a></li>
 </ul>
 </details>
 </div>
 <div>
 <details class="doc-index" id="doc-index-Constants" aria-labelledby="#doc-index-Constants-header">
 <summary id="#doc-index-Constants-header">
-Constants (25)</summary>
+Constants (26)</summary>
 <ul>
 <li><a href="#HICB">HICB</a></li>
 <li><a href="#LOCB">LOCB</a></li>
@@ -326,6 +328,7 @@ Constants (25)</summary>
 <li><a href="#T5">T5</a></li>
 <li><a href="#TX">TX</a></li>
 <li><a href="#UTF_MAX">UTF_MAX</a></li>
+<li><a href="#ZERO_WIDTH_JOINER">ZERO_WIDTH_JOINER</a></li>
 </ul>
 </details>
 </div>
@@ -342,8 +345,9 @@ Variables (2)</summary>
 <div>
 <details class="doc-index" id="doc-index-Procedures" aria-labelledby="#doc-index-Procedures-header">
 <summary id="#doc-index-Procedures-header">
-Procedures (19)</summary>
+Procedures (21)</summary>
 <ul>
+<li><a href="#decode_grapheme_clusters">decode_grapheme_clusters</a></li>
 <li><a href="#decode_last_rune_in_bytes">decode_last_rune_in_bytes</a></li>
 <li><a href="#decode_last_rune_in_string">decode_last_rune_in_string</a></li>
 <li><a href="#decode_rune_in_bytes">decode_rune_in_bytes</a></li>
@@ -351,6 +355,7 @@ Procedures (19)</summary>
 <li><a href="#encode_rune">encode_rune</a></li>
 <li><a href="#full_rune_in_bytes">full_rune_in_bytes</a></li>
 <li><a href="#full_rune_in_string">full_rune_in_string</a></li>
+<li><a href="#grapheme_count">grapheme_count</a></li>
 <li><a href="#rune_at">rune_at</a></li>
 <li><a href="#rune_at_pos">rune_at_pos</a></li>
 <li><a href="#rune_count_in_bytes">rune_count_in_bytes</a></li>
@@ -388,6 +393,15 @@ Procedure Groups (4)</summary>
 <pre class="doc-code">Accept_Range :: <span class="keyword-type">struct</span> {
 	lo: <a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a>,
 	hi: <a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a>,
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Grapheme"><span><a class="doc-id-link" href="#Grapheme">Grapheme<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/unicode/utf8/grapheme.odin#L22"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Grapheme :: <span class="keyword-type">struct</span> {
+	byte_index: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>,
+	rune_index: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>,
 }</pre>
 </div>
 </div>
@@ -551,6 +565,12 @@ A low/trailing surrogate is in range SURROGATE_LOW_MIN..SURROGATE_MAX.</p>
 <pre class="doc-code">UTF_MAX :: 4</pre>
 </div>
 </div>
+<div class="pkg-entity">
+<h3 id="ZERO_WIDTH_JOINER"><span><a class="doc-id-link" href="#ZERO_WIDTH_JOINER">ZERO_WIDTH_JOINER<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/unicode/utf8/grapheme.odin#L5"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">ZERO_WIDTH_JOINER :: unicode.ZERO_WIDTH_JOINER</pre>
+</div>
+</div>
 <h2 id="pkg-Variables" class="pkg-header">Variables</h2>
 <div class="pkg-entity">
 <h3 id="accept_ranges"><span><a class="doc-id-link" href="#accept_ranges">accept_ranges<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/unicode/utf8/utf8.odin#L40"><em>Source</em></a></div></h3>
@@ -565,6 +585,23 @@ A low/trailing surrogate is in range SURROGATE_LOW_MIN..SURROGATE_MAX.</p>
 </div>
 </div>
 <h2 id="pkg-Procedures" class="pkg-header">Procedures</h2>
+<div class="pkg-entity">
+<h3 id="decode_grapheme_clusters"><span><a class="doc-id-link" href="#decode_grapheme_clusters">decode_grapheme_clusters<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/unicode/utf8/grapheme.odin#L59"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">decode_grapheme_clusters :: <span class="keyword-type">proc</span>(str: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>, track_graphemes: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> = true, allocator := <a href="/base/runtime/#Context">context.allocator</a>) -> (graphemes: [<span class="keyword">dynamic</span>]<a class="code-typename" href="/core/unicode/utf8/#Grapheme">Grapheme</a>, grapheme_count: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, rune_count: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Decode the individual graphemes in a UTF-8 string.</p>
+<p><i>Allocates Using Provided Allocator</i></p>
+<p><b>Inputs:</b><br><span class="doc-list">str: The input string.</span>
+<span class="doc-list">track_graphemes: Whether or not to allocate and return <code>graphemes</code> with extra data about each grapheme.</span>
+<span class="doc-list">allocator: (default: context.allocator)</span></p>
+<p><b>Returns:</b><br><span class="doc-list">graphemes: Extra data about each grapheme.</span>
+<span class="doc-list">grapheme_count: The number of graphemes in the string.</span>
+<span class="doc-list">rune_count: The number of runes in the string.</span></p>
+</details>
+</div>
 <div class="pkg-entity">
 <h3 id="decode_last_rune_in_bytes"><span><a class="doc-id-link" href="#decode_last_rune_in_bytes">decode_last_rune_in_bytes<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/unicode/utf8/utf8.odin#L182"><em>Source</em></a></div></h3>
 <div>
@@ -615,6 +652,19 @@ An invalid encoding is considered a full rune since it will convert as an error 
 <summary class="hideme"><span>&nbsp;</span></summary>
 <p>full_rune_in_string reports if the bytes in s begin with a full utf-8 encoding of a rune or not
 An invalid encoding is considered a full rune since it will convert as an error rune of width 1 (RUNE_ERROR)</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="grapheme_count"><span><a class="doc-id-link" href="#grapheme_count">grapheme_count<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/unicode/utf8/grapheme.odin#L38"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">grapheme_count :: <span class="keyword-type">proc</span>(str: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>) -> (graphemes, runes: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Count the individual graphemes in a UTF-8 string.</p>
+<p><b>Inputs:</b><br><span class="doc-list">str: The input string.</span></p>
+<p><b>Returns:</b><br><span class="doc-list">graphemes: The number of graphemes in the string.</span>
+<span class="doc-list">runes: The number of runes in the string.</span></p>
 </details>
 </div>
 <div class="pkg-entity">
@@ -743,16 +793,18 @@ An invalid encoding is considered a full rune since it will convert as an error 
 </section>
 <h2 id="pkg-source-files">Source Files</h2>
 <ul>
+<li><a href="https://github.com/odin-lang/Odin/tree/master/core/unicode/utf8/grapheme.odin">grapheme.odin</a></li>
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/unicode/utf8/utf8.odin">utf8.odin</a></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2024-06 (vendor "odin") Windows_amd64 @ 2024-06-17 21:40:01.708638600 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2024-06 (vendor "odin") Windows_amd64 @ 2024-06-18 21:09:49.083866300 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
 <ul>
 <li><a href="#pkg-Types">Types</a><ul>
 <li><a href="#Accept_Range">Accept_Range</a></li>
+<li><a href="#Grapheme">Grapheme</a></li>
 </ul>
 </li>
 <li><a href="#pkg-Constants">Constants</a><ul>
@@ -781,6 +833,7 @@ An invalid encoding is considered a full rune since it will convert as an error 
 <li><a href="#T5">T5</a></li>
 <li><a href="#TX">TX</a></li>
 <li><a href="#UTF_MAX">UTF_MAX</a></li>
+<li><a href="#ZERO_WIDTH_JOINER">ZERO_WIDTH_JOINER</a></li>
 </ul>
 </li>
 <li><a href="#pkg-Variables">Variables</a><ul>
@@ -789,6 +842,7 @@ An invalid encoding is considered a full rune since it will convert as an error 
 </ul>
 </li>
 <li><a href="#pkg-Procedures">Procedures</a><ul>
+<li><a href="#decode_grapheme_clusters">decode_grapheme_clusters</a></li>
 <li><a href="#decode_last_rune_in_bytes">decode_last_rune_in_bytes</a></li>
 <li><a href="#decode_last_rune_in_string">decode_last_rune_in_string</a></li>
 <li><a href="#decode_rune_in_bytes">decode_rune_in_bytes</a></li>
@@ -796,6 +850,7 @@ An invalid encoding is considered a full rune since it will convert as an error 
 <li><a href="#encode_rune">encode_rune</a></li>
 <li><a href="#full_rune_in_bytes">full_rune_in_bytes</a></li>
 <li><a href="#full_rune_in_string">full_rune_in_string</a></li>
+<li><a href="#grapheme_count">grapheme_count</a></li>
 <li><a href="#rune_at">rune_at</a></li>
 <li><a href="#rune_at_pos">rune_at_pos</a></li>
 <li><a href="#rune_count_in_bytes">rune_count_in_bytes</a></li>
