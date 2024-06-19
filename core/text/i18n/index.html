@@ -288,47 +288,59 @@
 <div id="pkg-top">
 <h2>Overview</h2>
 <div id="pkg-overview">
-<p>The <code>i18n</code> package is flexible and easy to use.</p>
-<p>It has one call to get a translation: <code>get</code>, which the user can alias into something like <code>T</code>.</p>
-<p><code>get</code>, referred to as <code>T</code> here, has a few different signatures.
-All of them will return the key if the entry can't be found in the active translation catalog.</p>
-<p><span class="doc-list"><code>T(key)</code>              returns the translation of <code>key</code>.</span>
-<span class="doc-list"><code>T(key, n)</code>           returns a pluralized translation of <code>key</code> according to value <code>n</code>.</span></p>
-<p><span class="doc-list"><code>T(section, key)</code>     returns the translation of <code>key</code> in <code>section</code>.</span>
-<span class="doc-list"><code>T(section, key, n)</code>  returns a pluralized translation of <code>key</code> in <code>section</code> according to value <code>n</code>.</span></p>
-<p>By default lookup take place in the global <code>i18n.ACTIVE</code> catalog for ease of use.
-If you want to override which translation to use, for example in a language preview dialog, you can use the following:</p>
-<p><span class="doc-list"><code>T(key, n, catalog)</code>           returns the pluralized version of <code>key</code> from explictly supplied catalog.</span>
-<span class="doc-list"><code>T(section, key, n, catalog)</code>  returns the pluralized version of <code>key</code> in <code>section</code> from explictly supplied catalog.</span></p>
+<p>The <code>i18n</code> package is a flexible and easy to use way to localise applications.</p>
+<p>It has two calls to get a translation: <code>get()</code> and <code>get_n()</code>, which the user can alias into something like <code>T</code> and <code>Tn</code>
+with statements like:</p>
+<pre>T  :: i18n.get
+Tn :: i18n.get_n.
+
+</pre>
+<p><code>get()</code> is used for retrieving the translation of sentences which <b>never</b> change in form,
+like for instance "Connection established" or "All temporary files have been deleted".
+Note that the number (singular, dual, plural, whatever else) is not relevant: the sentence is fixed and it will have only one possible translation in any other language.</p>
+<p><code>get_n()</code> is used for retrieving the translations of sentences which change according to the number of items referenced.
+The various signatures of <code>get_n()</code> have one more parameter, <code>n</code>, which will receive that number and be used
+to select the correct form according to the pluralizer attached to the message catalogue when initially loaded;
+for instance, to summarise a rather complex matter, some languages use the singular form when referring to 0 items and some use the (only in their case) plural forms;
+also, languages may have more or less quantifier forms than a single singular form and a universal plural form:
+for instance, Chinese has just one form for any quantity, while Welsh may have up to 6 different forms for specific different quantities.</p>
+<p>Both <code>get()</code> and <code>get_n()</code>, referred to as <code>T</code> and <code>Tn</code> here, have several different signatures.
+All of them will return the key if the entry can't be found in the active translation catalogue.
+By default lookup take place in the global <code>i18n.ACTIVE</code> catalogue for ease of use, unless a specific catalogue is supplied.</p>
+<p><span class="doc-list"><code>T(key)</code>                   returns the translation of <code>key</code>.</span>
+<span class="doc-list"><code>T(key, catalog)</code>          returns the translation of <code>key</code> from explictly supplied catalogue.</span>
+<span class="doc-list"><code>T(section, key)</code>          returns the translation of <code>key</code> in <code>section</code>.</span>
+<span class="doc-list"><code>T(section, key, catalog)</code> returns the translation of <code>key</code> in <code>section</code> from explictly supplied catalogue.</span></p>
+<p><span class="doc-list"><code>Tn(key, n)</code>                   returns the translation of <code>key</code> according to number of items <code>n</code>.</span>
+<span class="doc-list"><code>Tn(key, n, catalog)</code>          returns the translation of <code>key</code> from explictly supplied catalogue.</span>
+<span class="doc-list"><code>Tn(section, key, n)</code>          returns the translation of <code>key</code> in <code>section</code> according to number of items <code>n</code>.</span>
+<span class="doc-list"><code>Tn(section, key, n, catalog)</code> returns the translation of <code>key</code> in <code>section</code> according to number of items <code>n</code> from explictly supplied catalogue.</span></p>
 <p>If a catalog has translation contexts or sections, then omitting it in the above calls looks up in section "".</p>
-<p>The default pluralization rule is n != 1, which is to say that passing n == 1 (or not passing n) returns the singular form.
-Passing n != 1 returns plural form 1.</p>
+<p>The default pluralization rule is <code>n != 1</code>, which is to say that passing <code>n == 1</code> returns the singular form (in slot 0).
+Passing <code>n != 1</code> returns the plural form in slot 1 (if any).</p>
 <p>Should a language not conform to this rule, you can pass a pluralizer procedure to the catalog parser.
-This is a procedure that maps an integer to an integer, taking a value and returning which plural slot should be used.</p>
+This is a procedure that maps an integer to an integer, taking a quantity and returning which plural slot should be used.</p>
 <p>You can also assign it to a loaded catalog after parsing, of course.</p>
 <details open class="code-example">
 <summary><b>Example:</b></summary>
 <pre><code class="hljs language-odin" data-lang="odin">import "core:fmt"
 import "core:text/i18n"
 
-T :: i18n.get
+T  :: i18n.get
+Tn :: i18n.get_n
 
 mo :: proc() {
 	using fmt
 
 	err: i18n.Error
 
-	/*
-		Parse MO file and set it as the active translation so we can omit `get`'s "catalog" parameter.
-	*/
+	// Parse MO file and set it as the active translation so we can omit `get`'s "catalog" parameter.
 	i18n.ACTIVE, err = i18n.parse_mo(#load("translations/nl_NL.mo"))
 	defer i18n.destroy()
 
 	if err != .None { return }
 
-	/*
-		These are in the .MO catalog.
-	*/
+	// These are in the .MO catalog.
 	println("-----")
 	println(T(""))
 	println("-----")
@@ -337,13 +349,11 @@ mo :: proc() {
 	println(T("Hellope, World!"))
 	println("-----")
 	// We pass 1 into `T` to get the singular format string, then 1 again into printf.
-	printf(T("There is %d leaf.\n", 1), 1)
+	printf(Tn("There is %d leaf.\n", 1), 1)
 	// We pass 42 into `T` to get the plural format string, then 42 again into printf.
-	printf(T("There is %d leaf.\n", 42), 42)
+	printf(Tn("There is %d leaf.\n", 42), 42)
 
-	/*
-		This isn't in the translation catalog, so the key is passed back untranslated.
-	*/
+	// This isn't in the translation catalog, so the key is passed back untranslated.
 	println("-----")
 	println(T("Come visit us on Discord!"))
 }
@@ -353,19 +363,13 @@ qt :: proc() {
 
 	err: i18n.Error
 
-	/*
-		Parse QT file and set it as the active translation so we can omit `get`'s "catalog" parameter.
-	*/
+	// Parse QT file and set it as the active translation so we can omit `get`'s "catalog" parameter.
 	i18n.ACTIVE, err = i18n.parse_qt(#load("translations/nl_NL-qt-ts.ts"))
 	defer i18n.destroy()
 
-	if err != .None {
-		return
-	}
+	if err != .None { return }
 
-	/*
-		These are in the .TS catalog. As you can see they have sections.
-	*/
+	// These are in the .TS catalog. As you can see they have sections.
 	println("--- Page section ---")
 	println("Page:Text for translation =", T("Page", "Text for translation"))
 	println("-----")
@@ -376,8 +380,8 @@ qt :: proc() {
 	println("-----")
 	println("--- apple_count section ---")
 	println("apple_count:%d apple(s) =")
-	println("\t 1  =", T("apple_count", "%d apple(s)", 1))
-	println("\t 42 =", T("apple_count", "%d apple(s)", 42))
+	println("\t 1  =", Tn("apple_count", "%d apple(s)", 1))
+	println("\t 42 =", Tn("apple_count", "%d apple(s)", 42))
 }
 </code></pre>
 </details>
@@ -419,13 +423,15 @@ Variables (2)</summary>
 <div>
 <details class="doc-index" id="doc-index-Procedures" aria-labelledby="#doc-index-Procedures-header">
 <summary id="#doc-index-Procedures-header">
-Procedures (11)</summary>
+Procedures (13)</summary>
 <ul>
 <li><a href="#destroy">destroy</a></li>
 <li><a href="#get_by_section">get_by_section</a></li>
+<li><a href="#get_by_section_with_quantity">get_by_section_with_quantity</a></li>
 <li><a href="#get_by_slot_by_section">get_by_slot_by_section</a></li>
 <li><a href="#get_by_slot_single_section">get_by_slot_single_section</a></li>
 <li><a href="#get_single_section">get_single_section</a></li>
+<li><a href="#get_single_section_with_quantity">get_single_section_with_quantity</a></li>
 <li><a href="#parse_mo_file">parse_mo_file</a></li>
 <li><a href="#parse_mo_from_bytes">parse_mo_from_bytes</a></li>
 <li><a href="#parse_qt_linguist_file">parse_qt_linguist_file</a></li>
@@ -438,10 +444,11 @@ Procedures (11)</summary>
 <div>
 <details class="doc-index" id="doc-index-Procedure Groups" aria-labelledby="#doc-index-Procedure Groups-header">
 <summary id="#doc-index-Procedure Groups-header">
-Procedure Groups (4)</summary>
+Procedure Groups (5)</summary>
 <ul>
 <li><a href="#get">get</a></li>
 <li><a href="#get_by_slot">get_by_slot</a></li>
+<li><a href="#get_n">get_n</a></li>
 <li><a href="#parse_mo">parse_mo</a></li>
 <li><a href="#parse_qt">parse_qt</a></li>
 </ul>
@@ -452,23 +459,23 @@ Procedure Groups (4)</summary>
 <section class="documentation">
 <h2 id="pkg-Types" class="pkg-header">Types</h2>
 <div class="pkg-entity">
-<h3 id="Error"><span><a class="doc-id-link" href="#Error">Error<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/i18n/i18n.odin#L39"><em>Source</em></a></div></h3>
+<h3 id="Error"><span><a class="doc-id-link" href="#Error">Error<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/i18n/i18n.odin#L29"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Error :: <span class="keyword-type">enum</span> <a href="/base/builtin#int"><span class="doc-builtin">int</span></a> {
-	<span class="comment">// 		General return values.</span>
+	<span class="comment">// General return values.</span>
 	None                           = 0, 
 	Empty_Translation_Catalog, 
 	Duplicate_Key, 
-	<span class="comment">// 		Couldn't find, open or read file.</span>
+	<span class="comment">// Couldn't find, open or read file.</span>
 	File_Error, 
-	<span class="comment">// 		File too short.</span>
+	<span class="comment">// File too short.</span>
 	Premature_EOF, 
-	<span class="comment">// 		GNU Gettext *.MO file errors.</span>
+	<span class="comment">// GNU Gettext *.MO file errors.</span>
 	MO_File_Invalid_Signature, 
 	MO_File_Unsupported_Version, 
 	MO_File_Invalid, 
 	MO_File_Incorrect_Plural_Count, 
-	<span class="comment">// 		Qt Linguist *.TS file errors.</span>
+	<span class="comment">// Qt Linguist *.TS file errors.</span>
 	TS_File_Parse_Error, 
 	TS_File_Expected_Context, 
 	TS_File_Expected_Context_Name, 
@@ -492,7 +499,7 @@ Procedure Groups (4)</summary>
 </ul>
 </div>
 <div class="pkg-entity">
-<h3 id="Parse_Options"><span><a class="doc-id-link" href="#Parse_Options">Parse_Options<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/i18n/i18n.odin#L79"><em>Source</em></a></div></h3>
+<h3 id="Parse_Options"><span><a class="doc-id-link" href="#Parse_Options">Parse_Options<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/i18n/i18n.odin#L59"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Parse_Options :: <span class="keyword-type">struct</span> {
 	merge_sections: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>,
@@ -513,13 +520,17 @@ Procedure Groups (4)</summary>
 </ul>
 </div>
 <div class="pkg-entity">
-<h3 id="Section"><span><a class="doc-id-link" href="#Section">Section<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/i18n/i18n.odin#L30"><em>Source</em></a></div></h3>
+<h3 id="Section"><span><a class="doc-id-link" href="#Section">Section<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/i18n/i18n.odin#L20"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Section :: <span class="keyword-type">map</span>[<a href="/base/builtin#string"><span class="doc-builtin">string</span></a>][]<a href="/base/builtin#string"><span class="doc-builtin">string</span></a></pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>The main data structure. This can be generated from various different file formats, as long as we have a parser for them.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="Translation"><span><a class="doc-id-link" href="#Translation">Translation<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/i18n/i18n.odin#L32"><em>Source</em></a></div></h3>
+<h3 id="Translation"><span><a class="doc-id-link" href="#Translation">Translation<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/i18n/i18n.odin#L22"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Translation :: <span class="keyword-type">struct</span> {
 	k_v:       <span class="keyword-type">map</span>[<a href="/base/builtin#string"><span class="doc-builtin">string</span></a>]<span class="keyword-type">map</span>[<a href="/base/builtin#string"><span class="doc-builtin">string</span></a>][]<a href="/base/builtin#string"><span class="doc-builtin">string</span></a>,
@@ -532,11 +543,14 @@ Procedure Groups (4)</summary>
 <ul>
 <li><a href="/core/text/i18n/#destroy">destroy</a></li>
 <li><a href="/core/text/i18n/#get_by_section">get_by_section</a></li>
+<li><a href="/core/text/i18n/#get_by_section_with_quantity">get_by_section_with_quantity</a></li>
 <li><a href="/core/text/i18n/#get_by_slot_by_section">get_by_slot_by_section</a></li>
 <li><a href="/core/text/i18n/#get_by_slot_single_section">get_by_slot_single_section</a></li>
 <li><a href="/core/text/i18n/#get_single_section">get_single_section</a></li>
+<li><a href="/core/text/i18n/#get_single_section_with_quantity">get_single_section_with_quantity</a></li>
 <li><a href="/core/text/i18n/#get">get</a>&nbsp;<em>(procedure groups)</em></li>
 <li><a href="/core/text/i18n/#get_by_slot">get_by_slot</a>&nbsp;<em>(procedure groups)</em></li>
+<li><a href="/core/text/i18n/#get_n">get_n</a>&nbsp;<em>(procedure groups)</em></li>
 </ul>
 <h5>Related Procedures With Returns</h5>
 <ul>
@@ -550,13 +564,13 @@ Procedure Groups (4)</summary>
 </div>
 <h2 id="pkg-Constants" class="pkg-header">Constants</h2>
 <div class="pkg-entity">
-<h3 id="DEFAULT_PARSE_OPTIONS"><span><a class="doc-id-link" href="#DEFAULT_PARSE_OPTIONS">DEFAULT_PARSE_OPTIONS<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/i18n/i18n.odin#L83"><em>Source</em></a></div></h3>
+<h3 id="DEFAULT_PARSE_OPTIONS"><span><a class="doc-id-link" href="#DEFAULT_PARSE_OPTIONS">DEFAULT_PARSE_OPTIONS<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/i18n/i18n.odin#L63"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">DEFAULT_PARSE_OPTIONS :: Parse_Options{merge_sections = false}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="MAX_PLURALS"><span><a class="doc-id-link" href="#MAX_PLURALS">MAX_PLURALS<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/i18n/i18n.odin#L24"><em>Source</em></a></div></h3>
+<h3 id="MAX_PLURALS"><span><a class="doc-id-link" href="#MAX_PLURALS">MAX_PLURALS<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/i18n/i18n.odin#L17"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">MAX_PLURALS :: min(max(#config(ODIN_i18N_MAX_PLURAL_FORMS, 10), 1), 255)</pre>
 </div>
@@ -567,7 +581,7 @@ Procedure Groups (4)</summary>
 </div>
 <h2 id="pkg-Variables" class="pkg-header">Variables</h2>
 <div class="pkg-entity">
-<h3 id="ACTIVE"><span><a class="doc-id-link" href="#ACTIVE">ACTIVE<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/i18n/i18n.odin#L21"><em>Source</em></a></div></h3>
+<h3 id="ACTIVE"><span><a class="doc-id-link" href="#ACTIVE">ACTIVE<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/i18n/i18n.odin#L14"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">ACTIVE: ^<a class="code-typename" href="/core/text/i18n/#Translation">Translation</a></pre>
 </div>
@@ -584,75 +598,153 @@ Procedure Groups (4)</summary>
 </div>
 <h2 id="pkg-Procedures" class="pkg-header">Procedures</h2>
 <div class="pkg-entity">
-<h3 id="destroy"><span><a class="doc-id-link" href="#destroy">destroy<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/i18n/i18n.odin#L168"><em>Source</em></a></div></h3>
+<h3 id="destroy"><span><a class="doc-id-link" href="#destroy">destroy<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/i18n/i18n.odin#L216"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">destroy :: <span class="keyword-type">proc</span>(catalog: ^<a class="code-typename" href="/core/text/i18n/#Translation">Translation</a> = ACTIVE, allocator := <a href="/base/runtime/#Context">context.allocator</a>) {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>Same for destroy:</p>
-<pre>- destroy(), to clean up the currently active catalog catalog i18n.ACTIVE
-- destroy(catalog), to clean up a specific catalog.
+<p><span class="doc-list">destroy(), to clean up the currently active catalog catalog i18n.ACTIVE</span></p>
+<pre>- destroy(catalog), to clean up a specific catalog.
 </pre>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="get_by_section"><span><a class="doc-id-link" href="#get_by_section">get_by_section<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/i18n/i18n.odin#L111"><em>Source</em></a></div></h3>
+<h3 id="get_by_section"><span><a class="doc-id-link" href="#get_by_section">get_by_section<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/i18n/i18n.odin#L100"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">get_by_section :: <span class="keyword-type">proc</span>(section, key: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>, number: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a> = 1, catalog: ^<a class="code-typename" href="/core/text/i18n/#Translation">Translation</a> = ACTIVE) -> (value: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>) {…}</pre>
+<pre class="doc-code">get_by_section :: <span class="keyword-type">proc</span>(section, key: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>, catalog: ^<a class="code-typename" href="/core/text/i18n/#Translation">Translation</a> = ACTIVE) -> (value: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>) {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>Several ways to use:</p>
-<pre>- get(section, key), which defaults to the singular form and i18n.ACTIVE catalog, or
-- get(section, key, number), which returns the appropriate plural from the active catalog, or
-- get(section, key, number, catalog) to grab text from a specific one.
+<p>Returns the first translation string for the passed <code>key</code> in a specific section or context.</p>
+<pre>It is also aliases with `get()`.
+
+Two ways to use it:
+- get(section, key), which defaults to the `i18n.ACTIVE` catalogue, or
+- get(section, key, catalog) to grab text from a specific loaded catalogue
+
+Inputs:
+- section: the catalogue section (sometimes also called 'context') in which to look up the translation
+- key:     the string to translate
+- catalog: the catalogue to use for the translation (defaults to i18n.ACTIVE)
+
+Returns:   the translated string, or the original `key` if no translation was found.
 </pre>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="get_by_slot_by_section"><span><a class="doc-id-link" href="#get_by_slot_by_section">get_by_slot_by_section<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/i18n/i18n.odin#L144"><em>Source</em></a></div></h3>
+<h3 id="get_by_section_with_quantity"><span><a class="doc-id-link" href="#get_by_section_with_quantity">get_by_section_with_quantity<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/i18n/i18n.odin#L150"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">get_by_slot_by_section :: <span class="keyword-type">proc</span>(section, key: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>, slot: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a> = 0, catalog: ^<a class="code-typename" href="/core/text/i18n/#Translation">Translation</a> = ACTIVE) -> (value: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>) {…}</pre>
+<pre class="doc-code">get_by_section_with_quantity :: <span class="keyword-type">proc</span>(section, key: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>, quantity: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, catalog: ^<a class="code-typename" href="/core/text/i18n/#Translation">Translation</a> = ACTIVE) -> (value: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>) {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>Several ways to use:</p>
-<pre>- get_by_slot(key), which defaults to the singular form and i18n.ACTIVE catalog, or
-- get_by_slot(key, slot), which returns the requested plural from the active catalog, or
+<p>Returns the translation string for the passed <code>key</code> in a specific plural form (if present in the catalogue)</p>
+<pre>in a specific section or context.
+It is also aliases with `get_n()`.
+
+Two ways to use it:
+- get(section, key, quantity), which returns the appropriate plural from the active catalogue, or
+- get(section, key, quantity, catalog) to grab text from a specific loaded catalogue
+
+Inputs:
+- section: the catalogue section (sometime also called 'context') from which to lookup the translation
+- key:     the string to translate
+- qantity: the quantity of item to be used to select the correct plural form
+- catalog: the catalogue to use for the translation (defaults to i18n.ACTIVE)
+
+Returns:   the translated string, or the original `key` if no translation was found
+</pre>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="get_by_slot_by_section"><span><a class="doc-id-link" href="#get_by_slot_by_section">get_by_slot_by_section<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/i18n/i18n.odin#L197"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">get_by_slot_by_section :: <span class="keyword-type">proc</span>(section, key: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>, slot: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, catalog: ^<a class="code-typename" href="/core/text/i18n/#Translation">Translation</a> = ACTIVE) -> (value: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Two ways to use:</p>
+<pre>- get_by_slot(key, slot), which returns the requested plural from the active catalog, or
 - get_by_slot(key, slot, catalog) to grab text from a specific one.
 
 If a file format parser doesn't (yet) support plural slots, each of the slots will point at the same string.
+
+Inputs:
+- section: the catalogue section (sometime also called 'context') from which to lookup the translation
+- key:     the string to translate.
+- slot:    the translation slot to choose (slots refer to plural forms specific for each language and their meaning changes from catalogue to catalogue).
+- catalog: the catalogue to use for the translation (defaults to i18n.ACTIVE)
+
+Returns:   the translated string or the original `key` if no translation was found.
 </pre>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="get_by_slot_single_section"><span><a class="doc-id-link" href="#get_by_slot_single_section">get_by_slot_single_section<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/i18n/i18n.odin#L132"><em>Source</em></a></div></h3>
+<h3 id="get_by_slot_single_section"><span><a class="doc-id-link" href="#get_by_slot_single_section">get_by_slot_single_section<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/i18n/i18n.odin#L178"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">get_by_slot_single_section :: <span class="keyword-type">proc</span>(key: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>, slot: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a> = 0, catalog: ^<a class="code-typename" href="/core/text/i18n/#Translation">Translation</a> = ACTIVE) -> (value: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>) {…}</pre>
+<pre class="doc-code">get_by_slot_single_section :: <span class="keyword-type">proc</span>(key: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>, slot: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, catalog: ^<a class="code-typename" href="/core/text/i18n/#Translation">Translation</a> = ACTIVE) -> (value: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>) {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>Several ways to use:</p>
-<pre>- get_by_slot(key), which defaults to the singular form and i18n.ACTIVE catalog, or
-- get_by_slot(key, slot), which returns the requested plural from the active catalog, or
-- get_by_slot(key, slot, catalog) to grab text from a specific one.
+<p>Two ways to use:</p>
+<pre>- get_by_slot(key, slot), which returns the requested plural from the active catalogue, or
+- get_by_slot(key, slot, catalog) to grab text from a specific loaded catalogue.
 
 If a file format parser doesn't (yet) support plural slots, each of the slots will point at the same string.
+- section: the catalogue section (sometime also called 'context') from which to lookup the translation
+
+Inputs:
+- key:     the string to translate.
+- slot:    the translation slot to choose (slots refer to plural forms specific for each language and their meaning changes from catalogue to catalogue).
+- catalog: the catalogue to use for the translation (defaults to i18n.ACTIVE)
+
+Returns:   the translated string, or the original `key` if no translation was found.
 </pre>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="get_single_section"><span><a class="doc-id-link" href="#get_single_section">get_single_section<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/i18n/i18n.odin#L93"><em>Source</em></a></div></h3>
+<h3 id="get_single_section"><span><a class="doc-id-link" href="#get_single_section">get_single_section<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/i18n/i18n.odin#L81"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">get_single_section :: <span class="keyword-type">proc</span>(key: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>, number: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a> = 1, catalog: ^<a class="code-typename" href="/core/text/i18n/#Translation">Translation</a> = ACTIVE) -> (value: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>) {…}</pre>
+<pre class="doc-code">get_single_section :: <span class="keyword-type">proc</span>(key: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>, catalog: ^<a class="code-typename" href="/core/text/i18n/#Translation">Translation</a> = ACTIVE) -> (value: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>) {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>Several ways to use:</p>
-<pre>- get(key), which defaults to the singular form and i18n.ACTIVE catalog, or
-- get(key, number), which returns the appropriate plural from the active catalog, or
-- get(key, number, catalog) to grab text from a specific one.
+<p>Returns the first translation string for the passed <code>key</code>.</p>
+<pre>It is also aliased with `get()`.
+
+Two ways to use it:
+- get(key), which defaults to the `i18n.ACTIVE` catalogue, or
+- get(key, catalog) to grab text from a specific loaded catalogue
+
+Inputs:
+- key:     the string to translate
+- catalog: the catalogue to use for the translation (defaults to i18n.ACTIVE)
+
+Returns:   the translated string, or the original `key` if no translation was found.
+</pre>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="get_single_section_with_quantity"><span><a class="doc-id-link" href="#get_single_section_with_quantity">get_single_section_with_quantity<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/i18n/i18n.odin#L121"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">get_single_section_with_quantity :: <span class="keyword-type">proc</span>(key: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>, quantity: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, catalog: ^<a class="code-typename" href="/core/text/i18n/#Translation">Translation</a> = ACTIVE) -> (value: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Returns the translation string for the passed <code>key</code> in a specific plural form (if present in the catalogue).</p>
+<pre>It is also aliased with `get_n()`.
+
+Two ways to use it:
+- get_n(key, quantity), which returns the appropriate plural from the active catalogue, or
+- get_n(key, quantity, catalog) to grab text from a specific loaded catalogue
+
+Inputs:
+- key:      the string to translate
+- quantity: the quantity of item to be used to select the correct plural form
+- catalog:  the catalogue to use for the translation (defaults to i18n.ACTIVE)
+
+Returns:    the translated string, or the original `key` if no translation was found.
 </pre>
 </details>
 </div>
@@ -698,7 +790,7 @@ If a file format parser doesn't (yet) support plural slots, each of the slots wi
 </div>
 <h2 id="pkg-Procedure Groups" class="pkg-header">Procedure Groups</h2>
 <div class="pkg-entity">
-<h3 id="get"><span><a class="doc-id-link" href="#get">get<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/i18n/i18n.odin#L122"><em>Source</em></a></div></h3>
+<h3 id="get"><span><a class="doc-id-link" href="#get">get<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/i18n/i18n.odin#L104"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">get :: <span class="keyword-type">proc</span>{
 	<a class="code-procedure" href="/core/text/i18n/#get_single_section">get_single_section</a>,
@@ -708,11 +800,21 @@ If a file format parser doesn't (yet) support plural slots, each of the slots wi
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="get_by_slot"><span><a class="doc-id-link" href="#get_by_slot">get_by_slot<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/i18n/i18n.odin#L161"><em>Source</em></a></div></h3>
+<h3 id="get_by_slot"><span><a class="doc-id-link" href="#get_by_slot">get_by_slot<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/i18n/i18n.odin#L210"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">get_by_slot :: <span class="keyword-type">proc</span>{
 	<a class="code-procedure" href="/core/text/i18n/#get_by_slot_single_section">get_by_slot_single_section</a>,
 	<a class="code-procedure" href="/core/text/i18n/#get_by_slot_by_section">get_by_slot_by_section</a>,
+}
+</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="get_n"><span><a class="doc-id-link" href="#get_n">get_n<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/i18n/i18n.odin#L161"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">get_n :: <span class="keyword-type">proc</span>{
+	<a class="code-procedure" href="/core/text/i18n/#get_single_section_with_quantity">get_single_section_with_quantity</a>,
+	<a class="code-procedure" href="/core/text/i18n/#get_by_section_with_quantity">get_by_section_with_quantity</a>,
 }
 </pre>
 </div>
@@ -746,7 +848,7 @@ If a file format parser doesn't (yet) support plural slots, each of the slots wi
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/text/i18n/qt_linguist.odin">qt_linguist.odin</a></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2024-06 (vendor "odin") Windows_amd64 @ 2024-06-18 21:09:49.072496400 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2024-06 (vendor "odin") Windows_amd64 @ 2024-06-19 21:11:46.323418600 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
@@ -771,9 +873,11 @@ If a file format parser doesn't (yet) support plural slots, each of the slots wi
 <li><a href="#pkg-Procedures">Procedures</a><ul>
 <li><a href="#destroy">destroy</a></li>
 <li><a href="#get_by_section">get_by_section</a></li>
+<li><a href="#get_by_section_with_quantity">get_by_section_with_quantity</a></li>
 <li><a href="#get_by_slot_by_section">get_by_slot_by_section</a></li>
 <li><a href="#get_by_slot_single_section">get_by_slot_single_section</a></li>
 <li><a href="#get_single_section">get_single_section</a></li>
+<li><a href="#get_single_section_with_quantity">get_single_section_with_quantity</a></li>
 <li><a href="#parse_mo_file">parse_mo_file</a></li>
 <li><a href="#parse_mo_from_bytes">parse_mo_from_bytes</a></li>
 <li><a href="#parse_qt_linguist_file">parse_qt_linguist_file</a></li>
@@ -785,6 +889,7 @@ If a file format parser doesn't (yet) support plural slots, each of the slots wi
 <li><a href="#pkg-Procedure Groups">Procedure Groups</a><ul>
 <li><a href="#get">get</a></li>
 <li><a href="#get_by_slot">get_by_slot</a></li>
+<li><a href="#get_n">get_n</a></li>
 <li><a href="#parse_mo">parse_mo</a></li>
 <li><a href="#parse_qt">parse_qt</a></li>
 </ul>
