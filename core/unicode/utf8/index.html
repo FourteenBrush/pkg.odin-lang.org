@@ -397,11 +397,12 @@ Procedure Groups (4)</summary>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="Grapheme"><span><a class="doc-id-link" href="#Grapheme">Grapheme<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/unicode/utf8/grapheme.odin#L22"><em>Source</em></a></div></h3>
+<h3 id="Grapheme"><span><a class="doc-id-link" href="#Grapheme">Grapheme<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/unicode/utf8/grapheme.odin#L23"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Grapheme :: <span class="keyword-type">struct</span> {
 	byte_index: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>,
 	rune_index: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>,
+	width:      <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>,
 }</pre>
 </div>
 </div>
@@ -586,9 +587,9 @@ A low/trailing surrogate is in range SURROGATE_LOW_MIN..SURROGATE_MAX.</p>
 </div>
 <h2 id="pkg-Procedures" class="pkg-header">Procedures</h2>
 <div class="pkg-entity">
-<h3 id="decode_grapheme_clusters"><span><a class="doc-id-link" href="#decode_grapheme_clusters">decode_grapheme_clusters<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/unicode/utf8/grapheme.odin#L59"><em>Source</em></a></div></h3>
+<h3 id="decode_grapheme_clusters"><span><a class="doc-id-link" href="#decode_grapheme_clusters">decode_grapheme_clusters<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/unicode/utf8/grapheme.odin#L63"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">decode_grapheme_clusters :: <span class="keyword-type">proc</span>(str: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>, track_graphemes: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> = true, allocator := <a href="/base/runtime/#Context">context.allocator</a>) -> (graphemes: [<span class="keyword">dynamic</span>]<a class="code-typename" href="/core/unicode/utf8/#Grapheme">Grapheme</a>, grapheme_count: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, rune_count: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>) {…}</pre>
+<pre class="doc-code">decode_grapheme_clusters :: <span class="keyword-type">proc</span>(str: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>, track_graphemes: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> = true, allocator := <a href="/base/runtime/#Context">context.allocator</a>) -> (graphemes: [<span class="keyword">dynamic</span>]<a class="code-typename" href="/core/unicode/utf8/#Grapheme">Grapheme</a>, grapheme_count: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, rune_count: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, width: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>) {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -599,7 +600,8 @@ A low/trailing surrogate is in range SURROGATE_LOW_MIN..SURROGATE_MAX.</p>
 <span class="doc-list">allocator: (default: context.allocator)</span></p>
 <p><b>Returns:</b><br><span class="doc-list">graphemes: Extra data about each grapheme.</span>
 <span class="doc-list">grapheme_count: The number of graphemes in the string.</span>
-<span class="doc-list">rune_count: The number of runes in the string.</span></p>
+<span class="doc-list">rune_count: The number of runes in the string.</span>
+<span class="doc-list">width: The width of the string in number of monospace cells.</span></p>
 </details>
 </div>
 <div class="pkg-entity">
@@ -655,16 +657,17 @@ An invalid encoding is considered a full rune since it will convert as an error 
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="grapheme_count"><span><a class="doc-id-link" href="#grapheme_count">grapheme_count<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/unicode/utf8/grapheme.odin#L38"><em>Source</em></a></div></h3>
+<h3 id="grapheme_count"><span><a class="doc-id-link" href="#grapheme_count">grapheme_count<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/unicode/utf8/grapheme.odin#L41"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">grapheme_count :: <span class="keyword-type">proc</span>(str: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>) -> (graphemes, runes: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>) {…}</pre>
+<pre class="doc-code">grapheme_count :: <span class="keyword-type">proc</span>(str: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>) -> (graphemes, runes, width: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>) {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
 <p>Count the individual graphemes in a UTF-8 string.</p>
 <p><b>Inputs:</b><br><span class="doc-list">str: The input string.</span></p>
 <p><b>Returns:</b><br><span class="doc-list">graphemes: The number of graphemes in the string.</span>
-<span class="doc-list">runes: The number of runes in the string.</span></p>
+<span class="doc-list">runes: The number of runes in the string.</span>
+<span class="doc-list">width: The width of the string in number of monospace cells.</span></p>
 </details>
 </div>
 <div class="pkg-entity">
@@ -797,7 +800,7 @@ An invalid encoding is considered a full rune since it will convert as an error 
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/unicode/utf8/utf8.odin">utf8.odin</a></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2024-06 (vendor "odin") Windows_amd64 @ 2024-06-19 21:11:46.334757200 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2024-06 (vendor "odin") Windows_amd64 @ 2024-06-20 11:49:39.069566300 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
