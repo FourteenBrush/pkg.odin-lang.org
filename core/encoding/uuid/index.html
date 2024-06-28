@@ -1,0 +1,1189 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>package encoding/uuid - pkg.odin-lang.org</title>	<link rel="stylesheet" type="text/css" href="https://odin-lang.org/scss/custom.min.css">
+	<link rel=stylesheet href="//odin-lang.org/lib/highlight/styles/github-dark.min.css">
+	<script src="//odin-lang.org/lib/highlight/highlight.min.js"></script>
+
+	<script>hljs.registerLanguage("odin",function(a){return{aliases:["odin","odinlang","odin-lang"],keywords:{keyword:"auto_cast bit_set break case cast context continue defer distinct do dynamic else enum fallthrough for foreign if import in map not_in or_else or_return package proc return struct switch transmute type_of typeid union using when where",literal:"true false nil",built_in:"abs align_of cap clamp complex conj expand_to_tuple imag jmag kmag len max min offset_of quaternion real size_of soa_unzip soa_zip swizzle type_info_of type_of typeid_of"},illegal:"</",contains:[a.C_LINE_COMMENT_MODE,a.C_BLOCK_COMMENT_MODE,{className:"string",variants:[a.QUOTE_STRING_MODE,{begin:"'",end:"[^\\\\]'"},{begin:"`",end:"`"}]},{className:"number",variants:[{begin:a.C_NUMBER_RE+"[ijk]",relevance:1},a.C_NUMBER_MODE]}]}})</script>
+	<script>hljs.highlightAll()</script>
+	<script>
+		function toggleDarkMode() {
+			if (document.body.classList.toggle("dark-mode")) {
+				window.localStorage.setItem("theme", "dark");
+			} else {
+				window.localStorage.setItem("theme", "light");
+			}
+		}
+	</script>
+	<link rel="stylesheet" type="text/css" href="https://odin-lang.org/css/style.css">
+
+	<link rel="stylesheet" type="text/css" href="/style.css">
+
+	</style>
+</head>
+<body>
+<header class="sticky-top">
+	<nav class="navbar navbar-expand-lg navbar-dark bg-primary odin-menu">
+		<div class="container">
+			<a class="navbar-brand" href="https://odin-lang.org/">
+			<img src="https://odin-lang.org/logo.svg" height="30" alt="Odin"></a>
+			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#odin-navbar-content" aria-controls="odin-navbar-content" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+			<div class="collapse navbar-collapse" id="odin-navbar-content">
+			<ul class="navbar-nav ms-md-auto">
+				<li class="nav-item"><a class="nav-link" href="https://odin-lang.org/">Home</a></li>
+				<li class="nav-item"><a class="nav-link" href="https://odin-lang.org/docs">Docs</a></li>
+				<li class="nav-item"><a class="nav-link active" href="/">Packages</a></li>
+				<li class="nav-item"><a class="nav-link" href="https://odin-lang.org/news">News</a></li>
+				<li class="nav-item"><a class="nav-link" href="https://odin-lang.org/showcase">Showcase</a></li>
+				<li class="nav-item"><a class="nav-link" href="https://odin-lang.org/community">Community</a></li>
+				<li class="nav-item"><a class="nav-link" href="https://github.com/odin-lang/Odin" target="_blank">GitHub</a></li>
+				<li class="nav-item">
+					<a
+						class="nav-link btn-dark-mode"
+						onclick="toggleDarkMode();"
+						title="Toggle Light/Dark Mode"
+					>
+						<span class="dark-mode-appearance">Appearance:</span>
+						<svg fill="white" id="dark-mode-icon" viewBox="0 0 384 512"><path d="M223.5 32C100 32 0 132.3 0 256S100 480 223.5 480c60.6 0 115.5-24.2 155.8-63.4c5-4.9 6.3-12.5 3.1-18.7s-10.1-9.7-17-8.5c-9.8 1.7-19.8 2.6-30.1 2.6c-96.9 0-175.5-78.8-175.5-176c0-65.8 36-123.1 89.3-153.3c6.1-3.5 9.2-10.5 7.7-17.3s-7.3-11.9-14.3-12.5c-6.3-.5-12.6-.8-19-.8z"/></svg>
+						<svg fill="white" id="light-mode-icon" viewBox="0 0 16 16">
+						  <path d="M8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8M8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0m0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13m8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5M3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8m10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0m-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0m9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707M4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708"/>
+						</svg>
+					</button>
+					</a>
+				</li>
+			</ul>
+		</div>
+		</div>
+	</nav>
+</header>
+<main>
+<div class="container full-width">
+<div class="row odin-main my-4" id="pkg">
+<nav id="pkg-sidebar" class="col-lg-2 odin-sidebar-border navbar-light sticky-top odin-below-navbar">
+<div class="py-3">
+<h4><a style="text-transform: capitalize; color: inherit;" href="/core">core Library</a></h4>
+<ul>
+<li class="nav-item"><a href="/core/bufio">bufio</a></li>
+<li class="nav-item"><a href="/core/bytes">bytes</a></li>
+<li class="nav-item"><a href="/core/c">c</a><ul>
+<li><a href="/core/c/frontend/preprocessor">frontend/preprocessor</a></li>
+<li><a href="/core/c/frontend/tokenizer">frontend/tokenizer</a></li>
+<li><a href="/core/c/libc">libc</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/compress">compress</a><ul>
+<li><a href="/core/compress/gzip">gzip</a></li>
+<li><a href="/core/compress/shoco">shoco</a></li>
+<li><a href="/core/compress/zlib">zlib</a></li>
+</ul>
+
+</li>
+<li class="nav-item">container<ul>
+<li><a href="/core/container/avl">avl</a></li>
+<li><a href="/core/container/bit_array">bit_array</a></li>
+<li><a href="/core/container/intrusive/list">intrusive/list</a></li>
+<li><a href="/core/container/lru">lru</a></li>
+<li><a href="/core/container/priority_queue">priority_queue</a></li>
+<li><a href="/core/container/queue">queue</a></li>
+<li><a href="/core/container/rbtree">rbtree</a></li>
+<li><a href="/core/container/small_array">small_array</a></li>
+<li><a href="/core/container/topological_sort">topological_sort</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/crypto">crypto</a><ul>
+<li><a href="/core/crypto/aes">aes</a></li>
+<li><a href="/core/crypto/blake2b">blake2b</a></li>
+<li><a href="/core/crypto/blake2s">blake2s</a></li>
+<li><a href="/core/crypto/chacha20">chacha20</a></li>
+<li><a href="/core/crypto/chacha20poly1305">chacha20poly1305</a></li>
+<li><a href="/core/crypto/ed25519">ed25519</a></li>
+<li><a href="/core/crypto/hash">hash</a></li>
+<li><a href="/core/crypto/hkdf">hkdf</a></li>
+<li><a href="/core/crypto/hmac">hmac</a></li>
+<li><a href="/core/crypto/kmac">kmac</a></li>
+<li><a href="/core/crypto/legacy/keccak">legacy/keccak</a></li>
+<li><a href="/core/crypto/legacy/md5">legacy/md5</a></li>
+<li><a href="/core/crypto/legacy/sha1">legacy/sha1</a></li>
+<li><a href="/core/crypto/pbkdf2">pbkdf2</a></li>
+<li><a href="/core/crypto/poly1305">poly1305</a></li>
+<li><a href="/core/crypto/ristretto255">ristretto255</a></li>
+<li><a href="/core/crypto/sha2">sha2</a></li>
+<li><a href="/core/crypto/sha3">sha3</a></li>
+<li><a href="/core/crypto/shake">shake</a></li>
+<li><a href="/core/crypto/sm3">sm3</a></li>
+<li><a href="/core/crypto/tuplehash">tuplehash</a></li>
+<li><a href="/core/crypto/x25519">x25519</a></li>
+</ul>
+
+</li>
+<li class="nav-item">debug<ul>
+<li><a href="/core/debug/pe">pe</a></li>
+<li><a href="/core/debug/trace">trace</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/dynlib">dynlib</a></li>
+<li class="nav-item">encoding<ul>
+<li><a href="/core/encoding/ansi">ansi</a></li>
+<li><a href="/core/encoding/base32">base32</a></li>
+<li><a href="/core/encoding/base64">base64</a></li>
+<li><a href="/core/encoding/cbor">cbor</a></li>
+<li><a href="/core/encoding/csv">csv</a></li>
+<li><a href="/core/encoding/endian">endian</a></li>
+<li><a href="/core/encoding/entity">entity</a></li>
+<li><a href="/core/encoding/hex">hex</a></li>
+<li><a href="/core/encoding/hxa">hxa</a></li>
+<li><a href="/core/encoding/json">json</a></li>
+<li><a class="active" href="/core/encoding/uuid">uuid</a></li>
+<li><a href="/core/encoding/uuid/legacy">uuid/legacy</a></li>
+<li><a href="/core/encoding/varint">varint</a></li>
+<li><a href="/core/encoding/xml">xml</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/flags">flags</a></li>
+<li class="nav-item"><a href="/core/fmt">fmt</a></li>
+<li class="nav-item"><a href="/core/hash">hash</a><ul>
+<li><a href="/core/hash/xxhash">xxhash</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/image">image</a><ul>
+<li><a href="/core/image/bmp">bmp</a></li>
+<li><a href="/core/image/netpbm">netpbm</a></li>
+<li><a href="/core/image/png">png</a></li>
+<li><a href="/core/image/qoi">qoi</a></li>
+<li><a href="/core/image/tga">tga</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/io">io</a></li>
+<li class="nav-item"><a href="/core/log">log</a></li>
+<li class="nav-item"><a href="/core/math">math</a><ul>
+<li><a href="/core/math/big">big</a></li>
+<li><a href="/core/math/bits">bits</a></li>
+<li><a href="/core/math/cmplx">cmplx</a></li>
+<li><a href="/core/math/ease">ease</a></li>
+<li><a href="/core/math/fixed">fixed</a></li>
+<li><a href="/core/math/linalg">linalg</a></li>
+<li><a href="/core/math/linalg/glsl">linalg/glsl</a></li>
+<li><a href="/core/math/linalg/hlsl">linalg/hlsl</a></li>
+<li><a href="/core/math/noise">noise</a></li>
+<li><a href="/core/math/rand">rand</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/mem">mem</a><ul>
+<li><a href="/core/mem/tlsf">tlsf</a></li>
+<li><a href="/core/mem/virtual">virtual</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/net">net</a></li>
+<li class="nav-item">odin<ul>
+<li><a href="/core/odin/ast">ast</a></li>
+<li><a href="/core/odin/doc-format">doc-format</a></li>
+<li><a href="/core/odin/parser">parser</a></li>
+<li><a href="/core/odin/tokenizer">tokenizer</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/os">os</a></li>
+<li class="nav-item">path<ul>
+<li><a href="/core/path/filepath">filepath</a></li>
+<li><a href="/core/path/slashpath">slashpath</a></li>
+</ul>
+
+</li>
+<li class="nav-item">prof<ul>
+<li><a href="/core/prof/spall">spall</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/reflect">reflect</a></li>
+<li class="nav-item"><a href="/core/relative">relative</a></li>
+<li class="nav-item"><a href="/core/simd">simd</a></li>
+<li class="nav-item"><a href="/core/slice">slice</a><ul>
+<li><a href="/core/slice/heap">heap</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/sort">sort</a></li>
+<li class="nav-item"><a href="/core/strconv">strconv</a><ul>
+<li><a href="/core/strconv/decimal">decimal</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/strings">strings</a></li>
+<li class="nav-item"><a href="/core/sync">sync</a><ul>
+<li><a href="/core/sync/chan">chan</a></li>
+</ul>
+
+</li>
+<li class="nav-item">sys<ul>
+<li><a href="/core/sys/darwin">darwin</a></li>
+<li><a href="/core/sys/darwin/Foundation">darwin/Foundation</a></li>
+<li><a href="/core/sys/haiku">haiku</a></li>
+<li><a href="/core/sys/info">info</a></li>
+<li><a href="/core/sys/linux">linux</a></li>
+<li><a href="/core/sys/valgrind">valgrind</a></li>
+<li><a href="/core/sys/windows">windows</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/testing">testing</a></li>
+<li class="nav-item">text<ul>
+<li><a href="/core/text/edit">edit</a></li>
+<li><a href="/core/text/i18n">i18n</a></li>
+<li><a href="/core/text/match">match</a></li>
+<li><a href="/core/text/scanner">scanner</a></li>
+<li><a href="/core/text/table">table</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/thread">thread</a></li>
+<li class="nav-item"><a href="/core/time">time</a><ul>
+<li><a href="/core/time/datetime">datetime</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/unicode">unicode</a><ul>
+<li><a href="/core/unicode/utf16">utf16</a></li>
+<li><a href="/core/unicode/utf8">utf8</a></li>
+<li><a href="/core/unicode/utf8/utf8string">utf8/utf8string</a></li>
+</ul>
+
+</li>
+</ul>
+</div>
+</nav>
+<article class="col-lg-8 p-4 documentation odin-article">
+<nav class="pkg-breadcrumb" aria-label="breadcrumb">
+<ol class="breadcrumb">
+<li class="breadcrumb-item"><a href="/core">core</a></li>
+<li class="breadcrumb-item">encoding</li>
+<li class="breadcrumb-item active" aria-current="page"><a href="/core/encoding/uuid">uuid</a></li>
+</ol>
+</nav>
+<h1>package core:encoding/uuid<div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/uuid"><em>Source</em></a></div></h1>
+
+		<div class="odin-search-wrapper">
+			<input type="search" id="odin-search" class="odin-search-package" autocomplete="off" spellcheck="false" placeholder="Fuzzy Search...">
+			<div class="odin-search-shortcut">
+				<div class="odin-search-key key-macos">⌘K</div>
+				<div class="odin-search-key key-windows">Ctrl+K</div>
+				<span class="odin-search-or">or</span>
+				<div class="odin-search-key">/</div>
+			</div>
+		</div>
+	
+<div id="odin-search-info">
+<div id="odin-search-time"></div>
+
+		<div id="odin-search-options">
+			<input type="checkbox" id="odin-search-filter" name="odin-search-filter">
+			<label for="odin-search-filter">Filter Results</label>
+		</div>
+</div>
+<ul id="odin-search-results"></ul>
+<div id="pkg-top">
+<h2>Overview</h2>
+<div id="pkg-overview">
+<p>package uuid implements Universally Unique Identifiers according to the
+standard originally outlined in RFC 4122 with additions from RFC 9562.</p>
+<p>The UUIDs are textually represented and read in the following string format:
+<code>00000000-0000-v000-V000-000000000000</code></p>
+<p><code>v</code> is where the version bits reside, and <code>V</code> is where the variant bits reside.
+The meaning of the other bits is version-dependent.</p>
+<p>Outside of string representations, UUIDs are represented in memory by a 128-bit
+structure organized as an array of 16 bytes.</p>
+<p>Of the UUID versions which may make use of random number generation, a
+requirement is placed upon them that the underlying generator be
+cryptographically-secure, per RFC 9562's suggestion.</p>
+<p><span class="doc-list">Version 1 without a node argument.</span>
+<span class="doc-list">Version 4 in all cases.</span>
+<span class="doc-list">Version 6 without either a clock or node argument.</span>
+<span class="doc-list">Version 7 in all cases.</span></p>
+<p>Here's an example of how to set up one:</p>
+<pre>import "core:crypto"
+import "core:encoding/uuid"
+
+main :: proc() {
+	my_uuid: uuid.Identifier
+
+	{
+		// This scope will have a CSPRNG.
+		context.random_generator = crypto.random_generator()
+		my_uuid = uuid.generate_v7()
+	}
+
+	// Back to the default random number generator.
+}
+
+
+</pre>
+<p>For more information on the specifications, see here:
+<span class="doc-list">https://www.rfc-editor.org/rfc/rfc4122.html</span>
+<span class="doc-list">https://www.rfc-editor.org/rfc/rfc9562.html</span></p>
+</div>
+<div id="pkg-index">
+<h2>Index</h2>
+<div>
+<details class="doc-index" id="doc-index-Types" aria-labelledby="#doc-index-Types-header">
+<summary id="#doc-index-Types-header">
+Types (3)</summary>
+<ul>
+<li><a href="#Identifier">Identifier</a></li>
+<li><a href="#Read_Error">Read_Error</a></li>
+<li><a href="#Variant_Type">Variant_Type</a></li>
+</ul>
+</details>
+</div>
+<div>
+<details class="doc-index" id="doc-index-Constants" aria-labelledby="#doc-index-Constants-header">
+<summary id="#doc-index-Constants-header">
+Constants (8)</summary>
+<ul>
+<li><a href="#EXPECTED_LENGTH">EXPECTED_LENGTH</a></li>
+<li><a href="#HNS_INTERVALS_BETWEEN_GREG_AND_UNIX">HNS_INTERVALS_BETWEEN_GREG_AND_UNIX</a></li>
+<li><a href="#VARIANT_BYTE_INDEX">VARIANT_BYTE_INDEX</a></li>
+<li><a href="#VERSION_7_COUNTER_MASK">VERSION_7_COUNTER_MASK</a></li>
+<li><a href="#VERSION_7_COUNTER_SHIFT">VERSION_7_COUNTER_SHIFT</a></li>
+<li><a href="#VERSION_7_TIME_MASK">VERSION_7_TIME_MASK</a></li>
+<li><a href="#VERSION_7_TIME_SHIFT">VERSION_7_TIME_SHIFT</a></li>
+<li><a href="#VERSION_BYTE_INDEX">VERSION_BYTE_INDEX</a></li>
+</ul>
+</details>
+</div>
+<div>
+<details class="doc-index" id="doc-index-Variables" aria-labelledby="#doc-index-Variables-header">
+<summary id="#doc-index-Variables-header">
+Variables (4)</summary>
+<ul>
+<li><a href="#Namespace_DNS">Namespace_DNS</a></li>
+<li><a href="#Namespace_OID">Namespace_OID</a></li>
+<li><a href="#Namespace_URL">Namespace_URL</a></li>
+<li><a href="#Namespace_X500">Namespace_X500</a></li>
+</ul>
+</details>
+</div>
+<div>
+<details class="doc-index" id="doc-index-Procedures" aria-labelledby="#doc-index-Procedures-header">
+<summary id="#doc-index-Procedures-header">
+Procedures (26)</summary>
+<ul>
+<li><a href="#clock_seq">clock_seq</a></li>
+<li><a href="#counter_v7">counter_v7</a></li>
+<li><a href="#generate_v1">generate_v1</a></li>
+<li><a href="#generate_v4">generate_v4</a></li>
+<li><a href="#generate_v6">generate_v6</a></li>
+<li><a href="#generate_v7_basic">generate_v7_basic</a></li>
+<li><a href="#generate_v7_with_counter">generate_v7_with_counter</a></li>
+<li><a href="#generate_v8_hash_bytes">generate_v8_hash_bytes</a></li>
+<li><a href="#generate_v8_hash_string">generate_v8_hash_string</a></li>
+<li><a href="#node">node</a></li>
+<li><a href="#raw_time_v1">raw_time_v1</a></li>
+<li><a href="#raw_time_v6">raw_time_v6</a></li>
+<li><a href="#raw_time_v7">raw_time_v7</a></li>
+<li><a href="#read">read</a></li>
+<li><a href="#stamp_v8_array">stamp_v8_array</a></li>
+<li><a href="#stamp_v8_int">stamp_v8_int</a></li>
+<li><a href="#stamp_v8_slice">stamp_v8_slice</a></li>
+<li><a href="#time_v1">time_v1</a></li>
+<li><a href="#time_v6">time_v6</a></li>
+<li><a href="#time_v7">time_v7</a></li>
+<li><a href="#to_string_allocated">to_string_allocated</a></li>
+<li><a href="#to_string_buffer">to_string_buffer</a></li>
+<li><a href="#unsafe_write">unsafe_write</a></li>
+<li><a href="#variant">variant</a></li>
+<li><a href="#version">version</a></li>
+<li><a href="#write">write</a></li>
+</ul>
+</details>
+</div>
+<div>
+<details class="doc-index" id="doc-index-Procedure Groups" aria-labelledby="#doc-index-Procedure Groups-header">
+<summary id="#doc-index-Procedure Groups-header">
+Procedure Groups (4)</summary>
+<ul>
+<li><a href="#generate_v7">generate_v7</a></li>
+<li><a href="#generate_v8_hash">generate_v8_hash</a></li>
+<li><a href="#stamp_v8">stamp_v8</a></li>
+<li><a href="#to_string">to_string</a></li>
+</ul>
+</details>
+</div>
+</div>
+</div>
+<section class="documentation">
+<h2 id="pkg-Types" class="pkg-header">Types</h2>
+<div class="pkg-entity">
+<h3 id="Identifier"><span><a class="doc-id-link" href="#Identifier">Identifier<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/uuid/definitions.odin#L4"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Identifier :: <span class="keyword-type">distinct</span> [16]<a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a></pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>A RFC 4122 Universally Unique Identifier</p>
+</details>
+<h5>Related Procedures With Parameters</h5>
+<ul>
+<li><a href="/core/encoding/uuid/#clock_seq">clock_seq</a></li>
+<li><a href="/core/encoding/uuid/#counter_v7">counter_v7</a></li>
+<li><a href="/core/encoding/uuid/#generate_v8_hash_bytes">generate_v8_hash_bytes</a></li>
+<li><a href="/core/encoding/uuid/#generate_v8_hash_string">generate_v8_hash_string</a></li>
+<li><a href="/core/encoding/uuid/#node">node</a></li>
+<li><a href="/core/encoding/uuid/#raw_time_v1">raw_time_v1</a></li>
+<li><a href="/core/encoding/uuid/#raw_time_v6">raw_time_v6</a></li>
+<li><a href="/core/encoding/uuid/#raw_time_v7">raw_time_v7</a></li>
+<li><a href="/core/encoding/uuid/#time_v1">time_v1</a></li>
+<li><a href="/core/encoding/uuid/#time_v6">time_v6</a></li>
+<li><a href="/core/encoding/uuid/#time_v7">time_v7</a></li>
+<li><a href="/core/encoding/uuid/#to_string_allocated">to_string_allocated</a></li>
+<li><a href="/core/encoding/uuid/#to_string_buffer">to_string_buffer</a></li>
+<li><a href="/core/encoding/uuid/#unsafe_write">unsafe_write</a></li>
+<li><a href="/core/encoding/uuid/#variant">variant</a></li>
+<li><a href="/core/encoding/uuid/#version">version</a></li>
+<li><a href="/core/encoding/uuid/#write">write</a></li>
+<li><a href="/core/encoding/uuid/#generate_v8_hash">generate_v8_hash</a>&nbsp;<em>(procedure groups)</em></li>
+<li><a href="/core/encoding/uuid/#to_string">to_string</a>&nbsp;<em>(procedure groups)</em></li>
+</ul>
+<h5>Related Procedures With Returns</h5>
+<ul>
+<li><a href="/core/encoding/uuid/#generate_v1">generate_v1</a></li>
+<li><a href="/core/encoding/uuid/#generate_v4">generate_v4</a></li>
+<li><a href="/core/encoding/uuid/#generate_v6">generate_v6</a></li>
+<li><a href="/core/encoding/uuid/#generate_v7_basic">generate_v7_basic</a></li>
+<li><a href="/core/encoding/uuid/#generate_v7_with_counter">generate_v7_with_counter</a></li>
+<li><a href="/core/encoding/uuid/#read">read</a></li>
+<li><a href="/core/encoding/uuid/#stamp_v8_array">stamp_v8_array</a></li>
+<li><a href="/core/encoding/uuid/#stamp_v8_int">stamp_v8_int</a></li>
+<li><a href="/core/encoding/uuid/#stamp_v8_slice">stamp_v8_slice</a></li>
+<li><a href="/core/encoding/uuid/#generate_v7">generate_v7</a>&nbsp;<em>(procedure groups)</em></li>
+<li><a href="/core/encoding/uuid/#stamp_v8">stamp_v8</a>&nbsp;<em>(procedure groups)</em></li>
+</ul>
+</div>
+<div class="pkg-entity">
+<h3 id="Read_Error"><span><a class="doc-id-link" href="#Read_Error">Read_Error<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/uuid/definitions.odin#L26"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Read_Error :: <span class="keyword-type">enum</span> <a href="/base/builtin#int"><span class="doc-builtin">int</span></a> {
+	None, 
+	Invalid_Length, 
+	Invalid_Hexadecimal, 
+	Invalid_Separator, 
+}</pre>
+</div>
+<h5>Related Procedures With Returns</h5>
+<ul>
+<li><a href="/core/encoding/uuid/#read">read</a></li>
+</ul>
+</div>
+<div class="pkg-entity">
+<h3 id="Variant_Type"><span><a class="doc-id-link" href="#Variant_Type">Variant_Type<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/uuid/definitions.odin#L33"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Variant_Type :: <span class="keyword-type">enum</span> <a href="/base/builtin#int"><span class="doc-builtin">int</span></a> {
+	Unknown, 
+	Reserved_Apollo_NCS,    <span class="comment">// 0b0xx</span>
+	RFC_4122,               <span class="comment">// 0b10x</span>
+	Reserved_Microsoft_COM, <span class="comment">// 0b110</span>
+	Reserved_Future,        <span class="comment">// 0b111</span>
+}</pre>
+</div>
+<h5>Related Procedures With Returns</h5>
+<ul>
+<li><a href="/core/encoding/uuid/#variant">variant</a></li>
+</ul>
+</div>
+<h2 id="pkg-Constants" class="pkg-header">Constants</h2>
+<div class="pkg-entity">
+<h3 id="EXPECTED_LENGTH"><span><a class="doc-id-link" href="#EXPECTED_LENGTH">EXPECTED_LENGTH<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/uuid/definitions.odin#L6"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">EXPECTED_LENGTH :: 8 + 4 + 4 + 4 + 12 + 4</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="HNS_INTERVALS_BETWEEN_GREG_AND_UNIX"><span><a class="doc-id-link" href="#HNS_INTERVALS_BETWEEN_GREG_AND_UNIX">HNS_INTERVALS_BETWEEN_GREG_AND_UNIX<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/uuid/definitions.odin#L12"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">HNS_INTERVALS_BETWEEN_GREG_AND_UNIX :: 141427 * 24 * 60 * 60 * 1000 * 1000 * 10</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>The number of 100-nanosecond intervals between 1582-10-15 and 1970-01-01.</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="VARIANT_BYTE_INDEX"><span><a class="doc-id-link" href="#VARIANT_BYTE_INDEX">VARIANT_BYTE_INDEX<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/uuid/definitions.odin#L9"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">VARIANT_BYTE_INDEX :: 8</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="VERSION_7_COUNTER_MASK"><span><a class="doc-id-link" href="#VERSION_7_COUNTER_MASK">VERSION_7_COUNTER_MASK<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/uuid/definitions.odin#L16"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">VERSION_7_COUNTER_MASK :: 0x00000000_00000fff_00000000_00000000</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="VERSION_7_COUNTER_SHIFT"><span><a class="doc-id-link" href="#VERSION_7_COUNTER_SHIFT">VERSION_7_COUNTER_SHIFT<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/uuid/definitions.odin#L17"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">VERSION_7_COUNTER_SHIFT :: 64</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="VERSION_7_TIME_MASK"><span><a class="doc-id-link" href="#VERSION_7_TIME_MASK">VERSION_7_TIME_MASK<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/uuid/definitions.odin#L14"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">VERSION_7_TIME_MASK :: 0xffffffff_ffff0000_00000000_00000000</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="VERSION_7_TIME_SHIFT"><span><a class="doc-id-link" href="#VERSION_7_TIME_SHIFT">VERSION_7_TIME_SHIFT<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/uuid/definitions.odin#L15"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">VERSION_7_TIME_SHIFT :: 80</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="VERSION_BYTE_INDEX"><span><a class="doc-id-link" href="#VERSION_BYTE_INDEX">VERSION_BYTE_INDEX<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/uuid/definitions.odin#L8"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">VERSION_BYTE_INDEX :: 6</pre>
+</div>
+</div>
+<h2 id="pkg-Variables" class="pkg-header">Variables</h2>
+<div class="pkg-entity">
+<h3 id="Namespace_DNS"><span><a class="doc-id-link" href="#Namespace_DNS">Namespace_DNS<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/uuid/definitions.odin#L43"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">@(rodata)
+Namespace_DNS: <a class="code-typename" href="/core/encoding/uuid/#Identifier">Identifier</a> = …</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Name string is a fully-qualified domain name.</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="Namespace_OID"><span><a class="doc-id-link" href="#Namespace_OID">Namespace_OID<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/uuid/definitions.odin#L57"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">@(rodata)
+Namespace_OID: <a class="code-typename" href="/core/encoding/uuid/#Identifier">Identifier</a> = …</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Name string is an ISO OID.</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="Namespace_URL"><span><a class="doc-id-link" href="#Namespace_URL">Namespace_URL<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/uuid/definitions.odin#L50"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">@(rodata)
+Namespace_URL: <a class="code-typename" href="/core/encoding/uuid/#Identifier">Identifier</a> = …</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Name string is a URL.</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="Namespace_X500"><span><a class="doc-id-link" href="#Namespace_X500">Namespace_X500<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/uuid/definitions.odin#L64"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">@(rodata)
+Namespace_X500: <a class="code-typename" href="/core/encoding/uuid/#Identifier">Identifier</a> = …</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Name string is an X.500 DN (in DER or a text output format).</p>
+</details>
+</div>
+<h2 id="pkg-Procedures" class="pkg-header">Procedures</h2>
+<div class="pkg-entity">
+<h3 id="clock_seq"><span><a class="doc-id-link" href="#clock_seq">clock_seq<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/uuid/reading.odin#L111"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">clock_seq :: <span class="keyword-type">proc</span> "contextless" (id: <a class="code-typename" href="/core/encoding/uuid/#Identifier">Identifier</a>) -> (clock_seq: <a href="/base/builtin#u16"><span class="doc-builtin">u16</span></a>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Get the clock sequence of a version 1 or version 6 UUID.</p>
+<p><b>Inputs:</b><br><span class="doc-list">id: The identifier.</span></p>
+<p><b>Returns:</b><br><span class="doc-list">clock_seq: The 14-bit clock sequence field.</span></p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="counter_v7"><span><a class="doc-id-link" href="#counter_v7">counter_v7<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/uuid/reading.odin#L239"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">counter_v7 :: <span class="keyword-type">proc</span> "contextless" (id: <a class="code-typename" href="/core/encoding/uuid/#Identifier">Identifier</a>) -> (counter: <a href="/base/builtin#u16"><span class="doc-builtin">u16</span></a>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Get the 12-bit counter value of a version 7 UUID.</p>
+<p>The UUID must have been generated with a counter, otherwise this procedure will
+return random bits.</p>
+<p><b>Inputs:</b><br><span class="doc-list">id: The identifier.</span></p>
+<p><b>Returns:</b><br><span class="doc-list">counter: The 12-bit counter value.</span></p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="generate_v1"><span><a class="doc-id-link" href="#generate_v1">generate_v1<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/uuid/generation.odin#L20"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">generate_v1 :: <span class="keyword-type">proc</span>(clock_seq: <a href="/base/builtin#u16"><span class="doc-builtin">u16</span></a>, node: runtime.<a class="code-typename" href="/base/runtime/#Maybe">Maybe</a>($T) = nil, timestamp: runtime.<a class="code-typename" href="/base/runtime/#Maybe">Maybe</a>($T) = nil) -> (result: <a class="code-typename" href="/core/encoding/uuid/#Identifier">Identifier</a>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Generate a version 1 UUID.</p>
+<p><b>Inputs:</b><br><span class="doc-list">clock_seq: The clock sequence, a number which must be initialized to a random number once in the lifetime of a system.</span>
+<span class="doc-list">node: An optional 48-bit spatially unique identifier, specified to be the IEEE 802 address of the system.</span>
+  If one is not provided or available, 48 bits of random state will take its place.
+<span class="doc-list">timestamp: A timestamp from the <code>core:time</code> package, or <code>nil</code> to use the current time.</span></p>
+<p><b>Returns:</b><br><span class="doc-list">result: The generated UUID.</span></p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="generate_v4"><span><a class="doc-id-link" href="#generate_v4">generate_v4<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/uuid/generation.odin#L63"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">generate_v4 :: <span class="keyword-type">proc</span>() -> (result: <a class="code-typename" href="/core/encoding/uuid/#Identifier">Identifier</a>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Generate a version 4 UUID.</p>
+<p>This UUID will be pseudorandom, save for 6 pre-determined version and variant bits.</p>
+<p><b>Returns:</b><br><span class="doc-list">result: The generated UUID.</span></p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="generate_v6"><span><a class="doc-id-link" href="#generate_v6">generate_v6<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/uuid/generation.odin#L90"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">generate_v6 :: <span class="keyword-type">proc</span>(clock_seq: runtime.<a class="code-typename" href="/base/runtime/#Maybe">Maybe</a>($T) = nil, node: runtime.<a class="code-typename" href="/base/runtime/#Maybe">Maybe</a>($T) = nil, timestamp: runtime.<a class="code-typename" href="/base/runtime/#Maybe">Maybe</a>($T) = nil) -> (result: <a class="code-typename" href="/core/encoding/uuid/#Identifier">Identifier</a>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Generate a version 6 UUID.</p>
+<p><b>Inputs:</b><br><span class="doc-list">clock_seq: The clock sequence from version 1, now made optional.</span>
+  If unspecified, it will be replaced with random bits.
+<span class="doc-list">node: An optional 48-bit spatially unique identifier, specified to be the IEEE 802 address of the system.</span>
+  If one is not provided or available, 48 bits of random state will take its place.
+<span class="doc-list">timestamp: A timestamp from the <code>core:time</code> package, or <code>nil</code> to use the current time.</span></p>
+<p><b>Returns:</b><br><span class="doc-list">result: The generated UUID.</span></p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="generate_v7_basic"><span><a class="doc-id-link" href="#generate_v7_basic">generate_v7_basic<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/uuid/generation.odin#L143"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">generate_v7_basic :: <span class="keyword-type">proc</span>(timestamp: runtime.<a class="code-typename" href="/base/runtime/#Maybe">Maybe</a>($T) = nil) -> (result: <a class="code-typename" href="/core/encoding/uuid/#Identifier">Identifier</a>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Generate a version 7 UUID.</p>
+<p>This UUID will be pseudorandom, save for 6 pre-determined version and variant
+bits and a 48-bit timestamp.</p>
+<p>It is designed with time-based sorting in mind, such as for database usage, as
+the highest bits are allocated from the timestamp of when it is created.</p>
+<p><b>Inputs:</b><br><span class="doc-list">timestamp: A timestamp from the <code>core:time</code> package, or <code>nil</code> to use the current time.</span></p>
+<p><b>Returns:</b><br><span class="doc-list">result: The generated UUID.</span></p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="generate_v7_with_counter"><span><a class="doc-id-link" href="#generate_v7_with_counter">generate_v7_with_counter<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/uuid/generation.odin#L193"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">generate_v7_with_counter :: <span class="keyword-type">proc</span>(counter: <a href="/base/builtin#u16"><span class="doc-builtin">u16</span></a>, timestamp: runtime.<a class="code-typename" href="/base/runtime/#Maybe">Maybe</a>($T) = nil) -> (result: <a class="code-typename" href="/core/encoding/uuid/#Identifier">Identifier</a>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Generate a version 7 UUID that has an incremented counter.</p>
+<p>This UUID will be pseudorandom, save for 6 pre-determined version and variant
+bits, a 48-bit timestamp, and 12 bits of counter state.</p>
+<p>It is designed with time-based sorting in mind, such as for database usage, as
+the highest bits are allocated from the timestamp of when it is created.</p>
+<p>This procedure is preferable if you are generating hundreds or thousands of
+UUIDs as a batch within the span of a millisecond. Do note that the counter
+only has 12 bits of state, thus <code>counter</code> cannot exceed the number 4,095.</p>
+<p><b>Inputs:</b><br><span class="doc-list">counter: A 12-bit value which should be incremented each time a UUID is generated in a batch.</span>
+<span class="doc-list">timestamp: A timestamp from the <code>core:time</code> package, or <code>nil</code> to use the current time.</span></p>
+<p><b>Returns:</b><br><span class="doc-list">result: The generated UUID.</span></p>
+<details open class="code-example">
+<summary><b>Example:</b></summary>
+<pre><code class="hljs language-odin" data-lang="odin">import "core:uuid"
+
+// Create a batch of UUIDs all at once.
+batch: [dynamic]uuid.Identifier
+
+for i: u16 = 0; i &lt; 1000; i += 1 {
+	my_uuid := uuid.generate_v7_counter(i)
+	append(&batch, my_uuid)
+}
+</code></pre>
+</details>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="generate_v8_hash_bytes"><span><a class="doc-id-link" href="#generate_v8_hash_bytes">generate_v8_hash_bytes<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/uuid/generation.odin#L254"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">generate_v8_hash_bytes :: <span class="keyword-type">proc</span>(namespace: <a class="code-typename" href="/core/encoding/uuid/#Identifier">Identifier</a>, name: []<a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a>, algorithm: crypto_hash.<a class="code-typename" href="/core/crypto/hash/#Algorithm">Algorithm</a>) -> (result: <a class="code-typename" href="/core/encoding/uuid/#Identifier">Identifier</a>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Generate a version 8 UUID using a specific hashing algorithm.</p>
+<p>This UUID is generated by hashing a name with a namespace.</p>
+<p>Note that all version 8 UUIDs are for experimental or vendor-specific use
+cases, per the specification. This use case in particular is for offering a
+non-legacy alternative to UUID versions 3 and 5.</p>
+<p><b>Inputs:</b><br><span class="doc-list">namespace: An <code>Identifier</code> that is used to represent the underlying namespace.</span>
+  This can be any one of the <code>Namespace_*</code> values provided in this package.
+<span class="doc-list">name: The byte slice which will be hashed with the namespace.</span>
+<span class="doc-list">algorithm: A hashing algorithm from <code>core:crypto/hash</code>.</span></p>
+<p><b>Returns:</b><br><span class="doc-list">result: The generated UUID.</span></p>
+<details open class="code-example">
+<summary><b>Example:</b></summary>
+<pre><code class="hljs language-odin" data-lang="odin">import "core:crypto/hash"
+import "core:encoding/uuid"
+import "core:fmt"
+
+main :: proc() {
+	my_uuid := uuid.generate_v8_hash(uuid.Namespace_DNS, "www.odin-lang.org", .SHA256)
+	my_uuid_string := uuid.to_string(my_uuid, context.temp_allocator)
+	fmt.println(my_uuid_string)
+}
+</code></pre>
+<b>Output:</b>
+<pre class="doc-code">3730f688-4bff-8dce-9cbf-74a3960c5703
+</pre>
+</details>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="generate_v8_hash_string"><span><a class="doc-id-link" href="#generate_v8_hash_string">generate_v8_hash_string<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/uuid/generation.odin#L320"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">generate_v8_hash_string :: <span class="keyword-type">proc</span>(namespace: <a class="code-typename" href="/core/encoding/uuid/#Identifier">Identifier</a>, name: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>, algorithm: crypto_hash.<a class="code-typename" href="/core/crypto/hash/#Algorithm">Algorithm</a>) -> (result: <a class="code-typename" href="/core/encoding/uuid/#Identifier">Identifier</a>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Generate a version 8 UUID using a specific hashing algorithm.</p>
+<p>This UUID is generated by hashing a name with a namespace.</p>
+<p>Note that all version 8 UUIDs are for experimental or vendor-specific use
+cases, per the specification. This use case in particular is for offering a
+non-legacy alternative to UUID versions 3 and 5.</p>
+<p><b>Inputs:</b><br><span class="doc-list">namespace: An <code>Identifier</code> that is used to represent the underlying namespace.</span>
+  This can be any one of the <code>Namespace_*</code> values provided in this package.
+<span class="doc-list">name: The string which will be hashed with the namespace.</span>
+<span class="doc-list">algorithm: A hashing algorithm from <code>core:crypto/hash</code>.</span></p>
+<p><b>Returns:</b><br><span class="doc-list">result: The generated UUID.</span></p>
+<details open class="code-example">
+<summary><b>Example:</b></summary>
+<pre><code class="hljs language-odin" data-lang="odin">import "core:crypto/hash"
+import "core:encoding/uuid"
+import "core:fmt"
+
+main :: proc() {
+	my_uuid := uuid.generate_v8_hash(uuid.Namespace_DNS, "www.odin-lang.org", .SHA256)
+	my_uuid_string := uuid.to_string(my_uuid, context.temp_allocator)
+	fmt.println(my_uuid_string)
+}
+</code></pre>
+<b>Output:</b>
+<pre class="doc-code">3730f688-4bff-8dce-9cbf-74a3960c5703
+</pre>
+</details>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="node"><span><a class="doc-id-link" href="#node">node<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/uuid/reading.odin#L124"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">node :: <span class="keyword-type">proc</span> "contextless" (id: <a class="code-typename" href="/core/encoding/uuid/#Identifier">Identifier</a>) -> (node: [6]<a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Get the node of a version 1 or version 6 UUID.</p>
+<p><b>Inputs:</b><br><span class="doc-list">id: The identifier.</span></p>
+<p><b>Returns:</b><br><span class="doc-list">node: The 48-bit spatially unique identifier.</span></p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="raw_time_v1"><span><a class="doc-id-link" href="#raw_time_v1">raw_time_v1<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/uuid/reading.odin#L139"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">raw_time_v1 :: <span class="keyword-type">proc</span> "contextless" (id: <a class="code-typename" href="/core/encoding/uuid/#Identifier">Identifier</a>) -> (timestamp: <a href="/base/builtin#u64"><span class="doc-builtin">u64</span></a>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Get the raw timestamp of a version 1 UUID.</p>
+<p><b>Inputs:</b><br><span class="doc-list">id: The identifier.</span></p>
+<p><b>Returns:</b><br><span class="doc-list">timestamp: The timestamp, in 100-nanosecond intervals since 1582-10-15.</span></p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="raw_time_v6"><span><a class="doc-id-link" href="#raw_time_v6">raw_time_v6<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/uuid/reading.odin#L178"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">raw_time_v6 :: <span class="keyword-type">proc</span> "contextless" (id: <a class="code-typename" href="/core/encoding/uuid/#Identifier">Identifier</a>) -> (timestamp: <a href="/base/builtin#u64"><span class="doc-builtin">u64</span></a>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Get the raw timestamp of a version 6 UUID.</p>
+<p><b>Inputs:</b><br><span class="doc-list">id: The identifier.</span></p>
+<p><b>Returns:</b><br><span class="doc-list">timestamp: The timestamp, in 100-nanosecond intervals since 1582-10-15.</span></p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="raw_time_v7"><span><a class="doc-id-link" href="#raw_time_v7">raw_time_v7<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/uuid/reading.odin#L209"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">raw_time_v7 :: <span class="keyword-type">proc</span> "contextless" (id: <a class="code-typename" href="/core/encoding/uuid/#Identifier">Identifier</a>) -> (timestamp: <a href="/base/builtin#u64"><span class="doc-builtin">u64</span></a>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Get the raw timestamp of a version 7 UUID.</p>
+<p><b>Inputs:</b><br><span class="doc-list">id: The identifier.</span></p>
+<p><b>Returns:</b><br><span class="doc-list">timestamp: The timestamp, in milliseconds since the UNIX epoch.</span></p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="read"><span><a class="doc-id-link" href="#read">read<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/uuid/reading.odin#L16"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">read :: <span class="keyword-type">proc</span> "contextless" (str: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>) -> (id: <a class="code-typename" href="/core/encoding/uuid/#Identifier">Identifier</a>, error: <a class="code-typename" href="/core/encoding/uuid/#Read_Error">Read_Error</a>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Convert a string to a UUID.</p>
+<p><b>Inputs:</b><br><span class="doc-list">str: A string in the 8-4-4-4-12 format.</span></p>
+<p><b>Returns:</b><br><span class="doc-list">id: The converted identifier, or <code>nil</code> if there is an error.</span>
+<span class="doc-list">error: A description of the error, or <code>nil</code> if successful.</span></p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="stamp_v8_array"><span><a class="doc-id-link" href="#stamp_v8_array">stamp_v8_array<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/uuid/stamping.odin#L43"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">stamp_v8_array :: <span class="keyword-type">proc</span>(array: [16]<a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a>) -> (result: <a class="code-typename" href="/core/encoding/uuid/#Identifier">Identifier</a>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Stamp an array of 16 bytes as being a valid version 8 UUID.</p>
+<p>Per the specification, all version 8 UUIDs are either for experimental or
+vendor-specific purposes. This procedure allows for converting arbitrary data
+into custom UUIDs.</p>
+<p><b>Inputs:</b><br><span class="doc-list">array: An array of 16 bytes.</span></p>
+<p><b>Returns:</b><br><span class="doc-list">result: A valid version 8 UUID.</span></p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="stamp_v8_int"><span><a class="doc-id-link" href="#stamp_v8_int">stamp_v8_int<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/uuid/stamping.odin#L18"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">stamp_v8_int :: <span class="keyword-type">proc</span>(<span class="keyword-type">#any_int</span> integer: <a href="/base/builtin#u128"><span class="doc-builtin">u128</span></a>) -> (result: <a class="code-typename" href="/core/encoding/uuid/#Identifier">Identifier</a>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Stamp a 128-bit integer as being a valid version 8 UUID.</p>
+<p>Per the specification, all version 8 UUIDs are either for experimental or
+vendor-specific purposes. This procedure allows for converting arbitrary data
+into custom UUIDs.</p>
+<p><b>Inputs:</b><br><span class="doc-list">integer: Any integer type.</span></p>
+<p><b>Returns:</b><br><span class="doc-list">result: A valid version 8 UUID.</span></p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="stamp_v8_slice"><span><a class="doc-id-link" href="#stamp_v8_slice">stamp_v8_slice<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/uuid/stamping.odin#L73"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">stamp_v8_slice :: <span class="keyword-type">proc</span>(slice: []<a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a>) -> (result: <a class="code-typename" href="/core/encoding/uuid/#Identifier">Identifier</a>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Stamp a slice of bytes as being a valid version 8 UUID.</p>
+<p>If the slice is less than 16 bytes long, the data available will be used.
+If it is longer than 16 bytes, only the first 16 will be used.</p>
+<p>This procedure does not modify the underlying slice.</p>
+<p>Per the specification, all version 8 UUIDs are either for experimental or
+vendor-specific purposes. This procedure allows for converting arbitrary data
+into custom UUIDs.</p>
+<p><b>Inputs:</b><br><span class="doc-list">slice: A slice of bytes.</span></p>
+<p><b>Returns:</b><br><span class="doc-list">result: A valid version 8 UUID.</span></p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="time_v1"><span><a class="doc-id-link" href="#time_v1">time_v1<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/uuid/reading.odin#L165"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">time_v1 :: <span class="keyword-type">proc</span> "contextless" (id: <a class="code-typename" href="/core/encoding/uuid/#Identifier">Identifier</a>) -> (timestamp: time.<a class="code-typename" href="/core/time/#Time">Time</a>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Get the timestamp of a version 1 UUID.</p>
+<p><b>Inputs:</b><br><span class="doc-list">id: The identifier.</span></p>
+<p><b>Returns:</b><br><span class="doc-list">timestamp: The timestamp of the UUID.</span></p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="time_v6"><span><a class="doc-id-link" href="#time_v6">time_v6<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/uuid/reading.odin#L196"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">time_v6 :: <span class="keyword-type">proc</span> "contextless" (id: <a class="code-typename" href="/core/encoding/uuid/#Identifier">Identifier</a>) -> (timestamp: time.<a class="code-typename" href="/core/time/#Time">Time</a>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Get the timestamp of a version 6 UUID.</p>
+<p><b>Inputs:</b><br><span class="doc-list">id: The identifier.</span></p>
+<p><b>Returns:</b><br><span class="doc-list">timestamp: The timestamp, in 100-nanosecond intervals since 1582-10-15.</span></p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="time_v7"><span><a class="doc-id-link" href="#time_v7">time_v7<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/uuid/reading.odin#L223"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">time_v7 :: <span class="keyword-type">proc</span> "contextless" (id: <a class="code-typename" href="/core/encoding/uuid/#Identifier">Identifier</a>) -> (timestamp: time.<a class="code-typename" href="/core/time/#Time">Time</a>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Get the timestamp of a version 7 UUID.</p>
+<p><b>Inputs:</b><br><span class="doc-list">id: The identifier.</span></p>
+<p><b>Returns:</b><br><span class="doc-list">timestamp: The timestamp, in milliseconds since the UNIX epoch.</span></p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="to_string_allocated"><span><a class="doc-id-link" href="#to_string_allocated">to_string_allocated<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/uuid/writing.odin#L90"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">to_string_allocated :: <span class="keyword-type">proc</span>(id: <a class="code-typename" href="/core/encoding/uuid/#Identifier">Identifier</a>, allocator := <a href="/base/runtime/#Context">context.allocator</a>, loc := <a href="/base/runtime/#Source_Code_Location">#caller_location</a>) -> (str: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>, error: runtime.<a class="code-typename" href="/base/runtime/#Allocator_Error">Allocator_Error</a>) <span class="directive">#optional_ok</span> {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Convert a UUID to a string in the 8-4-4-4-12 format.</p>
+<p><i>Allocates Using Provided Allocator</i></p>
+<p><b>Inputs:</b><br><span class="doc-list">id: The identifier to convert.</span>
+<span class="doc-list">allocator: (default: context.allocator)</span>
+<span class="doc-list">loc: The caller location for debugging purposes (default: #caller_location)</span></p>
+<p><b>Returns:</b><br><span class="doc-list">str: The allocated and converted string.</span>
+<span class="doc-list">error: An optional allocator error if one occured, <code>nil</code> otherwise.</span></p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="to_string_buffer"><span><a class="doc-id-link" href="#to_string_buffer">to_string_buffer<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/uuid/writing.odin#L115"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">to_string_buffer :: <span class="keyword-type">proc</span>(id: <a class="code-typename" href="/core/encoding/uuid/#Identifier">Identifier</a>, buffer: []<a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a>, loc := <a href="/base/runtime/#Source_Code_Location">#caller_location</a>) -> (str: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Convert a UUID to a string in the 8-4-4-4-12 format.</p>
+<p><b>Inputs:</b><br><span class="doc-list">id: The identifier to convert.</span>
+<span class="doc-list">buffer: A byte buffer to store the result. Must be at least 32 bytes large.</span>
+<span class="doc-list">loc: The caller location for debugging purposes (default: #caller_location)</span></p>
+<p><b>Returns:</b><br><span class="doc-list">str: The converted string which will be stored in <code>buffer</code>.</span></p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="unsafe_write"><span><a class="doc-id-link" href="#unsafe_write">unsafe_write<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/uuid/writing.odin#L56"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">unsafe_write :: <span class="keyword-type">proc</span>(w: io.<a class="code-typename" href="/core/io/#Stream">Stream</a>, id: <a class="code-typename" href="/core/encoding/uuid/#Identifier">Identifier</a>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Write a UUID in the 8-4-4-4-12 format.</p>
+<p>This procedure performs no error checking on the underlying stream.</p>
+<p><b>Inputs:</b><br><span class="doc-list">w: A writable stream.</span>
+<span class="doc-list">id: The identifier to convert.</span></p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="variant"><span><a class="doc-id-link" href="#variant">variant<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/uuid/reading.odin#L87"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">variant :: <span class="keyword-type">proc</span> "contextless" (id: <a class="code-typename" href="/core/encoding/uuid/#Identifier">Identifier</a>) -> (variant: <a class="code-typename" href="/core/encoding/uuid/#Variant_Type">Variant_Type</a>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Get the variant of a UUID.</p>
+<p><b>Inputs:</b><br><span class="doc-list">id: The identifier.</span></p>
+<p><b>Returns:</b><br><span class="doc-list">variant: The variant type.</span></p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="version"><span><a class="doc-id-link" href="#version">version<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/uuid/reading.odin#L74"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">version :: <span class="keyword-type">proc</span> "contextless" (id: <a class="code-typename" href="/core/encoding/uuid/#Identifier">Identifier</a>) -> (number: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Get the version of a UUID.</p>
+<p><b>Inputs:</b><br><span class="doc-list">id: The identifier.</span></p>
+<p><b>Returns:</b><br><span class="doc-list">number: The version number.</span></p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="write"><span><a class="doc-id-link" href="#write">write<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/uuid/writing.odin#L24"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">write :: <span class="keyword-type">proc</span>(w: io.<a class="code-typename" href="/core/io/#Stream">Stream</a>, id: <a class="code-typename" href="/core/encoding/uuid/#Identifier">Identifier</a>) -> (error: io.<a class="code-typename" href="/core/io/#Error">Error</a>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Write a UUID in the 8-4-4-4-12 format.</p>
+<p>This procedure performs error checking with every byte written.</p>
+<p>If you can guarantee beforehand that your stream has enough space to hold the
+UUID (32 bytes), then it is better to use <code>unsafe_write</code> instead as that will
+be faster.</p>
+<p><b>Inputs:</b><br><span class="doc-list">w: A writable stream.</span>
+<span class="doc-list">id: The identifier to convert.</span></p>
+<p><b>Returns:</b><br><span class="doc-list">error: An <code>io</code> error, if one occurred, otherwise <code>nil</code>.</span></p>
+</details>
+</div>
+<h2 id="pkg-Procedure Groups" class="pkg-header">Procedure Groups</h2>
+<div class="pkg-entity">
+<h3 id="generate_v7"><span><a class="doc-id-link" href="#generate_v7">generate_v7<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/uuid/generation.odin#L215"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">generate_v7 :: <span class="keyword-type">proc</span>{
+	<a class="code-procedure" href="/core/encoding/uuid/#generate_v7_basic">generate_v7_basic</a>,
+	<a class="code-procedure" href="/core/encoding/uuid/#generate_v7_with_counter">generate_v7_with_counter</a>,
+}
+</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="generate_v8_hash"><span><a class="doc-id-link" href="#generate_v8_hash">generate_v8_hash<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/uuid/generation.odin#L330"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">generate_v8_hash :: <span class="keyword-type">proc</span>{
+	<a class="code-procedure" href="/core/encoding/uuid/#generate_v8_hash_bytes">generate_v8_hash_bytes</a>,
+	<a class="code-procedure" href="/core/encoding/uuid/#generate_v8_hash_string">generate_v8_hash_string</a>,
+}
+</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="stamp_v8"><span><a class="doc-id-link" href="#stamp_v8">stamp_v8<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/uuid/stamping.odin#L85"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">stamp_v8 :: <span class="keyword-type">proc</span>{
+	<a class="code-procedure" href="/core/encoding/uuid/#stamp_v8_int">stamp_v8_int</a>,
+	<a class="code-procedure" href="/core/encoding/uuid/#stamp_v8_array">stamp_v8_array</a>,
+	<a class="code-procedure" href="/core/encoding/uuid/#stamp_v8_slice">stamp_v8_slice</a>,
+}
+</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="to_string"><span><a class="doc-id-link" href="#to_string">to_string<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/uuid/writing.odin#L128"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">to_string :: <span class="keyword-type">proc</span>{
+	<a class="code-procedure" href="/core/encoding/uuid/#to_string_allocated">to_string_allocated</a>,
+	<a class="code-procedure" href="/core/encoding/uuid/#to_string_buffer">to_string_buffer</a>,
+}
+</pre>
+</div>
+</div>
+</section>
+<h2 id="pkg-source-files">Source Files</h2>
+<ul>
+<li><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/uuid/definitions.odin">definitions.odin</a></li>
+<li><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/uuid/doc.odin">doc.odin</a></li>
+<li><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/uuid/generation.odin">generation.odin</a></li>
+<li><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/uuid/reading.odin">reading.odin</a></li>
+<li><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/uuid/stamping.odin">stamping.odin</a></li>
+<li><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/uuid/writing.odin">writing.odin</a></li>
+</ul>
+<h2 id="pkg-generation-information">Generation Information</h2>
+<p>Generated with <code>odin version dev-2024-06 (vendor "odin") Windows_amd64 @ 2024-06-28 09:20:18.045120700 +0000 UTC</code></p>
+</article>
+<div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
+<nav id="TableOfContents">
+<ul>
+<li><a href="#pkg-overview">Overview</a><li><a href="#pkg-Types">Types</a><ul>
+<li><a href="#Identifier">Identifier</a></li>
+<li><a href="#Read_Error">Read_Error</a></li>
+<li><a href="#Variant_Type">Variant_Type</a></li>
+</ul>
+</li>
+<li><a href="#pkg-Constants">Constants</a><ul>
+<li><a href="#EXPECTED_LENGTH">EXPECTED_LENGTH</a></li>
+<li><a href="#HNS_INTERVALS_BETWEEN_GREG_AND_UNIX">HNS_INTERVALS_BETWEEN_GREG_AND_UNIX</a></li>
+<li><a href="#VARIANT_BYTE_INDEX">VARIANT_BYTE_INDEX</a></li>
+<li><a href="#VERSION_7_COUNTER_MASK">VERSION_7_COUNTER_MASK</a></li>
+<li><a href="#VERSION_7_COUNTER_SHIFT">VERSION_7_COUNTER_SHIFT</a></li>
+<li><a href="#VERSION_7_TIME_MASK">VERSION_7_TIME_MASK</a></li>
+<li><a href="#VERSION_7_TIME_SHIFT">VERSION_7_TIME_SHIFT</a></li>
+<li><a href="#VERSION_BYTE_INDEX">VERSION_BYTE_INDEX</a></li>
+</ul>
+</li>
+<li><a href="#pkg-Variables">Variables</a><ul>
+<li><a href="#Namespace_DNS">Namespace_DNS</a></li>
+<li><a href="#Namespace_OID">Namespace_OID</a></li>
+<li><a href="#Namespace_URL">Namespace_URL</a></li>
+<li><a href="#Namespace_X500">Namespace_X500</a></li>
+</ul>
+</li>
+<li><a href="#pkg-Procedures">Procedures</a><ul>
+<li><a href="#clock_seq">clock_seq</a></li>
+<li><a href="#counter_v7">counter_v7</a></li>
+<li><a href="#generate_v1">generate_v1</a></li>
+<li><a href="#generate_v4">generate_v4</a></li>
+<li><a href="#generate_v6">generate_v6</a></li>
+<li><a href="#generate_v7_basic">generate_v7_basic</a></li>
+<li><a href="#generate_v7_with_counter">generate_v7_with_counter</a></li>
+<li><a href="#generate_v8_hash_bytes">generate_v8_hash_bytes</a></li>
+<li><a href="#generate_v8_hash_string">generate_v8_hash_string</a></li>
+<li><a href="#node">node</a></li>
+<li><a href="#raw_time_v1">raw_time_v1</a></li>
+<li><a href="#raw_time_v6">raw_time_v6</a></li>
+<li><a href="#raw_time_v7">raw_time_v7</a></li>
+<li><a href="#read">read</a></li>
+<li><a href="#stamp_v8_array">stamp_v8_array</a></li>
+<li><a href="#stamp_v8_int">stamp_v8_int</a></li>
+<li><a href="#stamp_v8_slice">stamp_v8_slice</a></li>
+<li><a href="#time_v1">time_v1</a></li>
+<li><a href="#time_v6">time_v6</a></li>
+<li><a href="#time_v7">time_v7</a></li>
+<li><a href="#to_string_allocated">to_string_allocated</a></li>
+<li><a href="#to_string_buffer">to_string_buffer</a></li>
+<li><a href="#unsafe_write">unsafe_write</a></li>
+<li><a href="#variant">variant</a></li>
+<li><a href="#version">version</a></li>
+<li><a href="#write">write</a></li>
+</ul>
+</li>
+<li><a href="#pkg-Procedure Groups">Procedure Groups</a><ul>
+<li><a href="#generate_v7">generate_v7</a></li>
+<li><a href="#generate_v8_hash">generate_v8_hash</a></li>
+<li><a href="#stamp_v8">stamp_v8</a></li>
+<li><a href="#to_string">to_string</a></li>
+</ul>
+</li>
+<li><a href="#pkg-source-files">Source Files</a></ul>
+</nav>
+</div></div>
+<script type="text/javascript">var odin_pkg_name = "uuid";</script>
+</div>
+
+</div>
+</main>
+
+<footer class="odin-footer">
+	<div class="container pb-5 pt-5">
+		<div class="row g-4">
+		<div class="col">
+		<a class="navbar-brand" href="https://odin-lang.org">
+		<img class="mb-3" src="https://odin-lang.org/logo.svg" height="30" alt="Odin"></a>
+		<p>
+		The Data-Oriented Language for Sane Software Development.
+		</p>
+		</div>
+		<nav class="col-md-auto">
+			<h4 class="fw-normal">Resources</h4>
+			<ul class="list-unstyled">
+			<li><a href="https://odin-lang.org/docs" class="link-light">Docs</a></li>
+			<li><a href="https://pkg.odin-lang.org/" class="link-light">Packages</a></li>
+			<li><a href="https://odin-lang.org/news" class="link-light">News</a></li>
+			</ul>
+		</nav>
+		<nav class="col-md-auto">
+			<h4 class="fw-normal">Community</h4>
+			<ul class="list-unstyled">
+			<li><a href="https://github.com/odin-lang/Odin" target="_blank" class="link-light">GitHub</a></li>
+			<li><a href="https://discord.com/invite/sVBPHEv" target="_blank" class="link-light">Discord</a></li>
+			<li><a href="https://www.twitch.tv/ginger_bill" target="_blank" class="link-light">Twitch</a></li>
+			<li><a href="https://www.youtube.com/channel/UCUSck1dOH7VKmG4lRW7tZXg" target="_blank" class="link-light">YouTube</a></li>
+			</ul>
+		</nav>
+		<nav class="col-md-auto">
+			<h4 class="fw-normal">Contribute</h4>
+			<ul class="list-unstyled">
+			<li><a href="https://github.com/odin-lang/Odin/issues" target="_blank" class="link-light">Issues</a></li>
+			<li><a href="https://www.patreon.com/gingerbill" target="_blank" class="link-light">Donate</a></li>
+			</ul>
+			</nav>
+		</div>
+		<div class="mt-4 text-muted">© 2016–2023 Ginger Bill</div>
+	</div>
+</footer>
+
+<script src="https://odin-lang.org/lib/bootstrap/js/bootstrap.min.js"></script>
+<script src="https://odin-lang.org/js/script.js"></script>
+<script src="/pkg-data.js"></script>
+<script src="/search.js"></script>
+</body>
+</html>
