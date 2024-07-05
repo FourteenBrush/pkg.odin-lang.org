@@ -373,7 +373,7 @@ Procedure Groups (0)</summary>
 <p class="pkg-empty-section">This section is empty.</p>
 <h2 id="pkg-Procedures" class="pkg-header">Procedures</h2>
 <div class="pkg-entity">
-<h3 id="initialize_symbols"><span><a class="doc-id-link" href="#initialize_symbols">initialize_symbols<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/dynlib/lib.odin#L126"><em>Source</em></a></div></h3>
+<h3 id="initialize_symbols"><span><a class="doc-id-link" href="#initialize_symbols">initialize_symbols<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/dynlib/lib.odin#L120"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">initialize_symbols :: <span class="keyword-type">proc</span>(symbol_table: ^$T, library_path: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>, symbol_prefix: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a> = "", handle_field_name: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a> = "__handle") -> (count: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a> = -1, ok: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> = false) {…}</pre>
 </div>
@@ -390,7 +390,7 @@ The number of symbols assigned on success. <code>ok</code> = true if <code>count
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="last_error"><span><a class="doc-id-link" href="#last_error">last_error<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/dynlib/lib.odin#L183"><em>Source</em></a></div></h3>
+<h3 id="last_error"><span><a class="doc-id-link" href="#last_error">last_error<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/dynlib/lib.odin#L175"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">last_error :: <span class="keyword-type">proc</span>() -> <a href="/base/builtin#string"><span class="doc-builtin">string</span></a> {…}</pre>
 </div>
@@ -400,7 +400,7 @@ The number of symbols assigned on success. <code>ok</code> = true if <code>count
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="load_library"><span><a class="doc-id-link" href="#load_library">load_library<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/dynlib/lib.odin#L43"><em>Source</em></a></div></h3>
+<h3 id="load_library"><span><a class="doc-id-link" href="#load_library">load_library<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/dynlib/lib.odin#L40"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">load_library :: <span class="keyword-type">proc</span>(path: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>, global_symbols: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> = false) -> (library: <a class="code-typename" href="/core/dynlib/#Library">Library</a>, did_load: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>) {…}</pre>
 </div>
@@ -408,13 +408,11 @@ The number of symbols assigned on success. <code>ok</code> = true if <code>count
 <summary class="hideme"><span>&nbsp;</span></summary>
 <p>Loads a dynamic library from the filesystem. The paramater <code>global_symbols</code> makes the symbols in the loaded
 library available to resolve references in subsequently loaded libraries.</p>
-<p>The paramater <code>global_symbols</code> is only used for the platforms <code>linux</code>, <code>darwin</code>, <code>freebsd</code> and <code>openbsd</code>.
+<p>The parameter <code>global_symbols</code> is only used for the platforms <code>linux</code>, <code>darwin</code>, <code>freebsd</code> and <code>openbsd</code>.
 On <code>windows</code> this paramater is ignored.</p>
 <p>The underlying behaviour is platform specific.
 On <code>linux</code>, <code>darwin</code>, <code>freebsd</code> and <code>openbsd</code> refer to <code>dlopen</code>.
-On <code>windows</code> refer to <code>LoadLibraryW</code>.</p>
-<p><b>Implicit Allocators</b>
-<code>context.temp_allocator</code></p>
+On <code>windows</code> refer to <code>LoadLibraryW</code>. Also temporarily needs an allocator to convert a string.</p>
 <details open class="code-example">
 <summary><b>Example:</b></summary>
 <pre><code class="hljs language-odin" data-lang="odin">import "core:dynlib"
@@ -434,7 +432,7 @@ load_my_library :: proc() {
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="symbol_address"><span><a class="doc-id-link" href="#symbol_address">symbol_address<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/dynlib/lib.odin#L107"><em>Source</em></a></div></h3>
+<h3 id="symbol_address"><span><a class="doc-id-link" href="#symbol_address">symbol_address<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/dynlib/lib.odin#L101"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">symbol_address :: <span class="keyword-type">proc</span>(library: <a class="code-typename" href="/core/dynlib/#Library">Library</a>, symbol: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>) -> (ptr: <a href="/base/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>, found: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>) <span class="directive">#optional_ok</span> {…}</pre>
 </div>
@@ -443,9 +441,7 @@ load_my_library :: proc() {
 <p>Loads the address of a procedure/variable from a dynamic library.</p>
 <p>The underlying behaviour is platform specific.
 On <code>linux</code>, <code>darwin</code>, <code>freebsd</code> and <code>openbsd</code> refer to <code>dlsym</code>.
-On <code>windows</code> refer to <code>GetProcAddress</code>.</p>
-<p><b>Implicit Allocators</b>
-<code>context.temp_allocator</code></p>
+On <code>windows</code> refer to <code>GetProcAddress</code>. Also temporarily needs an allocator to convert a string.</p>
 <details open class="code-example">
 <summary><b>Example:</b></summary>
 <pre><code class="hljs language-odin" data-lang="odin">import "core:dynlib"
@@ -471,7 +467,7 @@ find_a_in_my_library :: proc() {
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="unload_library"><span><a class="doc-id-link" href="#unload_library">unload_library<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/dynlib/lib.odin#L73"><em>Source</em></a></div></h3>
+<h3 id="unload_library"><span><a class="doc-id-link" href="#unload_library">unload_library<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/dynlib/lib.odin#L70"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">unload_library :: <span class="keyword-type">proc</span>(library: <a class="code-typename" href="/core/dynlib/#Library">Library</a>) -> (did_unload: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>) {…}</pre>
 </div>
@@ -514,7 +510,7 @@ load_then_unload_my_library :: proc() {
 <li><em>(hidden platform specific files)</em></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2024-07 (vendor "odin") Windows_amd64 @ 2024-07-03 21:11:00.066160200 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2024-07 (vendor "odin") Windows_amd64 @ 2024-07-05 21:10:00.960428800 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
