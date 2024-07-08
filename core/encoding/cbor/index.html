@@ -344,8 +344,11 @@ e.g. <code>cbor_tag:"69"</code> or <code>cbor_tag:"my_tag"</code>.</p>
 <summary><b>Example:</b></summary>
 <pre><code class="hljs language-odin" data-lang="odin">package main
 
+import "base:intrinsics"
+
 import "core:encoding/cbor"
 import "core:fmt"
+import "core:reflect"
 import "core:time"
 
 Possibilities :: union {
@@ -360,9 +363,32 @@ Data :: struct {
 	ignore_this: ^Data `cbor:"-"`,     // Ignored by implementation.
 	renamed: f32 `cbor:"renamed :)"`,  // Renamed when encoded.
 	my_union: Possibilities,           // Union support.
+
+	my_raw: [8]u32 `cbor_tag:"raw"`, // Custom tag that just writes the value as bytes.
 }
 
 main :: proc() {
+	// Example custom tag implementation that instead of breaking down all parts,
+	// just writes the value as a big byte blob. This is an advanced feature but very powerful.
+	RAW_TAG_NR :: 200
+	cbor.tag_register_number({
+		marshal = proc(_: ^cbor.Tag_Implementation, e: cbor.Encoder, v: any) -&gt; cbor.Marshal_Error {
+			cbor._encode_u8(e.writer, RAW_TAG_NR, .Tag) or_return
+			return cbor.err_conv(cbor._encode_bytes(e, reflect.as_bytes(v)))
+		},
+		unmarshal = proc(_: ^cbor.Tag_Implementation, d: cbor.Decoder, _: cbor.Tag_Number, v: any) -&gt; (cbor.Unmarshal_Error) {
+			hdr := cbor._decode_header(d.reader) or_return
+			maj, add := cbor._header_split(hdr)
+			if maj != .Bytes {
+				return .Bad_Tag_Value
+			}
+
+			bytes := cbor.err_conv(cbor._decode_bytes(d, add, maj)) or_return
+			intrinsics.mem_copy_non_overlapping(v.data, raw_data(bytes), len(bytes))
+			return nil
+		},
+	}, RAW_TAG_NR, "raw")
+
 	now := time.Time{_nsec = 1701117968 * 1e9}
 
 	data := Data{
@@ -372,21 +398,22 @@ main :: proc() {
 		ignore_this = &Data{},
 		renamed     = 123123.125,
 		my_union    = 3,
+		my_raw      = {1=1, 2=2, 3=3},
 	}
-	
+
 	// Marshal the struct into binary CBOR.
 	binary, err := cbor.marshal(data, cbor.ENCODE_FULLY_DETERMINISTIC)
-	assert(err == nil)
+	fmt.assertf(err == nil, "marshal error: %v", err)
 	defer delete(binary)
-	
+
 	// Decode the binary data into a `cbor.Value`.
 	decoded, derr := cbor.decode(string(binary))
-	assert(derr == nil)
+	fmt.assertf(derr == nil, "decode error: %v", derr)
 	defer cbor.destroy(decoded)
 
 	// Turn the CBOR into a human readable representation defined as the diagnostic format in [[RFC 8949 Section 8;https://www.rfc-editor.org/rfc/rfc8949.html#name-diagnostic-notation]].
 	diagnosis, eerr := cbor.to_diagnostic_format(decoded)
-	assert(eerr == nil)
+	fmt.assertf(eerr == nil, "to diagnostic error: %v", eerr)
 	defer delete(diagnosis)
 
 	fmt.println(diagnosis)
@@ -394,6 +421,7 @@ main :: proc() {
 </code></pre>
 <b>Output:</b>
 <pre class="doc-code">{
+	"my_raw": 200(h'00001000200030000000000000000000'),
 	"my_union": 1010([
 		"int",
 		3
@@ -1403,7 +1431,7 @@ See the docs on the proc group <code>encode_into</code> for more info.</p>
 <div class="pkg-entity">
 <h3 id="marshal_into_builder"><span><a class="doc-id-link" href="#marshal_into_builder">marshal_into_builder<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/cbor/marshal.odin#L66"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">marshal_into_builder :: <span class="keyword-type">proc</span>(b: ^strings.<a class="code-typename" href="/core/strings/#Builder">Builder</a>, v: <a href="/base/builtin#any"><span class="doc-builtin">any</span></a>, flags: <span class="keyword-type">bit_set</span>[<a class="code-typename" href="/core/encoding/cbor/#Encoder_Flag">Encoder_Flag</a>] = ENCODE_SMALL, temp_allocator := <a href="/base/runtime/#Context">context.temp_allocator</a>, loc := <a href="/base/runtime/#Source_Code_Location">#caller_location</a>) -> <a class="code-typename" href="/core/encoding/cbor/#Marshal_Error">Marshal_Error</a> {…}</pre>
+<pre class="doc-code">marshal_into_builder :: <span class="keyword-type">proc</span>(b: ^strings.<a class="code-typename" href="/core/strings/#Builder">Builder</a>, v: <a href="/base/builtin#any"><span class="doc-builtin">any</span></a>, flags: <span class="keyword-type">bit_set</span>[<a class="code-typename" href="/core/encoding/cbor/#Encoder_Flag">Encoder_Flag</a>] = ENCODE_SMALL, temp_allocator := <a href="/base/runtime/#Context">context.temp_allocator</a>) -> <a class="code-typename" href="/core/encoding/cbor/#Marshal_Error">Marshal_Error</a> {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -1425,7 +1453,7 @@ See docs on the <code>marshal_into</code> proc group for more info.</p>
 <div class="pkg-entity">
 <h3 id="marshal_into_encoder"><span><a class="doc-id-link" href="#marshal_into_encoder">marshal_into_encoder<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/cbor/marshal.odin#L79"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">marshal_into_encoder :: <span class="keyword-type">proc</span>(e: <a class="code-typename" href="/core/encoding/cbor/#Encoder">Encoder</a>, v: <a href="/base/builtin#any"><span class="doc-builtin">any</span></a>, loc := <a href="/base/runtime/#Source_Code_Location">#caller_location</a>) -> (err: <a class="code-typename" href="/core/encoding/cbor/#Marshal_Error">Marshal_Error</a>) {…}</pre>
+<pre class="doc-code">marshal_into_encoder :: <span class="keyword-type">proc</span>(e: <a class="code-typename" href="/core/encoding/cbor/#Encoder">Encoder</a>, v: <a href="/base/builtin#any"><span class="doc-builtin">any</span></a>) -> (err: <a class="code-typename" href="/core/encoding/cbor/#Marshal_Error">Marshal_Error</a>) {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -1436,7 +1464,7 @@ See docs on the <code>marshal_into</code> proc group for more info.</p>
 <div class="pkg-entity">
 <h3 id="marshal_into_writer"><span><a class="doc-id-link" href="#marshal_into_writer">marshal_into_writer<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/cbor/marshal.odin#L72"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">marshal_into_writer :: <span class="keyword-type">proc</span>(w: io.<a class="code-typename" href="/core/io/#Stream">Stream</a>, v: <a href="/base/builtin#any"><span class="doc-builtin">any</span></a>, flags: <span class="keyword-type">bit_set</span>[<a class="code-typename" href="/core/encoding/cbor/#Encoder_Flag">Encoder_Flag</a>] = ENCODE_SMALL, temp_allocator := <a href="/base/runtime/#Context">context.temp_allocator</a>, loc := <a href="/base/runtime/#Source_Code_Location">#caller_location</a>) -> <a class="code-typename" href="/core/encoding/cbor/#Marshal_Error">Marshal_Error</a> {…}</pre>
+<pre class="doc-code">marshal_into_writer :: <span class="keyword-type">proc</span>(w: io.<a class="code-typename" href="/core/io/#Stream">Stream</a>, v: <a href="/base/builtin#any"><span class="doc-builtin">any</span></a>, flags: <span class="keyword-type">bit_set</span>[<a class="code-typename" href="/core/encoding/cbor/#Encoder_Flag">Encoder_Flag</a>] = ENCODE_SMALL, temp_allocator := <a href="/base/runtime/#Context">context.temp_allocator</a>) -> <a class="code-typename" href="/core/encoding/cbor/#Marshal_Error">Marshal_Error</a> {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -1787,7 +1815,7 @@ an input.</p>
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/cbor/unmarshal.odin">unmarshal.odin</a></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2024-07 (vendor "odin") Windows_amd64 @ 2024-07-07 21:10:12.691573600 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2024-07 (vendor "odin") Windows_amd64 @ 2024-07-08 21:11:00.876196600 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
