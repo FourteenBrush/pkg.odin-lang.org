@@ -11,14 +11,6 @@
 	<script>hljs.registerLanguage("odin",function(a){return{aliases:["odin","odinlang","odin-lang"],keywords:{keyword:"auto_cast bit_set break case cast context continue defer distinct do dynamic else enum fallthrough for foreign if import in map not_in or_else or_return package proc return struct switch transmute type_of typeid union using when where",literal:"true false nil",built_in:"abs align_of cap clamp complex conj expand_to_tuple imag jmag kmag len max min offset_of quaternion real size_of soa_unzip soa_zip swizzle type_info_of type_of typeid_of"},illegal:"</",contains:[a.C_LINE_COMMENT_MODE,a.C_BLOCK_COMMENT_MODE,{className:"string",variants:[a.QUOTE_STRING_MODE,{begin:"'",end:"[^\\\\]'"},{begin:"`",end:"`"}]},{className:"number",variants:[{begin:a.C_NUMBER_RE+"[ijk]",relevance:1},a.C_NUMBER_MODE]}]}})</script>
 	<script>hljs.highlightAll()</script>
 	<script>
-		document.addEventListener("readystatechange", () => {
-			if (document.readyState === "interactive") {
-				if (window.localStorage.getItem("theme") === "dark")
-					document.body.classList.add("dark-mode");
-				else
-					document.body.classList.remove("dark-mode");
-			}
-		});
 		function toggleDarkMode() {
 			if (document.body.classList.toggle("dark-mode")) {
 				window.localStorage.setItem("theme", "dark");
@@ -34,6 +26,12 @@
 	</style>
 </head>
 <body>
+<script>
+	if (window.localStorage.getItem("theme") === "dark")
+		document.body.classList.add("dark-mode");
+	else
+		document.body.classList.remove("dark-mode");
+</script>
 <header class="sticky-top">
 	<nav class="navbar navbar-expand-lg navbar-dark bg-primary odin-menu">
 		<div class="container">
@@ -335,8 +333,10 @@ Variables (0)</summary>
 <div>
 <details class="doc-index" id="doc-index-Procedures" aria-labelledby="#doc-index-Procedures-header">
 <summary id="#doc-index-Procedures-header">
-Procedures (116)</summary>
+Procedures (118)</summary>
 <ul>
+<li><a href="#alias">alias</a></li>
+<li><a href="#alias_inexactly">alias_inexactly</a></li>
 <li><a href="#buffer_capacity">buffer_capacity</a></li>
 <li><a href="#buffer_destroy">buffer_destroy</a></li>
 <li><a href="#buffer_grow">buffer_grow</a></li>
@@ -553,6 +553,30 @@ The zero value for Buffer is an empty buffer ready to use.</p>
 <h2 id="pkg-Variables" class="pkg-header">Variables</h2>
 <p class="pkg-empty-section">This section is empty.</p>
 <h2 id="pkg-Procedures" class="pkg-header">Procedures</h2>
+<div class="pkg-entity">
+<h3 id="alias"><span><a class="doc-id-link" href="#alias">alias<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/bytes/bytes.odin#L1173"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">alias :: <span class="keyword-type">proc</span> "contextless" (a, b: []<a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a>) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>alias returns true iff a and b have a non-zero length, and any part of
+a overlaps with b.</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="alias_inexactly"><span><a class="doc-id-link" href="#alias_inexactly">alias_inexactly<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/bytes/bytes.odin#L1189"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">alias_inexactly :: <span class="keyword-type">proc</span> "contextless" (a, b: []<a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a>) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>alias_inexactly returns true iff a and b have a non-zero length,
+the base pointer of a and b are NOT equal, and any part of a overlaps
+with b (ie: <code>alias(a, b)</code> with an exception that returns false for
+<code>a == b</code>, <code>b = a[:len(a)-69]</code> and similar conditions).</p>
+</details>
+</div>
 <div class="pkg-entity">
 <h3 id="buffer_capacity"><span><a class="doc-id-link" href="#buffer_capacity">buffer_capacity<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/bytes/buffer.odin#L75"><em>Source</em></a></div></h3>
 <div>
@@ -1306,7 +1330,7 @@ Adjacent invalid bytes are only replaced once</p>
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/bytes/reader.odin">reader.odin</a></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2024-07 (vendor "odin") Windows_amd64 @ 2024-07-15 14:35:26.904861800 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2024-07 (vendor "odin") Windows_amd64 @ 2024-07-15 17:10:08.847296000 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
@@ -1321,6 +1345,8 @@ Adjacent invalid bytes are only replaced once</p>
 </ul>
 </li>
 <li><a href="#pkg-Procedures">Procedures</a><ul>
+<li><a href="#alias">alias</a></li>
+<li><a href="#alias_inexactly">alias_inexactly</a></li>
 <li><a href="#buffer_capacity">buffer_capacity</a></li>
 <li><a href="#buffer_destroy">buffer_destroy</a></li>
 <li><a href="#buffer_grow">buffer_grow</a></li>

@@ -11,14 +11,6 @@
 	<script>hljs.registerLanguage("odin",function(a){return{aliases:["odin","odinlang","odin-lang"],keywords:{keyword:"auto_cast bit_set break case cast context continue defer distinct do dynamic else enum fallthrough for foreign if import in map not_in or_else or_return package proc return struct switch transmute type_of typeid union using when where",literal:"true false nil",built_in:"abs align_of cap clamp complex conj expand_to_tuple imag jmag kmag len max min offset_of quaternion real size_of soa_unzip soa_zip swizzle type_info_of type_of typeid_of"},illegal:"</",contains:[a.C_LINE_COMMENT_MODE,a.C_BLOCK_COMMENT_MODE,{className:"string",variants:[a.QUOTE_STRING_MODE,{begin:"'",end:"[^\\\\]'"},{begin:"`",end:"`"}]},{className:"number",variants:[{begin:a.C_NUMBER_RE+"[ijk]",relevance:1},a.C_NUMBER_MODE]}]}})</script>
 	<script>hljs.highlightAll()</script>
 	<script>
-		document.addEventListener("readystatechange", () => {
-			if (document.readyState === "interactive") {
-				if (window.localStorage.getItem("theme") === "dark")
-					document.body.classList.add("dark-mode");
-				else
-					document.body.classList.remove("dark-mode");
-			}
-		});
 		function toggleDarkMode() {
 			if (document.body.classList.toggle("dark-mode")) {
 				window.localStorage.setItem("theme", "dark");
@@ -34,6 +26,12 @@
 	</style>
 </head>
 <body>
+<script>
+	if (window.localStorage.getItem("theme") === "dark")
+		document.body.classList.add("dark-mode");
+	else
+		document.body.classList.remove("dark-mode");
+</script>
 <header class="sticky-top">
 	<nav class="navbar navbar-expand-lg navbar-dark bg-primary odin-menu">
 		<div class="container">
@@ -305,6 +303,14 @@
 </div>
 <ul id="odin-search-results"></ul>
 <div id="pkg-top">
+<h2>Overview</h2>
+<div id="pkg-overview">
+<p>package aes implements the AES block cipher and some common modes.</p>
+<p>See:
+<span class="doc-list">https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.197-upd1.pdf</span>
+<span class="doc-list">https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-38a.pdf</span>
+<span class="doc-list">https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-38d.pdf</span></p>
+</div>
 <div id="pkg-index">
 <h2>Index</h2>
 <div>
@@ -322,11 +328,12 @@ Types (4)</summary>
 <div>
 <details class="doc-index" id="doc-index-Constants" aria-labelledby="#doc-index-Constants-header">
 <summary id="#doc-index-Constants-header">
-Constants (7)</summary>
+Constants (8)</summary>
 <ul>
 <li><a href="#BLOCK_SIZE">BLOCK_SIZE</a></li>
 <li><a href="#CTR_IV_SIZE">CTR_IV_SIZE</a></li>
 <li><a href="#GCM_NONCE_SIZE">GCM_NONCE_SIZE</a></li>
+<li><a href="#GCM_NONCE_SIZE_MAX">GCM_NONCE_SIZE_MAX</a></li>
 <li><a href="#GCM_TAG_SIZE">GCM_TAG_SIZE</a></li>
 <li><a href="#KEY_SIZE_128">KEY_SIZE_128</a></li>
 <li><a href="#KEY_SIZE_192">KEY_SIZE_192</a></li>
@@ -374,7 +381,7 @@ Procedure Groups (0)</summary>
 <section class="documentation">
 <h2 id="pkg-Types" class="pkg-header">Types</h2>
 <div class="pkg-entity">
-<h3 id="Context_CTR"><span><a class="doc-id-link" href="#Context_CTR">Context_CTR<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/aes/aes_ctr.odin#L12"><em>Source</em></a></div></h3>
+<h3 id="Context_CTR"><span><a class="doc-id-link" href="#Context_CTR">Context_CTR<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/aes/aes_ctr.odin#L13"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Context_CTR :: <span class="keyword-type">struct</span> {
 	_impl:           Context_Impl,
@@ -420,7 +427,7 @@ used to implement higher level constructs.</p>
 </ul>
 </div>
 <div class="pkg-entity">
-<h3 id="Context_GCM"><span><a class="doc-id-link" href="#Context_GCM">Context_GCM<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/aes/aes_gcm.odin#L20"><em>Source</em></a></div></h3>
+<h3 id="Context_GCM"><span><a class="doc-id-link" href="#Context_GCM">Context_GCM<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/aes/aes_gcm.odin#L23"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Context_GCM :: <span class="keyword-type">struct</span> {
 	_impl:           Context_Impl,
@@ -462,7 +469,7 @@ implementation available (See <code>is_hardware_accelerated()</code>).</p>
 </div>
 <h2 id="pkg-Constants" class="pkg-header">Constants</h2>
 <div class="pkg-entity">
-<h3 id="BLOCK_SIZE"><span><a class="doc-id-link" href="#BLOCK_SIZE">BLOCK_SIZE<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/aes/aes.odin#L22"><em>Source</em></a></div></h3>
+<h3 id="BLOCK_SIZE"><span><a class="doc-id-link" href="#BLOCK_SIZE">BLOCK_SIZE<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/aes/aes.odin#L21"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">BLOCK_SIZE :: _aes.BLOCK_SIZE</pre>
 </div>
@@ -472,7 +479,7 @@ implementation available (See <code>is_hardware_accelerated()</code>).</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="CTR_IV_SIZE"><span><a class="doc-id-link" href="#CTR_IV_SIZE">CTR_IV_SIZE<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/aes/aes_ctr.odin#L9"><em>Source</em></a></div></h3>
+<h3 id="CTR_IV_SIZE"><span><a class="doc-id-link" href="#CTR_IV_SIZE">CTR_IV_SIZE<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/aes/aes_ctr.odin#L10"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">CTR_IV_SIZE :: 16</pre>
 </div>
@@ -482,17 +489,27 @@ implementation available (See <code>is_hardware_accelerated()</code>).</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="GCM_NONCE_SIZE"><span><a class="doc-id-link" href="#GCM_NONCE_SIZE">GCM_NONCE_SIZE<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/aes/aes_gcm.odin#L10"><em>Source</em></a></div></h3>
+<h3 id="GCM_NONCE_SIZE"><span><a class="doc-id-link" href="#GCM_NONCE_SIZE">GCM_NONCE_SIZE<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/aes/aes_gcm.odin#L11"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">GCM_NONCE_SIZE :: 12</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>GCM_NONCE_SIZE is the size of the GCM nonce in bytes.</p>
+<p>GCM_NONCE_SIZE is the default size of the GCM nonce in bytes.</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="GCM_TAG_SIZE"><span><a class="doc-id-link" href="#GCM_TAG_SIZE">GCM_TAG_SIZE<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/aes/aes_gcm.odin#L12"><em>Source</em></a></div></h3>
+<h3 id="GCM_NONCE_SIZE_MAX"><span><a class="doc-id-link" href="#GCM_NONCE_SIZE_MAX">GCM_NONCE_SIZE_MAX<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/aes/aes_gcm.odin#L13"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">GCM_NONCE_SIZE_MAX :: 0x2000000000000000</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>GCM_NONCE_SIZE_MAX is the maximum size of the GCM nonce in bytes.</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="GCM_TAG_SIZE"><span><a class="doc-id-link" href="#GCM_TAG_SIZE">GCM_TAG_SIZE<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/aes/aes_gcm.odin#L15"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">GCM_TAG_SIZE :: _aes.GHASH_TAG_SIZE</pre>
 </div>
@@ -502,7 +519,7 @@ implementation available (See <code>is_hardware_accelerated()</code>).</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="KEY_SIZE_128"><span><a class="doc-id-link" href="#KEY_SIZE_128">KEY_SIZE_128<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/aes/aes.odin#L15"><em>Source</em></a></div></h3>
+<h3 id="KEY_SIZE_128"><span><a class="doc-id-link" href="#KEY_SIZE_128">KEY_SIZE_128<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/aes/aes.odin#L14"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">KEY_SIZE_128 :: _aes.KEY_SIZE_128</pre>
 </div>
@@ -512,7 +529,7 @@ implementation available (See <code>is_hardware_accelerated()</code>).</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="KEY_SIZE_192"><span><a class="doc-id-link" href="#KEY_SIZE_192">KEY_SIZE_192<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/aes/aes.odin#L17"><em>Source</em></a></div></h3>
+<h3 id="KEY_SIZE_192"><span><a class="doc-id-link" href="#KEY_SIZE_192">KEY_SIZE_192<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/aes/aes.odin#L16"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">KEY_SIZE_192 :: _aes.KEY_SIZE_192</pre>
 </div>
@@ -522,7 +539,7 @@ implementation available (See <code>is_hardware_accelerated()</code>).</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="KEY_SIZE_256"><span><a class="doc-id-link" href="#KEY_SIZE_256">KEY_SIZE_256<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/aes/aes.odin#L19"><em>Source</em></a></div></h3>
+<h3 id="KEY_SIZE_256"><span><a class="doc-id-link" href="#KEY_SIZE_256">KEY_SIZE_256<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/aes/aes.odin#L18"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">KEY_SIZE_256 :: _aes.KEY_SIZE_256</pre>
 </div>
@@ -555,7 +572,7 @@ implementation available (See <code>is_hardware_accelerated()</code>).</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="init_ctr"><span><a class="doc-id-link" href="#init_ctr">init_ctr<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/aes/aes_ctr.odin#L22"><em>Source</em></a></div></h3>
+<h3 id="init_ctr"><span><a class="doc-id-link" href="#init_ctr">init_ctr<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/aes/aes_ctr.odin#L23"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">init_ctr :: <span class="keyword-type">proc</span>(ctx: ^<a class="code-typename" href="/core/crypto/aes/#Context_CTR">Context_CTR</a>, key, iv: []<a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a>, impl: <a class="code-typename" href="/core/crypto/aes/#Implementation">Implementation</a> = Implementation.Hardware) {…}</pre>
 </div>
@@ -575,7 +592,7 @@ implementation available (See <code>is_hardware_accelerated()</code>).</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="init_gcm"><span><a class="doc-id-link" href="#init_gcm">init_gcm<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/aes/aes_gcm.odin#L26"><em>Source</em></a></div></h3>
+<h3 id="init_gcm"><span><a class="doc-id-link" href="#init_gcm">init_gcm<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/aes/aes_gcm.odin#L29"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">init_gcm :: <span class="keyword-type">proc</span>(ctx: ^<a class="code-typename" href="/core/crypto/aes/#Context_GCM">Context_GCM</a>, key: []<a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a>, impl: <a class="code-typename" href="/core/crypto/aes/#Implementation">Implementation</a> = Implementation.Hardware) {…}</pre>
 </div>
@@ -585,7 +602,7 @@ implementation available (See <code>is_hardware_accelerated()</code>).</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="is_hardware_accelerated"><span><a class="doc-id-link" href="#is_hardware_accelerated">is_hardware_accelerated<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/aes/aes_impl_hw_gen.odin#L8"><em>Source</em></a></div></h3>
+<h3 id="is_hardware_accelerated"><span><a class="doc-id-link" href="#is_hardware_accelerated">is_hardware_accelerated<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/aes/aes_impl_hw_intel.odin#L8"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">is_hardware_accelerated :: <span class="keyword-type">proc</span> "contextless" () -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> {…}</pre>
 </div>
@@ -596,7 +613,7 @@ is supported.</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="keystream_bytes_ctr"><span><a class="doc-id-link" href="#keystream_bytes_ctr">keystream_bytes_ctr<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/aes/aes_ctr.odin#L82"><em>Source</em></a></div></h3>
+<h3 id="keystream_bytes_ctr"><span><a class="doc-id-link" href="#keystream_bytes_ctr">keystream_bytes_ctr<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/aes/aes_ctr.odin#L84"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">keystream_bytes_ctr :: <span class="keyword-type">proc</span>(ctx: ^<a class="code-typename" href="/core/crypto/aes/#Context_CTR">Context_CTR</a>, dst: []<a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a>) {…}</pre>
 </div>
@@ -606,7 +623,7 @@ is supported.</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="open_gcm"><span><a class="doc-id-link" href="#open_gcm">open_gcm<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/aes/aes_gcm.odin#L69"><em>Source</em></a></div></h3>
+<h3 id="open_gcm"><span><a class="doc-id-link" href="#open_gcm">open_gcm<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/aes/aes_gcm.odin#L77"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">open_gcm :: <span class="keyword-type">proc</span>(
 	ctx:                         ^<a class="code-typename" href="/core/crypto/aes/#Context_GCM">Context_GCM</a>, 
@@ -624,7 +641,7 @@ fails, the destination buffer will be zeroed.</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="reset_ctr"><span><a class="doc-id-link" href="#reset_ctr">reset_ctr<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/aes/aes_ctr.odin#L117"><em>Source</em></a></div></h3>
+<h3 id="reset_ctr"><span><a class="doc-id-link" href="#reset_ctr">reset_ctr<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/aes/aes_ctr.odin#L119"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">reset_ctr :: <span class="keyword-type">proc</span> "contextless" (ctx: ^<a class="code-typename" href="/core/crypto/aes/#Context_CTR">Context_CTR</a>) {…}</pre>
 </div>
@@ -646,7 +663,7 @@ re-initialized to be used again.</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="reset_gcm"><span><a class="doc-id-link" href="#reset_gcm">reset_gcm<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/aes/aes_gcm.odin#L104"><em>Source</em></a></div></h3>
+<h3 id="reset_gcm"><span><a class="doc-id-link" href="#reset_gcm">reset_gcm<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/aes/aes_gcm.odin#L117"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">reset_gcm :: <span class="keyword-type">proc</span> "contextless" (ctx: ^<a class="code-typename" href="/core/crypto/aes/#Context_GCM">Context_GCM</a>) {…}</pre>
 </div>
@@ -657,7 +674,7 @@ re-initialized to be used again.</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="seal_gcm"><span><a class="doc-id-link" href="#seal_gcm">seal_gcm<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/aes/aes_gcm.odin#L35"><em>Source</em></a></div></h3>
+<h3 id="seal_gcm"><span><a class="doc-id-link" href="#seal_gcm">seal_gcm<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/aes/aes_gcm.odin#L38"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">seal_gcm :: <span class="keyword-type">proc</span>(
 	ctx:                  ^<a class="code-typename" href="/core/crypto/aes/#Context_GCM">Context_GCM</a>, 
@@ -673,7 +690,7 @@ with the provided Context_GCM and nonce, stores the output in dst and tag.</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="xor_bytes_ctr"><span><a class="doc-id-link" href="#xor_bytes_ctr">xor_bytes_ctr<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/aes/aes_ctr.odin#L37"><em>Source</em></a></div></h3>
+<h3 id="xor_bytes_ctr"><span><a class="doc-id-link" href="#xor_bytes_ctr">xor_bytes_ctr<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/aes/aes_ctr.odin#L38"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">xor_bytes_ctr :: <span class="keyword-type">proc</span>(ctx: ^<a class="code-typename" href="/core/crypto/aes/#Context_CTR">Context_CTR</a>, dst, src: []<a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a>) {…}</pre>
 </div>
@@ -691,18 +708,21 @@ alias exactly or not at all.</p>
 <ul>
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/aes/aes.odin">aes.odin</a></li>
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/aes/aes_ctr.odin">aes_ctr.odin</a></li>
+<li><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/aes/aes_ctr_hw_intel.odin">aes_ctr_hw_intel.odin</a></li>
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/aes/aes_ecb.odin">aes_ecb.odin</a></li>
+<li><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/aes/aes_ecb_hw_intel.odin">aes_ecb_hw_intel.odin</a></li>
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/aes/aes_gcm.odin">aes_gcm.odin</a></li>
+<li><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/aes/aes_gcm_hw_intel.odin">aes_gcm_hw_intel.odin</a></li>
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/aes/aes_impl.odin">aes_impl.odin</a></li>
-<li><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/aes/aes_impl_hw_gen.odin">aes_impl_hw_gen.odin</a></li>
+<li><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/aes/aes_impl_hw_intel.odin">aes_impl_hw_intel.odin</a></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2024-07 (vendor "odin") Windows_amd64 @ 2024-07-15 14:35:26.956694900 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2024-07 (vendor "odin") Windows_amd64 @ 2024-07-15 17:10:08.897223600 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
 <ul>
-<li><a href="#pkg-Types">Types</a><ul>
+<li><a href="#pkg-overview">Overview</a><li><a href="#pkg-Types">Types</a><ul>
 <li><a href="#Context_CTR">Context_CTR</a></li>
 <li><a href="#Context_ECB">Context_ECB</a></li>
 <li><a href="#Context_GCM">Context_GCM</a></li>
@@ -713,6 +733,7 @@ alias exactly or not at all.</p>
 <li><a href="#BLOCK_SIZE">BLOCK_SIZE</a></li>
 <li><a href="#CTR_IV_SIZE">CTR_IV_SIZE</a></li>
 <li><a href="#GCM_NONCE_SIZE">GCM_NONCE_SIZE</a></li>
+<li><a href="#GCM_NONCE_SIZE_MAX">GCM_NONCE_SIZE_MAX</a></li>
 <li><a href="#GCM_TAG_SIZE">GCM_TAG_SIZE</a></li>
 <li><a href="#KEY_SIZE_128">KEY_SIZE_128</a></li>
 <li><a href="#KEY_SIZE_192">KEY_SIZE_192</a></li>
