@@ -3,13 +3,22 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>package sys/linux - pkg.odin-lang.org</title>	<link rel="stylesheet" type="text/css" href="https://odin-lang.org/scss/custom.min.css">
+	<title>package sys/linux - pkg.odin-lang.org</title>	<link rel="icon" href="/favicon.svg">
+	<link rel="stylesheet" type="text/css" href="https://odin-lang.org/scss/custom.min.css">
 	<link rel=stylesheet href="//odin-lang.org/lib/highlight/styles/github-dark.min.css">
 	<script src="//odin-lang.org/lib/highlight/highlight.min.js"></script>
 
 	<script>hljs.registerLanguage("odin",function(a){return{aliases:["odin","odinlang","odin-lang"],keywords:{keyword:"auto_cast bit_set break case cast context continue defer distinct do dynamic else enum fallthrough for foreign if import in map not_in or_else or_return package proc return struct switch transmute type_of typeid union using when where",literal:"true false nil",built_in:"abs align_of cap clamp complex conj expand_to_tuple imag jmag kmag len max min offset_of quaternion real size_of soa_unzip soa_zip swizzle type_info_of type_of typeid_of"},illegal:"</",contains:[a.C_LINE_COMMENT_MODE,a.C_BLOCK_COMMENT_MODE,{className:"string",variants:[a.QUOTE_STRING_MODE,{begin:"'",end:"[^\\\\]'"},{begin:"`",end:"`"}]},{className:"number",variants:[{begin:a.C_NUMBER_RE+"[ijk]",relevance:1},a.C_NUMBER_MODE]}]}})</script>
 	<script>hljs.highlightAll()</script>
 	<script>
+		document.addEventListener("readystatechange", () => {
+			if (document.readyState === "interactive") {
+				if (window.localStorage.getItem("theme") === "dark")
+					document.body.classList.add("dark-mode");
+				else
+					document.body.classList.remove("dark-mode");
+			}
+		});
 		function toggleDarkMode() {
 			if (document.body.classList.toggle("dark-mode")) {
 				window.localStorage.setItem("theme", "dark");
@@ -207,7 +216,11 @@
 </li>
 <li class="nav-item"><a href="/core/reflect">reflect</a></li>
 <li class="nav-item"><a href="/core/relative">relative</a></li>
-<li class="nav-item"><a href="/core/simd">simd</a></li>
+<li class="nav-item"><a href="/core/simd">simd</a><ul>
+<li><a href="/core/simd/x86">x86</a></li>
+</ul>
+
+</li>
 <li class="nav-item"><a href="/core/slice">slice</a><ul>
 <li><a href="/core/slice/heap">heap</a></li>
 </ul>
@@ -12936,7 +12949,7 @@ F_SETLKW64         :: FCntl_Command_SETLKW64(.SETLKW64)</p>
 <div class="pkg-entity">
 <h3 id="accept"><span><a class="doc-id-link" href="#accept">accept<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/linux/sys.odin#L517"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">accept :: <span class="keyword-type">proc</span> "contextless" (sock: <a class="code-typename" href="/core/sys/linux/#Fd">Fd</a>, addr: ^$T, sockflags: <span class="keyword-type">bit_set</span>[<a class="code-typename" href="/core/sys/linux/#Socket_FD_Flags_Bits">Socket_FD_Flags_Bits</a>; <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>] = {}) -> (<a class="code-typename" href="/core/sys/linux/#Fd">Fd</a>, <a class="code-typename" href="/core/sys/linux/#Errno">Errno</a>) {…}</pre>
+<pre class="doc-code">accept :: <span class="keyword-type">proc</span> "contextless" (sock: <a class="code-typename" href="/core/sys/linux/#Fd">Fd</a>, addr: ^$, sockflags: <span class="keyword-type">bit_set</span>[<a class="code-typename" href="/core/sys/linux/#Socket_FD_Flags_Bits">Socket_FD_Flags_Bits</a>; <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>] = {}) -> (<a class="code-typename" href="/core/sys/linux/#Fd">Fd</a>, <a class="code-typename" href="/core/sys/linux/#Errno">Errno</a>) {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -12976,7 +12989,7 @@ For ARM64 available since Linux 2.6.16.
 <div class="pkg-entity">
 <h3 id="bind"><span><a class="doc-id-link" href="#bind">bind<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/linux/sys.odin#L608"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">bind :: <span class="keyword-type">proc</span> "contextless" (sock: <a class="code-typename" href="/core/sys/linux/#Fd">Fd</a>, addr: ^$T) -> <a class="code-typename" href="/core/sys/linux/#Errno">Errno</a> {…}</pre>
+<pre class="doc-code">bind :: <span class="keyword-type">proc</span> "contextless" (sock: <a class="code-typename" href="/core/sys/linux/#Fd">Fd</a>, addr: ^$) -> <a class="code-typename" href="/core/sys/linux/#Errno">Errno</a> {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -13072,7 +13085,7 @@ Available since Linux 5.9.
 <div class="pkg-entity">
 <h3 id="connect"><span><a class="doc-id-link" href="#connect">connect<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/linux/sys.odin#L501"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">connect :: <span class="keyword-type">proc</span> "contextless" (sock: <a class="code-typename" href="/core/sys/linux/#Fd">Fd</a>, addr: ^$T) -> <a class="code-typename" href="/core/sys/linux/#Errno">Errno</a> {…}</pre>
+<pre class="doc-code">connect :: <span class="keyword-type">proc</span> "contextless" (sock: <a class="code-typename" href="/core/sys/linux/#Fd">Fd</a>, addr: ^$) -> <a class="code-typename" href="/core/sys/linux/#Errno">Errno</a> {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -13983,25 +13996,25 @@ On 32-bit platforms available since Linux 2.4.
 <div class="pkg-entity">
 <h3 id="getsockopt_base"><span><a class="doc-id-link" href="#getsockopt_base">getsockopt_base<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/linux/sys.odin#L706"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">getsockopt_base :: <span class="keyword-type">proc</span> "contextless" (sock: <a class="code-typename" href="/core/sys/linux/#Fd">Fd</a>, level: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, opt: <a class="code-typename" href="/core/sys/linux/#Socket_Option">Socket_Option</a>, val: $T) -> (<a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, <a class="code-typename" href="/core/sys/linux/#Errno">Errno</a>) {…}</pre>
+<pre class="doc-code">getsockopt_base :: <span class="keyword-type">proc</span> "contextless" (sock: <a class="code-typename" href="/core/sys/linux/#Fd">Fd</a>, level: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, opt: <a class="code-typename" href="/core/sys/linux/#Socket_Option">Socket_Option</a>, val: $) -> (<a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, <a class="code-typename" href="/core/sys/linux/#Errno">Errno</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="getsockopt_sock"><span><a class="doc-id-link" href="#getsockopt_sock">getsockopt_sock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/linux/sys.odin#L717"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">getsockopt_sock :: <span class="keyword-type">proc</span> "contextless" (sock: <a class="code-typename" href="/core/sys/linux/#Fd">Fd</a>, level: <a class="code-typename" href="/core/sys/linux/#Socket_API_Level_Sock">Socket_API_Level_Sock</a>, opt: <a class="code-typename" href="/core/sys/linux/#Socket_Option">Socket_Option</a>, val: ^$T) -> (<a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, <a class="code-typename" href="/core/sys/linux/#Errno">Errno</a>) {…}</pre>
+<pre class="doc-code">getsockopt_sock :: <span class="keyword-type">proc</span> "contextless" (sock: <a class="code-typename" href="/core/sys/linux/#Fd">Fd</a>, level: <a class="code-typename" href="/core/sys/linux/#Socket_API_Level_Sock">Socket_API_Level_Sock</a>, opt: <a class="code-typename" href="/core/sys/linux/#Socket_Option">Socket_Option</a>, val: ^$) -> (<a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, <a class="code-typename" href="/core/sys/linux/#Errno">Errno</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="getsockopt_tcp"><span><a class="doc-id-link" href="#getsockopt_tcp">getsockopt_tcp<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/linux/sys.odin#L725"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">getsockopt_tcp :: <span class="keyword-type">proc</span> "contextless" (sock: <a class="code-typename" href="/core/sys/linux/#Fd">Fd</a>, level: <a class="code-typename" href="/core/sys/linux/#Socket_API_Level_TCP">Socket_API_Level_TCP</a>, opt: <a class="code-typename" href="/core/sys/linux/#Socket_TCP_Option">Socket_TCP_Option</a>, val: ^$T) -> (<a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, <a class="code-typename" href="/core/sys/linux/#Errno">Errno</a>) {…}</pre>
+<pre class="doc-code">getsockopt_tcp :: <span class="keyword-type">proc</span> "contextless" (sock: <a class="code-typename" href="/core/sys/linux/#Fd">Fd</a>, level: <a class="code-typename" href="/core/sys/linux/#Socket_API_Level_TCP">Socket_API_Level_TCP</a>, opt: <a class="code-typename" href="/core/sys/linux/#Socket_TCP_Option">Socket_TCP_Option</a>, val: ^$) -> (<a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, <a class="code-typename" href="/core/sys/linux/#Errno">Errno</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="getsockopt_udp"><span><a class="doc-id-link" href="#getsockopt_udp">getsockopt_udp<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/linux/sys.odin#L733"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">getsockopt_udp :: <span class="keyword-type">proc</span> "contextless" (sock: <a class="code-typename" href="/core/sys/linux/#Fd">Fd</a>, level: <a class="code-typename" href="/core/sys/linux/#Socket_API_Level_UDP">Socket_API_Level_UDP</a>, opt: <a class="code-typename" href="/core/sys/linux/#Socket_UDP_Option">Socket_UDP_Option</a>, val: ^$T) -> (<a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, <a class="code-typename" href="/core/sys/linux/#Errno">Errno</a>) {…}</pre>
+<pre class="doc-code">getsockopt_udp :: <span class="keyword-type">proc</span> "contextless" (sock: <a class="code-typename" href="/core/sys/linux/#Fd">Fd</a>, level: <a class="code-typename" href="/core/sys/linux/#Socket_API_Level_UDP">Socket_API_Level_UDP</a>, opt: <a class="code-typename" href="/core/sys/linux/#Socket_UDP_Option">Socket_UDP_Option</a>, val: ^$) -> (<a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, <a class="code-typename" href="/core/sys/linux/#Errno">Errno</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -14772,7 +14785,7 @@ On arm64 available since Linux 2.6.16.
 <div class="pkg-entity">
 <h3 id="recvfrom"><span><a class="doc-id-link" href="#recvfrom">recvfrom<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/linux/sys.odin#L530"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">recvfrom :: <span class="keyword-type">proc</span> "contextless" (sock: <a class="code-typename" href="/core/sys/linux/#Fd">Fd</a>, buf: []<a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a>, flags: <span class="keyword-type">bit_set</span>[<a class="code-typename" href="/core/sys/linux/#Socket_Msg_Bits">Socket_Msg_Bits</a>; <a href="/base/builtin#i32"><span class="doc-builtin">i32</span></a>], addr: ^$T) -> (<a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, <a class="code-typename" href="/core/sys/linux/#Errno">Errno</a>) {…}</pre>
+<pre class="doc-code">recvfrom :: <span class="keyword-type">proc</span> "contextless" (sock: <a class="code-typename" href="/core/sys/linux/#Fd">Fd</a>, buf: []<a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a>, flags: <span class="keyword-type">bit_set</span>[<a class="code-typename" href="/core/sys/linux/#Socket_Msg_Bits">Socket_Msg_Bits</a>; <a href="/base/builtin#i32"><span class="doc-builtin">i32</span></a>], addr: ^$) -> (<a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, <a class="code-typename" href="/core/sys/linux/#Errno">Errno</a>) {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -15032,7 +15045,7 @@ On 32-bit platforms available since Linux 2.6.
 <div class="pkg-entity">
 <h3 id="sendto"><span><a class="doc-id-link" href="#sendto">sendto<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/linux/sys.odin#L548"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">sendto :: <span class="keyword-type">proc</span> "contextless" (sock: <a class="code-typename" href="/core/sys/linux/#Fd">Fd</a>, buf: []<a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a>, flags: <span class="keyword-type">bit_set</span>[<a class="code-typename" href="/core/sys/linux/#Socket_Msg_Bits">Socket_Msg_Bits</a>; <a href="/base/builtin#i32"><span class="doc-builtin">i32</span></a>], addr: ^$T) -> (<a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, <a class="code-typename" href="/core/sys/linux/#Errno">Errno</a>) {…}</pre>
+<pre class="doc-code">sendto :: <span class="keyword-type">proc</span> "contextless" (sock: <a class="code-typename" href="/core/sys/linux/#Fd">Fd</a>, buf: []<a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a>, flags: <span class="keyword-type">bit_set</span>[<a class="code-typename" href="/core/sys/linux/#Socket_Msg_Bits">Socket_Msg_Bits</a>; <a href="/base/builtin#i32"><span class="doc-builtin">i32</span></a>], addr: ^$) -> (<a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, <a class="code-typename" href="/core/sys/linux/#Errno">Errno</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -15220,7 +15233,7 @@ On 32-bit platforms available since Linux 2.4.
 <div class="pkg-entity">
 <h3 id="setsockopt_base"><span><a class="doc-id-link" href="#setsockopt_base">setsockopt_base<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/linux/sys.odin#L660"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">setsockopt_base :: <span class="keyword-type">proc</span> "contextless" (sock: <a class="code-typename" href="/core/sys/linux/#Fd">Fd</a>, level: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, opt: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, val: $T) -> <a class="code-typename" href="/core/sys/linux/#Errno">Errno</a> {…}</pre>
+<pre class="doc-code">setsockopt_base :: <span class="keyword-type">proc</span> "contextless" (sock: <a class="code-typename" href="/core/sys/linux/#Fd">Fd</a>, level: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, opt: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, val: $) -> <a class="code-typename" href="/core/sys/linux/#Errno">Errno</a> {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -15232,19 +15245,19 @@ TODO(flysand): add ability to specify slices</p>
 <div class="pkg-entity">
 <h3 id="setsockopt_sock"><span><a class="doc-id-link" href="#setsockopt_sock">setsockopt_sock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/linux/sys.odin#L671"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">setsockopt_sock :: <span class="keyword-type">proc</span> "contextless" (sock: <a class="code-typename" href="/core/sys/linux/#Fd">Fd</a>, level: <a class="code-typename" href="/core/sys/linux/#Socket_API_Level_Sock">Socket_API_Level_Sock</a>, opt: <a class="code-typename" href="/core/sys/linux/#Socket_Option">Socket_Option</a>, val: $T) -> <a class="code-typename" href="/core/sys/linux/#Errno">Errno</a> {…}</pre>
+<pre class="doc-code">setsockopt_sock :: <span class="keyword-type">proc</span> "contextless" (sock: <a class="code-typename" href="/core/sys/linux/#Fd">Fd</a>, level: <a class="code-typename" href="/core/sys/linux/#Socket_API_Level_Sock">Socket_API_Level_Sock</a>, opt: <a class="code-typename" href="/core/sys/linux/#Socket_Option">Socket_Option</a>, val: $) -> <a class="code-typename" href="/core/sys/linux/#Errno">Errno</a> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="setsockopt_tcp"><span><a class="doc-id-link" href="#setsockopt_tcp">setsockopt_tcp<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/linux/sys.odin#L679"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">setsockopt_tcp :: <span class="keyword-type">proc</span> "contextless" (sock: <a class="code-typename" href="/core/sys/linux/#Fd">Fd</a>, level: <a class="code-typename" href="/core/sys/linux/#Socket_API_Level_TCP">Socket_API_Level_TCP</a>, opt: <a class="code-typename" href="/core/sys/linux/#Socket_TCP_Option">Socket_TCP_Option</a>, val: $T) -> <a class="code-typename" href="/core/sys/linux/#Errno">Errno</a> {…}</pre>
+<pre class="doc-code">setsockopt_tcp :: <span class="keyword-type">proc</span> "contextless" (sock: <a class="code-typename" href="/core/sys/linux/#Fd">Fd</a>, level: <a class="code-typename" href="/core/sys/linux/#Socket_API_Level_TCP">Socket_API_Level_TCP</a>, opt: <a class="code-typename" href="/core/sys/linux/#Socket_TCP_Option">Socket_TCP_Option</a>, val: $) -> <a class="code-typename" href="/core/sys/linux/#Errno">Errno</a> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
 <h3 id="setsockopt_udp"><span><a class="doc-id-link" href="#setsockopt_udp">setsockopt_udp<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/linux/sys.odin#L687"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">setsockopt_udp :: <span class="keyword-type">proc</span> "contextless" (sock: <a class="code-typename" href="/core/sys/linux/#Fd">Fd</a>, level: <a class="code-typename" href="/core/sys/linux/#Socket_API_Level_UDP">Socket_API_Level_UDP</a>, opt: <a class="code-typename" href="/core/sys/linux/#Socket_UDP_Option">Socket_UDP_Option</a>, val: $T) -> <a class="code-typename" href="/core/sys/linux/#Errno">Errno</a> {…}</pre>
+<pre class="doc-code">setsockopt_udp :: <span class="keyword-type">proc</span> "contextless" (sock: <a class="code-typename" href="/core/sys/linux/#Fd">Fd</a>, level: <a class="code-typename" href="/core/sys/linux/#Socket_API_Level_UDP">Socket_API_Level_UDP</a>, opt: <a class="code-typename" href="/core/sys/linux/#Socket_UDP_Option">Socket_UDP_Option</a>, val: $) -> <a class="code-typename" href="/core/sys/linux/#Errno">Errno</a> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -15948,7 +15961,7 @@ Before Linux 3.14 this operation is not atomic (i.e. not thread safe)
 <li><em>(hidden platform specific files)</em></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2024-07 (vendor "odin") Windows_amd64 @ 2024-07-08 21:11:01.287494000 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2024-07 (vendor "odin") Windows_amd64 @ 2024-07-15 14:23:48.890786200 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">

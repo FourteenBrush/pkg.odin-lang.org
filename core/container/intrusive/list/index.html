@@ -3,13 +3,22 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>package container/intrusive/list - pkg.odin-lang.org</title>	<link rel="stylesheet" type="text/css" href="https://odin-lang.org/scss/custom.min.css">
+	<title>package container/intrusive/list - pkg.odin-lang.org</title>	<link rel="icon" href="/favicon.svg">
+	<link rel="stylesheet" type="text/css" href="https://odin-lang.org/scss/custom.min.css">
 	<link rel=stylesheet href="//odin-lang.org/lib/highlight/styles/github-dark.min.css">
 	<script src="//odin-lang.org/lib/highlight/highlight.min.js"></script>
 
 	<script>hljs.registerLanguage("odin",function(a){return{aliases:["odin","odinlang","odin-lang"],keywords:{keyword:"auto_cast bit_set break case cast context continue defer distinct do dynamic else enum fallthrough for foreign if import in map not_in or_else or_return package proc return struct switch transmute type_of typeid union using when where",literal:"true false nil",built_in:"abs align_of cap clamp complex conj expand_to_tuple imag jmag kmag len max min offset_of quaternion real size_of soa_unzip soa_zip swizzle type_info_of type_of typeid_of"},illegal:"</",contains:[a.C_LINE_COMMENT_MODE,a.C_BLOCK_COMMENT_MODE,{className:"string",variants:[a.QUOTE_STRING_MODE,{begin:"'",end:"[^\\\\]'"},{begin:"`",end:"`"}]},{className:"number",variants:[{begin:a.C_NUMBER_RE+"[ijk]",relevance:1},a.C_NUMBER_MODE]}]}})</script>
 	<script>hljs.highlightAll()</script>
 	<script>
+		document.addEventListener("readystatechange", () => {
+			if (document.readyState === "interactive") {
+				if (window.localStorage.getItem("theme") === "dark")
+					document.body.classList.add("dark-mode");
+				else
+					document.body.classList.remove("dark-mode");
+			}
+		});
 		function toggleDarkMode() {
 			if (document.body.classList.toggle("dark-mode")) {
 				window.localStorage.setItem("theme", "dark");
@@ -207,7 +216,11 @@
 </li>
 <li class="nav-item"><a href="/core/reflect">reflect</a></li>
 <li class="nav-item"><a href="/core/relative">relative</a></li>
-<li class="nav-item"><a href="/core/simd">simd</a></li>
+<li class="nav-item"><a href="/core/simd">simd</a><ul>
+<li><a href="/core/simd/x86">x86</a></li>
+</ul>
+
+</li>
 <li class="nav-item"><a href="/core/slice">slice</a><ul>
 <li><a href="/core/slice/heap">heap</a></li>
 </ul>
@@ -293,6 +306,50 @@
 </div>
 <ul id="odin-search-results"></ul>
 <div id="pkg-top">
+<h2>Overview</h2>
+<div id="pkg-overview">
+<p>Package list implements an intrusive doubly-linked list.</p>
+<p>An intrusive container requires a <code>Node</code> to be embedded in your own structure, like this:</p>
+<pre>My_String :: struct {
+	node:  list.Node,
+	value: string,
+}
+
+</pre>
+<p>Embedding the members of a <code>list.Node</code> in your structure with the <code>using</code> keyword is also allowed:</p>
+<pre>My_String :: struct {
+	using node: list.Node,
+	value: string,
+}
+
+</pre>
+<p>Here is a full example:</p>
+<pre>package test
+
+import "core:fmt"
+import "core:container/intrusive/list"
+
+main :: proc() {
+    l: list.List
+
+    one := My_String{value="Hello"}
+    two := My_String{value="World"}
+
+    list.push_back(&l, &one.node)
+    list.push_back(&l, &two.node)
+
+    iter := list.iterator_head(l, My_String, "node")
+    for s in list.iterate_next(&iter) {
+        fmt.println(s.value)
+    }
+}
+
+My_String :: struct {
+    node:  list.Node,
+    value: string,
+}
+</pre>
+</div>
 <div id="pkg-index">
 <h2>Index</h2>
 <div>
@@ -353,7 +410,7 @@ Procedure Groups (0)</summary>
 <section class="documentation">
 <h2 id="pkg-Types" class="pkg-header">Types</h2>
 <div class="pkg-entity">
-<h3 id="Iterator"><span><a class="doc-id-link" href="#Iterator">Iterator<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/container/intrusive/list/intrusive_list.odin#L154"><em>Source</em></a></div></h3>
+<h3 id="Iterator"><span><a class="doc-id-link" href="#Iterator">Iterator<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/container/intrusive/list/intrusive_list.odin#L209"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Iterator :: <span class="keyword-type">struct</span>($Value: <span class="keyword-type">typeid</span>) {}</pre>
 </div>
@@ -412,6 +469,10 @@ of the parent structure. The parent type and field name are given to
 	next: ^<a class="code-typename" href="/core/container/intrusive/list/#Node">Node</a>,
 }</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>The list link you must include in your own structure.</p>
+</details>
 <h5>Related Procedures With Parameters</h5>
 <ul>
 <li><a href="/core/container/intrusive/list/#iterator_from_node">iterator_from_node</a></li>
@@ -431,97 +492,259 @@ of the parent structure. The parent type and field name are given to
 <p class="pkg-empty-section">This section is empty.</p>
 <h2 id="pkg-Procedures" class="pkg-header">Procedures</h2>
 <div class="pkg-entity">
-<h3 id="is_empty"><span><a class="doc-id-link" href="#is_empty">is_empty<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/container/intrusive/list/intrusive_list.odin#L109"><em>Source</em></a></div></h3>
+<h3 id="is_empty"><span><a class="doc-id-link" href="#is_empty">is_empty<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/container/intrusive/list/intrusive_list.odin#L147"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">is_empty :: <span class="keyword-type">proc</span> "contextless" (list: ^<a class="code-typename" href="/core/container/intrusive/list/#List">List</a>) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Checks whether the given list does not contain any element.</p>
+<p><b>Inputs</b>
+<span class="doc-list">list: The container list</span></p>
+<p><b>Returns</b> <code>true</code> if <code>list</code> is empty, <code>false</code> otherwise</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="iterate_next"><span><a class="doc-id-link" href="#iterate_next">iterate_next<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/container/intrusive/list/intrusive_list.odin#L177"><em>Source</em></a></div></h3>
+<h3 id="iterate_next"><span><a class="doc-id-link" href="#iterate_next">iterate_next<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/container/intrusive/list/intrusive_list.odin#L304"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">iterate_next :: <span class="keyword-type">proc</span> "contextless" (it: ^<a class="code-typename" href="/core/container/intrusive/list/#Iterator">Iterator</a>($T)) -> (ptr: ^$T, ok: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Retrieves the next element in a list and advances the iterator.</p>
+<p><b>Inputs</b><br>
+<span class="doc-list">it: The iterator</span></p>
+<p><b>Returns</b>
+<span class="doc-list">ptr: The next list element</span>
+<span class="doc-list">ok: <code>true</code> if the element is valid (the iterator could advance), <code>false</code> otherwise</span></p>
+<details open class="code-example">
+<summary><b>Example:</b></summary>
+<pre><code class="hljs language-odin" data-lang="odin">import "core:fmt"
+import "core:container/intrusive/list"
+
+iterate_next_example :: proc() {
+	l: list.List
+
+	one := My_Struct{value=1}
+	two := My_Struct{value=2}
+
+	list.push_back(&l, &one.node)
+	list.push_back(&l, &two.node)
+
+	it := list.iterator_head(l, My_Struct, "node")
+	for num in list.iterate_next(&it) {
+		fmt.println(num.value)
+	}
+}
+
+My_Struct :: struct {
+	node : list.Node,
+	value: int,
+}
+</code></pre>
+<b>Output:</b>
+<pre class="doc-code">1
+2
+</pre>
+</details>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="iterate_prev"><span><a class="doc-id-link" href="#iterate_prev">iterate_prev<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/container/intrusive/list/intrusive_list.odin#L187"><em>Source</em></a></div></h3>
+<h3 id="iterate_prev"><span><a class="doc-id-link" href="#iterate_prev">iterate_prev<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/container/intrusive/list/intrusive_list.odin#L354"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">iterate_prev :: <span class="keyword-type">proc</span> "contextless" (it: ^<a class="code-typename" href="/core/container/intrusive/list/#Iterator">Iterator</a>($T)) -> (ptr: ^$T, ok: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Retrieves the previous element in a list and recede the iterator.</p>
+<p><b>Inputs</b><br>
+<span class="doc-list">it: The iterator</span></p>
+<p><b>Returns</b>
+<span class="doc-list">ptr: The previous list element</span>
+<span class="doc-list">ok: <code>true</code> if the element is valid (the iterator could recede), <code>false</code> otherwise</span></p>
+<details open class="code-example">
+<summary><b>Example:</b></summary>
+<pre><code class="hljs language-odin" data-lang="odin">import "core:fmt"
+import "core:container/intrusive/list"
+
+iterate_next_example :: proc() {
+	l: list.List
+
+	one := My_Struct{value=1}
+	two := My_Struct{value=2}
+
+	list.push_back(&l, &one.node)
+	list.push_back(&l, &two.node)
+
+	it := list.iterator_tail(l, My_Struct, "node")
+	for num in list.iterate_prev(&it) {
+		fmt.println(num.value)
+	}
+}
+
+My_Struct :: struct {
+	node : list.Node,
+	value: int,
+}
+</code></pre>
+<b>Output:</b>
+<pre class="doc-code">2
+1
+</pre>
+</details>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="iterator_from_node"><span><a class="doc-id-link" href="#iterator_from_node">iterator_from_node<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/container/intrusive/list/intrusive_list.odin#L171"><em>Source</em></a></div></h3>
+<h3 id="iterator_from_node"><span><a class="doc-id-link" href="#iterator_from_node">iterator_from_node<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/container/intrusive/list/intrusive_list.odin#L257"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">iterator_from_node :: <span class="keyword-type">proc</span> "contextless" (node: ^<a class="code-typename" href="/core/container/intrusive/list/#Node">Node</a>, $T: <a href="/base/builtin#typeid"><span class="doc-builtin">typeid</span></a>, $field_name: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a> = ) -> <a class="code-typename" href="/core/container/intrusive/list/#Iterator">Iterator</a>($T) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Creates an iterator pointing at the specified node of a list.</p>
+<p><b>Inputs</b>
+<span class="doc-list">node: a list node</span>
+<span class="doc-list">T: The type of the list's elements</span>
+<span class="doc-list">field_name: The name of the node field in the <code>T</code> structure</span></p>
+<p><b>Returns</b> An iterator pointing at <code>node</code></p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="iterator_head"><span><a class="doc-id-link" href="#iterator_head">iterator_head<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/container/intrusive/list/intrusive_list.odin#L159"><em>Source</em></a></div></h3>
+<h3 id="iterator_head"><span><a class="doc-id-link" href="#iterator_head">iterator_head<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/container/intrusive/list/intrusive_list.odin#L225"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">iterator_head :: <span class="keyword-type">proc</span> "contextless" (list: <a class="code-typename" href="/core/container/intrusive/list/#List">List</a>, $T: <a href="/base/builtin#typeid"><span class="doc-builtin">typeid</span></a>, $field_name: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a> = ) -> <a class="code-typename" href="/core/container/intrusive/list/#Iterator">Iterator</a>($T) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Creates an iterator pointing at the head of the given list. For an example, see <code>iterate_next</code>.</p>
+<p><b>Inputs</b>
+<span class="doc-list">list: The container list</span>
+<span class="doc-list">T: The type of the list's elements</span>
+<span class="doc-list">field_name: The name of the node field in the <code>T</code> structure</span></p>
+<p><b>Returns</b> An iterator pointing at the head of <code>list</code></p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="iterator_tail"><span><a class="doc-id-link" href="#iterator_tail">iterator_tail<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/container/intrusive/list/intrusive_list.odin#L165"><em>Source</em></a></div></h3>
+<h3 id="iterator_tail"><span><a class="doc-id-link" href="#iterator_tail">iterator_tail<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/container/intrusive/list/intrusive_list.odin#L241"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">iterator_tail :: <span class="keyword-type">proc</span> "contextless" (list: <a class="code-typename" href="/core/container/intrusive/list/#List">List</a>, $T: <a href="/base/builtin#typeid"><span class="doc-builtin">typeid</span></a>, $field_name: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a> = ) -> <a class="code-typename" href="/core/container/intrusive/list/#Iterator">Iterator</a>($T) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Creates an iterator pointing at the tail of the given list. For an example, see <code>iterate_prev</code>.</p>
+<p><b>Inputs</b>
+<span class="doc-list">list: The container list</span>
+<span class="doc-list">T: The type of the list's elements</span>
+<span class="doc-list">field_name: The name of the node field in the <code>T</code> structure</span></p>
+<p><b>Returns</b> An iterator pointing at the tail of <code>list</code></p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="pop_back"><span><a class="doc-id-link" href="#pop_back">pop_back<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/container/intrusive/list/intrusive_list.odin#L133"><em>Source</em></a></div></h3>
+<h3 id="pop_back"><span><a class="doc-id-link" href="#pop_back">pop_back<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/container/intrusive/list/intrusive_list.odin#L187"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">pop_back :: <span class="keyword-type">proc</span> "contextless" (list: ^<a class="code-typename" href="/core/container/intrusive/list/#List">List</a>) -> ^<a class="code-typename" href="/core/container/intrusive/list/#Node">Node</a> {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Removes and returns the element at the back of the list with O(1) time complexity.</p>
+<p><b>Inputs</b>
+<span class="doc-list">list: The container list</span></p>
+<p><b>Returns</b> The node member of the user-defined element structure, or <code>nil</code> if the list is empty</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="pop_front"><span><a class="doc-id-link" href="#pop_front">pop_front<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/container/intrusive/list/intrusive_list.odin#L113"><em>Source</em></a></div></h3>
+<h3 id="pop_front"><span><a class="doc-id-link" href="#pop_front">pop_front<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/container/intrusive/list/intrusive_list.odin#L159"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">pop_front :: <span class="keyword-type">proc</span> "contextless" (list: ^<a class="code-typename" href="/core/container/intrusive/list/#List">List</a>) -> ^<a class="code-typename" href="/core/container/intrusive/list/#Node">Node</a> {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Removes and returns the element at the front of the list with O(1) time complexity.</p>
+<p><b>Inputs</b>
+<span class="doc-list">list: The container list</span></p>
+<p><b>Returns</b> The node member of the user-defined element structure, or <code>nil</code> if the list is empty</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="push_back"><span><a class="doc-id-link" href="#push_back">push_back<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/container/intrusive/list/intrusive_list.odin#L37"><em>Source</em></a></div></h3>
+<h3 id="push_back"><span><a class="doc-id-link" href="#push_back">push_back<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/container/intrusive/list/intrusive_list.odin#L50"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">push_back :: <span class="keyword-type">proc</span> "contextless" (list: ^<a class="code-typename" href="/core/container/intrusive/list/#List">List</a>, node: ^<a class="code-typename" href="/core/container/intrusive/list/#Node">Node</a>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Inserts a new element at the back of the list with O(1) time complexity.</p>
+<p><b>Inputs</b>
+<span class="doc-list">list: The container list</span>
+<span class="doc-list">node: The node member of the user-defined element structure</span></p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="push_front"><span><a class="doc-id-link" href="#push_front">push_front<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/container/intrusive/list/intrusive_list.odin#L26"><em>Source</em></a></div></h3>
+<h3 id="push_front"><span><a class="doc-id-link" href="#push_front">push_front<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/container/intrusive/list/intrusive_list.odin#L33"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">push_front :: <span class="keyword-type">proc</span> "contextless" (list: ^<a class="code-typename" href="/core/container/intrusive/list/#List">List</a>, node: ^<a class="code-typename" href="/core/container/intrusive/list/#Node">Node</a>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Inserts a new element at the front of the list with O(1) time complexity.</p>
+<p><b>Inputs</b>
+<span class="doc-list">list: The container list</span>
+<span class="doc-list">node: The node member of the user-defined element structure</span></p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="remove"><span><a class="doc-id-link" href="#remove">remove<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/container/intrusive/list/intrusive_list.odin#L48"><em>Source</em></a></div></h3>
+<h3 id="remove"><span><a class="doc-id-link" href="#remove">remove<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/container/intrusive/list/intrusive_list.odin#L68"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">remove :: <span class="keyword-type">proc</span> "contextless" (list: ^<a class="code-typename" href="/core/container/intrusive/list/#List">List</a>, node: ^<a class="code-typename" href="/core/container/intrusive/list/#Node">Node</a>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Removes an element from a list with O(1) time complexity.</p>
+<p><b>Inputs</b>
+<span class="doc-list">list: The container list</span>
+<span class="doc-list">node: The node member of the user-defined element structure to be removed</span></p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="remove_by_proc"><span><a class="doc-id-link" href="#remove_by_proc">remove_by_proc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/container/intrusive/list/intrusive_list.odin#L65"><em>Source</em></a></div></h3>
+<h3 id="remove_by_proc"><span><a class="doc-id-link" href="#remove_by_proc">remove_by_proc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/container/intrusive/list/intrusive_list.odin#L91"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">remove_by_proc :: <span class="keyword-type">proc</span>(list: ^<a class="code-typename" href="/core/container/intrusive/list/#List">List</a>, to_erase: <span class="keyword-type">proc</span>(_: ) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Removes from the given list all elements that satisfy a condition with O(N) time complexity.</p>
+<p><b>Inputs</b>
+<span class="doc-list">list: The container list</span>
+<span class="doc-list">to_erase: The condition procedure. It should return <code>true</code> if a node should be removed, <code>false</code> otherwise</span></p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="remove_by_proc_contextless"><span><a class="doc-id-link" href="#remove_by_proc_contextless">remove_by_proc_contextless<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/container/intrusive/list/intrusive_list.odin#L86"><em>Source</em></a></div></h3>
+<h3 id="remove_by_proc_contextless"><span><a class="doc-id-link" href="#remove_by_proc_contextless">remove_by_proc_contextless<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/container/intrusive/list/intrusive_list.odin#L118"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">remove_by_proc_contextless :: <span class="keyword-type">proc</span>(list: ^<a class="code-typename" href="/core/container/intrusive/list/#List">List</a>, to_erase: <span class="keyword-type">proc</span> "contextless" (_: ) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Removes from the given list all elements that satisfy a condition with O(N) time complexity.</p>
+<p><b>Inputs</b>
+<span class="doc-list">list: The container list</span>
+<span class="doc-list">to_erase: The _contextless_ condition procedure. It should return <code>true</code> if a node should be removed, <code>false</code> otherwise</span></p>
+</details>
 </div>
 <h2 id="pkg-Procedure Groups" class="pkg-header">Procedure Groups</h2>
 <p class="pkg-empty-section">This section is empty.</p>
 </section>
 <h2 id="pkg-source-files">Source Files</h2>
 <ul>
+<li><a href="https://github.com/odin-lang/Odin/tree/master/core/container/intrusive/list/doc.odin">doc.odin</a></li>
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/container/intrusive/list/intrusive_list.odin">intrusive_list.odin</a></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2024-07 (vendor "odin") Windows_amd64 @ 2024-07-08 21:11:00.846000200 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2024-07 (vendor "odin") Windows_amd64 @ 2024-07-15 14:23:48.448713500 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
 <ul>
-<li><a href="#pkg-Types">Types</a><ul>
+<li><a href="#pkg-overview">Overview</a><li><a href="#pkg-Types">Types</a><ul>
 <li><a href="#Iterator">Iterator</a></li>
 <li><a href="#List">List</a></li>
 <li><a href="#Node">Node</a></li>

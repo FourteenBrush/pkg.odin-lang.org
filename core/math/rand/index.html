@@ -3,13 +3,22 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>package math/rand - pkg.odin-lang.org</title>	<link rel="stylesheet" type="text/css" href="https://odin-lang.org/scss/custom.min.css">
+	<title>package math/rand - pkg.odin-lang.org</title>	<link rel="icon" href="/favicon.svg">
+	<link rel="stylesheet" type="text/css" href="https://odin-lang.org/scss/custom.min.css">
 	<link rel=stylesheet href="//odin-lang.org/lib/highlight/styles/github-dark.min.css">
 	<script src="//odin-lang.org/lib/highlight/highlight.min.js"></script>
 
 	<script>hljs.registerLanguage("odin",function(a){return{aliases:["odin","odinlang","odin-lang"],keywords:{keyword:"auto_cast bit_set break case cast context continue defer distinct do dynamic else enum fallthrough for foreign if import in map not_in or_else or_return package proc return struct switch transmute type_of typeid union using when where",literal:"true false nil",built_in:"abs align_of cap clamp complex conj expand_to_tuple imag jmag kmag len max min offset_of quaternion real size_of soa_unzip soa_zip swizzle type_info_of type_of typeid_of"},illegal:"</",contains:[a.C_LINE_COMMENT_MODE,a.C_BLOCK_COMMENT_MODE,{className:"string",variants:[a.QUOTE_STRING_MODE,{begin:"'",end:"[^\\\\]'"},{begin:"`",end:"`"}]},{className:"number",variants:[{begin:a.C_NUMBER_RE+"[ijk]",relevance:1},a.C_NUMBER_MODE]}]}})</script>
 	<script>hljs.highlightAll()</script>
 	<script>
+		document.addEventListener("readystatechange", () => {
+			if (document.readyState === "interactive") {
+				if (window.localStorage.getItem("theme") === "dark")
+					document.body.classList.add("dark-mode");
+				else
+					document.body.classList.remove("dark-mode");
+			}
+		});
 		function toggleDarkMode() {
 			if (document.body.classList.toggle("dark-mode")) {
 				window.localStorage.setItem("theme", "dark");
@@ -207,7 +216,11 @@
 </li>
 <li class="nav-item"><a href="/core/reflect">reflect</a></li>
 <li class="nav-item"><a href="/core/relative">relative</a></li>
-<li class="nav-item"><a href="/core/simd">simd</a></li>
+<li class="nav-item"><a href="/core/simd">simd</a><ul>
+<li><a href="/core/simd/x86">x86</a></li>
+</ul>
+
+</li>
 <li class="nav-item"><a href="/core/slice">slice</a><ul>
 <li><a href="/core/slice/heap">heap</a></li>
 </ul>
@@ -301,9 +314,11 @@
 <div>
 <details class="doc-index" id="doc-index-Types" aria-labelledby="#doc-index-Types-header">
 <summary id="#doc-index-Types-header">
-Types (1)</summary>
+Types (3)</summary>
 <ul>
 <li><a href="#Default_Random_State">Default_Random_State</a></li>
+<li><a href="#Generator">Generator</a></li>
+<li><a href="#Generator_Query_Info">Generator_Query_Info</a></li>
 </ul>
 </details>
 </div>
@@ -324,7 +339,7 @@ Variables (0)</summary>
 <div>
 <details class="doc-index" id="doc-index-Procedures" aria-labelledby="#doc-index-Procedures-header">
 <summary id="#doc-index-Procedures-header">
-Procedures (52)</summary>
+Procedures (54)</summary>
 <ul>
 <li><a href="#choice">choice</a></li>
 <li><a href="#choice_enum">choice_enum</a></li>
@@ -371,8 +386,10 @@ Procedures (52)</summary>
 <li><a href="#int_max">int_max</a></li>
 <li><a href="#norm_float64">norm_float64</a></li>
 <li><a href="#perm">perm</a></li>
+<li><a href="#query_info">query_info</a></li>
 <li><a href="#read">read</a></li>
 <li><a href="#reset">reset</a></li>
+<li><a href="#reset_bytes">reset_bytes</a></li>
 <li><a href="#set_global_seed">set_global_seed</a></li>
 <li><a href="#shuffle">shuffle</a></li>
 <li><a href="#uint128">uint128</a></li>
@@ -393,9 +410,21 @@ Procedure Groups (0)</summary>
 <section class="documentation">
 <h2 id="pkg-Types" class="pkg-header">Types</h2>
 <div class="pkg-entity">
-<h3 id="Default_Random_State"><span><a class="doc-id-link" href="#Default_Random_State">Default_Random_State<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L12"><em>Source</em></a></div></h3>
+<h3 id="Default_Random_State"><span><a class="doc-id-link" href="#Default_Random_State">Default_Random_State<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L16"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Default_Random_State :: runtime.<a class="code-typename" href="/base/runtime/#Default_Random_State">Default_Random_State</a></pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Generator"><span><a class="doc-id-link" href="#Generator">Generator<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L12"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Generator :: runtime.<a class="code-typename" href="/base/runtime/#Random_Generator">Random_Generator</a></pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Generator_Query_Info"><span><a class="doc-id-link" href="#Generator_Query_Info">Generator_Query_Info<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L14"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Generator_Query_Info :: runtime.<a class="code-typename" href="/base/runtime/#Random_Generator_Query_Info">Random_Generator_Query_Info</a></pre>
 </div>
 </div>
 <h2 id="pkg-Constants" class="pkg-header">Constants</h2>
@@ -404,9 +433,9 @@ Procedure Groups (0)</summary>
 <p class="pkg-empty-section">This section is empty.</p>
 <h2 id="pkg-Procedures" class="pkg-header">Procedures</h2>
 <div class="pkg-entity">
-<h3 id="choice"><span><a class="doc-id-link" href="#choice">choice<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L644"><em>Source</em></a></div></h3>
+<h3 id="choice"><span><a class="doc-id-link" href="#choice">choice<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L657"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">choice :: <span class="keyword-type">proc</span>(array: $T/[]$T) -> (res: $T) {…}</pre>
+<pre class="doc-code">choice :: <span class="keyword-type">proc</span>(array: $T/[]$T, gen := <a href="/base/runtime/#Context">context.random_generator</a>) -> (res: $T) {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -435,13 +464,13 @@ choice_example :: proc() {
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="choice_enum"><span><a class="doc-id-link" href="#choice_enum">choice_enum<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L654"><em>Source</em></a></div></h3>
+<h3 id="choice_enum"><span><a class="doc-id-link" href="#choice_enum">choice_enum<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L667"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">choice_enum :: <span class="keyword-type">proc</span>($T: <a href="/base/builtin#typeid"><span class="doc-builtin">typeid</span></a>) -> <a href="/base/builtin#typeid"><span class="doc-builtin">typeid</span></a> {…}</pre>
+<pre class="doc-code">choice_enum :: <span class="keyword-type">proc</span>($T: <a href="/base/builtin#typeid"><span class="doc-builtin">typeid</span></a>, gen := <a href="/base/runtime/#Context">context.random_generator</a>) -> <a href="/base/builtin#typeid"><span class="doc-builtin">typeid</span></a> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="create"><span><a class="doc-id-link" href="#create">create<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L15"><em>Source</em></a></div></h3>
+<h3 id="create"><span><a class="doc-id-link" href="#create">create<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L19"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">create :: <span class="keyword-type">proc</span>(seed: <a href="/base/builtin#u64"><span class="doc-builtin">u64</span></a>) -> (state: runtime.<a class="code-typename" href="/base/runtime/#Default_Random_State">Default_Random_State</a>) {…}</pre>
 </div>
@@ -449,7 +478,7 @@ choice_example :: proc() {
 <div class="pkg-entity">
 <h3 id="exp_float64"><span><a class="doc-id-link" href="#exp_float64">exp_float64<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/exp.odin#L19"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">exp_float64 :: <span class="keyword-type">proc</span>() -> <a href="/base/builtin#f64"><span class="doc-builtin">f64</span></a> {…}</pre>
+<pre class="doc-code">exp_float64 :: <span class="keyword-type">proc</span>(gen := <a href="/base/runtime/#Context">context.random_generator</a>) -> <a href="/base/builtin#f64"><span class="doc-builtin">f64</span></a> {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -466,9 +495,9 @@ the desired rate parameter</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="float32"><span><a class="doc-id-link" href="#float32">float32<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L421"><em>Source</em></a></div></h3>
+<h3 id="float32"><span><a class="doc-id-link" href="#float32">float32<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L434"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">float32 :: <span class="keyword-type">proc</span>() -> (val: <a href="/base/builtin#f32"><span class="doc-builtin">f32</span></a>) {…}</pre>
+<pre class="doc-code">float32 :: <span class="keyword-type">proc</span>(gen := <a href="/base/runtime/#Context">context.random_generator</a>) -> (val: <a href="/base/builtin#f32"><span class="doc-builtin">f32</span></a>) {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -492,7 +521,7 @@ float32_example :: proc() {
 <div class="pkg-entity">
 <h3 id="float32_beta"><span><a class="doc-id-link" href="#float32_beta">float32_beta<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/distributions.odin#L193"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">float32_beta :: <span class="keyword-type">proc</span>(alpha, beta: <a href="/base/builtin#f32"><span class="doc-builtin">f32</span></a>) -> <a href="/base/builtin#f32"><span class="doc-builtin">f32</span></a> {…}</pre>
+<pre class="doc-code">float32_beta :: <span class="keyword-type">proc</span>(alpha, beta: <a href="/base/builtin#f32"><span class="doc-builtin">f32</span></a>, gen := <a href="/base/runtime/#Context">context.random_generator</a>) -> <a href="/base/builtin#f32"><span class="doc-builtin">f32</span></a> {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -504,7 +533,7 @@ float32_example :: proc() {
 <div class="pkg-entity">
 <h3 id="float32_cauchy_lorentz"><span><a class="doc-id-link" href="#float32_cauchy_lorentz">float32_cauchy_lorentz<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/distributions.odin#L284"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">float32_cauchy_lorentz :: <span class="keyword-type">proc</span>(x_0, gamma: <a href="/base/builtin#f32"><span class="doc-builtin">f32</span></a>) -> <a href="/base/builtin#f32"><span class="doc-builtin">f32</span></a> {…}</pre>
+<pre class="doc-code">float32_cauchy_lorentz :: <span class="keyword-type">proc</span>(x_0, gamma: <a href="/base/builtin#f32"><span class="doc-builtin">f32</span></a>, gen := <a href="/base/runtime/#Context">context.random_generator</a>) -> <a href="/base/builtin#f32"><span class="doc-builtin">f32</span></a> {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -515,7 +544,7 @@ float32_example :: proc() {
 <div class="pkg-entity">
 <h3 id="float32_exponential"><span><a class="doc-id-link" href="#float32_exponential">float32_exponential<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/distributions.odin#L84"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">float32_exponential :: <span class="keyword-type">proc</span>(lambda: <a href="/base/builtin#f32"><span class="doc-builtin">f32</span></a>) -> <a href="/base/builtin#f32"><span class="doc-builtin">f32</span></a> {…}</pre>
+<pre class="doc-code">float32_exponential :: <span class="keyword-type">proc</span>(lambda: <a href="/base/builtin#f32"><span class="doc-builtin">f32</span></a>, gen := <a href="/base/runtime/#Context">context.random_generator</a>) -> <a href="/base/builtin#f32"><span class="doc-builtin">f32</span></a> {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -529,7 +558,7 @@ Return values range from
 <div class="pkg-entity">
 <h3 id="float32_gamma"><span><a class="doc-id-link" href="#float32_gamma">float32_gamma<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/distributions.odin#L165"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">float32_gamma :: <span class="keyword-type">proc</span>(alpha, beta: <a href="/base/builtin#f32"><span class="doc-builtin">f32</span></a>) -> <a href="/base/builtin#f32"><span class="doc-builtin">f32</span></a> {…}</pre>
+<pre class="doc-code">float32_gamma :: <span class="keyword-type">proc</span>(alpha, beta: <a href="/base/builtin#f32"><span class="doc-builtin">f32</span></a>, gen := <a href="/base/runtime/#Context">context.random_generator</a>) -> <a href="/base/builtin#f32"><span class="doc-builtin">f32</span></a> {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -544,7 +573,7 @@ Return values range from
 <div class="pkg-entity">
 <h3 id="float32_gompertz"><span><a class="doc-id-link" href="#float32_gompertz">float32_gompertz<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/distributions.odin#L336"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">float32_gompertz :: <span class="keyword-type">proc</span>(eta, b: <a href="/base/builtin#f32"><span class="doc-builtin">f32</span></a>) -> <a href="/base/builtin#f32"><span class="doc-builtin">f32</span></a> {…}</pre>
+<pre class="doc-code">float32_gompertz :: <span class="keyword-type">proc</span>(eta, b: <a href="/base/builtin#f32"><span class="doc-builtin">f32</span></a>, gen := <a href="/base/runtime/#Context">context.random_generator</a>) -> <a href="/base/builtin#f32"><span class="doc-builtin">f32</span></a> {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -556,7 +585,7 @@ Both <code>eta</code> and <code>b</code> must be &gt; 0</p>
 <div class="pkg-entity">
 <h3 id="float32_laplace"><span><a class="doc-id-link" href="#float32_laplace">float32_laplace<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/distributions.odin#L315"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">float32_laplace :: <span class="keyword-type">proc</span>(mean, b: <a href="/base/builtin#f32"><span class="doc-builtin">f32</span></a>) -> <a href="/base/builtin#f32"><span class="doc-builtin">f32</span></a> {…}</pre>
+<pre class="doc-code">float32_laplace :: <span class="keyword-type">proc</span>(mean, b: <a href="/base/builtin#f32"><span class="doc-builtin">f32</span></a>, gen := <a href="/base/runtime/#Context">context.random_generator</a>) -> <a href="/base/builtin#f32"><span class="doc-builtin">f32</span></a> {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -567,7 +596,7 @@ Both <code>eta</code> and <code>b</code> must be &gt; 0</p>
 <div class="pkg-entity">
 <h3 id="float32_log_cauchy_lorentz"><span><a class="doc-id-link" href="#float32_log_cauchy_lorentz">float32_log_cauchy_lorentz<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/distributions.odin#L299"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">float32_log_cauchy_lorentz :: <span class="keyword-type">proc</span>(x_0, gamma: <a href="/base/builtin#f32"><span class="doc-builtin">f32</span></a>) -> <a href="/base/builtin#f32"><span class="doc-builtin">f32</span></a> {…}</pre>
+<pre class="doc-code">float32_log_cauchy_lorentz :: <span class="keyword-type">proc</span>(x_0, gamma: <a href="/base/builtin#f32"><span class="doc-builtin">f32</span></a>, gen := <a href="/base/runtime/#Context">context.random_generator</a>) -> <a href="/base/builtin#f32"><span class="doc-builtin">f32</span></a> {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -578,7 +607,7 @@ Both <code>eta</code> and <code>b</code> must be &gt; 0</p>
 <div class="pkg-entity">
 <h3 id="float32_log_normal"><span><a class="doc-id-link" href="#float32_log_normal">float32_log_normal<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/distributions.odin#L64"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">float32_log_normal :: <span class="keyword-type">proc</span>(mean, stddev: <a href="/base/builtin#f32"><span class="doc-builtin">f32</span></a>) -> <a href="/base/builtin#f32"><span class="doc-builtin">f32</span></a> {…}</pre>
+<pre class="doc-code">float32_log_normal :: <span class="keyword-type">proc</span>(mean, stddev: <a href="/base/builtin#f32"><span class="doc-builtin">f32</span></a>, gen := <a href="/base/runtime/#Context">context.random_generator</a>) -> <a href="/base/builtin#f32"><span class="doc-builtin">f32</span></a> {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -588,7 +617,7 @@ Both <code>eta</code> and <code>b</code> must be &gt; 0</p>
 <div class="pkg-entity">
 <h3 id="float32_normal"><span><a class="doc-id-link" href="#float32_normal">float32_normal<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/distributions.odin#L52"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">float32_normal :: <span class="keyword-type">proc</span>(mean, stddev: <a href="/base/builtin#f32"><span class="doc-builtin">f32</span></a>) -> <a href="/base/builtin#f32"><span class="doc-builtin">f32</span></a> {…}</pre>
+<pre class="doc-code">float32_normal :: <span class="keyword-type">proc</span>(mean, stddev: <a href="/base/builtin#f32"><span class="doc-builtin">f32</span></a>, gen := <a href="/base/runtime/#Context">context.random_generator</a>) -> <a href="/base/builtin#f32"><span class="doc-builtin">f32</span></a> {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -598,7 +627,7 @@ Both <code>eta</code> and <code>b</code> must be &gt; 0</p>
 <div class="pkg-entity">
 <h3 id="float32_pareto"><span><a class="doc-id-link" href="#float32_pareto">float32_pareto<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/distributions.odin#L207"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">float32_pareto :: <span class="keyword-type">proc</span>(alpha, beta: <a href="/base/builtin#f32"><span class="doc-builtin">f32</span></a>) -> <a href="/base/builtin#f32"><span class="doc-builtin">f32</span></a> {…}</pre>
+<pre class="doc-code">float32_pareto :: <span class="keyword-type">proc</span>(alpha, beta: <a href="/base/builtin#f32"><span class="doc-builtin">f32</span></a>, gen := <a href="/base/runtime/#Context">context.random_generator</a>) -> <a href="/base/builtin#f32"><span class="doc-builtin">f32</span></a> {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -607,9 +636,9 @@ https://wikipedia.org/wiki/Pareto_distribution</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="float32_range"><span><a class="doc-id-link" href="#float32_range">float32_range<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L484"><em>Source</em></a></div></h3>
+<h3 id="float32_range"><span><a class="doc-id-link" href="#float32_range">float32_range<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L497"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">float32_range :: <span class="keyword-type">proc</span>(low, high: <a href="/base/builtin#f32"><span class="doc-builtin">f32</span></a>) -> (val: <a href="/base/builtin#f32"><span class="doc-builtin">f32</span></a>) {…}</pre>
+<pre class="doc-code">float32_range :: <span class="keyword-type">proc</span>(low, high: <a href="/base/builtin#f32"><span class="doc-builtin">f32</span></a>, gen := <a href="/base/runtime/#Context">context.random_generator</a>) -> (val: <a href="/base/builtin#f32"><span class="doc-builtin">f32</span></a>) {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -636,7 +665,7 @@ float32_range_example :: proc() {
 <div class="pkg-entity">
 <h3 id="float32_triangular"><span><a class="doc-id-link" href="#float32_triangular">float32_triangular<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/distributions.odin#L29"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">float32_triangular :: <span class="keyword-type">proc</span>(lo, hi: <a href="/base/builtin#f32"><span class="doc-builtin">f32</span></a>, mode: runtime.<a class="code-typename" href="/base/runtime/#Maybe">Maybe</a>($T)) -> <a href="/base/builtin#f32"><span class="doc-builtin">f32</span></a> {…}</pre>
+<pre class="doc-code">float32_triangular :: <span class="keyword-type">proc</span>(lo, hi: <a href="/base/builtin#f32"><span class="doc-builtin">f32</span></a>, mode: runtime.<a class="code-typename" href="/base/runtime/#Maybe">Maybe</a>($T), gen := <a href="/base/runtime/#Context">context.random_generator</a>) -> <a href="/base/builtin#f32"><span class="doc-builtin">f32</span></a> {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -645,7 +674,7 @@ See: http://wikipedia.org/wiki/Triangular_distribution</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="float32_uniform"><span><a class="doc-id-link" href="#float32_uniform">float32_uniform<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L484"><em>Source</em></a></div></h3>
+<h3 id="float32_uniform"><span><a class="doc-id-link" href="#float32_uniform">float32_uniform<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L497"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">float32_uniform :: <a class="code-procedure" href="/core/math/rand/#float32_range">float32_range</a></pre>
 </div>
@@ -674,7 +703,7 @@ float32_range_example :: proc() {
 <div class="pkg-entity">
 <h3 id="float32_von_mises"><span><a class="doc-id-link" href="#float32_von_mises">float32_von_mises<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/distributions.odin#L266"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">float32_von_mises :: <span class="keyword-type">proc</span>(mean_angle, kappa: <a href="/base/builtin#f32"><span class="doc-builtin">f32</span></a>) -> <a href="/base/builtin#f32"><span class="doc-builtin">f32</span></a> {…}</pre>
+<pre class="doc-code">float32_von_mises :: <span class="keyword-type">proc</span>(mean_angle, kappa: <a href="/base/builtin#f32"><span class="doc-builtin">f32</span></a>, gen := <a href="/base/runtime/#Context">context.random_generator</a>) -> <a href="/base/builtin#f32"><span class="doc-builtin">f32</span></a> {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -687,7 +716,7 @@ When <code>kappa</code> is zero, the Distribution is a uniform Distribution over
 <div class="pkg-entity">
 <h3 id="float32_weibull"><span><a class="doc-id-link" href="#float32_weibull">float32_weibull<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/distributions.odin#L220"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">float32_weibull :: <span class="keyword-type">proc</span>(alpha, beta: <a href="/base/builtin#f32"><span class="doc-builtin">f32</span></a>) -> <a href="/base/builtin#f32"><span class="doc-builtin">f32</span></a> {…}</pre>
+<pre class="doc-code">float32_weibull :: <span class="keyword-type">proc</span>(alpha, beta: <a href="/base/builtin#f32"><span class="doc-builtin">f32</span></a>, gen := <a href="/base/runtime/#Context">context.random_generator</a>) -> <a href="/base/builtin#f32"><span class="doc-builtin">f32</span></a> {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -695,9 +724,9 @@ When <code>kappa</code> is zero, the Distribution is a uniform Distribution over
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="float64"><span><a class="doc-id-link" href="#float64">float64<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L399"><em>Source</em></a></div></h3>
+<h3 id="float64"><span><a class="doc-id-link" href="#float64">float64<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L412"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">float64 :: <span class="keyword-type">proc</span>() -> (val: <a href="/base/builtin#f64"><span class="doc-builtin">f64</span></a>) {…}</pre>
+<pre class="doc-code">float64 :: <span class="keyword-type">proc</span>(gen := <a href="/base/runtime/#Context">context.random_generator</a>) -> (val: <a href="/base/builtin#f64"><span class="doc-builtin">f64</span></a>) {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -721,7 +750,7 @@ float64_example :: proc() {
 <div class="pkg-entity">
 <h3 id="float64_beta"><span><a class="doc-id-link" href="#float64_beta">float64_beta<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/distributions.odin#L176"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">float64_beta :: <span class="keyword-type">proc</span>(alpha, beta: <a href="/base/builtin#f64"><span class="doc-builtin">f64</span></a>) -> <a href="/base/builtin#f64"><span class="doc-builtin">f64</span></a> {…}</pre>
+<pre class="doc-code">float64_beta :: <span class="keyword-type">proc</span>(alpha, beta: <a href="/base/builtin#f64"><span class="doc-builtin">f64</span></a>, gen := <a href="/base/runtime/#Context">context.random_generator</a>) -> <a href="/base/builtin#f64"><span class="doc-builtin">f64</span></a> {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -733,7 +762,7 @@ float64_example :: proc() {
 <div class="pkg-entity">
 <h3 id="float64_cauchy_lorentz"><span><a class="doc-id-link" href="#float64_cauchy_lorentz">float64_cauchy_lorentz<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/distributions.odin#L274"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">float64_cauchy_lorentz :: <span class="keyword-type">proc</span>(x_0, gamma: <a href="/base/builtin#f64"><span class="doc-builtin">f64</span></a>) -> <a href="/base/builtin#f64"><span class="doc-builtin">f64</span></a> {…}</pre>
+<pre class="doc-code">float64_cauchy_lorentz :: <span class="keyword-type">proc</span>(x_0, gamma: <a href="/base/builtin#f64"><span class="doc-builtin">f64</span></a>, gen := <a href="/base/runtime/#Context">context.random_generator</a>) -> <a href="/base/builtin#f64"><span class="doc-builtin">f64</span></a> {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -744,7 +773,7 @@ float64_example :: proc() {
 <div class="pkg-entity">
 <h3 id="float64_exponential"><span><a class="doc-id-link" href="#float64_exponential">float64_exponential<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/distributions.odin#L75"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">float64_exponential :: <span class="keyword-type">proc</span>(lambda: <a href="/base/builtin#f64"><span class="doc-builtin">f64</span></a>) -> <a href="/base/builtin#f64"><span class="doc-builtin">f64</span></a> {…}</pre>
+<pre class="doc-code">float64_exponential :: <span class="keyword-type">proc</span>(lambda: <a href="/base/builtin#f64"><span class="doc-builtin">f64</span></a>, gen := <a href="/base/runtime/#Context">context.random_generator</a>) -> <a href="/base/builtin#f64"><span class="doc-builtin">f64</span></a> {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -758,7 +787,7 @@ Return values range from
 <div class="pkg-entity">
 <h3 id="float64_gamma"><span><a class="doc-id-link" href="#float64_gamma">float64_gamma<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/distributions.odin#L99"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">float64_gamma :: <span class="keyword-type">proc</span>(alpha, beta: <a href="/base/builtin#f64"><span class="doc-builtin">f64</span></a>) -> <a href="/base/builtin#f64"><span class="doc-builtin">f64</span></a> {…}</pre>
+<pre class="doc-code">float64_gamma :: <span class="keyword-type">proc</span>(alpha, beta: <a href="/base/builtin#f64"><span class="doc-builtin">f64</span></a>, gen := <a href="/base/runtime/#Context">context.random_generator</a>) -> <a href="/base/builtin#f64"><span class="doc-builtin">f64</span></a> {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -773,7 +802,7 @@ Return values range from
 <div class="pkg-entity">
 <h3 id="float64_gompertz"><span><a class="doc-id-link" href="#float64_gompertz">float64_gompertz<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/distributions.odin#L324"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">float64_gompertz :: <span class="keyword-type">proc</span>(eta, b: <a href="/base/builtin#f64"><span class="doc-builtin">f64</span></a>) -> <a href="/base/builtin#f64"><span class="doc-builtin">f64</span></a> {…}</pre>
+<pre class="doc-code">float64_gompertz :: <span class="keyword-type">proc</span>(eta, b: <a href="/base/builtin#f64"><span class="doc-builtin">f64</span></a>, gen := <a href="/base/runtime/#Context">context.random_generator</a>) -> <a href="/base/builtin#f64"><span class="doc-builtin">f64</span></a> {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -785,7 +814,7 @@ Both <code>eta</code> and <code>b</code> must be &gt; 0</p>
 <div class="pkg-entity">
 <h3 id="float64_laplace"><span><a class="doc-id-link" href="#float64_laplace">float64_laplace<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/distributions.odin#L307"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">float64_laplace :: <span class="keyword-type">proc</span>(mean, b: <a href="/base/builtin#f64"><span class="doc-builtin">f64</span></a>) -> <a href="/base/builtin#f64"><span class="doc-builtin">f64</span></a> {…}</pre>
+<pre class="doc-code">float64_laplace :: <span class="keyword-type">proc</span>(mean, b: <a href="/base/builtin#f64"><span class="doc-builtin">f64</span></a>, gen := <a href="/base/runtime/#Context">context.random_generator</a>) -> <a href="/base/builtin#f64"><span class="doc-builtin">f64</span></a> {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -796,7 +825,7 @@ Both <code>eta</code> and <code>b</code> must be &gt; 0</p>
 <div class="pkg-entity">
 <h3 id="float64_log_cauchy_lorentz"><span><a class="doc-id-link" href="#float64_log_cauchy_lorentz">float64_log_cauchy_lorentz<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/distributions.odin#L292"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">float64_log_cauchy_lorentz :: <span class="keyword-type">proc</span>(x_0, gamma: <a href="/base/builtin#f64"><span class="doc-builtin">f64</span></a>) -> <a href="/base/builtin#f64"><span class="doc-builtin">f64</span></a> {…}</pre>
+<pre class="doc-code">float64_log_cauchy_lorentz :: <span class="keyword-type">proc</span>(x_0, gamma: <a href="/base/builtin#f64"><span class="doc-builtin">f64</span></a>, gen := <a href="/base/runtime/#Context">context.random_generator</a>) -> <a href="/base/builtin#f64"><span class="doc-builtin">f64</span></a> {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -807,7 +836,7 @@ Both <code>eta</code> and <code>b</code> must be &gt; 0</p>
 <div class="pkg-entity">
 <h3 id="float64_log_normal"><span><a class="doc-id-link" href="#float64_log_normal">float64_log_normal<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/distributions.odin#L59"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">float64_log_normal :: <span class="keyword-type">proc</span>(mean, stddev: <a href="/base/builtin#f64"><span class="doc-builtin">f64</span></a>) -> <a href="/base/builtin#f64"><span class="doc-builtin">f64</span></a> {…}</pre>
+<pre class="doc-code">float64_log_normal :: <span class="keyword-type">proc</span>(mean, stddev: <a href="/base/builtin#f64"><span class="doc-builtin">f64</span></a>, gen := <a href="/base/runtime/#Context">context.random_generator</a>) -> <a href="/base/builtin#f64"><span class="doc-builtin">f64</span></a> {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -817,7 +846,7 @@ Both <code>eta</code> and <code>b</code> must be &gt; 0</p>
 <div class="pkg-entity">
 <h3 id="float64_normal"><span><a class="doc-id-link" href="#float64_normal">float64_normal<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/distributions.odin#L47"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">float64_normal :: <span class="keyword-type">proc</span>(mean, stddev: <a href="/base/builtin#f64"><span class="doc-builtin">f64</span></a>) -> <a href="/base/builtin#f64"><span class="doc-builtin">f64</span></a> {…}</pre>
+<pre class="doc-code">float64_normal :: <span class="keyword-type">proc</span>(mean, stddev: <a href="/base/builtin#f64"><span class="doc-builtin">f64</span></a>, gen := <a href="/base/runtime/#Context">context.random_generator</a>) -> <a href="/base/builtin#f64"><span class="doc-builtin">f64</span></a> {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -827,7 +856,7 @@ Both <code>eta</code> and <code>b</code> must be &gt; 0</p>
 <div class="pkg-entity">
 <h3 id="float64_pareto"><span><a class="doc-id-link" href="#float64_pareto">float64_pareto<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/distributions.odin#L201"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">float64_pareto :: <span class="keyword-type">proc</span>(alpha: <a href="/base/builtin#f64"><span class="doc-builtin">f64</span></a>) -> <a href="/base/builtin#f64"><span class="doc-builtin">f64</span></a> {…}</pre>
+<pre class="doc-code">float64_pareto :: <span class="keyword-type">proc</span>(alpha: <a href="/base/builtin#f64"><span class="doc-builtin">f64</span></a>, gen := <a href="/base/runtime/#Context">context.random_generator</a>) -> <a href="/base/builtin#f64"><span class="doc-builtin">f64</span></a> {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -836,9 +865,9 @@ https://wikipedia.org/wiki/Pareto_distribution</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="float64_range"><span><a class="doc-id-link" href="#float64_range">float64_range<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L449"><em>Source</em></a></div></h3>
+<h3 id="float64_range"><span><a class="doc-id-link" href="#float64_range">float64_range<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L462"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">float64_range :: <span class="keyword-type">proc</span>(low, high: <a href="/base/builtin#f64"><span class="doc-builtin">f64</span></a>) -> (val: <a href="/base/builtin#f64"><span class="doc-builtin">f64</span></a>) {…}</pre>
+<pre class="doc-code">float64_range :: <span class="keyword-type">proc</span>(low, high: <a href="/base/builtin#f64"><span class="doc-builtin">f64</span></a>, gen := <a href="/base/runtime/#Context">context.random_generator</a>) -> (val: <a href="/base/builtin#f64"><span class="doc-builtin">f64</span></a>) {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -865,7 +894,7 @@ float64_range_example :: proc() {
 <div class="pkg-entity">
 <h3 id="float64_triangular"><span><a class="doc-id-link" href="#float64_triangular">float64_triangular<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/distributions.odin#L11"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">float64_triangular :: <span class="keyword-type">proc</span>(lo, hi: <a href="/base/builtin#f64"><span class="doc-builtin">f64</span></a>, mode: runtime.<a class="code-typename" href="/base/runtime/#Maybe">Maybe</a>($T)) -> <a href="/base/builtin#f64"><span class="doc-builtin">f64</span></a> {…}</pre>
+<pre class="doc-code">float64_triangular :: <span class="keyword-type">proc</span>(lo, hi: <a href="/base/builtin#f64"><span class="doc-builtin">f64</span></a>, mode: runtime.<a class="code-typename" href="/base/runtime/#Maybe">Maybe</a>($T), gen := <a href="/base/runtime/#Context">context.random_generator</a>) -> <a href="/base/builtin#f64"><span class="doc-builtin">f64</span></a> {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -874,7 +903,7 @@ See: http://wikipedia.org/wiki/Triangular_distribution</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="float64_uniform"><span><a class="doc-id-link" href="#float64_uniform">float64_uniform<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L449"><em>Source</em></a></div></h3>
+<h3 id="float64_uniform"><span><a class="doc-id-link" href="#float64_uniform">float64_uniform<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L462"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">float64_uniform :: <a class="code-procedure" href="/core/math/rand/#float64_range">float64_range</a></pre>
 </div>
@@ -903,7 +932,7 @@ float64_range_example :: proc() {
 <div class="pkg-entity">
 <h3 id="float64_von_mises"><span><a class="doc-id-link" href="#float64_von_mises">float64_von_mises<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/distributions.odin#L230"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">float64_von_mises :: <span class="keyword-type">proc</span>(mean_angle, kappa: <a href="/base/builtin#f64"><span class="doc-builtin">f64</span></a>) -> <a href="/base/builtin#f64"><span class="doc-builtin">f64</span></a> {…}</pre>
+<pre class="doc-code">float64_von_mises :: <span class="keyword-type">proc</span>(mean_angle, kappa: <a href="/base/builtin#f64"><span class="doc-builtin">f64</span></a>, gen := <a href="/base/runtime/#Context">context.random_generator</a>) -> <a href="/base/builtin#f64"><span class="doc-builtin">f64</span></a> {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -916,7 +945,7 @@ When <code>kappa</code> is zero, the Distribution is a uniform Distribution over
 <div class="pkg-entity">
 <h3 id="float64_weibull"><span><a class="doc-id-link" href="#float64_weibull">float64_weibull<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/distributions.odin#L214"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">float64_weibull :: <span class="keyword-type">proc</span>(alpha, beta: <a href="/base/builtin#f64"><span class="doc-builtin">f64</span></a>) -> <a href="/base/builtin#f64"><span class="doc-builtin">f64</span></a> {…}</pre>
+<pre class="doc-code">float64_weibull :: <span class="keyword-type">proc</span>(alpha, beta: <a href="/base/builtin#f64"><span class="doc-builtin">f64</span></a>, gen := <a href="/base/runtime/#Context">context.random_generator</a>) -> <a href="/base/builtin#f64"><span class="doc-builtin">f64</span></a> {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -924,9 +953,9 @@ When <code>kappa</code> is zero, the Distribution is a uniform Distribution over
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="int127"><span><a class="doc-id-link" href="#int127">int127<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L217"><em>Source</em></a></div></h3>
+<h3 id="int127"><span><a class="doc-id-link" href="#int127">int127<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L230"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">int127 :: <span class="keyword-type">proc</span>() -> (val: <a href="/base/builtin#i128"><span class="doc-builtin">i128</span></a>) {…}</pre>
+<pre class="doc-code">int127 :: <span class="keyword-type">proc</span>(gen := <a href="/base/runtime/#Context">context.random_generator</a>) -> (val: <a href="/base/builtin#i128"><span class="doc-builtin">i128</span></a>) {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -949,9 +978,9 @@ int127_example :: proc() {
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="int127_max"><span><a class="doc-id-link" href="#int127_max">int127_max<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L327"><em>Source</em></a></div></h3>
+<h3 id="int127_max"><span><a class="doc-id-link" href="#int127_max">int127_max<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L340"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">int127_max :: <span class="keyword-type">proc</span>(n: <a href="/base/builtin#i128"><span class="doc-builtin">i128</span></a>) -> (val: <a href="/base/builtin#i128"><span class="doc-builtin">i128</span></a>) {…}</pre>
+<pre class="doc-code">int127_max :: <span class="keyword-type">proc</span>(n: <a href="/base/builtin#i128"><span class="doc-builtin">i128</span></a>, gen := <a href="/base/runtime/#Context">context.random_generator</a>) -> (val: <a href="/base/builtin#i128"><span class="doc-builtin">i128</span></a>) {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -975,9 +1004,9 @@ int127_max_example :: proc() {
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="int31"><span><a class="doc-id-link" href="#int31">int31<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L171"><em>Source</em></a></div></h3>
+<h3 id="int31"><span><a class="doc-id-link" href="#int31">int31<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L184"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">int31 :: <span class="keyword-type">proc</span>() -> (val: <a href="/base/builtin#i32"><span class="doc-builtin">i32</span></a>) {…}</pre>
+<pre class="doc-code">int31 :: <span class="keyword-type">proc</span>(gen := <a href="/base/runtime/#Context">context.random_generator</a>) -> (val: <a href="/base/builtin#i32"><span class="doc-builtin">i32</span></a>) {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -1000,9 +1029,9 @@ int31_example :: proc() {
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="int31_max"><span><a class="doc-id-link" href="#int31_max">int31_max<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L245"><em>Source</em></a></div></h3>
+<h3 id="int31_max"><span><a class="doc-id-link" href="#int31_max">int31_max<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L258"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">int31_max :: <span class="keyword-type">proc</span>(n: <a href="/base/builtin#i32"><span class="doc-builtin">i32</span></a>) -> (val: <a href="/base/builtin#i32"><span class="doc-builtin">i32</span></a>) {…}</pre>
+<pre class="doc-code">int31_max :: <span class="keyword-type">proc</span>(n: <a href="/base/builtin#i32"><span class="doc-builtin">i32</span></a>, gen := <a href="/base/runtime/#Context">context.random_generator</a>) -> (val: <a href="/base/builtin#i32"><span class="doc-builtin">i32</span></a>) {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -1026,9 +1055,9 @@ int31_max_example :: proc() {
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="int63"><span><a class="doc-id-link" href="#int63">int63<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L194"><em>Source</em></a></div></h3>
+<h3 id="int63"><span><a class="doc-id-link" href="#int63">int63<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L207"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">int63 :: <span class="keyword-type">proc</span>() -> (val: <a href="/base/builtin#i64"><span class="doc-builtin">i64</span></a>) {…}</pre>
+<pre class="doc-code">int63 :: <span class="keyword-type">proc</span>(gen := <a href="/base/runtime/#Context">context.random_generator</a>) -> (val: <a href="/base/builtin#i64"><span class="doc-builtin">i64</span></a>) {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -1051,9 +1080,9 @@ int63_example :: proc() {
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="int63_max"><span><a class="doc-id-link" href="#int63_max">int63_max<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L286"><em>Source</em></a></div></h3>
+<h3 id="int63_max"><span><a class="doc-id-link" href="#int63_max">int63_max<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L299"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">int63_max :: <span class="keyword-type">proc</span>(n: <a href="/base/builtin#i64"><span class="doc-builtin">i64</span></a>) -> (val: <a href="/base/builtin#i64"><span class="doc-builtin">i64</span></a>) {…}</pre>
+<pre class="doc-code">int63_max :: <span class="keyword-type">proc</span>(n: <a href="/base/builtin#i64"><span class="doc-builtin">i64</span></a>, gen := <a href="/base/runtime/#Context">context.random_generator</a>) -> (val: <a href="/base/builtin#i64"><span class="doc-builtin">i64</span></a>) {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -1077,9 +1106,9 @@ int63_max_example :: proc() {
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="int_max"><span><a class="doc-id-link" href="#int_max">int_max<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L368"><em>Source</em></a></div></h3>
+<h3 id="int_max"><span><a class="doc-id-link" href="#int_max">int_max<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L381"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">int_max :: <span class="keyword-type">proc</span>(n: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>) -> (val: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>) {…}</pre>
+<pre class="doc-code">int_max :: <span class="keyword-type">proc</span>(n: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, gen := <a href="/base/runtime/#Context">context.random_generator</a>) -> (val: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>) {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -1105,7 +1134,7 @@ int_max_example :: proc() {
 <div class="pkg-entity">
 <h3 id="norm_float64"><span><a class="doc-id-link" href="#norm_float64">norm_float64<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/normal.odin#L21"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">norm_float64 :: <span class="keyword-type">proc</span>() -> <a href="/base/builtin#f64"><span class="doc-builtin">f64</span></a> {…}</pre>
+<pre class="doc-code">norm_float64 :: <span class="keyword-type">proc</span>(gen := <a href="/base/runtime/#Context">context.random_generator</a>) -> <a href="/base/builtin#f64"><span class="doc-builtin">f64</span></a> {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -1121,9 +1150,9 @@ with a standard normal distribution with a mean of 0 and standard deviation of 1
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="perm"><span><a class="doc-id-link" href="#perm">perm<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L569"><em>Source</em></a></div></h3>
+<h3 id="perm"><span><a class="doc-id-link" href="#perm">perm<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L582"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">perm :: <span class="keyword-type">proc</span>(n: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, allocator := <a href="/base/runtime/#Context">context.allocator</a>) -> (res: []<a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, err: runtime.<a class="code-typename" href="/base/runtime/#Allocator_Error">Allocator_Error</a>) <span class="directive">#optional_ok</span> {…}</pre>
+<pre class="doc-code">perm :: <span class="keyword-type">proc</span>(n: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, allocator := <a href="/base/runtime/#Context">context.allocator</a>, gen := <a href="/base/runtime/#Context">context.random_generator</a>) -> (res: []<a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, err: runtime.<a class="code-typename" href="/base/runtime/#Allocator_Error">Allocator_Error</a>) <span class="directive">#optional_ok</span> {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -1154,9 +1183,15 @@ perm_example :: proc() -&gt; (err: mem.Allocator_Error) {
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="read"><span><a class="doc-id-link" href="#read">read<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L521"><em>Source</em></a></div></h3>
+<h3 id="query_info"><span><a class="doc-id-link" href="#query_info">query_info<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L78"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">read :: <span class="keyword-type">proc</span>(p: []<a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a>) -> (n: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>) {…}</pre>
+<pre class="doc-code">query_info :: <span class="keyword-type">proc</span>(gen := <a href="/base/runtime/#Context">context.random_generator</a>) -> runtime.<a class="code-typename" href="/base/runtime/#Random_Generator_Query_Info">Random_Generator_Query_Info</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="read"><span><a class="doc-id-link" href="#read">read<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L534"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">read :: <span class="keyword-type">proc</span>(p: []<a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a>, gen := <a href="/base/runtime/#Context">context.random_generator</a>) -> (n: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>) {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -1183,9 +1218,9 @@ read_example :: proc() {
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="reset"><span><a class="doc-id-link" href="#reset">reset<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L65"><em>Source</em></a></div></h3>
+<h3 id="reset"><span><a class="doc-id-link" href="#reset">reset<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L69"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">reset :: <span class="keyword-type">proc</span>(seed: <a href="/base/builtin#u64"><span class="doc-builtin">u64</span></a>) {…}</pre>
+<pre class="doc-code">reset :: <span class="keyword-type">proc</span>(seed: <a href="/base/builtin#u64"><span class="doc-builtin">u64</span></a>, gen := <a href="/base/runtime/#Context">context.random_generator</a>) {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -1207,7 +1242,13 @@ set_global_seed_example :: proc() {
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="set_global_seed"><span><a class="doc-id-link" href="#set_global_seed">set_global_seed<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L42"><em>Source</em></a></div></h3>
+<h3 id="reset_bytes"><span><a class="doc-id-link" href="#reset_bytes">reset_bytes<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L74"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">reset_bytes :: <span class="keyword-type">proc</span>(bytes: []<a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a>, gen := <a href="/base/runtime/#Context">context.random_generator</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="set_global_seed"><span><a class="doc-id-link" href="#set_global_seed">set_global_seed<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L46"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">set_global_seed :: <span class="keyword-type">proc</span>(seed: <a href="/base/builtin#u64"><span class="doc-builtin">u64</span></a>) {…}</pre>
 </div>
@@ -1231,9 +1272,9 @@ set_global_seed_example :: proc() {
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="shuffle"><span><a class="doc-id-link" href="#shuffle">shuffle<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L602"><em>Source</em></a></div></h3>
+<h3 id="shuffle"><span><a class="doc-id-link" href="#shuffle">shuffle<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L615"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">shuffle :: <span class="keyword-type">proc</span>(array: $T/[]$T) {…}</pre>
+<pre class="doc-code">shuffle :: <span class="keyword-type">proc</span>(array: $T/[]$T, gen := <a href="/base/runtime/#Context">context.random_generator</a>) {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -1258,9 +1299,9 @@ shuffle_example :: proc() {
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="uint128"><span><a class="doc-id-link" href="#uint128">uint128<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L144"><em>Source</em></a></div></h3>
+<h3 id="uint128"><span><a class="doc-id-link" href="#uint128">uint128<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L157"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">uint128 :: <span class="keyword-type">proc</span>() -> (val: <a href="/base/builtin#u128"><span class="doc-builtin">u128</span></a>) {…}</pre>
+<pre class="doc-code">uint128 :: <span class="keyword-type">proc</span>(gen := <a href="/base/runtime/#Context">context.random_generator</a>) -> (val: <a href="/base/builtin#u128"><span class="doc-builtin">u128</span></a>) {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -1282,9 +1323,9 @@ uint128_example :: proc() {
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="uint32"><span><a class="doc-id-link" href="#uint32">uint32<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L98"><em>Source</em></a></div></h3>
+<h3 id="uint32"><span><a class="doc-id-link" href="#uint32">uint32<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L111"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">uint32 :: <span class="keyword-type">proc</span>() -> (val: <a href="/base/builtin#u32"><span class="doc-builtin">u32</span></a>) {…}</pre>
+<pre class="doc-code">uint32 :: <span class="keyword-type">proc</span>(gen := <a href="/base/runtime/#Context">context.random_generator</a>) -> (val: <a href="/base/builtin#u32"><span class="doc-builtin">u32</span></a>) {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -1306,9 +1347,9 @@ uint32_example :: proc() {
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="uint64"><span><a class="doc-id-link" href="#uint64">uint64<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L121"><em>Source</em></a></div></h3>
+<h3 id="uint64"><span><a class="doc-id-link" href="#uint64">uint64<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin#L134"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">uint64 :: <span class="keyword-type">proc</span>() -> (val: <a href="/base/builtin#u64"><span class="doc-builtin">u64</span></a>) {…}</pre>
+<pre class="doc-code">uint64 :: <span class="keyword-type">proc</span>(gen := <a href="/base/runtime/#Context">context.random_generator</a>) -> (val: <a href="/base/builtin#u64"><span class="doc-builtin">u64</span></a>) {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -1340,13 +1381,15 @@ uint64_example :: proc() {
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/math/rand/rand.odin">rand.odin</a></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2024-07 (vendor "odin") Windows_amd64 @ 2024-07-08 21:11:01.098444500 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2024-07 (vendor "odin") Windows_amd64 @ 2024-07-15 14:23:48.699028200 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
 <ul>
 <li><a href="#pkg-overview">Overview</a><li><a href="#pkg-Types">Types</a><ul>
 <li><a href="#Default_Random_State">Default_Random_State</a></li>
+<li><a href="#Generator">Generator</a></li>
+<li><a href="#Generator_Query_Info">Generator_Query_Info</a></li>
 </ul>
 </li>
 <li><a href="#pkg-Procedures">Procedures</a><ul>
@@ -1395,8 +1438,10 @@ uint64_example :: proc() {
 <li><a href="#int_max">int_max</a></li>
 <li><a href="#norm_float64">norm_float64</a></li>
 <li><a href="#perm">perm</a></li>
+<li><a href="#query_info">query_info</a></li>
 <li><a href="#read">read</a></li>
 <li><a href="#reset">reset</a></li>
+<li><a href="#reset_bytes">reset_bytes</a></li>
 <li><a href="#set_global_seed">set_global_seed</a></li>
 <li><a href="#shuffle">shuffle</a></li>
 <li><a href="#uint128">uint128</a></li>
