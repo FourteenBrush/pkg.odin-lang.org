@@ -139,7 +139,7 @@ Types (7)</summary>
 <div>
 <details class="doc-index" id="doc-index-Procedures" aria-labelledby="#doc-index-Procedures-header">
 <summary id="#doc-index-Procedures-header">
-Procedures (192)</summary>
+Procedures (194)</summary>
 <ul>
 <li><a href="#soa_struct">soa_struct</a></li>
 <li><a href="#volatile_load">volatile_load</a></li>
@@ -160,6 +160,8 @@ Procedures (192)</summary>
 <li><a href="#overflow_add">overflow_add</a></li>
 <li><a href="#overflow_sub">overflow_sub</a></li>
 <li><a href="#overflow_mul">overflow_mul</a></li>
+<li><a href="#add_sat">add_sat</a></li>
+<li><a href="#sub_sat">sub_sat</a></li>
 <li><a href="#sqrt">sqrt</a></li>
 <li><a href="#fused_mul_add">fused_mul_add</a></li>
 <li><a href="#mem_copy">mem_copy</a></li>
@@ -597,7 +599,7 @@ Represents an Objective-C <code>Class</code> type.</p>
 <div class="pkg-entity">
 <h3 id="overflow_add"><span><a class="doc-id-link" href="#overflow_add">overflow_add<span class="a-hidden">&nbsp;¶</span></a></span></h3>
 <div>
-<pre class="doc-code">overflow_add :: <span class="keyword-type">proc</span>(lhs, rhs: $T) -> (T, <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>) <span class="directive">#optional_ok</span> {…}</pre>
+<pre class="doc-code">overflow_add :: <span class="keyword-type">proc</span>(lhs, rhs: $T) -> (T, <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>) <span class="keyword">where</span> <a href="/base/intrinsics#type_is_integer"><span class="code-procedure">type_is_integer</span></a>(T) <span class="directive">#optional_ok</span> {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -607,7 +609,7 @@ Represents an Objective-C <code>Class</code> type.</p>
 <div class="pkg-entity">
 <h3 id="overflow_sub"><span><a class="doc-id-link" href="#overflow_sub">overflow_sub<span class="a-hidden">&nbsp;¶</span></a></span></h3>
 <div>
-<pre class="doc-code">overflow_sub :: <span class="keyword-type">proc</span>(lhs, rhs: $T) -> (T, <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>) <span class="directive">#optional_ok</span> {…}</pre>
+<pre class="doc-code">overflow_sub :: <span class="keyword-type">proc</span>(lhs, rhs: $T) -> (T, <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>) <span class="keyword">where</span> <a href="/base/intrinsics#type_is_integer"><span class="code-procedure">type_is_integer</span></a>(T) <span class="directive">#optional_ok</span> {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -617,11 +619,31 @@ Represents an Objective-C <code>Class</code> type.</p>
 <div class="pkg-entity">
 <h3 id="overflow_mul"><span><a class="doc-id-link" href="#overflow_mul">overflow_mul<span class="a-hidden">&nbsp;¶</span></a></span></h3>
 <div>
-<pre class="doc-code">overflow_mul :: <span class="keyword-type">proc</span>(lhs, rhs: $T) -> (T, <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>) <span class="directive">#optional_ok</span> {…}</pre>
+<pre class="doc-code">overflow_mul :: <span class="keyword-type">proc</span>(lhs, rhs: $T) -> (T, <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>) <span class="keyword">where</span> <a href="/base/intrinsics#type_is_integer"><span class="code-procedure">type_is_integer</span></a>(T) <span class="directive">#optional_ok</span> {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
 <p>Performs an "subtract" operation with an overflow check. The second return value will be true if an overflow occurs.</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="add_sat"><span><a class="doc-id-link" href="#add_sat">add_sat<span class="a-hidden">&nbsp;¶</span></a></span></h3>
+<div>
+<pre class="doc-code">add_sat :: <span class="keyword-type">proc</span>(lhs, rhs: $T) -> T -> <span class="keyword">where</span> <a href="/base/intrinsics#type_is_integer"><span class="code-procedure">type_is_integer</span></a>(T) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Performs a saturating "add" operation, where the return value is clamped between <code>min(T)</code> and <code>max(T)</code>.</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="sub_sat"><span><a class="doc-id-link" href="#sub_sat">sub_sat<span class="a-hidden">&nbsp;¶</span></a></span></h3>
+<div>
+<pre class="doc-code">sub_sat :: <span class="keyword-type">proc</span>(lhs, rhs: $T) -> T -> <span class="keyword">where</span> <a href="/base/intrinsics#type_is_integer"><span class="code-procedure">type_is_integer</span></a>(T) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Performs a saturating "subtract" operation, where the return value is clamped between <code>min(T)</code> and <code>max(T)</code>.</p>
 </details>
 </div>
 <div class="pkg-entity">
@@ -2116,6 +2138,8 @@ Will register a class value at run-time for the given constant string value.</p>
 <li><a href="#overflow_add">overflow_add</a></li>
 <li><a href="#overflow_sub">overflow_sub</a></li>
 <li><a href="#overflow_mul">overflow_mul</a></li>
+<li><a href="#add_sat">add_sat</a></li>
+<li><a href="#sub_sat">sub_sat</a></li>
 <li><a href="#sqrt">sqrt</a></li>
 <li><a href="#fused_mul_add">fused_mul_add</a></li>
 <li><a href="#mem_copy">mem_copy</a></li>
