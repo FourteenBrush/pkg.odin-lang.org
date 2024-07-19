@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>package unicode/utf16 - pkg.odin-lang.org</title>	<link rel="icon" href="/favicon.svg">
+	<title>package encoding/ini - pkg.odin-lang.org</title>	<link rel="icon" href="/favicon.svg">
 	<link rel="stylesheet" type="text/css" href="https://odin-lang.org/scss/custom.min.css">
 	<link rel=stylesheet href="//odin-lang.org/lib/highlight/styles/github-dark.min.css">
 	<script src="//odin-lang.org/lib/highlight/highlight.min.js"></script>
@@ -145,7 +145,7 @@
 <li><a href="/core/encoding/entity">entity</a></li>
 <li><a href="/core/encoding/hex">hex</a></li>
 <li><a href="/core/encoding/hxa">hxa</a></li>
-<li><a href="/core/encoding/ini">ini</a></li>
+<li><a class="active" href="/core/encoding/ini">ini</a></li>
 <li><a href="/core/encoding/json">json</a></li>
 <li><a href="/core/encoding/uuid">uuid</a></li>
 <li><a href="/core/encoding/uuid/legacy">uuid/legacy</a></li>
@@ -265,7 +265,7 @@
 
 </li>
 <li class="nav-item"><a href="/core/unicode">unicode</a><ul>
-<li><a class="active" href="/core/unicode/utf16">utf16</a></li>
+<li><a href="/core/unicode/utf16">utf16</a></li>
 <li><a href="/core/unicode/utf8">utf8</a></li>
 <li><a href="/core/unicode/utf8/utf8string">utf8/utf8string</a></li>
 </ul>
@@ -278,11 +278,11 @@
 <nav class="pkg-breadcrumb" aria-label="breadcrumb">
 <ol class="breadcrumb">
 <li class="breadcrumb-item"><a href="/core">core</a></li>
-<li class="breadcrumb-item"><a href="/core/unicode">unicode</a></li>
-<li class="breadcrumb-item active" aria-current="page"><a href="/core/unicode/utf16">utf16</a></li>
+<li class="breadcrumb-item">encoding</li>
+<li class="breadcrumb-item active" aria-current="page"><a href="/core/encoding/ini">ini</a></li>
 </ol>
 </nav>
-<h1>package core:unicode/utf16<div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/unicode/utf16"><em>Source</em></a></div></h1>
+<h1>package core:encoding/ini<div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ini"><em>Source</em></a></div></h1>
 
 		<div class="odin-search-wrapper">
 			<input type="search" id="odin-search" class="odin-search-package" autocomplete="off" spellcheck="false" placeholder="Fuzzy Search...">
@@ -309,17 +309,20 @@
 <div>
 <details class="doc-index" id="doc-index-Types" aria-labelledby="#doc-index-Types-header">
 <summary id="#doc-index-Types-header">
-Types (0)</summary>
-<p class="pkg-empty-section">This section is empty.</p>
+Types (3)</summary>
+<ul>
+<li><a href="#Iterator">Iterator</a></li>
+<li><a href="#Map">Map</a></li>
+<li><a href="#Options">Options</a></li>
+</ul>
 </details>
 </div>
 <div>
 <details class="doc-index" id="doc-index-Constants" aria-labelledby="#doc-index-Constants-header">
 <summary id="#doc-index-Constants-header">
-Constants (2)</summary>
+Constants (1)</summary>
 <ul>
-<li><a href="#MAX_RUNE">MAX_RUNE</a></li>
-<li><a href="#REPLACEMENT_CHAR">REPLACEMENT_CHAR</a></li>
+<li><a href="#DEFAULT_OPTIONS">DEFAULT_OPTIONS</a></li>
 </ul>
 </details>
 </div>
@@ -333,15 +336,17 @@ Variables (0)</summary>
 <div>
 <details class="doc-index" id="doc-index-Procedures" aria-labelledby="#doc-index-Procedures-header">
 <summary id="#doc-index-Procedures-header">
-Procedures (7)</summary>
+Procedures (9)</summary>
 <ul>
-<li><a href="#decode">decode</a></li>
-<li><a href="#decode_surrogate_pair">decode_surrogate_pair</a></li>
-<li><a href="#decode_to_utf8">decode_to_utf8</a></li>
-<li><a href="#encode">encode</a></li>
-<li><a href="#encode_string">encode_string</a></li>
-<li><a href="#encode_surrogate_pair">encode_surrogate_pair</a></li>
-<li><a href="#is_surrogate">is_surrogate</a></li>
+<li><a href="#delete_map">delete_map</a></li>
+<li><a href="#iterate">iterate</a></li>
+<li><a href="#iterator_from_string">iterator_from_string</a></li>
+<li><a href="#load_map_from_path">load_map_from_path</a></li>
+<li><a href="#load_map_from_string">load_map_from_string</a></li>
+<li><a href="#save_map_to_string">save_map_to_string</a></li>
+<li><a href="#write_map">write_map</a></li>
+<li><a href="#write_pair">write_pair</a></li>
+<li><a href="#write_section">write_section</a></li>
 </ul>
 </details>
 </div>
@@ -356,63 +361,127 @@ Procedure Groups (0)</summary>
 </div>
 <section class="documentation">
 <h2 id="pkg-Types" class="pkg-header">Types</h2>
-<p class="pkg-empty-section">This section is empty.</p>
+<div class="pkg-entity">
+<h3 id="Iterator"><span><a class="doc-id-link" href="#Iterator">Iterator<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ini/ini.odin#L22"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Iterator :: <span class="keyword-type">struct</span> {
+	section: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>,
+	_src:    <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>,
+	options: <a class="code-typename" href="/core/encoding/ini/#Options">Options</a>,
+}</pre>
+</div>
+<h5>Related Procedures With Parameters</h5>
+<ul>
+<li><a href="/core/encoding/ini/#iterate">iterate</a></li>
+</ul>
+<h5>Related Procedures With Returns</h5>
+<ul>
+<li><a href="/core/encoding/ini/#iterator_from_string">iterator_from_string</a></li>
+</ul>
+</div>
+<div class="pkg-entity">
+<h3 id="Map"><span><a class="doc-id-link" href="#Map">Map<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ini/ini.odin#L81"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Map :: <span class="keyword-type">distinct</span> <span class="keyword-type">map</span>[<a href="/base/builtin#string"><span class="doc-builtin">string</span></a>]<span class="keyword-type">map</span>[<a href="/base/builtin#string"><span class="doc-builtin">string</span></a>]<a href="/base/builtin#string"><span class="doc-builtin">string</span></a></pre>
+</div>
+<h5>Related Procedures With Parameters</h5>
+<ul>
+<li><a href="/core/encoding/ini/#delete_map">delete_map</a></li>
+<li><a href="/core/encoding/ini/#save_map_to_string">save_map_to_string</a></li>
+<li><a href="/core/encoding/ini/#write_map">write_map</a></li>
+</ul>
+<h5>Related Procedures With Returns</h5>
+<ul>
+<li><a href="/core/encoding/ini/#load_map_from_path">load_map_from_path</a></li>
+<li><a href="/core/encoding/ini/#load_map_from_string">load_map_from_string</a></li>
+</ul>
+</div>
+<div class="pkg-entity">
+<h3 id="Options"><span><a class="doc-id-link" href="#Options">Options<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ini/ini.odin#L12"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Options :: <span class="keyword-type">struct</span> {
+	comment:        <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>,
+	key_lower_case: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>,
+}</pre>
+</div>
+<h5>Related Procedures With Parameters</h5>
+<ul>
+<li><a href="/core/encoding/ini/#iterator_from_string">iterator_from_string</a></li>
+<li><a href="/core/encoding/ini/#load_map_from_path">load_map_from_path</a></li>
+<li><a href="/core/encoding/ini/#load_map_from_string">load_map_from_string</a></li>
+</ul>
+<h5>Related Constants</h5>
+<ul>
+<li><a href="/core/encoding/ini/#DEFAULT_OPTIONS">DEFAULT_OPTIONS</a></li>
+</ul>
+</div>
 <h2 id="pkg-Constants" class="pkg-header">Constants</h2>
 <div class="pkg-entity">
-<h3 id="MAX_RUNE"><span><a class="doc-id-link" href="#MAX_RUNE">MAX_RUNE<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/unicode/utf16/utf16.odin#L6"><em>Source</em></a></div></h3>
+<h3 id="DEFAULT_OPTIONS"><span><a class="doc-id-link" href="#DEFAULT_OPTIONS">DEFAULT_OPTIONS<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ini/ini.odin#L17"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">MAX_RUNE :: '\U0010ffff'</pre>
-</div>
-</div>
-<div class="pkg-entity">
-<h3 id="REPLACEMENT_CHAR"><span><a class="doc-id-link" href="#REPLACEMENT_CHAR">REPLACEMENT_CHAR<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/unicode/utf16/utf16.odin#L5"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">REPLACEMENT_CHAR :: '\ufffd'</pre>
+<pre class="doc-code">DEFAULT_OPTIONS :: Options{comment = ";", key_lower_case = false}</pre>
 </div>
 </div>
 <h2 id="pkg-Variables" class="pkg-header">Variables</h2>
 <p class="pkg-empty-section">This section is empty.</p>
 <h2 id="pkg-Procedures" class="pkg-header">Procedures</h2>
 <div class="pkg-entity">
-<h3 id="decode"><span><a class="doc-id-link" href="#decode">decode<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/unicode/utf16/utf16.odin#L86"><em>Source</em></a></div></h3>
+<h3 id="delete_map"><span><a class="doc-id-link" href="#delete_map">delete_map<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ini/ini.odin#L138"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">decode :: <span class="keyword-type">proc</span>(d: []<a href="/base/builtin#rune"><span class="doc-builtin">rune</span></a>, s: []<a href="/base/builtin#u16"><span class="doc-builtin">u16</span></a>) -> (n: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>) {…}</pre>
+<pre class="doc-code">delete_map :: <span class="keyword-type">proc</span>(m: <a class="code-typename" href="/core/encoding/ini/#Map">Map</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="decode_surrogate_pair"><span><a class="doc-id-link" href="#decode_surrogate_pair">decode_surrogate_pair<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/unicode/utf16/utf16.odin#L18"><em>Source</em></a></div></h3>
+<h3 id="iterate"><span><a class="doc-id-link" href="#iterate">iterate<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ini/ini.odin#L39"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">decode_surrogate_pair :: <span class="keyword-type">proc</span>(r1, r2: <a href="/base/builtin#rune"><span class="doc-builtin">rune</span></a>) -> <a href="/base/builtin#rune"><span class="doc-builtin">rune</span></a> {…}</pre>
+<pre class="doc-code">iterate :: <span class="keyword-type">proc</span>(it: ^<a class="code-typename" href="/core/encoding/ini/#Iterator">Iterator</a>) -> (key, value: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>, ok: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Returns the raw <code>key</code> and <code>value</code>. <code>ok</code> will be false if no more key=value pairs cannot be found.
+They key and value may be quoted, which may require the use of <code>strconv.unquote_string</code>.</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="iterator_from_string"><span><a class="doc-id-link" href="#iterator_from_string">iterator_from_string<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ini/ini.odin#L28"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">iterator_from_string :: <span class="keyword-type">proc</span>(src: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>, options: <a class="code-typename" href="/core/encoding/ini/#Options">Options</a> = DEFAULT_OPTIONS) -> <a class="code-typename" href="/core/encoding/ini/#Iterator">Iterator</a> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="decode_to_utf8"><span><a class="doc-id-link" href="#decode_to_utf8">decode_to_utf8<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/unicode/utf16/utf16.odin#L110"><em>Source</em></a></div></h3>
+<h3 id="load_map_from_path"><span><a class="doc-id-link" href="#load_map_from_path">load_map_from_path<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ini/ini.odin#L121"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">decode_to_utf8 :: <span class="keyword-type">proc</span>(d: []<a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a>, s: []<a href="/base/builtin#u16"><span class="doc-builtin">u16</span></a>) -> (n: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>) {…}</pre>
+<pre class="doc-code">load_map_from_path :: <span class="keyword-type">proc</span>(path: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>, allocator: runtime.<a class="code-typename" href="/base/runtime/#Allocator">Allocator</a>, options: <a class="code-typename" href="/core/encoding/ini/#Options">Options</a> = DEFAULT_OPTIONS) -> (m: <a class="code-typename" href="/core/encoding/ini/#Map">Map</a>, err: runtime.<a class="code-typename" href="/base/runtime/#Allocator_Error">Allocator_Error</a>, ok: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="encode"><span><a class="doc-id-link" href="#encode">encode<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/unicode/utf16/utf16.odin#L35"><em>Source</em></a></div></h3>
+<h3 id="load_map_from_string"><span><a class="doc-id-link" href="#load_map_from_string">load_map_from_string<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ini/ini.odin#L83"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">encode :: <span class="keyword-type">proc</span>(d: []<a href="/base/builtin#u16"><span class="doc-builtin">u16</span></a>, s: []<a href="/base/builtin#rune"><span class="doc-builtin">rune</span></a>) -> <a href="/base/builtin#int"><span class="doc-builtin">int</span></a> {…}</pre>
+<pre class="doc-code">load_map_from_string :: <span class="keyword-type">proc</span>(src: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>, allocator: runtime.<a class="code-typename" href="/base/runtime/#Allocator">Allocator</a>, options: <a class="code-typename" href="/core/encoding/ini/#Options">Options</a> = DEFAULT_OPTIONS) -> (m: <a class="code-typename" href="/core/encoding/ini/#Map">Map</a>, err: runtime.<a class="code-typename" href="/base/runtime/#Allocator_Error">Allocator_Error</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="encode_string"><span><a class="doc-id-link" href="#encode_string">encode_string<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/unicode/utf16/utf16.odin#L61"><em>Source</em></a></div></h3>
+<h3 id="save_map_to_string"><span><a class="doc-id-link" href="#save_map_to_string">save_map_to_string<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ini/ini.odin#L132"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">encode_string :: <span class="keyword-type">proc</span>(d: []<a href="/base/builtin#u16"><span class="doc-builtin">u16</span></a>, s: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>) -> <a href="/base/builtin#int"><span class="doc-builtin">int</span></a> {…}</pre>
+<pre class="doc-code">save_map_to_string :: <span class="keyword-type">proc</span>(m: <a class="code-typename" href="/core/encoding/ini/#Map">Map</a>, allocator: runtime.<a class="code-typename" href="/base/runtime/#Allocator">Allocator</a>) -> (data: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="encode_surrogate_pair"><span><a class="doc-id-link" href="#encode_surrogate_pair">encode_surrogate_pair<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/unicode/utf16/utf16.odin#L26"><em>Source</em></a></div></h3>
+<h3 id="write_map"><span><a class="doc-id-link" href="#write_map">write_map<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ini/ini.odin#L177"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">encode_surrogate_pair :: <span class="keyword-type">proc</span>(c: <a href="/base/builtin#rune"><span class="doc-builtin">rune</span></a>) -> (r1, r2: <a href="/base/builtin#rune"><span class="doc-builtin">rune</span></a>) {…}</pre>
+<pre class="doc-code">write_map :: <span class="keyword-type">proc</span>(w: io.<a class="code-typename" href="/core/io/#Stream">Stream</a>, m: <a class="code-typename" href="/core/encoding/ini/#Map">Map</a>) -> (n: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, err: io.<a class="code-typename" href="/core/io/#Error">Error</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="is_surrogate"><span><a class="doc-id-link" href="#is_surrogate">is_surrogate<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/unicode/utf16/utf16.odin#L14"><em>Source</em></a></div></h3>
+<h3 id="write_pair"><span><a class="doc-id-link" href="#write_pair">write_pair<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ini/ini.odin#L159"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">is_surrogate :: <span class="keyword-type">proc</span>(r: <a href="/base/builtin#rune"><span class="doc-builtin">rune</span></a>) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> {…}</pre>
+<pre class="doc-code">write_pair :: <span class="keyword-type">proc</span>(w: io.<a class="code-typename" href="/core/io/#Stream">Stream</a>, key: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>, value: $T, n_written: ^<a href="/base/builtin#int"><span class="doc-builtin">int</span></a> = nil) -> (n: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, err: io.<a class="code-typename" href="/core/io/#Error">Error</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="write_section"><span><a class="doc-id-link" href="#write_section">write_section<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ini/ini.odin#L151"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">write_section :: <span class="keyword-type">proc</span>(w: io.<a class="code-typename" href="/core/io/#Stream">Stream</a>, name: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>, n_written: ^<a href="/base/builtin#int"><span class="doc-builtin">int</span></a> = nil) -> (n: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, err: io.<a class="code-typename" href="/core/io/#Error">Error</a>) {…}</pre>
 </div>
 </div>
 <h2 id="pkg-Procedure Groups" class="pkg-header">Procedure Groups</h2>
@@ -420,33 +489,40 @@ Procedure Groups (0)</summary>
 </section>
 <h2 id="pkg-source-files">Source Files</h2>
 <ul>
-<li><a href="https://github.com/odin-lang/Odin/tree/master/core/unicode/utf16/utf16.odin">utf16.odin</a></li>
+<li><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/ini/ini.odin">ini.odin</a></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2024-07 (vendor "odin") Windows_amd64 @ 2024-07-19 21:10:10.547027800 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2024-07 (vendor "odin") Windows_amd64 @ 2024-07-19 21:10:09.729217300 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
 <ul>
+<li><a href="#pkg-Types">Types</a><ul>
+<li><a href="#Iterator">Iterator</a></li>
+<li><a href="#Map">Map</a></li>
+<li><a href="#Options">Options</a></li>
+</ul>
+</li>
 <li><a href="#pkg-Constants">Constants</a><ul>
-<li><a href="#MAX_RUNE">MAX_RUNE</a></li>
-<li><a href="#REPLACEMENT_CHAR">REPLACEMENT_CHAR</a></li>
+<li><a href="#DEFAULT_OPTIONS">DEFAULT_OPTIONS</a></li>
 </ul>
 </li>
 <li><a href="#pkg-Procedures">Procedures</a><ul>
-<li><a href="#decode">decode</a></li>
-<li><a href="#decode_surrogate_pair">decode_surrogate_pair</a></li>
-<li><a href="#decode_to_utf8">decode_to_utf8</a></li>
-<li><a href="#encode">encode</a></li>
-<li><a href="#encode_string">encode_string</a></li>
-<li><a href="#encode_surrogate_pair">encode_surrogate_pair</a></li>
-<li><a href="#is_surrogate">is_surrogate</a></li>
+<li><a href="#delete_map">delete_map</a></li>
+<li><a href="#iterate">iterate</a></li>
+<li><a href="#iterator_from_string">iterator_from_string</a></li>
+<li><a href="#load_map_from_path">load_map_from_path</a></li>
+<li><a href="#load_map_from_string">load_map_from_string</a></li>
+<li><a href="#save_map_to_string">save_map_to_string</a></li>
+<li><a href="#write_map">write_map</a></li>
+<li><a href="#write_pair">write_pair</a></li>
+<li><a href="#write_section">write_section</a></li>
 </ul>
 </li>
 <li><a href="#pkg-source-files">Source Files</a></ul>
 </nav>
 </div></div>
-<script type="text/javascript">var odin_pkg_name = "utf16";</script>
+<script type="text/javascript">var odin_pkg_name = "encoding_ini";</script>
 </div>
 
 </div>
