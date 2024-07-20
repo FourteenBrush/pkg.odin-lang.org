@@ -437,49 +437,74 @@ Procedure Groups (2)</summary>
 <section class="documentation">
 <h2 id="pkg-Types" class="pkg-header">Types</h2>
 <div class="pkg-entity">
-<h3 id="Benchmark_Error"><span><a class="doc-id-link" href="#Benchmark_Error">Benchmark_Error<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/perf.odin#L100"><em>Source</em></a></div></h3>
+<h3 id="Benchmark_Error"><span><a class="doc-id-link" href="#Benchmark_Error">Benchmark_Error<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/perf.odin#L144"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Benchmark_Error :: <span class="keyword-type">enum</span> <a href="/base/builtin#int"><span class="doc-builtin">int</span></a> {
 	Okay             = 0, 
 	Allocation_Error, 
 }</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Errors returned by the <code>benchmark()</code> procedure.</p>
+</details>
 <h5>Related Procedures With Returns</h5>
 <ul>
 <li><a href="/core/time/#benchmark">benchmark</a></li>
 </ul>
 </div>
 <div class="pkg-entity">
-<h3 id="Benchmark_Options"><span><a class="doc-id-link" href="#Benchmark_Options">Benchmark_Options<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/perf.odin#L105"><em>Source</em></a></div></h3>
+<h3 id="Benchmark_Options"><span><a class="doc-id-link" href="#Benchmark_Options">Benchmark_Options<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/perf.odin#L152"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Benchmark_Options :: <span class="keyword-type">struct</span> {
+	<span class="comment">// The initialization procedure. `benchmark()` will call this before taking measurements.</span>
 	setup:                <span class="keyword-type">proc</span>(options: ^<a class="code-typename" href="/core/time/#Benchmark_Options">Benchmark_Options</a>, allocator := <a href="/base/runtime/#Context">context.allocator</a>) -> (err: <a class="code-typename" href="/core/time/#Benchmark_Error">Benchmark_Error</a>),
+	<span class="comment">// The procedure to benchmark.</span>
 	bench:                <span class="keyword-type">proc</span>(options: ^<a class="code-typename" href="/core/time/#Benchmark_Options">Benchmark_Options</a>, allocator := <a href="/base/runtime/#Context">context.allocator</a>) -> (err: <a class="code-typename" href="/core/time/#Benchmark_Error">Benchmark_Error</a>),
+	<span class="comment">// The deinitialization procedure.</span>
 	teardown:             <span class="keyword-type">proc</span>(options: ^<a class="code-typename" href="/core/time/#Benchmark_Options">Benchmark_Options</a>, allocator := <a href="/base/runtime/#Context">context.allocator</a>) -> (err: <a class="code-typename" href="/core/time/#Benchmark_Error">Benchmark_Error</a>),
+	<span class="comment">// Field to be used by `bench()` procedure for any purpose.</span>
 	rounds:               <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>,
+	<span class="comment">// Field to be used by `bench()` procedure for any purpose.</span>
 	bytes:                <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>,
+	<span class="comment">// Field to be used by `bench()` procedure for any purpose.</span>
 	input:                []<a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a>,
+	<span class="comment">// `bench()` writes to specify the count of elements processed.</span>
 	count:                <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>,
+	<span class="comment">// `bench()` writes to specify the number of bytes processed.</span>
 	processed:            <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>,
+	<span class="comment">// `bench()` can write the output slice here.</span>
 	output:               []<a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a>,
-	<span class="comment">// Unused for hash benchmarks</span>
+	<span class="comment">// `bench()` can write the output hash here.</span>
 	hash:                 <a href="/base/builtin#u128"><span class="doc-builtin">u128</span></a>,
-	<span class="comment">// 		Performance</span>
+	<span class="comment">// `benchmark()` procedure will output the duration of benchmark</span>
 	duration:             <a class="code-typename" href="/core/time/#Duration">Duration</a>,
+	<span class="comment">// `benchmark()` procedure will output the average count of elements</span>
+	<span class="comment">// processed per second, using the `count` field of this struct.</span>
 	rounds_per_second:    <a href="/base/builtin#f64"><span class="doc-builtin">f64</span></a>,
+	<span class="comment">// `benchmark()` procedure will output the average number of megabytes</span>
+	<span class="comment">// processed per second, using the `processed` field of this struct.</span>
 	megabytes_per_second: <a href="/base/builtin#f64"><span class="doc-builtin">f64</span></a>,
 }</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Options for benchmarking.</p>
+</details>
 <h5>Related Procedures With Parameters</h5>
 <ul>
 <li><a href="/core/time/#benchmark">benchmark</a></li>
 </ul>
 </div>
 <div class="pkg-entity">
-<h3 id="Duration"><span><a class="doc-id-link" href="#Duration">Duration<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L6"><em>Source</em></a></div></h3>
+<h3 id="Duration"><span><a class="doc-id-link" href="#Duration">Duration<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L9"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Duration :: <span class="keyword-type">distinct</span> <a href="/base/builtin#i64"><span class="doc-builtin">i64</span></a></pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Type representing duration, with nanosecond precision.</p>
+</details>
 <h5>Related Procedures With Parameters</h5>
 <ul>
 <li><a href="/core/time/#SCOPED_TICK_DURATION">SCOPED_TICK_DURATION</a></li>
@@ -520,7 +545,7 @@ Procedure Groups (2)</summary>
 </ul>
 </div>
 <div class="pkg-entity">
-<h3 id="Month"><span><a class="doc-id-link" href="#Month">Month<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L24"><em>Source</em></a></div></h3>
+<h3 id="Month"><span><a class="doc-id-link" href="#Month">Month<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L72"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Month :: <span class="keyword-type">enum</span> <a href="/base/builtin#int"><span class="doc-builtin">int</span></a> {
 	January   = 1, 
@@ -537,6 +562,10 @@ Procedure Groups (2)</summary>
 	December, 
 }</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Type representing a month.</p>
+</details>
 <h5>Related Procedures With Returns</h5>
 <ul>
 <li><a href="/core/time/#date">date</a></li>
@@ -544,7 +573,7 @@ Procedure Groups (2)</summary>
 </ul>
 </div>
 <div class="pkg-entity">
-<h3 id="Stopwatch"><span><a class="doc-id-link" href="#Stopwatch">Stopwatch<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L49"><em>Source</em></a></div></h3>
+<h3 id="Stopwatch"><span><a class="doc-id-link" href="#Stopwatch">Stopwatch<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L108"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Stopwatch :: <span class="keyword-type">struct</span> {
 	running:       <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>,
@@ -552,6 +581,14 @@ Procedure Groups (2)</summary>
 	_accumulation: <a class="code-typename" href="/core/time/#Duration">Duration</a>,
 }</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Type representing a stopwatch.</p>
+<p>The stopwatch is used for measuring the total time in multiple "runs". When the
+stopwatch is started, it starts counting time. When the stopwatch is stopped,
+the difference in time between the last start and the stop is added to the
+total. When the stopwatch resets, the total is reset.</p>
+</details>
 <h5>Related Procedures With Parameters</h5>
 <ul>
 <li><a href="/core/time/#clock_from_stopwatch">clock_from_stopwatch</a></li>
@@ -563,12 +600,16 @@ Procedure Groups (2)</summary>
 </ul>
 </div>
 <div class="pkg-entity">
-<h3 id="Tick"><span><a class="doc-id-link" href="#Tick">Tick<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/perf.odin#L6"><em>Source</em></a></div></h3>
+<h3 id="Tick"><span><a class="doc-id-link" href="#Tick">Tick<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/perf.odin#L9"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Tick :: <span class="keyword-type">struct</span> {
 	_nsec: <a href="/base/builtin#i64"><span class="doc-builtin">i64</span></a>,
 }</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Type representing monotonic time, useful for measuring durations.</p>
+</details>
 <h5>Related Procedures With Parameters</h5>
 <ul>
 <li><a href="/core/time/#tick_diff">tick_diff</a></li>
@@ -582,12 +623,19 @@ Procedure Groups (2)</summary>
 </ul>
 </div>
 <div class="pkg-entity">
-<h3 id="Time"><span><a class="doc-id-link" href="#Time">Time<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L20"><em>Source</em></a></div></h3>
+<h3 id="Time"><span><a class="doc-id-link" href="#Time">Time<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L65"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Time :: <span class="keyword-type">struct</span> {
 	_nsec: <a href="/base/builtin#i64"><span class="doc-builtin">i64</span></a>,
 }</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Specifies time since the UNIX epoch, with nanosecond precision.</p>
+<p>Capable of representing any time within the following range:</p>
+<p><span class="doc-list"><code>min: 1677-09-21 00:12:44.145224192 +0000 UTC</code></span>
+<span class="doc-list"><code>max: 2262-04-11 23:47:16.854775807 +0000 UTC</code></span></p>
+</details>
 <h5>Related Procedures With Parameters</h5>
 <ul>
 <li><a href="/core/time/#clock_from_time">clock_from_time</a></li>
@@ -618,7 +666,7 @@ Procedure Groups (2)</summary>
 </ul>
 </div>
 <div class="pkg-entity">
-<h3 id="Weekday"><span><a class="doc-id-link" href="#Weekday">Weekday<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L39"><em>Source</em></a></div></h3>
+<h3 id="Weekday"><span><a class="doc-id-link" href="#Weekday">Weekday<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L90"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Weekday :: <span class="keyword-type">enum</span> <a href="/base/builtin#int"><span class="doc-builtin">int</span></a> {
 	Sunday    = 0, 
@@ -630,6 +678,10 @@ Procedure Groups (2)</summary>
 	Saturday, 
 }</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Type representing a weekday.</p>
+</details>
 <h5>Related Procedures With Returns</h5>
 <ul>
 <li><a href="/core/time/#weekday">weekday</a></li>
@@ -637,7 +689,7 @@ Procedure Groups (2)</summary>
 </div>
 <h2 id="pkg-Constants" class="pkg-header">Constants</h2>
 <div class="pkg-entity">
-<h3 id="ABSOLUTE_TO_INTERNAL"><span><a class="doc-id-link" href="#ABSOLUTE_TO_INTERNAL">ABSOLUTE_TO_INTERNAL<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L282"><em>Source</em></a></div></h3>
+<h3 id="ABSOLUTE_TO_INTERNAL"><span><a class="doc-id-link" href="#ABSOLUTE_TO_INTERNAL">ABSOLUTE_TO_INTERNAL<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L502"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">ABSOLUTE_TO_INTERNAL :: i64(-9223371966579724800)</pre>
 </div>
@@ -647,13 +699,13 @@ Procedure Groups (2)</summary>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="ABSOLUTE_TO_UNIX"><span><a class="doc-id-link" href="#ABSOLUTE_TO_UNIX">ABSOLUTE_TO_UNIX<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L292"><em>Source</em></a></div></h3>
+<h3 id="ABSOLUTE_TO_UNIX"><span><a class="doc-id-link" href="#ABSOLUTE_TO_UNIX">ABSOLUTE_TO_UNIX<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L512"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">ABSOLUTE_TO_UNIX: <a href="/base/builtin#i64"><span class="doc-builtin">i64</span></a> : -UNIX_TO_ABSOLUTE</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="ABSOLUTE_ZERO_YEAR"><span><a class="doc-id-link" href="#ABSOLUTE_ZERO_YEAR">ABSOLUTE_ZERO_YEAR<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L281"><em>Source</em></a></div></h3>
+<h3 id="ABSOLUTE_ZERO_YEAR"><span><a class="doc-id-link" href="#ABSOLUTE_ZERO_YEAR">ABSOLUTE_ZERO_YEAR<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L501"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">ABSOLUTE_ZERO_YEAR :: i64(-292277022399)</pre>
 </div>
@@ -663,509 +715,897 @@ Procedure Groups (2)</summary>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="DAYS_PER_100_YEARS"><span><a class="doc-id-link" href="#DAYS_PER_100_YEARS">DAYS_PER_100_YEARS<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L419"><em>Source</em></a></div></h3>
+<h3 id="DAYS_PER_100_YEARS"><span><a class="doc-id-link" href="#DAYS_PER_100_YEARS">DAYS_PER_100_YEARS<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L683"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">DAYS_PER_100_YEARS :: 365 * 100 + 24</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Days in 100 years, with leap days.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="DAYS_PER_400_YEARS"><span><a class="doc-id-link" href="#DAYS_PER_400_YEARS">DAYS_PER_400_YEARS<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L418"><em>Source</em></a></div></h3>
+<h3 id="DAYS_PER_400_YEARS"><span><a class="doc-id-link" href="#DAYS_PER_400_YEARS">DAYS_PER_400_YEARS<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L678"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">DAYS_PER_400_YEARS :: 365 * 400 + 97</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Days in 400 years, with leap days.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="DAYS_PER_4_YEARS"><span><a class="doc-id-link" href="#DAYS_PER_4_YEARS">DAYS_PER_4_YEARS<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L420"><em>Source</em></a></div></h3>
+<h3 id="DAYS_PER_4_YEARS"><span><a class="doc-id-link" href="#DAYS_PER_4_YEARS">DAYS_PER_4_YEARS<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L688"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">DAYS_PER_4_YEARS :: 365 * 4 + 1</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Days in 4 years, with leap days.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="Hour"><span><a class="doc-id-link" href="#Hour">Hour<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L13"><em>Source</em></a></div></h3>
+<h3 id="Hour"><span><a class="doc-id-link" href="#Hour">Hour<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L39"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Hour: <a class="code-typename" href="/core/time/#Duration">Duration</a> : 60 * Minute</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>The duration equal to one hour (3600 seconds).</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="INTERNAL_TO_ABSOLUTE"><span><a class="doc-id-link" href="#INTERNAL_TO_ABSOLUTE">INTERNAL_TO_ABSOLUTE<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L283"><em>Source</em></a></div></h3>
+<h3 id="INTERNAL_TO_ABSOLUTE"><span><a class="doc-id-link" href="#INTERNAL_TO_ABSOLUTE">INTERNAL_TO_ABSOLUTE<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L503"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">INTERNAL_TO_ABSOLUTE: <a href="/base/builtin#i64"><span class="doc-builtin">i64</span></a> : -ABSOLUTE_TO_INTERNAL</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="INTERNAL_TO_UNIX"><span><a class="doc-id-link" href="#INTERNAL_TO_UNIX">INTERNAL_TO_UNIX<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L286"><em>Source</em></a></div></h3>
+<h3 id="INTERNAL_TO_UNIX"><span><a class="doc-id-link" href="#INTERNAL_TO_UNIX">INTERNAL_TO_UNIX<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L506"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">INTERNAL_TO_UNIX: <a href="/base/builtin#i64"><span class="doc-builtin">i64</span></a> : -UNIX_TO_INTERNAL</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="INTERNAL_TO_WALL"><span><a class="doc-id-link" href="#INTERNAL_TO_WALL">INTERNAL_TO_WALL<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L289"><em>Source</em></a></div></h3>
+<h3 id="INTERNAL_TO_WALL"><span><a class="doc-id-link" href="#INTERNAL_TO_WALL">INTERNAL_TO_WALL<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L509"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">INTERNAL_TO_WALL: <a href="/base/builtin#i64"><span class="doc-builtin">i64</span></a> : -WALL_TO_INTERNAL</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="IS_SUPPORTED"><span><a class="doc-id-link" href="#IS_SUPPORTED">IS_SUPPORTED<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L18"><em>Source</em></a></div></h3>
+<h3 id="IS_SUPPORTED"><span><a class="doc-id-link" href="#IS_SUPPORTED">IS_SUPPORTED<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L55"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">IS_SUPPORTED :: _IS_SUPPORTED</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Value specifying whether the time procedures are supported by the current
+platform.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="MAX_DURATION"><span><a class="doc-id-link" href="#MAX_DURATION">MAX_DURATION<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L16"><em>Source</em></a></div></h3>
+<h3 id="MAX_DURATION"><span><a class="doc-id-link" href="#MAX_DURATION">MAX_DURATION<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L49"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">MAX_DURATION :: Duration(1 &lt;&lt; 63 - 1)</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Maximum representable duration.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="MIN_DURATION"><span><a class="doc-id-link" href="#MIN_DURATION">MIN_DURATION<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L15"><em>Source</em></a></div></h3>
+<h3 id="MIN_DURATION"><span><a class="doc-id-link" href="#MIN_DURATION">MIN_DURATION<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L44"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">MIN_DURATION :: Duration(-1 &lt;&lt; 63)</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Minimum representable duration.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="Microsecond"><span><a class="doc-id-link" href="#Microsecond">Microsecond<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L9"><em>Source</em></a></div></h3>
+<h3 id="Microsecond"><span><a class="doc-id-link" href="#Microsecond">Microsecond<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L19"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Microsecond: <a class="code-typename" href="/core/time/#Duration">Duration</a> : 1000 * Nanosecond</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>The duration equal to one microsecond (1e-6 seconds).</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="Millisecond"><span><a class="doc-id-link" href="#Millisecond">Millisecond<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L10"><em>Source</em></a></div></h3>
+<h3 id="Millisecond"><span><a class="doc-id-link" href="#Millisecond">Millisecond<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L24"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Millisecond: <a class="code-typename" href="/core/time/#Duration">Duration</a> : 1000 * Microsecond</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>The duration equal to one millisecond (1e-3 seconds).</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="Minute"><span><a class="doc-id-link" href="#Minute">Minute<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L12"><em>Source</em></a></div></h3>
+<h3 id="Minute"><span><a class="doc-id-link" href="#Minute">Minute<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L34"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Minute: <a class="code-typename" href="/core/time/#Duration">Duration</a> : 60 * Second</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>The duration equal to one minute (60 seconds).</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="Nanosecond"><span><a class="doc-id-link" href="#Nanosecond">Nanosecond<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L8"><em>Source</em></a></div></h3>
+<h3 id="Nanosecond"><span><a class="doc-id-link" href="#Nanosecond">Nanosecond<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L14"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Nanosecond :: Duration(1)</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>The duration equal to one nanosecond (1e-9 seconds).</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="SECONDS_PER_DAY"><span><a class="doc-id-link" href="#SECONDS_PER_DAY">SECONDS_PER_DAY<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L416"><em>Source</em></a></div></h3>
+<h3 id="SECONDS_PER_DAY"><span><a class="doc-id-link" href="#SECONDS_PER_DAY">SECONDS_PER_DAY<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L668"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">SECONDS_PER_DAY :: 24 * SECONDS_PER_HOUR</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Number of seconds in a day (without leap seconds).</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="SECONDS_PER_HOUR"><span><a class="doc-id-link" href="#SECONDS_PER_HOUR">SECONDS_PER_HOUR<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L415"><em>Source</em></a></div></h3>
+<h3 id="SECONDS_PER_HOUR"><span><a class="doc-id-link" href="#SECONDS_PER_HOUR">SECONDS_PER_HOUR<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L663"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">SECONDS_PER_HOUR :: 60 * SECONDS_PER_MINUTE</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Number of seconds in an hour (without leap seconds).</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="SECONDS_PER_MINUTE"><span><a class="doc-id-link" href="#SECONDS_PER_MINUTE">SECONDS_PER_MINUTE<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L414"><em>Source</em></a></div></h3>
+<h3 id="SECONDS_PER_MINUTE"><span><a class="doc-id-link" href="#SECONDS_PER_MINUTE">SECONDS_PER_MINUTE<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L658"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">SECONDS_PER_MINUTE :: 60</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Number of seconds in a minute (without leap seconds).</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="SECONDS_PER_WEEK"><span><a class="doc-id-link" href="#SECONDS_PER_WEEK">SECONDS_PER_WEEK<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L417"><em>Source</em></a></div></h3>
+<h3 id="SECONDS_PER_WEEK"><span><a class="doc-id-link" href="#SECONDS_PER_WEEK">SECONDS_PER_WEEK<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L673"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">SECONDS_PER_WEEK :: 7 * SECONDS_PER_DAY</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Number of seconds in a week (without leap seconds).</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="Second"><span><a class="doc-id-link" href="#Second">Second<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L11"><em>Source</em></a></div></h3>
+<h3 id="Second"><span><a class="doc-id-link" href="#Second">Second<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L29"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Second: <a class="code-typename" href="/core/time/#Duration">Duration</a> : 1000 * Millisecond</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>The duration equal to one second.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="UNIX_TO_ABSOLUTE"><span><a class="doc-id-link" href="#UNIX_TO_ABSOLUTE">UNIX_TO_ABSOLUTE<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L291"><em>Source</em></a></div></h3>
+<h3 id="UNIX_TO_ABSOLUTE"><span><a class="doc-id-link" href="#UNIX_TO_ABSOLUTE">UNIX_TO_ABSOLUTE<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L511"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">UNIX_TO_ABSOLUTE: <a href="/base/builtin#i64"><span class="doc-builtin">i64</span></a> : UNIX_TO_INTERNAL + INTERNAL_TO_ABSOLUTE</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="UNIX_TO_INTERNAL"><span><a class="doc-id-link" href="#UNIX_TO_INTERNAL">UNIX_TO_INTERNAL<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L285"><em>Source</em></a></div></h3>
+<h3 id="UNIX_TO_INTERNAL"><span><a class="doc-id-link" href="#UNIX_TO_INTERNAL">UNIX_TO_INTERNAL<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L505"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">UNIX_TO_INTERNAL :: i64((1969 * 365 + 1969 / 4 - 1969 / 100 + 1969 / 400) * SECONDS_PER_DAY)</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="WALL_TO_INTERNAL"><span><a class="doc-id-link" href="#WALL_TO_INTERNAL">WALL_TO_INTERNAL<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L288"><em>Source</em></a></div></h3>
+<h3 id="WALL_TO_INTERNAL"><span><a class="doc-id-link" href="#WALL_TO_INTERNAL">WALL_TO_INTERNAL<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L508"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">WALL_TO_INTERNAL :: i64((1884 * 365 + 1884 / 4 - 1884 / 100 + 1884 / 400) * SECONDS_PER_DAY)</pre>
 </div>
 </div>
 <h2 id="pkg-Variables" class="pkg-header">Variables</h2>
 <div class="pkg-entity">
-<h3 id="days_before"><span><a class="doc-id-link" href="#days_before">days_before<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L397"><em>Source</em></a></div></h3>
+<h3 id="days_before"><span><a class="doc-id-link" href="#days_before">days_before<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L639"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">@(rodata)
 days_before: [13]<a href="/base/builtin#i32"><span class="doc-builtin">i32</span></a> = …</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Days before each month in a year, not counting the leap day on february 29th.</p>
+</details>
 </div>
 <h2 id="pkg-Procedures" class="pkg-header">Procedures</h2>
 <div class="pkg-entity">
-<h3 id="SCOPED_TICK_DURATION"><span><a class="doc-id-link" href="#SCOPED_TICK_DURATION">SCOPED_TICK_DURATION<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/perf.odin#L34"><em>Source</em></a></div></h3>
+<h3 id="SCOPED_TICK_DURATION"><span><a class="doc-id-link" href="#SCOPED_TICK_DURATION">SCOPED_TICK_DURATION<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/perf.odin#L60"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">SCOPED_TICK_DURATION :: <span class="keyword-type">proc</span> "contextless" (d: ^<a class="code-typename" href="/core/time/#Duration">Duration</a>) -> <a class="code-typename" href="/core/time/#Tick">Tick</a> {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Capture the duration the code in the current scope takes to execute.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="accurate_sleep"><span><a class="doc-id-link" href="#accurate_sleep">accurate_sleep<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L248"><em>Source</em></a></div></h3>
+<h3 id="accurate_sleep"><span><a class="doc-id-link" href="#accurate_sleep">accurate_sleep<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L468"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">accurate_sleep :: <span class="keyword-type">proc</span> "contextless" (d: <a class="code-typename" href="/core/time/#Duration">Duration</a>) {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>Accurate sleep borrowed from: https://blat-blatnik.github.io/computerBear/making-accurate-sleep-function/</p>
-<p>Accuracy seems to be pretty good out of the box on Linux, to within around 4µs worst case.
-On Windows it depends but is comparable with regular sleep in the worst case.
-To get the same kind of accuracy as on Linux, have your program call <code>windows.timeBeginPeriod(1)</code> to
-tell Windows to use a more accurate timer for your process.
-Additionally your program should call <code>windows.timeEndPeriod(1)</code> once you're done with <code>accurate_sleep</code>.</p>
+<p>Accurate sleep</p>
+<p>This procedure sleeps for the duration specified by <code>d</code>, very accurately.</p>
+<p><b>Note</b>: Implementation borrowed from: [this source](https://blat-blatnik.github.io/computerBear/making-accurate-sleep-function/)</p>
+<p><b>Note(linux)</b>: The accuracy is within around 4µs (microseconds), in the worst case.</p>
+<p><b>Note(windows)</b>: The accuracy depends but is comparable with regular sleep in
+the worst case. To get the same kind of accuracy as on Linux, have your program
+call <code>windows.timeBeginPeriod(1)</code> to tell Windows to use a more accurate timer
+for your process. Additionally your program should call <code>windows.timeEndPeriod(1)</code>
+once you're done with <code>accurate_sleep</code>.</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="benchmark"><span><a class="doc-id-link" href="#benchmark">benchmark<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/perf.odin#L127"><em>Source</em></a></div></h3>
+<h3 id="benchmark"><span><a class="doc-id-link" href="#benchmark">benchmark<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/perf.odin#L197"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">benchmark :: <span class="keyword-type">proc</span>(options: ^<a class="code-typename" href="/core/time/#Benchmark_Options">Benchmark_Options</a>, allocator := <a href="/base/runtime/#Context">context.allocator</a>) -> (err: <a class="code-typename" href="/core/time/#Benchmark_Error">Benchmark_Error</a>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Benchmark a procedure.</p>
+<p>This procedure produces a benchmark. The procedure specified in the <code>bench</code>
+field of the <code>options</code> parameter will be benchmarked. The following metrics
+can be obtained:</p>
+<p><span class="doc-list">Run time of the procedure</span>
+<span class="doc-list">Number of elements per second processed on average</span>
+<span class="doc-list">Number of bytes per second this processed on average</span></p>
+<p>In order to obtain these metrics, the <code>bench()</code> procedure writes to <code>options</code>
+struct the number of elements or bytes it has processed.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="clock_from_duration"><span><a class="doc-id-link" href="#clock_from_duration">clock_from_duration<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L188"><em>Source</em></a></div></h3>
+<h3 id="clock_from_duration"><span><a class="doc-id-link" href="#clock_from_duration">clock_from_duration<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L368"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">clock_from_duration :: <span class="keyword-type">proc</span> "contextless" (d: <a class="code-typename" href="/core/time/#Duration">Duration</a>) -> (hour, min, sec: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Obtain the time components from a duration.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="clock_from_seconds"><span><a class="doc-id-link" href="#clock_from_seconds">clock_from_seconds<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L196"><em>Source</em></a></div></h3>
+<h3 id="clock_from_seconds"><span><a class="doc-id-link" href="#clock_from_seconds">clock_from_seconds<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L382"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">clock_from_seconds :: <span class="keyword-type">proc</span> "contextless" (nsec: <a href="/base/builtin#u64"><span class="doc-builtin">u64</span></a>) -> (hour, min, sec: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Obtain the time components from the number of seconds.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="clock_from_stopwatch"><span><a class="doc-id-link" href="#clock_from_stopwatch">clock_from_stopwatch<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L192"><em>Source</em></a></div></h3>
+<h3 id="clock_from_stopwatch"><span><a class="doc-id-link" href="#clock_from_stopwatch">clock_from_stopwatch<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L375"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">clock_from_stopwatch :: <span class="keyword-type">proc</span> "contextless" (s: <a class="code-typename" href="/core/time/#Stopwatch">Stopwatch</a>) -> (hour, min, sec: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Obtain the time components from a stopwatch's total.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="clock_from_time"><span><a class="doc-id-link" href="#clock_from_time">clock_from_time<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L184"><em>Source</em></a></div></h3>
+<h3 id="clock_from_time"><span><a class="doc-id-link" href="#clock_from_time">clock_from_time<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L361"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">clock_from_time :: <span class="keyword-type">proc</span> "contextless" (t: <a class="code-typename" href="/core/time/#Time">Time</a>) -> (hour, min, sec: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Obtain the time components from a time.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="components_to_time"><span><a class="doc-id-link" href="#components_to_time">components_to_time<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L365"><em>Source</em></a></div></h3>
+<h3 id="components_to_time"><span><a class="doc-id-link" href="#components_to_time">components_to_time<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L592"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">components_to_time :: <span class="keyword-type">proc</span> "contextless" (
 	<span class="keyword-type">#any_int</span> year, <span class="keyword-type">#any_int</span> month, <span class="keyword-type">#any_int</span> day, <span class="keyword-type">#any_int</span> hour, <span class="keyword-type">#any_int</span> minute, <span class="keyword-type">#any_int</span> second: <a href="/base/builtin#i64"><span class="doc-builtin">i64</span></a>, 
 	<span class="keyword-type">#any_int</span> nsec:                          <a href="/base/builtin#i64"><span class="doc-builtin">i64</span></a> = i64(0), 
 ) -> (t: <a class="code-typename" href="/core/time/#Time">Time</a>, ok: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Convert datetime components into time.</p>
+<p>This procedure calculates the time from datetime components supplied in the
+arguments to this procedure. If the datetime components don't represent a valid
+datetime, the function returns <code>false</code> in the second argument.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="compound_to_time"><span><a class="doc-id-link" href="#compound_to_time">compound_to_time<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L373"><em>Source</em></a></div></h3>
+<h3 id="compound_to_time"><span><a class="doc-id-link" href="#compound_to_time">compound_to_time<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L606"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">compound_to_time :: <span class="keyword-type">proc</span> "contextless" (datetime: datetime.<a class="code-typename" href="/core/time/datetime/#DateTime">DateTime</a>) -> (t: <a class="code-typename" href="/core/time/#Time">Time</a>, ok: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Convert datetime into time.</p>
+<p>If the datetime represents a time outside of a valid range, <code>false</code> is returned
+as the second return value. See <code>Time</code> for the representable range.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="date"><span><a class="doc-id-link" href="#date">date<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L156"><em>Source</em></a></div></h3>
+<h3 id="date"><span><a class="doc-id-link" href="#date">date<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L315"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">date :: <span class="keyword-type">proc</span> "contextless" (t: <a class="code-typename" href="/core/time/#Time">Time</a>) -> (year: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, month: <a class="code-typename" href="/core/time/#Month">Month</a>, day: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Parse time into date components.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="day"><span><a class="doc-id-link" href="#day">day<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L171"><em>Source</em></a></div></h3>
+<h3 id="day"><span><a class="doc-id-link" href="#day">day<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L339"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">day :: <span class="keyword-type">proc</span> "contextless" (t: <a class="code-typename" href="/core/time/#Time">Time</a>) -> (day: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Obtain the day of the date specified by time.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="diff"><span><a class="doc-id-link" href="#diff">diff<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L89"><em>Source</em></a></div></h3>
+<h3 id="diff"><span><a class="doc-id-link" href="#diff">diff<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L173"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">diff :: <span class="keyword-type">proc</span> "contextless" (start, end: <a class="code-typename" href="/core/time/#Time">Time</a>) -> <a class="code-typename" href="/core/time/#Duration">Duration</a> {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Calculate the duration elapsed between two times.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="duration_hours"><span><a class="doc-id-link" href="#duration_hours">duration_hours<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L117"><em>Source</em></a></div></h3>
+<h3 id="duration_hours"><span><a class="doc-id-link" href="#duration_hours">duration_hours<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L227"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">duration_hours :: <span class="keyword-type">proc</span> "contextless" (d: <a class="code-typename" href="/core/time/#Duration">Duration</a>) -> <a href="/base/builtin#f64"><span class="doc-builtin">f64</span></a> {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Obtain the number of hours in a duration.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="duration_microseconds"><span><a class="doc-id-link" href="#duration_microseconds">duration_microseconds<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L101"><em>Source</em></a></div></h3>
+<h3 id="duration_microseconds"><span><a class="doc-id-link" href="#duration_microseconds">duration_microseconds<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L195"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">duration_microseconds :: <span class="keyword-type">proc</span> "contextless" (d: <a class="code-typename" href="/core/time/#Duration">Duration</a>) -> <a href="/base/builtin#f64"><span class="doc-builtin">f64</span></a> {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Obtain the number of microseconds in a duration.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="duration_milliseconds"><span><a class="doc-id-link" href="#duration_milliseconds">duration_milliseconds<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L104"><em>Source</em></a></div></h3>
+<h3 id="duration_milliseconds"><span><a class="doc-id-link" href="#duration_milliseconds">duration_milliseconds<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L202"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">duration_milliseconds :: <span class="keyword-type">proc</span> "contextless" (d: <a class="code-typename" href="/core/time/#Duration">Duration</a>) -> <a href="/base/builtin#f64"><span class="doc-builtin">f64</span></a> {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Obtain the number of milliseconds in a duration.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="duration_minutes"><span><a class="doc-id-link" href="#duration_minutes">duration_minutes<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L112"><em>Source</em></a></div></h3>
+<h3 id="duration_minutes"><span><a class="doc-id-link" href="#duration_minutes">duration_minutes<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L218"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">duration_minutes :: <span class="keyword-type">proc</span> "contextless" (d: <a class="code-typename" href="/core/time/#Duration">Duration</a>) -> <a href="/base/builtin#f64"><span class="doc-builtin">f64</span></a> {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Obtain the number of minutes in a duration.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="duration_nanoseconds"><span><a class="doc-id-link" href="#duration_nanoseconds">duration_nanoseconds<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L98"><em>Source</em></a></div></h3>
+<h3 id="duration_nanoseconds"><span><a class="doc-id-link" href="#duration_nanoseconds">duration_nanoseconds<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L188"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">duration_nanoseconds :: <span class="keyword-type">proc</span> "contextless" (d: <a class="code-typename" href="/core/time/#Duration">Duration</a>) -> <a href="/base/builtin#i64"><span class="doc-builtin">i64</span></a> {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Obtain the number of nanoseconds in a duration.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="duration_round"><span><a class="doc-id-link" href="#duration_round">duration_round<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L123"><em>Source</em></a></div></h3>
+<h3 id="duration_round"><span><a class="doc-id-link" href="#duration_round">duration_round<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L256"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">duration_round :: <span class="keyword-type">proc</span> "contextless" (d, m: <a class="code-typename" href="/core/time/#Duration">Duration</a>) -> <a class="code-typename" href="/core/time/#Duration">Duration</a> {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Round a duration to a specific unit.</p>
+<p>This procedure rounds the duration to a specific unit.</p>
+<p><b>Inputs</b>:
+<span class="doc-list"><code>d</code>: The duration to round.</span>
+<span class="doc-list"><code>m</code>: The unit to round to.</span></p>
+<p><b>Returns</b>:
+<span class="doc-list">The duration <code>d</code>, rounded to the unit specified by <code>m</code>.</span></p>
+<p><b>Example</b>:</p>
+<p>In order to obtain the rough amount of seconds in a duration, the following call
+can be used:</p>
+<p><code></code>`
+time.duration_round(my_duration, time.Second)
+<code></code>`</p>
+<p><b>Note</b>: Any duration can be supplied as a unit.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="duration_seconds"><span><a class="doc-id-link" href="#duration_seconds">duration_seconds<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L107"><em>Source</em></a></div></h3>
+<h3 id="duration_seconds"><span><a class="doc-id-link" href="#duration_seconds">duration_seconds<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L209"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">duration_seconds :: <span class="keyword-type">proc</span> "contextless" (d: <a class="code-typename" href="/core/time/#Duration">Duration</a>) -> <a href="/base/builtin#f64"><span class="doc-builtin">f64</span></a> {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Obtain the number of seconds in a duration.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="duration_truncate"><span><a class="doc-id-link" href="#duration_truncate">duration_truncate<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L152"><em>Source</em></a></div></h3>
+<h3 id="duration_truncate"><span><a class="doc-id-link" href="#duration_truncate">duration_truncate<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L308"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">duration_truncate :: <span class="keyword-type">proc</span> "contextless" (d, m: <a class="code-typename" href="/core/time/#Duration">Duration</a>) -> <a class="code-typename" href="/core/time/#Duration">Duration</a> {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Truncate the duration to the specified unit.</p>
+<p>This procedure truncates the duration <code>d</code> to the unit specified by <code>m</code>.</p>
+<p><b>Inputs</b>:
+<span class="doc-list"><code>d</code>: The duration to truncate.</span>
+<span class="doc-list"><code>m</code>: The unit to truncate to.</span></p>
+<p><b>Returns</b>:
+<span class="doc-list">The duration <code>d</code>, truncated to the unit specified by <code>m</code>.</span></p>
+<p><b>Example</b>:</p>
+<p>In order to obtain the amount of whole seconds in a duration, the following call
+can be used:</p>
+<p><code></code>`
+time.duration_round(my_duration, time.Second)
+<code></code>`</p>
+<p><b>Note</b>: Any duration can be supplied as a unit.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="from_nanoseconds"><span><a class="doc-id-link" href="#from_nanoseconds">from_nanoseconds<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L223"><em>Source</em></a></div></h3>
+<h3 id="from_nanoseconds"><span><a class="doc-id-link" href="#from_nanoseconds">from_nanoseconds<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L418"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">from_nanoseconds :: <span class="keyword-type">proc</span> "contextless" (nsec: <a href="/base/builtin#i64"><span class="doc-builtin">i64</span></a>) -> <a class="code-typename" href="/core/time/#Time">Time</a> {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Obtain time from unix nanoseconds.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="has_invariant_tsc"><span><a class="doc-id-link" href="#has_invariant_tsc">has_invariant_tsc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/perf.odin#L65"><em>Source</em></a></div></h3>
+<h3 id="has_invariant_tsc"><span><a class="doc-id-link" href="#has_invariant_tsc">has_invariant_tsc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/perf.odin#L97"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">has_invariant_tsc :: <span class="keyword-type">proc</span> "contextless" () -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Check if the CPU has invariant TSC.</p>
+<p>This procedure checks if the CPU contains an invariant TSC (Time stamp counter).
+Invariant TSC is a feature of modern processors that allows them to run their
+TSC at a fixed frequency, independent of ACPI state, and CPU frequency.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="is_leap_year"><span><a class="doc-id-link" href="#is_leap_year">is_leap_year<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L392"><em>Source</em></a></div></h3>
+<h3 id="is_leap_year"><span><a class="doc-id-link" href="#is_leap_year">is_leap_year<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L631"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">is_leap_year :: <span class="keyword-type">proc</span> "contextless" (year: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>) -> (leap: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Check if a year is a leap year.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="iso8601_to_components"><span><a class="doc-id-link" href="#iso8601_to_components">iso8601_to_components<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/iso8601.odin#L43"><em>Source</em></a></div></h3>
+<h3 id="iso8601_to_components"><span><a class="doc-id-link" href="#iso8601_to_components">iso8601_to_components<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/iso8601.odin#L105"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">iso8601_to_components :: <span class="keyword-type">proc</span>(iso_datetime: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>) -> (res: datetime.<a class="code-typename" href="/core/time/datetime/#DateTime">DateTime</a>, utc_offset: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, is_leap: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>, consumed: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>) {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>Parses an ISO 8601 string and returns Time and a UTC offset in minutes.
-e.g. 1985-04-12T23:20:50.52Z
-Performs no validation on whether components are valid, e.g. it'll return hour = 25 if that's what it's given</p>
+<p>Parse an ISO 8601 string into a datetime and a UTC offset in minutes.</p>
+<p>This procedure parses an ISO 8601 string of roughly the following format:</p>
+<p><code></code>`text
+YYYY-MM-DD[Tt]HH:mm:ss[.nn][Zz][+-]HH:mm
+<code></code>`</p>
+<p>And returns datetime, in UTC represented by that string, and the UTC offset, in
+minutes.</p>
+<p><b>Inputs</b>:
+<span class="doc-list"><code>iso_datetime</code>: The string to be parsed</span></p>
+<p><b>Returns</b>:
+<span class="doc-list"><code>res</code>: The parsed datetime, in UTC.</span>
+<span class="doc-list"><code>utc_offset</code>: The UTC offset, in minutes.</span>
+<span class="doc-list"><code>is_leap</code>: Specifies whether the moment was a leap second.</span>
+<span class="doc-list"><code>consumed</code>: The number of bytes consumed by parsing the string.</span></p>
+<p><b>Notes</b>:
+<span class="doc-list">This procedure performs no validation on whether components are valid,</span>
+  e.g. it'll return hour = 25 if that's what it's given in the specified
+  string.</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="iso8601_to_time_and_offset"><span><a class="doc-id-link" href="#iso8601_to_time_and_offset">iso8601_to_time_and_offset<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/iso8601.odin#L23"><em>Source</em></a></div></h3>
+<h3 id="iso8601_to_time_and_offset"><span><a class="doc-id-link" href="#iso8601_to_time_and_offset">iso8601_to_time_and_offset<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/iso8601.odin#L62"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">iso8601_to_time_and_offset :: <span class="keyword-type">proc</span>(iso_datetime: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>, is_leap: ^<a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> = nil) -> (res: <a class="code-typename" href="/core/time/#Time">Time</a>, utc_offset: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, consumed: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>) {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>Parses an ISO 8601 string and returns Time and a UTC offset in minutes.
-e.g. 1985-04-12T23:20:50.52Z
-Note: Only 4-digit years are accepted.
-Optional pointer to boolean <code>is_leap</code> will return <code>true</code> if the moment was a leap second.
-Leap seconds are smeared into 23:59:59.</p>
+<p>Parse an ISO 8601 string into a time and a UTC offset in minutes.</p>
+<p>This procedure parses an ISO 8601 string of roughly the following format:</p>
+<p><code></code>`text
+YYYY-MM-DD[Tt]HH:mm:ss[.nn][Zz][+-]HH:mm
+<code></code>`</p>
+<p>And returns time, in UTC represented by that string, and the UTC offset, in
+minutes.</p>
+<p><b>Inputs</b>:
+<span class="doc-list"><code>iso_datetime</code>: The string to be parsed.</span>
+<span class="doc-list"><code>is_leap</code>: Optional output parameter, specifying if the moment was a leap second.</span></p>
+<p><b>Returns</b>:
+<span class="doc-list"><code>res</code>: The time in UTC.</span>
+<span class="doc-list"><code>utc_offset</code>: The UTC offset of the time, in minutes.</span>
+<span class="doc-list"><code>consumed</code>: Number of bytes consumed by parsing the string.</span></p>
+<p><b>Notes</b>:
+<span class="doc-list">Only 4-digit years are accepted.</span>
+<span class="doc-list">Leap seconds are smeared into 23:59:59.</span></p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="iso8601_to_time_utc"><span><a class="doc-id-link" href="#iso8601_to_time_utc">iso8601_to_time_utc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/iso8601.odin#L10"><em>Source</em></a></div></h3>
+<h3 id="iso8601_to_time_utc"><span><a class="doc-id-link" href="#iso8601_to_time_utc">iso8601_to_time_utc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/iso8601.odin#L30"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">iso8601_to_time_utc :: <span class="keyword-type">proc</span>(iso_datetime: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>, is_leap: ^<a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> = nil) -> (res: <a class="code-typename" href="/core/time/#Time">Time</a>, consumed: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>) {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>Parses an ISO 8601 string and returns Time in UTC, with any UTC offset applied to it.
-Only 4-digit years are accepted.
-Optional pointer to boolean <code>is_leap</code> will return <code>true</code> if the moment was a leap second.
-Leap seconds are smeared into 23:59:59.</p>
+<p>Parse an ISO 8601 string into a time with UTC offset applied to it.</p>
+<p>This procedure parses an ISO 8601 string of roughly the following format:</p>
+<p><code></code>`text
+YYYY-MM-DD[Tt]HH:mm:ss[.nn][Zz][+-]HH:mm
+<code></code>`</p>
+<p>And returns time, in UTC represented by that string. In case the timezone offset
+is specified in the string, that timezone is applied to time.</p>
+<p><b>Inputs</b>:
+<span class="doc-list"><code>iso_datetime</code>: The string to be parsed.</span>
+<span class="doc-list"><code>is_leap</code>: Optional output parameter, specifying if the moment was a leap second.</span></p>
+<p><b>Returns</b>:
+<span class="doc-list"><code>res</code>: The time represented by <code>iso_datetime</code>, with UTC offset applied.</span>
+<span class="doc-list"><code>consumed</code>: Number of bytes consumed by parsing the string.</span></p>
+<p><b>Notes</b>:
+<span class="doc-list">Only 4-digit years are accepted.</span>
+<span class="doc-list">Leap seconds are smeared into 23:59:59.</span></p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="month"><span><a class="doc-id-link" href="#month">month<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L166"><em>Source</em></a></div></h3>
+<h3 id="month"><span><a class="doc-id-link" href="#month">month<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L331"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">month :: <span class="keyword-type">proc</span> "contextless" (t: <a class="code-typename" href="/core/time/#Time">Time</a>) -> (month: <a class="code-typename" href="/core/time/#Month">Month</a>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Obtain the month of the date specified by time.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="now"><span><a class="doc-id-link" href="#now">now<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L55"><em>Source</em></a></div></h3>
+<h3 id="now"><span><a class="doc-id-link" href="#now">now<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L117"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">now :: <span class="keyword-type">proc</span> "contextless" () -> <a class="code-typename" href="/core/time/#Time">Time</a> {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Obtain the current time.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="read_cycle_counter"><span><a class="doc-id-link" href="#read_cycle_counter">read_cycle_counter<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L205"><em>Source</em></a></div></h3>
+<h3 id="read_cycle_counter"><span><a class="doc-id-link" href="#read_cycle_counter">read_cycle_counter<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L394"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">read_cycle_counter :: <span class="keyword-type">proc</span> "contextless" () -> <a href="/base/builtin#u64"><span class="doc-builtin">u64</span></a> {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Read the timestamp counter of the CPU.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="rfc3339_to_components"><span><a class="doc-id-link" href="#rfc3339_to_components">rfc3339_to_components<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/rfc3339.odin#L44"><em>Source</em></a></div></h3>
+<h3 id="rfc3339_to_components"><span><a class="doc-id-link" href="#rfc3339_to_components">rfc3339_to_components<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/rfc3339.odin#L112"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">rfc3339_to_components :: <span class="keyword-type">proc</span>(rfc_datetime: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>) -> (res: datetime.<a class="code-typename" href="/core/time/datetime/#DateTime">DateTime</a>, utc_offset: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, is_leap: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>, consumed: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>) {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>Parses an RFC 3339 string and returns Time and a UTC offset in minutes.
-e.g. 1985-04-12T23:20:50.52Z
-Performs no validation on whether components are valid, e.g. it'll return hour = 25 if that's what it's given</p>
+<p>Parse an RFC 3339 string into a datetime and a UTC offset in minutes.</p>
+<p>This procedure parses the specified RFC 3339 strings of roughly the following
+format:</p>
+<p><code></code>`text
+YYYY-MM-DD[Tt]HH:mm:ss[.nn][Zz][+-]HH:mm
+<code></code>`</p>
+<p>And returns the datetime, in UTC and the UTC offset, in minutes, that were
+represented by the RFC 3339 string.</p>
+<p><b>Inputs</b>:
+<span class="doc-list"><code>rfc_datetime</code>: The RFC 3339 string to parse.</span></p>
+<p><b>Returns</b>:
+<span class="doc-list"><code>res</code>: The datetime, in UTC, that was parsed from the RFC 3339 string.</span>
+<span class="doc-list"><code>utc_offset</code>: The UTC offset, in minutes, that was parsed from the RFC 3339</span>
+  string.
+<span class="doc-list"><code>is_leap</code>: Specifies whether the moment was a leap second.</span>
+<span class="doc-list"><code>consumed</code>: Number of bytes consumed by parsing the string.</span></p>
+<p>Performs no validation on whether components are valid, e.g. it'll return hour = 25 if that's what it's given</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="rfc3339_to_time_and_offset"><span><a class="doc-id-link" href="#rfc3339_to_time_and_offset">rfc3339_to_time_and_offset<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/rfc3339.odin#L24"><em>Source</em></a></div></h3>
+<h3 id="rfc3339_to_time_and_offset"><span><a class="doc-id-link" href="#rfc3339_to_time_and_offset">rfc3339_to_time_and_offset<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/rfc3339.odin#L70"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">rfc3339_to_time_and_offset :: <span class="keyword-type">proc</span>(rfc_datetime: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>, is_leap: ^<a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> = nil) -> (res: <a class="code-typename" href="/core/time/#Time">Time</a>, utc_offset: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, consumed: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>) {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>Parses an RFC 3339 string and returns Time and a UTC offset in minutes.
-e.g. 1985-04-12T23:20:50.52Z
-Note: Only 4-digit years are accepted.
-Optional pointer to boolean <code>is_leap</code> will return <code>true</code> if the moment was a leap second.
-Leap seconds are smeared into 23:59:59.</p>
+<p>Parse an RFC 3339 string into a time and a UTC offset in minutes.</p>
+<p>This procedure parses the specified RFC 3339 strings of roughly the following
+format:</p>
+<p><code></code>`text
+YYYY-MM-DD[Tt]HH:mm:ss[.nn][Zz][+-]HH:mm
+<code></code>`</p>
+<p>And returns the time, in UTC and a UTC offset, in minutes, that were represented
+by the RFC 3339 string.</p>
+<p><b>Inputs</b>:
+<span class="doc-list"><code>rfc_datetime</code>: The RFC 3339 string to be parsed.</span>
+<span class="doc-list"><code>is_leap</code>: Optional output parameter specifying whether the moment was a</span>
+  leap second.</p>
+<p><b>Returns</b>:
+<span class="doc-list"><code>res</code>: The time, in UTC, that was parsed from the RFC 3339 string.</span>
+<span class="doc-list"><code>utc_offset</code>: The UTC offset, in minutes, that was parsed from the RFC 3339</span>
+  string.
+<span class="doc-list"><code>consumed</code>: The number of bytes consumed by parsing the string.</span></p>
+<p><b>Notes</b>:
+<span class="doc-list">Only 4-digit years are accepted.</span>
+<span class="doc-list">Leap seconds are smeared into 23:59:59.</span></p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="rfc3339_to_time_utc"><span><a class="doc-id-link" href="#rfc3339_to_time_utc">rfc3339_to_time_utc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/rfc3339.odin#L11"><em>Source</em></a></div></h3>
+<h3 id="rfc3339_to_time_utc"><span><a class="doc-id-link" href="#rfc3339_to_time_utc">rfc3339_to_time_utc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/rfc3339.odin#L34"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">rfc3339_to_time_utc :: <span class="keyword-type">proc</span>(rfc_datetime: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>, is_leap: ^<a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> = nil) -> (res: <a class="code-typename" href="/core/time/#Time">Time</a>, consumed: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>) {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>Parses an RFC 3339 string and returns Time in UTC, with any UTC offset applied to it.
-Only 4-digit years are accepted.
-Optional pointer to boolean <code>is_leap</code> will return <code>true</code> if the moment was a leap second.
-Leap seconds are smeared into 23:59:59.</p>
+<p>Parse an RFC 3339 string into time with a UTC offset applied to it.</p>
+<p>This procedure parses the specified RFC 3339 strings of roughly the following
+format:</p>
+<p><code></code>`text
+YYYY-MM-DD[Tt]HH:mm:ss[.nn][Zz][+-]HH:mm
+<code></code>`</p>
+<p>And returns the time that was represented by the RFC 3339 string, with the UTC
+offset applied to it.</p>
+<p><b>Inputs</b>:
+<span class="doc-list"><code>rfc_datetime</code>: An RFC 3339 string to parse.</span>
+<span class="doc-list"><code>is_leap</code>: Optional output parameter specifying whether the moment was a leap</span>
+  second.</p>
+<p><b>Returns</b>:
+<span class="doc-list"><code>res</code>: The time, with UTC offset applied, that was parsed from the RFC 3339</span>
+  string.
+<span class="doc-list"><code>consumed</code>: The number of bytes consumed by parsing the RFC 3339 string.</span></p>
+<p><b>Notes</b>:
+<span class="doc-list">Only 4-digit years are accepted.</span>
+<span class="doc-list">Leap seconds are smeared into 23:59:59.</span></p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="since"><span><a class="doc-id-link" href="#since">since<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L94"><em>Source</em></a></div></h3>
+<h3 id="since"><span><a class="doc-id-link" href="#since">since<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L181"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">since :: <span class="keyword-type">proc</span> "contextless" (start: <a class="code-typename" href="/core/time/#Time">Time</a>) -> <a class="code-typename" href="/core/time/#Duration">Duration</a> {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Calculate the duration elapsed since a specific time.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="sleep"><span><a class="doc-id-link" href="#sleep">sleep<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L59"><em>Source</em></a></div></h3>
+<h3 id="sleep"><span><a class="doc-id-link" href="#sleep">sleep<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L124"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">sleep :: <span class="keyword-type">proc</span> "contextless" (d: <a class="code-typename" href="/core/time/#Duration">Duration</a>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Sleep for the specified duration.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="stopwatch_duration"><span><a class="doc-id-link" href="#stopwatch_duration">stopwatch_duration<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L82"><em>Source</em></a></div></h3>
+<h3 id="stopwatch_duration"><span><a class="doc-id-link" href="#stopwatch_duration">stopwatch_duration<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L163"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">stopwatch_duration :: <span class="keyword-type">proc</span> "contextless" (stopwatch: <a class="code-typename" href="/core/time/#Stopwatch">Stopwatch</a>) -> <a class="code-typename" href="/core/time/#Duration">Duration</a> {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Obtain the total time, counted by the stopwatch.</p>
+<p>This procedure obtains the total time, counted by the stopwatch. If the stopwatch
+isn't stopped at the time of calling this procedure, the time between the last
+start and the current time is also accounted for.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="stopwatch_reset"><span><a class="doc-id-link" href="#stopwatch_reset">stopwatch_reset<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L77"><em>Source</em></a></div></h3>
+<h3 id="stopwatch_reset"><span><a class="doc-id-link" href="#stopwatch_reset">stopwatch_reset<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L151"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">stopwatch_reset :: <span class="keyword-type">proc</span> "contextless" (stopwatch: ^<a class="code-typename" href="/core/time/#Stopwatch">Stopwatch</a>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Reset the stopwatch.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="stopwatch_start"><span><a class="doc-id-link" href="#stopwatch_start">stopwatch_start<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L63"><em>Source</em></a></div></h3>
+<h3 id="stopwatch_start"><span><a class="doc-id-link" href="#stopwatch_start">stopwatch_start<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L131"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">stopwatch_start :: <span class="keyword-type">proc</span> "contextless" (stopwatch: ^<a class="code-typename" href="/core/time/#Stopwatch">Stopwatch</a>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Start the stopwatch.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="stopwatch_stop"><span><a class="doc-id-link" href="#stopwatch_stop">stopwatch_stop<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L70"><em>Source</em></a></div></h3>
+<h3 id="stopwatch_stop"><span><a class="doc-id-link" href="#stopwatch_stop">stopwatch_stop<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L141"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">stopwatch_stop :: <span class="keyword-type">proc</span> "contextless" (stopwatch: ^<a class="code-typename" href="/core/time/#Stopwatch">Stopwatch</a>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Stop the stopwatch.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="tick_diff"><span><a class="doc-id-link" href="#tick_diff">tick_diff<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/perf.odin#L13"><em>Source</em></a></div></h3>
+<h3 id="tick_diff"><span><a class="doc-id-link" href="#tick_diff">tick_diff<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/perf.odin#L23"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">tick_diff :: <span class="keyword-type">proc</span> "contextless" (start, end: <a class="code-typename" href="/core/time/#Tick">Tick</a>) -> <a class="code-typename" href="/core/time/#Duration">Duration</a> {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Obtain the difference between ticks.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="tick_lap_time"><span><a class="doc-id-link" href="#tick_lap_time">tick_lap_time<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/perf.odin#L18"><em>Source</em></a></div></h3>
+<h3 id="tick_lap_time"><span><a class="doc-id-link" href="#tick_lap_time">tick_lap_time<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/perf.odin#L39"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">tick_lap_time :: <span class="keyword-type">proc</span> "contextless" (prev: ^<a class="code-typename" href="/core/time/#Tick">Tick</a>) -> <a class="code-typename" href="/core/time/#Duration">Duration</a> {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Incrementally obtain durations since last tick.</p>
+<p>This procedure returns the duration between the current tick and the tick
+stored in <code>prev</code> pointer, and then stores the current tick in location,
+specified by <code>prev</code>. If the prev pointer contains an zero-initialized tick,
+then the returned duration is 0.</p>
+<p>This procedure is meant to be used in a loop, or in other scenarios, where one
+might want to obtain time between multiple ticks at specific points.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="tick_now"><span><a class="doc-id-link" href="#tick_now">tick_now<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/perf.odin#L9"><em>Source</em></a></div></h3>
+<h3 id="tick_now"><span><a class="doc-id-link" href="#tick_now">tick_now<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/perf.odin#L16"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">tick_now :: <span class="keyword-type">proc</span> "contextless" () -> <a class="code-typename" href="/core/time/#Tick">Tick</a> {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Obtain the current tick.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="tick_since"><span><a class="doc-id-link" href="#tick_since">tick_since<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/perf.odin#L28"><em>Source</em></a></div></h3>
+<h3 id="tick_since"><span><a class="doc-id-link" href="#tick_since">tick_since<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/perf.odin#L52"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">tick_since :: <span class="keyword-type">proc</span> "contextless" (start: <a class="code-typename" href="/core/time/#Tick">Tick</a>) -> <a class="code-typename" href="/core/time/#Duration">Duration</a> {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Obtain the duration since last tick.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="time_add"><span><a class="doc-id-link" href="#time_add">time_add<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L237"><em>Source</em></a></div></h3>
+<h3 id="time_add"><span><a class="doc-id-link" href="#time_add">time_add<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L449"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">time_add :: <span class="keyword-type">proc</span> "contextless" (t: <a class="code-typename" href="/core/time/#Time">Time</a>, d: <a class="code-typename" href="/core/time/#Duration">Duration</a>) -> <a class="code-typename" href="/core/time/#Time">Time</a> {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Add duration to a time.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="time_to_unix"><span><a class="doc-id-link" href="#time_to_unix">time_to_unix<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L228"><em>Source</em></a></div></h3>
+<h3 id="time_to_unix"><span><a class="doc-id-link" href="#time_to_unix">time_to_unix<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L430"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">time_to_unix :: <span class="keyword-type">proc</span> "contextless" (t: <a class="code-typename" href="/core/time/#Time">Time</a>) -> <a href="/base/builtin#i64"><span class="doc-builtin">i64</span></a> {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Obtain the unix seconds from a time.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="time_to_unix_nano"><span><a class="doc-id-link" href="#time_to_unix_nano">time_to_unix_nano<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L233"><em>Source</em></a></div></h3>
+<h3 id="time_to_unix_nano"><span><a class="doc-id-link" href="#time_to_unix_nano">time_to_unix_nano<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L442"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">time_to_unix_nano :: <span class="keyword-type">proc</span> "contextless" (t: <a class="code-typename" href="/core/time/#Time">Time</a>) -> <a href="/base/builtin#i64"><span class="doc-builtin">i64</span></a> {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Obtain the unix nanoseconds from a time.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="to_unix_nanoseconds"><span><a class="doc-id-link" href="#to_unix_nanoseconds">to_unix_nanoseconds<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L233"><em>Source</em></a></div></h3>
+<h3 id="to_unix_nanoseconds"><span><a class="doc-id-link" href="#to_unix_nanoseconds">to_unix_nanoseconds<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L442"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">to_unix_nanoseconds :: <a class="code-procedure" href="/core/time/#time_to_unix_nano">time_to_unix_nano</a></pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Obtain the unix nanoseconds from a time.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="to_unix_seconds"><span><a class="doc-id-link" href="#to_unix_seconds">to_unix_seconds<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L228"><em>Source</em></a></div></h3>
+<h3 id="to_unix_seconds"><span><a class="doc-id-link" href="#to_unix_seconds">to_unix_seconds<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L430"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">to_unix_seconds :: <a class="code-procedure" href="/core/time/#time_to_unix">time_to_unix</a></pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Obtain the unix seconds from a time.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="tsc_frequency"><span><a class="doc-id-link" href="#tsc_frequency">tsc_frequency<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/perf.odin#L73"><em>Source</em></a></div></h3>
+<h3 id="tsc_frequency"><span><a class="doc-id-link" href="#tsc_frequency">tsc_frequency<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/perf.odin#L116"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">tsc_frequency :: <span class="keyword-type">proc</span> "contextless" (fallback_sleep: <a class="code-typename" href="/core/time/#Duration">Duration</a> = 2 * Second) -> (<a href="/base/builtin#u64"><span class="doc-builtin">u64</span></a>, <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Obtain the CPU's TSC frequency, in hertz.</p>
+<p>This procedure tries to obtain the CPU's TSC frequency in hertz. If the CPU
+doesn't have an invariant TSC, this procedure returns with an error. Otherwise
+an attempt is made to fetch the TSC frequency from the OS. If this fails,
+the frequency is obtained by sleeping for the specified amount of time and
+dividing the readings from TSC by the duration of the sleep.</p>
+<p>The duration of sleep can be controlled by <code>fallback_sleep</code> parameter.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="unix"><span><a class="doc-id-link" href="#unix">unix<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L209"><em>Source</em></a></div></h3>
+<h3 id="unix"><span><a class="doc-id-link" href="#unix">unix<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L401"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">unix :: <span class="keyword-type">proc</span> "contextless" (sec: <a href="/base/builtin#i64"><span class="doc-builtin">i64</span></a>, nsec: <a href="/base/builtin#i64"><span class="doc-builtin">i64</span></a>) -> <a class="code-typename" href="/core/time/#Time">Time</a> {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Obtain time from unix seconds and unix nanoseconds.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="weekday"><span><a class="doc-id-link" href="#weekday">weekday<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L176"><em>Source</em></a></div></h3>
+<h3 id="weekday"><span><a class="doc-id-link" href="#weekday">weekday<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L347"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">weekday :: <span class="keyword-type">proc</span> "contextless" (t: <a class="code-typename" href="/core/time/#Time">Time</a>) -> (weekday: <a class="code-typename" href="/core/time/#Weekday">Weekday</a>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Obtain the week day of the date specified by time.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="year"><span><a class="doc-id-link" href="#year">year<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L161"><em>Source</em></a></div></h3>
+<h3 id="year"><span><a class="doc-id-link" href="#year">year<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L323"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">year :: <span class="keyword-type">proc</span> "contextless" (t: <a class="code-typename" href="/core/time/#Time">Time</a>) -> (year: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Obtain the year of the date specified by time.</p>
+</details>
 </div>
 <h2 id="pkg-Procedure Groups" class="pkg-header">Procedure Groups</h2>
 <div class="pkg-entity">
-<h3 id="clock"><span><a class="doc-id-link" href="#clock">clock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L182"><em>Source</em></a></div></h3>
+<h3 id="clock"><span><a class="doc-id-link" href="#clock">clock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L356"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">clock :: <span class="keyword-type">proc</span>{
 	<a class="code-procedure" href="/core/time/#clock_from_time">clock_from_time</a>,
@@ -1174,9 +1614,13 @@ Leap seconds are smeared into 23:59:59.</p>
 }
 </pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Obtain the time components from a time, a duration or a stopwatch's total.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="datetime_to_time"><span><a class="doc-id-link" href="#datetime_to_time">datetime_to_time<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L390"><em>Source</em></a></div></h3>
+<h3 id="datetime_to_time"><span><a class="doc-id-link" href="#datetime_to_time">datetime_to_time<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/time.odin#L626"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">datetime_to_time :: <span class="keyword-type">proc</span>{
 	<a class="code-procedure" href="/core/time/#components_to_time">components_to_time</a>,
@@ -1184,6 +1628,10 @@ Leap seconds are smeared into 23:59:59.</p>
 }
 </pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Convert datetime components into time.</p>
+</details>
 </div>
 </section>
 <h2 id="pkg-source-files">Source Files</h2>
@@ -1195,7 +1643,7 @@ Leap seconds are smeared into 23:59:59.</p>
 <li><em>(hidden platform specific files)</em></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2024-07 (vendor "odin") Windows_amd64 @ 2024-07-19 21:10:10.543204500 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2024-07 (vendor "odin") Windows_amd64 @ 2024-07-20 21:10:10.639245400 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
