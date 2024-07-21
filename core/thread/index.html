@@ -481,42 +481,54 @@ pool's memory address is not allowed to change until it is destroyed.</p>
 </ul>
 </div>
 <div class="pkg-entity">
-<h3 id="Thread"><span><a class="doc-id-link" href="#Thread">Thread<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L22"><em>Source</em></a></div></h3>
+<h3 id="Thread"><span><a class="doc-id-link" href="#Thread">Thread<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L39"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Thread :: <span class="keyword-type">struct</span> {
 	<span class="keyword-type">using</span> specific:     Thread_Os_Specific,
 	flags:              <span class="keyword-type">bit_set</span>[<a class="code-typename" href="/core/thread/#Thread_State">Thread_State</a>; <a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a>],
+	<span class="comment">// Thread ID.</span>
 	id:                 <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>,
+	<span class="comment">// The thread procedure.</span>
 	procedure:          <a class="code-typename" href="/core/thread/#Thread_Proc">Thread_Proc</a>,
-	<span class="comment">// 		These are values that the user can set as they wish, after the thread has been created.</span>
-	<span class="comment">// 		This data is easily available to the thread proc.</span>
-	<span class="comment">// </span>
-	<span class="comment">// 		These fields can be assigned to directly.</span>
-	<span class="comment">// </span>
-	<span class="comment">// 		Should be set after the thread is created, but before it is started.</span>
+	<span class="comment">// User-supplied pointer, that will be available to the thread once it is</span>
+	<span class="comment">// started. Should be set after the thread has been created, but before</span>
+	<span class="comment">// it is started.</span>
 	data:               <a href="/base/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>,
+	<span class="comment">// User-supplied integer, that will be available to the thread once it is</span>
+	<span class="comment">// started. Should be set after the thread has been created, but before</span>
+	<span class="comment">// it is started.</span>
 	user_index:         <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>,
+	<span class="comment">// User-supplied array of arguments, that will be available to the thread,</span>
+	<span class="comment">// once it is started. Should be set after the thread has been created,</span>
+	<span class="comment">// but before it is started.</span>
 	user_args:          [8]<a href="/base/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>,
-	<span class="comment">// 		The context to be used as 'context' in the thread proc.</span>
+	<span class="comment">// The thread context.</span>
+	<span class="comment">// This field can be assigned to directly, after the thread has been</span>
+	<span class="comment">// created, but __before__ the thread has been started. This field must</span>
+	<span class="comment">// not be changed after the thread has started.</span>
 	<span class="comment">// </span>
-	<span class="comment">// 		This field can be assigned to directly, after the thread has been created, but __before__ the thread has been started.</span>
-	<span class="comment">// 		This field must not be changed after the thread has started.</span>
+	<span class="comment">// **Note**: If this field is **not** set, the temp allocator will be managed</span>
+	<span class="comment">// automatically. If it is set, the allocators must be handled manually.</span>
 	<span class="comment">// </span>
-	<span class="comment">// 		NOTE: If you __don't__ set this, the temp allocator will be managed for you;</span>
-	<span class="comment">// 		      If you __do__ set this, then you're expected to handle whatever allocators you set, yourself.</span>
+	<span class="comment">// **IMPORTANT**:</span>
+	<span class="comment">// By default, the thread proc will get the same context as `main()` gets.</span>
+	<span class="comment">// In this situation, the thread will get a new temporary allocator which</span>
+	<span class="comment">// will be cleaned up when the thread dies. ***This does NOT happen when</span>
+	<span class="comment">// `init_context` field is initialized***.</span>
 	<span class="comment">// </span>
-	<span class="comment">// 		IMPORTANT:</span>
-	<span class="comment">// 		By default, the thread proc will get the same context as `main()` gets.</span>
-	<span class="comment">// 		In this situation, the thread will get a new temporary allocator which will be cleaned up when the thread dies.</span>
-	<span class="comment">// 		***This does NOT happen when you set `init_context`.***</span>
-	<span class="comment">// 		This means that if you set `init_context`, but still have the `temp_allocator` field set to the default temp allocator,</span>
-	<span class="comment">// 		then you'll need to call `runtime.default_temp_allocator_destroy(auto_cast the_thread.init_context.temp_allocator.data)` manually,</span>
-	<span class="comment">// 		in order to prevent any memory leaks.</span>
-	<span class="comment">// 		This call ***must*** be done ***in the thread proc*** because the default temporary allocator uses thread local state!</span>
+	<span class="comment">// If `init_context` is initialized, and `temp_allocator` field is set to</span>
+	<span class="comment">// the default temp allocator, then `runtime.default_temp_allocator_destroy()`</span>
+	<span class="comment">// procedure needs to be called from the thread procedure, in order to prevent</span>
+	<span class="comment">// any memory leaks.</span>
 	init_context:       runtime.<a class="code-typename" href="/base/runtime/#Maybe">Maybe</a>($T),
+	<span class="comment">// The allocator used to allocate data for the thread.</span>
 	creation_allocator: runtime.<a class="code-typename" href="/base/runtime/#Allocator">Allocator</a>,
 }</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Type representing a thread handle and the associated with that thread data.</p>
+</details>
 <h5>Related Procedures With Parameters</h5>
 <ul>
 <li><a href="/core/thread/#destroy">destroy</a></li>
@@ -537,7 +549,7 @@ pool's memory address is not allowed to change until it is destroyed.</p>
 </ul>
 </div>
 <div class="pkg-entity">
-<h3 id="Thread_Priority"><span><a class="doc-id-link" href="#Thread_Priority">Thread_Priority<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L67"><em>Source</em></a></div></h3>
+<h3 id="Thread_Priority"><span><a class="doc-id-link" href="#Thread_Priority">Thread_Priority<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L88"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Thread_Priority :: <span class="keyword-type">enum</span> <a href="/base/builtin#int"><span class="doc-builtin">int</span></a> {
 	Normal, 
@@ -545,6 +557,10 @@ pool's memory address is not allowed to change until it is destroyed.</p>
 	High, 
 }</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Type representing priority of a thread.</p>
+</details>
 <h5>Related Procedures With Parameters</h5>
 <ul>
 <li><a href="/core/thread/#create">create</a></li>
@@ -563,17 +579,22 @@ pool's memory address is not allowed to change until it is destroyed.</p>
 </ul>
 </div>
 <div class="pkg-entity">
-<h3 id="Thread_Proc"><span><a class="doc-id-link" href="#Thread_Proc">Thread_Proc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L11"><em>Source</em></a></div></h3>
+<h3 id="Thread_Proc"><span><a class="doc-id-link" href="#Thread_Proc">Thread_Proc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L19"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Thread_Proc :: <span class="keyword-type">proc</span>(_: ^<a class="code-typename" href="/core/thread/#Thread">Thread</a>)</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Type for a procedure that will be run in a thread, after that thread has been
+started.</p>
+</details>
 <h5>Related Procedures With Parameters</h5>
 <ul>
 <li><a href="/core/thread/#create">create</a></li>
 </ul>
 </div>
 <div class="pkg-entity">
-<h3 id="Thread_State"><span><a class="doc-id-link" href="#Thread_State">Thread_State<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L15"><em>Source</em></a></div></h3>
+<h3 id="Thread_State"><span><a class="doc-id-link" href="#Thread_State">Thread_State<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L29"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Thread_State :: <span class="keyword-type">enum</span> <a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a> {
 	Started, 
@@ -582,57 +603,113 @@ pool's memory address is not allowed to change until it is destroyed.</p>
 	Self_Cleanup, 
 }</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Type representing the state/flags of the thread.</p>
+</details>
 </div>
 <h2 id="pkg-Constants" class="pkg-header">Constants</h2>
 <div class="pkg-entity">
-<h3 id="IS_SUPPORTED"><span><a class="doc-id-link" href="#IS_SUPPORTED">IS_SUPPORTED<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L9"><em>Source</em></a></div></h3>
+<h3 id="IS_SUPPORTED"><span><a class="doc-id-link" href="#IS_SUPPORTED">IS_SUPPORTED<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L13"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">IS_SUPPORTED :: _IS_SUPPORTED</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Value, specifying whether <code>core:thread</code> functionality is available on the
+current platform.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="MAX_USER_ARGUMENTS"><span><a class="doc-id-link" href="#MAX_USER_ARGUMENTS">MAX_USER_ARGUMENTS<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L13"><em>Source</em></a></div></h3>
+<h3 id="MAX_USER_ARGUMENTS"><span><a class="doc-id-link" href="#MAX_USER_ARGUMENTS">MAX_USER_ARGUMENTS<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L24"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">MAX_USER_ARGUMENTS :: 8</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Maximum number of user arguments for polymorphic thread procedures.</p>
+</details>
 </div>
 <h2 id="pkg-Variables" class="pkg-header">Variables</h2>
 <p class="pkg-empty-section">This section is empty.</p>
 <h2 id="pkg-Procedures" class="pkg-header">Procedures</h2>
 <div class="pkg-entity">
-<h3 id="create"><span><a class="doc-id-link" href="#create">create<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L79"><em>Source</em></a></div></h3>
+<h3 id="create"><span><a class="doc-id-link" href="#create">create<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L104"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">create :: <span class="keyword-type">proc</span>(procedure: <a class="code-typename" href="/core/thread/#Thread_Proc">Thread_Proc</a>, priority: <a class="code-typename" href="/core/thread/#Thread_Priority">Thread_Priority</a> = Thread_Priority.Normal) -> ^<a class="code-typename" href="/core/thread/#Thread">Thread</a> {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>Creates a thread in a suspended state with the given priority.</p>
-<pre>To start the thread, call `thread.start()`.
-
-See `thread.create_and_start()`.
-</pre>
+<p>Create a thread in a suspended state with the given priority.</p>
+<p>This procedure creates a thread that will be set to run the procedure
+specified by <code>procedure</code> parameter with a specified priority. The returned
+thread will be in a suspended state, until <code>start()</code> procedure is called.</p>
+<p>To start the thread, call <code>start()</code>. Also the <code>create_and_start()</code>
+procedure can be called to create and start the thread immediately.</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="create_and_start"><span><a class="doc-id-link" href="#create_and_start">create_and_start<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L142"><em>Source</em></a></div></h3>
+<h3 id="create_and_start"><span><a class="doc-id-link" href="#create_and_start">create_and_start<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L267"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">create_and_start :: <span class="keyword-type">proc</span>(fn: <span class="keyword-type">proc</span>(), init_context: runtime.<a class="code-typename" href="/base/runtime/#Maybe">Maybe</a>($T) = nil, priority: <a class="code-typename" href="/core/thread/#Thread_Priority">Thread_Priority</a> = Thread_Priority.Normal, self_cleanup: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> = false) -> ^<a class="code-typename" href="/core/thread/#Thread">Thread</a> {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Run a procedure on a different thread.</p>
+<p>This procedure runs the given procedure on another thread. The context
+specified by <code>init_context</code> will be used as the context in which <code>fn</code> is going
+to execute. The thread will have priority specified by the <code>priority</code> parameter.</p>
+<p>If <code>self_cleanup</code> is specified, after the thread finishes the execution of the
+<code>fn</code> procedure, the resources associated with the thread are going to be
+automatically freed. <b>Do not</b> dereference the <code>^Thread</code> pointer, if this
+flag is specified.</p>
+<p><b>IMPORTANT</b>: If <code>init_context</code> is specified and the default temporary allocator
+is used, the thread procedure needs to call <code>runtime.default_temp_allocator_destroy()</code>
+in order to free the resources associated with the temporary allocations.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="create_and_start_with_data"><span><a class="doc-id-link" href="#create_and_start_with_data">create_and_start_with_data<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L160"><em>Source</em></a></div></h3>
+<h3 id="create_and_start_with_data"><span><a class="doc-id-link" href="#create_and_start_with_data">create_and_start_with_data<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L298"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">create_and_start_with_data :: <span class="keyword-type">proc</span>(data: <a href="/base/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>, fn: <span class="keyword-type">proc</span>(data: <a href="/base/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>), init_context: runtime.<a class="code-typename" href="/base/runtime/#Maybe">Maybe</a>($T) = nil, priority: <a class="code-typename" href="/core/thread/#Thread_Priority">Thread_Priority</a> = Thread_Priority.Normal, self_cleanup: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> = false) -> ^<a class="code-typename" href="/core/thread/#Thread">Thread</a> {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Run a procedure with one pointer parameter on a different thread.</p>
+<p>This procedure runs the given procedure on another thread. The context
+specified by <code>init_context</code> will be used as the context in which <code>fn</code> is going
+to execute. The thread will have priority specified by the <code>priority</code> parameter.</p>
+<p>If <code>self_cleanup</code> is specified, after the thread finishes the execution of the
+<code>fn</code> procedure, the resources associated with the thread are going to be
+automatically freed. <b>Do not</b> dereference the <code>^Thread</code> pointer, if this
+flag is specified.</p>
+<p><b>IMPORTANT</b>: If <code>init_context</code> is specified and the default temporary allocator
+is used, the thread procedure needs to call <code>runtime.default_temp_allocator_destroy()</code>
+in order to free the resources associated with the temporary allocations.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="create_and_start_with_poly_data"><span><a class="doc-id-link" href="#create_and_start_with_poly_data">create_and_start_with_poly_data<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L179"><em>Source</em></a></div></h3>
+<h3 id="create_and_start_with_poly_data"><span><a class="doc-id-link" href="#create_and_start_with_poly_data">create_and_start_with_poly_data<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L333"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">create_and_start_with_poly_data :: <span class="keyword-type">proc</span>(data: $T, fn: <span class="keyword-type">proc</span>(data: ), init_context: runtime.<a class="code-typename" href="/base/runtime/#Maybe">Maybe</a>($T) = nil, priority: <a class="code-typename" href="/core/thread/#Thread_Priority">Thread_Priority</a> = Thread_Priority.Normal, self_cleanup: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> = false) -> ^<a class="code-typename" href="/core/thread/#Thread">Thread</a> {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Run a procedure with one polymorphic parameter on a different thread.</p>
+<p>This procedure runs the given procedure on another thread. The context
+specified by <code>init_context</code> will be used as the context in which <code>fn</code> is going
+to execute. The thread will have priority specified by the <code>priority</code> parameter.</p>
+<p>If <code>self_cleanup</code> is specified, after the thread finishes the execution of the
+<code>fn</code> procedure, the resources associated with the thread are going to be
+automatically freed. <b>Do not</b> dereference the <code>^Thread</code> pointer, if this
+flag is specified.</p>
+<p><b>IMPORTANT</b>: If <code>init_context</code> is specified and the default temporary allocator
+is used, the thread procedure needs to call <code>runtime.default_temp_allocator_destroy()</code>
+in order to free the resources associated with the temporary allocations.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="create_and_start_with_poly_data2"><span><a class="doc-id-link" href="#create_and_start_with_poly_data2">create_and_start_with_poly_data2<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L204"><em>Source</em></a></div></h3>
+<h3 id="create_and_start_with_poly_data2"><span><a class="doc-id-link" href="#create_and_start_with_poly_data2">create_and_start_with_poly_data2<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L374"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">create_and_start_with_poly_data2 :: <span class="keyword-type">proc</span>(
 	arg1:         $T, 
@@ -643,9 +720,23 @@ See `thread.create_and_start()`.
 	self_cleanup: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> = false, 
 ) -> ^<a class="code-typename" href="/core/thread/#Thread">Thread</a> {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Run a procedure with two polymorphic parameters on a different thread.</p>
+<p>This procedure runs the given procedure on another thread. The context
+specified by <code>init_context</code> will be used as the context in which <code>fn</code> is going
+to execute. The thread will have priority specified by the <code>priority</code> parameter.</p>
+<p>If <code>self_cleanup</code> is specified, after the thread finishes the execution of the
+<code>fn</code> procedure, the resources associated with the thread are going to be
+automatically freed. <b>Do not</b> dereference the <code>^Thread</code> pointer, if this
+flag is specified.</p>
+<p><b>IMPORTANT</b>: If <code>init_context</code> is specified and the default temporary allocator
+is used, the thread procedure needs to call <code>runtime.default_temp_allocator_destroy()</code>
+in order to free the resources associated with the temporary allocations.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="create_and_start_with_poly_data3"><span><a class="doc-id-link" href="#create_and_start_with_poly_data3">create_and_start_with_poly_data3<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L235"><em>Source</em></a></div></h3>
+<h3 id="create_and_start_with_poly_data3"><span><a class="doc-id-link" href="#create_and_start_with_poly_data3">create_and_start_with_poly_data3<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L421"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">create_and_start_with_poly_data3 :: <span class="keyword-type">proc</span>(
 	arg1:         $T, 
@@ -657,9 +748,23 @@ See `thread.create_and_start()`.
 	self_cleanup: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> = false, 
 ) -> ^<a class="code-typename" href="/core/thread/#Thread">Thread</a> {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Run a procedure with three polymorphic parameters on a different thread.</p>
+<p>This procedure runs the given procedure on another thread. The context
+specified by <code>init_context</code> will be used as the context in which <code>fn</code> is going
+to execute. The thread will have priority specified by the <code>priority</code> parameter.</p>
+<p>If <code>self_cleanup</code> is specified, after the thread finishes the execution of the
+<code>fn</code> procedure, the resources associated with the thread are going to be
+automatically freed. <b>Do not</b> dereference the <code>^Thread</code> pointer, if this
+flag is specified.</p>
+<p><b>IMPORTANT</b>: If <code>init_context</code> is specified and the default temporary allocator
+is used, the thread procedure needs to call <code>runtime.default_temp_allocator_destroy()</code>
+in order to free the resources associated with the temporary allocations.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="create_and_start_with_poly_data4"><span><a class="doc-id-link" href="#create_and_start_with_poly_data4">create_and_start_with_poly_data4<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L267"><em>Source</em></a></div></h3>
+<h3 id="create_and_start_with_poly_data4"><span><a class="doc-id-link" href="#create_and_start_with_poly_data4">create_and_start_with_poly_data4<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L470"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">create_and_start_with_poly_data4 :: <span class="keyword-type">proc</span>(
 	arg1:         $T, 
@@ -672,30 +777,60 @@ See `thread.create_and_start()`.
 	self_cleanup: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> = false, 
 ) -> ^<a class="code-typename" href="/core/thread/#Thread">Thread</a> {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Run a procedure with four polymorphic parameters on a different thread.</p>
+<p>This procedure runs the given procedure on another thread. The context
+specified by <code>init_context</code> will be used as the context in which <code>fn</code> is going
+to execute. The thread will have priority specified by the <code>priority</code> parameter.</p>
+<p>If <code>self_cleanup</code> is specified, after the thread finishes the execution of the
+<code>fn</code> procedure, the resources associated with the thread are going to be
+automatically freed. <b>Do not</b> dereference the <code>^Thread</code> pointer, if this
+flag is specified.</p>
+<p><b>IMPORTANT</b>: If <code>init_context</code> is specified and the default temporary allocator
+is used, the thread procedure needs to call <code>runtime.default_temp_allocator_destroy()</code>
+in order to free the resources associated with the temporary allocations.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="destroy"><span><a class="doc-id-link" href="#destroy">destroy<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L82"><em>Source</em></a></div></h3>
+<h3 id="destroy"><span><a class="doc-id-link" href="#destroy">destroy<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L111"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">destroy :: <span class="keyword-type">proc</span>(thread: ^<a class="code-typename" href="/core/thread/#Thread">Thread</a>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Wait for the thread to finish and free all data associated with it.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="is_done"><span><a class="doc-id-link" href="#is_done">is_done<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L90"><em>Source</em></a></div></h3>
+<h3 id="is_done"><span><a class="doc-id-link" href="#is_done">is_done<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L125"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">is_done :: <span class="keyword-type">proc</span>(thread: ^<a class="code-typename" href="/core/thread/#Thread">Thread</a>) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Check if the thread has finished work.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="join"><span><a class="doc-id-link" href="#join">join<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L95"><em>Source</em></a></div></h3>
+<h3 id="join"><span><a class="doc-id-link" href="#join">join<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L132"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">join :: <span class="keyword-type">proc</span>(thread: ^<a class="code-typename" href="/core/thread/#Thread">Thread</a>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Wait for the thread to finish work.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="join_multiple"><span><a class="doc-id-link" href="#join_multiple">join_multiple<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L100"><em>Source</em></a></div></h3>
+<h3 id="join_multiple"><span><a class="doc-id-link" href="#join_multiple">join_multiple<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L139"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">join_multiple :: <span class="keyword-type">proc</span>(<span class="keyword-type">..</span> threads: ..^<a class="code-typename" href="/core/thread/#Thread">Thread</a>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Wait for all threads to finish work.</p>
+</details>
 </div>
 <div class="pkg-entity">
 <h3 id="pool_add_task"><span><a class="doc-id-link" href="#pool_add_task">pool_add_task<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread_pool.odin#L142"><em>Source</em></a></div></h3>
@@ -889,31 +1024,71 @@ resources unclaimed.</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="run"><span><a class="doc-id-link" href="#run">run<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L114"><em>Source</em></a></div></h3>
+<h3 id="run"><span><a class="doc-id-link" href="#run">run<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L168"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">run :: <span class="keyword-type">proc</span>(fn: <span class="keyword-type">proc</span>(), init_context: runtime.<a class="code-typename" href="/base/runtime/#Maybe">Maybe</a>($T) = nil, priority: <a class="code-typename" href="/core/thread/#Thread_Priority">Thread_Priority</a> = Thread_Priority.Normal) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Run a procedure on a different thread.</p>
+<p>This procedure runs the given procedure on another thread. The context
+specified by <code>init_context</code> will be used as the context in which <code>fn</code> is going
+to execute. The thread will have priority specified by the <code>priority</code> parameter.</p>
+<p><b>IMPORTANT</b>: If <code>init_context</code> is specified and the default temporary allocator
+is used, the thread procedure needs to call <code>runtime.default_temp_allocator_destroy()</code>
+in order to free the resources associated with the temporary allocations.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="run_with_data"><span><a class="doc-id-link" href="#run_with_data">run_with_data<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L118"><em>Source</em></a></div></h3>
+<h3 id="run_with_data"><span><a class="doc-id-link" href="#run_with_data">run_with_data<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L183"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">run_with_data :: <span class="keyword-type">proc</span>(data: <a href="/base/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>, fn: <span class="keyword-type">proc</span>(data: <a href="/base/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>), init_context: runtime.<a class="code-typename" href="/base/runtime/#Maybe">Maybe</a>($T) = nil, priority: <a class="code-typename" href="/core/thread/#Thread_Priority">Thread_Priority</a> = Thread_Priority.Normal) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Run a procedure with one pointer parameter on a different thread.</p>
+<p>This procedure runs the given procedure on another thread. The context
+specified by <code>init_context</code> will be used as the context in which <code>fn</code> is going
+to execute. The thread will have priority specified by the <code>priority</code> parameter.</p>
+<p><b>IMPORTANT</b>: If <code>init_context</code> is specified and the default temporary allocator
+is used, the thread procedure needs to call <code>runtime.default_temp_allocator_destroy()</code>
+in order to free the resources associated with the temporary allocations.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="run_with_poly_data"><span><a class="doc-id-link" href="#run_with_poly_data">run_with_poly_data<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L122"><em>Source</em></a></div></h3>
+<h3 id="run_with_poly_data"><span><a class="doc-id-link" href="#run_with_poly_data">run_with_poly_data<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L198"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">run_with_poly_data :: <span class="keyword-type">proc</span>(data: $T, fn: <span class="keyword-type">proc</span>(data: ), init_context: runtime.<a class="code-typename" href="/base/runtime/#Maybe">Maybe</a>($T) = nil, priority: <a class="code-typename" href="/core/thread/#Thread_Priority">Thread_Priority</a> = Thread_Priority.Normal) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Run a procedure with one polymorphic parameter on a different thread.</p>
+<p>This procedure runs the given procedure on another thread. The context
+specified by <code>init_context</code> will be used as the context in which <code>fn</code> is going
+to execute. The thread will have priority specified by the <code>priority</code> parameter.</p>
+<p><b>IMPORTANT</b>: If <code>init_context</code> is specified and the default temporary allocator
+is used, the thread procedure needs to call <code>runtime.default_temp_allocator_destroy()</code>
+in order to free the resources associated with the temporary allocations.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="run_with_poly_data2"><span><a class="doc-id-link" href="#run_with_poly_data2">run_with_poly_data2<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L127"><em>Source</em></a></div></h3>
+<h3 id="run_with_poly_data2"><span><a class="doc-id-link" href="#run_with_poly_data2">run_with_poly_data2<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L214"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">run_with_poly_data2 :: <span class="keyword-type">proc</span>(arg1: $T, arg2: $T, fn: <span class="keyword-type">proc</span>(_: , _: ), init_context: runtime.<a class="code-typename" href="/base/runtime/#Maybe">Maybe</a>($T) = nil, priority: <a class="code-typename" href="/core/thread/#Thread_Priority">Thread_Priority</a> = Thread_Priority.Normal) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Run a procedure with two polymorphic parameters on a different thread.</p>
+<p>This procedure runs the given procedure on another thread. The context
+specified by <code>init_context</code> will be used as the context in which <code>fn</code> is going
+to execute. The thread will have priority specified by the <code>priority</code> parameter.</p>
+<p><b>IMPORTANT</b>: If <code>init_context</code> is specified and the default temporary allocator
+is used, the thread procedure needs to call <code>runtime.default_temp_allocator_destroy()</code>
+in order to free the resources associated with the temporary allocations.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="run_with_poly_data3"><span><a class="doc-id-link" href="#run_with_poly_data3">run_with_poly_data3<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L132"><em>Source</em></a></div></h3>
+<h3 id="run_with_poly_data3"><span><a class="doc-id-link" href="#run_with_poly_data3">run_with_poly_data3<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L230"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">run_with_poly_data3 :: <span class="keyword-type">proc</span>(
 	arg1:         $T, 
@@ -924,9 +1099,19 @@ resources unclaimed.</p>
 	priority:     <a class="code-typename" href="/core/thread/#Thread_Priority">Thread_Priority</a> = Thread_Priority.Normal, 
 ) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Run a procedure with three polymorphic parameters on a different thread.</p>
+<p>This procedure runs the given procedure on another thread. The context
+specified by <code>init_context</code> will be used as the context in which <code>fn</code> is going
+to execute. The thread will have priority specified by the <code>priority</code> parameter.</p>
+<p><b>IMPORTANT</b>: If <code>init_context</code> is specified and the default temporary allocator
+is used, the thread procedure needs to call <code>runtime.default_temp_allocator_destroy()</code>
+in order to free the resources associated with the temporary allocations.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="run_with_poly_data4"><span><a class="doc-id-link" href="#run_with_poly_data4">run_with_poly_data4<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L136"><em>Source</em></a></div></h3>
+<h3 id="run_with_poly_data4"><span><a class="doc-id-link" href="#run_with_poly_data4">run_with_poly_data4<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L246"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">run_with_poly_data4 :: <span class="keyword-type">proc</span>(
 	arg1:         $T, 
@@ -938,24 +1123,46 @@ resources unclaimed.</p>
 	priority:     <a class="code-typename" href="/core/thread/#Thread_Priority">Thread_Priority</a> = Thread_Priority.Normal, 
 ) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Run a procedure with four polymorphic parameters on a different thread.</p>
+<p>This procedure runs the given procedure on another thread. The context
+specified by <code>init_context</code> will be used as the context in which <code>fn</code> is going
+to execute. The thread will have priority specified by the <code>priority</code> parameter.</p>
+<p><b>IMPORTANT</b>: If <code>init_context</code> is specified and the default temporary allocator
+is used, the thread procedure needs to call <code>runtime.default_temp_allocator_destroy()</code>
+in order to free the resources associated with the temporary allocations.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="start"><span><a class="doc-id-link" href="#start">start<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L86"><em>Source</em></a></div></h3>
+<h3 id="start"><span><a class="doc-id-link" href="#start">start<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L118"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">start :: <span class="keyword-type">proc</span>(thread: ^<a class="code-typename" href="/core/thread/#Thread">Thread</a>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Start a suspended thread.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="terminate"><span><a class="doc-id-link" href="#terminate">terminate<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L104"><em>Source</em></a></div></h3>
+<h3 id="terminate"><span><a class="doc-id-link" href="#terminate">terminate<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L146"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">terminate :: <span class="keyword-type">proc</span>(thread: ^<a class="code-typename" href="/core/thread/#Thread">Thread</a>, exit_code: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Forcibly terminate a running thread.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="yield"><span><a class="doc-id-link" href="#yield">yield<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L108"><em>Source</em></a></div></h3>
+<h3 id="yield"><span><a class="doc-id-link" href="#yield">yield<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/thread/thread.odin#L153"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">yield :: <span class="keyword-type">proc</span>() {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Yield the execution of the current thread to another OS thread or process.</p>
+</details>
 </div>
 <h2 id="pkg-Procedure Groups" class="pkg-header">Procedure Groups</h2>
 <p class="pkg-empty-section">This section is empty.</p>
@@ -967,7 +1174,7 @@ resources unclaimed.</p>
 <li><em>(hidden platform specific files)</em></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2024-07 (vendor "odin") Windows_amd64 @ 2024-07-20 21:10:10.636704200 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2024-07 (vendor "odin") Windows_amd64 @ 2024-07-21 21:09:04.968338000 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
