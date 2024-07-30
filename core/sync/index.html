@@ -303,6 +303,22 @@
 </div>
 <ul id="odin-search-results"></ul>
 <div id="pkg-top">
+<h2>Overview</h2>
+<div id="pkg-overview">
+<p>Synchronization primitives</p>
+<p>This package implements various synchronization primitives that can be used to
+synchronize threads' access to shared memory.</p>
+<p>To limit or control the threads' access to shared memory typically the
+following approaches are used:</p>
+<p>Locks
+Lock-free</p>
+<p>When using locks, sections of the code that access shared memory (also known as
+<b>critical sections</b>) are guarded by locks, allowing limited access to threads
+and blocking the execution of any other threads.</p>
+<p>In lock-free programming the data itself is organized in such a way that threads
+don't intervene much. It can be done via segmenting the data between threads,
+and/or by using atomic operations.</p>
+</div>
 <div id="pkg-index">
 <h2>Index</h2>
 <div>
@@ -521,21 +537,66 @@ waiting for signalling the occurence of an event</p>
 </ul>
 </div>
 <div class="pkg-entity">
-<h3 id="Atomic_Memory_Order"><span><a class="doc-id-link" href="#Atomic_Memory_Order">Atomic_Memory_Order<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/atomic.odin#L17"><em>Source</em></a></div></h3>
+<h3 id="Atomic_Memory_Order"><span><a class="doc-id-link" href="#Atomic_Memory_Order">Atomic_Memory_Order<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/atomic.odin#L73"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Atomic_Memory_Order :: .<a class="code-typename" href="//#Atomic_Memory_Order">Atomic_Memory_Order</a></pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>Atomic_Memory_Order :: enum {</p>
-<pre>Relaxed = 0, // Unordered
-Consume = 1, // Monotonic
-Acquire = 2,
-Release = 3,
-Acq_Rel = 4,
-Seq_Cst = 5,
+<p>Describes memory ordering for an atomic operation.</p>
+<p>Modern CPU's contain multiple cores and caches specific to those cores. When a
+core performs a write to memory, the value is written to cache first. The issue
+is that a core doesn't typically see what's inside the caches of other cores.
+In order to make operations consistent CPU's implement mechanisms that
+synchronize memory operations across cores by asking other cores or by
+pushing data about writes to other cores.</p>
+<p>Due to how these algorithms are implemented, the stores and loads performed by
+one core may seem to happen in a different order to another core. It also may
+happen that a core reorders stores and loads (independent of how compiler put
+them into the machine code). This can cause issues when trying to synchronize
+multiple memory locations between two cores. Which is why CPU's allow for
+stronger memory ordering guarantees if certain instructions or instruction
+variants are used.</p>
+<p>In Odin there are 5 different memory ordering guaranties that can be provided
+to an atomic operation:</p>
+<p><span class="doc-list"><code>Relaxed</code>: The memory access (load or store) is unordered with respect to</span>
+  other memory accesses. This can be used to implement an atomic counter.
+  Multiple threads access a single variable, but it doesn't matter when
+  exactly it gets incremented, because it will become eventually consistent.
+<span class="doc-list"><code>Consume</code>: No loads or stores dependent on a memory location can be</span>
+  reordered before a load with consume memory order. If other threads released
+  the same memory, it becomes visible.
+<span class="doc-list"><code>Acquire</code>: No loads or stores on a memory location can be reordered before a</span>
+  load of that memory location with acquire memory ordering. If other threads
+  release the same memory, it becomes visible.
+<span class="doc-list"><code>Release</code>: No loads or stores on a memory location can be reordered after a</span>
+  store of that memory location with release memory ordering. All threads that
+  acquire the same memory location will see all writes done by the current
+  thread.
+<span class="doc-list"><code>Acq_Rel</code>: Acquire-release memory ordering: combines acquire and release</span>
+  memory orderings in the same operation.
+<span class="doc-list"><code>Seq_Cst</code>: Sequential consistency. The strongest memory ordering. A load will</span>
+  always be an acquire operation, a store will always be a release operation,
+  and in addition to that all threads observe the same order of writes.</p>
+<p>Non-explicit atomics will always be sequentially consistent.</p>
+<pre>Atomic_Memory_Order :: enum {
+	Relaxed = 0, // Unordered
+	Consume = 1, // Monotonic
+	Acquire = 2,
+	Release = 3,
+	Acq_Rel = 4,
+	Seq_Cst = 5,
+}
+
 </pre>
-<p>}</p>
+<p><b>Note(i386, x64)</b>: x86 has a very strong memory model by default. It
+guarantees that all writes are ordered, stores and loads aren't reordered. In
+a sense, all operations are at least acquire and release operations. If <code>lock</code>
+prefix is used, all operations are sequentially consistent. If you use explicit
+atomics, make sure you have the correct atomic memory order, because bugs likely
+will not show up in x86, but may show up on e.g. arm. More on x86 memory
+ordering can be found
+<a href="https://www.cs.cmu.edu/~410-f10/doc/Intel_Reordering_318147.pdf">here</a></p>
 </details>
 </div>
 <div class="pkg-entity">
@@ -678,16 +739,26 @@ Posting to the semaphore increases the count by one, or the provided amount.</p>
 </ul>
 </div>
 <div class="pkg-entity">
-<h3 id="Auto_Reset_Event"><span><a class="doc-id-link" href="#Auto_Reset_Event">Auto_Reset_Event<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L144"><em>Source</em></a></div></h3>
+<h3 id="Auto_Reset_Event"><span><a class="doc-id-link" href="#Auto_Reset_Event">Auto_Reset_Event<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L215"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Auto_Reset_Event :: <span class="keyword-type">struct</span> {
 	<span class="comment">// status ==  0: Event is reset and no threads are waiting</span>
-	<span class="comment">// status ==  1: Event is signaled</span>
+	<span class="comment">// status ==  1: Event is signalled</span>
 	<span class="comment">// status == -N: Event is reset and N threads are waiting</span>
 	status: <a href="/base/builtin#i32"><span class="doc-builtin">i32</span></a>,
 	sema:   <a class="code-typename" href="/core/sync/#Sema">Sema</a>,
 }</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Auto-reset event.</p>
+<p>Represents a thread synchronization primitive that, when signalled, releases one
+single waiting thread and then resets automatically to a state where it can be
+signalled again.</p>
+<p>When a thread calls <code>auto_reset_event_wait</code>, it's execution will be blocked,
+until the event is signalled by another thread. The call to
+<code>auto_reset_event_signal</code> wakes up exactly one thread waiting for the event.</p>
+</details>
 <h5>Related Procedures With Parameters</h5>
 <ul>
 <li><a href="/core/sync/#auto_reset_event_signal">auto_reset_event_signal</a></li>
@@ -695,7 +766,7 @@ Posting to the semaphore increases the count by one, or the provided amount.</p>
 </ul>
 </div>
 <div class="pkg-entity">
-<h3 id="Barrier"><span><a class="doc-id-link" href="#Barrier">Barrier<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L104"><em>Source</em></a></div></h3>
+<h3 id="Barrier"><span><a class="doc-id-link" href="#Barrier">Barrier<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L153"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Barrier :: <span class="keyword-type">struct</span> {
 	mutex:         <a class="code-typename" href="/core/sync/#Mutex">Mutex</a>,
@@ -707,41 +778,38 @@ Posting to the semaphore increases the count by one, or the provided amount.</p>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>A barrier enabling multiple threads to synchronize the beginning of some computation</p>
-<details open class="code-example">
-<summary><b>Example:</b></summary>
-<pre><code class="hljs language-odin" data-lang="odin">package example
-
-import "core:fmt"
-import "core:sync"
-import "core:thread"
-
-barrier := &sync.Barrier{}
-
-main :: proc "contextless" () {
-	fmt.println("Start")
-
-	THREAD_COUNT :: 4
-	threads: [THREAD_COUNT]^thread.Thread
-
-	sync.barrier_init(barrier, THREAD_COUNT)
-
-	for _, i in threads {
-		threads[i] = thread.create_and_start(proc(t: ^thread.Thread) {
-			// Same messages will be printed together but without any interleaving
-			fmt.println("Getting ready!")
-			sync.barrier_wait(barrier)
-			fmt.println("Off their marks they go!")
-		})
-	}
-
-	for t in threads {
-		thread.destroy(t) // join and free thread
-	}
-	fmt.println("Finished")
+<p>Barrier.</p>
+<p>A barrier is a synchronization primitive enabling multiple threads to
+synchronize the beginning of some computation.</p>
+<p>When <code>barrier_wait</code> procedure is called by any thread, that thread will block
+the execution, until all threads associated with the barrier reach the same
+point of execution and also call <code>barrier_wait</code>.</p>
+<p>when barrier is initialized, a <code>thread_count</code> parameter is passed, signifying
+the amount of participant threads of the barrier. The barrier also keeps track
+of an internal atomic counter. When a thread calls <code>barrier_wait</code>, the internal
+counter is incremented. When the internal counter reaches <code>thread_count</code>, it is
+reset and all threads waiting on the barrier are unblocked.</p>
+<p>This type of synchronization primitive can be used to synchronize "staged"
+workloads, where the workload is split into stages, and until all threads have
+completed the previous threads, no thread is allowed to start work on the next
+stage. In this case, after each stage, a <code>barrier_wait</code> shall be inserted in the
+thread procedure.</p>
+<p><b>Example</b>:</p>
+<pre>THREAD_COUNT :: 4
+threads: [THREAD_COUNT]^thread.Thread
+sync.barrier_init(barrier, THREAD_COUNT)
+for _, i in threads {
+	threads[i] = thread.create_and_start(proc(t: ^thread.Thread) {
+		// Same messages will be printed together but without any interleaving
+		fmt.println("Getting ready!")
+		sync.barrier_wait(barrier)
+		fmt.println("Off their marks they go!")
+	})
 }
-</code></pre>
-</details>
+for t in threads {
+	thread.destroy(t)
+}
+</pre>
 </details>
 <h5>Related Procedures With Parameters</h5>
 <ul>
@@ -750,13 +818,24 @@ main :: proc "contextless" () {
 </ul>
 </div>
 <div class="pkg-entity">
-<h3 id="Benaphore"><span><a class="doc-id-link" href="#Benaphore">Benaphore<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L197"><em>Source</em></a></div></h3>
+<h3 id="Benaphore"><span><a class="doc-id-link" href="#Benaphore">Benaphore<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L341"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Benaphore :: <span class="keyword-type">struct</span> {
 	counter: <a href="/base/builtin#i32"><span class="doc-builtin">i32</span></a>,
 	sema:    <a class="code-typename" href="/core/sync/#Sema">Sema</a>,
 }</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Benaphore.</p>
+<p>A benaphore is a combination of an atomic variable and a semaphore that can
+improve locking efficiency in a no-contention system. Acquiring a benaphore
+lock doesn't call into an internal semaphore, if no other thread in a middle of
+a critical section.</p>
+<p>Once a lock on a benaphore is acquired by a thread, no other thread is allowed
+into any critical sections, associted with the same benaphore, until the lock
+is released.</p>
+</details>
 <h5>Related Procedures With Parameters</h5>
 <ul>
 <li><a href="/core/sync/#benaphore_guard">benaphore_guard</a></li>
@@ -770,7 +849,7 @@ main :: proc "contextless" () {
 </ul>
 </div>
 <div class="pkg-entity">
-<h3 id="Cond"><span><a class="doc-id-link" href="#Cond">Cond<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L158"><em>Source</em></a></div></h3>
+<h3 id="Cond"><span><a class="doc-id-link" href="#Cond">Cond<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L418"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Cond :: <span class="keyword-type">struct</span> {
 	impl: _Cond,
@@ -778,9 +857,27 @@ main :: proc "contextless" () {
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>Cond implements a condition variable, a rendezvous point for threads
-waiting for signalling the occurence of an event</p>
-<p>A Cond must not be copied after first use</p>
+<p>A condition variable.</p>
+<p><code>Cond</code> implements a condition variable, a rendezvous point for threads waiting
+for signalling the occurence of an event. Condition variables are used on
+conjuction with mutexes to provide a shared access to one or more shared
+variable.</p>
+<p>A typical usage of condition variable is as follows. A thread that intends to
+modify a shared variable shall:</p>
+<p>1. Acquire a lock on a mutex.
+2. Modify the shared memory.
+3. Release the lock.
+3. Call <code>cond_signal</code> or <code>cond_broadcast</code>.</p>
+<p>A thread that intends to wait on a shared variable shall:</p>
+<p>1. Acquire a lock on a mutex.
+2. Call <code>cond_wait</code> or <code>cond_wait_with_timeout</code> (will release the mutex).
+3. Check the condition and keep waiting in a loop if not satisfied with result.</p>
+<p><b>Note</b>: A condition variable must not be copied after first use (e.g., after
+waiting on it the first time). This is because, in order to coordinate with
+other threads, all threads must watch the same memory address to know when the
+lock has been released. Trying to use a copy of the lock at a different memory
+address will result in broken and unsafe behavior. For this reason, condition
+variables are marked as <code>#no_copy</code>.</p>
 </details>
 <h5>Related Procedures With Parameters</h5>
 <ul>
@@ -795,14 +892,21 @@ waiting for signalling the occurence of an event</p>
 </ul>
 </div>
 <div class="pkg-entity">
-<h3 id="Futex"><span><a class="doc-id-link" href="#Futex">Futex<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L207"><em>Source</em></a></div></h3>
+<h3 id="Futex"><span><a class="doc-id-link" href="#Futex">Futex<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L549"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Futex :: <span class="keyword-type">distinct</span> <a href="/base/builtin#u32"><span class="doc-builtin">u32</span></a></pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>Futex is a fast userspace mutual exclusion lock, using a 32-bit memory address as a hint</p>
-<p>An Futex must not be copied after first use</p>
+<p>Fast userspace mutual exclusion lock.</p>
+<p>Futex is a fast userspace mutual exclusion lock, that uses a pointer to a 32-bit
+value as an identifier of the queue of waiting threads. The value pointed to
+by that pointer can be used to store extra data.</p>
+<p><b>IMPORTANT</b>: A futex must not be copied after first use (e.g., after waiting
+on it the first time, or signalling it). This is because, in order to coordinate
+with other threads, all threads must watch the same memory address. Trying to
+use a copy of the lock at a different memory address will result in broken and
+unsafe behavior.</p>
 </details>
 <h5>Related Procedures With Parameters</h5>
 <ul>
@@ -817,7 +921,7 @@ waiting for signalling the occurence of an event</p>
 </ul>
 </div>
 <div class="pkg-entity">
-<h3 id="Mutex"><span><a class="doc-id-link" href="#Mutex">Mutex<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L25"><em>Source</em></a></div></h3>
+<h3 id="Mutex"><span><a class="doc-id-link" href="#Mutex">Mutex<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L40"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Mutex :: <span class="keyword-type">struct</span> {
 	impl: _Mutex,
@@ -825,18 +929,26 @@ waiting for signalling the occurence of an event</p>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
+<p>Mutual exclusion lock.</p>
 <p>A Mutex is a <a href="https://en.wikipedia.org/wiki/Mutual_exclusion">mutual exclusion lock</a>
-It can be used to prevent more than one thread from executing the same piece of code,
-and thus prevent access to same piece of memory by multiple threads, at the same time.</p>
-<p>A Mutex's zero value represents an initial, <i>unlocked</i> state.</p>
-<p>If another thread tries to take the lock while another thread holds it, it will pause
-until the lock is released. Code or memory that is "surrounded" by a mutex lock is said
-to be "guarded by a mutex".</p>
-<p>A Mutex must not be copied after first use (e.g., after locking it the first time).
-This is because, in order to coordinate with other threads, all threads must watch
-the same memory address to know when the lock has been released. Trying to use a
-copy of the lock at a different memory address will result in broken and unsafe
-behavior. For this reason, Mutexes are marked as <code>#no_copy</code>.</p>
+It can be used to prevent more than one thread from entering the critical
+section, and thus prevent access to same piece of memory by multiple threads, at
+the same time.</p>
+<p>Mutex's zero-initializzed value represents an initial, <i>unlocked</i> state.</p>
+<p>If another thread tries to acquire the lock, while it's already held (typically
+by another thread), the thread's execution will be blocked, until the lock is
+released. Code or memory that is "surrounded" by a mutex lock and unlock
+operations is said to be "guarded by a mutex".</p>
+<p><b>Note</b>: A Mutex must not be copied after first use (e.g., after locking it the
+first time). This is because, in order to coordinate with other threads, all
+threads must watch the same memory address to know when the lock has been
+released. Trying to use a copy of the lock at a different memory address will
+result in broken and unsafe behavior. For this reason, Mutexes are marked as
+<code>#no_copy</code>.</p>
+<p><b>Note</b>: If the current thread attempts to lock a mutex, while it's already
+holding another lock, that will cause a trivial case of deadlock. Do not use
+<code>Mutex</code> in recursive functions. In case multiple locks by the same thread are
+desired, use <code>Recursive_Mutex</code>.</p>
 </details>
 <h5>Related Procedures With Parameters</h5>
 <ul>
@@ -855,7 +967,7 @@ behavior. For this reason, Mutexes are marked as <code>#no_copy</code>.</p>
 </ul>
 </div>
 <div class="pkg-entity">
-<h3 id="Once"><span><a class="doc-id-link" href="#Once">Once<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L287"><em>Source</em></a></div></h3>
+<h3 id="Once"><span><a class="doc-id-link" href="#Once">Once<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L544"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Once :: <span class="keyword-type">struct</span> {
 	m:    <a class="code-typename" href="/core/sync/#Mutex">Mutex</a>,
@@ -864,8 +976,9 @@ behavior. For this reason, Mutexes are marked as <code>#no_copy</code>.</p>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>Once is a data value that will perform exactly on action.</p>
-<p>A Once must not be copied after first use.</p>
+<p>Once action.</p>
+<p><code>Once</code> a synchronization primitive, that only allows a single entry into a
+critical section from a single thread.</p>
 </details>
 <h5>Related Procedures With Parameters</h5>
 <ul>
@@ -877,7 +990,7 @@ behavior. For this reason, Mutexes are marked as <code>#no_copy</code>.</p>
 </ul>
 </div>
 <div class="pkg-entity">
-<h3 id="One_Shot_Event"><span><a class="doc-id-link" href="#One_Shot_Event">One_Shot_Event<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L429"><em>Source</em></a></div></h3>
+<h3 id="One_Shot_Event"><span><a class="doc-id-link" href="#One_Shot_Event">One_Shot_Event<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L721"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">One_Shot_Event :: <span class="keyword-type">struct</span> {
 	state: <a class="code-typename" href="/core/sync/#Futex">Futex</a>,
@@ -885,11 +998,12 @@ behavior. For this reason, Mutexes are marked as <code>#no_copy</code>.</p>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>A One_Shot_Event is an associated token which is initially not present:
-    * The <code>one_shot_event_wait</code> blocks the current thread until the event
-      is made available
-    * The <code>one_shot_event_signal</code> procedure automatically makes the token
-      available if its was not already.</p>
+<p>One-shot event.</p>
+<p>A one-shot event is an associated token which is initially not present:</p>
+<p>The <code>one_shot_event_wait</code> blocks the current thread until the event
+  is made available
+The <code>one_shot_event_signal</code> procedure automatically makes the token
+  available if its was not already.</p>
 </details>
 <h5>Related Procedures With Parameters</h5>
 <ul>
@@ -898,7 +1012,7 @@ behavior. For this reason, Mutexes are marked as <code>#no_copy</code>.</p>
 </ul>
 </div>
 <div class="pkg-entity">
-<h3 id="Parker"><span><a class="doc-id-link" href="#Parker">Parker<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L375"><em>Source</em></a></div></h3>
+<h3 id="Parker"><span><a class="doc-id-link" href="#Parker">Parker<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L644"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Parker :: <span class="keyword-type">struct</span> {
 	state: <a class="code-typename" href="/core/sync/#Futex">Futex</a>,
@@ -906,13 +1020,13 @@ behavior. For this reason, Mutexes are marked as <code>#no_copy</code>.</p>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>A Parker is an associated token which is initially not present:
-    * The <code>park</code> procedure blocks the current thread unless or until the token
-      is available, at which point the token is consumed.
-    * The <code>park_with_timeout</code> procedures works the same as <code>park</code> but only
-      blocks for the specified duration.
-    * The <code>unpark</code> procedure automatically makes the token available if it
-      was not already.</p>
+<p>A Parker is an associated token which is initially not present:</p>
+<p>The <code>park</code> procedure blocks the current thread unless or until the token
+  is available, at which point the token is consumed.
+The <code>park_with_timeout</code> procedures works the same as <code>park</code> but only
+  blocks for the specified duration.
+The <code>unpark</code> procedure automatically makes the token available if it
+  was not already.</p>
 </details>
 <h5>Related Procedures With Parameters</h5>
 <ul>
@@ -922,7 +1036,7 @@ behavior. For this reason, Mutexes are marked as <code>#no_copy</code>.</p>
 </ul>
 </div>
 <div class="pkg-entity">
-<h3 id="RW_Mutex"><span><a class="doc-id-link" href="#RW_Mutex">RW_Mutex<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L61"><em>Source</em></a></div></h3>
+<h3 id="RW_Mutex"><span><a class="doc-id-link" href="#RW_Mutex">RW_Mutex<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L151"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">RW_Mutex :: <span class="keyword-type">struct</span> {
 	impl: _RW_Mutex,
@@ -930,10 +1044,30 @@ behavior. For this reason, Mutexes are marked as <code>#no_copy</code>.</p>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>A RW_Mutex is a reader/writer mutual exclusion lock
-The lock can be held by any arbitrary number of readers or a single writer
-The zero value for a RW_Mutex is an unlocked mutex</p>
-<p>A RW_Mutex must not be copied after first use</p>
+<p>Read-write mutual exclusion lock.</p>
+<p>An <code>RW_Mutex</code> is a reader/writer mutual exclusion lock. The lock can be held by
+any number of readers or a single writer.</p>
+<p>This type of synchronization primitive supports two kinds of lock operations:</p>
+<p><span class="doc-list">Exclusive lock (write lock)</span>
+<span class="doc-list">Shared lock (read lock)</span></p>
+<p>When an exclusive lock is acquired by any thread, all other threads, attempting
+to acquire either an exclusive or shared lock, will be blocked from entering the
+critical sections associated with the read-write mutex, until the exclusive
+owner of the lock releases the lock.</p>
+<p>When a shared lock is acquired by any thread, any other thread attempting to
+acquire a shared lock will also be able to enter all the critical sections
+associated with the read-write mutex. However threads attempting to acquire
+an exclusive lock will be blocked from entering those critical sections, until
+all shared locks are released.</p>
+<p><b>Note</b>: A read-write mutex must not be copied after first use (e.g., after
+acquiring a lock). This is because, in order to coordinate with other threads,
+all threads must watch the same memory address to know when the lock has been
+released. Trying to use a copy of the lock at a different memory address will
+result in broken and unsafe behavior. For this reason, mutexes are marked as
+<code>#no_copy</code>.</p>
+<p><b>Note</b>: A read-write mutex is not recursive. Do not attempt to acquire an
+exclusive lock more than once from the same thread, or an exclusive and shared
+lock on the same thread. Taking a shared lock multiple times is acceptable.</p>
 </details>
 <h5>Related Procedures With Parameters</h5>
 <ul>
@@ -956,7 +1090,7 @@ The zero value for a RW_Mutex is an unlocked mutex</p>
 </ul>
 </div>
 <div class="pkg-entity">
-<h3 id="Recursive_Benaphore"><span><a class="doc-id-link" href="#Recursive_Benaphore">Recursive_Benaphore<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L225"><em>Source</em></a></div></h3>
+<h3 id="Recursive_Benaphore"><span><a class="doc-id-link" href="#Recursive_Benaphore">Recursive_Benaphore<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L433"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Recursive_Benaphore :: <span class="keyword-type">struct</span> {
 	counter:   <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>,
@@ -965,6 +1099,19 @@ The zero value for a RW_Mutex is an unlocked mutex</p>
 	sema:      <a class="code-typename" href="/core/sync/#Sema">Sema</a>,
 }</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Recursive benaphore.</p>
+<p>Recurisve benaphore is just like a plain benaphore, except it allows reentrancy
+into the critical section.</p>
+<p>When a lock is acquired on a benaphore, all other threads attempting to
+acquire a lock on the same benaphore will be blocked from any critical sections,
+associated with the same benaphore.</p>
+<p>When a lock is acquired on a benaphore by a thread, that thread is allowed
+to acquire another lock on the same benaphore. When a thread has acquired the
+lock on a benaphore, the benaphore will stay locked until the thread releases
+the lock as many times as it has been locked by the thread.</p>
+</details>
 <h5>Related Procedures With Parameters</h5>
 <ul>
 <li><a href="/core/sync/#recursive_benaphore_guard">recursive_benaphore_guard</a></li>
@@ -978,7 +1125,7 @@ The zero value for a RW_Mutex is an unlocked mutex</p>
 </ul>
 </div>
 <div class="pkg-entity">
-<h3 id="Recursive_Mutex"><span><a class="doc-id-link" href="#Recursive_Mutex">Recursive_Mutex<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L125"><em>Source</em></a></div></h3>
+<h3 id="Recursive_Mutex"><span><a class="doc-id-link" href="#Recursive_Mutex">Recursive_Mutex<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L317"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Recursive_Mutex :: <span class="keyword-type">struct</span> {
 	impl: _Recursive_Mutex,
@@ -986,9 +1133,23 @@ The zero value for a RW_Mutex is an unlocked mutex</p>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>A Recursive_Mutex is a recursive mutual exclusion lock
-The zero value for a Recursive_Mutex is an unlocked mutex</p>
-<p>A Recursive_Mutex must not be copied after first use</p>
+<p>Recursive mutual exclusion lock.</p>
+<p>Recurisve mutex is just like a plain mutex, except it allows reentrancy. In
+order for a thread to release the mutex for other threads, the mutex needs to
+be unlocked as many times, as it was locked.</p>
+<p>When a lock is acquired on a recursive mutex, all other threads attempting to
+acquire a lock on the same mutex will be blocked from any critical sections,
+associated with the same recrusive mutex.</p>
+<p>When a lock is acquired on a recursive mutex by a thread, that thread is allowed
+to acquire another lock on the same mutex. When a thread has acquired the lock
+on a recursive mutex, the recursive mutex will stay locked until the thread
+releases the lock as many times as it has been locked by the thread.</p>
+<p><b>Note</b>: A recursive mutex must not be copied after first use (e.g., after
+acquiring a lock). This is because, in order to coordinate with other threads,
+all threads must watch the same memory address to know when the lock has been
+released. Trying to use a copy of the lock at a different memory address will
+result in broken and unsafe behavior. For this reason, mutexes are marked as
+<code>#no_copy</code>.</p>
 </details>
 <h5>Related Procedures With Parameters</h5>
 <ul>
@@ -1003,7 +1164,7 @@ The zero value for a Recursive_Mutex is an unlocked mutex</p>
 </ul>
 </div>
 <div class="pkg-entity">
-<h3 id="Sema"><span><a class="doc-id-link" href="#Sema">Sema<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L186"><em>Source</em></a></div></h3>
+<h3 id="Sema"><span><a class="doc-id-link" href="#Sema">Sema<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L498"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Sema :: <span class="keyword-type">struct</span> {
 	impl: _Sema,
@@ -1011,9 +1172,21 @@ The zero value for a Recursive_Mutex is an unlocked mutex</p>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>When waited upon, blocks until the internal count is greater than zero, then subtracts one.
-Posting to the semaphore increases the count by one, or the provided amount.</p>
-<p>A Sema must not be copied after first use</p>
+<p>Semaphore.</p>
+<p>When waited upon, semaphore blocks until the internal count is greater than
+zero, then decrements the internal counter by one. Posting to the semaphore
+increases the count by one, or the provided amount.</p>
+<p>This type of synchronization primitives can be useful for implementing queues.
+The internal counter of the semaphore can be thought of as the amount of items
+in the queue. After a data has been pushed to the queue, the thread shall call
+<code>sema_post()</code> procedure, increasing the counter. When a thread takes an item
+from the queue to do the job, it shall call <code>sema_wait()</code>, waiting on the
+semaphore counter to become non-zero and decreasing it, if necessary.</p>
+<p><b>Note</b>: A semaphore must not be copied after first use (e.g., after posting
+to it). This is because, in order to coordinate with other threads, all threads
+must watch the same memory address to know when the lock has been released.
+Trying to use a copy of the lock at a different memory address will result in
+broken and unsafe behavior. For this reason, semaphores are marked as <code>#no_copy</code>.</p>
 </details>
 <h5>Related Procedures With Parameters</h5>
 <ul>
@@ -1026,13 +1199,24 @@ Posting to the semaphore increases the count by one, or the provided amount.</p>
 </ul>
 </div>
 <div class="pkg-entity">
-<h3 id="Ticket_Mutex"><span><a class="doc-id-link" href="#Ticket_Mutex">Ticket_Mutex<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L175"><em>Source</em></a></div></h3>
+<h3 id="Ticket_Mutex"><span><a class="doc-id-link" href="#Ticket_Mutex">Ticket_Mutex<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L269"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Ticket_Mutex :: <span class="keyword-type">struct</span> {
 	ticket:  <a href="/base/builtin#uint"><span class="doc-builtin">uint</span></a>,
 	serving: <a href="/base/builtin#uint"><span class="doc-builtin">uint</span></a>,
 }</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Ticket lock.</p>
+<p>A ticket lock is a mutual exclusion lock that uses "tickets" to control which
+thread is allowed into a critical section.</p>
+<p>This synchronization primitive works just like spinlock, except that it implements
+a "fairness" guarantee, making sure that each thread gets a roughly equal amount
+of entries into the critical section.</p>
+<p>This type of synchronization primitive is applicable for short critical sections
+in low-contention systems, as it uses a spinlock under the hood.</p>
+</details>
 <h5>Related Procedures With Parameters</h5>
 <ul>
 <li><a href="/core/sync/#ticket_mutex_guard">ticket_mutex_guard</a></li>
@@ -1044,7 +1228,7 @@ Posting to the semaphore increases the count by one, or the provided amount.</p>
 </ul>
 </div>
 <div class="pkg-entity">
-<h3 id="Wait_Group"><span><a class="doc-id-link" href="#Wait_Group">Wait_Group<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L10"><em>Source</em></a></div></h3>
+<h3 id="Wait_Group"><span><a class="doc-id-link" href="#Wait_Group">Wait_Group<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L29"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Wait_Group :: <span class="keyword-type">struct</span> {
 	counter: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>,
@@ -1054,8 +1238,22 @@ Posting to the semaphore increases the count by one, or the provided amount.</p>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>A Wait_Group waits for a collection of threads to finish</p>
-<p>A Wait_Group must not be copied after first use</p>
+<p>Wait group.</p>
+<p>Wait group is a synchronization primitive used by the waiting thread to wait,
+until a all working threads finish work.</p>
+<p>The waiting thread first sets the number of working threads it will expect to
+wait for using <code>wait_group_add</code> call, and start waiting using <code>wait_group_wait</code>
+call. When worker threads complete their work, each of them will call
+<code>wait_group_done</code>, and after all working threads have called this procedure,
+the waiting thread will resume execution.</p>
+<p>For the purpose of keeping track whether all working threads have finished their
+work, the wait group keeps an internal atomic counter. Initially, the waiting
+thread might set it to a certain non-zero amount. When each working thread
+completes the work, the internal counter is atomically decremented until it
+reaches zero. When it reaches zero, the waiting thread is unblocked. The counter
+is not allowed to become negative.</p>
+<p><b>Note</b>: Just like any synchronization primitives, a wait group cannot be
+copied after first use. See documentation for <code>Mutex</code> or <code>Cond</code>.</p>
 </details>
 <h5>Related Procedures With Parameters</h5>
 <ul>
@@ -1112,24 +1310,72 @@ Posting to the semaphore increases the count by one, or the provided amount.</p>
 <div>
 <pre class="doc-code">atomic_add :: <a href="/base/intrinsics#atomic_add">intrinsics</a>.atomic_add</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Atomically add a value to the value stored in memory.</p>
+<p>This procedure loads a value from memory, adds the specified value to it, and
+stores it back as an atomic operation. This operation is an atomic equivalent
+of the following:</p>
+<pre>dst^ += val
+
+</pre>
+<p>The memory ordering of this operation is sequentially-consistent.</p>
+</details>
 </div>
 <div class="pkg-entity">
 <h3 id="atomic_add_explicit"><span><a class="doc-id-link" href="#atomic_add_explicit">atomic_add_explicit<span class="a-hidden">&nbsp;¶</span></a></span></h3>
 <div>
 <pre class="doc-code">atomic_add_explicit :: <a href="/base/intrinsics#atomic_add_explicit">intrinsics</a>.atomic_add_explicit</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Atomically add a value to the value stored in memory.</p>
+<p>This procedure loads a value from memory, adds the specified value to it, and
+stores it back as an atomic operation. This operation is an atomic equivalent
+of the following:</p>
+<pre>dst^ += val
+
+</pre>
+<p>The memory ordering of this operation is as specified by the <code>order</code> parameter.</p>
+</details>
 </div>
 <div class="pkg-entity">
 <h3 id="atomic_and"><span><a class="doc-id-link" href="#atomic_and">atomic_and<span class="a-hidden">&nbsp;¶</span></a></span></h3>
 <div>
 <pre class="doc-code">atomic_and :: <a href="/base/intrinsics#atomic_and">intrinsics</a>.atomic_and</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Atomically replace the memory location with the result of AND operation with
+the specified value.</p>
+<p>This procedure loads a value from memory, calculates the result of AND operation
+between the loaded value and the specified value, and stores it back into the
+same memory location as an atomic operation. This operation is an atomic
+equivalent of the following:</p>
+<pre>dst^ &= val
+
+</pre>
+<p>The memory ordering of this operation is sequentially-consistent.</p>
+</details>
 </div>
 <div class="pkg-entity">
 <h3 id="atomic_and_explicit"><span><a class="doc-id-link" href="#atomic_and_explicit">atomic_and_explicit<span class="a-hidden">&nbsp;¶</span></a></span></h3>
 <div>
 <pre class="doc-code">atomic_and_explicit :: <a href="/base/intrinsics#atomic_and_explicit">intrinsics</a>.atomic_and_explicit</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Atomically replace the memory location with the result of AND operation with
+the specified value.</p>
+<p>This procedure loads a value from memory, calculates the result of AND operation
+between the loaded value and the specified value, and stores it back into the
+same memory location as an atomic operation. This operation is an atomic
+equivalent of the following:</p>
+<pre>dst^ &= val
+
+</pre>
+<p>The memory ordering of this operation is as specified by the <code>order</code> parameter.</p>
+</details>
 </div>
 <div class="pkg-entity">
 <h3 id="atomic_compare_exchange_strong"><span><a class="doc-id-link" href="#atomic_compare_exchange_strong">atomic_compare_exchange_strong<span class="a-hidden">&nbsp;¶</span></a></span></h3>
@@ -1138,7 +1384,29 @@ Posting to the semaphore increases the count by one, or the provided amount.</p>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>Returns value and optional ok boolean</p>
+<p>Atomically compare and exchange the value with a memory location.</p>
+<p>This procedure checks if the value pointed to by the <code>dst</code> parameter is equal
+to <code>old</code>, and if they are, it stores the value <code>new</code> into the memory location,
+all done in a single atomic operation. This procedure returns the old value
+stored in a memory location and a boolean value signifying whether <code>old</code> was
+equal to <code>new</code>.</p>
+<p>This procedure is an atomic equivalent of the following operation:</p>
+<pre>old_dst := dst^
+if old_dst == old {
+	dst^ = new
+	return old_dst, true
+} else {
+	return old_dst, false
+}
+
+</pre>
+<p>The strong version of compare exchange always returns true, when the returned
+old value stored in location pointed to by <code>dst</code> and the <code>old</code> parameter are
+equal.</p>
+<p>Atomic compare exchange has two memory orderings: One is for the
+read-modify-write operation, if the comparison succeeds, and the other is for
+the load operation, if the comparison fails. The memory ordering for both of
+of these operations is sequentially-consistent.</p>
 </details>
 </div>
 <div class="pkg-entity">
@@ -1146,18 +1414,99 @@ Posting to the semaphore increases the count by one, or the provided amount.</p>
 <div>
 <pre class="doc-code">atomic_compare_exchange_strong_explicit :: <a href="/base/intrinsics#atomic_compare_exchange_strong_explicit">intrinsics</a>.atomic_compare_exchange_strong_explicit</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Atomically compare and exchange the value with a memory location.</p>
+<p>This procedure checks if the value pointed to by the <code>dst</code> parameter is equal
+to <code>old</code>, and if they are, it stores the value <code>new</code> into the memory location,
+all done in a single atomic operation. This procedure returns the old value
+stored in a memory location and a boolean value signifying whether <code>old</code> was
+equal to <code>new</code>.</p>
+<p>This procedure is an atomic equivalent of the following operation:</p>
+<pre>old_dst := dst^
+if old_dst == old {
+	dst^ = new
+	return old_dst, true
+} else {
+	return old_dst, false
+}
+
+</pre>
+<p>The strong version of compare exchange always returns true, when the returned
+old value stored in location pointed to by <code>dst</code> and the <code>old</code> parameter are
+equal.</p>
+<p>Atomic compare exchange has two memory orderings: One is for the
+read-modify-write operation, if the comparison succeeds, and the other is for
+the load operation, if the comparison fails. The memory ordering for these
+operations is as specified by <code>success</code> and <code>failure</code> parameters respectively.</p>
+</details>
 </div>
 <div class="pkg-entity">
 <h3 id="atomic_compare_exchange_weak"><span><a class="doc-id-link" href="#atomic_compare_exchange_weak">atomic_compare_exchange_weak<span class="a-hidden">&nbsp;¶</span></a></span></h3>
 <div>
 <pre class="doc-code">atomic_compare_exchange_weak :: <a href="/base/intrinsics#atomic_compare_exchange_weak">intrinsics</a>.atomic_compare_exchange_weak</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Atomically compare and exchange the value with a memory location.</p>
+<p>This procedure checks if the value pointed to by the <code>dst</code> parameter is equal
+to <code>old</code>, and if they are, it stores the value <code>new</code> into the memory location,
+all done in a single atomic operation. This procedure returns the old value
+stored in a memory location and a boolean value signifying whether <code>old</code> was
+equal to <code>new</code>.</p>
+<p>This procedure is an atomic equivalent of the following operation:</p>
+<pre>old_dst := dst^
+if old_dst == old {
+	// may return false here
+	dst^ = new
+	return old_dst, true
+} else {
+	return old_dst, false
+}
+
+</pre>
+<p>The weak version of compare exchange may return false, even if <code>dst^ == old</code>.
+On some platforms running weak compare exchange in a loop is faster than a
+strong version.</p>
+<p>Atomic compare exchange has two memory orderings: One is for the
+read-modify-write operation, if the comparison succeeds, and the other is for
+the load operation, if the comparison fails. The memory ordering for both
+of these operations is sequentially-consistent.</p>
+</details>
 </div>
 <div class="pkg-entity">
 <h3 id="atomic_compare_exchange_weak_explicit"><span><a class="doc-id-link" href="#atomic_compare_exchange_weak_explicit">atomic_compare_exchange_weak_explicit<span class="a-hidden">&nbsp;¶</span></a></span></h3>
 <div>
 <pre class="doc-code">atomic_compare_exchange_weak_explicit :: <a href="/base/intrinsics#atomic_compare_exchange_weak_explicit">intrinsics</a>.atomic_compare_exchange_weak_explicit</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Atomically compare and exchange the value with a memory location.</p>
+<p>This procedure checks if the value pointed to by the <code>dst</code> parameter is equal
+to <code>old</code>, and if they are, it stores the value <code>new</code> into the memory location,
+all done in a single atomic operation. This procedure returns the old value
+stored in a memory location and a boolean value signifying whether <code>old</code> was
+equal to <code>new</code>.</p>
+<p>This procedure is an atomic equivalent of the following operation:</p>
+<pre>old_dst := dst^
+if old_dst == old {
+	// may return false here
+	dst^ = new
+	return old_dst, true
+} else {
+	return old_dst, false
+}
+
+</pre>
+<p>The weak version of compare exchange may return false, even if <code>dst^ == old</code>.
+On some platforms running weak compare exchange in a loop is faster than a
+strong version.</p>
+<p>Atomic compare exchange has two memory orderings: One is for the
+read-modify-write operation, if the comparison succeeds, and the other is for
+the load operation, if the comparison fails. The memory ordering for these
+operations is as specified by the <code>success</code> and <code>failure</code> parameters
+respectively.</p>
+</details>
 </div>
 <div class="pkg-entity">
 <h3 id="atomic_cond_broadcast"><span><a class="doc-id-link" href="#atomic_cond_broadcast">atomic_cond_broadcast<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives_atomic.odin#L314"><em>Source</em></a></div></h3>
@@ -1188,24 +1537,66 @@ Posting to the semaphore increases the count by one, or the provided amount.</p>
 <div>
 <pre class="doc-code">atomic_exchange :: <a href="/base/intrinsics#atomic_exchange">intrinsics</a>.atomic_exchange</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Atomically exchange the value in a memory location, with the specified value.</p>
+<p>This procedure loads a value from the specified memory location, and stores the
+specified value into that memory location. Then the loaded value is returned,
+all done in a single atomic operation. This operation is an atomic equivalent
+of the following:</p>
+<pre>tmp := dst^
+dst^ = val
+return tmp
+
+</pre>
+<p>The memory ordering of this operation is sequentially-consistent.</p>
+</details>
 </div>
 <div class="pkg-entity">
 <h3 id="atomic_exchange_explicit"><span><a class="doc-id-link" href="#atomic_exchange_explicit">atomic_exchange_explicit<span class="a-hidden">&nbsp;¶</span></a></span></h3>
 <div>
 <pre class="doc-code">atomic_exchange_explicit :: <a href="/base/intrinsics#atomic_exchange_explicit">intrinsics</a>.atomic_exchange_explicit</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Atomically exchange the value in a memory location, with the specified value.</p>
+<p>This procedure loads a value from the specified memory location, and stores the
+specified value into that memory location. Then the loaded value is returned,
+all done in a single atomic operation. This operation is an atomic equivalent
+of the following:</p>
+<pre>tmp := dst^
+dst^ = val
+return tmp
+
+</pre>
+<p>The memory ordering of this operation is as specified by the <code>order</code> parameter.</p>
+</details>
 </div>
 <div class="pkg-entity">
 <h3 id="atomic_load"><span><a class="doc-id-link" href="#atomic_load">atomic_load<span class="a-hidden">&nbsp;¶</span></a></span></h3>
 <div>
 <pre class="doc-code">atomic_load :: <a href="/base/intrinsics#atomic_load">intrinsics</a>.atomic_load</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Atomically load a value from memory.</p>
+<p>This procedure loads a value from a memory location in such a way that the
+received value is not a partial read. The memory ordering of this operation is
+sequentially-consistent.</p>
+</details>
 </div>
 <div class="pkg-entity">
 <h3 id="atomic_load_explicit"><span><a class="doc-id-link" href="#atomic_load_explicit">atomic_load_explicit<span class="a-hidden">&nbsp;¶</span></a></span></h3>
 <div>
 <pre class="doc-code">atomic_load_explicit :: <a href="/base/intrinsics#atomic_load_explicit">intrinsics</a>.atomic_load_explicit</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Atomically load a value from memory with explicit memory ordering.</p>
+<p>This procedure loads a value from a memory location in such a way that the
+received value is not a partial read. The memory ordering of this operation
+is as specified by the <code>order</code> parameter.</p>
+</details>
 </div>
 <div class="pkg-entity">
 <h3 id="atomic_mutex_guard"><span><a class="doc-id-link" href="#atomic_mutex_guard">atomic_mutex_guard<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives_atomic.odin#L91"><em>Source</em></a></div></h3>
@@ -1256,24 +1647,76 @@ Posting to the semaphore increases the count by one, or the provided amount.</p>
 <div>
 <pre class="doc-code">atomic_nand :: <a href="/base/intrinsics#atomic_nand">intrinsics</a>.atomic_nand</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Atomically replace the memory location with the result of NAND operation with
+the specified value.</p>
+<p>This procedure loads a value from memory, calculates the result of NAND operation
+between the loaded value and the specified value, and stores it back into the
+same memory location as an atomic operation. This operation is an atomic
+equivalent of the following:</p>
+<pre>dst^ = ~(dst^ & val)
+
+</pre>
+<p>The memory ordering of this operation is sequentially-consistent.</p>
+</details>
 </div>
 <div class="pkg-entity">
 <h3 id="atomic_nand_explicit"><span><a class="doc-id-link" href="#atomic_nand_explicit">atomic_nand_explicit<span class="a-hidden">&nbsp;¶</span></a></span></h3>
 <div>
 <pre class="doc-code">atomic_nand_explicit :: <a href="/base/intrinsics#atomic_nand_explicit">intrinsics</a>.atomic_nand_explicit</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Atomically replace the memory location with the result of NAND operation with
+the specified value.</p>
+<p>This procedure loads a value from memory, calculates the result of NAND operation
+between the loaded value and the specified value, and stores it back into the
+same memory location as an atomic operation. This operation is an atomic
+equivalent of the following:</p>
+<pre>dst^ = ~(dst^ & val)
+
+</pre>
+<p>The memory ordering of this operation is as specified by the <code>order</code> parameter.</p>
+</details>
 </div>
 <div class="pkg-entity">
 <h3 id="atomic_or"><span><a class="doc-id-link" href="#atomic_or">atomic_or<span class="a-hidden">&nbsp;¶</span></a></span></h3>
 <div>
 <pre class="doc-code">atomic_or :: <a href="/base/intrinsics#atomic_or">intrinsics</a>.atomic_or</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Atomically replace the memory location with the result of OR operation with
+the specified value.</p>
+<p>This procedure loads a value from memory, calculates the result of OR operation
+between the loaded value and the specified value, and stores it back into the
+same memory location as an atomic operation. This operation is an atomic
+equivalent of the following:</p>
+<pre>dst^ |= val
+
+</pre>
+<p>The memory ordering of this operation is sequentially-consistent.</p>
+</details>
 </div>
 <div class="pkg-entity">
 <h3 id="atomic_or_explicit"><span><a class="doc-id-link" href="#atomic_or_explicit">atomic_or_explicit<span class="a-hidden">&nbsp;¶</span></a></span></h3>
 <div>
 <pre class="doc-code">atomic_or_explicit :: <a href="/base/intrinsics#atomic_or_explicit">intrinsics</a>.atomic_or_explicit</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Atomically replace the memory location with the result of OR operation with
+the specified value.</p>
+<p>This procedure loads a value from memory, calculates the result of OR operation
+between the loaded value and the specified value, and stores it back into the
+same memory location as an atomic operation. This operation is an atomic
+equivalent of the following:</p>
+<pre>dst^ |= val
+
+</pre>
+<p>The memory ordering of this operation is as specified by the <code>order</code> parameter.</p>
+</details>
 </div>
 <div class="pkg-entity">
 <h3 id="atomic_recursive_mutex_guard"><span><a class="doc-id-link" href="#atomic_recursive_mutex_guard">atomic_recursive_mutex_guard<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives_atomic.odin#L277"><em>Source</em></a></div></h3>
@@ -1419,174 +1862,385 @@ If the mutex is already locked for reading or writing, the mutex blocks until th
 <div>
 <pre class="doc-code">atomic_signal_fence :: <a href="/base/intrinsics#atomic_signal_fence">intrinsics</a>.atomic_signal_fence</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Establish memory ordering between a current thread and a signal handler.</p>
+<p>This procedure establishes memory ordering between a thread and a signal
+handler, that run on the same thread, without an associated atomic operation.
+This procedure is equivalent to <code>atomic_thread_fence</code>, except it doesn't
+issue any CPU instructions for memory ordering.</p>
+</details>
 </div>
 <div class="pkg-entity">
 <h3 id="atomic_store"><span><a class="doc-id-link" href="#atomic_store">atomic_store<span class="a-hidden">&nbsp;¶</span></a></span></h3>
 <div>
 <pre class="doc-code">atomic_store :: <a href="/base/intrinsics#atomic_store">intrinsics</a>.atomic_store</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Atomically store a value into memory.</p>
+<p>This procedure stores a value to a memory location in such a way that no other
+thread is able to see partial reads. This operation is sequentially-consistent.</p>
+</details>
 </div>
 <div class="pkg-entity">
 <h3 id="atomic_store_explicit"><span><a class="doc-id-link" href="#atomic_store_explicit">atomic_store_explicit<span class="a-hidden">&nbsp;¶</span></a></span></h3>
 <div>
 <pre class="doc-code">atomic_store_explicit :: <a href="/base/intrinsics#atomic_store_explicit">intrinsics</a>.atomic_store_explicit</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Atomically store a value into memory with explicit memory ordering.</p>
+<p>This procedure stores a value to a memory location in such a way that no other
+thread is able to see partial reads. The memory ordering of this operation is
+as specified by the <code>order</code> parameter.</p>
+</details>
 </div>
 <div class="pkg-entity">
 <h3 id="atomic_sub"><span><a class="doc-id-link" href="#atomic_sub">atomic_sub<span class="a-hidden">&nbsp;¶</span></a></span></h3>
 <div>
 <pre class="doc-code">atomic_sub :: <a href="/base/intrinsics#atomic_sub">intrinsics</a>.atomic_sub</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Atomically subtract a value from the value stored in memory.</p>
+<p>This procedure loads a value from memory, subtracts the specified value from it,
+and stores the result back as an atomic operation. This operation is an atomic
+equivalent of the following:</p>
+<pre>dst^ -= val
+
+</pre>
+<p>The memory ordering of this operation is sequentially-consistent.</p>
+</details>
 </div>
 <div class="pkg-entity">
 <h3 id="atomic_sub_explicit"><span><a class="doc-id-link" href="#atomic_sub_explicit">atomic_sub_explicit<span class="a-hidden">&nbsp;¶</span></a></span></h3>
 <div>
 <pre class="doc-code">atomic_sub_explicit :: <a href="/base/intrinsics#atomic_sub_explicit">intrinsics</a>.atomic_sub_explicit</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Atomically subtract a value from the value stored in memory.</p>
+<p>This procedure loads a value from memory, subtracts the specified value from it,
+and stores the result back as an atomic operation. This operation is an atomic
+equivalent of the following:</p>
+<pre>dst^ -= val
+
+</pre>
+<p>The memory ordering of this operation is as specified by the <code>order</code> parameter.</p>
+</details>
 </div>
 <div class="pkg-entity">
 <h3 id="atomic_thread_fence"><span><a class="doc-id-link" href="#atomic_thread_fence">atomic_thread_fence<span class="a-hidden">&nbsp;¶</span></a></span></h3>
 <div>
 <pre class="doc-code">atomic_thread_fence :: <a href="/base/intrinsics#atomic_thread_fence">intrinsics</a>.atomic_thread_fence</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Establish memory ordering.</p>
+<p>This procedure establishes memory ordering, without an associated atomic
+operation.</p>
+</details>
 </div>
 <div class="pkg-entity">
 <h3 id="atomic_xor"><span><a class="doc-id-link" href="#atomic_xor">atomic_xor<span class="a-hidden">&nbsp;¶</span></a></span></h3>
 <div>
 <pre class="doc-code">atomic_xor :: <a href="/base/intrinsics#atomic_xor">intrinsics</a>.atomic_xor</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Atomically replace the memory location with the result of XOR operation with
+the specified value.</p>
+<p>This procedure loads a value from memory, calculates the result of XOR operation
+between the loaded value and the specified value, and stores it back into the
+same memory location as an atomic operation. This operation is an atomic
+equivalent of the following:</p>
+<pre>dst^ ~= val
+
+</pre>
+<p>The memory ordering of this operation is sequentially-consistent.</p>
+</details>
 </div>
 <div class="pkg-entity">
 <h3 id="atomic_xor_explicit"><span><a class="doc-id-link" href="#atomic_xor_explicit">atomic_xor_explicit<span class="a-hidden">&nbsp;¶</span></a></span></h3>
 <div>
 <pre class="doc-code">atomic_xor_explicit :: <a href="/base/intrinsics#atomic_xor_explicit">intrinsics</a>.atomic_xor_explicit</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Atomically replace the memory location with the result of XOR operation with
+the specified value.</p>
+<p>This procedure loads a value from memory, calculates the result of XOR operation
+between the loaded value and the specified value, and stores it back into the
+same memory location as an atomic operation. This operation is an atomic
+equivalent of the following:</p>
+<pre>dst^ ~= val
+
+</pre>
+<p>The memory ordering of this operation is as specified by the <code>order</code> parameter.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="auto_reset_event_signal"><span><a class="doc-id-link" href="#auto_reset_event_signal">auto_reset_event_signal<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L152"><em>Source</em></a></div></h3>
+<h3 id="auto_reset_event_signal"><span><a class="doc-id-link" href="#auto_reset_event_signal">auto_reset_event_signal<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L229"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">auto_reset_event_signal :: <span class="keyword-type">proc</span> "contextless" (e: ^<a class="code-typename" href="/core/sync/#Auto_Reset_Event">Auto_Reset_Event</a>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Signal an auto-reset event.</p>
+<p>This procedure signals an auto-reset event, waking up exactly one waiting
+thread.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="auto_reset_event_wait"><span><a class="doc-id-link" href="#auto_reset_event_wait">auto_reset_event_wait<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L166"><em>Source</em></a></div></h3>
+<h3 id="auto_reset_event_wait"><span><a class="doc-id-link" href="#auto_reset_event_wait">auto_reset_event_wait<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L249"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">auto_reset_event_wait :: <span class="keyword-type">proc</span> "contextless" (e: ^<a class="code-typename" href="/core/sync/#Auto_Reset_Event">Auto_Reset_Event</a>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Wait on an auto-reset event.</p>
+<p>This procedure blocks the execution of the current thread, until the event is
+signalled by another thread.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="barrier_init"><span><a class="doc-id-link" href="#barrier_init">barrier_init<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L112"><em>Source</em></a></div></h3>
+<h3 id="barrier_init"><span><a class="doc-id-link" href="#barrier_init">barrier_init<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L168"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">barrier_init :: <span class="keyword-type">proc</span> "contextless" (b: ^<a class="code-typename" href="/core/sync/#Barrier">Barrier</a>, thread_count: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Initialize a barrier.</p>
+<p>This procedure initializes the barrier for the specified amount of participant
+threads.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="barrier_wait"><span><a class="doc-id-link" href="#barrier_wait">barrier_wait<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L123"><em>Source</em></a></div></h3>
+<h3 id="barrier_wait"><span><a class="doc-id-link" href="#barrier_wait">barrier_wait<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L184"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">barrier_wait :: <span class="keyword-type">proc</span> "contextless" (b: ^<a class="code-typename" href="/core/sync/#Barrier">Barrier</a>) -> (is_leader: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>) {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>Block the current thread until all threads have rendezvoused
-Barrier can be reused after all threads rendezvoused once, and can be used continuously</p>
+<p>Block the current thread until all threads have rendezvoused.</p>
+<p>This procedure blocks the execution of the current thread, until all threads
+have reached the same point in the execution of the thread proc. Multiple calls
+to <code>barrier_wait</code> are allowed within the thread procedure.</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="benaphore_guard"><span><a class="doc-id-link" href="#benaphore_guard">benaphore_guard<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L220"><em>Source</em></a></div></h3>
+<h3 id="benaphore_guard"><span><a class="doc-id-link" href="#benaphore_guard">benaphore_guard<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L413"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">benaphore_guard :: <span class="keyword-type">proc</span> "contextless" (m: ^<a class="code-typename" href="/core/sync/#Benaphore">Benaphore</a>) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Guard the current scope with a lock on a benaphore.</p>
+<p>This procedure acquires a lock on a benaphore. The lock is automatically
+released at the end of callee's scope. If the benaphore was already locked, this
+procedure also blocks until the lock can be acquired.</p>
+<p>When a lock has been acquired, all threads attempting to acquire a lock will be
+blocked from entering any critical sections associated with the same benaphore,
+until the lock is released.</p>
+<p>This procedure always returns <code>true</code>. This makes it easy to define a critical
+section by putting the function inside the <code>if</code> statement.</p>
+<p><b>Example</b>:</p>
+<pre>if benaphore_guard(&m) {
+	...
+}
+</pre>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="benaphore_lock"><span><a class="doc-id-link" href="#benaphore_lock">benaphore_lock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L202"><em>Source</em></a></div></h3>
+<h3 id="benaphore_lock"><span><a class="doc-id-link" href="#benaphore_lock">benaphore_lock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L357"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">benaphore_lock :: <span class="keyword-type">proc</span> "contextless" (b: ^<a class="code-typename" href="/core/sync/#Benaphore">Benaphore</a>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Acquire a lock on a benaphore.</p>
+<p>This procedure acquires a lock on the specified benaphore. If the lock on a
+benaphore is already held, this procedure also blocks the execution of the
+current thread, until the lock could be acquired.</p>
+<p>Once a lock is acquired, all threads attempting to take a lock will be blocked
+from entering any critical sections associated with the same benaphore, until
+until the lock is released.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="benaphore_try_lock"><span><a class="doc-id-link" href="#benaphore_try_lock">benaphore_try_lock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L208"><em>Source</em></a></div></h3>
+<h3 id="benaphore_try_lock"><span><a class="doc-id-link" href="#benaphore_try_lock">benaphore_try_lock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L374"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">benaphore_try_lock :: <span class="keyword-type">proc</span> "contextless" (b: ^<a class="code-typename" href="/core/sync/#Benaphore">Benaphore</a>) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Try to acquire a lock on a benaphore.</p>
+<p>This procedure tries to acquire a lock on the specified benaphore. If it was
+already locked, then the returned value is <code>false</code>, otherwise the lock is
+acquired and the procedure returns <code>true</code>.</p>
+<p>If the lock is acquired, all threads that attempt to acquire a lock will be
+blocked from entering any critical sections associated with the same benaphore,
+until the lock is released.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="benaphore_unlock"><span><a class="doc-id-link" href="#benaphore_unlock">benaphore_unlock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L213"><em>Source</em></a></div></h3>
+<h3 id="benaphore_unlock"><span><a class="doc-id-link" href="#benaphore_unlock">benaphore_unlock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L386"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">benaphore_unlock :: <span class="keyword-type">proc</span> "contextless" (b: ^<a class="code-typename" href="/core/sync/#Benaphore">Benaphore</a>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Release a lock on a benaphore.</p>
+<p>This procedure releases a lock on the specified benaphore. If any of the threads
+are waiting on the lock, exactly one thread is allowed into a critical section
+associated with the same banaphore.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="cond_broadcast"><span><a class="doc-id-link" href="#cond_broadcast">cond_broadcast<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L177"><em>Source</em></a></div></h3>
+<h3 id="cond_broadcast"><span><a class="doc-id-link" href="#cond_broadcast">cond_broadcast<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L474"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">cond_broadcast :: <span class="keyword-type">proc</span> "contextless" (c: ^<a class="code-typename" href="/core/sync/#Cond">Cond</a>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Wake up all threads that wait on a condition variable.</p>
+<p>This procedure causes all threads waiting on the condition variable to wake up.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="cond_signal"><span><a class="doc-id-link" href="#cond_signal">cond_signal<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L173"><em>Source</em></a></div></h3>
+<h3 id="cond_signal"><span><a class="doc-id-link" href="#cond_signal">cond_signal<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L465"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">cond_signal :: <span class="keyword-type">proc</span> "contextless" (c: ^<a class="code-typename" href="/core/sync/#Cond">Cond</a>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Wake up one thread that waits on a condition variable.</p>
+<p>This procedure causes exactly one thread waiting on the condition variable to
+wake up.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="cond_wait"><span><a class="doc-id-link" href="#cond_wait">cond_wait<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L162"><em>Source</em></a></div></h3>
+<h3 id="cond_wait"><span><a class="doc-id-link" href="#cond_wait">cond_wait<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L434"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">cond_wait :: <span class="keyword-type">proc</span> "contextless" (c: ^<a class="code-typename" href="/core/sync/#Cond">Cond</a>, m: ^<a class="code-typename" href="/core/sync/#Mutex">Mutex</a>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Wait until the condition variable is signalled and release the associated mutex.</p>
+<p>This procedure blocks the current thread until the specified condition variable
+is signalled, or until a spurious wakeup occurs. In addition, if the condition
+has been signalled, this procedure releases the lock on the specified mutex.</p>
+<p>The mutex must be held by the calling thread, before calling the procedure.</p>
+<p><b>Note</b>: This procedure can return on a spurious wake-up, even if the condition
+variable was not signalled by a thread.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="cond_wait_with_timeout"><span><a class="doc-id-link" href="#cond_wait_with_timeout">cond_wait_with_timeout<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L166"><em>Source</em></a></div></h3>
+<h3 id="cond_wait_with_timeout"><span><a class="doc-id-link" href="#cond_wait_with_timeout">cond_wait_with_timeout<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L452"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">cond_wait_with_timeout :: <span class="keyword-type">proc</span> "contextless" (c: ^<a class="code-typename" href="/core/sync/#Cond">Cond</a>, m: ^<a class="code-typename" href="/core/sync/#Mutex">Mutex</a>, duration: time.<a class="code-typename" href="/core/time/#Duration">Duration</a>) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Wait until the condition variable is signalled or timeout is reached and release
+the associated mutex.</p>
+<p>This procedure blocks the current thread until the specified condition variable
+is signalled, a timeout is reached, or until a spurious wakeup occurs. In
+addition, if the condition has been signalled, this procedure releases the
+lock on the specified mutex.</p>
+<p>If the timeout was reached, this procedure returns <code>false</code>. Otherwise it returns
+<code>true</code>.</p>
+<p>Before this procedure is called the mutex must be held by the calling thread.</p>
+</details>
 </div>
 <div class="pkg-entity">
 <h3 id="cpu_relax"><span><a class="doc-id-link" href="#cpu_relax">cpu_relax<span class="a-hidden">&nbsp;¶</span></a></span></h3>
 <div>
 <pre class="doc-code">cpu_relax :: <a href="/base/intrinsics#cpu_relax">intrinsics</a>.cpu_relax</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>This procedure may lower CPU consumption or yield to a hyperthreaded twin
+processor. It's exact function is architecture specific, but the intent is to
+say that you're not doing much on a CPU.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="current_thread_id"><span><a class="doc-id-link" href="#current_thread_id">current_thread_id<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L6"><em>Source</em></a></div></h3>
+<h3 id="current_thread_id"><span><a class="doc-id-link" href="#current_thread_id">current_thread_id<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L9"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">current_thread_id :: <span class="keyword-type">proc</span> "contextless" () -> <a href="/base/builtin#int"><span class="doc-builtin">int</span></a> {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Obtain the current thread ID.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="futex_broadcast"><span><a class="doc-id-link" href="#futex_broadcast">futex_broadcast<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L233"><em>Source</em></a></div></h3>
+<h3 id="futex_broadcast"><span><a class="doc-id-link" href="#futex_broadcast">futex_broadcast<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L597"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">futex_broadcast :: <span class="keyword-type">proc</span> "contextless" (f: ^<a class="code-typename" href="/core/sync/#Futex">Futex</a>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Wake up multiple threads waiting on a futex.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="futex_signal"><span><a class="doc-id-link" href="#futex_signal">futex_signal<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L229"><em>Source</em></a></div></h3>
+<h3 id="futex_signal"><span><a class="doc-id-link" href="#futex_signal">futex_signal<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L590"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">futex_signal :: <span class="keyword-type">proc</span> "contextless" (f: ^<a class="code-typename" href="/core/sync/#Futex">Futex</a>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Wake up a single thread waiting on a futex.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="futex_wait"><span><a class="doc-id-link" href="#futex_wait">futex_wait<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L209"><em>Source</em></a></div></h3>
+<h3 id="futex_wait"><span><a class="doc-id-link" href="#futex_wait">futex_wait<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L558"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">futex_wait :: <span class="keyword-type">proc</span> "contextless" (f: ^<a class="code-typename" href="/core/sync/#Futex">Futex</a>, expected: <a href="/base/builtin#u32"><span class="doc-builtin">u32</span></a>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Sleep if the futex contains the expected value until it's signalled.</p>
+<p>If the value of the futex is <code>expected</code>, this procedure blocks the execution of
+the current thread, until the futex is woken up, or until a spurious wakeup
+occurs.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="futex_wait_with_timeout"><span><a class="doc-id-link" href="#futex_wait_with_timeout">futex_wait_with_timeout<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L218"><em>Source</em></a></div></h3>
+<h3 id="futex_wait_with_timeout"><span><a class="doc-id-link" href="#futex_wait_with_timeout">futex_wait_with_timeout<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L576"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">futex_wait_with_timeout :: <span class="keyword-type">proc</span> "contextless" (f: ^<a class="code-typename" href="/core/sync/#Futex">Futex</a>, expected: <a href="/base/builtin#u32"><span class="doc-builtin">u32</span></a>, duration: time.<a class="code-typename" href="/core/time/#Duration">Duration</a>) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>returns true if the wait happened within the duration, false if it exceeded the time duration</p>
+<p>Sleep if the futex contains the expected value until it's signalled or the
+timeout is reached.</p>
+<p>If the value of the futex is <code>expected</code>, this procedure blocks the execution of
+the current thread, until the futex is signalled, a timeout is reached, or
+until a spurious wakeup occurs.</p>
+<p>This procedure returns <code>false</code> if the timeout was reached, <code>true</code> otherwise.</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="mutex_guard"><span><a class="doc-id-link" href="#mutex_guard">mutex_guard<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L51"><em>Source</em></a></div></h3>
+<h3 id="mutex_guard"><span><a class="doc-id-link" href="#mutex_guard">mutex_guard<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L113"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">mutex_guard :: <span class="keyword-type">proc</span> "contextless" (m: ^<a class="code-typename" href="/core/sync/#Mutex">Mutex</a>) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>Example:</p>
+<p>Guard the current scope with a lock on a mutex.</p>
+<p>This procedure acquires a mutex lock. The lock is automatically released
+at the end of callee's scope. If the mutex was already locked, this procedure
+also blocks until the lock can be acquired.</p>
+<p>When a lock has been acquired, all threads attempting to acquire a lock will be
+blocked from entering any critical sections associated with the mutex, until
+the lock is released.</p>
+<p>This procedure always returns <code>true</code>. This makes it easy to define a critical
+section by putting the function inside the <code>if</code> statement.</p>
+<p><b>Example</b>:</p>
 <pre>if mutex_guard(&m) {
 	...
 }
@@ -1594,150 +2248,231 @@ Barrier can be reused after all threads rendezvoused once, and can be used conti
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="mutex_lock"><span><a class="doc-id-link" href="#mutex_lock">mutex_lock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L30"><em>Source</em></a></div></h3>
+<h3 id="mutex_lock"><span><a class="doc-id-link" href="#mutex_lock">mutex_lock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L58"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">mutex_lock :: <span class="keyword-type">proc</span> "contextless" (m: ^<a class="code-typename" href="/core/sync/#Mutex">Mutex</a>) {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>mutex_lock locks m</p>
+<p>Acquire a lock on a mutex.</p>
+<p>This procedure acquires a lock with the specified mutex. If the mutex has been
+already locked by any thread, this procedure also blocks until the lock can be
+acquired.</p>
+<p>Once the lock is acquired, all other threads that attempt to acquire a lock will
+be blocked from entering any critical sections associated with the same mutex,
+until the the lock is released.</p>
+<p><b>Note</b>: If the mutex is already locked by the current thread, a call to this
+procedure will block indefinately. Do not use this in recursive procedures.</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="mutex_try_lock"><span><a class="doc-id-link" href="#mutex_try_lock">mutex_try_lock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L40"><em>Source</em></a></div></h3>
+<h3 id="mutex_try_lock"><span><a class="doc-id-link" href="#mutex_try_lock">mutex_try_lock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L88"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">mutex_try_lock :: <span class="keyword-type">proc</span> "contextless" (m: ^<a class="code-typename" href="/core/sync/#Mutex">Mutex</a>) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>mutex_try_lock tries to lock m, will return true on success, and false on failure</p>
+<p>Try to acquire a lock on a mutex.</p>
+<p>This procedure tries to acquire a lock on the specified mutex. If it was already
+locked, then the returned value is <code>false</code>, otherwise the lock is acquired and
+the procedure returns <code>true</code>.</p>
+<p>If the lock is acquired, all threads that attempt to acquire a lock will be
+blocked from entering any critical sections associated with the same mutex,
+until the lock is released.</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="mutex_unlock"><span><a class="doc-id-link" href="#mutex_unlock">mutex_unlock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L35"><em>Source</em></a></div></h3>
+<h3 id="mutex_unlock"><span><a class="doc-id-link" href="#mutex_unlock">mutex_unlock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L73"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">mutex_unlock :: <span class="keyword-type">proc</span> "contextless" (m: ^<a class="code-typename" href="/core/sync/#Mutex">Mutex</a>) {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>mutex_unlock unlocks m</p>
+<p>Release a lock on a mutex.</p>
+<p>This procedure releases the lock associated with the specified mutex. If the
+mutex was not locked, this operation is a no-op.</p>
+<p>When the current thread, that holds a lock to the mutex calls <code>mutex_unlock</code>,
+this allows one other thread waiting on the mutex to enter any critical sections
+associated with the mutex. If there are no threads waiting on the mutex, the
+critical sections will remain open.</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="once_do_with_data"><span><a class="doc-id-link" href="#once_do_with_data">once_do_with_data<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L333"><em>Source</em></a></div></h3>
+<h3 id="once_do_with_data"><span><a class="doc-id-link" href="#once_do_with_data">once_do_with_data<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L601"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">once_do_with_data :: <span class="keyword-type">proc</span>(o: ^<a class="code-typename" href="/core/sync/#Once">Once</a>, fn: <span class="keyword-type">proc</span>(data: <a href="/base/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>), data: <a href="/base/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>) {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>once_do_with_data calls the procedure fn if and only if once_do_with_data is being called for the first for this instance of Once.</p>
+<p>Call a function with data once.</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="once_do_with_data_contextless"><span><a class="doc-id-link" href="#once_do_with_data_contextless">once_do_with_data_contextless<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L349"><em>Source</em></a></div></h3>
+<h3 id="once_do_with_data_contextless"><span><a class="doc-id-link" href="#once_do_with_data_contextless">once_do_with_data_contextless<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L619"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">once_do_with_data_contextless :: <span class="keyword-type">proc</span> "contextless" (o: ^<a class="code-typename" href="/core/sync/#Once">Once</a>, fn: <span class="keyword-type">proc</span> "contextless" (data: <a href="/base/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>), data: <a href="/base/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>) {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>once_do_with_data_contextless calls the procedure fn if and only if once_do_with_data_contextless is being called for the first for this instance of Once.</p>
+<p>Call a contextless function with data once.</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="once_do_without_data"><span><a class="doc-id-link" href="#once_do_without_data">once_do_without_data<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L301"><em>Source</em></a></div></h3>
+<h3 id="once_do_without_data"><span><a class="doc-id-link" href="#once_do_without_data">once_do_without_data<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L565"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">once_do_without_data :: <span class="keyword-type">proc</span>(o: ^<a class="code-typename" href="/core/sync/#Once">Once</a>, fn: <span class="keyword-type">proc</span>()) {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>once_do_without_data calls the procedure fn if and only if once_do_without_data is being called for the first for this instance of Once.</p>
+<p>Call a function with no data once.</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="once_do_without_data_contextless"><span><a class="doc-id-link" href="#once_do_without_data_contextless">once_do_without_data_contextless<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L317"><em>Source</em></a></div></h3>
+<h3 id="once_do_without_data_contextless"><span><a class="doc-id-link" href="#once_do_without_data_contextless">once_do_without_data_contextless<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L583"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">once_do_without_data_contextless :: <span class="keyword-type">proc</span>(o: ^<a class="code-typename" href="/core/sync/#Once">Once</a>, fn: <span class="keyword-type">proc</span> "contextless" ()) {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>once_do_without_data calls the procedure fn if and only if once_do_without_data is being called for the first for this instance of Once.</p>
+<p>Call a contextless function with no data once.</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="one_shot_event_signal"><span><a class="doc-id-link" href="#one_shot_event_signal">one_shot_event_signal<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L441"><em>Source</em></a></div></h3>
+<h3 id="one_shot_event_signal"><span><a class="doc-id-link" href="#one_shot_event_signal">one_shot_event_signal<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L740"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">one_shot_event_signal :: <span class="keyword-type">proc</span> "contextless" (e: ^<a class="code-typename" href="/core/sync/#One_Shot_Event">One_Shot_Event</a>) {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>Releases any threads that are currently blocked by this event with <code>one_shot_event_wait</code>.</p>
+<p>Make event available.</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="one_shot_event_wait"><span><a class="doc-id-link" href="#one_shot_event_wait">one_shot_event_wait<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L434"><em>Source</em></a></div></h3>
+<h3 id="one_shot_event_wait"><span><a class="doc-id-link" href="#one_shot_event_wait">one_shot_event_wait<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L731"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">one_shot_event_wait :: <span class="keyword-type">proc</span> "contextless" (e: ^<a class="code-typename" href="/core/sync/#One_Shot_Event">One_Shot_Event</a>) {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>Blocks the current thread until the event is made available with <code>one_shot_event_signal</code>.</p>
+<p>Block until the event is made available.</p>
+<p>This procedure blocks the execution of the current thread, until the event is
+made available.</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="park"><span><a class="doc-id-link" href="#park">park<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L382"><em>Source</em></a></div></h3>
+<h3 id="park"><span><a class="doc-id-link" href="#park">park<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L661"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">park :: <span class="keyword-type">proc</span> "contextless" (p: ^<a class="code-typename" href="/core/sync/#Parker">Parker</a>) {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>Blocks the current thread until the token is made available.</p>
-<p>Assumes this is only called by the thread that owns the Parker.</p>
+<p>Blocks until the token is available.</p>
+<p>This procedure blocks the execution of the current thread, until a token is
+made available.</p>
+<p><b>Note</b>: This procedure assumes this is only called by the thread that owns
+the Parker.</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="park_with_timeout"><span><a class="doc-id-link" href="#park_with_timeout">park_with_timeout<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L401"><em>Source</em></a></div></h3>
+<h3 id="park_with_timeout"><span><a class="doc-id-link" href="#park_with_timeout">park_with_timeout<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L682"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">park_with_timeout :: <span class="keyword-type">proc</span> "contextless" (p: ^<a class="code-typename" href="/core/sync/#Parker">Parker</a>, duration: time.<a class="code-typename" href="/core/time/#Duration">Duration</a>) {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>Blocks the current thread until the token is made available, but only
-for a limited duration.</p>
-<p>Assumes this is only called by the thread that owns the Parker</p>
+<p>Blocks until the token is available with timeout.</p>
+<p>This procedure blocks the execution of the current thread until a token is made
+available, or until the timeout has expired, whatever happens first.</p>
+<p><b>Note</b>: This procedure assumes this is only called by the thread that owns
+the Parker.</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="recursive_benaphore_guard"><span><a class="doc-id-link" href="#recursive_benaphore_guard">recursive_benaphore_guard<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L276"><em>Source</em></a></div></h3>
+<h3 id="recursive_benaphore_guard"><span><a class="doc-id-link" href="#recursive_benaphore_guard">recursive_benaphore_guard<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L533"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">recursive_benaphore_guard :: <span class="keyword-type">proc</span> "contextless" (m: ^<a class="code-typename" href="/core/sync/#Recursive_Benaphore">Recursive_Benaphore</a>) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Guard the current scope with a recursive benaphore.</p>
+<p>This procedure acquires a lock on the specified recursive benaphores and
+automatically releases it at the end of the callee's scope. If the recursive
+benaphore was already held by a another thread, this procedure also blocks until
+the lock can be acquired.</p>
+<p>When the lock is acquired all other threads attempting to take a lock will be
+blocked from entering any critical sections associated with the same benaphore,
+until the lock is released.</p>
+<p>This procedure always returns <code>true</code>, which makes it easy to define a critical
+section by calling this procedure inside an <code>if</code> statement.</p>
+<p><b>Example</b>:</p>
+<pre>if recursive_benaphore_guard(&m) {
+	...
+}
+</pre>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="recursive_benaphore_lock"><span><a class="doc-id-link" href="#recursive_benaphore_lock">recursive_benaphore_lock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L232"><em>Source</em></a></div></h3>
+<h3 id="recursive_benaphore_lock"><span><a class="doc-id-link" href="#recursive_benaphore_lock">recursive_benaphore_lock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L450"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">recursive_benaphore_lock :: <span class="keyword-type">proc</span> "contextless" (b: ^<a class="code-typename" href="/core/sync/#Recursive_Benaphore">Recursive_Benaphore</a>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Acquire a lock on a recursive benaphore.</p>
+<p>This procedure acquires a lock on a recursive benaphore. If the benaphore is
+held by another thread, this function blocks until the lock can be acquired.</p>
+<p>Once a lock is acquired, all other threads attempting to acquire a lock will
+be blocked from entering any critical sections associated with the same
+recursive benaphore, until the lock is released.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="recursive_benaphore_try_lock"><span><a class="doc-id-link" href="#recursive_benaphore_try_lock">recursive_benaphore_try_lock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L244"><em>Source</em></a></div></h3>
+<h3 id="recursive_benaphore_try_lock"><span><a class="doc-id-link" href="#recursive_benaphore_try_lock">recursive_benaphore_try_lock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L473"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">recursive_benaphore_try_lock :: <span class="keyword-type">proc</span> "contextless" (b: ^<a class="code-typename" href="/core/sync/#Recursive_Benaphore">Recursive_Benaphore</a>) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Try to acquire a lock on a recursive benaphore.</p>
+<p>This procedure attempts to acquire a lock on recursive benaphore. If the
+benaphore is already held by a different thread, this procedure returns <code>false</code>.
+Otherwise the lock is acquired and the procedure returns <code>true</code>.</p>
+<p>If the lock is acquired, all other threads attempting to acquire a lock will
+be blocked from entering any critical sections assciated with the same recursive
+benaphore, until the lock is released.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="recursive_benaphore_unlock"><span><a class="doc-id-link" href="#recursive_benaphore_unlock">recursive_benaphore_unlock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L259"><em>Source</em></a></div></h3>
+<h3 id="recursive_benaphore_unlock"><span><a class="doc-id-link" href="#recursive_benaphore_unlock">recursive_benaphore_unlock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L495"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">recursive_benaphore_unlock :: <span class="keyword-type">proc</span> "contextless" (b: ^<a class="code-typename" href="/core/sync/#Recursive_Benaphore">Recursive_Benaphore</a>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Release a lock on a recursive benaphore.</p>
+<p>This procedure releases a lock on the specified recursive benaphore. It also
+causes the critical sections associated with the same benaphore, to become open
+for other threads for entering.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="recursive_mutex_guard"><span><a class="doc-id-link" href="#recursive_mutex_guard">recursive_mutex_guard<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L148"><em>Source</em></a></div></h3>
+<h3 id="recursive_mutex_guard"><span><a class="doc-id-link" href="#recursive_mutex_guard">recursive_mutex_guard<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L384"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">recursive_mutex_guard :: <span class="keyword-type">proc</span> "contextless" (m: ^<a class="code-typename" href="/core/sync/#Recursive_Mutex">Recursive_Mutex</a>) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>Example:</p>
+<p>Guard the scope with a recursive mutex lock.</p>
+<p>This procedure acquires a lock on the specified recursive mutex and
+automatically releases it at the end of the callee's scope. If the recursive
+mutex was already held by a another thread, this procedure also blocks until the
+lock can be acquired.</p>
+<p>When the lock is acquired all other threads attempting to take a lock will be
+blocked from entering any critical sections associated with the same mutex,
+until the lock is released.</p>
+<p>This procedure always returns <code>true</code>, which makes it easy to define a critical
+section by calling this procedure inside an <code>if</code> statement.</p>
+<p><b>Example</b>:</p>
 <pre>if recursive_mutex_guard(&m) {
 	...
 }
@@ -1745,31 +2480,68 @@ for a limited duration.</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="recursive_mutex_lock"><span><a class="doc-id-link" href="#recursive_mutex_lock">recursive_mutex_lock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L129"><em>Source</em></a></div></h3>
+<h3 id="recursive_mutex_lock"><span><a class="doc-id-link" href="#recursive_mutex_lock">recursive_mutex_lock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L332"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">recursive_mutex_lock :: <span class="keyword-type">proc</span> "contextless" (m: ^<a class="code-typename" href="/core/sync/#Recursive_Mutex">Recursive_Mutex</a>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Acquire a lock on a recursive mutex.</p>
+<p>This procedure acquires a lock on the specified recursive mutex. If the lock is
+acquired by a different thread, this procedure also blocks until the lock can be
+acquired.</p>
+<p>When the lock is acquired, all other threads attempting to acquire a lock will
+be blocked from entering any critical sections associated with the same mutex,
+until the lock is released.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="recursive_mutex_try_lock"><span><a class="doc-id-link" href="#recursive_mutex_try_lock">recursive_mutex_try_lock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L137"><em>Source</em></a></div></h3>
+<h3 id="recursive_mutex_try_lock"><span><a class="doc-id-link" href="#recursive_mutex_try_lock">recursive_mutex_try_lock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L358"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">recursive_mutex_try_lock :: <span class="keyword-type">proc</span> "contextless" (m: ^<a class="code-typename" href="/core/sync/#Recursive_Mutex">Recursive_Mutex</a>) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Try to acquire a lock on a recursive mutex.</p>
+<p>This procedure attempts to acquire a lock on the specified recursive mutex. If
+the recursive mutex is locked by other threads, this procedure returns <code>false</code>.
+Otherwise it locks the mutex and returns <code>true</code>.</p>
+<p>If the lock is acquired, all other threads attempting to obtain a lock will be
+blocked from entering any critical sections associated with the same mutex,
+until the lock is released.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="recursive_mutex_unlock"><span><a class="doc-id-link" href="#recursive_mutex_unlock">recursive_mutex_unlock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L133"><em>Source</em></a></div></h3>
+<h3 id="recursive_mutex_unlock"><span><a class="doc-id-link" href="#recursive_mutex_unlock">recursive_mutex_unlock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L343"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">recursive_mutex_unlock :: <span class="keyword-type">proc</span> "contextless" (m: ^<a class="code-typename" href="/core/sync/#Recursive_Mutex">Recursive_Mutex</a>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Release a lock on a recursive mutex.</p>
+<p>This procedure releases a lock on the specified recursive mutex. It also causes
+the critical sections associated with the same mutex, to become open for other
+threads for entering.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="rw_mutex_guard"><span><a class="doc-id-link" href="#rw_mutex_guard">rw_mutex_guard<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L102"><em>Source</em></a></div></h3>
+<h3 id="rw_mutex_guard"><span><a class="doc-id-link" href="#rw_mutex_guard">rw_mutex_guard<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L262"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">rw_mutex_guard :: <span class="keyword-type">proc</span> "contextless" (m: ^<a class="code-typename" href="/core/sync/#RW_Mutex">RW_Mutex</a>) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>Example:</p>
+<p>Guard the current scope with an exclusive lock on a read-write mutex.</p>
+<p>This procedure acquires an exclusive lock on the specified read-write mutex.
+This procedure automatically releases the lock at the end of the callee's scope.
+If the mutex was already locked by readers or a writer, this procedure blocks,
+until a lock can be acquired.</p>
+<p>When an exclusive lock is acquired, all other threads attempting to acquire an
+exclusive lock will be blocked from entering any critical sections associated
+with the same read-write mutex, until the exclusive lock is released.</p>
+<p>This procedure always returns <code>true</code>, which makes it easy to define a critical
+section by running this procedure inside an <code>if</code> statement.</p>
+<p><b>Example</b>:</p>
 <pre>if rw_mutex_guard(&m) {
 	...
 }
@@ -1777,149 +2549,273 @@ for a limited duration.</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="rw_mutex_lock"><span><a class="doc-id-link" href="#rw_mutex_lock">rw_mutex_lock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L67"><em>Source</em></a></div></h3>
+<h3 id="rw_mutex_lock"><span><a class="doc-id-link" href="#rw_mutex_lock">rw_mutex_lock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L166"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">rw_mutex_lock :: <span class="keyword-type">proc</span> "contextless" (rw: ^<a class="code-typename" href="/core/sync/#RW_Mutex">RW_Mutex</a>) {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>rw_mutex_lock locks rw for writing (with a single writer)
-If the mutex is already locked for reading or writing, the mutex blocks until the mutex is available.</p>
+<p>Acquire an exclusive lock.</p>
+<p>This procedure acquires an exclusive lock on the specified read-write mutex. If
+the lock is already held by any thread, this procedure also blocks until the
+lock can be acquired.</p>
+<p>After a lock has been acquired, any thread attempting to acquire any lock
+will be blocked from entering any critical sections associated with the same
+read-write mutex, until the exclusive lock is released.</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="rw_mutex_shared_guard"><span><a class="doc-id-link" href="#rw_mutex_shared_guard">rw_mutex_shared_guard<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L114"><em>Source</em></a></div></h3>
+<h3 id="rw_mutex_shared_guard"><span><a class="doc-id-link" href="#rw_mutex_shared_guard">rw_mutex_shared_guard<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L289"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">rw_mutex_shared_guard :: <span class="keyword-type">proc</span> "contextless" (m: ^<a class="code-typename" href="/core/sync/#RW_Mutex">RW_Mutex</a>) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>Example:</p>
-<pre>if rw_mutex_shared_guard(&m) {
+<p>Guard the current scope with a shared lock on a read-write mutex.</p>
+<p>This procedure acquires a shared lock on the specified read-write mutex. This
+procedure automatically releases the lock at the end of the callee's scope. If
+the mutex already has an associated exclusive lock, this procedure blocks, until
+a lock can be acquired.</p>
+<p>When a shared lock is obtained, all other threads attempting to obtain an
+exclusive lock will be blocked from any critical sections, associated with the
+same read-write mutex, until all shared locks are released.</p>
+<p>This procedure always returns <code>true</code>, which makes it easy to define a critical
+section by running this procedure inside an <code>if</code> statement.</p>
+<p><b>Example</b>:</p>
+<pre>if rw_mutex_guard(&m) {
 	...
 }
 </pre>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="rw_mutex_shared_lock"><span><a class="doc-id-link" href="#rw_mutex_shared_lock">rw_mutex_shared_lock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L82"><em>Source</em></a></div></h3>
+<h3 id="rw_mutex_shared_lock"><span><a class="doc-id-link" href="#rw_mutex_shared_lock">rw_mutex_shared_lock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L210"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">rw_mutex_shared_lock :: <span class="keyword-type">proc</span> "contextless" (rw: ^<a class="code-typename" href="/core/sync/#RW_Mutex">RW_Mutex</a>) {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>rw_mutex_shared_lock locks rw for reading (with arbitrary number of readers)</p>
+<p>Acquire a shared lock on a read-write mutex.</p>
+<p>This procedure acquires a shared lock on the specified read-write mutex. If the
+mutex already has an exclusive lock held, this procedure also blocks until the
+lock can be acquired.</p>
+<p>After the shared lock is obtained, all threads attempting to acquire an
+exclusive lock will be blocked from entering any critical sections associated
+with the same read-write mutex, until all shared locks associated with the
+specified read-write mutex are released.</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="rw_mutex_shared_unlock"><span><a class="doc-id-link" href="#rw_mutex_shared_unlock">rw_mutex_shared_unlock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L87"><em>Source</em></a></div></h3>
+<h3 id="rw_mutex_shared_unlock"><span><a class="doc-id-link" href="#rw_mutex_shared_unlock">rw_mutex_shared_unlock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L221"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">rw_mutex_shared_unlock :: <span class="keyword-type">proc</span> "contextless" (rw: ^<a class="code-typename" href="/core/sync/#RW_Mutex">RW_Mutex</a>) {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>rw_mutex_shared_unlock unlocks rw for reading (with arbitrary number of readers)</p>
+<p>Release the shared lock on a read-write mutex.</p>
+<p>This procedure releases shared lock on the specified read-write mutex. When all
+shared locks are released, all critical sections associated with the same
+read-write mutex become open to other threads.</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="rw_mutex_try_lock"><span><a class="doc-id-link" href="#rw_mutex_try_lock">rw_mutex_try_lock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L77"><em>Source</em></a></div></h3>
+<h3 id="rw_mutex_try_lock"><span><a class="doc-id-link" href="#rw_mutex_try_lock">rw_mutex_try_lock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L194"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">rw_mutex_try_lock :: <span class="keyword-type">proc</span> "contextless" (rw: ^<a class="code-typename" href="/core/sync/#RW_Mutex">RW_Mutex</a>) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>rw_mutex_try_lock tries to lock rw for writing (with a single writer)</p>
+<p>Try to acquire an exclusive lock on a read-write mutex.</p>
+<p>This procedure tries to acquire an exclusive lock on the specified read-write
+mutex. If the mutex was already locked, the procedure returns <code>false</code>. Otherwise
+it acquires the exclusive lock and returns <code>true</code>.</p>
+<p>If the lock has been acquired, all threads attempting to acquire any lock
+will be blocked from entering any critical sections associated with the same
+read-write mutex, until the exclusive locked is released.</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="rw_mutex_try_shared_lock"><span><a class="doc-id-link" href="#rw_mutex_try_shared_lock">rw_mutex_try_shared_lock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L92"><em>Source</em></a></div></h3>
+<h3 id="rw_mutex_try_shared_lock"><span><a class="doc-id-link" href="#rw_mutex_try_shared_lock">rw_mutex_try_shared_lock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L236"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">rw_mutex_try_shared_lock :: <span class="keyword-type">proc</span> "contextless" (rw: ^<a class="code-typename" href="/core/sync/#RW_Mutex">RW_Mutex</a>) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>rw_mutex_try_shared_lock tries to lock rw for reading (with arbitrary number of readers)</p>
+<p>Try to acquire a shared lock on a read-write mutex.</p>
+<p>This procedure attempts to acquire a lock on the specified read-write mutex. If
+the mutex already has an exclusive lock held, this procedure returns <code>false</code>.
+Otherwise, it acquires the lock on the mutex and returns <code>true</code>.</p>
+<p>If the shared lock has been acquired, it causes all threads attempting to
+acquire the exclusive lock to be blocked from entering any critical sections
+associated with the same read-write mutex, until all shared locks are released.</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="rw_mutex_unlock"><span><a class="doc-id-link" href="#rw_mutex_unlock">rw_mutex_unlock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L72"><em>Source</em></a></div></h3>
+<h3 id="rw_mutex_unlock"><span><a class="doc-id-link" href="#rw_mutex_unlock">rw_mutex_unlock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L179"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">rw_mutex_unlock :: <span class="keyword-type">proc</span> "contextless" (rw: ^<a class="code-typename" href="/core/sync/#RW_Mutex">RW_Mutex</a>) {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>rw_mutex_unlock unlocks rw for writing (with a single writer)</p>
+<p>Release an exclusive lock.</p>
+<p>This procedure releases an exclusive lock associated with the specified
+read-write mutex.</p>
+<p>When the exclusive lock is released, all critical sections, associated with the
+same read-write mutex, become open to other threads.</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="sema_post"><span><a class="doc-id-link" href="#sema_post">sema_post<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L190"><em>Source</em></a></div></h3>
+<h3 id="sema_post"><span><a class="doc-id-link" href="#sema_post">sema_post<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L509"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">sema_post :: <span class="keyword-type">proc</span> "contextless" (s: ^<a class="code-typename" href="/core/sync/#Sema">Sema</a>, count: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a> = 1) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Increment the internal counter on a semaphore by the specified amount.</p>
+<p>This procedure increments the internal counter of the semaphore. If any of the
+threads were waiting on the semaphore, up to <code>count</code> of threads will continue
+the execution and enter the critical section.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="sema_wait"><span><a class="doc-id-link" href="#sema_wait">sema_wait<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L194"><em>Source</em></a></div></h3>
+<h3 id="sema_wait"><span><a class="doc-id-link" href="#sema_wait">sema_wait<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L520"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">sema_wait :: <span class="keyword-type">proc</span> "contextless" (s: ^<a class="code-typename" href="/core/sync/#Sema">Sema</a>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Wait on a semaphore until the internal counter is non-zero.</p>
+<p>This procedure blocks the execution of the current thread, until the semaphore
+counter is non-zero, and atomically decrements it by one, once the wait has
+ended.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="sema_wait_with_timeout"><span><a class="doc-id-link" href="#sema_wait_with_timeout">sema_wait_with_timeout<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L198"><em>Source</em></a></div></h3>
+<h3 id="sema_wait_with_timeout"><span><a class="doc-id-link" href="#sema_wait_with_timeout">sema_wait_with_timeout<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin#L532"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">sema_wait_with_timeout :: <span class="keyword-type">proc</span> "contextless" (s: ^<a class="code-typename" href="/core/sync/#Sema">Sema</a>, duration: time.<a class="code-typename" href="/core/time/#Duration">Duration</a>) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Wait on a semaphore until the internal counter is non-zero or a timeout is reached.</p>
+<p>This procedure blocks the execution of the current thread, until the semaphore
+counter is non-zero, and if so atomically decrements it by one, once the wait
+has ended. If the specified timeout is reached, the function returns <code>false</code>,
+otherwise it returns <code>true</code>.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="ticket_mutex_guard"><span><a class="doc-id-link" href="#ticket_mutex_guard">ticket_mutex_guard<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L191"><em>Source</em></a></div></h3>
+<h3 id="ticket_mutex_guard"><span><a class="doc-id-link" href="#ticket_mutex_guard">ticket_mutex_guard<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L324"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">ticket_mutex_guard :: <span class="keyword-type">proc</span> "contextless" (m: ^<a class="code-typename" href="/core/sync/#Ticket_Mutex">Ticket_Mutex</a>) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Guard the current scope with a lock on a ticket mutex.</p>
+<p>This procedure acquires a lock on a ticket mutex. The lock is automatically
+released at the end of callee's scope. If the mutex was already locked, this
+procedure also blocks until the lock can be acquired.</p>
+<p>When a lock has been acquired, all threads attempting to acquire a lock will be
+blocked from entering any critical sections associated with the ticket mutex,
+until the lock is released.</p>
+<p>This procedure always returns <code>true</code>. This makes it easy to define a critical
+section by putting the function inside the <code>if</code> statement.</p>
+<p><b>Example</b>:</p>
+<pre>if ticket_mutex_guard(&m) {
+	...
+}
+</pre>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="ticket_mutex_lock"><span><a class="doc-id-link" href="#ticket_mutex_lock">ticket_mutex_lock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L180"><em>Source</em></a></div></h3>
+<h3 id="ticket_mutex_lock"><span><a class="doc-id-link" href="#ticket_mutex_lock">ticket_mutex_lock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L285"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">ticket_mutex_lock :: <span class="keyword-type">proc</span> "contextless" (m: ^<a class="code-typename" href="/core/sync/#Ticket_Mutex">Ticket_Mutex</a>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Acquire a lock on a ticket mutex.</p>
+<p>This procedure acquires a lock on a ticket mutex. If the ticket mutex is held
+by another thread, this procedure also blocks the execution until the lock
+can be acquired.</p>
+<p>Once the lock is acquired, any thread calling <code>ticket_mutex_lock</code> will be
+blocked from entering any critical sections associated with the same ticket
+mutex, until the lock is released.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="ticket_mutex_unlock"><span><a class="doc-id-link" href="#ticket_mutex_unlock">ticket_mutex_unlock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L187"><em>Source</em></a></div></h3>
+<h3 id="ticket_mutex_unlock"><span><a class="doc-id-link" href="#ticket_mutex_unlock">ticket_mutex_unlock<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L299"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">ticket_mutex_unlock :: <span class="keyword-type">proc</span> "contextless" (m: ^<a class="code-typename" href="/core/sync/#Ticket_Mutex">Ticket_Mutex</a>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Release a lock on a ticket mutex.</p>
+<p>This procedure releases the lock on a ticket mutex. If any of the threads are
+waiting to acquire the lock, exactly one of those threads is unblocked and
+allowed into the critical section.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="unpark"><span><a class="doc-id-link" href="#unpark">unpark<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L413"><em>Source</em></a></div></h3>
+<h3 id="unpark"><span><a class="doc-id-link" href="#unpark">unpark<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L705"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">unpark :: <span class="keyword-type">proc</span> "contextless" (p: ^<a class="code-typename" href="/core/sync/#Parker">Parker</a>) {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>Automatically makes thee token available if it was not already.</p>
+<p>Make the token available.</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="wait_group_add"><span><a class="doc-id-link" href="#wait_group_add">wait_group_add<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L16"><em>Source</em></a></div></h3>
+<h3 id="wait_group_add"><span><a class="doc-id-link" href="#wait_group_add">wait_group_add<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L42"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">wait_group_add :: <span class="keyword-type">proc</span> "contextless" (wg: ^<a class="code-typename" href="/core/sync/#Wait_Group">Wait_Group</a>, delta: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Increment an internal counter of a wait group.</p>
+<p>This procedure atomicaly increments a number to the specified wait group's
+internal counter by a specified amount. This operation can be done on any
+thread.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="wait_group_done"><span><a class="doc-id-link" href="#wait_group_done">wait_group_done<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L35"><em>Source</em></a></div></h3>
+<h3 id="wait_group_done"><span><a class="doc-id-link" href="#wait_group_done">wait_group_done<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L68"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">wait_group_done :: <span class="keyword-type">proc</span> "contextless" (wg: ^<a class="code-typename" href="/core/sync/#Wait_Group">Wait_Group</a>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Signal work done by a thread in a wait group.</p>
+<p>This procedure decrements the internal counter of the specified wait group and
+wakes up the waiting thread. Once the internal counter reaches zero, the waiting
+thread resumes execution.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="wait_group_wait"><span><a class="doc-id-link" href="#wait_group_wait">wait_group_wait<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L39"><em>Source</em></a></div></h3>
+<h3 id="wait_group_wait"><span><a class="doc-id-link" href="#wait_group_wait">wait_group_wait<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L78"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">wait_group_wait :: <span class="keyword-type">proc</span> "contextless" (wg: ^<a class="code-typename" href="/core/sync/#Wait_Group">Wait_Group</a>) {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Wait for all worker threads in the wait group.</p>
+<p>This procedure blocks the execution of the current thread, until the specified
+wait group's internal counter reaches zero.</p>
+</details>
 </div>
 <div class="pkg-entity">
-<h3 id="wait_group_wait_with_timeout"><span><a class="doc-id-link" href="#wait_group_wait_with_timeout">wait_group_wait_with_timeout<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L50"><em>Source</em></a></div></h3>
+<h3 id="wait_group_wait_with_timeout"><span><a class="doc-id-link" href="#wait_group_wait_with_timeout">wait_group_wait_with_timeout<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L97"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">wait_group_wait_with_timeout :: <span class="keyword-type">proc</span> "contextless" (wg: ^<a class="code-typename" href="/core/sync/#Wait_Group">Wait_Group</a>, duration: time.<a class="code-typename" href="/core/time/#Duration">Duration</a>) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> {…}</pre>
 </div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Wait for all worker threads in the wait group, or until timeout is reached.</p>
+<p>This procedure blocks the execution of the current thread, until the specified
+wait group's internal counter reaches zero, or until the timeout is reached.</p>
+<p>This procedure returns <code>false</code>, if the timeout was reached, <code>true</code> otherwise.</p>
+</details>
 </div>
 <h2 id="pkg-Procedure Groups" class="pkg-header">Procedure Groups</h2>
 <div class="pkg-entity">
@@ -1980,7 +2876,7 @@ If the mutex is already locked for reading or writing, the mutex blocks until th
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="once_do"><span><a class="doc-id-link" href="#once_do">once_do<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L293"><em>Source</em></a></div></h3>
+<h3 id="once_do"><span><a class="doc-id-link" href="#once_do">once_do<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin#L555"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">once_do :: <span class="keyword-type">proc</span>{
 	<a class="code-procedure" href="/core/sync/#once_do_without_data">once_do_without_data</a>,
@@ -1992,7 +2888,9 @@ If the mutex is already locked for reading or writing, the mutex blocks until th
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>once_do calls the procedure fn if and only if once_do is being called for the first for this instance of Once.</p>
+<p>Call a function once.</p>
+<p>The <code>once_do</code> procedure group calls a specified function, if it wasn't already
+called from the perspective of a specific <code>Once</code> struct.</p>
 </details>
 </div>
 <div class="pkg-entity">
@@ -2149,6 +3047,7 @@ If the mutex is already locked for reading or writing, the mutex blocks until th
 <h2 id="pkg-source-files">Source Files</h2>
 <ul>
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/atomic.odin">atomic.odin</a></li>
+<li><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/doc.odin">doc.odin</a></li>
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/extended.odin">extended.odin</a></li>
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives.odin">primitives.odin</a></li>
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/sync/primitives_atomic.odin">primitives_atomic.odin</a></li>
@@ -2157,12 +3056,12 @@ If the mutex is already locked for reading or writing, the mutex blocks until th
 <li><em>(hidden platform specific files)</em></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2024-07 (vendor "odin") Windows_amd64 @ 2024-07-29 21:11:11.728380700 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2024-07 (vendor "odin") Windows_amd64 @ 2024-07-30 21:12:02.891148600 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
 <ul>
-<li><a href="#pkg-Types">Types</a><ul>
+<li><a href="#pkg-overview">Overview</a><li><a href="#pkg-Types">Types</a><ul>
 <li><a href="#Atomic_Cond">Atomic_Cond</a></li>
 <li><a href="#Atomic_Memory_Order">Atomic_Memory_Order</a></li>
 <li><a href="#Atomic_Mutex">Atomic_Mutex</a></li>
