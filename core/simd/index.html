@@ -375,11 +375,10 @@ Variables (0)</summary>
 <div>
 <details class="doc-index" id="doc-index-Procedures" aria-labelledby="#doc-index-Procedures-header">
 <summary id="#doc-index-Procedures-header">
-Procedures (61)</summary>
+Procedures (69)</summary>
 <ul>
 <li><a href="#abs">abs</a></li>
 <li><a href="#add">add</a></li>
-<li><a href="#add_sat">add_sat</a></li>
 <li><a href="#bit_and">bit_and</a></li>
 <li><a href="#bit_and_not">bit_and_not</a></li>
 <li><a href="#bit_not">bit_not</a></li>
@@ -399,6 +398,7 @@ Procedures (61)</summary>
 <li><a href="#from_array">from_array</a></li>
 <li><a href="#from_slice">from_slice</a></li>
 <li><a href="#fused_mul_add">fused_mul_add</a></li>
+<li><a href="#gather">gather</a></li>
 <li><a href="#lanes_eq">lanes_eq</a></li>
 <li><a href="#lanes_ge">lanes_ge</a></li>
 <li><a href="#lanes_gt">lanes_gt</a></li>
@@ -408,6 +408,10 @@ Procedures (61)</summary>
 <li><a href="#lanes_reverse">lanes_reverse</a></li>
 <li><a href="#lanes_rotate_left">lanes_rotate_left</a></li>
 <li><a href="#lanes_rotate_right">lanes_rotate_right</a></li>
+<li><a href="#masked_compress_store">masked_compress_store</a></li>
+<li><a href="#masked_expand_load">masked_expand_load</a></li>
+<li><a href="#masked_load">masked_load</a></li>
+<li><a href="#masked_store">masked_store</a></li>
 <li><a href="#max">max</a></li>
 <li><a href="#min">min</a></li>
 <li><a href="#mul">mul</a></li>
@@ -415,7 +419,9 @@ Procedures (61)</summary>
 <li><a href="#neg">neg</a></li>
 <li><a href="#recip">recip</a></li>
 <li><a href="#reduce_add_ordered">reduce_add_ordered</a></li>
+<li><a href="#reduce_all">reduce_all</a></li>
 <li><a href="#reduce_and">reduce_and</a></li>
+<li><a href="#reduce_any">reduce_any</a></li>
 <li><a href="#reduce_max">reduce_max</a></li>
 <li><a href="#reduce_min">reduce_min</a></li>
 <li><a href="#reduce_mul_ordered">reduce_mul_ordered</a></li>
@@ -423,6 +429,9 @@ Procedures (61)</summary>
 <li><a href="#reduce_xor">reduce_xor</a></li>
 <li><a href="#replace">replace</a></li>
 <li><a href="#reverse_bits">reverse_bits</a></li>
+<li><a href="#saturating_add">saturating_add</a></li>
+<li><a href="#saturating_sub">saturating_sub</a></li>
+<li><a href="#scatter">scatter</a></li>
 <li><a href="#select">select</a></li>
 <li><a href="#shl">shl</a></li>
 <li><a href="#shl_masked">shl_masked</a></li>
@@ -432,7 +441,6 @@ Procedures (61)</summary>
 <li><a href="#signum">signum</a></li>
 <li><a href="#sqrt">sqrt</a></li>
 <li><a href="#sub">sub</a></li>
-<li><a href="#sub_sat">sub_sat</a></li>
 <li><a href="#swizzle">swizzle</a></li>
 <li><a href="#to_array">to_array</a></li>
 <li><a href="#to_array_ptr">to_array_ptr</a></li>
@@ -752,16 +760,6 @@ Procedure Groups (0)</summary>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="add_sat"><span><a class="doc-id-link" href="#add_sat">add_sat<span class="a-hidden">&nbsp;¶</span></a></span></h3>
-<div>
-<pre class="doc-code">add_sat :: <a href="/base/intrinsics#simd_add_sat">intrinsics</a>.simd_add_sat</pre>
-</div>
-<details class="odin-doc-toggle" open>
-<summary class="hideme"><span>&nbsp;</span></summary>
-<p>Saturation Arithmetic</p>
-</details>
-</div>
-<div class="pkg-entity">
 <h3 id="bit_and"><span><a class="doc-id-link" href="#bit_and">bit_and<span class="a-hidden">&nbsp;¶</span></a></span></h3>
 <div>
 <pre class="doc-code">bit_and :: <a href="/base/intrinsics#simd_bit_and">intrinsics</a>.simd_bit_and</pre>
@@ -774,7 +772,7 @@ Procedure Groups (0)</summary>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="bit_not"><span><a class="doc-id-link" href="#bit_not">bit_not<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/simd/simd.odin#L169"><em>Source</em></a></div></h3>
+<h3 id="bit_not"><span><a class="doc-id-link" href="#bit_not">bit_not<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/simd/simd.odin#L181"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">bit_not :: <span class="keyword-type">proc</span> "contextless" (v: $/<span class="directive">#simd</span>[0]$T) -> $/<span class="directive">#simd</span>[0]$T {…}</pre>
 </div>
@@ -804,7 +802,7 @@ Procedure Groups (0)</summary>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="copysign"><span><a class="doc-id-link" href="#copysign">copysign<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/simd/simd.odin#L173"><em>Source</em></a></div></h3>
+<h3 id="copysign"><span><a class="doc-id-link" href="#copysign">copysign<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/simd/simd.odin#L185"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">copysign :: <span class="keyword-type">proc</span> "contextless" (v, sign: $/<span class="directive">#simd</span>[0]$T) -> $/<span class="directive">#simd</span>[0]$T {…}</pre>
 </div>
@@ -866,13 +864,13 @@ Procedure Groups (0)</summary>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="from_array"><span><a class="doc-id-link" href="#from_array">from_array<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/simd/simd.odin#L156"><em>Source</em></a></div></h3>
+<h3 id="from_array"><span><a class="doc-id-link" href="#from_array">from_array<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/simd/simd.odin#L168"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">from_array :: <span class="keyword-type">proc</span> "contextless" (v: $T/[0]$T) -> <span class="directive">#simd</span>[0]$T {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="from_slice"><span><a class="doc-id-link" href="#from_slice">from_slice<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/simd/simd.odin#L160"><em>Source</em></a></div></h3>
+<h3 id="from_slice"><span><a class="doc-id-link" href="#from_slice">from_slice<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/simd/simd.odin#L172"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">from_slice :: <span class="keyword-type">proc</span>($T: <span class="keyword-type">typeid</span>/<span class="directive">#simd</span>[0]T, slice: []T) -> $/<span class="directive">#simd</span>[0]T {…}</pre>
 </div>
@@ -882,6 +880,16 @@ Procedure Groups (0)</summary>
 <div>
 <pre class="doc-code">fused_mul_add :: <a href="/base/intrinsics#fused_mul_add">intrinsics</a>.fused_mul_add</pre>
 </div>
+</div>
+<div class="pkg-entity">
+<h3 id="gather"><span><a class="doc-id-link" href="#gather">gather<span class="a-hidden">&nbsp;¶</span></a></span></h3>
+<div>
+<pre class="doc-code">gather :: <a href="/base/intrinsics#simd_gather">intrinsics</a>.simd_gather</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Gather and Scatter intrinsics</p>
+</details>
 </div>
 <div class="pkg-entity">
 <h3 id="lanes_eq"><span><a class="doc-id-link" href="#lanes_eq">lanes_eq<span class="a-hidden">&nbsp;¶</span></a></span></h3>
@@ -946,6 +954,30 @@ element-wise:
 </div>
 </div>
 <div class="pkg-entity">
+<h3 id="masked_compress_store"><span><a class="doc-id-link" href="#masked_compress_store">masked_compress_store<span class="a-hidden">&nbsp;¶</span></a></span></h3>
+<div>
+<pre class="doc-code">masked_compress_store :: <a href="/base/intrinsics#simd_masked_compress_store">intrinsics</a>.simd_masked_compress_store</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="masked_expand_load"><span><a class="doc-id-link" href="#masked_expand_load">masked_expand_load<span class="a-hidden">&nbsp;¶</span></a></span></h3>
+<div>
+<pre class="doc-code">masked_expand_load :: <a href="/base/intrinsics#simd_masked_expand_load">intrinsics</a>.simd_masked_expand_load</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="masked_load"><span><a class="doc-id-link" href="#masked_load">masked_load<span class="a-hidden">&nbsp;¶</span></a></span></h3>
+<div>
+<pre class="doc-code">masked_load :: <a href="/base/intrinsics#simd_masked_load">intrinsics</a>.simd_masked_load</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="masked_store"><span><a class="doc-id-link" href="#masked_store">masked_store<span class="a-hidden">&nbsp;¶</span></a></span></h3>
+<div>
+<pre class="doc-code">masked_store :: <a href="/base/intrinsics#simd_masked_store">intrinsics</a>.simd_masked_store</pre>
+</div>
+</div>
+<div class="pkg-entity">
 <h3 id="max"><span><a class="doc-id-link" href="#max">max<span class="a-hidden">&nbsp;¶</span></a></span></h3>
 <div>
 <pre class="doc-code">max :: <a href="/base/intrinsics#simd_max">intrinsics</a>.simd_max</pre>
@@ -976,7 +1008,7 @@ element-wise:
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="recip"><span><a class="doc-id-link" href="#recip">recip<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/simd/simd.odin#L185"><em>Source</em></a></div></h3>
+<h3 id="recip"><span><a class="doc-id-link" href="#recip">recip<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/simd/simd.odin#L197"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">recip :: <span class="keyword-type">proc</span> "contextless" (v: $/<span class="directive">#simd</span>[0]$T) -> $/<span class="directive">#simd</span>[0]$T {…}</pre>
 </div>
@@ -988,9 +1020,21 @@ element-wise:
 </div>
 </div>
 <div class="pkg-entity">
+<h3 id="reduce_all"><span><a class="doc-id-link" href="#reduce_all">reduce_all<span class="a-hidden">&nbsp;¶</span></a></span></h3>
+<div>
+<pre class="doc-code">reduce_all :: <a href="/base/intrinsics#simd_reduce_all">intrinsics</a>.simd_reduce_all</pre>
+</div>
+</div>
+<div class="pkg-entity">
 <h3 id="reduce_and"><span><a class="doc-id-link" href="#reduce_and">reduce_and<span class="a-hidden">&nbsp;¶</span></a></span></h3>
 <div>
 <pre class="doc-code">reduce_and :: <a href="/base/intrinsics#simd_reduce_and">intrinsics</a>.simd_reduce_and</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="reduce_any"><span><a class="doc-id-link" href="#reduce_any">reduce_any<span class="a-hidden">&nbsp;¶</span></a></span></h3>
+<div>
+<pre class="doc-code">reduce_any :: <a href="/base/intrinsics#simd_reduce_any">intrinsics</a>.simd_reduce_any</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -1037,6 +1081,28 @@ element-wise:
 <h3 id="reverse_bits"><span><a class="doc-id-link" href="#reverse_bits">reverse_bits<span class="a-hidden">&nbsp;¶</span></a></span></h3>
 <div>
 <pre class="doc-code">reverse_bits :: <a href="/base/intrinsics#reverse_bits">intrinsics</a>.reverse_bits</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="saturating_add"><span><a class="doc-id-link" href="#saturating_add">saturating_add<span class="a-hidden">&nbsp;¶</span></a></span></h3>
+<div>
+<pre class="doc-code">saturating_add :: <a href="/base/intrinsics#simd_saturating_add">intrinsics</a>.simd_saturating_add</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Saturation Arithmetic</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="saturating_sub"><span><a class="doc-id-link" href="#saturating_sub">saturating_sub<span class="a-hidden">&nbsp;¶</span></a></span></h3>
+<div>
+<pre class="doc-code">saturating_sub :: <a href="/base/intrinsics#simd_saturating_sub">intrinsics</a>.simd_saturating_sub</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="scatter"><span><a class="doc-id-link" href="#scatter">scatter<span class="a-hidden">&nbsp;¶</span></a></span></h3>
+<div>
+<pre class="doc-code">scatter :: <a href="/base/intrinsics#simd_scatter">intrinsics</a>.simd_scatter</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -1094,7 +1160,7 @@ x &lt;&lt; (y & mask)</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="signum"><span><a class="doc-id-link" href="#signum">signum<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/simd/simd.odin#L180"><em>Source</em></a></div></h3>
+<h3 id="signum"><span><a class="doc-id-link" href="#signum">signum<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/simd/simd.odin#L192"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">signum :: <span class="keyword-type">proc</span> "contextless" (v: $/<span class="directive">#simd</span>[0]$T) -> $/<span class="directive">#simd</span>[0]$T {…}</pre>
 </div>
@@ -1112,12 +1178,6 @@ x &lt;&lt; (y & mask)</p>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="sub_sat"><span><a class="doc-id-link" href="#sub_sat">sub_sat<span class="a-hidden">&nbsp;¶</span></a></span></h3>
-<div>
-<pre class="doc-code">sub_sat :: <a href="/base/intrinsics#simd_sub_sat">intrinsics</a>.simd_sub_sat</pre>
-</div>
-</div>
-<div class="pkg-entity">
 <h3 id="swizzle"><span><a class="doc-id-link" href="#swizzle">swizzle<span class="a-hidden">&nbsp;¶</span></a></span></h3>
 <div>
 <pre class="doc-code">swizzle :: <a href="/base/builtin#swizzle">builtin</a>.swizzle</pre>
@@ -1128,13 +1188,13 @@ x &lt;&lt; (y & mask)</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="to_array"><span><a class="doc-id-link" href="#to_array">to_array<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/simd/simd.odin#L153"><em>Source</em></a></div></h3>
+<h3 id="to_array"><span><a class="doc-id-link" href="#to_array">to_array<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/simd/simd.odin#L165"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">to_array :: <span class="keyword-type">proc</span> "contextless" (v: <span class="directive">#simd</span>[0]$T) -> [0]$T {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="to_array_ptr"><span><a class="doc-id-link" href="#to_array_ptr">to_array_ptr<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/simd/simd.odin#L150"><em>Source</em></a></div></h3>
+<h3 id="to_array_ptr"><span><a class="doc-id-link" href="#to_array_ptr">to_array_ptr<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/simd/simd.odin#L162"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">to_array_ptr :: <span class="keyword-type">proc</span> "contextless" (v: ^<span class="directive">#simd</span>[0]$T) -> ^[0]$T {…}</pre>
 </div>
@@ -1159,7 +1219,7 @@ x &lt;&lt; (y & mask)</p>
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/simd/simd.odin">simd.odin</a></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2024-08 (vendor "odin") Windows_amd64 @ 2024-08-04 21:10:46.323475500 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2024-08 (vendor "odin") Windows_amd64 @ 2024-08-05 14:50:54.200554100 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
@@ -1215,7 +1275,6 @@ x &lt;&lt; (y & mask)</p>
 <li><a href="#pkg-Procedures">Procedures</a><ul>
 <li><a href="#abs">abs</a></li>
 <li><a href="#add">add</a></li>
-<li><a href="#add_sat">add_sat</a></li>
 <li><a href="#bit_and">bit_and</a></li>
 <li><a href="#bit_and_not">bit_and_not</a></li>
 <li><a href="#bit_not">bit_not</a></li>
@@ -1235,6 +1294,7 @@ x &lt;&lt; (y & mask)</p>
 <li><a href="#from_array">from_array</a></li>
 <li><a href="#from_slice">from_slice</a></li>
 <li><a href="#fused_mul_add">fused_mul_add</a></li>
+<li><a href="#gather">gather</a></li>
 <li><a href="#lanes_eq">lanes_eq</a></li>
 <li><a href="#lanes_ge">lanes_ge</a></li>
 <li><a href="#lanes_gt">lanes_gt</a></li>
@@ -1244,6 +1304,10 @@ x &lt;&lt; (y & mask)</p>
 <li><a href="#lanes_reverse">lanes_reverse</a></li>
 <li><a href="#lanes_rotate_left">lanes_rotate_left</a></li>
 <li><a href="#lanes_rotate_right">lanes_rotate_right</a></li>
+<li><a href="#masked_compress_store">masked_compress_store</a></li>
+<li><a href="#masked_expand_load">masked_expand_load</a></li>
+<li><a href="#masked_load">masked_load</a></li>
+<li><a href="#masked_store">masked_store</a></li>
 <li><a href="#max">max</a></li>
 <li><a href="#min">min</a></li>
 <li><a href="#mul">mul</a></li>
@@ -1251,7 +1315,9 @@ x &lt;&lt; (y & mask)</p>
 <li><a href="#neg">neg</a></li>
 <li><a href="#recip">recip</a></li>
 <li><a href="#reduce_add_ordered">reduce_add_ordered</a></li>
+<li><a href="#reduce_all">reduce_all</a></li>
 <li><a href="#reduce_and">reduce_and</a></li>
+<li><a href="#reduce_any">reduce_any</a></li>
 <li><a href="#reduce_max">reduce_max</a></li>
 <li><a href="#reduce_min">reduce_min</a></li>
 <li><a href="#reduce_mul_ordered">reduce_mul_ordered</a></li>
@@ -1259,6 +1325,9 @@ x &lt;&lt; (y & mask)</p>
 <li><a href="#reduce_xor">reduce_xor</a></li>
 <li><a href="#replace">replace</a></li>
 <li><a href="#reverse_bits">reverse_bits</a></li>
+<li><a href="#saturating_add">saturating_add</a></li>
+<li><a href="#saturating_sub">saturating_sub</a></li>
+<li><a href="#scatter">scatter</a></li>
 <li><a href="#select">select</a></li>
 <li><a href="#shl">shl</a></li>
 <li><a href="#shl_masked">shl_masked</a></li>
@@ -1268,7 +1337,6 @@ x &lt;&lt; (y & mask)</p>
 <li><a href="#signum">signum</a></li>
 <li><a href="#sqrt">sqrt</a></li>
 <li><a href="#sub">sub</a></li>
-<li><a href="#sub_sat">sub_sat</a></li>
 <li><a href="#swizzle">swizzle</a></li>
 <li><a href="#to_array">to_array</a></li>
 <li><a href="#to_array_ptr">to_array_ptr</a></li>
