@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>package crypto/legacy/keccak - pkg.odin-lang.org</title>	<link rel="icon" href="/favicon.svg">
+	<title>package crypto/aead - pkg.odin-lang.org</title>	<link rel="icon" href="/favicon.svg">
 	<link rel="stylesheet" type="text/css" href="https://odin-lang.org/scss/custom.min.css">
 	<link rel=stylesheet href="//odin-lang.org/lib/highlight/styles/github-dark.min.css">
 	<script src="//odin-lang.org/lib/highlight/highlight.min.js"></script>
@@ -103,7 +103,7 @@
 
 </li>
 <li class="nav-item"><a href="/core/crypto">crypto</a><ul>
-<li><a href="/core/crypto/aead">aead</a></li>
+<li><a class="active" href="/core/crypto/aead">aead</a></li>
 <li><a href="/core/crypto/aes">aes</a></li>
 <li><a href="/core/crypto/blake2b">blake2b</a></li>
 <li><a href="/core/crypto/blake2s">blake2s</a></li>
@@ -114,7 +114,7 @@
 <li><a href="/core/crypto/hkdf">hkdf</a></li>
 <li><a href="/core/crypto/hmac">hmac</a></li>
 <li><a href="/core/crypto/kmac">kmac</a></li>
-<li><a class="active" href="/core/crypto/legacy/keccak">legacy/keccak</a></li>
+<li><a href="/core/crypto/legacy/keccak">legacy/keccak</a></li>
 <li><a href="/core/crypto/legacy/md5">legacy/md5</a></li>
 <li><a href="/core/crypto/legacy/sha1">legacy/sha1</a></li>
 <li><a href="/core/crypto/pbkdf2">pbkdf2</a></li>
@@ -280,11 +280,10 @@
 <ol class="breadcrumb">
 <li class="breadcrumb-item"><a href="/core">core</a></li>
 <li class="breadcrumb-item"><a href="/core/crypto">crypto</a></li>
-<li class="breadcrumb-item">legacy</li>
-<li class="breadcrumb-item active" aria-current="page"><a href="/core/crypto/legacy/keccak">keccak</a></li>
+<li class="breadcrumb-item active" aria-current="page"><a href="/core/crypto/aead">aead</a></li>
 </ol>
 </nav>
-<h1>package core:crypto/legacy/keccak<div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/legacy/keccak"><em>Source</em></a></div></h1>
+<h1>package core:crypto/aead<div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/aead"><em>Source</em></a></div></h1>
 
 		<div class="odin-search-wrapper">
 			<input type="search" id="odin-search" class="odin-search-package" autocomplete="off" spellcheck="false" placeholder="Fuzzy Search...">
@@ -308,67 +307,117 @@
 <div id="pkg-top">
 <h2>Overview</h2>
 <div id="pkg-overview">
-<p>package keccak implements the Keccak hash algorithm family.</p>
-<p>During the SHA-3 standardization process, the padding scheme was changed
-thus Keccac and SHA-3 produce different outputs.  Most users should use
-SHA-3 and/or SHAKE instead, however the legacy algorithm is provided for
-backward compatibility purposes.</p>
+<p>package aead provides a generic interface to the supported Authenticated
+Encryption with Associated Data algorithms.</p>
+<p>Both a one-shot and context based interface are provided, with similar
+usage.  If multiple messages are to be sealed/opened via the same key,
+the context based interface may be more efficient, depending on the
+algorithm.</p>
+<p>WARNING: Reusing the same key + iv to seal (encrypt) multiple messages
+results in catastrophic loss of security for most algorithms.</p>
+<p><code></code>`odin
+package aead_example</p>
+<p>import "core:bytes"
+import "core:crypto"
+import "core:crypto/aead"</p>
+<p>main :: proc() {</p>
+<pre>algo := aead.Algorithm.XCHACHA20POLY1305
+
+// The example added associated data, and plaintext.
+aad_str := "Get your ass in gear boys."
+pt_str := "They're immanetizing the Eschaton."
+
+aad := transmute([]byte)aad_str
+plaintext := transmute([]byte)pt_str
+pt_len := len(plaintext)
+
+// Generate a random key for the purposes of illustration.
+key := make([]byte, aead.KEY_SIZES[algo])
+defer delete(key)
+crypto.rand_bytes(key)
+
+// `ciphertext || tag`, is a common way data is transmitted, so
+// demonstrate that.
+buf := make([]byte, pt_len + aead.TAG_SIZES[algo])
+defer delete(buf)
+ciphertext, tag := buf[:pt_len], buf[pt_len:]
+
+// Seal the AAD + Plaintext.
+iv := make([]byte, aead.IV_SIZES[algo])
+defer delete(iv)
+crypto.rand_bytes(iv) // Random IVs are safe with XChaCha20-Poly1305.
+aead.seal(algo, ciphertext, tag, key, iv, aad, plaintext)
+
+// Open the AAD + Ciphertext.
+opened_pt := buf[:pt_len]
+if ok := aead.open(algo, opened_pt, key, iv, aad, ciphertext, tag); !ok {
+	panic("aead example: failed to open")
+}
+
+assert(bytes.equal(opened_pt, plaintext))
+</pre>
+<p>}
+<code></code>`</p>
 </div>
 <div id="pkg-index">
 <h2>Index</h2>
 <div>
 <details class="doc-index" id="doc-index-Types" aria-labelledby="#doc-index-Types-header">
 <summary id="#doc-index-Types-header">
-Types (1)</summary>
+Types (3)</summary>
 <ul>
+<li><a href="#Algorithm">Algorithm</a></li>
 <li><a href="#Context">Context</a></li>
+<li><a href="#Implementation">Implementation</a></li>
 </ul>
 </details>
 </div>
 <div>
 <details class="doc-index" id="doc-index-Constants" aria-labelledby="#doc-index-Constants-header">
 <summary id="#doc-index-Constants-header">
-Constants (8)</summary>
+Constants (1)</summary>
 <ul>
-<li><a href="#BLOCK_SIZE_224">BLOCK_SIZE_224</a></li>
-<li><a href="#BLOCK_SIZE_256">BLOCK_SIZE_256</a></li>
-<li><a href="#BLOCK_SIZE_384">BLOCK_SIZE_384</a></li>
-<li><a href="#BLOCK_SIZE_512">BLOCK_SIZE_512</a></li>
-<li><a href="#DIGEST_SIZE_224">DIGEST_SIZE_224</a></li>
-<li><a href="#DIGEST_SIZE_256">DIGEST_SIZE_256</a></li>
-<li><a href="#DIGEST_SIZE_384">DIGEST_SIZE_384</a></li>
-<li><a href="#DIGEST_SIZE_512">DIGEST_SIZE_512</a></li>
+<li><a href="#MAX_TAG_SIZE">MAX_TAG_SIZE</a></li>
 </ul>
 </details>
 </div>
 <div>
 <details class="doc-index" id="doc-index-Variables" aria-labelledby="#doc-index-Variables-header">
 <summary id="#doc-index-Variables-header">
-Variables (0)</summary>
-<p class="pkg-empty-section">This section is empty.</p>
+Variables (4)</summary>
+<ul>
+<li><a href="#ALGORITHM_NAMES">ALGORITHM_NAMES</a></li>
+<li><a href="#IV_SIZES">IV_SIZES</a></li>
+<li><a href="#KEY_SIZES">KEY_SIZES</a></li>
+<li><a href="#TAG_SIZES">TAG_SIZES</a></li>
+</ul>
 </details>
 </div>
 <div>
 <details class="doc-index" id="doc-index-Procedures" aria-labelledby="#doc-index-Procedures-header">
 <summary id="#doc-index-Procedures-header">
-Procedures (8)</summary>
+Procedures (9)</summary>
 <ul>
-<li><a href="#clone">clone</a></li>
-<li><a href="#final">final</a></li>
-<li><a href="#init_224">init_224</a></li>
-<li><a href="#init_256">init_256</a></li>
-<li><a href="#init_384">init_384</a></li>
-<li><a href="#init_512">init_512</a></li>
+<li><a href="#algorithm">algorithm</a></li>
+<li><a href="#init">init</a></li>
+<li><a href="#iv_size">iv_size</a></li>
+<li><a href="#open_ctx">open_ctx</a></li>
+<li><a href="#open_oneshot">open_oneshot</a></li>
 <li><a href="#reset">reset</a></li>
-<li><a href="#update">update</a></li>
+<li><a href="#seal_ctx">seal_ctx</a></li>
+<li><a href="#seal_oneshot">seal_oneshot</a></li>
+<li><a href="#tag_size">tag_size</a></li>
 </ul>
 </details>
 </div>
 <div>
 <details class="doc-index" id="doc-index-Procedure Groups" aria-labelledby="#doc-index-Procedure Groups-header">
 <summary id="#doc-index-Procedure Groups-header">
-Procedure Groups (0)</summary>
-<p class="pkg-empty-section">This section is empty.</p>
+Procedure Groups (2)</summary>
+<ul>
+<li><a href="#open">open</a></li>
+<li><a href="#seal">seal</a></li>
+</ul>
 </details>
 </div>
 </div>
@@ -376,188 +425,210 @@ Procedure Groups (0)</summary>
 <section class="documentation">
 <h2 id="pkg-Types" class="pkg-header">Types</h2>
 <div class="pkg-entity">
-<h3 id="Context"><span><a class="doc-id-link" href="#Context">Context<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/legacy/keccak/keccak.odin#L40"><em>Source</em></a></div></h3>
+<h3 id="Algorithm"><span><a class="doc-id-link" href="#Algorithm">Algorithm<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/aead/low_level.odin#L21"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">Context :: <span class="keyword-type">struct</span> {
-	st:             <span class="keyword-type">struct</span> <span class="directive">#raw_union</span> {
-		b: ,
-		q: ,
-	},
-	pt:             <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>,
-	rsiz:           <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>,
-	mdlen:          <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>,
-	dsbyte:         <a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a>,
-	is_initialized: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>,
-	is_finalized:   <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>,
+<pre class="doc-code">Algorithm :: <span class="keyword-type">enum</span> <a href="/base/builtin#int"><span class="doc-builtin">int</span></a> {
+	Invalid, 
+	AES_GCM_128, 
+	AES_GCM_192, 
+	AES_GCM_256, 
+	CHACHA20POLY1305, 
+	XCHACHA20POLY1305, 
 }</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>Context is a Keccak instance.</p>
+<p>Algorithm is the algorithm identifier associated with a given Context.</p>
 </details>
 <h5>Related Procedures With Parameters</h5>
 <ul>
-<li><a href="/core/crypto/legacy/keccak/#clone">clone</a></li>
-<li><a href="/core/crypto/legacy/keccak/#final">final</a></li>
-<li><a href="/core/crypto/legacy/keccak/#init_224">init_224</a></li>
-<li><a href="/core/crypto/legacy/keccak/#init_256">init_256</a></li>
-<li><a href="/core/crypto/legacy/keccak/#init_384">init_384</a></li>
-<li><a href="/core/crypto/legacy/keccak/#init_512">init_512</a></li>
-<li><a href="/core/crypto/legacy/keccak/#reset">reset</a></li>
-<li><a href="/core/crypto/legacy/keccak/#update">update</a></li>
+<li><a href="/core/crypto/aead/#init">init</a></li>
+<li><a href="/core/crypto/aead/#open_oneshot">open_oneshot</a></li>
+<li><a href="/core/crypto/aead/#seal_oneshot">seal_oneshot</a></li>
+<li><a href="/core/crypto/aead/#open">open</a>&nbsp;<em>(procedure groups)</em></li>
+<li><a href="/core/crypto/aead/#seal">seal</a>&nbsp;<em>(procedure groups)</em></li>
+</ul>
+<h5>Related Procedures With Returns</h5>
+<ul>
+<li><a href="/core/crypto/aead/#algorithm">algorithm</a></li>
+</ul>
+</div>
+<div class="pkg-entity">
+<h3 id="Context"><span><a class="doc-id-link" href="#Context">Context<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/aead/low_level.odin#L73"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Context :: <span class="keyword-type">struct</span> {
+	_algo: <a class="code-typename" href="/core/crypto/aead/#Algorithm">Algorithm</a>,
+	_impl: <span class="keyword-type">union</span> {
+		aes.<a class="code-typename" href="/core/crypto/aes/#Context_GCM">Context_GCM</a>, 
+		chacha20poly1305.<a class="code-typename" href="/core/crypto/chacha20poly1305/#Context">Context</a>, 
+	},
+}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Context is a concrete instantiation of a specific AEAD algorithm.</p>
+</details>
+<h5>Related Procedures With Parameters</h5>
+<ul>
+<li><a href="/core/crypto/aead/#algorithm">algorithm</a></li>
+<li><a href="/core/crypto/aead/#init">init</a></li>
+<li><a href="/core/crypto/aead/#iv_size">iv_size</a></li>
+<li><a href="/core/crypto/aead/#open_ctx">open_ctx</a></li>
+<li><a href="/core/crypto/aead/#reset">reset</a></li>
+<li><a href="/core/crypto/aead/#seal_ctx">seal_ctx</a></li>
+<li><a href="/core/crypto/aead/#tag_size">tag_size</a></li>
+<li><a href="/core/crypto/aead/#open">open</a>&nbsp;<em>(procedure groups)</em></li>
+<li><a href="/core/crypto/aead/#seal">seal</a>&nbsp;<em>(procedure groups)</em></li>
+</ul>
+</div>
+<div class="pkg-entity">
+<h3 id="Implementation"><span><a class="doc-id-link" href="#Implementation">Implementation<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/aead/low_level.odin#L11"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Implementation :: <span class="keyword-type">union</span> {
+	aes.<a class="code-typename" href="/core/crypto/aes/#Implementation">Implementation</a>, 
+	chacha20.<a class="code-typename" href="/core/crypto/chacha20/#Implementation">Implementation</a>, 
+}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Implementation is an AEAD implementation.  Most callers will not need
+to use this as the package will automatically select the most performant
+implementation available.</p>
+</details>
+<h5>Related Procedures With Parameters</h5>
+<ul>
+<li><a href="/core/crypto/aead/#init">init</a></li>
+<li><a href="/core/crypto/aead/#open_oneshot">open_oneshot</a></li>
+<li><a href="/core/crypto/aead/#seal_oneshot">seal_oneshot</a></li>
+<li><a href="/core/crypto/aead/#open">open</a>&nbsp;<em>(procedure groups)</em></li>
+<li><a href="/core/crypto/aead/#seal">seal</a>&nbsp;<em>(procedure groups)</em></li>
 </ul>
 </div>
 <h2 id="pkg-Constants" class="pkg-header">Constants</h2>
 <div class="pkg-entity">
-<h3 id="BLOCK_SIZE_224"><span><a class="doc-id-link" href="#BLOCK_SIZE_224">BLOCK_SIZE_224<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/legacy/keccak/keccak.odin#L31"><em>Source</em></a></div></h3>
+<h3 id="MAX_TAG_SIZE"><span><a class="doc-id-link" href="#MAX_TAG_SIZE">MAX_TAG_SIZE<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/aead/low_level.odin#L18"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">BLOCK_SIZE_224 :: _sha3.RATE_224</pre>
+<pre class="doc-code">MAX_TAG_SIZE :: 16</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>BLOCK_SIZE_224 is the Keccak-224 block size in bytes.</p>
-</details>
-</div>
-<div class="pkg-entity">
-<h3 id="BLOCK_SIZE_256"><span><a class="doc-id-link" href="#BLOCK_SIZE_256">BLOCK_SIZE_256<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/legacy/keccak/keccak.odin#L33"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">BLOCK_SIZE_256 :: _sha3.RATE_256</pre>
-</div>
-<details class="odin-doc-toggle" open>
-<summary class="hideme"><span>&nbsp;</span></summary>
-<p>BLOCK_SIZE_256 is the Keccak-256 block size in bytes.</p>
-</details>
-</div>
-<div class="pkg-entity">
-<h3 id="BLOCK_SIZE_384"><span><a class="doc-id-link" href="#BLOCK_SIZE_384">BLOCK_SIZE_384<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/legacy/keccak/keccak.odin#L35"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">BLOCK_SIZE_384 :: _sha3.RATE_384</pre>
-</div>
-<details class="odin-doc-toggle" open>
-<summary class="hideme"><span>&nbsp;</span></summary>
-<p>BLOCK_SIZE_384 is the Keccak-384 block size in bytes.</p>
-</details>
-</div>
-<div class="pkg-entity">
-<h3 id="BLOCK_SIZE_512"><span><a class="doc-id-link" href="#BLOCK_SIZE_512">BLOCK_SIZE_512<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/legacy/keccak/keccak.odin#L37"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">BLOCK_SIZE_512 :: _sha3.RATE_512</pre>
-</div>
-<details class="odin-doc-toggle" open>
-<summary class="hideme"><span>&nbsp;</span></summary>
-<p>BLOCK_SIZE_512 is the Keccak-512 block size in bytes.</p>
-</details>
-</div>
-<div class="pkg-entity">
-<h3 id="DIGEST_SIZE_224"><span><a class="doc-id-link" href="#DIGEST_SIZE_224">DIGEST_SIZE_224<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/legacy/keccak/keccak.odin#L22"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">DIGEST_SIZE_224 :: 28</pre>
-</div>
-<details class="odin-doc-toggle" open>
-<summary class="hideme"><span>&nbsp;</span></summary>
-<p>DIGEST_SIZE_224 is the Keccak-224 digest size.</p>
-</details>
-</div>
-<div class="pkg-entity">
-<h3 id="DIGEST_SIZE_256"><span><a class="doc-id-link" href="#DIGEST_SIZE_256">DIGEST_SIZE_256<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/legacy/keccak/keccak.odin#L24"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">DIGEST_SIZE_256 :: 32</pre>
-</div>
-<details class="odin-doc-toggle" open>
-<summary class="hideme"><span>&nbsp;</span></summary>
-<p>DIGEST_SIZE_256 is the Keccak-256 digest size.</p>
-</details>
-</div>
-<div class="pkg-entity">
-<h3 id="DIGEST_SIZE_384"><span><a class="doc-id-link" href="#DIGEST_SIZE_384">DIGEST_SIZE_384<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/legacy/keccak/keccak.odin#L26"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">DIGEST_SIZE_384 :: 48</pre>
-</div>
-<details class="odin-doc-toggle" open>
-<summary class="hideme"><span>&nbsp;</span></summary>
-<p>DIGEST_SIZE_384 is the Keccak-384 digest size.</p>
-</details>
-</div>
-<div class="pkg-entity">
-<h3 id="DIGEST_SIZE_512"><span><a class="doc-id-link" href="#DIGEST_SIZE_512">DIGEST_SIZE_512<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/legacy/keccak/keccak.odin#L28"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">DIGEST_SIZE_512 :: 64</pre>
-</div>
-<details class="odin-doc-toggle" open>
-<summary class="hideme"><span>&nbsp;</span></summary>
-<p>DIGEST_SIZE_512 is the Keccak-512 digest size.</p>
+<p>MAX_TAG_SIZE is the maximum size tag that can be returned by any of the
+Algorithms supported via this package.</p>
 </details>
 </div>
 <h2 id="pkg-Variables" class="pkg-header">Variables</h2>
-<p class="pkg-empty-section">This section is empty.</p>
+<div class="pkg-entity">
+<h3 id="ALGORITHM_NAMES"><span><a class="doc-id-link" href="#ALGORITHM_NAMES">ALGORITHM_NAMES<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/aead/low_level.odin#L31"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">ALGORITHM_NAMES: [<a class="code-typename" href="/core/crypto/aead/#Algorithm">Algorithm</a>]<a href="/base/builtin#string"><span class="doc-builtin">string</span></a> = …</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>ALGORITM_NAMES is the Agorithm to algorithm name string.</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="IV_SIZES"><span><a class="doc-id-link" href="#IV_SIZES">IV_SIZES<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/aead/low_level.odin#L63"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">IV_SIZES: [<a class="code-typename" href="/core/crypto/aead/#Algorithm">Algorithm</a>]<a href="/base/builtin#int"><span class="doc-builtin">int</span></a> = …</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>IV_SIZES is the Algorithm to initialization vector size in bytes.</p>
+<p>Note: Some algorithms (such as AES-GCM) support variable IV sizes.</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="KEY_SIZES"><span><a class="doc-id-link" href="#KEY_SIZES">KEY_SIZES<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/aead/low_level.odin#L51"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">KEY_SIZES: [<a class="code-typename" href="/core/crypto/aead/#Algorithm">Algorithm</a>]<a href="/base/builtin#int"><span class="doc-builtin">int</span></a> = …</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>KEY_SIZES is the Algorithm to key size in bytes.</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="TAG_SIZES"><span><a class="doc-id-link" href="#TAG_SIZES">TAG_SIZES<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/aead/low_level.odin#L41"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">TAG_SIZES: [<a class="code-typename" href="/core/crypto/aead/#Algorithm">Algorithm</a>]<a href="/base/builtin#int"><span class="doc-builtin">int</span></a> = …</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>TAG_SIZES is the Algorithm to tag size in bytes.</p>
+</details>
+</div>
 <h2 id="pkg-Procedures" class="pkg-header">Procedures</h2>
 <div class="pkg-entity">
-<h3 id="clone"><span><a class="doc-id-link" href="#clone">clone<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/legacy/keccak/keccak.odin#L87"><em>Source</em></a></div></h3>
+<h3 id="algorithm"><span><a class="doc-id-link" href="#algorithm">algorithm<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/aead/low_level.odin#L175"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">clone :: <span class="keyword-type">proc</span>(ctx, other: ^<a class="code-typename" href="/core/crypto/legacy/keccak/#Context">Context</a>) {…}</pre>
+<pre class="doc-code">algorithm :: <span class="keyword-type">proc</span>(ctx: ^<a class="code-typename" href="/core/crypto/aead/#Context">Context</a>) -> <a class="code-typename" href="/core/crypto/aead/#Algorithm">Algorithm</a> {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>clone clones the Context other into ctx.</p>
+<p>algorithm returns the Algorithm used by a Context instance.</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="final"><span><a class="doc-id-link" href="#final">final<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/legacy/keccak/keccak.odin#L82"><em>Source</em></a></div></h3>
+<h3 id="init"><span><a class="doc-id-link" href="#init">init<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/aead/low_level.odin#L92"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">final :: <span class="keyword-type">proc</span>(ctx: ^<a class="code-typename" href="/core/crypto/legacy/keccak/#Context">Context</a>, hash: []<a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a>, finalize_clone: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> = false) {…}</pre>
+<pre class="doc-code">init :: <span class="keyword-type">proc</span>(ctx: ^<a class="code-typename" href="/core/crypto/aead/#Context">Context</a>, algorithm: <a class="code-typename" href="/core/crypto/aead/#Algorithm">Algorithm</a>, key: []<a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a>, impl: <a class="code-typename" href="/core/crypto/aead/#Implementation">Implementation</a> = nil) {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>final finalizes the Context, writes the digest to hash, and calls
-reset on the Context.</p>
-<p>Iff finalize_clone is set, final will work on a copy of the Context,
-which is useful for for calculating rolling digests.</p>
+<p>init initializes a Context with a specific AEAD Algorithm.</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="init_224"><span><a class="doc-id-link" href="#init_224">init_224<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/legacy/keccak/keccak.odin#L43"><em>Source</em></a></div></h3>
+<h3 id="iv_size"><span><a class="doc-id-link" href="#iv_size">iv_size<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/aead/low_level.odin#L180"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">init_224 :: <span class="keyword-type">proc</span>(ctx: ^<a class="code-typename" href="/core/crypto/legacy/keccak/#Context">Context</a>) {…}</pre>
+<pre class="doc-code">iv_size :: <span class="keyword-type">proc</span>(ctx: ^<a class="code-typename" href="/core/crypto/aead/#Context">Context</a>) -> <a href="/base/builtin#int"><span class="doc-builtin">int</span></a> {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>init_224 initializes a Context for Keccak-224.</p>
+<p>iv_size returns the IV size of a Context instance in bytes.</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="init_256"><span><a class="doc-id-link" href="#init_256">init_256<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/legacy/keccak/keccak.odin#L49"><em>Source</em></a></div></h3>
+<h3 id="open_ctx"><span><a class="doc-id-link" href="#open_ctx">open_ctx<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/aead/low_level.odin#L147"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">init_256 :: <span class="keyword-type">proc</span>(ctx: ^<a class="code-typename" href="/core/crypto/legacy/keccak/#Context">Context</a>) {…}</pre>
+<pre class="doc-code">open_ctx :: <span class="keyword-type">proc</span>(
+	ctx:                      ^<a class="code-typename" href="/core/crypto/aead/#Context">Context</a>, 
+	dst, iv, aad, ciphertext, 
+	tag:                      []<a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a>, 
+) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>init_256 initializes a Context for Keccak-256.</p>
+<p>open_ctx authenticates the aad and ciphertext, and decrypts the ciphertext,
+with the provided Context, iv, and tag, and stores the output in dst,
+returning true iff the authentication was successful.  If authentication
+fails, the destination buffer will be zeroed.</p>
+<p>dst and plaintext MUST alias exactly or not at all.</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="init_384"><span><a class="doc-id-link" href="#init_384">init_384<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/legacy/keccak/keccak.odin#L55"><em>Source</em></a></div></h3>
+<h3 id="open_oneshot"><span><a class="doc-id-link" href="#open_oneshot">open_oneshot<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/aead/aead.odin#L21"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">init_384 :: <span class="keyword-type">proc</span>(ctx: ^<a class="code-typename" href="/core/crypto/legacy/keccak/#Context">Context</a>) {…}</pre>
+<pre class="doc-code">open_oneshot :: <span class="keyword-type">proc</span>(
+	algo:                               <a class="code-typename" href="/core/crypto/aead/#Algorithm">Algorithm</a>, 
+	dst, key, iv, aad, ciphertext, tag: []<a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a>, 
+	impl:                               <a class="code-typename" href="/core/crypto/aead/#Implementation">Implementation</a> = nil, 
+) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>init_384 initializes a Context for Keccak-384.</p>
+<p>open authenticates the aad and ciphertext, and decrypts the ciphertext,
+with the provided algorithm, key, iv, and tag, and stores the output in dst,
+returning true iff the authentication was successful.  If authentication
+fails, the destination buffer will be zeroed.</p>
+<p>dst and plaintext MUST alias exactly or not at all.</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="init_512"><span><a class="doc-id-link" href="#init_512">init_512<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/legacy/keccak/keccak.odin#L61"><em>Source</em></a></div></h3>
+<h3 id="reset"><span><a class="doc-id-link" href="#reset">reset<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/aead/low_level.odin#L160"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">init_512 :: <span class="keyword-type">proc</span>(ctx: ^<a class="code-typename" href="/core/crypto/legacy/keccak/#Context">Context</a>) {…}</pre>
-</div>
-<details class="odin-doc-toggle" open>
-<summary class="hideme"><span>&nbsp;</span></summary>
-<p>init_512 initializes a Context for Keccak-512.</p>
-</details>
-</div>
-<div class="pkg-entity">
-<h3 id="reset"><span><a class="doc-id-link" href="#reset">reset<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/legacy/keccak/keccak.odin#L93"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">reset :: <span class="keyword-type">proc</span>(ctx: ^<a class="code-typename" href="/core/crypto/legacy/keccak/#Context">Context</a>) {…}</pre>
+<pre class="doc-code">reset :: <span class="keyword-type">proc</span>(ctx: ^<a class="code-typename" href="/core/crypto/aead/#Context">Context</a>) {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -566,58 +637,119 @@ be used again.</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="update"><span><a class="doc-id-link" href="#update">update<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/legacy/keccak/keccak.odin#L73"><em>Source</em></a></div></h3>
+<h3 id="seal_ctx"><span><a class="doc-id-link" href="#seal_ctx">seal_ctx<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/aead/low_level.odin#L129"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">update :: <span class="keyword-type">proc</span>(ctx: ^<a class="code-typename" href="/core/crypto/legacy/keccak/#Context">Context</a>, data: []<a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a>) {…}</pre>
+<pre class="doc-code">seal_ctx :: <span class="keyword-type">proc</span>(
+	ctx:               ^<a class="code-typename" href="/core/crypto/aead/#Context">Context</a>, 
+	dst, tag, iv, aad, 
+	plaintext:         []<a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a>, 
+) {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>update adds more data to the Context.</p>
+<p>seal_ctx encrypts the plaintext and authenticates the aad and ciphertext,
+with the provided Context and iv, stores the output in dst and tag.</p>
+<p>dst and plaintext MUST alias exactly or not at all.</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="seal_oneshot"><span><a class="doc-id-link" href="#seal_oneshot">seal_oneshot<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/aead/aead.odin#L7"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">seal_oneshot :: <span class="keyword-type">proc</span>(
+	algo:                              <a class="code-typename" href="/core/crypto/aead/#Algorithm">Algorithm</a>, 
+	dst, tag, key, iv, aad, plaintext: []<a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a>, 
+	impl:                              <a class="code-typename" href="/core/crypto/aead/#Implementation">Implementation</a> = nil, 
+) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>seal_oneshot encrypts the plaintext and authenticates the aad and ciphertext,
+with the provided algorithm, key, and iv, stores the output in dst and tag.</p>
+<p>dst and plaintext MUST alias exactly or not at all.</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="tag_size"><span><a class="doc-id-link" href="#tag_size">tag_size<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/aead/low_level.odin#L185"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">tag_size :: <span class="keyword-type">proc</span>(ctx: ^<a class="code-typename" href="/core/crypto/aead/#Context">Context</a>) -> <a href="/base/builtin#int"><span class="doc-builtin">int</span></a> {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>tag_size returns the tag size of a Context instance in bytes.</p>
 </details>
 </div>
 <h2 id="pkg-Procedure Groups" class="pkg-header">Procedure Groups</h2>
-<p class="pkg-empty-section">This section is empty.</p>
+<div class="pkg-entity">
+<h3 id="open"><span><a class="doc-id-link" href="#open">open<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/aead/aead.odin#L33"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">open :: <span class="keyword-type">proc</span>{
+	<a class="code-procedure" href="/core/crypto/aead/#open_ctx">open_ctx</a>,
+	<a class="code-procedure" href="/core/crypto/aead/#open_oneshot">open_oneshot</a>,
+}
+</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="seal"><span><a class="doc-id-link" href="#seal">seal<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/aead/aead.odin#L28"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">seal :: <span class="keyword-type">proc</span>{
+	<a class="code-procedure" href="/core/crypto/aead/#seal_ctx">seal_ctx</a>,
+	<a class="code-procedure" href="/core/crypto/aead/#seal_oneshot">seal_oneshot</a>,
+}
+</pre>
+</div>
+</div>
 </section>
 <h2 id="pkg-source-files">Source Files</h2>
 <ul>
-<li><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/legacy/keccak/keccak.odin">keccak.odin</a></li>
+<li><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/aead/aead.odin">aead.odin</a></li>
+<li><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/aead/doc.odin">doc.odin</a></li>
+<li><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/aead/low_level.odin">low_level.odin</a></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2024-08 (vendor "odin") Windows_amd64 @ 2024-08-10 21:10:59.494333400 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2024-08 (vendor "odin") Windows_amd64 @ 2024-08-10 21:10:59.486630700 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
 <ul>
 <li><a href="#pkg-overview">Overview</a><li><a href="#pkg-Types">Types</a><ul>
+<li><a href="#Algorithm">Algorithm</a></li>
 <li><a href="#Context">Context</a></li>
+<li><a href="#Implementation">Implementation</a></li>
 </ul>
 </li>
 <li><a href="#pkg-Constants">Constants</a><ul>
-<li><a href="#BLOCK_SIZE_224">BLOCK_SIZE_224</a></li>
-<li><a href="#BLOCK_SIZE_256">BLOCK_SIZE_256</a></li>
-<li><a href="#BLOCK_SIZE_384">BLOCK_SIZE_384</a></li>
-<li><a href="#BLOCK_SIZE_512">BLOCK_SIZE_512</a></li>
-<li><a href="#DIGEST_SIZE_224">DIGEST_SIZE_224</a></li>
-<li><a href="#DIGEST_SIZE_256">DIGEST_SIZE_256</a></li>
-<li><a href="#DIGEST_SIZE_384">DIGEST_SIZE_384</a></li>
-<li><a href="#DIGEST_SIZE_512">DIGEST_SIZE_512</a></li>
+<li><a href="#MAX_TAG_SIZE">MAX_TAG_SIZE</a></li>
+</ul>
+</li>
+<li><a href="#pkg-Variables">Variables</a><ul>
+<li><a href="#ALGORITHM_NAMES">ALGORITHM_NAMES</a></li>
+<li><a href="#IV_SIZES">IV_SIZES</a></li>
+<li><a href="#KEY_SIZES">KEY_SIZES</a></li>
+<li><a href="#TAG_SIZES">TAG_SIZES</a></li>
 </ul>
 </li>
 <li><a href="#pkg-Procedures">Procedures</a><ul>
-<li><a href="#clone">clone</a></li>
-<li><a href="#final">final</a></li>
-<li><a href="#init_224">init_224</a></li>
-<li><a href="#init_256">init_256</a></li>
-<li><a href="#init_384">init_384</a></li>
-<li><a href="#init_512">init_512</a></li>
+<li><a href="#algorithm">algorithm</a></li>
+<li><a href="#init">init</a></li>
+<li><a href="#iv_size">iv_size</a></li>
+<li><a href="#open_ctx">open_ctx</a></li>
+<li><a href="#open_oneshot">open_oneshot</a></li>
 <li><a href="#reset">reset</a></li>
-<li><a href="#update">update</a></li>
+<li><a href="#seal_ctx">seal_ctx</a></li>
+<li><a href="#seal_oneshot">seal_oneshot</a></li>
+<li><a href="#tag_size">tag_size</a></li>
+</ul>
+</li>
+<li><a href="#pkg-Procedure Groups">Procedure Groups</a><ul>
+<li><a href="#open">open</a></li>
+<li><a href="#seal">seal</a></li>
 </ul>
 </li>
 <li><a href="#pkg-source-files">Source Files</a></ul>
 </nav>
 </div></div>
-<script type="text/javascript">var odin_pkg_name = "keccak";</script>
+<script type="text/javascript">var odin_pkg_name = "aead";</script>
 </div>
 
 </div>

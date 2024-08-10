@@ -103,6 +103,7 @@
 
 </li>
 <li class="nav-item"><a href="/core/crypto">crypto</a><ul>
+<li><a href="/core/crypto/aead">aead</a></li>
 <li><a href="/core/crypto/aes">aes</a></li>
 <li><a href="/core/crypto/blake2b">blake2b</a></li>
 <li><a href="/core/crypto/blake2s">blake2s</a></li>
@@ -306,28 +307,33 @@
 <div id="pkg-top">
 <h2>Overview</h2>
 <div id="pkg-overview">
-<p>package chacha20poly1305 implements the AEAD_CHACHA20_POLY1305 Authenticated
-Encryption with Additional Data algorithm.</p>
+<p>package chacha20poly1305 implements the AEAD_CHACHA20_POLY1305 and
+AEAD_XChaCha20_Poly1305 Authenticated Encryption with Additional Data
+algorithms.</p>
 <p>See:
-<span class="doc-list">https://www.rfc-editor.org/rfc/rfc8439</span></p>
+<span class="doc-list">https://www.rfc-editor.org/rfc/rfc8439</span>
+<span class="doc-list">https://datatracker.ietf.org/doc/html/draft-arciszewski-xchacha-03</span></p>
 </div>
 <div id="pkg-index">
 <h2>Index</h2>
 <div>
 <details class="doc-index" id="doc-index-Types" aria-labelledby="#doc-index-Types-header">
 <summary id="#doc-index-Types-header">
-Types (0)</summary>
-<p class="pkg-empty-section">This section is empty.</p>
+Types (1)</summary>
+<ul>
+<li><a href="#Context">Context</a></li>
+</ul>
 </details>
 </div>
 <div>
 <details class="doc-index" id="doc-index-Constants" aria-labelledby="#doc-index-Constants-header">
 <summary id="#doc-index-Constants-header">
-Constants (3)</summary>
+Constants (4)</summary>
 <ul>
+<li><a href="#IV_SIZE">IV_SIZE</a></li>
 <li><a href="#KEY_SIZE">KEY_SIZE</a></li>
-<li><a href="#NONCE_SIZE">NONCE_SIZE</a></li>
 <li><a href="#TAG_SIZE">TAG_SIZE</a></li>
+<li><a href="#XIV_SIZE">XIV_SIZE</a></li>
 </ul>
 </details>
 </div>
@@ -341,10 +347,13 @@ Variables (0)</summary>
 <div>
 <details class="doc-index" id="doc-index-Procedures" aria-labelledby="#doc-index-Procedures-header">
 <summary id="#doc-index-Procedures-header">
-Procedures (2)</summary>
+Procedures (5)</summary>
 <ul>
-<li><a href="#decrypt">decrypt</a></li>
-<li><a href="#encrypt">encrypt</a></li>
+<li><a href="#init">init</a></li>
+<li><a href="#init_xchacha">init_xchacha</a></li>
+<li><a href="#open">open</a></li>
+<li><a href="#reset">reset</a></li>
+<li><a href="#seal">seal</a></li>
 </ul>
 </details>
 </div>
@@ -359,10 +368,42 @@ Procedure Groups (0)</summary>
 </div>
 <section class="documentation">
 <h2 id="pkg-Types" class="pkg-header">Types</h2>
-<p class="pkg-empty-section">This section is empty.</p>
+<div class="pkg-entity">
+<h3 id="Context"><span><a class="doc-id-link" href="#Context">Context<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/chacha20poly1305/chacha20poly1305.odin#L65"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Context :: <span class="keyword-type">struct</span> {
+	_key:            [32]<a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a>,
+	_impl:           chacha20.<a class="code-typename" href="/core/crypto/chacha20/#Implementation">Implementation</a>,
+	_is_xchacha:     <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>,
+	_is_initialized: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>,
+}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Context is a keyed (X)Chacha20Poly1305 instance.</p>
+</details>
+<h5>Related Procedures With Parameters</h5>
+<ul>
+<li><a href="/core/crypto/chacha20poly1305/#init">init</a></li>
+<li><a href="/core/crypto/chacha20poly1305/#init_xchacha">init_xchacha</a></li>
+<li><a href="/core/crypto/chacha20poly1305/#open">open</a></li>
+<li><a href="/core/crypto/chacha20poly1305/#reset">reset</a></li>
+<li><a href="/core/crypto/chacha20poly1305/#seal">seal</a></li>
+</ul>
+</div>
 <h2 id="pkg-Constants" class="pkg-header">Constants</h2>
 <div class="pkg-entity">
-<h3 id="KEY_SIZE"><span><a class="doc-id-link" href="#KEY_SIZE">KEY_SIZE<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/chacha20poly1305/chacha20poly1305.odin#L17"><em>Source</em></a></div></h3>
+<h3 id="IV_SIZE"><span><a class="doc-id-link" href="#IV_SIZE">IV_SIZE<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/chacha20poly1305/chacha20poly1305.odin#L21"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">IV_SIZE :: chacha20.IV_SIZE</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>IV_SIZE is the chacha20poly1305 IV size in bytes.</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="KEY_SIZE"><span><a class="doc-id-link" href="#KEY_SIZE">KEY_SIZE<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/chacha20poly1305/chacha20poly1305.odin#L19"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">KEY_SIZE :: chacha20.KEY_SIZE</pre>
 </div>
@@ -372,17 +413,7 @@ Procedure Groups (0)</summary>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="NONCE_SIZE"><span><a class="doc-id-link" href="#NONCE_SIZE">NONCE_SIZE<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/chacha20poly1305/chacha20poly1305.odin#L19"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">NONCE_SIZE :: chacha20.NONCE_SIZE</pre>
-</div>
-<details class="odin-doc-toggle" open>
-<summary class="hideme"><span>&nbsp;</span></summary>
-<p>NONCE_SIZE is the chacha20poly1305 nonce size in bytes.</p>
-</details>
-</div>
-<div class="pkg-entity">
-<h3 id="TAG_SIZE"><span><a class="doc-id-link" href="#TAG_SIZE">TAG_SIZE<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/chacha20poly1305/chacha20poly1305.odin#L21"><em>Source</em></a></div></h3>
+<h3 id="TAG_SIZE"><span><a class="doc-id-link" href="#TAG_SIZE">TAG_SIZE<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/chacha20poly1305/chacha20poly1305.odin#L25"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">TAG_SIZE :: poly1305.TAG_SIZE</pre>
 </div>
@@ -391,37 +422,85 @@ Procedure Groups (0)</summary>
 <p>TAG_SIZE is the chacha20poly1305 tag size in bytes.</p>
 </details>
 </div>
+<div class="pkg-entity">
+<h3 id="XIV_SIZE"><span><a class="doc-id-link" href="#XIV_SIZE">XIV_SIZE<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/chacha20poly1305/chacha20poly1305.odin#L23"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">XIV_SIZE :: chacha20.XIV_SIZE</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>XIV_SIZE is the xchacha20poly1305 IV size in bytes.</p>
+</details>
+</div>
 <h2 id="pkg-Variables" class="pkg-header">Variables</h2>
 <p class="pkg-empty-section">This section is empty.</p>
 <h2 id="pkg-Procedures" class="pkg-header">Procedures</h2>
 <div class="pkg-entity">
-<h3 id="decrypt"><span><a class="doc-id-link" href="#decrypt">decrypt<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/chacha20poly1305/chacha20poly1305.odin#L115"><em>Source</em></a></div></h3>
+<h3 id="init"><span><a class="doc-id-link" href="#init">init<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/chacha20poly1305/chacha20poly1305.odin#L73"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">decrypt :: <span class="keyword-type">proc</span>(
-	plaintext, tag, key, nonce, aad, 
-	ciphertext:                      []<a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a>, 
+<pre class="doc-code">init :: <span class="keyword-type">proc</span>(ctx: ^<a class="code-typename" href="/core/crypto/chacha20poly1305/#Context">Context</a>, key: []<a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a>, impl: chacha20.<a class="code-typename" href="/core/crypto/chacha20/#Implementation">Implementation</a> = chacha20.DEFAULT_IMPLEMENTATION) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>init initializes a Context with the provided key, for AEAD_CHACHA20_POLY1305.</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="init_xchacha"><span><a class="doc-id-link" href="#init_xchacha">init_xchacha<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/chacha20poly1305/chacha20poly1305.odin#L89"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">init_xchacha :: <span class="keyword-type">proc</span>(ctx: ^<a class="code-typename" href="/core/crypto/chacha20poly1305/#Context">Context</a>, key: []<a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a>, impl: chacha20.<a class="code-typename" href="/core/crypto/chacha20/#Implementation">Implementation</a> = chacha20.DEFAULT_IMPLEMENTATION) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>init_xchacha initializes a Context with the provided key, for
+AEAD_XChaCha20_Poly1305.</p>
+<p>Note: While there are multiple definitions of XChaCha20-Poly1305
+this sticks to the IETF draft and uses a 32-bit counter.</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="open"><span><a class="doc-id-link" href="#open">open<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/chacha20poly1305/chacha20poly1305.odin#L153"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">open :: <span class="keyword-type">proc</span>(
+	ctx:                      ^<a class="code-typename" href="/core/crypto/chacha20poly1305/#Context">Context</a>, 
+	dst, iv, aad, ciphertext, 
+	tag:                      []<a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a>, 
 ) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>decrypt authenticates the aad and ciphertext, and decrypts the ciphertext,
-with the provided key, nonce, and tag, and stores the output in plaintext,
-returning true iff the authentication was successful.</p>
-<p>If authentication fails, the destination plaintext buffer will be zeroed.</p>
+<p>open authenticates the aad and ciphertext, and decrypts the ciphertext,
+with the provided Context, iv, and tag, and stores the output in dst,
+returning true iff the authentication was successful.  If authentication
+fails, the destination buffer will be zeroed.</p>
+<p>dst and plaintext MUST alias exactly or not at all.</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="encrypt"><span><a class="doc-id-link" href="#encrypt">encrypt<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/chacha20poly1305/chacha20poly1305.odin#L64"><em>Source</em></a></div></h3>
+<h3 id="reset"><span><a class="doc-id-link" href="#reset">reset<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/chacha20poly1305/chacha20poly1305.odin#L212"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">encrypt :: <span class="keyword-type">proc</span>(
-	ciphertext, tag, key, nonce, aad, 
-	plaintext:                        []<a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a>, 
+<pre class="doc-code">reset :: <span class="keyword-type">proc</span> "contextless" (ctx: ^<a class="code-typename" href="/core/crypto/chacha20poly1305/#Context">Context</a>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>reset sanitizes the Context.  The Context must be
+re-initialized to be used again.</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="seal"><span><a class="doc-id-link" href="#seal">seal<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/chacha20poly1305/chacha20poly1305.odin#L98"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">seal :: <span class="keyword-type">proc</span>(
+	ctx:               ^<a class="code-typename" href="/core/crypto/chacha20poly1305/#Context">Context</a>, 
+	dst, tag, iv, aad, 
+	plaintext:         []<a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a>, 
 ) {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>encrypt encrypts the plaintext and authenticates the aad and ciphertext,
-with the provided key and nonce, stores the output in ciphertext and tag.</p>
+<p>seal encrypts the plaintext and authenticates the aad and ciphertext,
+with the provided Context and iv, stores the output in dst and tag.</p>
+<p>dst and plaintext MUST alias exactly or not at all.</p>
 </details>
 </div>
 <h2 id="pkg-Procedure Groups" class="pkg-header">Procedure Groups</h2>
@@ -432,20 +511,28 @@ with the provided key and nonce, stores the output in ciphertext and tag.</p>
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/chacha20poly1305/chacha20poly1305.odin">chacha20poly1305.odin</a></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2024-08 (vendor "odin") Windows_amd64 @ 2024-08-09 21:10:02.276196500 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2024-08 (vendor "odin") Windows_amd64 @ 2024-08-10 21:10:59.489914700 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
 <ul>
-<li><a href="#pkg-overview">Overview</a><li><a href="#pkg-Constants">Constants</a><ul>
+<li><a href="#pkg-overview">Overview</a><li><a href="#pkg-Types">Types</a><ul>
+<li><a href="#Context">Context</a></li>
+</ul>
+</li>
+<li><a href="#pkg-Constants">Constants</a><ul>
+<li><a href="#IV_SIZE">IV_SIZE</a></li>
 <li><a href="#KEY_SIZE">KEY_SIZE</a></li>
-<li><a href="#NONCE_SIZE">NONCE_SIZE</a></li>
 <li><a href="#TAG_SIZE">TAG_SIZE</a></li>
+<li><a href="#XIV_SIZE">XIV_SIZE</a></li>
 </ul>
 </li>
 <li><a href="#pkg-Procedures">Procedures</a><ul>
-<li><a href="#decrypt">decrypt</a></li>
-<li><a href="#encrypt">encrypt</a></li>
+<li><a href="#init">init</a></li>
+<li><a href="#init_xchacha">init_xchacha</a></li>
+<li><a href="#open">open</a></li>
+<li><a href="#reset">reset</a></li>
+<li><a href="#seal">seal</a></li>
 </ul>
 </li>
 <li><a href="#pkg-source-files">Source Files</a></ul>
