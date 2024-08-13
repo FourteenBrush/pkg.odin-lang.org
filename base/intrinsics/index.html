@@ -139,8 +139,12 @@ Types (7)</summary>
 <div>
 <details class="doc-index" id="doc-index-Procedures" aria-labelledby="#doc-index-Procedures-header">
 <summary id="#doc-index-Procedures-header">
-Procedures (194)</summary>
+Procedures (211)</summary>
 <ul>
+<li><a href="#transpose">transpose</a></li>
+<li><a href="#outer_product">outer_product</a></li>
+<li><a href="#hadamard_product">hadamard_product</a></li>
+<li><a href="#matrix_flatten">matrix_flatten</a></li>
 <li><a href="#soa_struct">soa_struct</a></li>
 <li><a href="#volatile_load">volatile_load</a></li>
 <li><a href="#volatile_store">volatile_store</a></li>
@@ -180,13 +184,9 @@ Procedures (194)</summary>
 <li><a href="#prefetch_read_data">prefetch_read_data</a></li>
 <li><a href="#prefetch_write_instruction">prefetch_write_instruction</a></li>
 <li><a href="#prefetch_write_data">prefetch_write_data</a></li>
-<li><a href="#constant_utf16_cstring">constant_utf16_cstring</a></li>
-<li><a href="#transpose">transpose</a></li>
-<li><a href="#outer_product">outer_product</a></li>
-<li><a href="#hadamard_product">hadamard_product</a></li>
-<li><a href="#matrix_flatten">matrix_flatten</a></li>
 <li><a href="#expect">expect</a></li>
 <li><a href="#syscall">syscall</a></li>
+<li><a href="#syscall_bsd">syscall_bsd</a></li>
 <li><a href="#atomic_type_is_lock_free">atomic_type_is_lock_free</a></li>
 <li><a href="#atomic_thread_fence">atomic_thread_fence</a></li>
 <li><a href="#atomic_signal_fence">atomic_signal_fence</a></li>
@@ -254,6 +254,8 @@ Procedures (194)</summary>
 <li><a href="#type_is_simd_vector">type_is_simd_vector</a></li>
 <li><a href="#type_is_matrix">type_is_matrix</a></li>
 <li><a href="#type_has_nil">type_has_nil</a></li>
+<li><a href="#type_is_matrix_row_major">type_is_matrix_row_major</a></li>
+<li><a href="#type_is_matrix_column_major">type_is_matrix_column_major</a></li>
 <li><a href="#type_is_specialization_of">type_is_specialization_of</a></li>
 <li><a href="#type_is_variant_of">type_is_variant_of</a></li>
 <li><a href="#type_union_tag_type">type_union_tag_type</a></li>
@@ -262,6 +264,8 @@ Procedures (194)</summary>
 <li><a href="#type_union_variant_count">type_union_variant_count</a></li>
 <li><a href="#type_variant_type_of">type_variant_type_of</a></li>
 <li><a href="#type_variant_index_of">type_variant_index_of</a></li>
+<li><a href="#type_bit_set_elem_type">type_bit_set_elem_type</a></li>
+<li><a href="#type_bit_set_underlying_type">type_bit_set_underlying_type</a></li>
 <li><a href="#type_has_field">type_has_field</a></li>
 <li><a href="#type_field_type">type_field_type</a></li>
 <li><a href="#type_proc_parameter_count">type_proc_parameter_count</a></li>
@@ -269,6 +273,7 @@ Procedures (194)</summary>
 <li><a href="#type_proc_parameter_type">type_proc_parameter_type</a></li>
 <li><a href="#type_proc_return_type">type_proc_return_type</a></li>
 <li><a href="#type_struct_field_count">type_struct_field_count</a></li>
+<li><a href="#type_struct_has_implicit_padding">type_struct_has_implicit_padding</a></li>
 <li><a href="#type_polymorphic_record_parameter_count">type_polymorphic_record_parameter_count</a></li>
 <li><a href="#type_polymorphic_record_parameter_value">type_polymorphic_record_parameter_value</a></li>
 <li><a href="#type_is_specialized_polymorphic_record">type_is_specialized_polymorphic_record</a></li>
@@ -281,16 +286,17 @@ Procedures (194)</summary>
 <li><a href="#type_map_cell_info">type_map_cell_info</a></li>
 <li><a href="#type_convert_variants_to_pointers">type_convert_variants_to_pointers</a></li>
 <li><a href="#type_merge">type_merge</a></li>
+<li><a href="#constant_utf16_cstring">constant_utf16_cstring</a></li>
 <li><a href="#simd_add">simd_add</a></li>
 <li><a href="#simd_sub">simd_sub</a></li>
 <li><a href="#simd_mul">simd_mul</a></li>
 <li><a href="#simd_div">simd_div</a></li>
+<li><a href="#simd_saturating_add">simd_saturating_add</a></li>
+<li><a href="#simd_saturating_sub">simd_saturating_sub</a></li>
 <li><a href="#simd_shl">simd_shl</a></li>
 <li><a href="#simd_shr">simd_shr</a></li>
 <li><a href="#simd_shl_masked">simd_shl_masked</a></li>
 <li><a href="#simd_shr_masked">simd_shr_masked</a></li>
-<li><a href="#simd_saturating_add">simd_saturating_add</a></li>
-<li><a href="#simd_saturating_sub">simd_saturating_sub</a></li>
 <li><a href="#simd_bit_and">simd_bit_and</a></li>
 <li><a href="#simd_bit_or">simd_bit_or</a></li>
 <li><a href="#simd_bit_xor">simd_bit_xor</a></li>
@@ -315,6 +321,14 @@ Procedures (194)</summary>
 <li><a href="#simd_reduce_and">simd_reduce_and</a></li>
 <li><a href="#simd_reduce_or">simd_reduce_or</a></li>
 <li><a href="#simd_reduce_xor">simd_reduce_xor</a></li>
+<li><a href="#simd_reduce_any">simd_reduce_any</a></li>
+<li><a href="#simd_reduce_all">simd_reduce_all</a></li>
+<li><a href="#simd_gather">simd_gather</a></li>
+<li><a href="#simd_scatter">simd_scatter</a></li>
+<li><a href="#simd_masked_load">simd_masked_load</a></li>
+<li><a href="#simd_masked_store">simd_masked_store</a></li>
+<li><a href="#simd_masked_expand_load">simd_masked_expand_load</a></li>
+<li><a href="#simd_masked_compress_store">simd_masked_compress_store</a></li>
 <li><a href="#simd_shuffle">simd_shuffle</a></li>
 <li><a href="#simd_select">simd_select</a></li>
 <li><a href="#simd_ceil">simd_ceil</a></li>
@@ -322,9 +336,11 @@ Procedures (194)</summary>
 <li><a href="#simd_trunc">simd_trunc</a></li>
 <li><a href="#simd_nearest">simd_nearest</a></li>
 <li><a href="#simd_to_bits">simd_to_bits</a></li>
-<li><a href="#simd_reverse">simd_reverse</a></li>
-<li><a href="#simd_rotate_left">simd_rotate_left</a></li>
-<li><a href="#simd_rotate_right">simd_rotate_right</a></li>
+<li><a href="#simd_lanes_reverse">simd_lanes_reverse</a></li>
+<li><a href="#simd_lanes_rotate_left">simd_lanes_rotate_left</a></li>
+<li><a href="#simd_lanes_rotate_right">simd_lanes_rotate_right</a></li>
+<li><a href="#has_target_feature">has_target_feature</a></li>
+<li><a href="#procedure_of">procedure_of</a></li>
 <li><a href="#wasm_memory_grow">wasm_memory_grow</a></li>
 <li><a href="#wasm_memory_size">wasm_memory_size</a></li>
 <li><a href="#wasm_memory_atomic_wait32">wasm_memory_atomic_wait32</a></li>
@@ -335,6 +351,7 @@ Procedures (194)</summary>
 <li><a href="#objc_register_selector">objc_register_selector</a></li>
 <li><a href="#objc_find_class">objc_find_class</a></li>
 <li><a href="#objc_register_class">objc_register_class</a></li>
+<li><a href="#valgrind_client_request">valgrind_client_request</a></li>
 </ul>
 </details>
 </div>
@@ -435,6 +452,30 @@ Represents an Objective-C <code>Class</code> type.</p>
 </div>
 <h2 id="pkg-Procedures" class="pkg-header">Procedures</h2>
 <div class="pkg-entity">
+<h3 id="transpose"><span><a class="doc-id-link" href="#transpose">transpose<span class="a-hidden">&nbsp;¶</span></a></span></h3>
+<div>
+<pre class="doc-code">transpose :: <span class="keyword-type">proc</span>(m: $M/<span class="keyword-type">matrix</span>[$R, $C]$E) -> <span class="keyword-type">matrix</span>[C, R]E {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="outer_product"><span><a class="doc-id-link" href="#outer_product">outer_product<span class="a-hidden">&nbsp;¶</span></a></span></h3>
+<div>
+<pre class="doc-code">outer_product :: <span class="keyword-type">proc</span>(a: $A/[$X]$E, b: $B/[$Y]E) -> <span class="keyword-type">matrix</span>[X, Y]E {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="hadamard_product"><span><a class="doc-id-link" href="#hadamard_product">hadamard_product<span class="a-hidden">&nbsp;¶</span></a></span></h3>
+<div>
+<pre class="doc-code">hadamard_product :: <span class="keyword-type">proc</span>(a, b: $T/<span class="keyword-type">matrix</span>[$R, $C]$E) -> T {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="matrix_flatten"><span><a class="doc-id-link" href="#matrix_flatten">matrix_flatten<span class="a-hidden">&nbsp;¶</span></a></span></h3>
+<div>
+<pre class="doc-code">matrix_flatten :: <span class="keyword-type">proc</span>(m: $T/<span class="keyword-type">matrix</span>[$R, $C]$E) -> [R*C]E {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
 <h3 id="soa_struct"><span><a class="doc-id-link" href="#soa_struct">soa_struct<span class="a-hidden">&nbsp;¶</span></a></span></h3>
 <div>
 <pre class="doc-code">soa_struct :: <span class="keyword-type">proc</span>($N: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, $T: <span class="keyword-type">typeid</span>) -> type/<span class="directive">#soa</span>[N]T {…}</pre>
@@ -509,7 +550,7 @@ Represents an Objective-C <code>Class</code> type.</p>
 <div class="pkg-entity">
 <h3 id="alloca"><span><a class="doc-id-link" href="#alloca">alloca<span class="a-hidden">&nbsp;¶</span></a></span></h3>
 <div>
-<pre class="doc-code">alloca :: <span class="keyword-type">proc</span>(size, align: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>) -> [^]<a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a> {…}</pre>
+<pre class="doc-code">alloca :: <span class="keyword-type">proc</span>(size, align: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>) -> [^]byte {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -563,7 +604,7 @@ Represents an Objective-C <code>Class</code> type.</p>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>Counts the number of trailing unset bits (<code>0</code>s) until a set bit (<code>1</code>)` is seen or if at all.</p>
+<p>Counts the number of trailing unset bits (<code>0</code>s) until a set bit (<code>1</code>) is seen or all bits have been counted.</p>
 </details>
 </div>
 <div class="pkg-entity">
@@ -573,7 +614,7 @@ Represents an Objective-C <code>Class</code> type.</p>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>Counts the number of leading unset bits (<code>0</code>s) until a set bit (<code>1</code>)` is seen or if at all.</p>
+<p>Counts the number of leading unset bits (<code>0</code>s) until a set bit (<code>1</code>) is seen or all bits have been counted.</p>
 </details>
 </div>
 <div class="pkg-entity">
@@ -789,7 +830,7 @@ Represents an Objective-C <code>Class</code> type.</p>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>The <code>prefetch_read_instruction</code> intrinsic is a hint to the code gnerator to insert a prefetch instruction if supported; otherwise, it is a no-op. Prefetches have no affect on the behaviour of the program but can change its performance characteristics.</p>
+<p>The <code>prefetch_*</code> intrinsic are a hint to the code generator to insert a prefetch instruction if supported; otherwise, it is a no-op. Prefetches have no affect on the behaviour of the program but can change its performance characteristics.</p>
 <p>The <code>locality</code> parameter must be a constant integer, and its temporal locality value ranges from <code>0</code> (no locality) to <code>3</code> (extremely local, keep in cache).</p>
 </details>
 </div>
@@ -800,7 +841,7 @@ Represents an Objective-C <code>Class</code> type.</p>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>The <code>prefetch_read_instruction</code> intrinsic is a hint to the code gnerator to insert a prefetch instruction if supported; otherwise, it is a no-op. Prefetches have no affect on the behaviour of the program but can change its performance characteristics.</p>
+<p>The <code>prefetch_*</code> intrinsic are a hint to the code generator to insert a prefetch instruction if supported; otherwise, it is a no-op. Prefetches have no affect on the behaviour of the program but can change its performance characteristics.</p>
 <p>The <code>locality</code> parameter must be a constant integer, and its temporal locality value ranges from <code>0</code> (no locality) to <code>3</code> (extremely local, keep in cache).</p>
 </details>
 </div>
@@ -811,7 +852,7 @@ Represents an Objective-C <code>Class</code> type.</p>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>The <code>prefetch_read_instruction</code> intrinsic is a hint to the code gnerator to insert a prefetch instruction if supported; otherwise, it is a no-op. Prefetches have no affect on the behaviour of the program but can change its performance characteristics.</p>
+<p>The <code>prefetch_*</code> intrinsic are a hint to the code generator to insert a prefetch instruction if supported; otherwise, it is a no-op. Prefetches have no affect on the behaviour of the program but can change its performance characteristics.</p>
 <p>The <code>locality</code> parameter must be a constant integer, and its temporal locality value ranges from <code>0</code> (no locality) to <code>3</code> (extremely local, keep in cache).</p>
 </details>
 </div>
@@ -822,43 +863,9 @@ Represents an Objective-C <code>Class</code> type.</p>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>The <code>prefetch_read_instruction</code> intrinsic is a hint to the code gnerator to insert a prefetch instruction if supported; otherwise, it is a no-op. Prefetches have no affect on the behaviour of the program but can change its performance characteristics.</p>
+<p>The <code>prefetch_*</code> intrinsic are a hint to the code generator to insert a prefetch instruction if supported; otherwise, it is a no-op. Prefetches have no affect on the behaviour of the program but can change its performance characteristics.</p>
 <p>The <code>locality</code> parameter must be a constant integer, and its temporal locality value ranges from <code>0</code> (no locality) to <code>3</code> (extremely local, keep in cache).</p>
 </details>
-</div>
-<div class="pkg-entity">
-<h3 id="constant_utf16_cstring"><span><a class="doc-id-link" href="#constant_utf16_cstring">constant_utf16_cstring<span class="a-hidden">&nbsp;¶</span></a></span></h3>
-<div>
-<pre class="doc-code">constant_utf16_cstring :: <span class="keyword-type">proc</span>($literal: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>) -> [^]<a href="/base/builtin#u16"><span class="doc-builtin">u16</span></a> {…}</pre>
-</div>
-<details class="odin-doc-toggle" open>
-<summary class="hideme"><span>&nbsp;</span></summary>
-<p>Returns a run-time value of a constant string UTF-8 value encoded as a UTF-16 NUL terminated string value, useful for interfacing with UTF-16 procedure such as the Windows API.</p>
-</details>
-</div>
-<div class="pkg-entity">
-<h3 id="transpose"><span><a class="doc-id-link" href="#transpose">transpose<span class="a-hidden">&nbsp;¶</span></a></span></h3>
-<div>
-<pre class="doc-code">transpose :: <span class="keyword-type">proc</span>(m: $M/<span class="keyword-type">matrix</span>[$R, $C]$E) -> <span class="keyword-type">matrix</span>[C, R]E {…}</pre>
-</div>
-</div>
-<div class="pkg-entity">
-<h3 id="outer_product"><span><a class="doc-id-link" href="#outer_product">outer_product<span class="a-hidden">&nbsp;¶</span></a></span></h3>
-<div>
-<pre class="doc-code">outer_product :: <span class="keyword-type">proc</span>(a: $A/[$I]$E, b: $B/[$J]E) -> (c: [I*J]E) {…}</pre>
-</div>
-</div>
-<div class="pkg-entity">
-<h3 id="hadamard_product"><span><a class="doc-id-link" href="#hadamard_product">hadamard_product<span class="a-hidden">&nbsp;¶</span></a></span></h3>
-<div>
-<pre class="doc-code">hadamard_product :: <span class="keyword-type">proc</span>(a, b: $M/<span class="keyword-type">matrix</span>[$R, $C]$E) -> (c: M) {…}</pre>
-</div>
-</div>
-<div class="pkg-entity">
-<h3 id="matrix_flatten"><span><a class="doc-id-link" href="#matrix_flatten">matrix_flatten<span class="a-hidden">&nbsp;¶</span></a></span></h3>
-<div>
-<pre class="doc-code">matrix_flatten :: <span class="keyword-type">proc</span>(m: $M/<span class="keyword-type">matrix</span>[$R, $C]$E) -> [R*C]E {…}</pre>
-</div>
 </div>
 <div class="pkg-entity">
 <h3 id="expect"><span><a class="doc-id-link" href="#expect">expect<span class="a-hidden">&nbsp;¶</span></a></span></h3>
@@ -878,6 +885,16 @@ Represents an Objective-C <code>Class</code> type.</p>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
 <p>Linux and Darwin Only</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="syscall_bsd"><span><a class="doc-id-link" href="#syscall_bsd">syscall_bsd<span class="a-hidden">&nbsp;¶</span></a></span></h3>
+<div>
+<pre class="doc-code">syscall_bsd :: <span class="keyword-type">proc</span>(id: <a href="/base/builtin#uintptr"><span class="doc-builtin">uintptr</span></a>, args: ..<a href="/base/builtin#uintptr"><span class="doc-builtin">uintptr</span></a>) -> (<a href="/base/builtin#uintptr"><span class="doc-builtin">uintptr</span></a>, <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>FreeBSD, NetBSD, etc.</p>
 </details>
 </div>
 <div class="pkg-entity">
@@ -1152,6 +1169,12 @@ Represents an Objective-C <code>Class</code> type.</p>
 <div>
 <pre class="doc-code">type_is_unsigned :: <span class="keyword-type">proc</span>($T: <span class="keyword-type">typeid</span>) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> {…}</pre>
 </div>
+</div>
+<div class="pkg-entity">
+<h3 id="type_is_numeric"><span><a class="doc-id-link" href="#type_is_numeric">type_is_numeric<span class="a-hidden">&nbsp;¶</span></a></span></h3>
+<div>
+<pre class="doc-code">type_is_numeric :: <span class="keyword-type">proc</span>($T: <span class="keyword-type">typeid</span>) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> {…}</pre>
+</div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
 <p>Returns true if a "numeric" in nature:</p>
@@ -1162,12 +1185,6 @@ Represents an Objective-C <code>Class</code> type.</p>
 <span class="doc-list">Any enum</span>
 <span class="doc-list">Any fixed-array of a numeric type</span></p>
 </details>
-</div>
-<div class="pkg-entity">
-<h3 id="type_is_numeric"><span><a class="doc-id-link" href="#type_is_numeric">type_is_numeric<span class="a-hidden">&nbsp;¶</span></a></span></h3>
-<div>
-<pre class="doc-code">type_is_numeric :: <span class="keyword-type">proc</span>($T: <span class="keyword-type">typeid</span>) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> {…}</pre>
-</div>
 </div>
 <div class="pkg-entity">
 <h3 id="type_is_ordered"><span><a class="doc-id-link" href="#type_is_ordered">type_is_ordered<span class="a-hidden">&nbsp;¶</span></a></span></h3>
@@ -1362,6 +1379,18 @@ Represents an Objective-C <code>Class</code> type.</p>
 </details>
 </div>
 <div class="pkg-entity">
+<h3 id="type_is_matrix_row_major"><span><a class="doc-id-link" href="#type_is_matrix_row_major">type_is_matrix_row_major<span class="a-hidden">&nbsp;¶</span></a></span></h3>
+<div>
+<pre class="doc-code">type_is_matrix_row_major :: <span class="keyword-type">proc</span>($T: <span class="keyword-type">typeid</span>) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> <span class="keyword">where</span> <a href="/base/intrinsics#type_is_matrix"><span class="code-procedure">type_is_matrix</span></a>(T) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="type_is_matrix_column_major"><span><a class="doc-id-link" href="#type_is_matrix_column_major">type_is_matrix_column_major<span class="a-hidden">&nbsp;¶</span></a></span></h3>
+<div>
+<pre class="doc-code">type_is_matrix_column_major :: <span class="keyword-type">proc</span>($T: <span class="keyword-type">typeid</span>) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> <span class="keyword">where</span> <a href="/base/intrinsics#type_is_matrix"><span class="code-procedure">type_is_matrix</span></a>(T) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
 <h3 id="type_is_specialization_of"><span><a class="doc-id-link" href="#type_is_specialization_of">type_is_specialization_of<span class="a-hidden">&nbsp;¶</span></a></span></h3>
 <div>
 <pre class="doc-code">type_is_specialization_of :: <span class="keyword-type">proc</span>($T, $S: <span class="keyword-type">typeid</span>) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> {…}</pre>
@@ -1410,6 +1439,18 @@ Represents an Objective-C <code>Class</code> type.</p>
 </div>
 </div>
 <div class="pkg-entity">
+<h3 id="type_bit_set_elem_type"><span><a class="doc-id-link" href="#type_bit_set_elem_type">type_bit_set_elem_type<span class="a-hidden">&nbsp;¶</span></a></span></h3>
+<div>
+<pre class="doc-code">type_bit_set_elem_type :: <span class="keyword-type">proc</span>($T: <span class="keyword-type">typeid</span>) -> <span class="keyword-type">typeid</span> <span class="keyword">where</span> <a href="/base/intrinsics#type_is_bit_set"><span class="code-procedure">type_is_bit_set</span></a>(T) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="type_bit_set_underlying_type"><span><a class="doc-id-link" href="#type_bit_set_underlying_type">type_bit_set_underlying_type<span class="a-hidden">&nbsp;¶</span></a></span></h3>
+<div>
+<pre class="doc-code">type_bit_set_underlying_type :: <span class="keyword-type">proc</span>($T: <span class="keyword-type">typeid</span>) -> <span class="keyword-type">typeid</span> <span class="keyword">where</span> <a href="/base/intrinsics#type_is_bit_set"><span class="code-procedure">type_is_bit_set</span></a>(T) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
 <h3 id="type_has_field"><span><a class="doc-id-link" href="#type_has_field">type_has_field<span class="a-hidden">&nbsp;¶</span></a></span></h3>
 <div>
 <pre class="doc-code">type_has_field :: <span class="keyword-type">proc</span>($T: <span class="keyword-type">typeid</span>, $name: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> {…}</pre>
@@ -1449,6 +1490,12 @@ Represents an Objective-C <code>Class</code> type.</p>
 <h3 id="type_struct_field_count"><span><a class="doc-id-link" href="#type_struct_field_count">type_struct_field_count<span class="a-hidden">&nbsp;¶</span></a></span></h3>
 <div>
 <pre class="doc-code">type_struct_field_count :: <span class="keyword-type">proc</span>($T: <span class="keyword-type">typeid</span>) -> <a href="/base/builtin#int"><span class="doc-builtin">int</span></a> <span class="keyword">where</span> <a href="/base/intrinsics#type_is_struct"><span class="code-procedure">type_is_struct</span></a>(T) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="type_struct_has_implicit_padding"><span><a class="doc-id-link" href="#type_struct_has_implicit_padding">type_struct_has_implicit_padding<span class="a-hidden">&nbsp;¶</span></a></span></h3>
+<div>
+<pre class="doc-code">type_struct_has_implicit_padding :: <span class="keyword-type">proc</span>($T: <span class="keyword-type">typeid</span>) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> <span class="keyword">where</span> <a href="/base/intrinsics#type_is_struct"><span class="code-procedure">type_is_struct</span></a>(T) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -1542,6 +1589,16 @@ type_convert_variants_to_pointers(Foo) == union {^A, ^B, ^C}
 </div>
 </div>
 <div class="pkg-entity">
+<h3 id="constant_utf16_cstring"><span><a class="doc-id-link" href="#constant_utf16_cstring">constant_utf16_cstring<span class="a-hidden">&nbsp;¶</span></a></span></h3>
+<div>
+<pre class="doc-code">constant_utf16_cstring :: <span class="keyword-type">proc</span>($literal: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>) -> [^]<a href="/base/builtin#u16"><span class="doc-builtin">u16</span></a> {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Returns a runtime value of a constant string UTF-8 value encoded as a UTF-16 NULL terminated string value, useful for interfacing with UTF-16 procedure such as the Windows API.</p>
+</details>
+</div>
+<div class="pkg-entity">
 <h3 id="simd_add"><span><a class="doc-id-link" href="#simd_add">simd_add<span class="a-hidden">&nbsp;¶</span></a></span></h3>
 <div>
 <pre class="doc-code">simd_add :: <span class="keyword-type">proc</span>(a, b: <span class="directive">#simd</span>[N]T) -> <span class="directive">#simd</span>[N]T {…}</pre>
@@ -1563,6 +1620,18 @@ type_convert_variants_to_pointers(Foo) == union {^A, ^B, ^C}
 <h3 id="simd_div"><span><a class="doc-id-link" href="#simd_div">simd_div<span class="a-hidden">&nbsp;¶</span></a></span></h3>
 <div>
 <pre class="doc-code">simd_div :: <span class="keyword-type">proc</span>(a, b: <span class="directive">#simd</span>[N]T) -> <span class="directive">#simd</span>[N]T <span class="keyword">where</span> <a href="/base/intrinsics#type_is_float"><span class="code-procedure">type_is_float</span></a>(T) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="simd_saturating_add"><span><a class="doc-id-link" href="#simd_saturating_add">simd_saturating_add<span class="a-hidden">&nbsp;¶</span></a></span></h3>
+<div>
+<pre class="doc-code">simd_saturating_add :: <span class="keyword-type">proc</span>(a, b: <span class="directive">#simd</span>[N]T) -> <span class="directive">#simd</span>[N]T <span class="keyword">where</span> <a href="/base/intrinsics#type_is_integer"><span class="code-procedure">type_is_integer</span></a>(T) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="simd_saturating_sub"><span><a class="doc-id-link" href="#simd_saturating_sub">simd_saturating_sub<span class="a-hidden">&nbsp;¶</span></a></span></h3>
+<div>
+<pre class="doc-code">simd_saturating_sub :: <span class="keyword-type">proc</span>(a, b: <span class="directive">#simd</span>[N]T) -> <span class="directive">#simd</span>[N]T <span class="keyword">where</span> <a href="/base/intrinsics#type_is_integer"><span class="code-procedure">type_is_integer</span></a>(T) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -1604,18 +1673,6 @@ type_convert_variants_to_pointers(Foo) == union {^A, ^B, ^C}
 <summary class="hideme"><span>&nbsp;</span></summary>
 <p>Similar to C's behaviour: `x &gt;&gt; (y & mask)</p>
 </details>
-</div>
-<div class="pkg-entity">
-<h3 id="simd_saturating_add"><span><a class="doc-id-link" href="#simd_saturating_add">simd_saturating_add<span class="a-hidden">&nbsp;¶</span></a></span></h3>
-<div>
-<pre class="doc-code">simd_saturating_add :: <span class="keyword-type">proc</span>(a, b: <span class="directive">#simd</span>[N]T) -> <span class="directive">#simd</span>[N]T {…}</pre>
-</div>
-</div>
-<div class="pkg-entity">
-<h3 id="simd_saturating_sub"><span><a class="doc-id-link" href="#simd_saturating_sub">simd_saturating_sub<span class="a-hidden">&nbsp;¶</span></a></span></h3>
-<div>
-<pre class="doc-code">simd_saturating_sub :: <span class="keyword-type">proc</span>(a, b: <span class="directive">#simd</span>[N]T) -> <span class="directive">#simd</span>[N]T {…}</pre>
-</div>
 </div>
 <div class="pkg-entity">
 <h3 id="simd_bit_and"><span><a class="doc-id-link" href="#simd_bit_and">simd_bit_and<span class="a-hidden">&nbsp;¶</span></a></span></h3>
@@ -1885,6 +1942,54 @@ type_convert_variants_to_pointers(Foo) == union {^A, ^B, ^C}
 </details>
 </div>
 <div class="pkg-entity">
+<h3 id="simd_reduce_any"><span><a class="doc-id-link" href="#simd_reduce_any">simd_reduce_any<span class="a-hidden">&nbsp;¶</span></a></span></h3>
+<div>
+<pre class="doc-code">simd_reduce_any :: <span class="keyword-type">proc</span>(a: <span class="directive">#simd</span>[N]T) -> T <span class="keyword">where</span> <a href="/base/intrinsics#type_is_boolean"><span class="code-procedure">type_is_boolean</span></a>(T) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="simd_reduce_all"><span><a class="doc-id-link" href="#simd_reduce_all">simd_reduce_all<span class="a-hidden">&nbsp;¶</span></a></span></h3>
+<div>
+<pre class="doc-code">simd_reduce_all :: <span class="keyword-type">proc</span>(a: <span class="directive">#simd</span>[N]T) -> T <span class="keyword">where</span> <a href="/base/intrinsics#type_is_boolean"><span class="code-procedure">type_is_boolean</span></a>(T) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="simd_gather"><span><a class="doc-id-link" href="#simd_gather">simd_gather<span class="a-hidden">&nbsp;¶</span></a></span></h3>
+<div>
+<pre class="doc-code">simd_gather :: <span class="keyword-type">proc</span>(ptr: <span class="directive">#simd</span>[N]<a href="/base/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>, val: <span class="directive">#simd</span>[N]T, mask: <span class="directive">#simd</span>[N]U) -> <span class="directive">#simd</span>[N]T <span class="keyword">where</span> <a href="/base/intrinsics#type_is_integer"><span class="code-procedure">type_is_integer</span></a>(U) || <a href="/base/intrinsics#type_is_boolean"><span class="code-procedure">type_is_boolean</span></a>(U) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="simd_scatter"><span><a class="doc-id-link" href="#simd_scatter">simd_scatter<span class="a-hidden">&nbsp;¶</span></a></span></h3>
+<div>
+<pre class="doc-code">simd_scatter :: <span class="keyword-type">proc</span>(ptr: <a href="/base/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>, val: <span class="directive">#simd</span>[N]T, mask: <span class="directive">#simd</span>[N]U) <span class="keyword">where</span> <a href="/base/intrinsics#type_is_integer"><span class="code-procedure">type_is_integer</span></a>(U) || <a href="/base/intrinsics#type_is_boolean"><span class="code-procedure">type_is_boolean</span></a>(U) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="simd_masked_load"><span><a class="doc-id-link" href="#simd_masked_load">simd_masked_load<span class="a-hidden">&nbsp;¶</span></a></span></h3>
+<div>
+<pre class="doc-code">simd_masked_load :: <span class="keyword-type">proc</span>(ptr: <a href="/base/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>, val: <span class="directive">#simd</span>[N]T, mask: <span class="directive">#simd</span>[N]U) -> <span class="directive">#simd</span>[N]T <span class="keyword">where</span> <a href="/base/intrinsics#type_is_integer"><span class="code-procedure">type_is_integer</span></a>(U) || <a href="/base/intrinsics#type_is_boolean"><span class="code-procedure">type_is_boolean</span></a>(U) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="simd_masked_store"><span><a class="doc-id-link" href="#simd_masked_store">simd_masked_store<span class="a-hidden">&nbsp;¶</span></a></span></h3>
+<div>
+<pre class="doc-code">simd_masked_store :: <span class="keyword-type">proc</span>(ptr: <a href="/base/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>, val: <span class="directive">#simd</span>[N]T, mask: <span class="directive">#simd</span>[N]U) <span class="keyword">where</span> <a href="/base/intrinsics#type_is_integer"><span class="code-procedure">type_is_integer</span></a>(U) || <a href="/base/intrinsics#type_is_boolean"><span class="code-procedure">type_is_boolean</span></a>(U) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="simd_masked_expand_load"><span><a class="doc-id-link" href="#simd_masked_expand_load">simd_masked_expand_load<span class="a-hidden">&nbsp;¶</span></a></span></h3>
+<div>
+<pre class="doc-code">simd_masked_expand_load :: <span class="keyword-type">proc</span>(ptr: <a href="/base/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>, val: <span class="directive">#simd</span>[N]T, mask: <span class="directive">#simd</span>[N]U) -> <span class="directive">#simd</span>[N]T <span class="keyword">where</span> <a href="/base/intrinsics#type_is_integer"><span class="code-procedure">type_is_integer</span></a>(U) || <a href="/base/intrinsics#type_is_boolean"><span class="code-procedure">type_is_boolean</span></a>(U) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="simd_masked_compress_store"><span><a class="doc-id-link" href="#simd_masked_compress_store">simd_masked_compress_store<span class="a-hidden">&nbsp;¶</span></a></span></h3>
+<div>
+<pre class="doc-code">simd_masked_compress_store :: <span class="keyword-type">proc</span>(ptr: <a href="/base/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>, val: <span class="directive">#simd</span>[N]T, mask: <span class="directive">#simd</span>[N]U) <span class="keyword">where</span> <a href="/base/intrinsics#type_is_integer"><span class="code-procedure">type_is_integer</span></a>(U) || <a href="/base/intrinsics#type_is_boolean"><span class="code-procedure">type_is_boolean</span></a>(U) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
 <h3 id="simd_shuffle"><span><a class="doc-id-link" href="#simd_shuffle">simd_shuffle<span class="a-hidden">&nbsp;¶</span></a></span></h3>
 <div>
 <pre class="doc-code">simd_shuffle :: <span class="keyword-type">proc</span>(a, b: <span class="directive">#simd</span>[N]T, $indices: ..<a href="/base/builtin#int"><span class="doc-builtin">int</span></a>) -> <span class="directive">#simd</span>[len(indices)]T {…}</pre>
@@ -1958,9 +2063,9 @@ v: #simd[6]T = intrinsics.simd_shuffle(a, b, 0, 1, 0, 3, 0, 4) // repeated indic
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="simd_reverse"><span><a class="doc-id-link" href="#simd_reverse">simd_reverse<span class="a-hidden">&nbsp;¶</span></a></span></h3>
+<h3 id="simd_lanes_reverse"><span><a class="doc-id-link" href="#simd_lanes_reverse">simd_lanes_reverse<span class="a-hidden">&nbsp;¶</span></a></span></h3>
 <div>
-<pre class="doc-code">simd_reverse :: <span class="keyword-type">proc</span>(a: <span class="directive">#simd</span>[N]T) -> <span class="directive">#simd</span>[N]T {…}</pre>
+<pre class="doc-code">simd_lanes_reverse :: <span class="keyword-type">proc</span>(a: <span class="directive">#simd</span>[N]T) -> <span class="directive">#simd</span>[N]T {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
@@ -1968,16 +2073,37 @@ v: #simd[6]T = intrinsics.simd_shuffle(a, b, 0, 1, 0, 3, 0, 4) // repeated indic
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="simd_rotate_left"><span><a class="doc-id-link" href="#simd_rotate_left">simd_rotate_left<span class="a-hidden">&nbsp;¶</span></a></span></h3>
+<h3 id="simd_lanes_rotate_left"><span><a class="doc-id-link" href="#simd_lanes_rotate_left">simd_lanes_rotate_left<span class="a-hidden">&nbsp;¶</span></a></span></h3>
 <div>
-<pre class="doc-code">simd_rotate_left :: <span class="keyword-type">proc</span>(a: <span class="directive">#simd</span>[N]T, $offset: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>) -> <span class="directive">#simd</span>[N]T {…}</pre>
+<pre class="doc-code">simd_lanes_rotate_left :: <span class="keyword-type">proc</span>(a: <span class="directive">#simd</span>[N]T, $offset: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>) -> <span class="directive">#simd</span>[N]T {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="simd_rotate_right"><span><a class="doc-id-link" href="#simd_rotate_right">simd_rotate_right<span class="a-hidden">&nbsp;¶</span></a></span></h3>
+<h3 id="simd_lanes_rotate_right"><span><a class="doc-id-link" href="#simd_lanes_rotate_right">simd_lanes_rotate_right<span class="a-hidden">&nbsp;¶</span></a></span></h3>
 <div>
-<pre class="doc-code">simd_rotate_right :: <span class="keyword-type">proc</span>(a: <span class="directive">#simd</span>[N]T, $offset: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>) -> <span class="directive">#simd</span>[N]T {…}</pre>
+<pre class="doc-code">simd_lanes_rotate_right :: <span class="keyword-type">proc</span>(a: <span class="directive">#simd</span>[N]T, $offset: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>) -> <span class="directive">#simd</span>[N]T {…}</pre>
 </div>
+</div>
+<div class="pkg-entity">
+<h3 id="has_target_feature"><span><a class="doc-id-link" href="#has_target_feature">has_target_feature<span class="a-hidden">&nbsp;¶</span></a></span></h3>
+<div>
+<pre class="doc-code">has_target_feature :: <span class="keyword-type">proc</span>($test: $T) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> <span class="keyword">where</span> <a href="/base/intrinsics#type_is_string"><span class="code-procedure">type_is_string</span></a>(T) || <a href="/base/intrinsics#type_is_proc"><span class="code-procedure">type_is_proc</span></a>(T) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Checks if the current target supports the given target features.</p>
+<p>Takes a constant comma-separated string (eg: "sha512,sse4.1"), or a procedure type which has either <code>@(require_target_feature)</code> or <code>@(enable_target_feature)</code> as its input and returns a boolean indicating if all listed features are supported.</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="procedure_of"><span><a class="doc-id-link" href="#procedure_of">procedure_of<span class="a-hidden">&nbsp;¶</span></a></span></h3>
+<div>
+<pre class="doc-code">procedure_of :: <span class="keyword-type">proc</span>(x: $T) -> T <span class="keyword">where</span> <a href="/base/intrinsics#type_is_proc"><span class="code-procedure">type_is_proc</span></a>(T) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Returns the value of the procedure where <code>x</code> must be a call expression.</p>
+</details>
 </div>
 <div class="pkg-entity">
 <h3 id="wasm_memory_grow"><span><a class="doc-id-link" href="#wasm_memory_grow">wasm_memory_grow<span class="a-hidden">&nbsp;¶</span></a></span></h3>
@@ -2095,6 +2221,12 @@ Will return a run-time cached class value for the given constant string value.</
 Will register a class value at run-time for the given constant string value.</p>
 </details>
 </div>
+<div class="pkg-entity">
+<h3 id="valgrind_client_request"><span><a class="doc-id-link" href="#valgrind_client_request">valgrind_client_request<span class="a-hidden">&nbsp;¶</span></a></span></h3>
+<div>
+<pre class="doc-code">valgrind_client_request :: <span class="keyword-type">proc</span>(default: <a href="/base/builtin#uintptr"><span class="doc-builtin">uintptr</span></a>, request: <a href="/base/builtin#uintptr"><span class="doc-builtin">uintptr</span></a>, a0, a1, a2, a3, a4: <a href="/base/builtin#uintptr"><span class="doc-builtin">uintptr</span></a>) -> <a href="/base/builtin#uintptr"><span class="doc-builtin">uintptr</span></a> {…}</pre>
+</div>
+</div>
 <h2 id="pkg-Procedure Groups" class="pkg-header">Procedure Groups</h2>
 <script type="text/javascript">var odin_pkg_name = "intrinsics";</script>
 </section></article>
@@ -2119,6 +2251,10 @@ Will register a class value at run-time for the given constant string value.</p>
 </li>
 <li>
 <a href="#pkg-Procedures">Procedures</a><ul>
+<li><a href="#transpose">transpose</a></li>
+<li><a href="#outer_product">outer_product</a></li>
+<li><a href="#hadamard_product">hadamard_product</a></li>
+<li><a href="#matrix_flatten">matrix_flatten</a></li>
 <li><a href="#soa_struct">soa_struct</a></li>
 <li><a href="#volatile_load">volatile_load</a></li>
 <li><a href="#volatile_store">volatile_store</a></li>
@@ -2158,13 +2294,9 @@ Will register a class value at run-time for the given constant string value.</p>
 <li><a href="#prefetch_read_data">prefetch_read_data</a></li>
 <li><a href="#prefetch_write_instruction">prefetch_write_instruction</a></li>
 <li><a href="#prefetch_write_data">prefetch_write_data</a></li>
-<li><a href="#constant_utf16_cstring">constant_utf16_cstring</a></li>
-<li><a href="#transpose">transpose</a></li>
-<li><a href="#outer_product">outer_product</a></li>
-<li><a href="#hadamard_product">hadamard_product</a></li>
-<li><a href="#matrix_flatten">matrix_flatten</a></li>
 <li><a href="#expect">expect</a></li>
 <li><a href="#syscall">syscall</a></li>
+<li><a href="#syscall_bsd">syscall_bsd</a></li>
 <li><a href="#atomic_type_is_lock_free">atomic_type_is_lock_free</a></li>
 <li><a href="#atomic_thread_fence">atomic_thread_fence</a></li>
 <li><a href="#atomic_signal_fence">atomic_signal_fence</a></li>
@@ -2232,6 +2364,8 @@ Will register a class value at run-time for the given constant string value.</p>
 <li><a href="#type_is_simd_vector">type_is_simd_vector</a></li>
 <li><a href="#type_is_matrix">type_is_matrix</a></li>
 <li><a href="#type_has_nil">type_has_nil</a></li>
+<li><a href="#type_is_matrix_row_major">type_is_matrix_row_major</a></li>
+<li><a href="#type_is_matrix_column_major">type_is_matrix_column_major</a></li>
 <li><a href="#type_is_specialization_of">type_is_specialization_of</a></li>
 <li><a href="#type_is_variant_of">type_is_variant_of</a></li>
 <li><a href="#type_union_tag_type">type_union_tag_type</a></li>
@@ -2240,6 +2374,8 @@ Will register a class value at run-time for the given constant string value.</p>
 <li><a href="#type_union_variant_count">type_union_variant_count</a></li>
 <li><a href="#type_variant_type_of">type_variant_type_of</a></li>
 <li><a href="#type_variant_index_of">type_variant_index_of</a></li>
+<li><a href="#type_bit_set_elem_type">type_bit_set_elem_type</a></li>
+<li><a href="#type_bit_set_underlying_type">type_bit_set_underlying_type</a></li>
 <li><a href="#type_has_field">type_has_field</a></li>
 <li><a href="#type_field_type">type_field_type</a></li>
 <li><a href="#type_proc_parameter_count">type_proc_parameter_count</a></li>
@@ -2247,6 +2383,7 @@ Will register a class value at run-time for the given constant string value.</p>
 <li><a href="#type_proc_parameter_type">type_proc_parameter_type</a></li>
 <li><a href="#type_proc_return_type">type_proc_return_type</a></li>
 <li><a href="#type_struct_field_count">type_struct_field_count</a></li>
+<li><a href="#type_struct_has_implicit_padding">type_struct_has_implicit_padding</a></li>
 <li><a href="#type_polymorphic_record_parameter_count">type_polymorphic_record_parameter_count</a></li>
 <li><a href="#type_polymorphic_record_parameter_value">type_polymorphic_record_parameter_value</a></li>
 <li><a href="#type_is_specialized_polymorphic_record">type_is_specialized_polymorphic_record</a></li>
@@ -2259,16 +2396,17 @@ Will register a class value at run-time for the given constant string value.</p>
 <li><a href="#type_map_cell_info">type_map_cell_info</a></li>
 <li><a href="#type_convert_variants_to_pointers">type_convert_variants_to_pointers</a></li>
 <li><a href="#type_merge">type_merge</a></li>
+<li><a href="#constant_utf16_cstring">constant_utf16_cstring</a></li>
 <li><a href="#simd_add">simd_add</a></li>
 <li><a href="#simd_sub">simd_sub</a></li>
 <li><a href="#simd_mul">simd_mul</a></li>
 <li><a href="#simd_div">simd_div</a></li>
+<li><a href="#simd_saturating_add">simd_saturating_add</a></li>
+<li><a href="#simd_saturating_sub">simd_saturating_sub</a></li>
 <li><a href="#simd_shl">simd_shl</a></li>
 <li><a href="#simd_shr">simd_shr</a></li>
 <li><a href="#simd_shl_masked">simd_shl_masked</a></li>
 <li><a href="#simd_shr_masked">simd_shr_masked</a></li>
-<li><a href="#simd_saturating_add">simd_saturating_add</a></li>
-<li><a href="#simd_saturating_sub">simd_saturating_sub</a></li>
 <li><a href="#simd_bit_and">simd_bit_and</a></li>
 <li><a href="#simd_bit_or">simd_bit_or</a></li>
 <li><a href="#simd_bit_xor">simd_bit_xor</a></li>
@@ -2293,6 +2431,14 @@ Will register a class value at run-time for the given constant string value.</p>
 <li><a href="#simd_reduce_and">simd_reduce_and</a></li>
 <li><a href="#simd_reduce_or">simd_reduce_or</a></li>
 <li><a href="#simd_reduce_xor">simd_reduce_xor</a></li>
+<li><a href="#simd_reduce_any">simd_reduce_any</a></li>
+<li><a href="#simd_reduce_all">simd_reduce_all</a></li>
+<li><a href="#simd_gather">simd_gather</a></li>
+<li><a href="#simd_scatter">simd_scatter</a></li>
+<li><a href="#simd_masked_load">simd_masked_load</a></li>
+<li><a href="#simd_masked_store">simd_masked_store</a></li>
+<li><a href="#simd_masked_expand_load">simd_masked_expand_load</a></li>
+<li><a href="#simd_masked_compress_store">simd_masked_compress_store</a></li>
 <li><a href="#simd_shuffle">simd_shuffle</a></li>
 <li><a href="#simd_select">simd_select</a></li>
 <li><a href="#simd_ceil">simd_ceil</a></li>
@@ -2300,9 +2446,11 @@ Will register a class value at run-time for the given constant string value.</p>
 <li><a href="#simd_trunc">simd_trunc</a></li>
 <li><a href="#simd_nearest">simd_nearest</a></li>
 <li><a href="#simd_to_bits">simd_to_bits</a></li>
-<li><a href="#simd_reverse">simd_reverse</a></li>
-<li><a href="#simd_rotate_left">simd_rotate_left</a></li>
-<li><a href="#simd_rotate_right">simd_rotate_right</a></li>
+<li><a href="#simd_lanes_reverse">simd_lanes_reverse</a></li>
+<li><a href="#simd_lanes_rotate_left">simd_lanes_rotate_left</a></li>
+<li><a href="#simd_lanes_rotate_right">simd_lanes_rotate_right</a></li>
+<li><a href="#has_target_feature">has_target_feature</a></li>
+<li><a href="#procedure_of">procedure_of</a></li>
 <li><a href="#wasm_memory_grow">wasm_memory_grow</a></li>
 <li><a href="#wasm_memory_size">wasm_memory_size</a></li>
 <li><a href="#wasm_memory_atomic_wait32">wasm_memory_atomic_wait32</a></li>
@@ -2313,6 +2461,7 @@ Will register a class value at run-time for the given constant string value.</p>
 <li><a href="#objc_register_selector">objc_register_selector</a></li>
 <li><a href="#objc_find_class">objc_find_class</a></li>
 <li><a href="#objc_register_class">objc_register_class</a></li>
+<li><a href="#valgrind_client_request">valgrind_client_request</a></li>
 </ul>
 </li>
 <li>
