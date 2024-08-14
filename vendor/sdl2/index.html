@@ -2779,9 +2779,12 @@ Procedure Groups (0)</summary>
 <pre class="doc-code">GameControllerButtonBind :: <span class="keyword-type">struct</span> {
 	bindType: <a class="code-typename" href="/vendor/sdl2/#GameControllerBindType">GameControllerBindType</a>,
 	value:    <span class="keyword-type">struct</span> <span class="directive">#raw_union</span> {
-		button: ,
-		axis:   ,
-		hat:    ,
+		button: <a href="/base/builtin#i32"><span class="doc-builtin">i32</span></a>,
+		axis:   <a href="/base/builtin#i32"><span class="doc-builtin">i32</span></a>,
+		hat:    <span class="keyword-type">struct</span> {
+			hat:      <a href="/base/builtin#i32"><span class="doc-builtin">i32</span></a>,
+			hat_mask: <a href="/base/builtin#i32"><span class="doc-builtin">i32</span></a>,
+		},
 	},
 }</pre>
 </div>
@@ -4325,16 +4328,43 @@ Procedure Groups (0)</summary>
 	size:   <span class="keyword-type">proc</span> "c" (ctx: ^<a class="code-typename" href="/vendor/sdl2/#RWops">RWops</a>) -> <a href="/base/builtin#i64"><span class="doc-builtin">i64</span></a>,
 	seek:   <span class="keyword-type">proc</span> "c" (ctx: ^<a class="code-typename" href="/vendor/sdl2/#RWops">RWops</a>, offset: <a href="/base/builtin#i64"><span class="doc-builtin">i64</span></a>, whence: <a href="/base/builtin#i32"><span class="doc-builtin">i32</span></a>) -> <a href="/base/builtin#i64"><span class="doc-builtin">i64</span></a>,
 	read:   <span class="keyword-type">proc</span> "c" (ctx: ^<a class="code-typename" href="/vendor/sdl2/#RWops">RWops</a>, ptr: <a href="/base/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>, size: <a href="/base/builtin#uint"><span class="doc-builtin">uint</span></a>, maxnum: <a href="/base/builtin#uint"><span class="doc-builtin">uint</span></a>) -> <a href="/base/builtin#uint"><span class="doc-builtin">uint</span></a>,
-	write:  <span class="keyword-type">proc</span> "c" (ctx: , ptr: , size: , num: ) -> <a href="/base/builtin#uint"><span class="doc-builtin">uint</span></a>,
+	write:  <span class="keyword-type">proc</span> "c" (ctx: ^<a class="code-typename" href="/vendor/sdl2/#RWops">RWops</a>, ptr: <a href="/base/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>, size: <a href="/base/builtin#uint"><span class="doc-builtin">uint</span></a>, num: <a href="/base/builtin#uint"><span class="doc-builtin">uint</span></a>) -> <a href="/base/builtin#uint"><span class="doc-builtin">uint</span></a>,
 	close:  <span class="keyword-type">proc</span> "c" (ctx: ^<a class="code-typename" href="/vendor/sdl2/#RWops">RWops</a>) -> <a href="/base/builtin#i32"><span class="doc-builtin">i32</span></a>,
 	type:   <a href="/base/builtin#u32"><span class="doc-builtin">u32</span></a>,
 	hidden: <span class="keyword-type">struct</span> <span class="directive">#raw_union</span> {
-		androidio: ,
-		windowsio: ,
-		vitaio:    ,
-		stdio:     ,
-		mem:       ,
-		unknown:   ,
+		androidio: <span class="keyword-type">struct</span> {
+			asset: <a href="/base/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>,
+		},
+		windowsio: <span class="keyword-type">struct</span> {
+			append: <a class="code-typename" href="/vendor/sdl2/#bool">bool</a>,
+			h:      <a href="/base/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>,
+			buffer: <span class="keyword-type">struct</span> {
+				data: <a href="/base/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>,
+				size: <a href="/base/builtin#uint"><span class="doc-builtin">uint</span></a>,
+				left: <a href="/base/builtin#uint"><span class="doc-builtin">uint</span></a>,
+			},
+		},
+		vitaio:    <span class="keyword-type">struct</span> {
+			h:      <a href="/base/builtin#i32"><span class="doc-builtin">i32</span></a>,
+			buffer: <span class="keyword-type">struct</span> {
+				data: <a href="/base/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>,
+				size: <a href="/base/builtin#uint"><span class="doc-builtin">uint</span></a>,
+				left: <a href="/base/builtin#uint"><span class="doc-builtin">uint</span></a>,
+			},
+		},
+		stdio:     <span class="keyword-type">struct</span> {
+			autoclose: <a class="code-typename" href="/vendor/sdl2/#bool">bool</a>,
+			fp:        <a href="/base/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>,
+		},
+		mem:       <span class="keyword-type">struct</span> {
+			base: ^<a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a>,
+			here: ^<a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a>,
+			stop: ^<a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a>,
+		},
+		unknown:   <span class="keyword-type">struct</span> {
+			data1: <a href="/base/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>,
+			data2: <a href="/base/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>,
+		},
 	},
 }</pre>
 </div>
@@ -5311,15 +5341,51 @@ NOTE: Prefer the intrinsics built into Odin 'package intrinsics'</p>
 	version:   <a class="code-typename" href="/vendor/sdl2/#version">version</a>,
 	subsystem: <a class="code-typename" href="/vendor/sdl2/#SYSWM_TYPE">SYSWM_TYPE</a>,
 	info:      <span class="keyword-type">struct</span> <span class="directive">#raw_union</span> {
-		win:     ,
-		winrt:   ,
-		x11:     ,
-		cocoa:   ,
-		uikit:   ,
-		wl:      ,
-		mir:     ,
-		android: ,
-		dummy:   ,
+		win:     <span class="keyword-type">struct</span> {
+			window:    <a href="/base/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>,
+			hdc:       <a href="/base/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>,
+			hinstance: <a href="/base/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>,
+		},
+		winrt:   <span class="keyword-type">struct</span> {
+			window: <a href="/base/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>,
+		},
+		x11:     <span class="keyword-type">struct</span> {
+			display: <a href="/base/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>,
+			window:  <a href="/base/builtin#uintptr"><span class="doc-builtin">uintptr</span></a>,
+		},
+		cocoa:   <span class="keyword-type">struct</span> {
+			window: <a href="/base/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>,
+		},
+		uikit:   <span class="keyword-type">struct</span> {
+			window:             <a href="/base/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>,
+			<span class="comment">// *&lt; The UIKit window </span>
+			framebuffer:        <a href="/base/builtin#u32"><span class="doc-builtin">u32</span></a>,
+			<span class="comment">// *&lt; The GL view's Framebuffer Object. It must be bound when rendering to the screen using GL. </span>
+			colorbuffer:        <a href="/base/builtin#u32"><span class="doc-builtin">u32</span></a>,
+			<span class="comment">// *&lt; The GL view's color Renderbuffer Object. It must be bound when SDL_GL_SwapWindow is called. </span>
+			resolveFramebuffer: <a href="/base/builtin#u32"><span class="doc-builtin">u32</span></a>,
+		},
+		wl:      <span class="keyword-type">struct</span> {
+			display:       <a href="/base/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>,
+			<span class="comment">// *&lt; Wayland display </span>
+			surface:       <a href="/base/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>,
+			<span class="comment">// *&lt; Wayland surface </span>
+			shell_surface: <a href="/base/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>,
+			<span class="comment">// *&lt; DEPRECATED Wayland shell_surface (window manager handle) </span>
+			egl_window:    <a href="/base/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>,
+			<span class="comment">// *&lt; Wayland EGL window (native window) </span>
+			xdg_surface:   <a href="/base/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>,
+		},
+		mir:     <span class="keyword-type">struct</span> {
+			connection: <a href="/base/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>,
+			<span class="comment">// *&lt; Mir display server connection </span>
+			surface:    <a href="/base/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>,
+		},
+		android: <span class="keyword-type">struct</span> {
+			window:  <a href="/base/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>,
+			surface: <a href="/base/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>,
+		},
+		dummy:   [64]<a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a>,
 	},
 }</pre>
 </div>
@@ -5343,11 +5409,25 @@ NOTE: Prefer the intrinsics built into Odin 'package intrinsics'</p>
 	version:   <a class="code-typename" href="/vendor/sdl2/#version">version</a>,
 	subsystem: <a class="code-typename" href="/vendor/sdl2/#SYSWM_TYPE">SYSWM_TYPE</a>,
 	msg:       <span class="keyword-type">struct</span> <span class="directive">#raw_union</span> {
-		win:   ,
-		x11:   ,
-		cocoa: ,
-		uikit: ,
-		dummy: ,
+		win:   <span class="keyword-type">struct</span> {
+			hwnd:   <a href="/base/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>,
+			<span class="comment">// *&lt; The window for the message </span>
+			msg:    <a href="/base/builtin#u32"><span class="doc-builtin">u32</span></a>,
+			<span class="comment">// *&lt; The type of message </span>
+			wParam: <a href="/base/builtin#uint"><span class="doc-builtin">uint</span></a>,
+			<span class="comment">// *&lt; WORD message parameter </span>
+			lParam: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>,
+		},
+		x11:   <span class="keyword-type">struct</span> {
+			event: <a class="code-typename" href="/vendor/sdl2/#XEvent">XEvent</a>,
+		},
+		cocoa: <span class="keyword-type">struct</span> {
+			dummy: <a href="/base/builtin#i32"><span class="doc-builtin">i32</span></a>,
+		},
+		uikit: <span class="keyword-type">struct</span> {
+			dummy: <a href="/base/builtin#i32"><span class="doc-builtin">i32</span></a>,
+		},
+		dummy: <a href="/base/builtin#i32"><span class="doc-builtin">i32</span></a>,
 	},
 }</pre>
 </div>
@@ -14866,7 +14946,7 @@ NOTE: Prefer the intrinsics built into Odin 'package intrinsics'</p>
 <li><a href="https://github.com/odin-lang/Odin/tree/master/vendor/sdl2/sdl_vulkan.odin">sdl_vulkan.odin</a></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2024-08 (vendor "odin") Windows_amd64 @ 2024-08-14 10:36:53.219094200 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2024-08 (vendor "odin") Windows_amd64 @ 2024-08-14 12:06:11.366912200 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">

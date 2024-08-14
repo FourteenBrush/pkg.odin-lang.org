@@ -287,13 +287,30 @@ Procedure Groups (0)</summary>
 <pre class="doc-code">Event :: <span class="keyword-type">struct</span> {
 	code: <a class="code-typename" href="/vendor/ggpo/#EventCode">EventCode</a>,
 	<span class="keyword-type">using</span> u: <span class="keyword-type">struct</span> <span class="directive">#raw_union</span> {
-		connected:              ,
-		synchronizing:          ,
-		synchronized:           ,
-		disconnected:           ,
-		timesync:               ,
-		connection_interrupted: ,
-		connection_resumed:     ,
+		connected:              <span class="keyword-type">struct</span> {
+			player: <a class="code-typename" href="/vendor/ggpo/#PlayerHandle">PlayerHandle</a>,
+		},
+		synchronizing:          <span class="keyword-type">struct</span> {
+			player: <a class="code-typename" href="/vendor/ggpo/#PlayerHandle">PlayerHandle</a>,
+			count:  <a href="/base/builtin#i32"><span class="doc-builtin">i32</span></a>,
+			total:  <a href="/base/builtin#i32"><span class="doc-builtin">i32</span></a>,
+		},
+		synchronized:           <span class="keyword-type">struct</span> {
+			player: <a class="code-typename" href="/vendor/ggpo/#PlayerHandle">PlayerHandle</a>,
+		},
+		disconnected:           <span class="keyword-type">struct</span> {
+			player: <a class="code-typename" href="/vendor/ggpo/#PlayerHandle">PlayerHandle</a>,
+		},
+		timesync:               <span class="keyword-type">struct</span> {
+			frames_ahead: <a href="/base/builtin#i32"><span class="doc-builtin">i32</span></a>,
+		},
+		connection_interrupted: <span class="keyword-type">struct</span> {
+			player:             <a class="code-typename" href="/vendor/ggpo/#PlayerHandle">PlayerHandle</a>,
+			disconnect_timeout: <a href="/base/builtin#i32"><span class="doc-builtin">i32</span></a>,
+		},
+		connection_resumed:     <span class="keyword-type">struct</span> {
+			player: <a class="code-typename" href="/vendor/ggpo/#PlayerHandle">PlayerHandle</a>,
+		},
 	},
 }</pre>
 </div>
@@ -353,14 +370,14 @@ Procedure Groups (0)</summary>
 <div>
 <pre class="doc-code">NetworkStats :: <span class="keyword-type">struct</span> {
 	network:  <span class="keyword-type">struct</span> {
-		send_queue_len: ,
-		recv_queue_len: ,
-		ping:           ,
-		kbps_sent:      ,
+		send_queue_len: <a href="/base/builtin#i32"><span class="doc-builtin">i32</span></a>,
+		recv_queue_len: <a href="/base/builtin#i32"><span class="doc-builtin">i32</span></a>,
+		ping:           <a href="/base/builtin#i32"><span class="doc-builtin">i32</span></a>,
+		kbps_sent:      <a href="/base/builtin#i32"><span class="doc-builtin">i32</span></a>,
 	},
 	timesync: <span class="keyword-type">struct</span> {
-		local_frames_behind:  ,
-		remote_frames_behind: ,
+		local_frames_behind:  <a href="/base/builtin#i32"><span class="doc-builtin">i32</span></a>,
+		remote_frames_behind: <a href="/base/builtin#i32"><span class="doc-builtin">i32</span></a>,
 	},
 }</pre>
 </div>
@@ -412,8 +429,11 @@ Procedure Groups (0)</summary>
 	type:       <a class="code-typename" href="/vendor/ggpo/#PlayerType">PlayerType</a>,
 	player_num: <a href="/base/builtin#i32"><span class="doc-builtin">i32</span></a>,
 	<span class="keyword-type">using</span> u:    <span class="keyword-type">struct</span> <span class="directive">#raw_union</span> {
-		local:  ,
-		remote: ,
+		local:  <span class="keyword-type">struct</span> {},
+		remote: <span class="keyword-type">struct</span> {
+			ip_address: [32]<a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a>,
+			port:       <a href="/base/builtin#u16"><span class="doc-builtin">u16</span></a>,
+		},
 	},
 }</pre>
 </div>
@@ -478,12 +498,12 @@ Procedure Groups (0)</summary>
 <pre class="doc-code">SessionCallbacks :: <span class="keyword-type">struct</span> {
 	<span class="comment">// 	 * begin_game callback - This callback has been deprecated.  You must</span>
 	<span class="comment">// 	 * implement it, but should ignore the 'game' parameter.</span>
-	begin_game:      <span class="keyword-type">proc</span> "c" (game: ) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>,
+	begin_game:      <span class="keyword-type">proc</span> "c" (game: <a href="/base/builtin#cstring"><span class="doc-builtin">cstring</span></a>) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>,
 	<span class="comment">// 	 * save_game_state - The client should allocate a buffer, copy the</span>
 	<span class="comment">// 	 * entire contents of the current game state into it, and copy the</span>
 	<span class="comment">// 	 * length into the len parameter.  Optionally, the client can compute</span>
 	<span class="comment">// 	 * a checksum of the data and store it in the checksum argument.</span>
-	save_game_state: <span class="keyword-type">proc</span> "c" (buffer: , len: , checksum: , frame: ) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>,
+	save_game_state: <span class="keyword-type">proc</span> "c" (buffer: ^[^]<a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a>, len: ^<a href="/base/builtin#i32"><span class="doc-builtin">i32</span></a>, checksum: ^<a href="/base/builtin#i32"><span class="doc-builtin">i32</span></a>, frame: <a href="/base/builtin#i32"><span class="doc-builtin">i32</span></a>) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>,
 	<span class="comment">// 	 * load_game_state - GGPO.net will call this function at the beginning</span>
 	<span class="comment">// 	 * of a rollback.  The buffer and len parameters contain a previously</span>
 	<span class="comment">// 	 * saved state returned from the save_game_state function.  The client</span>
@@ -493,10 +513,10 @@ Procedure Groups (0)</summary>
 	<span class="comment">// 	 * log_game_state - Used in diagnostic testing.  The client should use</span>
 	<span class="comment">// 	 * the log function to write the contents of the specified save</span>
 	<span class="comment">// 	 * state in a human readible form.</span>
-	log_game_state:  <span class="keyword-type">proc</span> "c" (filename: , buffer: , len: ) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>,
+	log_game_state:  <span class="keyword-type">proc</span> "c" (filename: <a href="/base/builtin#cstring"><span class="doc-builtin">cstring</span></a>, buffer: [^]<a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a>, len: <a href="/base/builtin#i32"><span class="doc-builtin">i32</span></a>) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>,
 	<span class="comment">// 	 * free_buffer - Frees a game state allocated in save_game_state.  You</span>
 	<span class="comment">// 	 * should deallocate the memory contained in the buffer.</span>
-	free_buffer:     <span class="keyword-type">proc</span> "c" (buffer: ),
+	free_buffer:     <span class="keyword-type">proc</span> "c" (buffer: <a href="/base/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>),
 	<span class="comment">// 	 * advance_frame - Called during a rollback.  You should advance your game</span>
 	<span class="comment">// 	 * state by exactly one frame.  Before each frame, call synchronize_input</span>
 	<span class="comment">// 	 * to retrieve the inputs you should use for that frame.  After each frame,</span>
@@ -504,10 +524,10 @@ Procedure Groups (0)</summary>
 	<span class="comment">// 	 * finished.</span>
 	<span class="comment">// 	 *</span>
 	<span class="comment">// 	 * The flags parameter is reserved.  It can safely be ignored at this time.</span>
-	advance_frame:   <span class="keyword-type">proc</span> "c" (flags: ) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>,
+	advance_frame:   <span class="keyword-type">proc</span> "c" (flags: <a href="/base/builtin#i32"><span class="doc-builtin">i32</span></a>) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>,
 	<span class="comment">// 	 * on_event - Notification that something has happened.  See the EventCode</span>
 	<span class="comment">// 	 * structure above for more information.</span>
-	on_event:        <span class="keyword-type">proc</span> "c" (info: ) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>,
+	on_event:        <span class="keyword-type">proc</span> "c" (info: ^<a class="code-typename" href="/vendor/ggpo/#Event">Event</a>) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>,
 }</pre>
 </div>
 <details class="odin-doc-toggle" open>
@@ -909,7 +929,7 @@ Procedure Groups (0)</summary>
 <li><a href="https://github.com/odin-lang/Odin/tree/master/vendor/ggpo/ggpo.odin">ggpo.odin</a></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2024-08 (vendor "odin") Windows_amd64 @ 2024-08-14 10:36:52.855265700 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2024-08 (vendor "odin") Windows_amd64 @ 2024-08-14 12:06:10.992010600 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
