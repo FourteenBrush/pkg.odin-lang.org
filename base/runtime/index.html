@@ -280,7 +280,7 @@ Variables (5)</summary>
 <div>
 <details class="doc-index" id="doc-index-Procedures" aria-labelledby="#doc-index-Procedures-header">
 <summary id="#doc-index-Procedures-header">
-Procedures (287)</summary>
+Procedures (291)</summary>
 <ul>
 <li><a href="#DEFAULT_TEMP_ALLOCATOR_TEMP_GUARD">DEFAULT_TEMP_ALLOCATOR_TEMP_GUARD</a></li>
 <li><a href="#abs_complex128">abs_complex128</a></li>
@@ -313,6 +313,7 @@ Procedures (287)</summary>
 <li><a href="#arena_temp_end">arena_temp_end</a></li>
 <li><a href="#arena_temp_ignore">arena_temp_ignore</a></li>
 <li><a href="#assert">assert</a></li>
+<li><a href="#assert_contextless">assert_contextless</a></li>
 <li><a href="#assign_at_elem">assign_at_elem</a></li>
 <li><a href="#assign_at_elem_string">assign_at_elem_string</a></li>
 <li><a href="#assign_at_elems">assign_at_elems</a></li>
@@ -344,6 +345,7 @@ Procedures (287)</summary>
 <li><a href="#debug_trap">debug_trap</a></li>
 <li><a href="#default_allocator">default_allocator</a></li>
 <li><a href="#default_allocator_proc">default_allocator_proc</a></li>
+<li><a href="#default_assertion_contextless_failure_proc">default_assertion_contextless_failure_proc</a></li>
 <li><a href="#default_assertion_failure_proc">default_assertion_failure_proc</a></li>
 <li><a href="#default_context">default_context</a></li>
 <li><a href="#default_hasher">default_hasher</a></li>
@@ -488,6 +490,7 @@ Procedures (287)</summary>
 <li><a href="#panic">panic</a></li>
 <li><a href="#panic_allocator">panic_allocator</a></li>
 <li><a href="#panic_allocator_proc">panic_allocator_proc</a></li>
+<li><a href="#panic_contextless">panic_contextless</a></li>
 <li><a href="#pop">pop</a></li>
 <li><a href="#pop_front">pop_front</a></li>
 <li><a href="#pop_front_safe">pop_front_safe</a></li>
@@ -567,6 +570,7 @@ Procedures (287)</summary>
 <li><a href="#udivti3">udivti3</a></li>
 <li><a href="#umodti3">umodti3</a></li>
 <li><a href="#unimplemented">unimplemented</a></li>
+<li><a href="#unimplemented_contextless">unimplemented_contextless</a></li>
 <li><a href="#unordered_remove">unordered_remove</a></li>
 <li><a href="#unordered_remove_soa">unordered_remove_soa</a></li>
 </ul>
@@ -1647,10 +1651,12 @@ ODIN_SANITIZER_FLAGS // is a constant
 <li><a href="/base/runtime/#arena_temp_end">arena_temp_end</a></li>
 <li><a href="/base/runtime/#arena_temp_ignore">arena_temp_ignore</a></li>
 <li><a href="/base/runtime/#assert">assert</a></li>
+<li><a href="/base/runtime/#assert_contextless">assert_contextless</a></li>
 <li><a href="/base/runtime/#assign_at_elem">assign_at_elem</a></li>
 <li><a href="/base/runtime/#assign_at_elem_string">assign_at_elem_string</a></li>
 <li><a href="/base/runtime/#assign_at_elems">assign_at_elems</a></li>
 <li><a href="/base/runtime/#bounds_check_error_loc">bounds_check_error_loc</a></li>
+<li><a href="/base/runtime/#default_assertion_contextless_failure_proc">default_assertion_contextless_failure_proc</a></li>
 <li><a href="/base/runtime/#default_assertion_failure_proc">default_assertion_failure_proc</a></li>
 <li><a href="/base/runtime/#default_logger_proc">default_logger_proc</a></li>
 <li><a href="/base/runtime/#default_temp_allocator_proc">default_temp_allocator_proc</a></li>
@@ -1718,6 +1724,7 @@ ODIN_SANITIZER_FLAGS // is a constant
 <li><a href="/base/runtime/#ordered_remove_soa">ordered_remove_soa</a></li>
 <li><a href="/base/runtime/#panic">panic</a></li>
 <li><a href="/base/runtime/#panic_allocator_proc">panic_allocator_proc</a></li>
+<li><a href="/base/runtime/#panic_contextless">panic_contextless</a></li>
 <li><a href="/base/runtime/#pop">pop</a></li>
 <li><a href="/base/runtime/#pop_front">pop_front</a></li>
 <li><a href="/base/runtime/#print_caller_location">print_caller_location</a></li>
@@ -1732,6 +1739,7 @@ ODIN_SANITIZER_FLAGS // is a constant
 <li><a href="/base/runtime/#slice_expr_error_hi_loc">slice_expr_error_hi_loc</a></li>
 <li><a href="/base/runtime/#slice_expr_error_lo_hi_loc">slice_expr_error_lo_hi_loc</a></li>
 <li><a href="/base/runtime/#unimplemented">unimplemented</a></li>
+<li><a href="/base/runtime/#unimplemented_contextless">unimplemented_contextless</a></li>
 <li><a href="/base/runtime/#unordered_remove">unordered_remove</a></li>
 <li><a href="/base/runtime/#unordered_remove_soa">unordered_remove_soa</a></li>
 <li><a href="/base/runtime/#append">append</a>&nbsp;<em>(procedure groups)</em></li>
@@ -2596,6 +2604,12 @@ This procedure is not necessary to use the Arena as the default zero as <code>ar
 </div>
 </div>
 <div class="pkg-entity">
+<h3 id="assert_contextless"><span><a class="doc-id-link" href="#assert_contextless">assert_contextless<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/base/runtime/core_builtin.odin#L955"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">assert_contextless :: <span class="keyword-type">proc</span> "contextless" (condition: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>, message: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a> = "", loc := <a href="/base/runtime/#Source_Code_Location">#caller_location</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
 <h3 id="assign_at_elem"><span><a class="doc-id-link" href="#assign_at_elem">assign_at_elem<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/base/runtime/core_builtin.odin#L671"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">assign_at_elem :: <span class="keyword-type">proc</span>(array: ^$T/[<span class="keyword">dynamic</span>]$T, index: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, <span class="keyword-type">#no_broadcast</span> arg: $T, loc := <a href="/base/runtime/#Source_Code_Location">#caller_location</a>) -> (ok: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>, err: <a class="code-typename" href="/base/runtime/#Allocator_Error">Allocator_Error</a>) <span class="directive">#optional_ok</span> {…}</pre>
@@ -2803,6 +2817,12 @@ of len(src) and len(dst).</p>
 <h3 id="default_allocator_proc"><span><a class="doc-id-link" href="#default_allocator_proc">default_allocator_proc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/base/runtime/heap_allocator.odin#L12"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">default_allocator_proc :: <a class="code-procedure" href="/base/runtime/#heap_allocator_proc">heap_allocator_proc</a></pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="default_assertion_contextless_failure_proc"><span><a class="doc-id-link" href="#default_assertion_contextless_failure_proc">default_assertion_contextless_failure_proc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/base/runtime/core.odin#L756"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">default_assertion_contextless_failure_proc :: <span class="keyword-type">proc</span> "contextless" (prefix, message: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>, loc: <a class="code-typename" href="/base/runtime/#Source_Code_Location">Source_Code_Location</a>) -> ! {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -3897,6 +3917,12 @@ Note: If the index is out of bounds, this procedure will panic.</p>
 </div>
 </div>
 <div class="pkg-entity">
+<h3 id="panic_contextless"><span><a class="doc-id-link" href="#panic_contextless">panic_contextless<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/base/runtime/core_builtin.odin#L970"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">panic_contextless :: <span class="keyword-type">proc</span> "contextless" (message: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>, loc := <a href="/base/runtime/#Source_Code_Location">#caller_location</a>) -> ! {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
 <h3 id="pop"><span><a class="doc-id-link" href="#pop">pop<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/base/runtime/core_builtin.odin#L114"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">pop :: <span class="keyword-type">proc</span>(array: ^$T/[<span class="keyword">dynamic</span>]$T, loc := <a href="/base/runtime/#Source_Code_Location">#caller_location</a>) -> (res: $T) {…}</pre>
@@ -4446,6 +4472,12 @@ Note: Prefer the procedure group `shrink`
 </div>
 </div>
 <div class="pkg-entity">
+<h3 id="unimplemented_contextless"><span><a class="doc-id-link" href="#unimplemented_contextless">unimplemented_contextless<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/base/runtime/core_builtin.odin#L975"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">unimplemented_contextless :: <span class="keyword-type">proc</span> "contextless" (message: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>, loc := <a href="/base/runtime/#Source_Code_Location">#caller_location</a>) -> ! {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
 <h3 id="unordered_remove"><span><a class="doc-id-link" href="#unordered_remove">unordered_remove<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/base/runtime/core_builtin.odin#L71"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">unordered_remove :: <span class="keyword-type">proc</span>(array: ^$T/[<span class="keyword">dynamic</span>]$T, index: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, loc := <a href="/base/runtime/#Source_Code_Location">#caller_location</a>) {…}</pre>
@@ -4792,7 +4824,7 @@ Make uses the specified allocator, default is context.allocator.</p>
 <li><em>(hidden platform specific files)</em></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2024-08 (vendor "odin") Windows_amd64 @ 2024-08-13 21:10:52.729609300 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2024-08 (vendor "odin") Windows_amd64 @ 2024-08-14 10:36:51.423385200 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
@@ -4962,6 +4994,7 @@ Make uses the specified allocator, default is context.allocator.</p>
 <li><a href="#arena_temp_end">arena_temp_end</a></li>
 <li><a href="#arena_temp_ignore">arena_temp_ignore</a></li>
 <li><a href="#assert">assert</a></li>
+<li><a href="#assert_contextless">assert_contextless</a></li>
 <li><a href="#assign_at_elem">assign_at_elem</a></li>
 <li><a href="#assign_at_elem_string">assign_at_elem_string</a></li>
 <li><a href="#assign_at_elems">assign_at_elems</a></li>
@@ -4993,6 +5026,7 @@ Make uses the specified allocator, default is context.allocator.</p>
 <li><a href="#debug_trap">debug_trap</a></li>
 <li><a href="#default_allocator">default_allocator</a></li>
 <li><a href="#default_allocator_proc">default_allocator_proc</a></li>
+<li><a href="#default_assertion_contextless_failure_proc">default_assertion_contextless_failure_proc</a></li>
 <li><a href="#default_assertion_failure_proc">default_assertion_failure_proc</a></li>
 <li><a href="#default_context">default_context</a></li>
 <li><a href="#default_hasher">default_hasher</a></li>
@@ -5137,6 +5171,7 @@ Make uses the specified allocator, default is context.allocator.</p>
 <li><a href="#panic">panic</a></li>
 <li><a href="#panic_allocator">panic_allocator</a></li>
 <li><a href="#panic_allocator_proc">panic_allocator_proc</a></li>
+<li><a href="#panic_contextless">panic_contextless</a></li>
 <li><a href="#pop">pop</a></li>
 <li><a href="#pop_front">pop_front</a></li>
 <li><a href="#pop_front_safe">pop_front_safe</a></li>
@@ -5216,6 +5251,7 @@ Make uses the specified allocator, default is context.allocator.</p>
 <li><a href="#udivti3">udivti3</a></li>
 <li><a href="#umodti3">umodti3</a></li>
 <li><a href="#unimplemented">unimplemented</a></li>
+<li><a href="#unimplemented_contextless">unimplemented_contextless</a></li>
 <li><a href="#unordered_remove">unordered_remove</a></li>
 <li><a href="#unordered_remove_soa">unordered_remove_soa</a></li>
 </ul>

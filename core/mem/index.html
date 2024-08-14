@@ -309,31 +309,34 @@
 <p>package mem implements various types of allocators.</p>
 <p>An example of how to use the <code>Tracking_Allocator</code> to track subsequent allocations
 in your program and report leaks and bad frees:</p>
-<p><code></code>`odin
-package foo</p>
-<p>import "core:mem"
-import "core:fmt"</p>
-<p>_main :: proc() {</p>
-<pre>do stuff
-</pre>
-<p>}</p>
-<p>main :: proc() {</p>
-<pre>track: mem.Tracking_Allocator
-mem.tracking_allocator_init(&track, context.allocator)
-defer mem.tracking_allocator_destroy(&track)
-context.allocator = mem.tracking_allocator(&track)
+<details open class="code-example">
+<summary><b>Example:</b></summary>
+<pre><code class="hljs language-odin" data-lang="odin">package foo
 
-_main()
+import "core:mem"
+import "core:fmt"
 
-for _, leak in track.allocation_map {
-	fmt.printf("%v leaked %m\n", leak.location, leak.size)
+_main :: proc() {
+	// do stuff
 }
-for bad_free in track.bad_free_array {
-	fmt.printf("%v allocation %p was freed badly\n", bad_free.location, bad_free.memory)
+
+main :: proc() {
+	track: mem.Tracking_Allocator
+	mem.tracking_allocator_init(&track, context.allocator)
+	defer mem.tracking_allocator_destroy(&track)
+	context.allocator = mem.tracking_allocator(&track)
+
+	_main()
+
+	for _, leak in track.allocation_map {
+		fmt.printf("%v leaked %m\n", leak.location, leak.size)
+	}
+	for bad_free in track.bad_free_array {
+		fmt.printf("%v allocation %p was freed badly\n", bad_free.location, bad_free.memory)
+	}
 }
-</pre>
-<p>}
-<code></code>`</p>
+</code></pre>
+</details>
 </div>
 <div id="pkg-index">
 <h2>Index</h2>
@@ -1971,7 +1974,7 @@ within is freed; they are immediately returned to the block allocator.</p>
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/tracking_allocator.odin">tracking_allocator.odin</a></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2024-08 (vendor "odin") Windows_amd64 @ 2024-08-13 21:10:53.082617700 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2024-08 (vendor "odin") Windows_amd64 @ 2024-08-14 10:36:51.765923300 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
