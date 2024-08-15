@@ -469,7 +469,7 @@ Variables (0)</summary>
 <div>
 <details class="doc-index" id="doc-index-Procedures" aria-labelledby="#doc-index-Procedures-header">
 <summary id="#doc-index-Procedures-header">
-Procedures (75)</summary>
+Procedures (78)</summary>
 <ul>
 <li><a href="#errno">errno</a></li>
 <li><a href="#mach_task_self">mach_task_self</a></li>
@@ -496,6 +496,7 @@ Procedures (75)</summary>
 <li><a href="#sys_rename">sys_rename</a></li>
 <li><a href="#sys_rename_at">sys_rename_at</a></li>
 <li><a href="#sys_rmdir">sys_rmdir</a></li>
+<li><a href="#sys_shm_open">sys_shm_open</a></li>
 <li><a href="#sys_write_string">sys_write_string</a></li>
 <li><a href="#syscall_access">syscall_access</a></li>
 <li><a href="#syscall_adjtime">syscall_adjtime</a></li>
@@ -539,6 +540,8 @@ Procedures (75)</summary>
 <li><a href="#syscall_rename">syscall_rename</a></li>
 <li><a href="#syscall_rename_at">syscall_rename_at</a></li>
 <li><a href="#syscall_rmdir">syscall_rmdir</a></li>
+<li><a href="#syscall_shm_open">syscall_shm_open</a></li>
+<li><a href="#syscall_shm_unlink">syscall_shm_unlink</a></li>
 <li><a href="#syscall_stat">syscall_stat</a></li>
 <li><a href="#syscall_sysctl">syscall_sysctl</a></li>
 <li><a href="#syscall_sysctlbyname">syscall_sysctlbyname</a></li>
@@ -2757,57 +2760,63 @@ EINVAL	:	The operation associated with existing kernel state</p>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="sys_chmod"><span><a class="doc-id-link" href="#sys_chmod">sys_chmod<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/xnu_system_call_helpers.odin#L178"><em>Source</em></a></div></h3>
+<h3 id="sys_chmod"><span><a class="doc-id-link" href="#sys_chmod">sys_chmod<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/xnu_system_call_helpers.odin#L186"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">sys_chmod :: <span class="keyword-type">proc</span>(path: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>, mode: <span class="keyword-type">bit_set</span>[<a class="code-typename" href="/core/sys/darwin/#Permission_Enum">Permission_Enum</a>; <a href="/base/builtin#u16"><span class="doc-builtin">u16</span></a>]) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="sys_lseek"><span><a class="doc-id-link" href="#sys_lseek">sys_lseek<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/xnu_system_call_helpers.odin#L174"><em>Source</em></a></div></h3>
+<h3 id="sys_lseek"><span><a class="doc-id-link" href="#sys_lseek">sys_lseek<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/xnu_system_call_helpers.odin#L182"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">sys_lseek :: <span class="keyword-type">proc</span>(fd: <a href="/base/builtin#i32"><span class="doc-builtin">i32</span></a>, offset: <a href="/base/builtin#i64"><span class="doc-builtin">i64</span></a>, whence: <a class="code-typename" href="/core/sys/darwin/#Offset_From">Offset_From</a>) -> <a href="/base/builtin#i64"><span class="doc-builtin">i64</span></a> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="sys_lstat"><span><a class="doc-id-link" href="#sys_lstat">sys_lstat<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/xnu_system_call_helpers.odin#L185"><em>Source</em></a></div></h3>
+<h3 id="sys_lstat"><span><a class="doc-id-link" href="#sys_lstat">sys_lstat<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/xnu_system_call_helpers.odin#L193"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">sys_lstat :: <span class="keyword-type">proc</span>(path: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>, status: ^<a class="code-typename" href="/core/sys/darwin/#__DARWIN_STRUCT_STAT64">__DARWIN_STRUCT_STAT64</a>) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="sys_mkdir"><span><a class="doc-id-link" href="#sys_mkdir">sys_mkdir<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/xnu_system_call_helpers.odin#L139"><em>Source</em></a></div></h3>
+<h3 id="sys_mkdir"><span><a class="doc-id-link" href="#sys_mkdir">sys_mkdir<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/xnu_system_call_helpers.odin#L147"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">sys_mkdir :: <span class="keyword-type">proc</span>(path: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>, mode: <span class="keyword-type">bit_set</span>[<a class="code-typename" href="/core/sys/darwin/#Permission_Enum">Permission_Enum</a>; <a href="/base/builtin#u16"><span class="doc-builtin">u16</span></a>]) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="sys_mkdir_at"><span><a class="doc-id-link" href="#sys_mkdir_at">sys_mkdir_at<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/xnu_system_call_helpers.odin#L146"><em>Source</em></a></div></h3>
+<h3 id="sys_mkdir_at"><span><a class="doc-id-link" href="#sys_mkdir_at">sys_mkdir_at<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/xnu_system_call_helpers.odin#L154"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">sys_mkdir_at :: <span class="keyword-type">proc</span>(fd: <a href="/base/builtin#i32"><span class="doc-builtin">i32</span></a>, path: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>, mode: <span class="keyword-type">bit_set</span>[<a class="code-typename" href="/core/sys/darwin/#Permission_Enum">Permission_Enum</a>; <a href="/base/builtin#u16"><span class="doc-builtin">u16</span></a>]) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="sys_open"><span><a class="doc-id-link" href="#sys_open">sys_open<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/xnu_system_call_helpers.odin#L103"><em>Source</em></a></div></h3>
+<h3 id="sys_open"><span><a class="doc-id-link" href="#sys_open">sys_open<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/xnu_system_call_helpers.odin#L126"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">sys_open :: <span class="keyword-type">proc</span>(path: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>, oflag: <span class="keyword-type">bit_set</span>[<a class="code-typename" href="/core/sys/darwin/#Open_Flags_Enum">Open_Flags_Enum</a>; <a href="/base/builtin#u16"><span class="doc-builtin">u16</span></a>], mode: <span class="keyword-type">bit_set</span>[<a class="code-typename" href="/core/sys/darwin/#Permission_Enum">Permission_Enum</a>; <a href="/base/builtin#u16"><span class="doc-builtin">u16</span></a>]) -> (<a href="/base/builtin#i32"><span class="doc-builtin">i32</span></a>, <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="sys_rename"><span><a class="doc-id-link" href="#sys_rename">sys_rename<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/xnu_system_call_helpers.odin#L160"><em>Source</em></a></div></h3>
+<h3 id="sys_rename"><span><a class="doc-id-link" href="#sys_rename">sys_rename<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/xnu_system_call_helpers.odin#L168"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">sys_rename :: <span class="keyword-type">proc</span>(path: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>, new_path: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="sys_rename_at"><span><a class="doc-id-link" href="#sys_rename_at">sys_rename_at<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/xnu_system_call_helpers.odin#L167"><em>Source</em></a></div></h3>
+<h3 id="sys_rename_at"><span><a class="doc-id-link" href="#sys_rename_at">sys_rename_at<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/xnu_system_call_helpers.odin#L175"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">sys_rename_at :: <span class="keyword-type">proc</span>(fd: <a href="/base/builtin#i32"><span class="doc-builtin">i32</span></a>, path: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>, to_fd: <a href="/base/builtin#i32"><span class="doc-builtin">i32</span></a>, new_path: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="sys_rmdir"><span><a class="doc-id-link" href="#sys_rmdir">sys_rmdir<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/xnu_system_call_helpers.odin#L153"><em>Source</em></a></div></h3>
+<h3 id="sys_rmdir"><span><a class="doc-id-link" href="#sys_rmdir">sys_rmdir<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/xnu_system_call_helpers.odin#L161"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">sys_rmdir :: <span class="keyword-type">proc</span>(path: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>, mode: <span class="keyword-type">bit_set</span>[<a class="code-typename" href="/core/sys/darwin/#Permission_Enum">Permission_Enum</a>; <a href="/base/builtin#u16"><span class="doc-builtin">u16</span></a>]) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="sys_shm_open"><span><a class="doc-id-link" href="#sys_shm_open">sys_shm_open<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/xnu_system_call_helpers.odin#L199"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">sys_shm_open :: <span class="keyword-type">proc</span>(name: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>, oflag: <span class="keyword-type">bit_set</span>[<a class="code-typename" href="/core/sys/darwin/#Open_Flags_Enum">Open_Flags_Enum</a>; <a href="/base/builtin#u16"><span class="doc-builtin">u16</span></a>], mode: <span class="keyword-type">bit_set</span>[<a class="code-typename" href="/core/sys/darwin/#Permission_Enum">Permission_Enum</a>; <a href="/base/builtin#u16"><span class="doc-builtin">u16</span></a>]) -> (<a href="/base/builtin#i32"><span class="doc-builtin">i32</span></a>, <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -3091,6 +3100,18 @@ EINVAL	:	The operation associated with existing kernel state</p>
 </div>
 </div>
 <div class="pkg-entity">
+<h3 id="syscall_shm_open"><span><a class="doc-id-link" href="#syscall_shm_open">syscall_shm_open<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/xnu_system_call_wrappers.odin#L429"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">syscall_shm_open :: <span class="keyword-type">proc</span> <span class="string">"contextless"</span> (name: <a href="/base/builtin#cstring"><span class="doc-builtin">cstring</span></a>, oflag: <a href="/base/builtin#u32"><span class="doc-builtin">u32</span></a>, mode: <a href="/base/builtin#u32"><span class="doc-builtin">u32</span></a>) -> <a href="/base/builtin#i32"><span class="doc-builtin">i32</span></a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="syscall_shm_unlink"><span><a class="doc-id-link" href="#syscall_shm_unlink">syscall_shm_unlink<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/xnu_system_call_wrappers.odin#L433"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">syscall_shm_unlink :: <span class="keyword-type">proc</span> <span class="string">"contextless"</span> (name: <a href="/base/builtin#cstring"><span class="doc-builtin">cstring</span></a>) -> <a href="/base/builtin#i32"><span class="doc-builtin">i32</span></a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
 <h3 id="syscall_stat"><span><a class="doc-id-link" href="#syscall_stat">syscall_stat<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/xnu_system_call_wrappers.odin#L300"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">syscall_stat :: <span class="keyword-type">proc</span> <span class="string">"contextless"</span> (path: <a href="/base/builtin#cstring"><span class="doc-builtin">cstring</span></a>, status: ^<a class="code-typename" href="/core/sys/darwin/#__DARWIN_STRUCT_STAT64">__DARWIN_STRUCT_STAT64</a>) -> <a href="/base/builtin#i32"><span class="doc-builtin">i32</span></a> {…}</pre>
@@ -3153,7 +3174,7 @@ EINVAL	:	The operation associated with existing kernel state</p>
 <li><em>(hidden platform specific files)</em></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2024-08 (vendor "odin") Windows_amd64 @ 2024-08-14 21:10:12.539230300 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2024-08 (vendor "odin") Windows_amd64 @ 2024-08-15 21:11:21.374986100 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
@@ -3325,6 +3346,7 @@ EINVAL	:	The operation associated with existing kernel state</p>
 <li><a href="#sys_rename">sys_rename</a></li>
 <li><a href="#sys_rename_at">sys_rename_at</a></li>
 <li><a href="#sys_rmdir">sys_rmdir</a></li>
+<li><a href="#sys_shm_open">sys_shm_open</a></li>
 <li><a href="#sys_write_string">sys_write_string</a></li>
 <li><a href="#syscall_access">syscall_access</a></li>
 <li><a href="#syscall_adjtime">syscall_adjtime</a></li>
@@ -3368,6 +3390,8 @@ EINVAL	:	The operation associated with existing kernel state</p>
 <li><a href="#syscall_rename">syscall_rename</a></li>
 <li><a href="#syscall_rename_at">syscall_rename_at</a></li>
 <li><a href="#syscall_rmdir">syscall_rmdir</a></li>
+<li><a href="#syscall_shm_open">syscall_shm_open</a></li>
+<li><a href="#syscall_shm_unlink">syscall_shm_unlink</a></li>
 <li><a href="#syscall_stat">syscall_stat</a></li>
 <li><a href="#syscall_sysctl">syscall_sysctl</a></li>
 <li><a href="#syscall_sysctlbyname">syscall_sysctlbyname</a></li>
