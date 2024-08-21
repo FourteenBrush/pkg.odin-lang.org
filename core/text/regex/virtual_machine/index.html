@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>package text/regex/virtual_machine - pkg.odin-lang.org</title>	<link rel="icon" href="/favicon.svg">
+	<link rel="stylesheet" type="text/css" href="https://odin-lang.org/scss/custom.min.css">
+	<link rel=stylesheet href="//odin-lang.org/lib/highlight/styles/github-dark.min.css">
+	<script src="//odin-lang.org/lib/highlight/highlight.min.js"></script>
+
+	<script>hljs.registerLanguage("odin",function(a){return{aliases:["odin","odinlang","odin-lang"],keywords:{keyword:"auto_cast bit_set break case cast context continue defer distinct do dynamic else enum fallthrough for foreign if import in map not_in or_else or_return package proc return struct switch transmute type_of typeid union using when where",literal:"true false nil",built_in:"abs align_of cap clamp complex conj expand_to_tuple imag jmag kmag len max min offset_of quaternion real size_of soa_unzip soa_zip swizzle type_info_of type_of typeid_of"},illegal:"</",contains:[a.C_LINE_COMMENT_MODE,a.C_BLOCK_COMMENT_MODE,{className:"string",variants:[a.QUOTE_STRING_MODE,{begin:"'",end:"[^\\\\]'"},{begin:"`",end:"`"}]},{className:"number",variants:[{begin:a.C_NUMBER_RE+"[ijk]",relevance:1},a.C_NUMBER_MODE]}]}})</script>
+	<script>hljs.highlightAll()</script>
+	<script>
+		function toggleDarkMode() {
+			if (document.body.classList.toggle("dark-mode")) {
+				window.localStorage.setItem("theme", "dark");
+			} else {
+				window.localStorage.setItem("theme", "light");
+			}
+		}
+	</script>
+	<link rel="stylesheet" type="text/css" href="https://odin-lang.org/css/style.css">
+
+	<link rel="stylesheet" type="text/css" href="/style.css">
+
+	</style>
+</head>
+<body>
+<script>
+	if (window.localStorage.getItem("theme") === "dark")
+		document.body.classList.add("dark-mode");
+	else
+		document.body.classList.remove("dark-mode");
+</script>
+<header class="sticky-top">
+	<nav class="navbar navbar-expand-lg navbar-dark bg-primary odin-menu">
+		<div class="container">
+			<a class="navbar-brand" href="https://odin-lang.org/">
+			<img src="https://odin-lang.org/logo.svg" height="30" alt="Odin"></a>
+			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#odin-navbar-content" aria-controls="odin-navbar-content" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+			<div class="collapse navbar-collapse" id="odin-navbar-content">
+			<ul class="navbar-nav ms-md-auto">
+				<li class="nav-item"><a class="nav-link" href="https://odin-lang.org/">Home</a></li>
+				<li class="nav-item"><a class="nav-link" href="https://odin-lang.org/docs">Docs</a></li>
+				<li class="nav-item"><a class="nav-link active" href="/">Packages</a></li>
+				<li class="nav-item"><a class="nav-link" href="https://odin-lang.org/news">News</a></li>
+				<li class="nav-item"><a class="nav-link" href="https://odin-lang.org/showcase">Showcase</a></li>
+				<li class="nav-item"><a class="nav-link" href="https://odin-lang.org/community">Community</a></li>
+				<li class="nav-item"><a class="nav-link" href="https://github.com/odin-lang/Odin" target="_blank">GitHub</a></li>
+				<li class="nav-item">
+					<a
+						class="nav-link btn-dark-mode"
+						onclick="toggleDarkMode();"
+						title="Toggle Light/Dark Mode"
+					>
+						<span class="dark-mode-appearance">Appearance:</span>
+						<svg fill="white" id="dark-mode-icon" viewBox="0 0 384 512"><path d="M223.5 32C100 32 0 132.3 0 256S100 480 223.5 480c60.6 0 115.5-24.2 155.8-63.4c5-4.9 6.3-12.5 3.1-18.7s-10.1-9.7-17-8.5c-9.8 1.7-19.8 2.6-30.1 2.6c-96.9 0-175.5-78.8-175.5-176c0-65.8 36-123.1 89.3-153.3c6.1-3.5 9.2-10.5 7.7-17.3s-7.3-11.9-14.3-12.5c-6.3-.5-12.6-.8-19-.8z"/></svg>
+						<svg fill="white" id="light-mode-icon" viewBox="0 0 16 16">
+						  <path d="M8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8M8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0m0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13m8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5M3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8m10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0m-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0m9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707M4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708"/>
+						</svg>
+					</button>
+					</a>
+				</li>
+			</ul>
+		</div>
+		</div>
+	</nav>
+</header>
+<main>
+<div class="container full-width">
+<div class="row odin-main my-4" id="pkg">
+<nav id="pkg-sidebar" class="col-lg-2 odin-sidebar-border navbar-light sticky-top odin-below-navbar">
+<div class="py-3">
+<h4><a style="text-transform: capitalize; color: inherit;" href="/core">core Library</a></h4>
+<ul>
+<li class="nav-item"><a href="/core/bufio">bufio</a></li>
+<li class="nav-item"><a href="/core/bytes">bytes</a></li>
+<li class="nav-item"><a href="/core/c">c</a><ul>
+<li><a href="/core/c/frontend/preprocessor">frontend/preprocessor</a></li>
+<li><a href="/core/c/frontend/tokenizer">frontend/tokenizer</a></li>
+<li><a href="/core/c/libc">libc</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/compress">compress</a><ul>
+<li><a href="/core/compress/gzip">gzip</a></li>
+<li><a href="/core/compress/shoco">shoco</a></li>
+<li><a href="/core/compress/zlib">zlib</a></li>
+</ul>
+
+</li>
+<li class="nav-item">container<ul>
+<li><a href="/core/container/avl">avl</a></li>
+<li><a href="/core/container/bit_array">bit_array</a></li>
+<li><a href="/core/container/intrusive/list">intrusive/list</a></li>
+<li><a href="/core/container/lru">lru</a></li>
+<li><a href="/core/container/priority_queue">priority_queue</a></li>
+<li><a href="/core/container/queue">queue</a></li>
+<li><a href="/core/container/rbtree">rbtree</a></li>
+<li><a href="/core/container/small_array">small_array</a></li>
+<li><a href="/core/container/topological_sort">topological_sort</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/crypto">crypto</a><ul>
+<li><a href="/core/crypto/aead">aead</a></li>
+<li><a href="/core/crypto/aes">aes</a></li>
+<li><a href="/core/crypto/blake2b">blake2b</a></li>
+<li><a href="/core/crypto/blake2s">blake2s</a></li>
+<li><a href="/core/crypto/chacha20">chacha20</a></li>
+<li><a href="/core/crypto/chacha20poly1305">chacha20poly1305</a></li>
+<li><a href="/core/crypto/ed25519">ed25519</a></li>
+<li><a href="/core/crypto/hash">hash</a></li>
+<li><a href="/core/crypto/hkdf">hkdf</a></li>
+<li><a href="/core/crypto/hmac">hmac</a></li>
+<li><a href="/core/crypto/kmac">kmac</a></li>
+<li><a href="/core/crypto/legacy/keccak">legacy/keccak</a></li>
+<li><a href="/core/crypto/legacy/md5">legacy/md5</a></li>
+<li><a href="/core/crypto/legacy/sha1">legacy/sha1</a></li>
+<li><a href="/core/crypto/pbkdf2">pbkdf2</a></li>
+<li><a href="/core/crypto/poly1305">poly1305</a></li>
+<li><a href="/core/crypto/ristretto255">ristretto255</a></li>
+<li><a href="/core/crypto/sha2">sha2</a></li>
+<li><a href="/core/crypto/sha3">sha3</a></li>
+<li><a href="/core/crypto/shake">shake</a></li>
+<li><a href="/core/crypto/sm3">sm3</a></li>
+<li><a href="/core/crypto/tuplehash">tuplehash</a></li>
+<li><a href="/core/crypto/x25519">x25519</a></li>
+</ul>
+
+</li>
+<li class="nav-item">debug<ul>
+<li><a href="/core/debug/pe">pe</a></li>
+<li><a href="/core/debug/trace">trace</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/dynlib">dynlib</a></li>
+<li class="nav-item">encoding<ul>
+<li><a href="/core/encoding/ansi">ansi</a></li>
+<li><a href="/core/encoding/base32">base32</a></li>
+<li><a href="/core/encoding/base64">base64</a></li>
+<li><a href="/core/encoding/cbor">cbor</a></li>
+<li><a href="/core/encoding/csv">csv</a></li>
+<li><a href="/core/encoding/endian">endian</a></li>
+<li><a href="/core/encoding/entity">entity</a></li>
+<li><a href="/core/encoding/hex">hex</a></li>
+<li><a href="/core/encoding/hxa">hxa</a></li>
+<li><a href="/core/encoding/ini">ini</a></li>
+<li><a href="/core/encoding/json">json</a></li>
+<li><a href="/core/encoding/uuid">uuid</a></li>
+<li><a href="/core/encoding/uuid/legacy">uuid/legacy</a></li>
+<li><a href="/core/encoding/varint">varint</a></li>
+<li><a href="/core/encoding/xml">xml</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/flags">flags</a></li>
+<li class="nav-item"><a href="/core/fmt">fmt</a></li>
+<li class="nav-item"><a href="/core/hash">hash</a><ul>
+<li><a href="/core/hash/xxhash">xxhash</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/image">image</a><ul>
+<li><a href="/core/image/bmp">bmp</a></li>
+<li><a href="/core/image/netpbm">netpbm</a></li>
+<li><a href="/core/image/png">png</a></li>
+<li><a href="/core/image/qoi">qoi</a></li>
+<li><a href="/core/image/tga">tga</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/io">io</a></li>
+<li class="nav-item"><a href="/core/log">log</a></li>
+<li class="nav-item"><a href="/core/math">math</a><ul>
+<li><a href="/core/math/big">big</a></li>
+<li><a href="/core/math/bits">bits</a></li>
+<li><a href="/core/math/cmplx">cmplx</a></li>
+<li><a href="/core/math/ease">ease</a></li>
+<li><a href="/core/math/fixed">fixed</a></li>
+<li><a href="/core/math/linalg">linalg</a></li>
+<li><a href="/core/math/linalg/glsl">linalg/glsl</a></li>
+<li><a href="/core/math/linalg/hlsl">linalg/hlsl</a></li>
+<li><a href="/core/math/noise">noise</a></li>
+<li><a href="/core/math/rand">rand</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/mem">mem</a><ul>
+<li><a href="/core/mem/tlsf">tlsf</a></li>
+<li><a href="/core/mem/virtual">virtual</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/net">net</a></li>
+<li class="nav-item">odin<ul>
+<li><a href="/core/odin/ast">ast</a></li>
+<li><a href="/core/odin/doc-format">doc-format</a></li>
+<li><a href="/core/odin/parser">parser</a></li>
+<li><a href="/core/odin/tokenizer">tokenizer</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/os">os</a></li>
+<li class="nav-item">path<ul>
+<li><a href="/core/path/filepath">filepath</a></li>
+<li><a href="/core/path/slashpath">slashpath</a></li>
+</ul>
+
+</li>
+<li class="nav-item">prof<ul>
+<li><a href="/core/prof/spall">spall</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/reflect">reflect</a></li>
+<li class="nav-item"><a href="/core/relative">relative</a></li>
+<li class="nav-item"><a href="/core/simd">simd</a><ul>
+<li><a href="/core/simd/x86">x86</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/slice">slice</a><ul>
+<li><a href="/core/slice/heap">heap</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/sort">sort</a></li>
+<li class="nav-item"><a href="/core/strconv">strconv</a><ul>
+<li><a href="/core/strconv/decimal">decimal</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/strings">strings</a></li>
+<li class="nav-item"><a href="/core/sync">sync</a><ul>
+<li><a href="/core/sync/chan">chan</a></li>
+</ul>
+
+</li>
+<li class="nav-item">sys<ul>
+<li><a href="/core/sys/darwin">darwin</a></li>
+<li><a href="/core/sys/darwin/Foundation">darwin/Foundation</a></li>
+<li><a href="/core/sys/haiku">haiku</a></li>
+<li><a href="/core/sys/info">info</a></li>
+<li><a href="/core/sys/linux">linux</a></li>
+<li><a href="/core/sys/orca">orca</a></li>
+<li><a href="/core/sys/posix">posix</a></li>
+<li><a href="/core/sys/valgrind">valgrind</a></li>
+<li><a href="/core/sys/windows">windows</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/testing">testing</a></li>
+<li class="nav-item">text<ul>
+<li><a href="/core/text/edit">edit</a></li>
+<li><a href="/core/text/i18n">i18n</a></li>
+<li><a href="/core/text/match">match</a></li>
+<li><a href="/core/text/regex">regex</a></li>
+<li><a href="/core/text/regex/common">regex/common</a></li>
+<li><a href="/core/text/regex/compiler">regex/compiler</a></li>
+<li><a href="/core/text/regex/optimizer">regex/optimizer</a></li>
+<li><a href="/core/text/regex/parser">regex/parser</a></li>
+<li><a href="/core/text/regex/tokenizer">regex/tokenizer</a></li>
+<li><a class="active" href="/core/text/regex/virtual_machine">regex/virtual_machine</a></li>
+<li><a href="/core/text/scanner">scanner</a></li>
+<li><a href="/core/text/table">table</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/thread">thread</a></li>
+<li class="nav-item"><a href="/core/time">time</a><ul>
+<li><a href="/core/time/datetime">datetime</a></li>
+</ul>
+
+</li>
+<li class="nav-item"><a href="/core/unicode">unicode</a><ul>
+<li><a href="/core/unicode/utf16">utf16</a></li>
+<li><a href="/core/unicode/utf8">utf8</a></li>
+<li><a href="/core/unicode/utf8/utf8string">utf8/utf8string</a></li>
+</ul>
+
+</li>
+</ul>
+</div>
+</nav>
+<article class="col-lg-8 p-4 documentation odin-article">
+<nav class="pkg-breadcrumb" aria-label="breadcrumb">
+<ol class="breadcrumb">
+<li class="breadcrumb-item"><a href="/core">core</a></li>
+<li class="breadcrumb-item">text</li>
+<li class="breadcrumb-item"><a href="/core/text/regex">regex</a></li>
+<li class="breadcrumb-item active" aria-current="page"><a href="/core/text/regex/virtual_machine">virtual_machine</a></li>
+</ol>
+</nav>
+<h1>package core:text/regex/virtual_machine<div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/regex/virtual_machine"><em>Source</em></a></div></h1>
+
+		<div class="odin-search-wrapper">
+			<input type="search" id="odin-search" class="odin-search-package" autocomplete="off" spellcheck="false" placeholder="Fuzzy Search...">
+			<div class="odin-search-shortcut">
+				<div class="odin-search-key key-macos">⌘K</div>
+				<div class="odin-search-key key-windows">Ctrl+K</div>
+				<span class="odin-search-or">or</span>
+				<div class="odin-search-key">/</div>
+			</div>
+		</div>
+	
+<div id="odin-search-info">
+<div id="odin-search-time"></div>
+
+		<div id="odin-search-options">
+			<input type="checkbox" id="odin-search-filter" name="odin-search-filter">
+			<label for="odin-search-filter">Filter Results</label>
+		</div>
+</div>
+<ul id="odin-search-results"></ul>
+<div id="pkg-top">
+<h2>Overview</h2>
+<div id="pkg-overview">
+<p>package regex_vm implements a threaded virtual machine for interpreting
+regular expressions, based on the designs described by Russ Cox and attributed
+to both Ken Thompson and Rob Pike.</p>
+<p>The virtual machine executes all threads in lock step, i.e. the string pointer
+does not advance until all threads have finished processing the current rune.
+The algorithm does not look backwards.</p>
+<p>Threads merge when splitting or jumping to positions already visited by another
+thread, based on the observation that each thread having visited one PC
+(Program Counter) state will execute identically to the previous thread.</p>
+<p>Each thread keeps a save state of its capture groups, and thread priority is
+used to allow higher precedence operations to complete first with correct save
+states, such as greedy versus non-greedy repetition.</p>
+<p>For more information, see: https://swtch.com/~rsc/regexp/regexp2.html</p>
+<p><b>Implementation Details:</b></p>
+<p><span class="doc-list">Each opcode is 8 bits in size, and most instructions have no operands.</span></p>
+<p><span class="doc-list">All operands larger than <code>u8</code> are read in system endian order.</span></p>
+<p><span class="doc-list">Jump and Split instructions operate on absolute positions in <code>u16</code> operands.</span></p>
+<p><span class="doc-list">Classes such as <code>[0-9]</code> are stored in a RegEx-specific slice of structs which</span>
+  are then dereferenced by a <code>u8</code> index from the <code>Rune_Class</code> instructions.</p>
+<p><span class="doc-list">Each Byte and Rune opcode have their operands stored inline after the opcode,</span>
+  sized <code>u8</code> and <code>i32</code> respectively.</p>
+<p><span class="doc-list">A bitmap is used to determine which PC positions are occupied by a thread to</span>
+  perform merging. The bitmap is cleared with every new frame.</p>
+<p><span class="doc-list">The VM supports two modes: ASCII and Unicode, decided by a compile-time</span>
+  boolean constant argument provided to <code>run</code>. The procedure differs only in
+  string decoding. This was done for the sake of performance.</p>
+<p><span class="doc-list">No allocations are ever freed; the VM expects an arena or temporary allocator</span>
+  to be used in the context preceding it.</p>
+<p><b>Opcode Reference:</b></p>
+<pre>(0x00) Match
+
+The terminal opcode which ends a thread. This always comes at the end of
+the program.
+
+(0x01) Match_And_Exit
+
+A modified version of Match which stops the virtual machine entirely. It is
+only compiled for `No_Capture` expressions, as those expressions do not
+need to determine which thread may have saved the most appropriate capture
+groups.
+
+(0x02) Byte
+
+Consumes one byte from the text using its operand, which is also a byte.
+
+(0x03) Rune
+
+Consumes one Unicode codepoint from the text using its operand, which is
+four bytes long in a system-dependent endian order.
+
+(0x04) Rune_Class
+
+Consumes one character (which may be an ASCII byte or Unicode codepoint,
+wholly dependent on which mode the virtual machine is running in) from the
+text.
+
+The actual data storing what runes and ranges of runes apply to the class
+are stored alongside the program in the Regular_Expression structure and
+the operand for this opcode is a single byte which indexes into a
+collection of these data structures.
+
+(0x05) Rune_Class_Negated
+
+A modified version of Rune_Class that functions the same, save for how it
+returns the opposite of what Rune_Class matches.
+
+(0x06) Wildcard
+
+Consumes one byte or one Unicode codepoint, depending on the VM mode.
+
+(0x07) Jump
+
+Sets the Program Counter of a VM thread to the operand, which is a u16.
+This opcode is used to implement Alternation (coming at the end of the left
+choice) and Repeat_Zero (to cause the thread to loop backwards).
+
+(0x08) Split
+
+Spawns a new thread for the X operand and causes the current thread to jump
+to the Y operand. This opcode is used to implement Alternation, all the
+Repeat variations, and the Optional nodes.
+
+Splitting threads is how the virtual machine is able to execute optional
+control flow paths, letting it evaluate different possible ways to match
+text.
+
+(0x09) Save
+
+Saves the current string index to a slot on the thread dictated by the
+operand. These values will be used later to reconstruct capture groups.
+
+(0x0A) Assert_Start
+
+Asserts that the thread is at the beginning of a string.
+
+(0x0B) Assert_End
+
+Asserts that the thread is at the end of a string.
+
+(0x0C) Assert_Word_Boundary
+
+Asserts that the thread is on a word boundary, which can be the start or
+end of the text. This examines both the current rune and the next rune.
+
+(0x0D) Assert_Non_Word_Boundary
+
+A modified version of Assert_Word_Boundary that returns the opposite value.
+
+(0x0E) Multiline_Open
+
+This opcode is compiled in only when the `Multiline` flag is present, and
+it replaces both `^` and `$` text anchors.
+
+It asserts that either the current thread is on one of the string
+boundaries, or it consumes a `\n` or `\r` character.
+
+If a `\r` character is consumed, the PC will be advanced to the sibling
+`Multiline_Close` opcode to optionally consume a `\n` character on the next
+frame.
+
+(0x0F) Multiline_Close
+
+This opcode is always present after `Multiline_Open`.
+
+It handles consuming the second half of a complete newline, if necessary.
+For example, Windows newlines are represented by the characters `\r\n`,
+whereas UNIX newlines are `\n` and Macintosh newlines are `\r`.
+
+(0x10) Wait_For_Byte
+(0x11) Wait_For_Rune
+(0x12) Wait_For_Rune_Class
+(0x13) Wait_For_Rune_Class_Negated
+
+These opcodes are an optimization around restarting threads on failed
+matches when the beginning to a pattern is predictable and the Global flag
+is set.
+
+They will cause the VM to wait for the next rune to match before splitting,
+as would happen in the un-optimized version.
+
+(0x14) Match_All_And_Escape
+
+This opcode is an optimized version of `.*$` or `.+$` that causes the
+active thread to immediately work on escaping the program by following all
+Jumps out to the end.
+
+While running through the rest of the program, the thread will trigger on
+every Save instruction it passes to store the length of the string.
+
+This way, any time a program hits one of these `.*$` constructs, the
+virtual machine can exit early, vastly improving processing times.
+
+Be aware, this opcode is not compiled in if the `Multiline` flag is on, as
+the meaning of `$` changes with that flag.
+</pre>
+</div>
+<div id="pkg-index">
+<h2>Index</h2>
+<div>
+<details class="doc-index" id="doc-index-Types" aria-labelledby="#doc-index-Types-header">
+<summary id="#doc-index-Types-header">
+Types (7)</summary>
+<ul>
+<li><a href="#Machine">Machine</a></li>
+<li><a href="#Opcode">Opcode</a></li>
+<li><a href="#Opcode_Iterator">Opcode_Iterator</a></li>
+<li><a href="#Program">Program</a></li>
+<li><a href="#Rune_Class_Data">Rune_Class_Data</a></li>
+<li><a href="#Rune_Class_Range">Rune_Class_Range</a></li>
+<li><a href="#Thread">Thread</a></li>
+</ul>
+</details>
+</div>
+<div>
+<details class="doc-index" id="doc-index-Constants" aria-labelledby="#doc-index-Constants-header">
+<summary id="#doc-index-Constants-header">
+Constants (0)</summary>
+<p class="pkg-empty-section">This section is empty.</p>
+</details>
+</div>
+<div>
+<details class="doc-index" id="doc-index-Variables" aria-labelledby="#doc-index-Variables-header">
+<summary id="#doc-index-Variables-header">
+Variables (0)</summary>
+<p class="pkg-empty-section">This section is empty.</p>
+</details>
+</div>
+<div>
+<details class="doc-index" id="doc-index-Procedures" aria-labelledby="#doc-index-Procedures-header">
+<summary id="#doc-index-Procedures-header">
+Procedures (9)</summary>
+<ul>
+<li><a href="#add_thread">add_thread</a></li>
+<li><a href="#check_busy_map">check_busy_map</a></li>
+<li><a href="#create">create</a></li>
+<li><a href="#is_word_class">is_word_class</a></li>
+<li><a href="#iterate_opcodes">iterate_opcodes</a></li>
+<li><a href="#opcode_count">opcode_count</a></li>
+<li><a href="#opcode_to_name">opcode_to_name</a></li>
+<li><a href="#run">run</a></li>
+<li><a href="#set_busy_map">set_busy_map</a></li>
+</ul>
+</details>
+</div>
+<div>
+<details class="doc-index" id="doc-index-Procedure Groups" aria-labelledby="#doc-index-Procedure Groups-header">
+<summary id="#doc-index-Procedure Groups-header">
+Procedure Groups (0)</summary>
+<p class="pkg-empty-section">This section is empty.</p>
+</details>
+</div>
+</div>
+</div>
+<section class="documentation">
+<h2 id="pkg-Types" class="pkg-header">Types</h2>
+<div class="pkg-entity">
+<h3 id="Machine"><span><a class="doc-id-link" href="#Machine">Machine<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/regex/virtual_machine/virtual_machine.odin#L59"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Machine :: <span class="keyword-type">struct</span> {
+	<span class="comment">// Program state</span>
+	memory:            <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>,
+	class_data:        []<a class="code-typename" href="/core/text/regex/virtual_machine/#Rune_Class_Data">Rune_Class_Data</a>,
+	code:              []<a class="code-typename" href="/core/text/regex/virtual_machine/#Opcode">Opcode</a>,
+	<span class="comment">// Thread state</span>
+	top_thread:        <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>,
+	threads:           [^]<a class="code-typename" href="/core/text/regex/virtual_machine/#Thread">Thread</a>,
+	next_threads:      [^]<a class="code-typename" href="/core/text/regex/virtual_machine/#Thread">Thread</a>,
+	<span class="comment">// The busy map is used to merge threads based on their program counters.</span>
+	busy_map:          []<a href="/base/builtin#u64"><span class="doc-builtin">u64</span></a>,
+	<span class="comment">// Global state</span>
+	string_pointer:    <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>,
+	current_rune:      <a href="/base/builtin#rune"><span class="doc-builtin">rune</span></a>,
+	current_rune_size: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>,
+	next_rune:         <a href="/base/builtin#rune"><span class="doc-builtin">rune</span></a>,
+	next_rune_size:    <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>,
+}</pre>
+</div>
+<h5>Related Procedures With Parameters</h5>
+<ul>
+<li><a href="/core/text/regex/virtual_machine/#add_thread">add_thread</a></li>
+<li><a href="/core/text/regex/virtual_machine/#check_busy_map">check_busy_map</a></li>
+<li><a href="/core/text/regex/virtual_machine/#run">run</a></li>
+<li><a href="/core/text/regex/virtual_machine/#set_busy_map">set_busy_map</a></li>
+</ul>
+<h5>Related Procedures With Returns</h5>
+<ul>
+<li><a href="/core/text/regex/virtual_machine/#create">create</a></li>
+</ul>
+</div>
+<div class="pkg-entity">
+<h3 id="Opcode"><span><a class="doc-id-link" href="#Opcode">Opcode<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/regex/virtual_machine/virtual_machine.odin#L27"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Opcode :: <span class="keyword-type">enum</span> <a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a> {
+	<span class="comment">// | [ operands ]</span>
+	Match                       = 0,  <span class="comment">// |</span>
+	Match_And_Exit              = 1,  <span class="comment">// |</span>
+	Byte                        = 2,  <span class="comment">// | u8</span>
+	Rune                        = 3,  <span class="comment">// | i32</span>
+	Rune_Class                  = 4,  <span class="comment">// | u8</span>
+	Rune_Class_Negated          = 5,  <span class="comment">// | u8</span>
+	Wildcard                    = 6,  <span class="comment">// |</span>
+	Jump                        = 7,  <span class="comment">// | u16</span>
+	Split                       = 8,  <span class="comment">// | u16, u16</span>
+	Save                        = 9,  <span class="comment">// | u8</span>
+	Assert_Start                = 10, <span class="comment">// |</span>
+	Assert_End                  = 11, <span class="comment">// |</span>
+	Assert_Word_Boundary        = 12, <span class="comment">// |</span>
+	Assert_Non_Word_Boundary    = 13, <span class="comment">// |</span>
+	Multiline_Open              = 14, <span class="comment">// |</span>
+	Multiline_Close             = 15, <span class="comment">// |</span>
+	Wait_For_Byte               = 16, <span class="comment">// | u8</span>
+	Wait_For_Rune               = 17, <span class="comment">// | i32</span>
+	Wait_For_Rune_Class         = 18, <span class="comment">// | u8</span>
+	Wait_For_Rune_Class_Negated = 19, <span class="comment">// | u8</span>
+	Match_All_And_Escape        = 20, <span class="comment">// |</span>
+}</pre>
+</div>
+<h5>Related Procedures With Parameters</h5>
+<ul>
+<li><a href="/core/text/regex/virtual_machine/#opcode_to_name">opcode_to_name</a></li>
+</ul>
+<h5>Related Procedures With Returns</h5>
+<ul>
+<li><a href="/core/text/regex/virtual_machine/#iterate_opcodes">iterate_opcodes</a></li>
+</ul>
+</div>
+<div class="pkg-entity">
+<h3 id="Opcode_Iterator"><span><a class="doc-id-link" href="#Opcode_Iterator">Opcode_Iterator<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/regex/virtual_machine/util.odin#L11"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Opcode_Iterator :: <span class="keyword-type">struct</span> {
+	code: []<a class="code-typename" href="/core/text/regex/virtual_machine/#Opcode">Opcode</a>,
+	pc:   <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>,
+}</pre>
+</div>
+<h5>Related Procedures With Parameters</h5>
+<ul>
+<li><a href="/core/text/regex/virtual_machine/#iterate_opcodes">iterate_opcodes</a></li>
+</ul>
+</div>
+<div class="pkg-entity">
+<h3 id="Program"><span><a class="doc-id-link" href="#Program">Program<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/regex/virtual_machine/virtual_machine.odin#L57"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Program :: []<a class="code-typename" href="/core/text/regex/virtual_machine/#Opcode">Opcode</a></pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Rune_Class_Data"><span><a class="doc-id-link" href="#Rune_Class_Data">Rune_Class_Data<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/regex/virtual_machine/virtual_machine.odin#L22"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Rune_Class_Data :: <span class="keyword-type">struct</span> {
+	runes:  []<a href="/base/builtin#rune"><span class="doc-builtin">rune</span></a>,
+	ranges: []regex_parser.<a class="code-typename" href="/core/text/regex/parser/#Rune_Class_Range">Rune_Class_Range</a>,
+}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>NOTE: This structure differs intentionally from the one in <code>regex/parser</code>,
+as this data doesn't need to be a dynamic array once it hits the VM.</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="Rune_Class_Range"><span><a class="doc-id-link" href="#Rune_Class_Range">Rune_Class_Range<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/regex/virtual_machine/virtual_machine.odin#L18"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Rune_Class_Range :: regex_parser.<a class="code-typename" href="/core/text/regex/parser/#Rune_Class_Range">Rune_Class_Range</a></pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Thread"><span><a class="doc-id-link" href="#Thread">Thread<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/regex/virtual_machine/virtual_machine.odin#L52"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Thread :: <span class="keyword-type">struct</span> {
+	pc:    <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>,
+	saved: ^[20]<a href="/base/builtin#int"><span class="doc-builtin">int</span></a>,
+}</pre>
+</div>
+</div>
+<h2 id="pkg-Constants" class="pkg-header">Constants</h2>
+<p class="pkg-empty-section">This section is empty.</p>
+<h2 id="pkg-Variables" class="pkg-header">Variables</h2>
+<p class="pkg-empty-section">This section is empty.</p>
+<h2 id="pkg-Procedures" class="pkg-header">Procedures</h2>
+<div class="pkg-entity">
+<h3 id="add_thread"><span><a class="doc-id-link" href="#add_thread">add_thread<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/regex/virtual_machine/virtual_machine.odin#L110"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">add_thread :: <span class="keyword-type">proc</span>(vm: ^<a class="code-typename" href="/core/text/regex/virtual_machine/#Machine">Machine</a>, saved: ^[20]<a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, pc: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="check_busy_map"><span><a class="doc-id-link" href="#check_busy_map">check_busy_map<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/regex/virtual_machine/virtual_machine.odin#L104"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">check_busy_map :: <span class="keyword-type">proc</span> <span class="string">"contextless"</span> (vm: ^<a class="code-typename" href="/core/text/regex/virtual_machine/#Machine">Machine</a>, pc: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="create"><span><a class="doc-id-link" href="#create">create<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/regex/virtual_machine/virtual_machine.odin#L630"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">create :: <span class="keyword-type">proc</span>(code: []<a class="code-typename" href="/core/text/regex/virtual_machine/#Opcode">Opcode</a>, str: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>) -> (vm: <a class="code-typename" href="/core/text/regex/virtual_machine/#Machine">Machine</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="is_word_class"><span><a class="doc-id-link" href="#is_word_class">is_word_class<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/regex/virtual_machine/virtual_machine.odin#L85"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">is_word_class :: <span class="keyword-type">proc</span> <span class="string">"contextless"</span> (r: <a href="/base/builtin#rune"><span class="doc-builtin">rune</span></a>) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>@MetaCharacter
+NOTE: This must be kept in sync with the compiler & tokenizer.</p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="iterate_opcodes"><span><a class="doc-id-link" href="#iterate_opcodes">iterate_opcodes<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/regex/virtual_machine/util.odin#L16"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">iterate_opcodes :: <span class="keyword-type">proc</span>(iter: ^<a class="code-typename" href="/core/text/regex/virtual_machine/#Opcode_Iterator">Opcode_Iterator</a>) -> (opcode: <a class="code-typename" href="/core/text/regex/virtual_machine/#Opcode">Opcode</a>, pc: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, ok: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="opcode_count"><span><a class="doc-id-link" href="#opcode_count">opcode_count<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/regex/virtual_machine/virtual_machine.odin#L622"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">opcode_count :: <span class="keyword-type">proc</span>(code: []<a class="code-typename" href="/core/text/regex/virtual_machine/#Opcode">Opcode</a>) -> (opcodes: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="opcode_to_name"><span><a class="doc-id-link" href="#opcode_to_name">opcode_to_name<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/regex/virtual_machine/util.odin#L54"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">opcode_to_name :: <span class="keyword-type">proc</span>(opcode: <a class="code-typename" href="/core/text/regex/virtual_machine/#Opcode">Opcode</a>) -> (str: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="run"><span><a class="doc-id-link" href="#run">run<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/regex/virtual_machine/virtual_machine.odin#L330"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">run :: <span class="keyword-type">proc</span>(vm: ^<a class="code-typename" href="/core/text/regex/virtual_machine/#Machine">Machine</a>, $UNICODE_MODE: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> = ) -> (saved: ^[20]<a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, ok: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="set_busy_map"><span><a class="doc-id-link" href="#set_busy_map">set_busy_map<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/text/regex/virtual_machine/virtual_machine.odin#L94"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">set_busy_map :: <span class="keyword-type">proc</span> <span class="string">"contextless"</span> (vm: ^<a class="code-typename" href="/core/text/regex/virtual_machine/#Machine">Machine</a>, pc: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> {…}</pre>
+</div>
+</div>
+<h2 id="pkg-Procedure Groups" class="pkg-header">Procedure Groups</h2>
+<p class="pkg-empty-section">This section is empty.</p>
+</section>
+<h2 id="pkg-source-files">Source Files</h2>
+<ul>
+<li><a href="https://github.com/odin-lang/Odin/tree/master/core/text/regex/virtual_machine/doc.odin">doc.odin</a></li>
+<li><a href="https://github.com/odin-lang/Odin/tree/master/core/text/regex/virtual_machine/util.odin">util.odin</a></li>
+<li><a href="https://github.com/odin-lang/Odin/tree/master/core/text/regex/virtual_machine/virtual_machine.odin">virtual_machine.odin</a></li>
+</ul>
+<h2 id="pkg-generation-information">Generation Information</h2>
+<p>Generated with <code>odin version dev-2024-08 (vendor "odin") Windows_amd64 @ 2024-08-21 21:10:49.045850000 +0000 UTC</code></p>
+</article>
+<div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
+<nav id="TableOfContents">
+<ul>
+<li><a href="#pkg-overview">Overview</a><li><a href="#pkg-Types">Types</a><ul>
+<li><a href="#Machine">Machine</a></li>
+<li><a href="#Opcode">Opcode</a></li>
+<li><a href="#Opcode_Iterator">Opcode_Iterator</a></li>
+<li><a href="#Program">Program</a></li>
+<li><a href="#Rune_Class_Data">Rune_Class_Data</a></li>
+<li><a href="#Rune_Class_Range">Rune_Class_Range</a></li>
+<li><a href="#Thread">Thread</a></li>
+</ul>
+</li>
+<li><a href="#pkg-Procedures">Procedures</a><ul>
+<li><a href="#add_thread">add_thread</a></li>
+<li><a href="#check_busy_map">check_busy_map</a></li>
+<li><a href="#create">create</a></li>
+<li><a href="#is_word_class">is_word_class</a></li>
+<li><a href="#iterate_opcodes">iterate_opcodes</a></li>
+<li><a href="#opcode_count">opcode_count</a></li>
+<li><a href="#opcode_to_name">opcode_to_name</a></li>
+<li><a href="#run">run</a></li>
+<li><a href="#set_busy_map">set_busy_map</a></li>
+</ul>
+</li>
+<li><a href="#pkg-source-files">Source Files</a></ul>
+</nav>
+</div></div>
+<script type="text/javascript">var odin_pkg_name = "regex_vm";</script>
+</div>
+
+</div>
+</main>
+
+<footer class="odin-footer">
+	<div class="container pb-5 pt-5">
+		<div class="row g-4">
+		<div class="col">
+		<a class="navbar-brand" href="https://odin-lang.org">
+		<img class="mb-3" src="https://odin-lang.org/logo.svg" height="30" alt="Odin"></a>
+		<p>
+		The Data-Oriented Language for Sane Software Development.
+		</p>
+		</div>
+		<nav class="col-md-auto">
+			<h4 class="fw-normal">Resources</h4>
+			<ul class="list-unstyled">
+			<li><a href="https://odin-lang.org/docs" class="link-light">Docs</a></li>
+			<li><a href="https://pkg.odin-lang.org/" class="link-light">Packages</a></li>
+			<li><a href="https://odin-lang.org/news" class="link-light">News</a></li>
+			</ul>
+		</nav>
+		<nav class="col-md-auto">
+			<h4 class="fw-normal">Community</h4>
+			<ul class="list-unstyled">
+			<li><a href="https://github.com/odin-lang/Odin" target="_blank" class="link-light">GitHub</a></li>
+			<li><a href="https://discord.com/invite/sVBPHEv" target="_blank" class="link-light">Discord</a></li>
+			<li><a href="https://www.twitch.tv/ginger_bill" target="_blank" class="link-light">Twitch</a></li>
+			<li><a href="https://www.youtube.com/channel/UCUSck1dOH7VKmG4lRW7tZXg" target="_blank" class="link-light">YouTube</a></li>
+			</ul>
+		</nav>
+		<nav class="col-md-auto">
+			<h4 class="fw-normal">Contribute</h4>
+			<ul class="list-unstyled">
+			<li><a href="https://github.com/odin-lang/Odin/issues" target="_blank" class="link-light">Issues</a></li>
+			<li><a href="https://www.patreon.com/gingerbill" target="_blank" class="link-light">Donate</a></li>
+			</ul>
+			</nav>
+		</div>
+		<div class="mt-4 text-muted">© 2016–2023 Ginger Bill</div>
+	</div>
+</footer>
+
+<script src="https://odin-lang.org/lib/bootstrap/js/bootstrap.min.js"></script>
+<script src="https://odin-lang.org/js/script.js"></script>
+<script src="/pkg-data.js"></script>
+<script src="/search.js"></script>
+</body>
+</html>

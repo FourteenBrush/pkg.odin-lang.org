@@ -256,6 +256,13 @@
 <li><a href="/core/text/edit">edit</a></li>
 <li><a href="/core/text/i18n">i18n</a></li>
 <li><a href="/core/text/match">match</a></li>
+<li><a href="/core/text/regex">regex</a></li>
+<li><a href="/core/text/regex/common">regex/common</a></li>
+<li><a href="/core/text/regex/compiler">regex/compiler</a></li>
+<li><a href="/core/text/regex/optimizer">regex/optimizer</a></li>
+<li><a href="/core/text/regex/parser">regex/parser</a></li>
+<li><a href="/core/text/regex/tokenizer">regex/tokenizer</a></li>
+<li><a href="/core/text/regex/virtual_machine">regex/virtual_machine</a></li>
 <li><a href="/core/text/scanner">scanner</a></li>
 <li><a href="/core/text/table">table</a></li>
 </ul>
@@ -509,7 +516,7 @@ Variables (21)</summary>
 <div>
 <details class="doc-index" id="doc-index-Procedures" aria-labelledby="#doc-index-Procedures-header">
 <summary id="#doc-index-Procedures-header">
-Procedures (396)</summary>
+Procedures (399)</summary>
 <ul>
 <li><a href="#AT">AT</a></li>
 <li><a href="#AllocateObject">AllocateObject</a></li>
@@ -713,11 +720,13 @@ Procedures (396)</summary>
 <li><a href="#MenuItem_registerActionCallback">MenuItem_registerActionCallback</a></li>
 <li><a href="#MenuItem_setKeyEquivalentModifierMask">MenuItem_setKeyEquivalentModifierMask</a></li>
 <li><a href="#MenuItem_setSubmenu">MenuItem_setSubmenu</a></li>
+<li><a href="#MenuItem_title">MenuItem_title</a></li>
 <li><a href="#Menu_addItem">Menu_addItem</a></li>
 <li><a href="#Menu_addItemWithTitle">Menu_addItemWithTitle</a></li>
 <li><a href="#Menu_alloc">Menu_alloc</a></li>
 <li><a href="#Menu_init">Menu_init</a></li>
 <li><a href="#Menu_initWithTitle">Menu_initWithTitle</a></li>
+<li><a href="#Menu_itemArray">Menu_itemArray</a></li>
 <li><a href="#NotificationCenter_addObserverName">NotificationCenter_addObserverName</a></li>
 <li><a href="#NotificationCenter_alloc">NotificationCenter_alloc</a></li>
 <li><a href="#NotificationCenter_defaultCenter">NotificationCenter_defaultCenter</a></li>
@@ -856,6 +865,7 @@ Procedures (396)</summary>
 <li><a href="#Window_isModalPanel">Window_isModalPanel</a></li>
 <li><a href="#Window_isResizable">Window_isResizable</a></li>
 <li><a href="#Window_isZoomable">Window_isZoomable</a></li>
+<li><a href="#Window_mainMenu">Window_mainMenu</a></li>
 <li><a href="#Window_makeKeyAndOrderFront">Window_makeKeyAndOrderFront</a></li>
 <li><a href="#Window_opaque">Window_opaque</a></li>
 <li><a href="#Window_orderedIndex">Window_orderedIndex</a></li>
@@ -963,6 +973,7 @@ Procedure Groups (1)</summary>
 <li><a href="/core/sys/darwin/Foundation/#Application_terminate">terminate</a></li>
 <li><a href="/core/sys/darwin/Foundation/#Application_updateWindows">updateWindows</a></li>
 <li><a href="/core/sys/darwin/Foundation/#Application_windows">windows</a></li>
+<li><a href="/core/sys/darwin/Foundation/#Window_mainMenu">mainMenu</a></li>
 </ul>
 <h6>Methods Inherited From <a href="/core/sys/darwin/Foundation/#Object">Object</a></h6>
 <ul>
@@ -981,7 +992,7 @@ Procedure Groups (1)</summary>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="ApplicationDelegate"><span><a class="doc-id-link" href="#ApplicationDelegate">ApplicationDelegate<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/Foundation/NSApplication.odin#L229"><em>Source</em></a></div></h3>
+<h3 id="ApplicationDelegate"><span><a class="doc-id-link" href="#ApplicationDelegate">ApplicationDelegate<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/Foundation/NSApplication.odin#L234"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">ApplicationDelegate :: <span class="keyword-type">struct</span> {
 	<span class="keyword-type">using</span> _: <a class="code-typename" href="/core/sys/darwin/Foundation/#Object">Object</a>,
@@ -1030,7 +1041,7 @@ Procedure Groups (1)</summary>
 </ul>
 </div>
 <div class="pkg-entity">
-<h3 id="ApplicationDelegateTemplate"><span><a class="doc-id-link" href="#ApplicationDelegateTemplate">ApplicationDelegateTemplate<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/Foundation/NSApplication.odin#L161"><em>Source</em></a></div></h3>
+<h3 id="ApplicationDelegateTemplate"><span><a class="doc-id-link" href="#ApplicationDelegateTemplate">ApplicationDelegateTemplate<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/Foundation/NSApplication.odin#L166"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">ApplicationDelegateTemplate :: <span class="keyword-type">struct</span> {
 	<span class="comment">// Launching Applications</span>
@@ -2082,7 +2093,7 @@ Procedure Groups (1)</summary>
 </ul>
 </div>
 <div class="pkg-entity">
-<h3 id="Menu"><span><a class="doc-id-link" href="#Menu">Menu<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/Foundation/NSMenu.odin#L77"><em>Source</em></a></div></h3>
+<h3 id="Menu"><span><a class="doc-id-link" href="#Menu">Menu<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/Foundation/NSMenu.odin#L81"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Menu :: <span class="keyword-type">struct</span> {
 	<span class="keyword-type">using</span> _: <a class="code-typename" href="/core/sys/darwin/Foundation/#Object">Object</a>,
@@ -2096,6 +2107,7 @@ Procedure Groups (1)</summary>
 <li><a href="/core/sys/darwin/Foundation/#Menu_alloc">alloc</a>&nbsp;<em>(class method)</em></li>
 <li><a href="/core/sys/darwin/Foundation/#Menu_init">init</a></li>
 <li><a href="/core/sys/darwin/Foundation/#Menu_initWithTitle">initWithTitle</a></li>
+<li><a href="/core/sys/darwin/Foundation/#Menu_itemArray">itemArray</a></li>
 </ul>
 <h6>Methods Inherited From <a href="/core/sys/darwin/Foundation/#Object">Object</a></h6>
 <ul>
@@ -2128,6 +2140,7 @@ Procedure Groups (1)</summary>
 <li><a href="/core/sys/darwin/Foundation/#MenuItem_registerActionCallback">registerActionCallback</a>&nbsp;<em>(class method)</em></li>
 <li><a href="/core/sys/darwin/Foundation/#MenuItem_setKeyEquivalentModifierMask">setKeyEquivalentModifierMask</a></li>
 <li><a href="/core/sys/darwin/Foundation/#MenuItem_setSubmenu">setSubmenu</a></li>
+<li><a href="/core/sys/darwin/Foundation/#MenuItem_title">title</a></li>
 </ul>
 <h6>Methods Inherited From <a href="/core/sys/darwin/Foundation/#Object">Object</a></h6>
 <ul>
@@ -2643,7 +2656,7 @@ Procedure Groups (1)</summary>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="RunningApplication"><span><a class="doc-id-link" href="#RunningApplication">RunningApplication<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/Foundation/NSApplication.odin#L149"><em>Source</em></a></div></h3>
+<h3 id="RunningApplication"><span><a class="doc-id-link" href="#RunningApplication">RunningApplication<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/Foundation/NSApplication.odin#L154"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">RunningApplication :: <span class="keyword-type">struct</span> {
 	<span class="keyword-type">using</span> _: <a class="code-typename" href="/core/sys/darwin/Foundation/#Object">Object</a>,
@@ -4159,7 +4172,7 @@ self-><a href="#Application_activateIgnoringOtherApps">activateIgnoringOtherApps
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="Application_currentEvent"><span><a class="doc-id-link" href="#Application_currentEvent">Application_currentEvent<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/Foundation/NSApplication.odin#L129"><em>Source</em></a></div></h3>
+<h3 id="Application_currentEvent"><span><a class="doc-id-link" href="#Application_currentEvent">Application_currentEvent<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/Foundation/NSApplication.odin#L134"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Application_currentEvent :: <span class="keyword-type">proc</span> <span class="string">"c"</span> (
 	self: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Application">Application</a>, 
@@ -4178,7 +4191,7 @@ res := self-><a href="#Application_currentEvent">currentEvent</a>()
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="Application_finishLaunching"><span><a class="doc-id-link" href="#Application_finishLaunching">Application_finishLaunching<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/Foundation/NSApplication.odin#L114"><em>Source</em></a></div></h3>
+<h3 id="Application_finishLaunching"><span><a class="doc-id-link" href="#Application_finishLaunching">Application_finishLaunching<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/Foundation/NSApplication.odin#L119"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Application_finishLaunching :: <span class="keyword-type">proc</span> <span class="string">"c"</span> (
 	self: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Application">Application</a>, 
@@ -4197,7 +4210,7 @@ self-><a href="#Application_finishLaunching">finishLaunching</a>()
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="Application_isRunning"><span><a class="doc-id-link" href="#Application_isRunning">Application_isRunning<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/Foundation/NSApplication.odin#L124"><em>Source</em></a></div></h3>
+<h3 id="Application_isRunning"><span><a class="doc-id-link" href="#Application_isRunning">Application_isRunning<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/Foundation/NSApplication.odin#L129"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Application_isRunning :: <span class="keyword-type">proc</span> <span class="string">"c"</span> (
 	self: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Application">Application</a>, 
@@ -4216,7 +4229,7 @@ res := self-><a href="#Application_isRunning">isRunning</a>()
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="Application_nextEventMatchingMask"><span><a class="doc-id-link" href="#Application_nextEventMatchingMask">Application_nextEventMatchingMask<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/Foundation/NSApplication.odin#L134"><em>Source</em></a></div></h3>
+<h3 id="Application_nextEventMatchingMask"><span><a class="doc-id-link" href="#Application_nextEventMatchingMask">Application_nextEventMatchingMask<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/Foundation/NSApplication.odin#L139"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Application_nextEventMatchingMask :: <span class="keyword-type">proc</span> <span class="string">"c"</span> (
 	self:       ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Application">Application</a>, 
@@ -4244,7 +4257,7 @@ res := self-><a href="#Application_nextEventMatchingMask">nextEventMatchingMask<
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="Application_run"><span><a class="doc-id-link" href="#Application_run">Application_run<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/Foundation/NSApplication.odin#L109"><em>Source</em></a></div></h3>
+<h3 id="Application_run"><span><a class="doc-id-link" href="#Application_run">Application_run<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/Foundation/NSApplication.odin#L114"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Application_run :: <span class="keyword-type">proc</span> <span class="string">"c"</span> (
 	self: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Application">Application</a>, 
@@ -4263,7 +4276,7 @@ self-><a href="#Application_run">run</a>()
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="Application_sendEvent"><span><a class="doc-id-link" href="#Application_sendEvent">Application_sendEvent<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/Foundation/NSApplication.odin#L139"><em>Source</em></a></div></h3>
+<h3 id="Application_sendEvent"><span><a class="doc-id-link" href="#Application_sendEvent">Application_sendEvent<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/Foundation/NSApplication.odin#L144"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Application_sendEvent :: <span class="keyword-type">proc</span> <span class="string">"c"</span> (
 	self:  ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Application">Application</a>, 
@@ -4303,7 +4316,7 @@ res := self-><a href="#Application_setActivationPolicy">setActivationPolicy</a>(
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="Application_setDelegate"><span><a class="doc-id-link" href="#Application_setDelegate">Application_setDelegate<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/Foundation/NSApplication.odin#L612"><em>Source</em></a></div></h3>
+<h3 id="Application_setDelegate"><span><a class="doc-id-link" href="#Application_setDelegate">Application_setDelegate<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/Foundation/NSApplication.odin#L617"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Application_setDelegate :: <span class="keyword-type">proc</span> <span class="string">"c"</span> (
 	self:     ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Application">Application</a>, 
@@ -4323,7 +4336,7 @@ self-><a href="#Application_setDelegate">setDelegate</a>(delegate)
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="Application_setMainMenu"><span><a class="doc-id-link" href="#Application_setMainMenu">Application_setMainMenu<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/Foundation/NSApplication.odin#L99"><em>Source</em></a></div></h3>
+<h3 id="Application_setMainMenu"><span><a class="doc-id-link" href="#Application_setMainMenu">Application_setMainMenu<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/Foundation/NSApplication.odin#L104"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Application_setMainMenu :: <span class="keyword-type">proc</span> <span class="string">"c"</span> (
 	self: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Application">Application</a>, 
@@ -4381,7 +4394,7 @@ res := <a href="#Application">Application</a>.<a href="#Application_sharedApplic
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="Application_terminate"><span><a class="doc-id-link" href="#Application_terminate">Application_terminate<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/Foundation/NSApplication.odin#L119"><em>Source</em></a></div></h3>
+<h3 id="Application_terminate"><span><a class="doc-id-link" href="#Application_terminate">Application_terminate<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/Foundation/NSApplication.odin#L124"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Application_terminate :: <span class="keyword-type">proc</span> <span class="string">"c"</span> (
 	self:   ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Application">Application</a>, 
@@ -4401,7 +4414,7 @@ self-><a href="#Application_terminate">terminate</a>(sender)
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="Application_updateWindows"><span><a class="doc-id-link" href="#Application_updateWindows">Application_updateWindows<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/Foundation/NSApplication.odin#L143"><em>Source</em></a></div></h3>
+<h3 id="Application_updateWindows"><span><a class="doc-id-link" href="#Application_updateWindows">Application_updateWindows<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/Foundation/NSApplication.odin#L148"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Application_updateWindows :: <span class="keyword-type">proc</span> <span class="string">"c"</span> (
 	self: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Application">Application</a>, 
@@ -4420,7 +4433,7 @@ self-><a href="#Application_updateWindows">updateWindows</a>()
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="Application_windows"><span><a class="doc-id-link" href="#Application_windows">Application_windows<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/Foundation/NSApplication.odin#L104"><em>Source</em></a></div></h3>
+<h3 id="Application_windows"><span><a class="doc-id-link" href="#Application_windows">Application_windows<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/Foundation/NSApplication.odin#L109"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Application_windows :: <span class="keyword-type">proc</span> <span class="string">"c"</span> (
 	self: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Application">Application</a>, 
@@ -8028,7 +8041,26 @@ self-><a href="#MenuItem_setSubmenu">setSubmenu</a>(submenu)
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="Menu_addItem"><span><a class="doc-id-link" href="#Menu_addItem">Menu_addItem<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/Foundation/NSMenu.odin#L96"><em>Source</em></a></div></h3>
+<h3 id="MenuItem_title"><span><a class="doc-id-link" href="#MenuItem_title">MenuItem_title<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/Foundation/NSMenu.odin#L74"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">MenuItem_title :: <span class="keyword-type">proc</span> <span class="string">"c"</span> (
+	self: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#MenuItem">MenuItem</a>, 
+) -> ^<a class="code-typename" href="/core/sys/darwin/Foundation/#String">String</a> {…}</pre>
+<div>
+<h5>Objective-C Method Information</h5>
+<ul>
+<li>Class: <a href="#MenuItem">MenuItem</a></li>
+<li>Name: <strong>title</strong></li>
+</ul>
+</div>
+<h5>Syntax Usage</h5>
+<pre>
+res := self-><a href="#MenuItem_title">title</a>()
+</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Menu_addItem"><span><a class="doc-id-link" href="#Menu_addItem">Menu_addItem<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/Foundation/NSMenu.odin#L100"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Menu_addItem :: <span class="keyword-type">proc</span> <span class="string">"c"</span> (
 	self: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Menu">Menu</a>, 
@@ -8048,7 +8080,7 @@ self-><a href="#Menu_addItem">addItem</a>(item)
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="Menu_addItemWithTitle"><span><a class="doc-id-link" href="#Menu_addItemWithTitle">Menu_addItemWithTitle<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/Foundation/NSMenu.odin#L101"><em>Source</em></a></div></h3>
+<h3 id="Menu_addItemWithTitle"><span><a class="doc-id-link" href="#Menu_addItemWithTitle">Menu_addItemWithTitle<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/Foundation/NSMenu.odin#L105"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Menu_addItemWithTitle :: <span class="keyword-type">proc</span> <span class="string">"c"</span> (
 	self:          ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Menu">Menu</a>, 
@@ -8074,7 +8106,7 @@ res := self-><a href="#Menu_addItemWithTitle">addItemWithTitle</a>(
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="Menu_alloc"><span><a class="doc-id-link" href="#Menu_alloc">Menu_alloc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/Foundation/NSMenu.odin#L80"><em>Source</em></a></div></h3>
+<h3 id="Menu_alloc"><span><a class="doc-id-link" href="#Menu_alloc">Menu_alloc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/Foundation/NSMenu.odin#L84"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Menu_alloc :: <span class="keyword-type">proc</span> <span class="string">"c"</span> () -> ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Menu">Menu</a> {…}</pre>
 <div>
@@ -8092,7 +8124,7 @@ res := <a href="#Menu">Menu</a>.<a href="#Menu_alloc">alloc</a>()
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="Menu_init"><span><a class="doc-id-link" href="#Menu_init">Menu_init<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/Foundation/NSMenu.odin#L85"><em>Source</em></a></div></h3>
+<h3 id="Menu_init"><span><a class="doc-id-link" href="#Menu_init">Menu_init<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/Foundation/NSMenu.odin#L89"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Menu_init :: <span class="keyword-type">proc</span> <span class="string">"c"</span> (
 	self: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Menu">Menu</a>, 
@@ -8111,7 +8143,7 @@ res := self-><a href="#Menu_init">init</a>()
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="Menu_initWithTitle"><span><a class="doc-id-link" href="#Menu_initWithTitle">Menu_initWithTitle<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/Foundation/NSMenu.odin#L90"><em>Source</em></a></div></h3>
+<h3 id="Menu_initWithTitle"><span><a class="doc-id-link" href="#Menu_initWithTitle">Menu_initWithTitle<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/Foundation/NSMenu.odin#L94"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Menu_initWithTitle :: <span class="keyword-type">proc</span> <span class="string">"c"</span> (
 	self:  ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Menu">Menu</a>, 
@@ -8127,6 +8159,25 @@ res := self-><a href="#Menu_init">init</a>()
 <h5>Syntax Usage</h5>
 <pre>
 res := self-><a href="#Menu_initWithTitle">initWithTitle</a>(title)
+</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Menu_itemArray"><span><a class="doc-id-link" href="#Menu_itemArray">Menu_itemArray<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/Foundation/NSMenu.odin#L110"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Menu_itemArray :: <span class="keyword-type">proc</span> <span class="string">"c"</span> (
+	self: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Menu">Menu</a>, 
+) -> ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Array">Array</a> {…}</pre>
+<div>
+<h5>Objective-C Method Information</h5>
+<ul>
+<li>Class: <a href="#Menu">Menu</a></li>
+<li>Name: <strong>itemArray</strong></li>
+</ul>
+</div>
+<h5>Syntax Usage</h5>
+<pre>
+res := self-><a href="#Menu_itemArray">itemArray</a>()
 </pre>
 </div>
 </div>
@@ -9421,7 +9472,7 @@ self-><a href="#OpenPanel_setResolvesAliases">setResolvesAliases</a>(setting)
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="RunningApplication_currentApplication"><span><a class="doc-id-link" href="#RunningApplication_currentApplication">RunningApplication_currentApplication<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/Foundation/NSApplication.odin#L152"><em>Source</em></a></div></h3>
+<h3 id="RunningApplication_currentApplication"><span><a class="doc-id-link" href="#RunningApplication_currentApplication">RunningApplication_currentApplication<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/Foundation/NSApplication.odin#L157"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">RunningApplication_currentApplication :: <span class="keyword-type">proc</span> <span class="string">"c"</span> () -> ^<a class="code-typename" href="/core/sys/darwin/Foundation/#RunningApplication">RunningApplication</a> {…}</pre>
 <div>
@@ -9439,7 +9490,7 @@ res := <a href="#RunningApplication">RunningApplication</a>.<a href="#RunningApp
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="RunningApplication_localizedName"><span><a class="doc-id-link" href="#RunningApplication_localizedName">RunningApplication_localizedName<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/Foundation/NSApplication.odin#L157"><em>Source</em></a></div></h3>
+<h3 id="RunningApplication_localizedName"><span><a class="doc-id-link" href="#RunningApplication_localizedName">RunningApplication_localizedName<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/Foundation/NSApplication.odin#L162"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">RunningApplication_localizedName :: <span class="keyword-type">proc</span> <span class="string">"c"</span> (
 	self: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#RunningApplication">RunningApplication</a>, 
@@ -10800,6 +10851,25 @@ res := self-><a href="#Window_isZoomable">isZoomable</a>()
 </div>
 </div>
 <div class="pkg-entity">
+<h3 id="Window_mainMenu"><span><a class="doc-id-link" href="#Window_mainMenu">Window_mainMenu<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/Foundation/NSApplication.odin#L99"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Window_mainMenu :: <span class="keyword-type">proc</span> <span class="string">"c"</span> (
+	self: ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Application">Application</a>, 
+) -> ^<a class="code-typename" href="/core/sys/darwin/Foundation/#Menu">Menu</a> {…}</pre>
+<div>
+<h5>Objective-C Method Information</h5>
+<ul>
+<li>Class: <a href="#Application">Application</a></li>
+<li>Name: <strong>mainMenu</strong></li>
+</ul>
+</div>
+<h5>Syntax Usage</h5>
+<pre>
+res := self-><a href="#Window_mainMenu">mainMenu</a>()
+</pre>
+</div>
+</div>
+<div class="pkg-entity">
 <h3 id="Window_makeKeyAndOrderFront"><span><a class="doc-id-link" href="#Window_makeKeyAndOrderFront">Window_makeKeyAndOrderFront<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/Foundation/NSWindow.odin#L669"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Window_makeKeyAndOrderFront :: <span class="keyword-type">proc</span> <span class="string">"c"</span> (
@@ -11146,7 +11216,7 @@ self-><a href="#Window_setWantsLayer">setWantsLayer</a>(ok)
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="application_delegate_register_and_alloc"><span><a class="doc-id-link" href="#application_delegate_register_and_alloc">application_delegate_register_and_alloc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/Foundation/NSApplication.odin#L235"><em>Source</em></a></div></h3>
+<h3 id="application_delegate_register_and_alloc"><span><a class="doc-id-link" href="#application_delegate_register_and_alloc">application_delegate_register_and_alloc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/Foundation/NSApplication.odin#L240"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">application_delegate_register_and_alloc :: <span class="keyword-type">proc</span>(
 	template:         <a class="code-typename" href="/core/sys/darwin/Foundation/#ApplicationDelegateTemplate">ApplicationDelegateTemplate</a>, 
@@ -11640,7 +11710,7 @@ res := <a href="#Number">Number</a>.<a href="#Number_numberWithBool">number</a>(
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/Foundation/objc.odin">objc.odin</a></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2024-08 (vendor "odin") Windows_amd64 @ 2024-08-20 21:10:51.257963800 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2024-08 (vendor "odin") Windows_amd64 @ 2024-08-21 21:10:48.354252100 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
@@ -12029,11 +12099,13 @@ res := <a href="#Number">Number</a>.<a href="#Number_numberWithBool">number</a>(
 <li><a href="#MenuItem_registerActionCallback">MenuItem_registerActionCallback</a></li>
 <li><a href="#MenuItem_setKeyEquivalentModifierMask">MenuItem_setKeyEquivalentModifierMask</a></li>
 <li><a href="#MenuItem_setSubmenu">MenuItem_setSubmenu</a></li>
+<li><a href="#MenuItem_title">MenuItem_title</a></li>
 <li><a href="#Menu_addItem">Menu_addItem</a></li>
 <li><a href="#Menu_addItemWithTitle">Menu_addItemWithTitle</a></li>
 <li><a href="#Menu_alloc">Menu_alloc</a></li>
 <li><a href="#Menu_init">Menu_init</a></li>
 <li><a href="#Menu_initWithTitle">Menu_initWithTitle</a></li>
+<li><a href="#Menu_itemArray">Menu_itemArray</a></li>
 <li><a href="#NotificationCenter_addObserverName">NotificationCenter_addObserverName</a></li>
 <li><a href="#NotificationCenter_alloc">NotificationCenter_alloc</a></li>
 <li><a href="#NotificationCenter_defaultCenter">NotificationCenter_defaultCenter</a></li>
@@ -12172,6 +12244,7 @@ res := <a href="#Number">Number</a>.<a href="#Number_numberWithBool">number</a>(
 <li><a href="#Window_isModalPanel">Window_isModalPanel</a></li>
 <li><a href="#Window_isResizable">Window_isResizable</a></li>
 <li><a href="#Window_isZoomable">Window_isZoomable</a></li>
+<li><a href="#Window_mainMenu">Window_mainMenu</a></li>
 <li><a href="#Window_makeKeyAndOrderFront">Window_makeKeyAndOrderFront</a></li>
 <li><a href="#Window_opaque">Window_opaque</a></li>
 <li><a href="#Window_orderedIndex">Window_orderedIndex</a></li>
