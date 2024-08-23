@@ -319,7 +319,7 @@
 <div>
 <details class="doc-index" id="doc-index-Types" aria-labelledby="#doc-index-Types-header">
 <summary id="#doc-index-Types-header">
-Types (41)</summary>
+Types (43)</summary>
 <ul>
 <li><a href="#Bool">Bool</a></li>
 <li><a href="#Offset_From">Offset_From</a></li>
@@ -330,6 +330,7 @@ Types (41)</summary>
 <li><a href="#PID_Info_Flavor">PID_Info_Flavor</a></li>
 <li><a href="#Permission">Permission</a></li>
 <li><a href="#Permission_Enum">Permission_Enum</a></li>
+<li><a href="#Pid_Rusage_Flavor">Pid_Rusage_Flavor</a></li>
 <li><a href="#RUsage">RUsage</a></li>
 <li><a href="#System_Call_Number">System_Call_Number</a></li>
 <li><a href="#blkcnt_t">blkcnt_t</a></li>
@@ -352,6 +353,7 @@ Types (41)</summary>
 <li><a href="#proc_taskallinfo">proc_taskallinfo</a></li>
 <li><a href="#proc_taskinfo">proc_taskinfo</a></li>
 <li><a href="#proc_vnodepathinfo">proc_vnodepathinfo</a></li>
+<li><a href="#rusage_info_v0">rusage_info_v0</a></li>
 <li><a href="#semaphore_t">semaphore_t</a></li>
 <li><a href="#stat">stat</a></li>
 <li><a href="#task_t">task_t</a></li>
@@ -477,7 +479,7 @@ Variables (0)</summary>
 <div>
 <details class="doc-index" id="doc-index-Procedures" aria-labelledby="#doc-index-Procedures-header">
 <summary id="#doc-index-Procedures-header">
-Procedures (78)</summary>
+Procedures (79)</summary>
 <ul>
 <li><a href="#errno">errno</a></li>
 <li><a href="#mach_task_self">mach_task_self</a></li>
@@ -487,6 +489,7 @@ Procedures (78)</summary>
 <li><a href="#os_sync_wake_by_address_all">os_sync_wake_by_address_all</a></li>
 <li><a href="#os_sync_wake_by_address_any">os_sync_wake_by_address_any</a></li>
 <li><a href="#proc_listallpids">proc_listallpids</a></li>
+<li><a href="#proc_pid_rusage">proc_pid_rusage</a></li>
 <li><a href="#proc_pidinfo">proc_pidinfo</a></li>
 <li><a href="#proc_pidpath">proc_pidpath</a></li>
 <li><a href="#semaphore_create">semaphore_create</a></li>
@@ -623,7 +626,7 @@ Procedure Groups (0)</summary>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="PBI_Flag_Bits"><span><a class="doc-id-link" href="#PBI_Flag_Bits">PBI_Flag_Bits<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/proc.odin#L129"><em>Source</em></a></div></h3>
+<h3 id="PBI_Flag_Bits"><span><a class="doc-id-link" href="#PBI_Flag_Bits">PBI_Flag_Bits<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/proc.odin#L130"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">PBI_Flag_Bits :: <span class="keyword-type">enum</span> <a href="/base/builtin#u32"><span class="doc-builtin">u32</span></a> {
 	SYSTEM      = 0, 
@@ -646,13 +649,13 @@ Procedure Groups (0)</summary>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="PBI_Flags"><span><a class="doc-id-link" href="#PBI_Flags">PBI_Flags<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/proc.odin#L147"><em>Source</em></a></div></h3>
+<h3 id="PBI_Flags"><span><a class="doc-id-link" href="#PBI_Flags">PBI_Flags<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/proc.odin#L148"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">PBI_Flags :: <span class="keyword-type">bit_set</span>[<a class="code-typename" href="/core/sys/darwin/#PBI_Flag_Bits">PBI_Flag_Bits</a>; <a href="/base/builtin#u32"><span class="doc-builtin">u32</span></a>]</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="PID_Info_Flavor"><span><a class="doc-id-link" href="#PID_Info_Flavor">PID_Info_Flavor<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/proc.odin#L149"><em>Source</em></a></div></h3>
+<h3 id="PID_Info_Flavor"><span><a class="doc-id-link" href="#PID_Info_Flavor">PID_Info_Flavor<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/proc.odin#L150"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">PID_Info_Flavor :: <span class="keyword-type">enum</span> <a href="/base/builtin#i32"><span class="doc-builtin">i32</span></a> {
 	LISTFDS        = 1, 
@@ -715,6 +718,23 @@ Procedure Groups (0)</summary>
 	PERMISSION_ISVTX,                  <span class="comment">// save swapped text even after use</span>
 }</pre>
 </div>
+</div>
+<div class="pkg-entity">
+<h3 id="Pid_Rusage_Flavor"><span><a class="doc-id-link" href="#Pid_Rusage_Flavor">Pid_Rusage_Flavor<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/proc.odin#L171"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Pid_Rusage_Flavor :: <span class="keyword-type">enum</span> <a href="/base/builtin#i32"><span class="doc-builtin">i32</span></a> {
+	V0, 
+	V1, 
+	V2, 
+	V3, 
+	V4, 
+	V5, 
+}</pre>
+</div>
+<h5>Related Procedures With Parameters</h5>
+<ul>
+<li><a href="/core/sys/darwin/#proc_pid_rusage">proc_pid_rusage</a></li>
+</ul>
 </div>
 <div class="pkg-entity">
 <h3 id="RUsage"><span><a class="doc-id-link" href="#RUsage">RUsage<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/darwin.odin#L10"><em>Source</em></a></div></h3>
@@ -1322,7 +1342,7 @@ Procedure Groups (0)</summary>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="fsid_t"><span><a class="doc-id-link" href="#fsid_t">fsid_t<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/proc.odin#L127"><em>Source</em></a></div></h3>
+<h3 id="fsid_t"><span><a class="doc-id-link" href="#fsid_t">fsid_t<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/proc.odin#L128"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">fsid_t :: <span class="keyword-type">distinct</span> [2]<a href="/base/builtin#i32"><span class="doc-builtin">i32</span></a></pre>
 </div>
@@ -1447,7 +1467,7 @@ Procedure Groups (0)</summary>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="proc_bsdinfo"><span><a class="doc-id-link" href="#proc_bsdinfo">proc_bsdinfo<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/proc.odin#L19"><em>Source</em></a></div></h3>
+<h3 id="proc_bsdinfo"><span><a class="doc-id-link" href="#proc_bsdinfo">proc_bsdinfo<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/proc.odin#L20"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">proc_bsdinfo :: <span class="keyword-type">struct</span> {
 	pbi_flags:        <span class="keyword-type">bit_set</span>[<a class="code-typename" href="/core/sys/darwin/#PBI_Flag_Bits">PBI_Flag_Bits</a>; <a href="/base/builtin#u32"><span class="doc-builtin">u32</span></a>],
@@ -1476,7 +1496,7 @@ Procedure Groups (0)</summary>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="proc_bsdshortinfo"><span><a class="doc-id-link" href="#proc_bsdshortinfo">proc_bsdshortinfo<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/proc.odin#L44"><em>Source</em></a></div></h3>
+<h3 id="proc_bsdshortinfo"><span><a class="doc-id-link" href="#proc_bsdshortinfo">proc_bsdshortinfo<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/proc.odin#L45"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">proc_bsdshortinfo :: <span class="keyword-type">struct</span> {
 	pbsi_pid:    <a href="/base/builtin#u32"><span class="doc-builtin">u32</span></a>,
@@ -1496,7 +1516,7 @@ Procedure Groups (0)</summary>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="proc_taskallinfo"><span><a class="doc-id-link" href="#proc_taskallinfo">proc_taskallinfo<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/proc.odin#L122"><em>Source</em></a></div></h3>
+<h3 id="proc_taskallinfo"><span><a class="doc-id-link" href="#proc_taskallinfo">proc_taskallinfo<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/proc.odin#L123"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">proc_taskallinfo :: <span class="keyword-type">struct</span> {
 	pbsd:   <a class="code-typename" href="/core/sys/darwin/#proc_bsdinfo">proc_bsdinfo</a>,
@@ -1505,7 +1525,7 @@ Procedure Groups (0)</summary>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="proc_taskinfo"><span><a class="doc-id-link" href="#proc_taskinfo">proc_taskinfo<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/proc.odin#L101"><em>Source</em></a></div></h3>
+<h3 id="proc_taskinfo"><span><a class="doc-id-link" href="#proc_taskinfo">proc_taskinfo<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/proc.odin#L102"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">proc_taskinfo :: <span class="keyword-type">struct</span> {
 	pti_virtual_size:      <a href="/base/builtin#u64"><span class="doc-builtin">u64</span></a> <span class="string">`fmt:"M"`</span>,
@@ -1530,11 +1550,29 @@ Procedure Groups (0)</summary>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="proc_vnodepathinfo"><span><a class="doc-id-link" href="#proc_vnodepathinfo">proc_vnodepathinfo<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/proc.odin#L60"><em>Source</em></a></div></h3>
+<h3 id="proc_vnodepathinfo"><span><a class="doc-id-link" href="#proc_vnodepathinfo">proc_vnodepathinfo<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/proc.odin#L61"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">proc_vnodepathinfo :: <span class="keyword-type">struct</span> {
 	pvi_cdir: <a class="code-typename" href="/core/sys/darwin/#vnode_info_path">vnode_info_path</a>,
 	pvi_rdir: <a class="code-typename" href="/core/sys/darwin/#vnode_info_path">vnode_info_path</a>,
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="rusage_info_v0"><span><a class="doc-id-link" href="#rusage_info_v0">rusage_info_v0<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/proc.odin#L180"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">rusage_info_v0 :: <span class="keyword-type">struct</span> {
+	ri_uuid:               [16]<a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a>,
+	ri_user_time:          <a href="/base/builtin#u64"><span class="doc-builtin">u64</span></a>,
+	ri_system_time:        <a href="/base/builtin#u64"><span class="doc-builtin">u64</span></a>,
+	ri_pkg_idle_wkups:     <a href="/base/builtin#u64"><span class="doc-builtin">u64</span></a>,
+	ri_interrupt_wkups:    <a href="/base/builtin#u64"><span class="doc-builtin">u64</span></a>,
+	ri_pageins:            <a href="/base/builtin#u64"><span class="doc-builtin">u64</span></a>,
+	ri_wired_size:         <a href="/base/builtin#u64"><span class="doc-builtin">u64</span></a>,
+	ri_resident_size:      <a href="/base/builtin#u64"><span class="doc-builtin">u64</span></a>,
+	ri_phys_footprint:     <a href="/base/builtin#u64"><span class="doc-builtin">u64</span></a>,
+	ri_proc_start_abstime: <a href="/base/builtin#u64"><span class="doc-builtin">u64</span></a>,
+	ri_proc_exit_abstime:  <a href="/base/builtin#u64"><span class="doc-builtin">u64</span></a>,
 }</pre>
 </div>
 </div>
@@ -1610,7 +1648,7 @@ See core/sys/unix/pthread_linux.odin/pthread_t.</p>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="vinfo_stat"><span><a class="doc-id-link" href="#vinfo_stat">vinfo_stat<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/proc.odin#L77"><em>Source</em></a></div></h3>
+<h3 id="vinfo_stat"><span><a class="doc-id-link" href="#vinfo_stat">vinfo_stat<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/proc.odin#L78"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">vinfo_stat :: <span class="keyword-type">struct</span> {
 	vst_dev:           <a href="/base/builtin#u32"><span class="doc-builtin">u32</span></a>,
@@ -1638,7 +1676,7 @@ See core/sys/unix/pthread_linux.odin/pthread_t.</p>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="vnode_info"><span><a class="doc-id-link" href="#vnode_info">vnode_info<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/proc.odin#L70"><em>Source</em></a></div></h3>
+<h3 id="vnode_info"><span><a class="doc-id-link" href="#vnode_info">vnode_info<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/proc.odin#L71"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">vnode_info :: <span class="keyword-type">struct</span> {
 	vi_stat: <a class="code-typename" href="/core/sys/darwin/#vinfo_stat">vinfo_stat</a>,
@@ -1649,7 +1687,7 @@ See core/sys/unix/pthread_linux.odin/pthread_t.</p>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="vnode_info_path"><span><a class="doc-id-link" href="#vnode_info_path">vnode_info_path<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/proc.odin#L65"><em>Source</em></a></div></h3>
+<h3 id="vnode_info_path"><span><a class="doc-id-link" href="#vnode_info_path">vnode_info_path<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/proc.odin#L66"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">vnode_info_path :: <span class="keyword-type">struct</span> {
 	vip_vi:   <a class="code-typename" href="/core/sys/darwin/#vnode_info">vnode_info</a>,
@@ -2007,7 +2045,7 @@ See core/sys/unix/pthread_linux.odin/pthread_t.</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="MAXCOMLEN"><span><a class="doc-id-link" href="#MAXCOMLEN">MAXCOMLEN<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/proc.odin#L17"><em>Source</em></a></div></h3>
+<h3 id="MAXCOMLEN"><span><a class="doc-id-link" href="#MAXCOMLEN">MAXCOMLEN<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/proc.odin#L18"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">MAXCOMLEN :: 16</pre>
 </div>
@@ -2373,7 +2411,7 @@ See core/sys/unix/pthread_linux.odin/pthread_t.</p>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="PIDPATHINFO_MAXSIZE"><span><a class="doc-id-link" href="#PIDPATHINFO_MAXSIZE">PIDPATHINFO_MAXSIZE<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/proc.odin#L168"><em>Source</em></a></div></h3>
+<h3 id="PIDPATHINFO_MAXSIZE"><span><a class="doc-id-link" href="#PIDPATHINFO_MAXSIZE">PIDPATHINFO_MAXSIZE<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/proc.odin#L169"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">PIDPATHINFO_MAXSIZE :: 4 * posix.PATH_MAX</pre>
 </div>
@@ -2717,6 +2755,12 @@ EINVAL	:	The operation associated with existing kernel state</p>
 <h3 id="proc_listallpids"><span><a class="doc-id-link" href="#proc_listallpids">proc_listallpids<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/proc.odin#L14"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">proc_listallpids :: <span class="keyword-type">proc</span> <span class="string">"c"</span> (buffer: [^]<a href="/base/builtin#i32"><span class="doc-builtin">i32</span></a>, buffersize: <a href="/base/builtin#i32"><span class="doc-builtin">i32</span></a>) -> <a href="/base/builtin#i32"><span class="doc-builtin">i32</span></a> ---</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="proc_pid_rusage"><span><a class="doc-id-link" href="#proc_pid_rusage">proc_pid_rusage<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/darwin/proc.odin#L15"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">proc_pid_rusage :: <span class="keyword-type">proc</span> <span class="string">"c"</span> (pid: posix.<a class="code-typename" href="/core/sys/posix/#pid_t">pid_t</a>, flavor: <a class="code-typename" href="/core/sys/darwin/#Pid_Rusage_Flavor">Pid_Rusage_Flavor</a>, buffer: <a href="/base/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>) -> <a href="/base/builtin#i32"><span class="doc-builtin">i32</span></a> ---</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -3182,7 +3226,7 @@ EINVAL	:	The operation associated with existing kernel state</p>
 <li><em>(hidden platform specific files)</em></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2024-08 (vendor "odin") Windows_amd64 @ 2024-08-22 21:11:29.350344500 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2024-08 (vendor "odin") Windows_amd64 @ 2024-08-23 21:10:13.425853600 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
@@ -3197,6 +3241,7 @@ EINVAL	:	The operation associated with existing kernel state</p>
 <li><a href="#PID_Info_Flavor">PID_Info_Flavor</a></li>
 <li><a href="#Permission">Permission</a></li>
 <li><a href="#Permission_Enum">Permission_Enum</a></li>
+<li><a href="#Pid_Rusage_Flavor">Pid_Rusage_Flavor</a></li>
 <li><a href="#RUsage">RUsage</a></li>
 <li><a href="#System_Call_Number">System_Call_Number</a></li>
 <li><a href="#blkcnt_t">blkcnt_t</a></li>
@@ -3219,6 +3264,7 @@ EINVAL	:	The operation associated with existing kernel state</p>
 <li><a href="#proc_taskallinfo">proc_taskallinfo</a></li>
 <li><a href="#proc_taskinfo">proc_taskinfo</a></li>
 <li><a href="#proc_vnodepathinfo">proc_vnodepathinfo</a></li>
+<li><a href="#rusage_info_v0">rusage_info_v0</a></li>
 <li><a href="#semaphore_t">semaphore_t</a></li>
 <li><a href="#stat">stat</a></li>
 <li><a href="#task_t">task_t</a></li>
@@ -3337,6 +3383,7 @@ EINVAL	:	The operation associated with existing kernel state</p>
 <li><a href="#os_sync_wake_by_address_all">os_sync_wake_by_address_all</a></li>
 <li><a href="#os_sync_wake_by_address_any">os_sync_wake_by_address_any</a></li>
 <li><a href="#proc_listallpids">proc_listallpids</a></li>
+<li><a href="#proc_pid_rusage">proc_pid_rusage</a></li>
 <li><a href="#proc_pidinfo">proc_pidinfo</a></li>
 <li><a href="#proc_pidpath">proc_pidpath</a></li>
 <li><a href="#semaphore_create">semaphore_create</a></li>

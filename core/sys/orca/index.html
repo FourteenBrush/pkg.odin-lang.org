@@ -606,11 +606,10 @@ Variables (5)</summary>
 <div>
 <details class="doc-index" id="doc-index-Procedures" aria-labelledby="#doc-index-Procedures-header">
 <summary id="#doc-index-Procedures-header">
-Procedures (336)</summary>
+Procedures (334)</summary>
 <ul>
 <li><a href="#abort">abort</a></li>
 <li><a href="#abort_ext">abort_ext</a></li>
-<li><a href="#abortf">abortf</a></li>
 <li><a href="#arc">arc</a></li>
 <li><a href="#arena_cleanup">arena_cleanup</a></li>
 <li><a href="#arena_clear">arena_clear</a></li>
@@ -652,6 +651,7 @@ Procedures (336)</summary>
 <li><a href="#color_convert">color_convert</a></li>
 <li><a href="#color_rgba">color_rgba</a></li>
 <li><a href="#color_srgba">color_srgba</a></li>
+<li><a href="#create_odin_logger">create_odin_logger</a></li>
 <li><a href="#cubic_to">cubic_to</a></li>
 <li><a href="#ellipse_fill">ellipse_fill</a></li>
 <li><a href="#ellipse_stroke">ellipse_stroke</a></li>
@@ -757,13 +757,10 @@ Procedures (336)</summary>
 <li><a href="#list_push_front">list_push_front</a></li>
 <li><a href="#list_remove">list_remove</a></li>
 <li><a href="#log_error">log_error</a></li>
-<li><a href="#log_errorf">log_errorf</a></li>
 <li><a href="#log_ext">log_ext</a></li>
 <li><a href="#log_info">log_info</a></li>
-<li><a href="#log_infof">log_infof</a></li>
 <li><a href="#log_set_level">log_set_level</a></li>
 <li><a href="#log_warning">log_warning</a></li>
-<li><a href="#log_warningf">log_warningf</a></li>
 <li><a href="#mat2x3_inv">mat2x3_inv</a></li>
 <li><a href="#mat2x3_mul">mat2x3_mul</a></li>
 <li><a href="#mat2x3_mul_m">mat2x3_mul_m</a></li>
@@ -782,6 +779,7 @@ Procedures (336)</summary>
 <li><a href="#mouse_released">mouse_released</a></li>
 <li><a href="#mouse_wheel">mouse_wheel</a></li>
 <li><a href="#move_to">move_to</a></li>
+<li><a href="#odin_logger_proc">odin_logger_proc</a></li>
 <li><a href="#path_append">path_append</a></li>
 <li><a href="#path_is_absolute">path_is_absolute</a></li>
 <li><a href="#path_join">path_join</a></li>
@@ -4681,7 +4679,7 @@ This enum declares all I/O operations.</p>
 </div>
 <h2 id="pkg-Procedures" class="pkg-header">Procedures</h2>
 <div class="pkg-entity">
-<h3 id="abort"><span><a class="doc-id-link" href="#abort">abort<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/orca/macros.odin#L71"><em>Source</em></a></div></h3>
+<h3 id="abort"><span><a class="doc-id-link" href="#abort">abort<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/orca/macros.odin#L39"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">abort :: <span class="keyword-type">proc</span> <span class="string">"contextless"</span> (msg: <a href="/base/builtin#cstring"><span class="doc-builtin">cstring</span></a>, loc := <a href="/base/runtime/#Source_Code_Location">#caller_location</a>) {…}</pre>
 </div>
@@ -4697,12 +4695,6 @@ This enum declares all I/O operations.</p>
 <pre>This function should not be called directly by user code, which should use the `OC_ABORT` macro instead, as the macro takes care of filling in the source location parameters of the function.
 </pre>
 </details>
-</div>
-<div class="pkg-entity">
-<h3 id="abortf"><span><a class="doc-id-link" href="#abortf">abortf<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/orca/macros.odin#L80"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">abortf :: <span class="keyword-type">proc</span>(format: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>, <span class="keyword-type">..</span> args: ..<a href="/base/builtin#any"><span class="doc-builtin">any</span></a>, loc := <a href="/base/runtime/#Source_Code_Location">#caller_location</a>) {…}</pre>
-</div>
 </div>
 <div class="pkg-entity">
 <h3 id="arc"><span><a class="doc-id-link" href="#arc">arc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/orca/orca.odin#L1565"><em>Source</em></a></div></h3>
@@ -4771,13 +4763,13 @@ This enum declares all I/O operations.</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="arena_push_array"><span><a class="doc-id-link" href="#arena_push_array">arena_push_array<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/orca/macros.odin#L194"><em>Source</em></a></div></h3>
+<h3 id="arena_push_array"><span><a class="doc-id-link" href="#arena_push_array">arena_push_array<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/orca/macros.odin#L153"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">arena_push_array :: <span class="keyword-type">proc</span> <span class="string">"contextless"</span> (arena: ^<a class="code-typename" href="/core/sys/orca/#arena">arena</a>, $T: <a href="/base/builtin#typeid"><span class="doc-builtin">typeid</span></a>, count: <a href="/base/builtin#u64"><span class="doc-builtin">u64</span></a>) -> []<a href="/base/builtin#typeid"><span class="doc-builtin">typeid</span></a> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="arena_push_type"><span><a class="doc-id-link" href="#arena_push_type">arena_push_type<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/orca/macros.odin#L190"><em>Source</em></a></div></h3>
+<h3 id="arena_push_type"><span><a class="doc-id-link" href="#arena_push_type">arena_push_type<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/orca/macros.odin#L149"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">arena_push_type :: <span class="keyword-type">proc</span> <span class="string">"contextless"</span> (arena: ^<a class="code-typename" href="/core/sys/orca/#arena">arena</a>, $T: <a href="/base/builtin#typeid"><span class="doc-builtin">typeid</span></a>) -> ^<a href="/base/builtin#typeid"><span class="doc-builtin">typeid</span></a> {…}</pre>
 </div>
@@ -4997,6 +4989,12 @@ This enum declares all I/O operations.</p>
 <h3 id="color_srgba"><span><a class="doc-id-link" href="#color_srgba">color_srgba<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/orca/orca.odin#L1465"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">color_srgba :: <span class="keyword-type">proc</span> <span class="string">"c"</span> (r: <a href="/base/builtin#f32"><span class="doc-builtin">f32</span></a>, g: <a href="/base/builtin#f32"><span class="doc-builtin">f32</span></a>, b: <a href="/base/builtin#f32"><span class="doc-builtin">f32</span></a>, a: <a href="/base/builtin#f32"><span class="doc-builtin">f32</span></a>) -> <a class="code-typename" href="/core/sys/orca/#color">color</a> ---</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="create_odin_logger"><span><a class="doc-id-link" href="#create_odin_logger">create_odin_logger<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/orca/odin.odin#L7"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">create_odin_logger :: <span class="keyword-type">proc</span>(lowest: runtime.<a class="code-typename" href="/base/runtime/#Logger_Level">Logger_Level</a> = runtime.Logger_Level.Debug, ident: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a> = "") -> runtime.<a class="code-typename" href="/base/runtime/#Logger">Logger</a> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -5553,7 +5551,7 @@ This enum declares all I/O operations.</p>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="list_checked_entry"><span><a class="doc-id-link" href="#list_checked_entry">list_checked_entry<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/orca/macros.odin#L117"><em>Source</em></a></div></h3>
+<h3 id="list_checked_entry"><span><a class="doc-id-link" href="#list_checked_entry">list_checked_entry<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/orca/macros.odin#L76"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">list_checked_entry :: <span class="keyword-type">proc</span> <span class="string">"contextless"</span> (elt: ^<a class="code-typename" href="/core/sys/orca/#list_elt">list_elt</a>, $T: <a href="/base/builtin#typeid"><span class="doc-builtin">typeid</span></a>, $member: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a> = ) -> ^<a href="/base/builtin#typeid"><span class="doc-builtin">typeid</span></a> {…}</pre>
 </div>
@@ -5573,7 +5571,7 @@ This enum declares all I/O operations.</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="list_entry"><span><a class="doc-id-link" href="#list_entry">list_entry<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/orca/macros.odin#L94"><em>Source</em></a></div></h3>
+<h3 id="list_entry"><span><a class="doc-id-link" href="#list_entry">list_entry<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/orca/macros.odin#L53"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">list_entry :: <span class="keyword-type">proc</span> <span class="string">"contextless"</span> (elt: ^<a class="code-typename" href="/core/sys/orca/#list_elt">list_elt</a>, $T: <a href="/base/builtin#typeid"><span class="doc-builtin">typeid</span></a>, $member: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a> = ) -> ^<a href="/base/builtin#typeid"><span class="doc-builtin">typeid</span></a> {…}</pre>
 </div>
@@ -5583,13 +5581,13 @@ This enum declares all I/O operations.</p>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="list_first_entry"><span><a class="doc-id-link" href="#list_first_entry">list_first_entry<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/orca/macros.odin#L125"><em>Source</em></a></div></h3>
+<h3 id="list_first_entry"><span><a class="doc-id-link" href="#list_first_entry">list_first_entry<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/orca/macros.odin#L84"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">list_first_entry :: <span class="keyword-type">proc</span> <span class="string">"contextless"</span> (list: ^<a class="code-typename" href="/core/sys/orca/#list">list</a>, $T: <a href="/base/builtin#typeid"><span class="doc-builtin">typeid</span></a>, $member: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a> = ) -> ^<a href="/base/builtin#typeid"><span class="doc-builtin">typeid</span></a> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="list_for"><span><a class="doc-id-link" href="#list_for">list_for<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/orca/macros.odin#L138"><em>Source</em></a></div></h3>
+<h3 id="list_for"><span><a class="doc-id-link" href="#list_for">list_for<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/orca/macros.odin#L97"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">list_for :: <span class="keyword-type">proc</span> <span class="string">"contextless"</span> (list: ^<a class="code-typename" href="/core/sys/orca/#list">list</a>, elt: ^^<a class="code-typename" href="/core/sys/orca/#list_elt">list_elt</a>, $T: <a href="/base/builtin#typeid"><span class="doc-builtin">typeid</span></a>, $member: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a> = ) -> (^<a href="/base/builtin#typeid"><span class="doc-builtin">typeid</span></a>, <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>) {…}</pre>
 </div>
@@ -5603,7 +5601,7 @@ for elt in oc.list_for(list, &_elt, int, "elt") {
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="list_for_reverse"><span><a class="doc-id-link" href="#list_for_reverse">list_for_reverse<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/orca/macros.odin#L156"><em>Source</em></a></div></h3>
+<h3 id="list_for_reverse"><span><a class="doc-id-link" href="#list_for_reverse">list_for_reverse<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/orca/macros.odin#L115"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">list_for_reverse :: <span class="keyword-type">proc</span> <span class="string">"contextless"</span> (list: ^<a class="code-typename" href="/core/sys/orca/#list">list</a>, elt: ^^<a class="code-typename" href="/core/sys/orca/#list_elt">list_elt</a>, $T: <a href="/base/builtin#typeid"><span class="doc-builtin">typeid</span></a>, $member: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a> = ) -> (^<a href="/base/builtin#typeid"><span class="doc-builtin">typeid</span></a>, <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>) {…}</pre>
 </div>
@@ -5639,7 +5637,7 @@ for elt in oc.list_for(list, &_elt, int, "elt") {
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="list_iter"><span><a class="doc-id-link" href="#list_iter">list_iter<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/orca/macros.odin#L138"><em>Source</em></a></div></h3>
+<h3 id="list_iter"><span><a class="doc-id-link" href="#list_iter">list_iter<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/orca/macros.odin#L97"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">list_iter :: <a class="code-procedure" href="/core/sys/orca/#list_for">list_for</a></pre>
 </div>
@@ -5653,19 +5651,19 @@ for elt in oc.list_for(list, &_elt, int, "elt") {
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="list_iter_reverse"><span><a class="doc-id-link" href="#list_iter_reverse">list_iter_reverse<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/orca/macros.odin#L156"><em>Source</em></a></div></h3>
+<h3 id="list_iter_reverse"><span><a class="doc-id-link" href="#list_iter_reverse">list_iter_reverse<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/orca/macros.odin#L115"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">list_iter_reverse :: <a class="code-procedure" href="/core/sys/orca/#list_for_reverse">list_for_reverse</a></pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="list_last_entry"><span><a class="doc-id-link" href="#list_last_entry">list_last_entry<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/orca/macros.odin#L129"><em>Source</em></a></div></h3>
+<h3 id="list_last_entry"><span><a class="doc-id-link" href="#list_last_entry">list_last_entry<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/orca/macros.odin#L88"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">list_last_entry :: <span class="keyword-type">proc</span> <span class="string">"contextless"</span> (list: ^<a class="code-typename" href="/core/sys/orca/#list">list</a>, $T: <a href="/base/builtin#typeid"><span class="doc-builtin">typeid</span></a>, $member: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a> = ) -> ^<a href="/base/builtin#typeid"><span class="doc-builtin">typeid</span></a> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="list_next_entry"><span><a class="doc-id-link" href="#list_next_entry">list_next_entry<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/orca/macros.odin#L99"><em>Source</em></a></div></h3>
+<h3 id="list_next_entry"><span><a class="doc-id-link" href="#list_next_entry">list_next_entry<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/orca/macros.odin#L58"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">list_next_entry :: <span class="keyword-type">proc</span> <span class="string">"contextless"</span> (list: ^<a class="code-typename" href="/core/sys/orca/#list">list</a>, elt: ^<a class="code-typename" href="/core/sys/orca/#list_elt">list_elt</a>, $T: <a href="/base/builtin#typeid"><span class="doc-builtin">typeid</span></a>, $member: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a> = ) -> ^<a href="/base/builtin#typeid"><span class="doc-builtin">typeid</span></a> {…}</pre>
 </div>
@@ -5685,7 +5683,7 @@ for elt in oc.list_for(list, &_elt, int, "elt") {
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="list_pop_back_entry"><span><a class="doc-id-link" href="#list_pop_back_entry">list_pop_back_entry<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/orca/macros.odin#L178"><em>Source</em></a></div></h3>
+<h3 id="list_pop_back_entry"><span><a class="doc-id-link" href="#list_pop_back_entry">list_pop_back_entry<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/orca/macros.odin#L137"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">list_pop_back_entry :: <span class="keyword-type">proc</span> <span class="string">"contextless"</span> (list: ^<a class="code-typename" href="/core/sys/orca/#list">list</a>, $T: <a href="/base/builtin#typeid"><span class="doc-builtin">typeid</span></a>, $member: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a> = ) -> ^<a href="/base/builtin#typeid"><span class="doc-builtin">typeid</span></a> {…}</pre>
 </div>
@@ -5701,13 +5699,13 @@ for elt in oc.list_for(list, &_elt, int, "elt") {
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="list_pop_front_entry"><span><a class="doc-id-link" href="#list_pop_front_entry">list_pop_front_entry<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/orca/macros.odin#L170"><em>Source</em></a></div></h3>
+<h3 id="list_pop_front_entry"><span><a class="doc-id-link" href="#list_pop_front_entry">list_pop_front_entry<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/orca/macros.odin#L129"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">list_pop_front_entry :: <span class="keyword-type">proc</span> <span class="string">"contextless"</span> (list: ^<a class="code-typename" href="/core/sys/orca/#list">list</a>, $T: <a href="/base/builtin#typeid"><span class="doc-builtin">typeid</span></a>, $member: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a> = ) -> ^<a href="/base/builtin#typeid"><span class="doc-builtin">typeid</span></a> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="list_prev_entry"><span><a class="doc-id-link" href="#list_prev_entry">list_prev_entry<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/orca/macros.odin#L108"><em>Source</em></a></div></h3>
+<h3 id="list_prev_entry"><span><a class="doc-id-link" href="#list_prev_entry">list_prev_entry<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/orca/macros.odin#L67"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">list_prev_entry :: <span class="keyword-type">proc</span> <span class="string">"contextless"</span> (list: ^<a class="code-typename" href="/core/sys/orca/#list">list</a>, elt: ^<a class="code-typename" href="/core/sys/orca/#list_elt">list_elt</a>, $T: <a href="/base/builtin#typeid"><span class="doc-builtin">typeid</span></a>, $member: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a> = ) -> ^<a href="/base/builtin#typeid"><span class="doc-builtin">typeid</span></a> {…}</pre>
 </div>
@@ -5747,15 +5745,9 @@ for elt in oc.list_for(list, &_elt, int, "elt") {
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="log_error"><span><a class="doc-id-link" href="#log_error">log_error<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/orca/macros.odin#L11"><em>Source</em></a></div></h3>
+<h3 id="log_error"><span><a class="doc-id-link" href="#log_error">log_error<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/orca/macros.odin#L9"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">log_error :: <span class="keyword-type">proc</span> <span class="string">"contextless"</span> (msg: <a href="/base/builtin#cstring"><span class="doc-builtin">cstring</span></a>, loc := <a href="/base/runtime/#Source_Code_Location">#caller_location</a>) {…}</pre>
-</div>
-</div>
-<div class="pkg-entity">
-<h3 id="log_errorf"><span><a class="doc-id-link" href="#log_errorf">log_errorf<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/orca/macros.odin#L21"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">log_errorf :: <span class="keyword-type">proc</span>(format: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>, <span class="keyword-type">..</span> args: ..<a href="/base/builtin#any"><span class="doc-builtin">any</span></a>, loc := <a href="/base/runtime/#Source_Code_Location">#caller_location</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -5778,15 +5770,9 @@ for elt in oc.list_for(list, &_elt, int, "elt") {
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="log_info"><span><a class="doc-id-link" href="#log_info">log_info<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/orca/macros.odin#L51"><em>Source</em></a></div></h3>
+<h3 id="log_info"><span><a class="doc-id-link" href="#log_info">log_info<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/orca/macros.odin#L29"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">log_info :: <span class="keyword-type">proc</span> <span class="string">"contextless"</span> (msg: <a href="/base/builtin#cstring"><span class="doc-builtin">cstring</span></a>, loc := <a href="/base/runtime/#Source_Code_Location">#caller_location</a>) {…}</pre>
-</div>
-</div>
-<div class="pkg-entity">
-<h3 id="log_infof"><span><a class="doc-id-link" href="#log_infof">log_infof<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/orca/macros.odin#L61"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">log_infof :: <span class="keyword-type">proc</span>(format: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>, <span class="keyword-type">..</span> args: ..<a href="/base/builtin#any"><span class="doc-builtin">any</span></a>, loc := <a href="/base/runtime/#Source_Code_Location">#caller_location</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -5800,15 +5786,9 @@ for elt in oc.list_for(list, &_elt, int, "elt") {
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="log_warning"><span><a class="doc-id-link" href="#log_warning">log_warning<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/orca/macros.odin#L31"><em>Source</em></a></div></h3>
+<h3 id="log_warning"><span><a class="doc-id-link" href="#log_warning">log_warning<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/orca/macros.odin#L19"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">log_warning :: <span class="keyword-type">proc</span> <span class="string">"contextless"</span> (msg: <a href="/base/builtin#cstring"><span class="doc-builtin">cstring</span></a>, loc := <a href="/base/runtime/#Source_Code_Location">#caller_location</a>) {…}</pre>
-</div>
-</div>
-<div class="pkg-entity">
-<h3 id="log_warningf"><span><a class="doc-id-link" href="#log_warningf">log_warningf<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/orca/macros.odin#L41"><em>Source</em></a></div></h3>
-<div>
-<pre class="doc-code">log_warningf :: <span class="keyword-type">proc</span>(format: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>, <span class="keyword-type">..</span> args: ..<a href="/base/builtin#any"><span class="doc-builtin">any</span></a>, loc := <a href="/base/runtime/#Source_Code_Location">#caller_location</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -5937,6 +5917,12 @@ for elt in oc.list_for(list, &_elt, int, "elt") {
 <h3 id="move_to"><span><a class="doc-id-link" href="#move_to">move_to<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/orca/orca.odin#L1546"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">move_to :: <span class="keyword-type">proc</span> <span class="string">"c"</span> (x, y: <a href="/base/builtin#f32"><span class="doc-builtin">f32</span></a>) ---</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="odin_logger_proc"><span><a class="doc-id-link" href="#odin_logger_proc">odin_logger_proc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/orca/odin.odin#L11"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">odin_logger_proc :: <span class="keyword-type">proc</span>(logger_data: <a href="/base/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>, level: runtime.<a class="code-typename" href="/base/runtime/#Logger_Level">Logger_Level</a>, text: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>, options: <span class="keyword-type">bit_set</span>[runtime.<a class="code-typename" href="/base/runtime/#Logger_Option">Logger_Option</a>], location := <a href="/base/runtime/#Source_Code_Location">#caller_location</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -6197,13 +6183,13 @@ for elt in oc.list_for(list, &_elt, int, "elt") {
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="str16_list_first"><span><a class="doc-id-link" href="#str16_list_first">str16_list_first<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/orca/macros.odin#L230"><em>Source</em></a></div></h3>
+<h3 id="str16_list_first"><span><a class="doc-id-link" href="#str16_list_first">str16_list_first<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/orca/macros.odin#L189"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">str16_list_first :: <span class="keyword-type">proc</span> <span class="string">"contextless"</span> (sl: ^<a class="code-typename" href="/core/sys/orca/#str16_list">str16_list</a>) -> <a class="code-typename" href="/core/sys/orca/#str16">str16</a> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="str16_list_for"><span><a class="doc-id-link" href="#str16_list_for">str16_list_for<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/orca/macros.odin#L246"><em>Source</em></a></div></h3>
+<h3 id="str16_list_for"><span><a class="doc-id-link" href="#str16_list_for">str16_list_for<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/orca/macros.odin#L205"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">str16_list_for :: <span class="keyword-type">proc</span> <span class="string">"contextless"</span> (list: ^<a class="code-typename" href="/core/sys/orca/#str16_list">str16_list</a>, elt: ^^<a class="code-typename" href="/core/sys/orca/#list_elt">list_elt</a>) -> (^<a class="code-typename" href="/core/sys/orca/#str16_elt">str16_elt</a>, <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>) {…}</pre>
 </div>
@@ -6219,7 +6205,7 @@ for elt in oc.list_for(list, &_elt, int, "elt") {
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="str16_list_last"><span><a class="doc-id-link" href="#str16_list_last">str16_list_last<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/orca/macros.odin#L238"><em>Source</em></a></div></h3>
+<h3 id="str16_list_last"><span><a class="doc-id-link" href="#str16_list_last">str16_list_last<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/orca/macros.odin#L197"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">str16_list_last :: <span class="keyword-type">proc</span> <span class="string">"contextless"</span> (sl: ^<a class="code-typename" href="/core/sys/orca/#str16_list">str16_list</a>) -> <a class="code-typename" href="/core/sys/orca/#str16">str16</a> {…}</pre>
 </div>
@@ -6297,13 +6283,13 @@ for elt in oc.list_for(list, &_elt, int, "elt") {
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="str32_list_first"><span><a class="doc-id-link" href="#str32_list_first">str32_list_first<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/orca/macros.odin#L250"><em>Source</em></a></div></h3>
+<h3 id="str32_list_first"><span><a class="doc-id-link" href="#str32_list_first">str32_list_first<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/orca/macros.odin#L209"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">str32_list_first :: <span class="keyword-type">proc</span> <span class="string">"contextless"</span> (sl: ^<a class="code-typename" href="/core/sys/orca/#str32_list">str32_list</a>) -> <a class="code-typename" href="/core/sys/orca/#str32">str32</a> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="str32_list_for"><span><a class="doc-id-link" href="#str32_list_for">str32_list_for<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/orca/macros.odin#L266"><em>Source</em></a></div></h3>
+<h3 id="str32_list_for"><span><a class="doc-id-link" href="#str32_list_for">str32_list_for<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/orca/macros.odin#L225"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">str32_list_for :: <span class="keyword-type">proc</span> <span class="string">"contextless"</span> (list: ^<a class="code-typename" href="/core/sys/orca/#str32_list">str32_list</a>, elt: ^^<a class="code-typename" href="/core/sys/orca/#list_elt">list_elt</a>) -> (^<a class="code-typename" href="/core/sys/orca/#str32_elt">str32_elt</a>, <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>) {…}</pre>
 </div>
@@ -6319,7 +6305,7 @@ for elt in oc.list_for(list, &_elt, int, "elt") {
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="str32_list_last"><span><a class="doc-id-link" href="#str32_list_last">str32_list_last<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/orca/macros.odin#L258"><em>Source</em></a></div></h3>
+<h3 id="str32_list_last"><span><a class="doc-id-link" href="#str32_list_last">str32_list_last<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/orca/macros.odin#L217"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">str32_list_last :: <span class="keyword-type">proc</span> <span class="string">"contextless"</span> (sl: ^<a class="code-typename" href="/core/sys/orca/#str32_list">str32_list</a>) -> <a class="code-typename" href="/core/sys/orca/#str32">str32</a> {…}</pre>
 </div>
@@ -6417,25 +6403,25 @@ for elt in oc.list_for(list, &_elt, int, "elt") {
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="str8_list_empty"><span><a class="doc-id-link" href="#str8_list_empty">str8_list_empty<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/orca/macros.odin#L226"><em>Source</em></a></div></h3>
+<h3 id="str8_list_empty"><span><a class="doc-id-link" href="#str8_list_empty">str8_list_empty<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/orca/macros.odin#L185"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">str8_list_empty :: <span class="keyword-type">proc</span> <span class="string">"contextless"</span> (list: <a class="code-typename" href="/core/sys/orca/#str8_list">str8_list</a>) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="str8_list_first"><span><a class="doc-id-link" href="#str8_list_first">str8_list_first<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/orca/macros.odin#L204"><em>Source</em></a></div></h3>
+<h3 id="str8_list_first"><span><a class="doc-id-link" href="#str8_list_first">str8_list_first<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/orca/macros.odin#L163"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">str8_list_first :: <span class="keyword-type">proc</span> <span class="string">"contextless"</span> (sl: ^<a class="code-typename" href="/core/sys/orca/#str8_list">str8_list</a>) -> <a href="/base/builtin#string"><span class="doc-builtin">string</span></a> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="str8_list_for"><span><a class="doc-id-link" href="#str8_list_for">str8_list_for<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/orca/macros.odin#L220"><em>Source</em></a></div></h3>
+<h3 id="str8_list_for"><span><a class="doc-id-link" href="#str8_list_for">str8_list_for<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/orca/macros.odin#L179"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">str8_list_for :: <span class="keyword-type">proc</span> <span class="string">"contextless"</span> (list: ^<a class="code-typename" href="/core/sys/orca/#str8_list">str8_list</a>, elt: ^^<a class="code-typename" href="/core/sys/orca/#list_elt">list_elt</a>) -> (^<a class="code-typename" href="/core/sys/orca/#str8_elt">str8_elt</a>, <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="str8_list_iter"><span><a class="doc-id-link" href="#str8_list_iter">str8_list_iter<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/orca/macros.odin#L220"><em>Source</em></a></div></h3>
+<h3 id="str8_list_iter"><span><a class="doc-id-link" href="#str8_list_iter">str8_list_iter<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/orca/macros.odin#L179"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">str8_list_iter :: <a class="code-procedure" href="/core/sys/orca/#str8_list_for">str8_list_for</a></pre>
 </div>
@@ -6451,7 +6437,7 @@ for elt in oc.list_for(list, &_elt, int, "elt") {
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="str8_list_last"><span><a class="doc-id-link" href="#str8_list_last">str8_list_last<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/orca/macros.odin#L212"><em>Source</em></a></div></h3>
+<h3 id="str8_list_last"><span><a class="doc-id-link" href="#str8_list_last">str8_list_last<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/orca/macros.odin#L171"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">str8_list_last :: <span class="keyword-type">proc</span> <span class="string">"contextless"</span> (sl: ^<a class="code-typename" href="/core/sys/orca/#str8_list">str8_list</a>) -> <a href="/base/builtin#string"><span class="doc-builtin">string</span></a> {…}</pre>
 </div>
@@ -6747,7 +6733,7 @@ for elt in oc.list_for(list, &_elt, int, "elt") {
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="ui_container"><span><a class="doc-id-link" href="#ui_container">ui_container<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/orca/macros.odin#L271"><em>Source</em></a></div></h3>
+<h3 id="ui_container"><span><a class="doc-id-link" href="#ui_container">ui_container<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/orca/macros.odin#L230"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">ui_container :: <span class="keyword-type">proc</span> <span class="string">"contextless"</span> (name: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>, flags: <span class="keyword-type">bit_set</span>[<a class="code-typename" href="/core/sys/orca/#ui_flag">ui_flag</a>; <a href="/base/builtin#u32"><span class="doc-builtin">u32</span></a>] = {}) -> ^<a class="code-typename" href="/core/sys/orca/#ui_box">ui_box</a> {…}</pre>
 </div>
@@ -6765,7 +6751,7 @@ for elt in oc.list_for(list, &_elt, int, "elt") {
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="ui_frame"><span><a class="doc-id-link" href="#ui_frame">ui_frame<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/orca/macros.odin#L276"><em>Source</em></a></div></h3>
+<h3 id="ui_frame"><span><a class="doc-id-link" href="#ui_frame">ui_frame<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/orca/macros.odin#L235"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">ui_frame :: <span class="keyword-type">proc</span> <span class="string">"contextless"</span> (frame_size: [2]<a href="/base/builtin#f32"><span class="doc-builtin">f32</span></a>, style: <a class="code-typename" href="/core/sys/orca/#ui_style">ui_style</a>, mask: <span class="keyword-type">bit_set</span>[<a class="code-typename" href="/core/sys/orca/#style_enum">style_enum</a>; <a href="/base/builtin#u64"><span class="doc-builtin">u64</span></a>]) {…}</pre>
 </div>
@@ -6807,13 +6793,13 @@ for elt in oc.list_for(list, &_elt, int, "elt") {
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="ui_menu"><span><a class="doc-id-link" href="#ui_menu">ui_menu<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/orca/macros.odin#L286"><em>Source</em></a></div></h3>
+<h3 id="ui_menu"><span><a class="doc-id-link" href="#ui_menu">ui_menu<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/orca/macros.odin#L245"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">ui_menu :: <span class="keyword-type">proc</span> <span class="string">"contextless"</span> (name: <a href="/base/builtin#cstring"><span class="doc-builtin">cstring</span></a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="ui_menu_bar"><span><a class="doc-id-link" href="#ui_menu_bar">ui_menu_bar<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/orca/macros.odin#L291"><em>Source</em></a></div></h3>
+<h3 id="ui_menu_bar"><span><a class="doc-id-link" href="#ui_menu_bar">ui_menu_bar<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/orca/macros.odin#L250"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">ui_menu_bar :: <span class="keyword-type">proc</span> <span class="string">"contextless"</span> (name: <a href="/base/builtin#cstring"><span class="doc-builtin">cstring</span></a>) {…}</pre>
 </div>
@@ -6849,7 +6835,7 @@ for elt in oc.list_for(list, &_elt, int, "elt") {
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="ui_panel"><span><a class="doc-id-link" href="#ui_panel">ui_panel<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/orca/macros.odin#L281"><em>Source</em></a></div></h3>
+<h3 id="ui_panel"><span><a class="doc-id-link" href="#ui_panel">ui_panel<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/orca/macros.odin#L240"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">ui_panel :: <span class="keyword-type">proc</span> <span class="string">"contextless"</span> (name: <a href="/base/builtin#cstring"><span class="doc-builtin">cstring</span></a>, flags: <span class="keyword-type">bit_set</span>[<a class="code-typename" href="/core/sys/orca/#ui_flag">ui_flag</a>; <a href="/base/builtin#u32"><span class="doc-builtin">u32</span></a>]) {…}</pre>
 </div>
@@ -7156,10 +7142,11 @@ for elt in oc.list_for(list, &_elt, int, "elt") {
 <h2 id="pkg-source-files">Source Files</h2>
 <ul>
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/orca/macros.odin">macros.odin</a></li>
+<li><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/orca/odin.odin">odin.odin</a></li>
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/sys/orca/orca.odin">orca.odin</a></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2024-08 (vendor "odin") Windows_amd64 @ 2024-08-22 21:11:29.508470900 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2024-08 (vendor "odin") Windows_amd64 @ 2024-08-23 21:10:13.575340400 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
@@ -7439,7 +7426,6 @@ for elt in oc.list_for(list, &_elt, int, "elt") {
 <li><a href="#pkg-Procedures">Procedures</a><ul>
 <li><a href="#abort">abort</a></li>
 <li><a href="#abort_ext">abort_ext</a></li>
-<li><a href="#abortf">abortf</a></li>
 <li><a href="#arc">arc</a></li>
 <li><a href="#arena_cleanup">arena_cleanup</a></li>
 <li><a href="#arena_clear">arena_clear</a></li>
@@ -7481,6 +7467,7 @@ for elt in oc.list_for(list, &_elt, int, "elt") {
 <li><a href="#color_convert">color_convert</a></li>
 <li><a href="#color_rgba">color_rgba</a></li>
 <li><a href="#color_srgba">color_srgba</a></li>
+<li><a href="#create_odin_logger">create_odin_logger</a></li>
 <li><a href="#cubic_to">cubic_to</a></li>
 <li><a href="#ellipse_fill">ellipse_fill</a></li>
 <li><a href="#ellipse_stroke">ellipse_stroke</a></li>
@@ -7586,13 +7573,10 @@ for elt in oc.list_for(list, &_elt, int, "elt") {
 <li><a href="#list_push_front">list_push_front</a></li>
 <li><a href="#list_remove">list_remove</a></li>
 <li><a href="#log_error">log_error</a></li>
-<li><a href="#log_errorf">log_errorf</a></li>
 <li><a href="#log_ext">log_ext</a></li>
 <li><a href="#log_info">log_info</a></li>
-<li><a href="#log_infof">log_infof</a></li>
 <li><a href="#log_set_level">log_set_level</a></li>
 <li><a href="#log_warning">log_warning</a></li>
-<li><a href="#log_warningf">log_warningf</a></li>
 <li><a href="#mat2x3_inv">mat2x3_inv</a></li>
 <li><a href="#mat2x3_mul">mat2x3_mul</a></li>
 <li><a href="#mat2x3_mul_m">mat2x3_mul_m</a></li>
@@ -7611,6 +7595,7 @@ for elt in oc.list_for(list, &_elt, int, "elt") {
 <li><a href="#mouse_released">mouse_released</a></li>
 <li><a href="#mouse_wheel">mouse_wheel</a></li>
 <li><a href="#move_to">move_to</a></li>
+<li><a href="#odin_logger_proc">odin_logger_proc</a></li>
 <li><a href="#path_append">path_append</a></li>
 <li><a href="#path_is_absolute">path_is_absolute</a></li>
 <li><a href="#path_join">path_join</a></li>
