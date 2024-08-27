@@ -132,7 +132,7 @@ implemented within the compiler rather than in this "preload" file</p>
 <div>
 <details class="doc-index" id="doc-index-Types" aria-labelledby="#doc-index-Types-header">
 <summary id="#doc-index-Types-header">
-Types (99)</summary>
+Types (100)</summary>
 <ul>
 <li><a href="#Allocator">Allocator</a></li>
 <li><a href="#Allocator_Error">Allocator_Error</a></li>
@@ -194,6 +194,7 @@ Types (99)</summary>
 <li><a href="#Raw_Soa_Pointer">Raw_Soa_Pointer</a></li>
 <li><a href="#Raw_String">Raw_String</a></li>
 <li><a href="#Source_Code_Location">Source_Code_Location</a></li>
+<li><a href="#Thread_Local_Cleaner">Thread_Local_Cleaner</a></li>
 <li><a href="#Type_Info">Type_Info</a></li>
 <li><a href="#Type_Info_Any">Type_Info_Any</a></li>
 <li><a href="#Type_Info_Array">Type_Info_Array</a></li>
@@ -280,7 +281,7 @@ Variables (5)</summary>
 <div>
 <details class="doc-index" id="doc-index-Procedures" aria-labelledby="#doc-index-Procedures-header">
 <summary id="#doc-index-Procedures-header">
-Procedures (291)</summary>
+Procedures (293)</summary>
 <ul>
 <li><a href="#DEFAULT_TEMP_ALLOCATOR_TEMP_GUARD">DEFAULT_TEMP_ALLOCATOR_TEMP_GUARD</a></li>
 <li><a href="#abs_complex128">abs_complex128</a></li>
@@ -289,6 +290,7 @@ Procedures (291)</summary>
 <li><a href="#abs_quaternion128">abs_quaternion128</a></li>
 <li><a href="#abs_quaternion256">abs_quaternion256</a></li>
 <li><a href="#abs_quaternion64">abs_quaternion64</a></li>
+<li><a href="#add_thread_local_cleaner">add_thread_local_cleaner</a></li>
 <li><a href="#aeabi_d2h">aeabi_d2h</a></li>
 <li><a href="#align_forward_int">align_forward_int</a></li>
 <li><a href="#align_forward_uint">align_forward_uint</a></li>
@@ -536,6 +538,7 @@ Procedures (291)</summary>
 <li><a href="#reserve_soa">reserve_soa</a></li>
 <li><a href="#resize_dynamic_array">resize_dynamic_array</a></li>
 <li><a href="#resize_soa">resize_soa</a></li>
+<li><a href="#run_thread_local_cleaners">run_thread_local_cleaners</a></li>
 <li><a href="#shrink_dynamic_array">shrink_dynamic_array</a></li>
 <li><a href="#shrink_map">shrink_map</a></li>
 <li><a href="#slice_expr_error_hi">slice_expr_error_hi</a></li>
@@ -1769,6 +1772,16 @@ ODIN_SANITIZER_FLAGS // is a constant
 </ul>
 </div>
 <div class="pkg-entity">
+<h3 id="Thread_Local_Cleaner"><span><a class="doc-id-link" href="#Thread_Local_Cleaner">Thread_Local_Cleaner<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/base/runtime/thread_management.odin#L3"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Thread_Local_Cleaner :: <span class="keyword-type">proc</span>()</pre>
+</div>
+<h5>Related Procedures With Parameters</h5>
+<ul>
+<li><a href="/base/runtime/#add_thread_local_cleaner">add_thread_local_cleaner</a></li>
+</ul>
+</div>
+<div class="pkg-entity">
 <h3 id="Type_Info"><span><a class="doc-id-link" href="#Type_Info">Type_Info<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/base/runtime/core.odin#L213"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Type_Info :: <span class="keyword-type">struct</span> {
@@ -2442,6 +2455,19 @@ This will be set by the compiler</p>
 <div>
 <pre class="doc-code">abs_quaternion64 :: <span class="keyword-type">proc</span> <span class="string">"contextless"</span> (x: <a href="/base/builtin#quaternion64"><span class="doc-builtin">quaternion64</span></a>) -> <a href="/base/builtin#f16"><span class="doc-builtin">f16</span></a> {…}</pre>
 </div>
+</div>
+<div class="pkg-entity">
+<h3 id="add_thread_local_cleaner"><span><a class="doc-id-link" href="#add_thread_local_cleaner">add_thread_local_cleaner<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/base/runtime/thread_management.odin#L13"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">add_thread_local_cleaner :: <span class="keyword-type">proc</span> <span class="string">"contextless"</span> (p: <a class="code-typename" href="/base/runtime/#Thread_Local_Cleaner">Thread_Local_Cleaner</a>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Add a procedure that will be run at the end of a thread for the purpose of
+deallocating state marked as <code>thread_local</code>.</p>
+<p>Intended to be called in an <code>init</code> procedure of a package with
+dynamically-allocated memory that is stored in <code>thread_local</code> variables.</p>
+</details>
 </div>
 <div class="pkg-entity">
 <h3 id="aeabi_d2h"><span><a class="doc-id-link" href="#aeabi_d2h">aeabi_d2h<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/base/runtime/internal.odin#L838"><em>Source</em></a></div></h3>
@@ -4237,6 +4263,18 @@ Note: If the range is out of bounds, this procedure will panic.</p>
 </div>
 </div>
 <div class="pkg-entity">
+<h3 id="run_thread_local_cleaners"><span><a class="doc-id-link" href="#run_thread_local_cleaners">run_thread_local_cleaners<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/base/runtime/thread_management.odin#L27"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">run_thread_local_cleaners :: <span class="keyword-type">proc</span>() {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Run all of the thread-local cleaner procedures.</p>
+<p>Intended to be called by the internals of a threading API at the end of a
+thread's lifetime.</p>
+</details>
+</div>
+<div class="pkg-entity">
 <h3 id="shrink_dynamic_array"><span><a class="doc-id-link" href="#shrink_dynamic_array">shrink_dynamic_array<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/base/runtime/core_builtin.odin#L841"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">shrink_dynamic_array :: <span class="keyword-type">proc</span>(array: ^$T/[<span class="keyword">dynamic</span>]$T, new_cap: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a> = -1, loc := <a href="/base/runtime/#Source_Code_Location">#caller_location</a>) -> (did_shrink: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>, err: <a class="code-typename" href="/base/runtime/#Allocator_Error">Allocator_Error</a>) {…}</pre>
@@ -4828,11 +4866,12 @@ Make uses the specified allocator, default is context.allocator.</p>
 <li><a href="https://github.com/odin-lang/Odin/tree/master/base/runtime/print.odin">print.odin</a></li>
 <li><a href="https://github.com/odin-lang/Odin/tree/master/base/runtime/procs.odin">procs.odin</a></li>
 <li><a href="https://github.com/odin-lang/Odin/tree/master/base/runtime/random_generator.odin">random_generator.odin</a></li>
+<li><a href="https://github.com/odin-lang/Odin/tree/master/base/runtime/thread_management.odin">thread_management.odin</a></li>
 <li><a href="https://github.com/odin-lang/Odin/tree/master/base/runtime/udivmod128.odin">udivmod128.odin</a></li>
 <li><em>(hidden platform specific files)</em></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2024-08 (vendor "odin") Windows_amd64 @ 2024-08-26 21:10:10.672118600 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2024-08 (vendor "odin") Windows_amd64 @ 2024-08-27 21:10:16.375850100 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
@@ -4898,6 +4937,7 @@ Make uses the specified allocator, default is context.allocator.</p>
 <li><a href="#Raw_Soa_Pointer">Raw_Soa_Pointer</a></li>
 <li><a href="#Raw_String">Raw_String</a></li>
 <li><a href="#Source_Code_Location">Source_Code_Location</a></li>
+<li><a href="#Thread_Local_Cleaner">Thread_Local_Cleaner</a></li>
 <li><a href="#Type_Info">Type_Info</a></li>
 <li><a href="#Type_Info_Any">Type_Info_Any</a></li>
 <li><a href="#Type_Info_Array">Type_Info_Array</a></li>
@@ -4978,6 +5018,7 @@ Make uses the specified allocator, default is context.allocator.</p>
 <li><a href="#abs_quaternion128">abs_quaternion128</a></li>
 <li><a href="#abs_quaternion256">abs_quaternion256</a></li>
 <li><a href="#abs_quaternion64">abs_quaternion64</a></li>
+<li><a href="#add_thread_local_cleaner">add_thread_local_cleaner</a></li>
 <li><a href="#aeabi_d2h">aeabi_d2h</a></li>
 <li><a href="#align_forward_int">align_forward_int</a></li>
 <li><a href="#align_forward_uint">align_forward_uint</a></li>
@@ -5225,6 +5266,7 @@ Make uses the specified allocator, default is context.allocator.</p>
 <li><a href="#reserve_soa">reserve_soa</a></li>
 <li><a href="#resize_dynamic_array">resize_dynamic_array</a></li>
 <li><a href="#resize_soa">resize_soa</a></li>
+<li><a href="#run_thread_local_cleaners">run_thread_local_cleaners</a></li>
 <li><a href="#shrink_dynamic_array">shrink_dynamic_array</a></li>
 <li><a href="#shrink_map">shrink_map</a></li>
 <li><a href="#slice_expr_error_hi">slice_expr_error_hi</a></li>
