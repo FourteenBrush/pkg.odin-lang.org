@@ -318,8 +318,9 @@
 <div>
 <details class="doc-index" id="doc-index-Types" aria-labelledby="#doc-index-Types-header">
 <summary id="#doc-index-Types-header">
-Types (37)</summary>
+Types (38)</summary>
 <ul>
+<li><a href="#Bit_Field">Bit_Field</a></li>
 <li><a href="#Enum_Field">Enum_Field</a></li>
 <li><a href="#Struct_Field">Struct_Field</a></li>
 <li><a href="#Struct_Field_Count_Method">Struct_Field_Count_Method</a></li>
@@ -379,7 +380,7 @@ Variables (0)</summary>
 <div>
 <details class="doc-index" id="doc-index-Procedures" aria-labelledby="#doc-index-Procedures-header">
 <summary id="#doc-index-Procedures-header">
-Procedures (103)</summary>
+Procedures (109)</summary>
 <ul>
 <li><a href="#align_of_typeid">align_of_typeid</a></li>
 <li><a href="#any_base">any_base</a></li>
@@ -397,6 +398,12 @@ Procedures (103)</summary>
 <li><a href="#as_u64">as_u64</a></li>
 <li><a href="#as_uint">as_uint</a></li>
 <li><a href="#backing_type_kind">backing_type_kind</a></li>
+<li><a href="#bit_field_names">bit_field_names</a></li>
+<li><a href="#bit_field_offsets">bit_field_offsets</a></li>
+<li><a href="#bit_field_sizes">bit_field_sizes</a></li>
+<li><a href="#bit_field_tags">bit_field_tags</a></li>
+<li><a href="#bit_field_types">bit_field_types</a></li>
+<li><a href="#bit_fields_zipped">bit_fields_zipped</a></li>
 <li><a href="#bit_set_is_big_endian">bit_set_is_big_endian</a></li>
 <li><a href="#capacity">capacity</a></li>
 <li><a href="#deref">deref</a></li>
@@ -501,6 +508,20 @@ Procedure Groups (2)</summary>
 </div>
 <section class="documentation">
 <h2 id="pkg-Types" class="pkg-header">Types</h2>
+<div class="pkg-entity">
+<h3 id="Bit_Field"><span><a class="doc-id-link" href="#Bit_Field">Bit_Field<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/reflect/reflect.odin#L1018"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Bit_Field :: <span class="keyword-type">struct</span> {
+	name:   <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>,
+	type:   ^runtime.<a class="code-typename" href="/base/runtime/#Type_Info">Type_Info</a>,
+	size:   <a href="/base/builtin#uintptr"><span class="doc-builtin">uintptr</span></a>,
+	<span class="comment">// Size in bits</span>
+	offset: <a href="/base/builtin#uintptr"><span class="doc-builtin">uintptr</span></a>,
+	<span class="comment">// Offset in bits</span>
+	tag:    <a class="code-typename" href="/core/reflect/#Struct_Tag">Struct_Tag</a>,
+}</pre>
+</div>
+</div>
 <div class="pkg-entity">
 <h3 id="Enum_Field"><span><a class="doc-id-link" href="#Enum_Field">Enum_Field<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/reflect/reflect.odin#L746"><em>Source</em></a></div></h3>
 <div>
@@ -799,7 +820,7 @@ Each key is a non-empty string which contains no control characters other than s
 </div>
 <h2 id="pkg-Constants" class="pkg-header">Constants</h2>
 <div class="pkg-entity">
-<h3 id="DEFAULT_EQUAL_MAX_RECURSION_LEVEL"><span><a class="doc-id-link" href="#DEFAULT_EQUAL_MAX_RECURSION_LEVEL">DEFAULT_EQUAL_MAX_RECURSION_LEVEL<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/reflect/reflect.odin#L1523"><em>Source</em></a></div></h3>
+<h3 id="DEFAULT_EQUAL_MAX_RECURSION_LEVEL"><span><a class="doc-id-link" href="#DEFAULT_EQUAL_MAX_RECURSION_LEVEL">DEFAULT_EQUAL_MAX_RECURSION_LEVEL<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/reflect/reflect.odin#L1591"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">DEFAULT_EQUAL_MAX_RECURSION_LEVEL :: 32</pre>
 </div>
@@ -838,7 +859,7 @@ Each key is a non-empty string which contains no control characters other than s
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="as_bool"><span><a class="doc-id-link" href="#as_bool">as_bool<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/reflect/reflect.odin#L1019"><em>Source</em></a></div></h3>
+<h3 id="as_bool"><span><a class="doc-id-link" href="#as_bool">as_bool<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/reflect/reflect.odin#L1087"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">as_bool :: <span class="keyword-type">proc</span>(a: <a href="/base/builtin#any"><span class="doc-builtin">any</span></a>) -> (value: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>, valid: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>) {…}</pre>
 </div>
@@ -850,49 +871,49 @@ Each key is a non-empty string which contains no control characters other than s
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="as_f64"><span><a class="doc-id-link" href="#as_f64">as_f64<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/reflect/reflect.odin#L1276"><em>Source</em></a></div></h3>
+<h3 id="as_f64"><span><a class="doc-id-link" href="#as_f64">as_f64<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/reflect/reflect.odin#L1344"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">as_f64 :: <span class="keyword-type">proc</span>(a: <a href="/base/builtin#any"><span class="doc-builtin">any</span></a>) -> (value: <a href="/base/builtin#f64"><span class="doc-builtin">f64</span></a>, valid: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="as_i64"><span><a class="doc-id-link" href="#as_i64">as_i64<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/reflect/reflect.odin#L1058"><em>Source</em></a></div></h3>
+<h3 id="as_i64"><span><a class="doc-id-link" href="#as_i64">as_i64<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/reflect/reflect.odin#L1126"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">as_i64 :: <span class="keyword-type">proc</span>(a: <a href="/base/builtin#any"><span class="doc-builtin">any</span></a>) -> (value: <a href="/base/builtin#i64"><span class="doc-builtin">i64</span></a>, valid: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="as_int"><span><a class="doc-id-link" href="#as_int">as_int<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/reflect/reflect.odin#L1042"><em>Source</em></a></div></h3>
+<h3 id="as_int"><span><a class="doc-id-link" href="#as_int">as_int<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/reflect/reflect.odin#L1110"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">as_int :: <span class="keyword-type">proc</span>(a: <a href="/base/builtin#any"><span class="doc-builtin">any</span></a>) -> (value: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, valid: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="as_pointer"><span><a class="doc-id-link" href="#as_pointer">as_pointer<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/reflect/reflect.odin#L1461"><em>Source</em></a></div></h3>
+<h3 id="as_pointer"><span><a class="doc-id-link" href="#as_pointer">as_pointer<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/reflect/reflect.odin#L1529"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">as_pointer :: <span class="keyword-type">proc</span>(a: <a href="/base/builtin#any"><span class="doc-builtin">any</span></a>) -> (value: <a href="/base/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>, valid: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="as_raw_data"><span><a class="doc-id-link" href="#as_raw_data">as_raw_data<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/reflect/reflect.odin#L1489"><em>Source</em></a></div></h3>
+<h3 id="as_raw_data"><span><a class="doc-id-link" href="#as_raw_data">as_raw_data<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/reflect/reflect.odin#L1557"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">as_raw_data :: <span class="keyword-type">proc</span>(a: <a href="/base/builtin#any"><span class="doc-builtin">any</span></a>) -> (value: <a href="/base/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>, valid: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="as_string"><span><a class="doc-id-link" href="#as_string">as_string<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/reflect/reflect.odin#L1383"><em>Source</em></a></div></h3>
+<h3 id="as_string"><span><a class="doc-id-link" href="#as_string">as_string<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/reflect/reflect.odin#L1451"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">as_string :: <span class="keyword-type">proc</span>(a: <a href="/base/builtin#any"><span class="doc-builtin">any</span></a>) -> (value: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>, valid: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="as_u64"><span><a class="doc-id-link" href="#as_u64">as_u64<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/reflect/reflect.odin#L1166"><em>Source</em></a></div></h3>
+<h3 id="as_u64"><span><a class="doc-id-link" href="#as_u64">as_u64<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/reflect/reflect.odin#L1234"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">as_u64 :: <span class="keyword-type">proc</span>(a: <a href="/base/builtin#any"><span class="doc-builtin">any</span></a>) -> (value: <a href="/base/builtin#u64"><span class="doc-builtin">u64</span></a>, valid: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="as_uint"><span><a class="doc-id-link" href="#as_uint">as_uint<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/reflect/reflect.odin#L1050"><em>Source</em></a></div></h3>
+<h3 id="as_uint"><span><a class="doc-id-link" href="#as_uint">as_uint<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/reflect/reflect.odin#L1118"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">as_uint :: <span class="keyword-type">proc</span>(a: <a href="/base/builtin#any"><span class="doc-builtin">any</span></a>) -> (value: <a href="/base/builtin#uint"><span class="doc-builtin">uint</span></a>, valid: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>) {…}</pre>
 </div>
@@ -906,6 +927,42 @@ Each key is a non-empty string which contains no control characters other than s
 <summary class="hideme"><span>&nbsp;</span></summary>
 <p>TODO(bill): Better name</p>
 </details>
+</div>
+<div class="pkg-entity">
+<h3 id="bit_field_names"><span><a class="doc-id-link" href="#bit_field_names">bit_field_names<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/reflect/reflect.odin#L1042"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">bit_field_names :: <span class="keyword-type">proc</span>(T: <a href="/base/builtin#typeid"><span class="doc-builtin">typeid</span></a>) -> []<a href="/base/builtin#string"><span class="doc-builtin">string</span></a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="bit_field_offsets"><span><a class="doc-id-link" href="#bit_field_offsets">bit_field_offsets<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/reflect/reflect.odin#L1069"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">bit_field_offsets :: <span class="keyword-type">proc</span>(T: <a href="/base/builtin#typeid"><span class="doc-builtin">typeid</span></a>) -> []<a href="/base/builtin#uintptr"><span class="doc-builtin">uintptr</span></a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="bit_field_sizes"><span><a class="doc-id-link" href="#bit_field_sizes">bit_field_sizes<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/reflect/reflect.odin#L1060"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">bit_field_sizes :: <span class="keyword-type">proc</span>(T: <a href="/base/builtin#typeid"><span class="doc-builtin">typeid</span></a>) -> []<a href="/base/builtin#uintptr"><span class="doc-builtin">uintptr</span></a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="bit_field_tags"><span><a class="doc-id-link" href="#bit_field_tags">bit_field_tags<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/reflect/reflect.odin#L1078"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">bit_field_tags :: <span class="keyword-type">proc</span>(T: <a href="/base/builtin#typeid"><span class="doc-builtin">typeid</span></a>) -> []<a class="code-typename" href="/core/reflect/#Struct_Tag">Struct_Tag</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="bit_field_types"><span><a class="doc-id-link" href="#bit_field_types">bit_field_types<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/reflect/reflect.odin#L1051"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">bit_field_types :: <span class="keyword-type">proc</span>(T: <a href="/base/builtin#typeid"><span class="doc-builtin">typeid</span></a>) -> []^runtime.<a class="code-typename" href="/base/runtime/#Type_Info">Type_Info</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="bit_fields_zipped"><span><a class="doc-id-link" href="#bit_fields_zipped">bit_fields_zipped<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/reflect/reflect.odin#L1027"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">bit_fields_zipped :: <span class="keyword-type">proc</span>(T: <a href="/base/builtin#typeid"><span class="doc-builtin">typeid</span></a>) -> (fields: <span class="directive">#soa</span>[]<a class="code-typename" href="/core/reflect/#Bit_Field">Bit_Field</a>) {…}</pre>
+</div>
 </div>
 <div class="pkg-entity">
 <h3 id="bit_set_is_big_endian"><span><a class="doc-id-link" href="#bit_set_is_big_endian">bit_set_is_big_endian<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/reflect/reflect.odin#L996"><em>Source</em></a></div></h3>
@@ -978,13 +1035,13 @@ Each key is a non-empty string which contains no control characters other than s
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="eq"><span><a class="doc-id-link" href="#eq">eq<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/reflect/reflect.odin#L1530"><em>Source</em></a></div></h3>
+<h3 id="eq"><span><a class="doc-id-link" href="#eq">eq<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/reflect/reflect.odin#L1598"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">eq :: <a class="code-procedure" href="/core/reflect/#equal">equal</a></pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="equal"><span><a class="doc-id-link" href="#equal">equal<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/reflect/reflect.odin#L1530"><em>Source</em></a></div></h3>
+<h3 id="equal"><span><a class="doc-id-link" href="#equal">equal<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/reflect/reflect.odin#L1598"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">equal :: <span class="keyword-type">proc</span>(a, b: <a href="/base/builtin#any"><span class="doc-builtin">any</span></a>, including_indirect_array_recursion: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> = false, recursion_level: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a> = 0) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> {…}</pre>
 </div>
@@ -1248,25 +1305,25 @@ Each key is a non-empty string which contains no control characters other than s
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="ne"><span><a class="doc-id-link" href="#ne">ne<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/reflect/reflect.odin#L1526"><em>Source</em></a></div></h3>
+<h3 id="ne"><span><a class="doc-id-link" href="#ne">ne<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/reflect/reflect.odin#L1594"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">ne :: <a class="code-procedure" href="/core/reflect/#not_equal">not_equal</a></pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="not_equal"><span><a class="doc-id-link" href="#not_equal">not_equal<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/reflect/reflect.odin#L1526"><em>Source</em></a></div></h3>
+<h3 id="not_equal"><span><a class="doc-id-link" href="#not_equal">not_equal<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/reflect/reflect.odin#L1594"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">not_equal :: <span class="keyword-type">proc</span>(a, b: <a href="/base/builtin#any"><span class="doc-builtin">any</span></a>, including_indirect_array_recursion: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> = false, recursion_level: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a> = 0) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="relative_pointer_to_absolute"><span><a class="doc-id-link" href="#relative_pointer_to_absolute">relative_pointer_to_absolute<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/reflect/reflect.odin#L1403"><em>Source</em></a></div></h3>
+<h3 id="relative_pointer_to_absolute"><span><a class="doc-id-link" href="#relative_pointer_to_absolute">relative_pointer_to_absolute<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/reflect/reflect.odin#L1471"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">relative_pointer_to_absolute :: <span class="keyword-type">proc</span>(a: <a href="/base/builtin#any"><span class="doc-builtin">any</span></a>) -> <a href="/base/builtin#rawptr"><span class="doc-builtin">rawptr</span></a> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="relative_pointer_to_absolute_raw"><span><a class="doc-id-link" href="#relative_pointer_to_absolute_raw">relative_pointer_to_absolute_raw<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/reflect/reflect.odin#L1418"><em>Source</em></a></div></h3>
+<h3 id="relative_pointer_to_absolute_raw"><span><a class="doc-id-link" href="#relative_pointer_to_absolute_raw">relative_pointer_to_absolute_raw<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/reflect/reflect.odin#L1486"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">relative_pointer_to_absolute_raw :: <span class="keyword-type">proc</span>(data: <a href="/base/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>, base_integer_id: <a href="/base/builtin#typeid"><span class="doc-builtin">typeid</span></a>) -> <a href="/base/builtin#rawptr"><span class="doc-builtin">rawptr</span></a> {…}</pre>
 </div>
@@ -1488,12 +1545,13 @@ if symbols_loaded != symbols_expected {
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/reflect/types.odin">types.odin</a></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2024-08 (vendor "odin") Windows_amd64 @ 2024-08-29 21:10:49.642993500 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2024-08 (vendor "odin") Windows_amd64 @ 2024-08-30 21:12:01.227902600 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
 <ul>
 <li><a href="#pkg-Types">Types</a><ul>
+<li><a href="#Bit_Field">Bit_Field</a></li>
 <li><a href="#Enum_Field">Enum_Field</a></li>
 <li><a href="#Struct_Field">Struct_Field</a></li>
 <li><a href="#Struct_Field_Count_Method">Struct_Field_Count_Method</a></li>
@@ -1554,6 +1612,12 @@ if symbols_loaded != symbols_expected {
 <li><a href="#as_u64">as_u64</a></li>
 <li><a href="#as_uint">as_uint</a></li>
 <li><a href="#backing_type_kind">backing_type_kind</a></li>
+<li><a href="#bit_field_names">bit_field_names</a></li>
+<li><a href="#bit_field_offsets">bit_field_offsets</a></li>
+<li><a href="#bit_field_sizes">bit_field_sizes</a></li>
+<li><a href="#bit_field_tags">bit_field_tags</a></li>
+<li><a href="#bit_field_types">bit_field_types</a></li>
+<li><a href="#bit_fields_zipped">bit_fields_zipped</a></li>
 <li><a href="#bit_set_is_big_endian">bit_set_is_big_endian</a></li>
 <li><a href="#capacity">capacity</a></li>
 <li><a href="#deref">deref</a></li>

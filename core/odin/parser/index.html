@@ -319,14 +319,18 @@
 <div>
 <details class="doc-index" id="doc-index-Types" aria-labelledby="#doc-index-Types-header">
 <summary id="#doc-index-Types-header">
-Types (9)</summary>
+Types (13)</summary>
 <ul>
+<li><a href="#Build_Kind">Build_Kind</a></li>
+<li><a href="#Build_Target">Build_Target</a></li>
 <li><a href="#Error_Handler">Error_Handler</a></li>
 <li><a href="#Expr_And_Flags">Expr_And_Flags</a></li>
+<li><a href="#File_Tags">File_Tags</a></li>
 <li><a href="#Flag">Flag</a></li>
 <li><a href="#Flags">Flags</a></li>
 <li><a href="#Import_Decl_Kind">Import_Decl_Kind</a></li>
 <li><a href="#Parser">Parser</a></li>
+<li><a href="#Private_Flag">Private_Flag</a></li>
 <li><a href="#Stmt_Allow_Flag">Stmt_Allow_Flag</a></li>
 <li><a href="#Stmt_Allow_Flags">Stmt_Allow_Flags</a></li>
 <li><a href="#Warning_Handler">Warning_Handler</a></li>
@@ -352,7 +356,7 @@ Variables (0)</summary>
 <div>
 <details class="doc-index" id="doc-index-Procedures" aria-labelledby="#doc-index-Procedures-header">
 <summary id="#doc-index-Procedures-header">
-Procedures (88)</summary>
+Procedures (92)</summary>
 <ul>
 <li><a href="#advance_token">advance_token</a></li>
 <li><a href="#allow_token">allow_token</a></li>
@@ -380,6 +384,8 @@ Procedures (88)</summary>
 <li><a href="#expect_token">expect_token</a></li>
 <li><a href="#expect_token_after">expect_token_after</a></li>
 <li><a href="#fix_advance_to_next_stmt">fix_advance_to_next_stmt</a></li>
+<li><a href="#get_build_arch_from_string">get_build_arch_from_string</a></li>
+<li><a href="#get_build_os_from_string">get_build_os_from_string</a></li>
 <li><a href="#is_blank_ident_node">is_blank_ident_node</a></li>
 <li><a href="#is_blank_ident_string">is_blank_ident_string</a></li>
 <li><a href="#is_blank_ident_token">is_blank_ident_token</a></li>
@@ -388,6 +394,7 @@ Procedures (88)</summary>
 <li><a href="#is_package_name_reserved">is_package_name_reserved</a></li>
 <li><a href="#is_semicolon_optional_for_node">is_semicolon_optional_for_node</a></li>
 <li><a href="#is_token_field_prefix">is_token_field_prefix</a></li>
+<li><a href="#match_build_tags">match_build_tags</a></li>
 <li><a href="#new_ast_field">new_ast_field</a></li>
 <li><a href="#new_blank_ident">new_blank_ident</a></li>
 <li><a href="#next_token0">next_token0</a></li>
@@ -405,6 +412,7 @@ Procedures (88)</summary>
 <li><a href="#parse_field_list">parse_field_list</a></li>
 <li><a href="#parse_field_prefixes">parse_field_prefixes</a></li>
 <li><a href="#parse_file">parse_file</a></li>
+<li><a href="#parse_file_tags">parse_file_tags</a></li>
 <li><a href="#parse_for_stmt">parse_for_stmt</a></li>
 <li><a href="#parse_foreign_block">parse_foreign_block</a></li>
 <li><a href="#parse_foreign_block_decl">parse_foreign_block_decl</a></li>
@@ -459,6 +467,29 @@ Procedure Groups (1)</summary>
 <section class="documentation">
 <h2 id="pkg-Types" class="pkg-header">Types</h2>
 <div class="pkg-entity">
+<h3 id="Build_Kind"><span><a class="doc-id-link" href="#Build_Kind">Build_Kind<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/parser/file_tags.odin#L15"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Build_Kind :: <span class="keyword-type">struct</span> {
+	os:   <span class="keyword-type">bit_set</span>[.<a class="code-typename" href="//#Odin_OS_Type">Odin_OS_Type</a>],
+	arch: <span class="keyword-type">bit_set</span>[.<a class="code-typename" href="//#Odin_Arch_Type">Odin_Arch_Type</a>],
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="Build_Target"><span><a class="doc-id-link" href="#Build_Target">Build_Target<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/parser/file_tags.odin#L209"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Build_Target :: <span class="keyword-type">struct</span> {
+	os:           .<a class="code-typename" href="//#Odin_OS_Type">Odin_OS_Type</a>,
+	arch:         .<a class="code-typename" href="//#Odin_Arch_Type">Odin_Arch_Type</a>,
+	project_name: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>,
+}</pre>
+</div>
+<h5>Related Procedures With Parameters</h5>
+<ul>
+<li><a href="/core/odin/parser/#match_build_tags">match_build_tags</a></li>
+</ul>
+</div>
+<div class="pkg-entity">
 <h3 id="Error_Handler"><span><a class="doc-id-link" href="#Error_Handler">Error_Handler<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/parser/parser.odin#L9"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Error_Handler :: <span class="keyword-type">proc</span>(pos: odin_tokenizer.<a class="code-typename" href="/core/odin/tokenizer/#Pos">Pos</a>, fmt: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>, <span class="keyword-type">..</span> args: ..<a href="/base/builtin#any"><span class="doc-builtin">any</span></a>)</pre>
@@ -472,6 +503,27 @@ Procedure Groups (1)</summary>
 	flags: odin_ast.<a class="code-typename" href="/core/odin/ast/#Field_Flags">Field_Flags</a>,
 }</pre>
 </div>
+</div>
+<div class="pkg-entity">
+<h3 id="File_Tags"><span><a class="doc-id-link" href="#File_Tags">File_Tags<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/parser/file_tags.odin#L20"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">File_Tags :: <span class="keyword-type">struct</span> {
+	build_project_name: [][]<a href="/base/builtin#string"><span class="doc-builtin">string</span></a>,
+	build:              []<a class="code-typename" href="/core/odin/parser/#Build_Kind">Build_Kind</a>,
+	private:            <a class="code-typename" href="/core/odin/parser/#Private_Flag">Private_Flag</a>,
+	ignore:             <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>,
+	lazy:               <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>,
+	no_instrumentation: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>,
+}</pre>
+</div>
+<h5>Related Procedures With Parameters</h5>
+<ul>
+<li><a href="/core/odin/parser/#match_build_tags">match_build_tags</a></li>
+</ul>
+<h5>Related Procedures With Returns</h5>
+<ul>
+<li><a href="/core/odin/parser/#parse_file_tags">parse_file_tags</a></li>
+</ul>
 </div>
 <div class="pkg-entity">
 <h3 id="Flag"><span><a class="doc-id-link" href="#Flag">Flag<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/parser/parser.odin#L11"><em>Source</em></a></div></h3>
@@ -618,6 +670,16 @@ Procedure Groups (1)</summary>
 <ul>
 <li><a href="/core/odin/parser/#default_parser">default_parser</a></li>
 </ul>
+</div>
+<div class="pkg-entity">
+<h3 id="Private_Flag"><span><a class="doc-id-link" href="#Private_Flag">Private_Flag<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/parser/file_tags.odin#L9"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Private_Flag :: <span class="keyword-type">enum</span> <a href="/base/builtin#int"><span class="doc-builtin">int</span></a> {
+	Public, 
+	Package, 
+	File, 
+}</pre>
+</div>
 </div>
 <div class="pkg-entity">
 <h3 id="Stmt_Allow_Flag"><span><a class="doc-id-link" href="#Stmt_Allow_Flag">Stmt_Allow_Flag<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/parser/parser.odin#L56"><em>Source</em></a></div></h3>
@@ -811,6 +873,18 @@ Procedure Groups (1)</summary>
 </div>
 </div>
 <div class="pkg-entity">
+<h3 id="get_build_arch_from_string"><span><a class="doc-id-link" href="#get_build_arch_from_string">get_build_arch_from_string<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/parser/file_tags.odin#L40"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">get_build_arch_from_string :: <span class="keyword-type">proc</span>(str: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>) -> .<a class="code-typename" href="//#Odin_Arch_Type">Odin_Arch_Type</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="get_build_os_from_string"><span><a class="doc-id-link" href="#get_build_os_from_string">get_build_os_from_string<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/parser/file_tags.odin#L30"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">get_build_os_from_string :: <span class="keyword-type">proc</span>(str: <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>) -> .<a class="code-typename" href="//#Odin_OS_Type">Odin_OS_Type</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
 <h3 id="is_blank_ident_node"><span><a class="doc-id-link" href="#is_blank_ident_node">is_blank_ident_node<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/parser/parser.odin#L479"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">is_blank_ident_node :: <span class="keyword-type">proc</span>(node: ^odin_ast.<a class="code-typename" href="/core/odin/ast/#Node">Node</a>) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> {…}</pre>
@@ -856,6 +930,12 @@ Procedure Groups (1)</summary>
 <h3 id="is_token_field_prefix"><span><a class="doc-id-link" href="#is_token_field_prefix">is_token_field_prefix<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/parser/parser.odin#L1694"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">is_token_field_prefix :: <span class="keyword-type">proc</span>(p: ^<a class="code-typename" href="/core/odin/parser/#Parser">Parser</a>) -> odin_ast.<a class="code-typename" href="/core/odin/ast/#Field_Flag">Field_Flag</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="match_build_tags"><span><a class="doc-id-link" href="#match_build_tags">match_build_tags<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/parser/file_tags.odin#L216"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">match_build_tags :: <span class="keyword-type">proc</span>(file_tags: <a class="code-typename" href="/core/odin/parser/#File_Tags">File_Tags</a>, target: <a class="code-typename" href="/core/odin/parser/#Build_Target">Build_Target</a>) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -958,6 +1038,12 @@ Procedure Groups (1)</summary>
 <h3 id="parse_file"><span><a class="doc-id-link" href="#parse_file">parse_file<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/parser/parser.odin#L137"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">parse_file :: <span class="keyword-type">proc</span>(p: ^<a class="code-typename" href="/core/odin/parser/#Parser">Parser</a>, file: ^odin_ast.<a class="code-typename" href="/core/odin/ast/#File">File</a>) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="parse_file_tags"><span><a class="doc-id-link" href="#parse_file_tags">parse_file_tags<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/parser/file_tags.odin#L51"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">parse_file_tags :: <span class="keyword-type">proc</span>(file: odin_ast.<a class="code-typename" href="/core/odin/ast/#File">File</a>, allocator := <a href="/base/runtime/#Context">context.allocator</a>) -> (tags: <a class="code-typename" href="/core/odin/parser/#File_Tags">File_Tags</a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
@@ -1197,22 +1283,27 @@ Procedure Groups (1)</summary>
 </section>
 <h2 id="pkg-source-files">Source Files</h2>
 <ul>
+<li><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/parser/file_tags.odin">file_tags.odin</a></li>
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/parser/parse_files.odin">parse_files.odin</a></li>
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/parser/parser.odin">parser.odin</a></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2024-08 (vendor "odin") Windows_amd64 @ 2024-08-29 21:10:49.631324200 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2024-08 (vendor "odin") Windows_amd64 @ 2024-08-30 21:12:01.216335800 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
 <ul>
 <li><a href="#pkg-Types">Types</a><ul>
+<li><a href="#Build_Kind">Build_Kind</a></li>
+<li><a href="#Build_Target">Build_Target</a></li>
 <li><a href="#Error_Handler">Error_Handler</a></li>
 <li><a href="#Expr_And_Flags">Expr_And_Flags</a></li>
+<li><a href="#File_Tags">File_Tags</a></li>
 <li><a href="#Flag">Flag</a></li>
 <li><a href="#Flags">Flags</a></li>
 <li><a href="#Import_Decl_Kind">Import_Decl_Kind</a></li>
 <li><a href="#Parser">Parser</a></li>
+<li><a href="#Private_Flag">Private_Flag</a></li>
 <li><a href="#Stmt_Allow_Flag">Stmt_Allow_Flag</a></li>
 <li><a href="#Stmt_Allow_Flags">Stmt_Allow_Flags</a></li>
 <li><a href="#Warning_Handler">Warning_Handler</a></li>
@@ -1249,6 +1340,8 @@ Procedure Groups (1)</summary>
 <li><a href="#expect_token">expect_token</a></li>
 <li><a href="#expect_token_after">expect_token_after</a></li>
 <li><a href="#fix_advance_to_next_stmt">fix_advance_to_next_stmt</a></li>
+<li><a href="#get_build_arch_from_string">get_build_arch_from_string</a></li>
+<li><a href="#get_build_os_from_string">get_build_os_from_string</a></li>
 <li><a href="#is_blank_ident_node">is_blank_ident_node</a></li>
 <li><a href="#is_blank_ident_string">is_blank_ident_string</a></li>
 <li><a href="#is_blank_ident_token">is_blank_ident_token</a></li>
@@ -1257,6 +1350,7 @@ Procedure Groups (1)</summary>
 <li><a href="#is_package_name_reserved">is_package_name_reserved</a></li>
 <li><a href="#is_semicolon_optional_for_node">is_semicolon_optional_for_node</a></li>
 <li><a href="#is_token_field_prefix">is_token_field_prefix</a></li>
+<li><a href="#match_build_tags">match_build_tags</a></li>
 <li><a href="#new_ast_field">new_ast_field</a></li>
 <li><a href="#new_blank_ident">new_blank_ident</a></li>
 <li><a href="#next_token0">next_token0</a></li>
@@ -1274,6 +1368,7 @@ Procedure Groups (1)</summary>
 <li><a href="#parse_field_list">parse_field_list</a></li>
 <li><a href="#parse_field_prefixes">parse_field_prefixes</a></li>
 <li><a href="#parse_file">parse_file</a></li>
+<li><a href="#parse_file_tags">parse_file_tags</a></li>
 <li><a href="#parse_for_stmt">parse_for_stmt</a></li>
 <li><a href="#parse_foreign_block">parse_foreign_block</a></li>
 <li><a href="#parse_foreign_block_decl">parse_foreign_block_decl</a></li>
