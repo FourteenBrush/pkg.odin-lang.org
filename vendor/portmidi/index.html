@@ -386,13 +386,12 @@ Procedure Groups (0)</summary>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>*</p>
-<pre>All midi data comes in the form of Event structures. A sysex
+<p>*
+All midi data comes in the form of Event structures. A sysex
 message is encoded as a sequence of Event structures, with each
 structure carrying 4 bytes of the message, i.e. only the first
-Event carries the status byte.
-
-Note that MIDI allows nested messages: the so-called "real-time" MIDI 
+Event carries the status byte.</p>
+<p>Note that MIDI allows nested messages: the so-called "real-time" MIDI 
 messages can be inserted into the MIDI byte stream at any location, 
 including within a sysex message. MIDI real-time messages are one-byte
 messages used mainly for timing (see the MIDI spec). PortMidi retains 
@@ -404,53 +403,46 @@ bytes or to buffer an unlimited number of real-time messages that
 arrive embedded in a long sysex message. To simplify things, the input
 parser is allowed to pass real-time MIDI messages embedded within a 
 sysex message, and it is up to the client to detect, process, and 
-remove these messages as they arrive.
-
-When receiving sysex messages, the sysex message is terminated
+remove these messages as they arrive.</p>
+<p>When receiving sysex messages, the sysex message is terminated
 by either an EOX status byte (anywhere in the 4 byte messages) or
 by a non-real-time status byte in the low order byte of the message.
 If you get a non-real-time status byte but there was no EOX byte, it 
 means the sysex message was somehow truncated. This is not
 considered an error; e.g., a missing EOX can result from the user
-disconnecting a MIDI cable during sysex transmission.
-
-A real-time message can occur within a sysex message. A real-time 
+disconnecting a MIDI cable during sysex transmission.</p>
+<p>A real-time message can occur within a sysex message. A real-time 
 message will always occupy a full Event with the status byte in 
 the low-order byte of the Event message field. (This implies that
 the byte-order of sysex bytes and real-time message bytes may not
 be preserved -- for example, if a real-time message arrives after
 3 bytes of a sysex message, the real-time message will be delivered
 first. The first word of the sysex message will be delivered only
-after the 4th byte arrives, filling the 4-byte Event message field.
-
-The timestamp field is observed when the output port is opened with
+after the 4th byte arrives, filling the 4-byte Event message field.</p>
+<p>The timestamp field is observed when the output port is opened with
 a non-zero latency. A timestamp of zero means "use the current time",
 which in turn means to deliver the message with a delay of
 latency (the latency parameter used when opening the output port.)
 Do not expect PortMidi to sort data according to timestamps -- 
 messages should be sent in the correct order, and timestamps MUST 
-be non-decreasing. See also "Example" for OpenOutput() above.
-
-A sysex message will generally fill many Event structures. On 
+be non-decreasing. See also "Example" for OpenOutput() above.</p>
+<p>A sysex message will generally fill many Event structures. On 
 output to a Stream with non-zero latency, the first timestamp
 on sysex message data will determine the time to begin sending the 
 message. PortMidi implementations may ignore timestamps for the 
-remainder of the sysex message. 
-
-On input, the timestamp ideally denotes the arrival time of the 
+remainder of the sysex message. </p>
+<p>On input, the timestamp ideally denotes the arrival time of the 
 status byte of the message. The first timestamp on sysex message 
 data will be valid. Subsequent timestamps may denote 
 when message bytes were actually received, or they may be simply 
-copies of the first timestamp.
-
-Timestamps for nested messages: If a real-time message arrives in 
+copies of the first timestamp.</p>
+<p>Timestamps for nested messages: If a real-time message arrives in 
 the middle of some other message, it is enqueued immediately with 
 the timestamp corresponding to its arrival time. The interrupted 
 non-real-time message or 4-byte packet of sysex data will be enqueued 
 later. The timestamp of interrupted data will be equal to that of
 the interrupting real-time message to insure that timestamps are
-non-decreasing.
-</pre>
+non-decreasing.</p>
 </details>
 <h5>Related Procedures With Parameters</h5>
 <ul>
@@ -540,10 +532,9 @@ non-decreasing.
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>*</p>
-<pre>Timestamp is used to represent a millisecond clock with arbitrary
-start time. The type is used for all MIDI timestampes and clocks.
-</pre>
+<p>*
+Timestamp is used to represent a millisecond clock with arbitrary
+start time. The type is used for all MIDI timestampes and clocks.</p>
 </details>
 <h5>Related Procedures With Parameters</h5>
 <ul>
@@ -809,14 +800,13 @@ filter active sensing messages (0xFE):</p>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>*</p>
-<pre>	Abort() terminates outgoing messages immediately
-	The caller should immediately close the output port;
-	this call may result in transmission of a partial midi message.
-	There is no abort for Midi input because the user can simply
-	ignore messages in the buffer and close an input device at
-	any time.
-</pre>
+<p>*
+Abort() terminates outgoing messages immediately
+The caller should immediately close the output port;
+this call may result in transmission of a partial midi message.
+There is no abort for Midi input because the user can simply
+ignore messages in the buffer and close an input device at
+any time.</p>
 </details>
 </div>
 <div class="pkg-entity">
@@ -838,11 +828,10 @@ filter active sensing messages (0xFE):</p>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>*</p>
-<pre>	Close() closes a midi stream, flushing any pending buffers.
-	(PortMidi attempts to close open streams when the application 
-	exits -- this is particularly difficult under Windows.)
-</pre>
+<p>*
+Close() closes a midi stream, flushing any pending buffers.
+(PortMidi attempts to close open streams when the application 
+exits -- this is particularly difficult under Windows.)</p>
 </details>
 </div>
 <div class="pkg-entity">
@@ -862,14 +851,13 @@ filter active sensing messages (0xFE):</p>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>Dequeue() removes one item from the queue, copying it into msg.</p>
-<pre>	Returns 1 if successful, and 0 if the queue is empty.
-	Returns .BufferOverflow if what would have been the next thing
-	in the queue was dropped due to overflow. (So when overflow occurs,
-	the receiver can receive a queue full of messages before getting the
-	overflow report. This protocol ensures that the reader will be 
-	notified when data is lost due to overflow.
-</pre>
+<p>Dequeue() removes one item from the queue, copying it into msg.
+Returns 1 if successful, and 0 if the queue is empty.
+Returns .BufferOverflow if what would have been the next thing
+in the queue was dropped due to overflow. (So when overflow occurs,
+the receiver can receive a queue full of messages before getting the
+overflow report. This protocol ensures that the reader will be 
+notified when data is lost due to overflow.</p>
 </details>
 </div>
 <div class="pkg-entity">
@@ -879,10 +867,9 @@ filter active sensing messages (0xFE):</p>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>Enqueue() inserts one item into the queue, copying it from msg.</p>
-<pre>	Returns .NoError if successful and .BufferOverflow if the queue was 
-	already full. If .BufferOverflow is returned, the overflow flag is set.
-</pre>
+<p>Enqueue() inserts one item into the queue, copying it from msg.
+Returns .NoError if successful and .BufferOverflow if the queue was 
+already full. If .BufferOverflow is returned, the overflow flag is set.</p>
 </details>
 </div>
 <div class="pkg-entity">
@@ -904,15 +891,13 @@ filter active sensing messages (0xFE):</p>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>*</p>
-<pre>	GetDeviceInfo() returns a pointer to a DeviceInfo structure
-	referring to the device specified by id.
-	If id is out of range the function returns nil.
-
-	The returned structure is owned by the PortMidi implementation and must
-	not be manipulated or freed. The pointer is guaranteed to be valid
-	between calls to Initialize() and Terminate().
-</pre>
+<p>*
+GetDeviceInfo() returns a pointer to a DeviceInfo structure
+referring to the device specified by id.
+If id is out of range the function returns nil.</p>
+<p>The returned structure is owned by the PortMidi implementation and must
+not be manipulated or freed. The pointer is guaranteed to be valid
+between calls to Initialize() and Terminate().</p>
 </details>
 </div>
 <div class="pkg-entity">
@@ -922,11 +907,10 @@ filter active sensing messages (0xFE):</p>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>*</p>
-<pre>Translate portmidi error number into human readable message.
+<p>*
+Translate portmidi error number into human readable message.
 These strings are constants (set at compile time) so client has
-no need to allocate storage
-</pre>
+no need to allocate storage</p>
 </details>
 </div>
 <div class="pkg-entity">
@@ -936,11 +920,10 @@ no need to allocate storage
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>*</p>
-<pre>Translate portmidi host error into human readable message.
+<p>*
+Translate portmidi host error into human readable message.
 These strings are computed at run time, so client has to allocate storage.
-After this routine executes, the host error is cleared.
-</pre>
+After this routine executes, the host error is cleared.</p>
 </details>
 </div>
 <div class="pkg-entity">
@@ -950,20 +933,19 @@ After this routine executes, the host error is cleared.
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>*</p>
-<pre>	Test whether stream has a pending host error. Normally, the client finds
-	out about errors through returned error codes, but some errors can occur
-	asynchronously where the client does not
-	explicitly call a function, and therefore cannot receive an error code.
-	The client can test for a pending error using HasHostError(). If true,
-	the error can be accessed and cleared by calling GetErrorText(). 
-	Errors are also cleared by calling other functions that can return
-	errors, e.g. OpenInput(), OpenOutput(), Read(), Write(). The
-	client does not need to call HasHostError(). Any pending error will be
-	reported the next time the client performs an explicit function call on 
-	the stream, e.g. an input or output operation. Until the error is cleared,
-	no new error codes will be obtained, even for a different stream.
-</pre>
+<p>*
+Test whether stream has a pending host error. Normally, the client finds
+out about errors through returned error codes, but some errors can occur
+asynchronously where the client does not
+explicitly call a function, and therefore cannot receive an error code.
+The client can test for a pending error using HasHostError(). If true,
+the error can be accessed and cleared by calling GetErrorText(). 
+Errors are also cleared by calling other functions that can return
+errors, e.g. OpenInput(), OpenOutput(), Read(), Write(). The
+client does not need to call HasHostError(). Any pending error will be
+reported the next time the client performs an explicit function call on 
+the stream, e.g. an input or output operation. Until the error is cleared,
+no new error codes will be obtained, even for a different stream.</p>
 </details>
 </div>
 <div class="pkg-entity">
@@ -973,10 +955,9 @@ After this routine executes, the host error is cleared.
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>*</p>
-<pre>	Initialize() is the library initialisation function - call this before
-	using the library.
-</pre>
+<p>*
+Initialize() is the library initialisation function - call this before
+using the library.</p>
 </details>
 </div>
 <div class="pkg-entity">
@@ -986,13 +967,11 @@ After this routine executes, the host error is cleared.
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>*</p>
-<pre>MessageMake() encodes a short Midi message into a 32-bit word. If data1
-and/or data2 are not present, use zero.
-
-MessageStatus(), MessageData1(), and
-MessageData2() extract fields from a 32-bit midi message.
-</pre>
+<p>*
+MessageMake() encodes a short Midi message into a 32-bit word. If data1
+and/or data2 are not present, use zero.</p>
+<p>MessageStatus(), MessageData1(), and
+MessageData2() extract fields from a 32-bit midi message.</p>
 </details>
 </div>
 <div class="pkg-entity">
@@ -1020,13 +999,11 @@ MessageData2() extract fields from a 32-bit midi message.
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>*</p>
-<pre>MessageMake() encodes a short Midi message into a 32-bit word. If data1
-and/or data2 are not present, use zero.
-
-MessageStatus(), MessageData1(), and
-MessageData2() extract fields from a 32-bit midi message.
-</pre>
+<p>*
+MessageMake() encodes a short Midi message into a 32-bit word. If data1
+and/or data2 are not present, use zero.</p>
+<p>MessageStatus(), MessageData1(), and
+MessageData2() extract fields from a 32-bit midi message.</p>
 </details>
 </div>
 <div class="pkg-entity">
@@ -1049,69 +1026,59 @@ MessageData2() extract fields from a 32-bit midi message.
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>*</p>
-<pre>	OpenInput() and OpenOutput() open devices.
-
-	stream is the address of a Stream pointer which will receive
-	a pointer to the newly opened stream.
-
-	inputDevice is the id of the device used for input (see DeviceID above).
-
-	inputDriverInfo is a pointer to an optional driver specific data structure
-	containing additional information for device setup or handle processing.
-	inputDriverInfo is never required for correct operation. If not used
-	inputDriverInfo should be nil.
-
-	outputDevice is the id of the device used for output (see DeviceID above.)
-
-	outputDriverInfo is a pointer to an optional driver specific data structure
-	containing additional information for device setup or handle processing.
-	outputDriverInfo is never required for correct operation. If not used
-	outputDriverInfo should be nil.
-
-	For input, the buffersize specifies the number of input events to be 
-	buffered waiting to be read using Read(). For output, buffersize 
-	specifies the number of output events to be buffered waiting for output. 
-	(In some cases -- see below -- PortMidi does not buffer output at all
-	and merely passes data to a lower-level API, in which case buffersize
-	is ignored.)
-
-	latency is the delay in milliseconds applied to timestamps to determine 
-	when the output should actually occur. (If latency is &lt; 0, 0 is assumed.) 
-	If latency is zero, timestamps are ignored and all output is delivered
-	immediately. If latency is greater than zero, output is delayed until the
-	message timestamp plus the latency. (NOTE: the time is measured relative 
-	to the time source indicated by time_proc. Timestamps are absolute,
-	not relative delays or offsets.) In some cases, PortMidi can obtain
-	better timing than your application by passing timestamps along to the
-	device driver or hardware. Latency may also help you to synchronize midi
-	data to audio data by matching midi latency to the audio buffer latency.
-
-	time_proc is a pointer to a procedure that returns time in milliseconds. It
-	may be nil, in which case a default millisecond timebase (PortTime) is 
-	used. If the application wants to use PortTime, it should start the timer
-	(call Pt_Start) before calling OpenInput or OpenOutput. If the
-	application tries to start the timer *after* OpenInput or OpenOutput,
-	it may get a ptAlreadyStarted error from Pt_Start, and the application's
-	preferred time resolution and callback function will be ignored.
-	time_proc result values are appended to incoming MIDI data, and time_proc
-	times are used to schedule outgoing MIDI data (when latency is non-zero).
-
-	time_info is a pointer passed to time_proc.
-
-	Example: If I provide a timestamp of 5000, latency is 1, and time_proc
-	returns 4990, then the desired output time will be when time_proc returns
-	timestamp+latency = 5001. This will be 5001-4990 = 11ms from now.
-
-	return value:
-	Upon success Open() returns NoError and places a pointer to a
-	valid Stream in the stream argument.
-	If a call to Open() fails a nonzero error code is returned (see
-	PMError above) and the value of port is invalid.
-
-	Any stream that is successfully opened should eventually be closed
-	by calling Close().
-</pre>
+<p>*
+OpenInput() and OpenOutput() open devices.</p>
+<p>stream is the address of a Stream pointer which will receive
+a pointer to the newly opened stream.</p>
+<p>inputDevice is the id of the device used for input (see DeviceID above).</p>
+<p>inputDriverInfo is a pointer to an optional driver specific data structure
+containing additional information for device setup or handle processing.
+inputDriverInfo is never required for correct operation. If not used
+inputDriverInfo should be nil.</p>
+<p>outputDevice is the id of the device used for output (see DeviceID above.)</p>
+<p>outputDriverInfo is a pointer to an optional driver specific data structure
+containing additional information for device setup or handle processing.
+outputDriverInfo is never required for correct operation. If not used
+outputDriverInfo should be nil.</p>
+<p>For input, the buffersize specifies the number of input events to be 
+buffered waiting to be read using Read(). For output, buffersize 
+specifies the number of output events to be buffered waiting for output. 
+(In some cases -- see below -- PortMidi does not buffer output at all
+and merely passes data to a lower-level API, in which case buffersize
+is ignored.)</p>
+<p>latency is the delay in milliseconds applied to timestamps to determine 
+when the output should actually occur. (If latency is &lt; 0, 0 is assumed.) 
+If latency is zero, timestamps are ignored and all output is delivered
+immediately. If latency is greater than zero, output is delayed until the
+message timestamp plus the latency. (NOTE: the time is measured relative 
+to the time source indicated by time_proc. Timestamps are absolute,
+not relative delays or offsets.) In some cases, PortMidi can obtain
+better timing than your application by passing timestamps along to the
+device driver or hardware. Latency may also help you to synchronize midi
+data to audio data by matching midi latency to the audio buffer latency.</p>
+<p>time_proc is a pointer to a procedure that returns time in milliseconds. It
+may be nil, in which case a default millisecond timebase (PortTime) is 
+used. If the application wants to use PortTime, it should start the timer
+(call Pt_Start) before calling OpenInput or OpenOutput. If the
+application tries to start the timer <i>after</i> OpenInput or OpenOutput,
+it may get a ptAlreadyStarted error from Pt_Start, and the application's
+preferred time resolution and callback function will be ignored.
+time_proc result values are appended to incoming MIDI data, and time_proc
+times are used to schedule outgoing MIDI data (when latency is non-zero).</p>
+<p>time_info is a pointer passed to time_proc.</p>
+<details open class="code-example">
+<summary><b>Example:</b></summary>
+<pre><code class="hljs language-odin" data-lang="odin"></code></pre>
+</details>
+<p>returns 4990, then the desired output time will be when time_proc returns
+timestamp+latency = 5001. This will be 5001-4990 = 11ms from now.</p>
+<p>return value:
+Upon success Open() returns NoError and places a pointer to a
+valid Stream in the stream argument.
+If a call to Open() fails a nonzero error code is returned (see
+PMError above) and the value of port is invalid.</p>
+<p>Any stream that is successfully opened should eventually be closed
+by calling Close().</p>
 </details>
 </div>
 <div class="pkg-entity">
@@ -1135,9 +1102,8 @@ MessageData2() extract fields from a 32-bit midi message.
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>*</p>
-<pre>	Poll() tests whether input is available.
-</pre>
+<p>*
+Poll() tests whether input is available.</p>
 </details>
 </div>
 <div class="pkg-entity">
@@ -1165,8 +1131,8 @@ MessageData2() extract fields from a 32-bit midi message.
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>QueueFull() returns non-zero if the queue is full</p>
-<pre>    QueueEmpty() returns non-zero if the queue is empty
+<p>QueueFull() returns non-zero if the queue is full
+    QueueEmpty() returns non-zero if the queue is empty
     Either condition may change immediately because a parallel
     enqueue or dequeue operation could be in progress. Furthermore,
     QueueEmpty() is optimistic: it may say false, when due to 
@@ -1175,8 +1141,7 @@ MessageData2() extract fields from a 32-bit midi message.
     false. On the other hand, QueueFull() is pessimistic: if it
     returns false, then Enqueue() is guaranteed to succeed. 
     Error conditions: QueueFull() returns .BadPtr if queue is nil.
-    QueueEmpty() returns false if queue is nil.
-</pre>
+    QueueEmpty() returns false if queue is nil.</p>
 </details>
 </div>
 <div class="pkg-entity">
@@ -1186,26 +1151,25 @@ MessageData2() extract fields from a 32-bit midi message.
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>QueuePeek() returns a pointer to the item at the head of the queue,</p>
-<pre>	or NULL if the queue is empty. The item is not removed from the queue.
-	QueuePeek() will not indicate when an overflow occurs. If you want
-	to get and check .BufferOverflow messages, use the return value of
-	QueuePeek() *only* as an indication that you should call 
-	Dequeue(). At the point where a direct call to Dequeue() would
-	return .BufferOverflow, QueuePeek() will return NULL but internally
-	clear the .BufferOverflow flag, enabling Enqueue() to resume
-	enqueuing messages. A subsequent call to QueuePeek()
-	will return a pointer to the first message *after* the overflow. 
-	Using this as an indication to call Dequeue(), the first call
-	to Dequeue() will return .BufferOverflow. The second call will
-	return success, copying the same message pointed to by the previous
-	QueuePeek().
-	When to use QueuePeek(): (1) when you need to look at the message
-	data to decide who should be called to receive it. (2) when you need
-	to know a message is ready but cannot accept the message.
-	Note that QueuePeek() is not a fast check, so if possible, you 
-	might as well just call Dequeue() and accept the data if it is there.
-</pre>
+<p>QueuePeek() returns a pointer to the item at the head of the queue,
+or NULL if the queue is empty. The item is not removed from the queue.
+QueuePeek() will not indicate when an overflow occurs. If you want
+to get and check .BufferOverflow messages, use the return value of
+QueuePeek() <i>only</i> as an indication that you should call 
+Dequeue(). At the point where a direct call to Dequeue() would
+return .BufferOverflow, QueuePeek() will return NULL but internally
+clear the .BufferOverflow flag, enabling Enqueue() to resume
+enqueuing messages. A subsequent call to QueuePeek()
+will return a pointer to the first message <i>after</i> the overflow. 
+Using this as an indication to call Dequeue(), the first call
+to Dequeue() will return .BufferOverflow. The second call will
+return success, copying the same message pointed to by the previous
+QueuePeek().
+When to use QueuePeek(): (1) when you need to look at the message
+data to decide who should be called to receive it. (2) when you need
+to know a message is ready but cannot accept the message.
+Note that QueuePeek() is not a fast check, so if possible, you 
+might as well just call Dequeue() and accept the data if it is there.</p>
 </details>
 </div>
 <div class="pkg-entity">
@@ -1215,29 +1179,24 @@ MessageData2() extract fields from a 32-bit midi message.
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>*</p>
-<pre>	Read() retrieves midi data into a buffer, and returns the number
-	of events read. Result is a non-negative number unless an error occurs, 
-	in which case a Error value will be returned.
-
-	Buffer Overflow
-
-	The problem: if an input overflow occurs, data will be lost, ultimately 
-	because there is no flow control all the way back to the data source. 
-	When data is lost, the receiver should be notified and some sort of 
-	graceful recovery should take place, e.g. you shouldn't resume receiving 
-	in the middle of a long sysex message.
-
-	With a lock-free fifo, which is pretty much what we're stuck with to 
-	enable portability to the Mac, it's tricky for the producer and consumer 
-	to synchronously reset the buffer and resume normal operation.
-
-	Solution: the buffer managed by PortMidi will be flushed when an overflow
-	occurs. The consumer (Read()) gets an error message (.BufferOverflow)
-	and ordinary processing resumes as soon as a new message arrives. The
-	remainder of a partial sysex message is not considered to be a "new
-	message" and will be flushed as well.
-</pre>
+<p>*
+Read() retrieves midi data into a buffer, and returns the number
+of events read. Result is a non-negative number unless an error occurs, 
+in which case a Error value will be returned.</p>
+<p>Buffer Overflow</p>
+<p>The problem: if an input overflow occurs, data will be lost, ultimately 
+because there is no flow control all the way back to the data source. 
+When data is lost, the receiver should be notified and some sort of 
+graceful recovery should take place, e.g. you shouldn't resume receiving 
+in the middle of a long sysex message.</p>
+<p>With a lock-free fifo, which is pretty much what we're stuck with to 
+enable portability to the Mac, it's tricky for the producer and consumer 
+to synchronously reset the buffer and resume normal operation.</p>
+<p>Solution: the buffer managed by PortMidi will be flushed when an overflow
+occurs. The consumer (Read()) gets an error message (.BufferOverflow)
+and ordinary processing resumes as soon as a new message arrives. The
+remainder of a partial sysex message is not considered to be a "new
+message" and will be flushed as well.</p>
 </details>
 </div>
 <div class="pkg-entity">
@@ -1247,21 +1206,18 @@ MessageData2() extract fields from a 32-bit midi message.
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>*</p>
-<pre>	SetChannelMask() filters incoming messages based on channel.
-	The mask is a 16-bit bitfield corresponding to appropriate channels.
-	The _Channel macro can assist in calling this function.
-	i.e. to set receive only input on channel 1, call with
-	SetChannelMask(Channel(1));
-	Multiple channels should be OR'd together, like
-	SetChannelMask(Channel(10) | Channel(11))
-
-	Note that channels are numbered 0 to 15 (not 1 to 16). Most 
-	synthesizer and interfaces number channels starting at 1, but
-	PortMidi numbers channels starting at 0.
-
-	All channels are allowed by default
-</pre>
+<p>*
+SetChannelMask() filters incoming messages based on channel.
+The mask is a 16-bit bitfield corresponding to appropriate channels.
+The _Channel macro can assist in calling this function.
+i.e. to set receive only input on channel 1, call with
+SetChannelMask(Channel(1));
+Multiple channels should be OR'd together, like
+SetChannelMask(Channel(10) | Channel(11))</p>
+<p>Note that channels are numbered 0 to 15 (not 1 to 16). Most 
+synthesizer and interfaces number channels starting at 1, but
+PortMidi numbers channels starting at 0.</p>
+<p>All channels are allowed by default</p>
 </details>
 </div>
 <div class="pkg-entity">
@@ -1271,19 +1227,17 @@ MessageData2() extract fields from a 32-bit midi message.
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>*</p>
-<pre>	SetFilter() sets filters on an open input stream to drop selected
-	input types. By default, only active sensing messages are filtered.
-	To prohibit, say, active sensing and sysex messages, call
-	SetFilter(stream, FILT_ACTIVE | FILT_SYSEX);
-
-	Filtering is useful when midi routing or midi thru functionality is being
-	provided by the user application.
-	For example, you may want to exclude timing messages (clock, MTC, start/stop/continue),
-	while allowing note-related messages to pass.
-	Or you may be using a sequencer or drum-machine for MIDI clock information but want to
-	exclude any notes it may play.
-</pre>
+<p>*
+SetFilter() sets filters on an open input stream to drop selected
+input types. By default, only active sensing messages are filtered.
+To prohibit, say, active sensing and sysex messages, call
+SetFilter(stream, FILT_ACTIVE | FILT_SYSEX);</p>
+<p>Filtering is useful when midi routing or midi thru functionality is being
+provided by the user application.
+For example, you may want to exclude timing messages (clock, MTC, start/stop/continue),
+while allowing note-related messages to pass.
+Or you may be using a sequencer or drum-machine for MIDI clock information but want to
+exclude any notes it may play.</p>
 </details>
 </div>
 <div class="pkg-entity">
@@ -1293,14 +1247,13 @@ MessageData2() extract fields from a 32-bit midi message.
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>SetOverflow() allows the writer (enqueuer) to signal an overflow</p>
-<pre>	condition to the reader (dequeuer). E.g. when transfering data from 
-	the OS to an application, if the OS indicates a buffer overrun,
-	SetOverflow() can be used to insure that the reader receives a
-	.BufferOverflow result from Dequeue(). Returns .BadPtr if queue
-	is NULL, returns .BufferOverflow if buffer is already in an overflow
-	state, returns .NoError if successfully set overflow state.
-</pre>
+<p>SetOverflow() allows the writer (enqueuer) to signal an overflow
+condition to the reader (dequeuer). E.g. when transfering data from 
+the OS to an application, if the OS indicates a buffer overrun,
+SetOverflow() can be used to insure that the reader receives a
+.BufferOverflow result from Dequeue(). Returns .BadPtr if queue
+is NULL, returns .BufferOverflow if buffer is already in an overflow
+state, returns .NoError if successfully set overflow state.</p>
 </details>
 </div>
 <div class="pkg-entity">
@@ -1310,29 +1263,27 @@ MessageData2() extract fields from a 32-bit midi message.
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>*</p>
-<pre>	Synchronize() instructs PortMidi to (re)synchronize to the
-	time_proc passed when the stream was opened. Typically, this
-	is used when the stream must be opened before the time_proc
-	reference is actually advancing. In this case, message timing
-	may be erratic, but since timestamps of zero mean 
-	"send immediately," initialization messages with zero timestamps
-	can be written without a functioning time reference and without
-	problems. Before the first MIDI message with a non-zero
-	timestamp is written to the stream, the time reference must
-	begin to advance (for example, if the time_proc computes time
-	based on audio samples, time might begin to advance when an 
-	audio stream becomes active). After time_proc return values
-	become valid, and BEFORE writing the first non-zero timestamped 
-	MIDI message, call Synchronize() so that PortMidi can observe
-	the difference between the current time_proc value and its
-	MIDI stream time. 
-	
-	In the more normal case where time_proc 
-	values advance continuously, there is no need to call 
-	Synchronize. PortMidi will always synchronize at the 
-	first output message and periodically thereafter.
-</pre>
+<p>*
+Synchronize() instructs PortMidi to (re)synchronize to the
+time_proc passed when the stream was opened. Typically, this
+is used when the stream must be opened before the time_proc
+reference is actually advancing. In this case, message timing
+may be erratic, but since timestamps of zero mean 
+"send immediately," initialization messages with zero timestamps
+can be written without a functioning time reference and without
+problems. Before the first MIDI message with a non-zero
+timestamp is written to the stream, the time reference must
+begin to advance (for example, if the time_proc computes time
+based on audio samples, time might begin to advance when an 
+audio stream becomes active). After time_proc return values
+become valid, and BEFORE writing the first non-zero timestamped 
+MIDI message, call Synchronize() so that PortMidi can observe
+the difference between the current time_proc value and its
+MIDI stream time. </p>
+<p>In the more normal case where time_proc 
+values advance continuously, there is no need to call 
+Synchronize. PortMidi will always synchronize at the 
+first output message and periodically thereafter.</p>
 </details>
 </div>
 <div class="pkg-entity">
@@ -1342,10 +1293,9 @@ MessageData2() extract fields from a 32-bit midi message.
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>*</p>
-<pre>	Terminate() is the library termination function - call this after
-	using the library.
-</pre>
+<p>*
+Terminate() is the library termination function - call this after
+using the library.</p>
 </details>
 </div>
 <div class="pkg-entity">
@@ -1356,17 +1306,17 @@ MessageData2() extract fields from a 32-bit midi message.
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
 <p>Write() writes midi data from a buffer. This may contain:</p>
-<pre>		- short messages 
-	or 
-		- sysex messages that are converted into a sequence of Event
-		  structures, e.g. sending data from a file or forwarding them
-		  from midi input.
-
-	Use WriteSysEx() to write a sysex message stored as a contiguous 
-	array of bytes.
-
-	Sysex data may contain embedded real-time messages.
+<pre>- short messages 
 </pre>
+<p>or </p>
+<pre>- sysex messages that are converted into a sequence of Event
+  structures, e.g. sending data from a file or forwarding them
+  from midi input.
+
+</pre>
+<p>Use WriteSysEx() to write a sysex message stored as a contiguous 
+array of bytes.</p>
+<p>Sysex data may contain embedded real-time messages.</p>
 </details>
 </div>
 <div class="pkg-entity">
@@ -1376,12 +1326,11 @@ MessageData2() extract fields from a 32-bit midi message.
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>*</p>
-<pre>	WriteShort() writes a timestamped non-system-exclusive midi message.
-	Messages are delivered in order as received, and timestamps must be 
-	non-decreasing. (But timestamps are ignored if the stream was opened
-	with latency = 0.)
-</pre>
+<p>*
+WriteShort() writes a timestamped non-system-exclusive midi message.
+Messages are delivered in order as received, and timestamps must be 
+non-decreasing. (But timestamps are ignored if the stream was opened
+with latency = 0.)</p>
 </details>
 </div>
 <div class="pkg-entity">
@@ -1391,9 +1340,8 @@ MessageData2() extract fields from a 32-bit midi message.
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
-<p>*</p>
-<pre>	WriteSysEx() writes a timestamped system-exclusive midi message.
-</pre>
+<p>*
+WriteSysEx() writes a timestamped system-exclusive midi message.</p>
 </details>
 </div>
 <h2 id="pkg-Procedure Groups" class="pkg-header">Procedure Groups</h2>
@@ -1406,7 +1354,7 @@ MessageData2() extract fields from a 32-bit midi message.
 <li><a href="https://github.com/odin-lang/Odin/tree/master/vendor/portmidi/util.odin">util.odin</a></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2024-09 (vendor "odin") Windows_amd64 @ 2024-09-02 21:10:08.371131200 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2024-09 (vendor "odin") Windows_amd64 @ 2024-09-03 17:56:31.182474500 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">

@@ -316,44 +316,41 @@
 <div id="pkg-top">
 <h2>Overview</h2>
 <div id="pkg-overview">
-<p>import "base:runtime"</p>
-<pre>import "core:prof/spall"
-import "core:sync"
+<p>import "base:runtime"
+import "core:prof/spall"
+import "core:sync"</p>
+<p>spall_ctx: spall.Context
+@(thread_local) spall_buffer: spall.Buffer</p>
+<p>foo :: proc() {</p>
+<pre>spall.SCOPED_EVENT(&spall_ctx, &spall_buffer, #procedure)
+</pre>
+<p>}</p>
+<p>main :: proc() {</p>
+<pre>spall_ctx = spall.context_create("trace_test.spall")
+defer spall.context_destroy(&spall_ctx)
 
-spall_ctx: spall.Context
-@(thread_local) spall_buffer: spall.Buffer
+buffer_backing := make([]u8, spall.BUFFER_DEFAULT_SIZE)
+spall_buffer = spall.buffer_create(buffer_backing, u32(sync.current_thread_id()))
+defer spall.buffer_destroy(&spall_ctx, &spall_buffer)
 
-foo :: proc() {
-	spall.SCOPED_EVENT(&spall_ctx, &spall_buffer, #procedure)
-}
+spall.SCOPED_EVENT(&spall_ctx, &spall_buffer, #procedure)
 
-main :: proc() {
-	spall_ctx = spall.context_create("trace_test.spall")
-	defer spall.context_destroy(&spall_ctx)
-
-	buffer_backing := make([]u8, spall.BUFFER_DEFAULT_SIZE)
-	spall_buffer = spall.buffer_create(buffer_backing, u32(sync.current_thread_id()))
-	defer spall.buffer_destroy(&spall_ctx, &spall_buffer)
-
-	spall.SCOPED_EVENT(&spall_ctx, &spall_buffer, #procedure)
-
-	for i := 0; i &lt; 9001; i += 1 {
-		foo()
-	}
-}
-
-// Automatic profiling of every procedure:
-
-@(instrumentation_enter)
-spall_enter :: proc "contextless" (proc_address, call_site_return_address: rawptr, loc: runtime.Source_Code_Location) {
-	spall._buffer_begin(&spall_ctx, &spall_buffer, "", "", loc)
-}
-
-@(instrumentation_exit)
-spall_exit :: proc "contextless" (proc_address, call_site_return_address: rawptr, loc: runtime.Source_Code_Location) {
-	spall._buffer_end(&spall_ctx, &spall_buffer)
+for i := 0; i &lt; 9001; i += 1 {
+	foo()
 }
 </pre>
+<p>}</p>
+<p>// Automatic profiling of every procedure:</p>
+<p>@(instrumentation_enter)
+spall_enter :: proc "contextless" (proc_address, call_site_return_address: rawptr, loc: runtime.Source_Code_Location) {</p>
+<pre>spall._buffer_begin(&spall_ctx, &spall_buffer, "", "", loc)
+</pre>
+<p>}</p>
+<p>@(instrumentation_exit)
+spall_exit :: proc "contextless" (proc_address, call_site_return_address: rawptr, loc: runtime.Source_Code_Location) {</p>
+<pre>spall._buffer_end(&spall_ctx, &spall_buffer)
+</pre>
+<p>}</p>
 </div>
 <div id="pkg-index">
 <h2>Index</h2>
@@ -616,7 +613,7 @@ Procedure Groups (1)</summary>
 <li><em>(hidden platform specific files)</em></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2024-09 (vendor "odin") Windows_amd64 @ 2024-09-02 21:10:06.882830800 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2024-09 (vendor "odin") Windows_amd64 @ 2024-09-03 17:56:29.740768900 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">

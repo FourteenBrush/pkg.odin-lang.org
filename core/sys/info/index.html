@@ -325,6 +325,31 @@ and CPU information.</p>
 <p>On Windows, GPUs will also be enumerated using the registry.</p>
 <p>CPU feature flags can be tested against <code>cpu_features</code>, where applicable, e.g.
 <code>if .aes in si.aes { ... }</code></p>
+<details open class="code-example">
+<summary><b>Example:</b></summary>
+<pre><code class="hljs language-odin" data-lang="odin">import "core:fmt"
+import si "core:sys/info"
+
+main :: proc() {
+	fmt.printfln("Odin:  %v",    ODIN_VERSION)
+	fmt.printfln("OS:    %v",    si.os_version.as_string)
+	fmt.printfln("OS:    %#v",   si.os_version)
+	fmt.printfln("CPU:   %v",    si.cpu_name)
+	fmt.printfln("RAM:   %#.1M", si.ram.total_ram)
+
+	// fmt.printfln("Features: %v",      si.cpu_features)
+	// fmt.printfln("MacOS version: %v", si.macos_version)
+
+	fmt.println()
+	for gpu, i in si.gpus {
+		fmt.printfln("GPU #%v:", i)
+		fmt.printfln("\tVendor: %v",    gpu.vendor_name)
+		fmt.printfln("\tModel:  %v",    gpu.model_name)
+		fmt.printfln("\tVRAM:   %#.1M", gpu.total_ram)
+	}
+}
+</code></pre>
+</details>
 <p><span class="doc-list">Example Windows output:</span></p>
 <pre>Odin:  dev-2022-09
 OS:    Windows 10 Professional (version: 20H2), build: 19042.1466
@@ -365,31 +390,6 @@ OS:   OS_Version{
 CPU:  Intel(R) Core(TM) i5-7360U CPU @ 2.30GHz
 RAM:  8.0 GiB
 </pre>
-<details open class="code-example">
-<summary><b>Example:</b></summary>
-<pre><code class="hljs language-odin" data-lang="odin">import "core:fmt"
-import si "core:sys/info"
-
-main :: proc() {
-	fmt.printfln("Odin:  %v",    ODIN_VERSION)
-	fmt.printfln("OS:    %v",    si.os_version.as_string)
-	fmt.printfln("OS:    %#v",   si.os_version)
-	fmt.printfln("CPU:   %v",    si.cpu_name)
-	fmt.printfln("RAM:   %#.1M", si.ram.total_ram)
-
-	// fmt.printfln("Features: %v",      si.cpu_features)
-	// fmt.printfln("MacOS version: %v", si.macos_version)
-
-	fmt.println()
-	for gpu, i in si.gpus {
-		fmt.printfln("GPU #%v:", i)
-		fmt.printfln("\tVendor: %v",    gpu.vendor_name)
-		fmt.printfln("\tModel:  %v",    gpu.model_name)
-		fmt.printfln("\tVRAM:   %#.1M", gpu.total_ram)
-	}
-}
-</code></pre>
-</details>
 </div>
 <div id="pkg-index">
 <h2>Index</h2>
@@ -614,7 +614,7 @@ Procedure Groups (0)</summary>
 <li><em>(hidden platform specific files)</em></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2024-09 (vendor "odin") Windows_amd64 @ 2024-09-02 21:10:06.960799200 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2024-09 (vendor "odin") Windows_amd64 @ 2024-09-03 17:56:29.823210100 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
