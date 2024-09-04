@@ -332,40 +332,49 @@ accomplish common tasks.
 <span class="doc-list"><code>hash_file</code> - Takes a file handle and returns the computed digest.</span>
   A third optional boolean parameter controls if the file is streamed
   (default), or or read at once.</p>
-<p><code></code>`odin
-package hash_example</p>
-<p>import "core:crypto/hash"</p>
-<p>main :: proc() {</p>
-<pre>input := "Feed the fire."
+<details open class="code-example">
+<summary><b>Example:</b></summary>
+<pre><code class="hljs language-odin" data-lang="odin">package hash_example
 
-// Compute the digest, using the high level API.
-returned_digest := hash.hash(hash.Algorithm.SHA512_256, input)
-defer delete(returned_digest)
+import "core:crypto/hash"
 
-// Variant that takes a destination buffer, instead of returning
-// the digest.
-digest := make([]byte, hash.DIGEST_SIZES[hash.Algorithm.BLAKE2B]) // @note: Destination buffer has to be at least as big as the digest size of the hash.
-defer delete(digest)
-hash.hash(hash.Algorithm.BLAKE2B, input, digest)
-</pre>
-<p>}
-<code></code>`</p>
+main :: proc() {
+	input := "Feed the fire."
+
+	// Compute the digest, using the high level API.
+	returned_digest := hash.hash(hash.Algorithm.SHA512_256, input)
+	defer delete(returned_digest)
+
+	// Variant that takes a destination buffer, instead of returning
+	// the digest.
+	digest := make([]byte, hash.DIGEST_SIZES[hash.Algorithm.BLAKE2B]) // @note: Destination buffer has to be at least as big as the digest size of the hash.
+	defer delete(digest)
+	hash.hash(hash.Algorithm.BLAKE2B, input, digest)
+}
+</code></pre>
+</details>
 <p>A generic low level API is provided supporting the init/update/final interface
 that is typical with cryptographic hash function implementations.</p>
-<p><code></code>`odin
-package hash_example</p>
-<p>import "core:crypto/hash"</p>
-<p>main :: proc() {
-    input := "Let the cinders burn."</p>
-<p>    // Compute the digest, using the low level API.
-    ctx: hash.Context
-    digest := make([]byte, hash.DIGEST_SIZES[hash.Algorithm.SHA3_512])
-    defer delete(digest)</p>
-<p>    hash.init(&ctx, hash.Algorithm.SHA3_512)
-    hash.update(&ctx, transmute([]byte)input)
-    hash.final(&ctx, digest)
+<details open class="code-example">
+<summary><b>Example:</b></summary>
+<pre><code class="hljs language-odin" data-lang="odin">package hash_example
+
+import "core:crypto/hash"
+
+main :: proc() {
+	input := "Let the cinders burn."
+
+	// Compute the digest, using the low level API.
+	ctx: hash.Context
+	digest := make([]byte, hash.DIGEST_SIZES[hash.Algorithm.SHA3_512])
+	defer delete(digest)
+
+	hash.init(&ctx, hash.Algorithm.SHA3_512)
+	hash.update(&ctx, transmute([]byte)input)
+	hash.final(&ctx, digest)
 }
-<code></code>`</p>
+</code></pre>
+</details>
 </div>
 <div id="pkg-index">
 <h2>Index</h2>
@@ -748,7 +757,7 @@ be used again.</p>
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/hash/low_level.odin">low_level.odin</a></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2024-09 (vendor "odin") Windows_amd64 @ 2024-09-03 21:10:26.648103800 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2024-09 (vendor "odin") Windows_amd64 @ 2024-09-04 21:10:35.397113100 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">

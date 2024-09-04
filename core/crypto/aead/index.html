@@ -324,49 +324,52 @@ the context based interface may be more efficient, depending on the
 algorithm.</p>
 <p>WARNING: Reusing the same key + iv to seal (encrypt) multiple messages
 results in catastrophic loss of security for most algorithms.</p>
-<p><code></code>`odin
-package aead_example</p>
-<p>import "core:bytes"
+<details open class="code-example">
+<summary><b>Example:</b></summary>
+<pre><code class="hljs language-odin" data-lang="odin">package aead_example
+
+import "core:bytes"
 import "core:crypto"
-import "core:crypto/aead"</p>
-<p>main :: proc() {</p>
-<pre>algo := aead.Algorithm.XCHACHA20POLY1305
+import "core:crypto/aead"
 
-// The example added associated data, and plaintext.
-aad_str := "Get your ass in gear boys."
-pt_str := "They're immanetizing the Eschaton."
+main :: proc() {
+	algo := aead.Algorithm.XCHACHA20POLY1305
 
-aad := transmute([]byte)aad_str
-plaintext := transmute([]byte)pt_str
-pt_len := len(plaintext)
+	// The example added associated data, and plaintext.
+	aad_str := "Get your ass in gear boys."
+	pt_str := "They're immanetizing the Eschaton."
 
-// Generate a random key for the purposes of illustration.
-key := make([]byte, aead.KEY_SIZES[algo])
-defer delete(key)
-crypto.rand_bytes(key)
+	aad := transmute([]byte)aad_str
+	plaintext := transmute([]byte)pt_str
+	pt_len := len(plaintext)
 
-// `ciphertext || tag`, is a common way data is transmitted, so
-// demonstrate that.
-buf := make([]byte, pt_len + aead.TAG_SIZES[algo])
-defer delete(buf)
-ciphertext, tag := buf[:pt_len], buf[pt_len:]
+	// Generate a random key for the purposes of illustration.
+	key := make([]byte, aead.KEY_SIZES[algo])
+	defer delete(key)
+	crypto.rand_bytes(key)
 
-// Seal the AAD + Plaintext.
-iv := make([]byte, aead.IV_SIZES[algo])
-defer delete(iv)
-crypto.rand_bytes(iv) // Random IVs are safe with XChaCha20-Poly1305.
-aead.seal(algo, ciphertext, tag, key, iv, aad, plaintext)
+	// `ciphertext || tag`, is a common way data is transmitted, so
+	// demonstrate that.
+	buf := make([]byte, pt_len + aead.TAG_SIZES[algo])
+	defer delete(buf)
+	ciphertext, tag := buf[:pt_len], buf[pt_len:]
 
-// Open the AAD + Ciphertext.
-opened_pt := buf[:pt_len]
-if ok := aead.open(algo, opened_pt, key, iv, aad, ciphertext, tag); !ok {
-	panic("aead example: failed to open")
+	// Seal the AAD + Plaintext.
+	iv := make([]byte, aead.IV_SIZES[algo])
+	defer delete(iv)
+	crypto.rand_bytes(iv) // Random IVs are safe with XChaCha20-Poly1305.
+	aead.seal(algo, ciphertext, tag, key, iv, aad, plaintext)
+
+	// Open the AAD + Ciphertext.
+	opened_pt := buf[:pt_len]
+	if ok := aead.open(algo, opened_pt, key, iv, aad, ciphertext, tag); !ok {
+		panic("aead example: failed to open")
+	}
+
+	assert(bytes.equal(opened_pt, plaintext))
 }
-
-assert(bytes.equal(opened_pt, plaintext))
-</pre>
-<p>}
-<code></code>`</p>
+</code></pre>
+</details>
 </div>
 <div id="pkg-index">
 <h2>Index</h2>
@@ -716,7 +719,7 @@ with the provided algorithm, key, and iv, stores the output in dst and tag.</p>
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/crypto/aead/low_level.odin">low_level.odin</a></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2024-09 (vendor "odin") Windows_amd64 @ 2024-09-03 21:10:26.641296800 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2024-09 (vendor "odin") Windows_amd64 @ 2024-09-04 21:10:35.391680000 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">

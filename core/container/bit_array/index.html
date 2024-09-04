@@ -317,8 +317,10 @@
 <h2>Overview</h2>
 <div id="pkg-overview">
 <p>The Bit Array can be used in several ways:</p>
-<p><span class="doc-list">By default you don't need to instantiate a Bit Array:</span></p>
-<pre>package test
+<p>By default you don't need to instantiate a Bit Array.</p>
+<details open class="code-example">
+<summary><b>Example:</b></summary>
+<pre><code class="hljs language-odin" data-lang="odin">package test
 
 import "core:fmt"
 import "core:container/bit_array"
@@ -336,10 +338,12 @@ main :: proc() {
 	fmt.println(was_set, was_retrieved) 
 	destroy(&bits)
 }
-
-</pre>
-<p><span class="doc-list">A Bit Array can optionally allow for negative indices, if the minimum value was given during creation:</span></p>
-<pre>package test
+</code></pre>
+</details>
+<p>A Bit Array can optionally allow for negative indices, if the minimum value was given during creation.</p>
+<details open class="code-example">
+<summary><b>Example:</b></summary>
+<pre><code class="hljs language-odin" data-lang="odin">package test
 
 import "core:fmt"
 import "core:container/bit_array"
@@ -363,7 +367,8 @@ main :: proc() {
 	fmt.printf("Get(Negative_Test): %v, %v\n", get(bits, Foo.Negative_Test))
 	fmt.printf("Freed.\n")
 }
-</pre>
+</code></pre>
+</details>
 </div>
 <div id="pkg-index">
 <h2>Index</h2>
@@ -394,7 +399,7 @@ Variables (0)</summary>
 <div>
 <details class="doc-index" id="doc-index-Procedures" aria-labelledby="#doc-index-Procedures-header">
 <summary id="#doc-index-Procedures-header">
-Procedures (13)</summary>
+Procedures (15)</summary>
 <ul>
 <li><a href="#clear">clear</a></li>
 <li><a href="#create">create</a></li>
@@ -403,8 +408,10 @@ Procedures (13)</summary>
 <li><a href="#iterate_by_all">iterate_by_all</a></li>
 <li><a href="#iterate_by_set">iterate_by_set</a></li>
 <li><a href="#iterate_by_unset">iterate_by_unset</a></li>
+<li><a href="#len">len</a></li>
 <li><a href="#make_iterator">make_iterator</a></li>
 <li><a href="#set">set</a></li>
+<li><a href="#shrink">shrink</a></li>
 <li><a href="#unsafe_get">unsafe_get</a></li>
 <li><a href="#unsafe_set">unsafe_set</a></li>
 <li><a href="#unsafe_unset">unsafe_unset</a></li>
@@ -424,12 +431,12 @@ Procedure Groups (0)</summary>
 <section class="documentation">
 <h2 id="pkg-Types" class="pkg-header">Types</h2>
 <div class="pkg-entity">
-<h3 id="Bit_Array"><span><a class="doc-id-link" href="#Bit_Array">Bit_Array<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/container/bit_array/bit_array.odin#L18"><em>Source</em></a></div></h3>
+<h3 id="Bit_Array"><span><a class="doc-id-link" href="#Bit_Array">Bit_Array<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/container/bit_array/bit_array.odin#L19"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Bit_Array :: <span class="keyword-type">struct</span> {
 	bits:         [<span class="keyword">dynamic</span>]<a href="/base/builtin#u64"><span class="doc-builtin">u64</span></a>,
 	bias:         <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>,
-	max_index:    <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>,
+	length:       <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>,
 	free_pointer: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>,
 }</pre>
 </div>
@@ -438,8 +445,10 @@ Procedure Groups (0)</summary>
 <li><a href="/core/container/bit_array/#clear">clear</a></li>
 <li><a href="/core/container/bit_array/#destroy">destroy</a></li>
 <li><a href="/core/container/bit_array/#get">get</a></li>
+<li><a href="/core/container/bit_array/#len">len</a></li>
 <li><a href="/core/container/bit_array/#make_iterator">make_iterator</a></li>
 <li><a href="/core/container/bit_array/#set">set</a></li>
+<li><a href="/core/container/bit_array/#shrink">shrink</a></li>
 <li><a href="/core/container/bit_array/#unsafe_get">unsafe_get</a></li>
 <li><a href="/core/container/bit_array/#unsafe_set">unsafe_set</a></li>
 <li><a href="/core/container/bit_array/#unsafe_unset">unsafe_unset</a></li>
@@ -451,7 +460,7 @@ Procedure Groups (0)</summary>
 </ul>
 </div>
 <div class="pkg-entity">
-<h3 id="Bit_Array_Iterator"><span><a class="doc-id-link" href="#Bit_Array_Iterator">Bit_Array_Iterator<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/container/bit_array/bit_array.odin#L25"><em>Source</em></a></div></h3>
+<h3 id="Bit_Array_Iterator"><span><a class="doc-id-link" href="#Bit_Array_Iterator">Bit_Array_Iterator<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/container/bit_array/bit_array.odin#L26"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Bit_Array_Iterator :: <span class="keyword-type">struct</span> {
 	array:    ^<a class="code-typename" href="/core/container/bit_array/#Bit_Array">Bit_Array</a>,
@@ -476,7 +485,7 @@ Procedure Groups (0)</summary>
 <p class="pkg-empty-section">This section is empty.</p>
 <h2 id="pkg-Procedures" class="pkg-header">Procedures</h2>
 <div class="pkg-entity">
-<h3 id="clear"><span><a class="doc-id-link" href="#clear">clear<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/container/bit_array/bit_array.odin#L297"><em>Source</em></a></div></h3>
+<h3 id="clear"><span><a class="doc-id-link" href="#clear">clear<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/container/bit_array/bit_array.odin#L301"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">clear :: <span class="keyword-type">proc</span>(ba: ^<a class="code-typename" href="/core/container/bit_array/#Bit_Array">Bit_Array</a>) {…}</pre>
 </div>
@@ -487,13 +496,15 @@ Procedure Groups (0)</summary>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="create"><span><a class="doc-id-link" href="#create">create<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/container/bit_array/bit_array.odin#L274"><em>Source</em></a></div></h3>
+<h3 id="create"><span><a class="doc-id-link" href="#create">create<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/container/bit_array/bit_array.odin#L278"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">create :: <span class="keyword-type">proc</span>(max_index: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, min_index: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a> = 0, allocator := <a href="/base/runtime/#Context">context.allocator</a>) -> (res: ^<a class="code-typename" href="/core/container/bit_array/#Bit_Array">Bit_Array</a>, ok: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>) <span class="directive">#optional_ok</span> {…}</pre>
 </div>
 <details class="odin-doc-toggle" open>
 <summary class="hideme"><span>&nbsp;</span></summary>
 <p>A helper function to create a Bit Array with optional bias, in case your smallest index is non-zero (including negative).</p>
+<p>The range of bits created by this procedure is <code>min_index..&lt;max_index</code>, and the
+array will be able to expand beyond <code>max_index</code> if needed.</p>
 <p><i>Allocates (`new(Bit_Array) & make(ba.bits)`)</i></p>
 <p><b>Inputs:</b><br><span class="doc-list">max_index: maximum starting index</span>
 <span class="doc-list">min_index: minimum starting index (used as a bias)</span>
@@ -502,7 +513,7 @@ Procedure Groups (0)</summary>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="destroy"><span><a class="doc-id-link" href="#destroy">destroy<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/container/bit_array/bit_array.odin#L307"><em>Source</em></a></div></h3>
+<h3 id="destroy"><span><a class="doc-id-link" href="#destroy">destroy<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/container/bit_array/bit_array.odin#L353"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">destroy :: <span class="keyword-type">proc</span>(ba: ^<a class="code-typename" href="/core/container/bit_array/#Bit_Array">Bit_Array</a>) {…}</pre>
 </div>
@@ -513,7 +524,7 @@ Procedure Groups (0)</summary>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="get"><span><a class="doc-id-link" href="#get">get<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/container/bit_array/bit_array.odin#L151"><em>Source</em></a></div></h3>
+<h3 id="get"><span><a class="doc-id-link" href="#get">get<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/container/bit_array/bit_array.odin#L152"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">get :: <span class="keyword-type">proc</span>(ba: ^<a class="code-typename" href="/core/container/bit_array/#Bit_Array">Bit_Array</a>, <span class="keyword-type">#any_int</span> index: <a href="/base/builtin#uint"><span class="doc-builtin">uint</span></a>) -> (res: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>, ok: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>) <span class="directive">#optional_ok</span> {…}</pre>
 </div>
@@ -527,7 +538,7 @@ Procedure Groups (0)</summary>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="iterate_by_all"><span><a class="doc-id-link" href="#iterate_by_all">iterate_by_all<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/container/bit_array/bit_array.odin#L53"><em>Source</em></a></div></h3>
+<h3 id="iterate_by_all"><span><a class="doc-id-link" href="#iterate_by_all">iterate_by_all<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/container/bit_array/bit_array.odin#L54"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">iterate_by_all :: <span class="keyword-type">proc</span>(it: ^<a class="code-typename" href="/core/container/bit_array/#Bit_Array_Iterator">Bit_Array_Iterator</a>) -> (set: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>, index: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, ok: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>) {…}</pre>
 </div>
@@ -541,7 +552,7 @@ Procedure Groups (0)</summary>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="iterate_by_set"><span><a class="doc-id-link" href="#iterate_by_set">iterate_by_set<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/container/bit_array/bit_array.odin#L78"><em>Source</em></a></div></h3>
+<h3 id="iterate_by_set"><span><a class="doc-id-link" href="#iterate_by_set">iterate_by_set<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/container/bit_array/bit_array.odin#L79"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">iterate_by_set :: <span class="keyword-type">proc</span>(it: ^<a class="code-typename" href="/core/container/bit_array/#Bit_Array_Iterator">Bit_Array_Iterator</a>) -> (index: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, ok: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>) {…}</pre>
 </div>
@@ -554,7 +565,7 @@ Procedure Groups (0)</summary>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="iterate_by_unset"><span><a class="doc-id-link" href="#iterate_by_unset">iterate_by_unset<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/container/bit_array/bit_array.odin#L91"><em>Source</em></a></div></h3>
+<h3 id="iterate_by_unset"><span><a class="doc-id-link" href="#iterate_by_unset">iterate_by_unset<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/container/bit_array/bit_array.odin#L92"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">iterate_by_unset :: <span class="keyword-type">proc</span>(it: ^<a class="code-typename" href="/core/container/bit_array/#Bit_Array_Iterator">Bit_Array_Iterator</a>) -> (index: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, ok: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>) {…}</pre>
 </div>
@@ -567,7 +578,19 @@ Procedure Groups (0)</summary>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="make_iterator"><span><a class="doc-id-link" href="#make_iterator">make_iterator<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/container/bit_array/bit_array.odin#L39"><em>Source</em></a></div></h3>
+<h3 id="len"><span><a class="doc-id-link" href="#len">len<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/container/bit_array/bit_array.odin#L314"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">len :: <span class="keyword-type">proc</span>(ba: ^<a class="code-typename" href="/core/container/bit_array/#Bit_Array">Bit_Array</a>) -> (length: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Gets the length of set and unset valid bits in the Bit_Array.</p>
+<p><b>Inputs:</b><br><span class="doc-list">ba: The target Bit_Array</span></p>
+<p><b>Returns:</b><br><span class="doc-list">length: The length of valid bits.</span></p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="make_iterator"><span><a class="doc-id-link" href="#make_iterator">make_iterator<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/container/bit_array/bit_array.odin#L40"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">make_iterator :: <span class="keyword-type">proc</span>(ba: ^<a class="code-typename" href="/core/container/bit_array/#Bit_Array">Bit_Array</a>) -> (it: <a class="code-typename" href="/core/container/bit_array/#Bit_Array_Iterator">Bit_Array_Iterator</a>) {…}</pre>
 </div>
@@ -579,7 +602,7 @@ Procedure Groups (0)</summary>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="set"><span><a class="doc-id-link" href="#set">set<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/container/bit_array/bit_array.odin#L199"><em>Source</em></a></div></h3>
+<h3 id="set"><span><a class="doc-id-link" href="#set">set<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/container/bit_array/bit_array.odin#L200"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">set :: <span class="keyword-type">proc</span>(ba: ^<a class="code-typename" href="/core/container/bit_array/#Bit_Array">Bit_Array</a>, <span class="keyword-type">#any_int</span> index: <a href="/base/builtin#uint"><span class="doc-builtin">uint</span></a>, set_to: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> = true, allocator := <a href="/base/runtime/#Context">context.allocator</a>) -> (ok: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>) {…}</pre>
 </div>
@@ -595,7 +618,18 @@ Procedure Groups (0)</summary>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="unsafe_get"><span><a class="doc-id-link" href="#unsafe_get">unsafe_get<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/container/bit_array/bit_array.odin#L182"><em>Source</em></a></div></h3>
+<h3 id="shrink"><span><a class="doc-id-link" href="#shrink">shrink<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/container/bit_array/bit_array.odin#L324"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">shrink :: <span class="keyword-type">proc</span>(ba: ^<a class="code-typename" href="/core/container/bit_array/#Bit_Array">Bit_Array</a>) {…}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>Shrinks the Bit_Array's backing storage to the smallest possible size.</p>
+<p><b>Inputs:</b><br><span class="doc-list">ba: The target Bit_Array</span></p>
+</details>
+</div>
+<div class="pkg-entity">
+<h3 id="unsafe_get"><span><a class="doc-id-link" href="#unsafe_get">unsafe_get<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/container/bit_array/bit_array.odin#L183"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">unsafe_get :: <span class="keyword-type">proc</span>(ba: ^<a class="code-typename" href="/core/container/bit_array/#Bit_Array">Bit_Array</a>, <span class="keyword-type">#any_int</span> index: <a href="/base/builtin#uint"><span class="doc-builtin">uint</span></a>) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> {…}</pre>
 </div>
@@ -609,7 +643,7 @@ Procedure Groups (0)</summary>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="unsafe_set"><span><a class="doc-id-link" href="#unsafe_set">unsafe_set<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/container/bit_array/bit_array.odin#L230"><em>Source</em></a></div></h3>
+<h3 id="unsafe_set"><span><a class="doc-id-link" href="#unsafe_set">unsafe_set<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/container/bit_array/bit_array.odin#L231"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">unsafe_set :: <span class="keyword-type">proc</span>(ba: ^<a class="code-typename" href="/core/container/bit_array/#Bit_Array">Bit_Array</a>, bit: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>) {…}</pre>
 </div>
@@ -622,7 +656,7 @@ Procedure Groups (0)</summary>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="unsafe_unset"><span><a class="doc-id-link" href="#unsafe_unset">unsafe_unset<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/container/bit_array/bit_array.odin#L258"><em>Source</em></a></div></h3>
+<h3 id="unsafe_unset"><span><a class="doc-id-link" href="#unsafe_unset">unsafe_unset<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/container/bit_array/bit_array.odin#L259"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">unsafe_unset :: <span class="keyword-type">proc</span>(b: ^<a class="code-typename" href="/core/container/bit_array/#Bit_Array">Bit_Array</a>, bit: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>) {…}</pre>
 </div>
@@ -635,7 +669,7 @@ Procedure Groups (0)</summary>
 </details>
 </div>
 <div class="pkg-entity">
-<h3 id="unset"><span><a class="doc-id-link" href="#unset">unset<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/container/bit_array/bit_array.odin#L246"><em>Source</em></a></div></h3>
+<h3 id="unset"><span><a class="doc-id-link" href="#unset">unset<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/container/bit_array/bit_array.odin#L247"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">unset :: <span class="keyword-type">proc</span>(ba: ^<a class="code-typename" href="/core/container/bit_array/#Bit_Array">Bit_Array</a>, <span class="keyword-type">#any_int</span> index: <a href="/base/builtin#uint"><span class="doc-builtin">uint</span></a>, allocator := <a href="/base/runtime/#Context">context.allocator</a>) -> (ok: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>) {…}</pre>
 </div>
@@ -658,7 +692,7 @@ Procedure Groups (0)</summary>
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/container/bit_array/doc.odin">doc.odin</a></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2024-09 (vendor "odin") Windows_amd64 @ 2024-09-03 21:10:26.633048300 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2024-09 (vendor "odin") Windows_amd64 @ 2024-09-04 21:10:35.382966000 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
@@ -676,8 +710,10 @@ Procedure Groups (0)</summary>
 <li><a href="#iterate_by_all">iterate_by_all</a></li>
 <li><a href="#iterate_by_set">iterate_by_set</a></li>
 <li><a href="#iterate_by_unset">iterate_by_unset</a></li>
+<li><a href="#len">len</a></li>
 <li><a href="#make_iterator">make_iterator</a></li>
 <li><a href="#set">set</a></li>
+<li><a href="#shrink">shrink</a></li>
 <li><a href="#unsafe_get">unsafe_get</a></li>
 <li><a href="#unsafe_set">unsafe_set</a></li>
 <li><a href="#unsafe_unset">unsafe_unset</a></li>

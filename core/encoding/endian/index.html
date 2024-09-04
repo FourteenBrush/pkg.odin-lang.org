@@ -318,18 +318,27 @@
 <div id="pkg-overview">
 <p>Package endian implements a simple translation between bytes and numbers with
     specific endian encodings.</p>
-<p>    buf: [100]u8
-    put_u16(buf[:], .Little, 16) or_return</p>
-<p>    You may ask yourself, why isn't <code>byte_order</code> platform Endianness by default, so we can write:
-    put_u16(buf[:], 16) or_return</p>
-<p>    The answer is that very few file formats are written in native/platform endianness. Most of them specify the endianness of
-    each of their fields, or use a header field which specifies it for the entire file.</p>
-<p>    e.g. a file which specifies it at the top for all fields could do this:
-    file_order := .Little if buf[0] == 0 else .Big
-    field := get_u16(buf[1:], file_order) or_return</p>
-<p>    If on the other hand a field is <i>always</i> Big-Endian, you're wise to explicitly state it for the benefit of the reader,
-    be that your future self or someone else.</p>
-<p>    field := get_u16(buf[:], .Big) or_return</p>
+<details open class="code-example">
+<summary><b>Example:</b></summary>
+<pre><code class="hljs language-odin" data-lang="odin">buf: [100]u8
+put_u16(buf[:], .Little, 16) or_return
+
+// You may ask yourself, why isn't `byte_order` platform Endianness by default, so we can write:
+put_u16(buf[:], 16) or_return
+
+// The answer is that very few file formats are written in native/platform endianness. Most of them specify the endianness of
+// each of their fields, or use a header field which specifies it for the entire file.
+
+// e.g. a file which specifies it at the top for all fields could do this:
+file_order := .Little if buf[0] == 0 else .Big
+field := get_u16(buf[1:], file_order) or_return
+
+// If on the other hand a field is *always* Big-Endian, you're wise to explicitly state it for the benefit of the reader,
+// be that your future self or someone else.
+
+field := get_u16(buf[:], .Big) or_return
+</code></pre>
+</details>
 </div>
 <div id="pkg-index">
 <h2>Index</h2>
@@ -640,7 +649,7 @@ Procedure Groups (0)</summary>
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/encoding/endian/endian.odin">endian.odin</a></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2024-09 (vendor "odin") Windows_amd64 @ 2024-09-03 21:10:26.670251400 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2024-09 (vendor "odin") Windows_amd64 @ 2024-09-04 21:10:35.419384900 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
