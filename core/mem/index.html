@@ -405,7 +405,7 @@ used to denote the count of objects.</p>
 <div>
 <details class="doc-index" id="doc-index-Types" aria-labelledby="#doc-index-Types-header">
 <summary id="#doc-index-Types-header">
-Types (42)</summary>
+Types (43)</summary>
 <ul>
 <li><a href="#Allocator">Allocator</a></li>
 <li><a href="#Allocator_Error">Allocator_Error</a></li>
@@ -417,6 +417,7 @@ Types (42)</summary>
 <li><a href="#Arena_Temp_Memory">Arena_Temp_Memory</a></li>
 <li><a href="#Buddy_Allocator">Buddy_Allocator</a></li>
 <li><a href="#Buddy_Block">Buddy_Block</a></li>
+<li><a href="#Compat_Allocator">Compat_Allocator</a></li>
 <li><a href="#Dynamic_Arena">Dynamic_Arena</a></li>
 <li><a href="#Dynamic_Pool">Dynamic_Pool</a></li>
 <li><a href="#Fixed_Byte_Buffer">Fixed_Byte_Buffer</a></li>
@@ -485,7 +486,7 @@ Variables (0)</summary>
 <div>
 <details class="doc-index" id="doc-index-Procedures" aria-labelledby="#doc-index-Procedures-header">
 <summary id="#doc-index-Procedures-header">
-Procedures (187)</summary>
+Procedures (190)</summary>
 <ul>
 <li><a href="#align_backward">align_backward</a></li>
 <li><a href="#align_backward_int">align_backward_int</a></li>
@@ -532,6 +533,9 @@ Procedures (187)</summary>
 <li><a href="#compare">compare</a></li>
 <li><a href="#compare_byte_ptrs">compare_byte_ptrs</a></li>
 <li><a href="#compare_ptrs">compare_ptrs</a></li>
+<li><a href="#compat_allocator">compat_allocator</a></li>
+<li><a href="#compat_allocator_init">compat_allocator_init</a></li>
+<li><a href="#compat_allocator_proc">compat_allocator_proc</a></li>
 <li><a href="#context_from_allocator">context_from_allocator</a></li>
 <li><a href="#copy">copy</a></li>
 <li><a href="#copy_non_overlapping">copy_non_overlapping</a></li>
@@ -1037,6 +1041,29 @@ all of the memory that was allocated from the arena will be freed.</p>
 <li><a href="/core/mem/#buddy_block_find_best">buddy_block_find_best</a></li>
 <li><a href="/core/mem/#buddy_block_next">buddy_block_next</a></li>
 <li><a href="/core/mem/#buddy_block_split">buddy_block_split</a></li>
+</ul>
+</div>
+<div class="pkg-entity">
+<h3 id="Compat_Allocator"><span><a class="doc-id-link" href="#Compat_Allocator">Compat_Allocator<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/allocators.odin#L2290"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">Compat_Allocator :: <span class="keyword-type">struct</span> {
+	parent: runtime.<a class="code-typename" href="/base/runtime/#Allocator">Allocator</a>,
+}</pre>
+</div>
+<details class="odin-doc-toggle" open>
+<summary class="hideme"><span>&nbsp;</span></summary>
+<p>An allocator that keeps track of allocation sizes and passes it along to resizes.
+This is useful if you are using a library that needs an equivalent of <code>realloc</code> but want to use
+the Odin allocator interface.</p>
+<p>You want to wrap your allocator into this one if you are trying to use any allocator that relies
+on the old size to work.</p>
+<p>The overhead of this allocator is an extra max(alignment, size_of(Header)) bytes allocated for each allocation, these bytes are
+used to store the size and original pointer.</p>
+</details>
+<h5>Related Procedures With Parameters</h5>
+<ul>
+<li><a href="/core/mem/#compat_allocator">compat_allocator</a></li>
+<li><a href="/core/mem/#compat_allocator_init">compat_allocator_init</a></li>
 </ul>
 </div>
 <div class="pkg-entity">
@@ -2379,6 +2406,31 @@ ordering.</p>
   - Otherwise the comparison continues until <code>n</code> bytes are compared.
 2. If all the bytes in the range are equal, this procedure returns <code>0</code>.</p>
 </details>
+</div>
+<div class="pkg-entity">
+<h3 id="compat_allocator"><span><a class="doc-id-link" href="#compat_allocator">compat_allocator<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/allocators.odin#L2298"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">compat_allocator :: <span class="keyword-type">proc</span>(rra: ^<a class="code-typename" href="/core/mem/#Compat_Allocator">Compat_Allocator</a>) -> runtime.<a class="code-typename" href="/base/runtime/#Allocator">Allocator</a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="compat_allocator_init"><span><a class="doc-id-link" href="#compat_allocator_init">compat_allocator_init<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/allocators.odin#L2294"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">compat_allocator_init :: <span class="keyword-type">proc</span>(rra: ^<a class="code-typename" href="/core/mem/#Compat_Allocator">Compat_Allocator</a>, allocator := <a href="/base/runtime/#Context">context.allocator</a>) {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="compat_allocator_proc"><span><a class="doc-id-link" href="#compat_allocator_proc">compat_allocator_proc<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/allocators.odin#L2305"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">compat_allocator_proc :: <span class="keyword-type">proc</span>(
+	allocator_data:  <a href="/base/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>, 
+	mode:            runtime.<a class="code-typename" href="/base/runtime/#Allocator_Mode">Allocator_Mode</a>, 
+	size, alignment: <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, 
+	old_memory:      <a href="/base/builtin#rawptr"><span class="doc-builtin">rawptr</span></a>, 
+	old_size:        <a href="/base/builtin#int"><span class="doc-builtin">int</span></a>, 
+	location := <a href="/base/runtime/#Source_Code_Location">#caller_location</a>, 
+) -> (data: []<a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a>, err: runtime.<a class="code-typename" href="/base/runtime/#Allocator_Error">Allocator_Error</a>) {…}</pre>
+</div>
 </div>
 <div class="pkg-entity">
 <h3 id="context_from_allocator"><span><a class="doc-id-link" href="#context_from_allocator">context_from_allocator<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/mem.odin#L591"><em>Source</em></a></div></h3>
@@ -4645,7 +4697,7 @@ to zero, and returns the slice <code>data</code>.</p>
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/mem/tracking_allocator.odin">tracking_allocator.odin</a></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2024-09 (vendor "odin") Windows_amd64 @ 2024-09-16 21:10:40.149752300 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2024-09 (vendor "odin") Windows_amd64 @ 2024-09-17 15:37:00.176631600 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
@@ -4661,6 +4713,7 @@ to zero, and returns the slice <code>data</code>.</p>
 <li><a href="#Arena_Temp_Memory">Arena_Temp_Memory</a></li>
 <li><a href="#Buddy_Allocator">Buddy_Allocator</a></li>
 <li><a href="#Buddy_Block">Buddy_Block</a></li>
+<li><a href="#Compat_Allocator">Compat_Allocator</a></li>
 <li><a href="#Dynamic_Arena">Dynamic_Arena</a></li>
 <li><a href="#Dynamic_Pool">Dynamic_Pool</a></li>
 <li><a href="#Fixed_Byte_Buffer">Fixed_Byte_Buffer</a></li>
@@ -4759,6 +4812,9 @@ to zero, and returns the slice <code>data</code>.</p>
 <li><a href="#compare">compare</a></li>
 <li><a href="#compare_byte_ptrs">compare_byte_ptrs</a></li>
 <li><a href="#compare_ptrs">compare_ptrs</a></li>
+<li><a href="#compat_allocator">compat_allocator</a></li>
+<li><a href="#compat_allocator_init">compat_allocator_init</a></li>
+<li><a href="#compat_allocator_proc">compat_allocator_proc</a></li>
 <li><a href="#context_from_allocator">context_from_allocator</a></li>
 <li><a href="#copy">copy</a></li>
 <li><a href="#copy_non_overlapping">copy_non_overlapping</a></li>
