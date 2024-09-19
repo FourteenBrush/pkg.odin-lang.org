@@ -351,7 +351,7 @@ Variables (2)</summary>
 <div>
 <details class="doc-index" id="doc-index-Procedures" aria-labelledby="#doc-index-Procedures-header">
 <summary id="#doc-index-Procedures-header">
-Procedures (25)</summary>
+Procedures (26)</summary>
 <ul>
 <li><a href="#advance_rune">advance_rune</a></li>
 <li><a href="#default_error_handler">default_error_handler</a></li>
@@ -370,6 +370,7 @@ Procedures (25)</summary>
 <li><a href="#scan">scan</a></li>
 <li><a href="#scan_comment">scan_comment</a></li>
 <li><a href="#scan_escape">scan_escape</a></li>
+<li><a href="#scan_file_tag">scan_file_tag</a></li>
 <li><a href="#scan_identifier">scan_identifier</a></li>
 <li><a href="#scan_number">scan_number</a></li>
 <li><a href="#scan_raw_string">scan_raw_string</a></li>
@@ -460,6 +461,7 @@ Procedure Groups (0)</summary>
 	Invalid, 
 	EOF, 
 	Comment, 
+	File_Tag, 
 	B_Literal_Begin, 
 	Ident,                        <span class="comment">// main</span>
 	Integer,                      <span class="comment">// 12345</span>
@@ -576,7 +578,7 @@ Procedure Groups (0)</summary>
 	Matrix,                       <span class="comment">// matrix</span>
 	B_Keyword_End, 
 	COUNT, 
-	B_Custom_Keyword_Begin = 119, 
+	B_Custom_Keyword_Begin = 120, 
 }</pre>
 </div>
 <h5>Related Procedures With Parameters</h5>
@@ -621,6 +623,7 @@ Procedure Groups (0)</summary>
 <li><a href="/core/odin/tokenizer/#scan">scan</a></li>
 <li><a href="/core/odin/tokenizer/#scan_comment">scan_comment</a></li>
 <li><a href="/core/odin/tokenizer/#scan_escape">scan_escape</a></li>
+<li><a href="/core/odin/tokenizer/#scan_file_tag">scan_file_tag</a></li>
 <li><a href="/core/odin/tokenizer/#scan_identifier">scan_identifier</a></li>
 <li><a href="/core/odin/tokenizer/#scan_number">scan_number</a></li>
 <li><a href="/core/odin/tokenizer/#scan_raw_string">scan_raw_string</a></li>
@@ -633,15 +636,15 @@ Procedure Groups (0)</summary>
 <p class="pkg-empty-section">This section is empty.</p>
 <h2 id="pkg-Variables" class="pkg-header">Variables</h2>
 <div class="pkg-entity">
-<h3 id="custom_keyword_tokens"><span><a class="doc-id-link" href="#custom_keyword_tokens">custom_keyword_tokens<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/tokenizer/token.odin#L294"><em>Source</em></a></div></h3>
+<h3 id="custom_keyword_tokens"><span><a class="doc-id-link" href="#custom_keyword_tokens">custom_keyword_tokens<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/tokenizer/token.odin#L296"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">custom_keyword_tokens: []<a href="/base/builtin#string"><span class="doc-builtin">string</span></a></pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="tokens"><span><a class="doc-id-link" href="#tokens">tokens<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/tokenizer/token.odin#L165"><em>Source</em></a></div></h3>
+<h3 id="tokens"><span><a class="doc-id-link" href="#tokens">tokens<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/tokenizer/token.odin#L166"><em>Source</em></a></div></h3>
 <div>
-<pre class="doc-code">tokens: [118]<a href="/base/builtin#string"><span class="doc-builtin">string</span></a> = …</pre>
+<pre class="doc-code">tokens: [119]<a href="/base/builtin#string"><span class="doc-builtin">string</span></a> = …</pre>
 </div>
 </div>
 <h2 id="pkg-Procedures" class="pkg-header">Procedures</h2>
@@ -658,7 +661,7 @@ Procedure Groups (0)</summary>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="digit_val"><span><a class="doc-id-link" href="#digit_val">digit_val<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/tokenizer/tokenizer.odin#L258"><em>Source</em></a></div></h3>
+<h3 id="digit_val"><span><a class="doc-id-link" href="#digit_val">digit_val<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/tokenizer/tokenizer.odin#L275"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">digit_val :: <span class="keyword-type">proc</span>(r: <a href="/base/builtin#rune"><span class="doc-builtin">rune</span></a>) -> <a href="/base/builtin#int"><span class="doc-builtin">int</span></a> {…}</pre>
 </div>
@@ -676,7 +679,7 @@ Procedure Groups (0)</summary>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="is_assignment_operator"><span><a class="doc-id-link" href="#is_assignment_operator">is_assignment_operator<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/tokenizer/token.odin#L337"><em>Source</em></a></div></h3>
+<h3 id="is_assignment_operator"><span><a class="doc-id-link" href="#is_assignment_operator">is_assignment_operator<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/tokenizer/token.odin#L339"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">is_assignment_operator :: <span class="keyword-type">proc</span>(kind: <a class="code-typename" href="/core/odin/tokenizer/#Token_Kind">Token_Kind</a>) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> {…}</pre>
 </div>
@@ -688,7 +691,7 @@ Procedure Groups (0)</summary>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="is_keyword"><span><a class="doc-id-link" href="#is_keyword">is_keyword<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/tokenizer/token.odin#L340"><em>Source</em></a></div></h3>
+<h3 id="is_keyword"><span><a class="doc-id-link" href="#is_keyword">is_keyword<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/tokenizer/token.odin#L342"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">is_keyword :: <span class="keyword-type">proc</span>(kind: <a class="code-typename" href="/core/odin/tokenizer/#Token_Kind">Token_Kind</a>) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> {…}</pre>
 </div>
@@ -700,19 +703,19 @@ Procedure Groups (0)</summary>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="is_literal"><span><a class="doc-id-link" href="#is_literal">is_literal<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/tokenizer/token.odin#L323"><em>Source</em></a></div></h3>
+<h3 id="is_literal"><span><a class="doc-id-link" href="#is_literal">is_literal<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/tokenizer/token.odin#L325"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">is_literal :: <span class="keyword-type">proc</span>(kind: <a class="code-typename" href="/core/odin/tokenizer/#Token_Kind">Token_Kind</a>) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="is_newline"><span><a class="doc-id-link" href="#is_newline">is_newline<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/tokenizer/token.odin#L297"><em>Source</em></a></div></h3>
+<h3 id="is_newline"><span><a class="doc-id-link" href="#is_newline">is_newline<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/tokenizer/token.odin#L299"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">is_newline :: <span class="keyword-type">proc</span>(tok: <a class="code-typename" href="/core/odin/tokenizer/#Token">Token</a>) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="is_operator"><span><a class="doc-id-link" href="#is_operator">is_operator<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/tokenizer/token.odin#L326"><em>Source</em></a></div></h3>
+<h3 id="is_operator"><span><a class="doc-id-link" href="#is_operator">is_operator<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/tokenizer/token.odin#L328"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">is_operator :: <span class="keyword-type">proc</span>(kind: <a class="code-typename" href="/core/odin/tokenizer/#Token_Kind">Token_Kind</a>) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> {…}</pre>
 </div>
@@ -730,7 +733,7 @@ Procedure Groups (0)</summary>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="scan"><span><a class="doc-id-link" href="#scan">scan<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/tokenizer/tokenizer.odin#L474"><em>Source</em></a></div></h3>
+<h3 id="scan"><span><a class="doc-id-link" href="#scan">scan<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/tokenizer/tokenizer.odin#L491"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">scan :: <span class="keyword-type">proc</span>(t: ^<a class="code-typename" href="/core/odin/tokenizer/#Tokenizer">Tokenizer</a>) -> <a class="code-typename" href="/core/odin/tokenizer/#Token">Token</a> {…}</pre>
 </div>
@@ -742,37 +745,43 @@ Procedure Groups (0)</summary>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="scan_escape"><span><a class="doc-id-link" href="#scan_escape">scan_escape<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/tokenizer/tokenizer.odin#L270"><em>Source</em></a></div></h3>
+<h3 id="scan_escape"><span><a class="doc-id-link" href="#scan_escape">scan_escape<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/tokenizer/tokenizer.odin#L287"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">scan_escape :: <span class="keyword-type">proc</span>(t: ^<a class="code-typename" href="/core/odin/tokenizer/#Tokenizer">Tokenizer</a>) -> <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="scan_identifier"><span><a class="doc-id-link" href="#scan_identifier">scan_identifier<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/tokenizer/tokenizer.odin#L209"><em>Source</em></a></div></h3>
+<h3 id="scan_file_tag"><span><a class="doc-id-link" href="#scan_file_tag">scan_file_tag<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/tokenizer/tokenizer.odin#L209"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">scan_file_tag :: <span class="keyword-type">proc</span>(t: ^<a class="code-typename" href="/core/odin/tokenizer/#Tokenizer">Tokenizer</a>) -> <a href="/base/builtin#string"><span class="doc-builtin">string</span></a> {…}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="scan_identifier"><span><a class="doc-id-link" href="#scan_identifier">scan_identifier<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/tokenizer/tokenizer.odin#L226"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">scan_identifier :: <span class="keyword-type">proc</span>(t: ^<a class="code-typename" href="/core/odin/tokenizer/#Tokenizer">Tokenizer</a>) -> <a href="/base/builtin#string"><span class="doc-builtin">string</span></a> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="scan_number"><span><a class="doc-id-link" href="#scan_number">scan_number<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/tokenizer/tokenizer.odin#L356"><em>Source</em></a></div></h3>
+<h3 id="scan_number"><span><a class="doc-id-link" href="#scan_number">scan_number<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/tokenizer/tokenizer.odin#L373"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">scan_number :: <span class="keyword-type">proc</span>(t: ^<a class="code-typename" href="/core/odin/tokenizer/#Tokenizer">Tokenizer</a>, seen_decimal_point: <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>) -> (<a class="code-typename" href="/core/odin/tokenizer/#Token_Kind">Token_Kind</a>, <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>) {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="scan_raw_string"><span><a class="doc-id-link" href="#scan_raw_string">scan_raw_string<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/tokenizer/tokenizer.odin#L240"><em>Source</em></a></div></h3>
+<h3 id="scan_raw_string"><span><a class="doc-id-link" href="#scan_raw_string">scan_raw_string<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/tokenizer/tokenizer.odin#L257"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">scan_raw_string :: <span class="keyword-type">proc</span>(t: ^<a class="code-typename" href="/core/odin/tokenizer/#Tokenizer">Tokenizer</a>) -> <a href="/base/builtin#string"><span class="doc-builtin">string</span></a> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="scan_rune"><span><a class="doc-id-link" href="#scan_rune">scan_rune<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/tokenizer/tokenizer.odin#L324"><em>Source</em></a></div></h3>
+<h3 id="scan_rune"><span><a class="doc-id-link" href="#scan_rune">scan_rune<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/tokenizer/tokenizer.odin#L341"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">scan_rune :: <span class="keyword-type">proc</span>(t: ^<a class="code-typename" href="/core/odin/tokenizer/#Tokenizer">Tokenizer</a>) -> <a href="/base/builtin#string"><span class="doc-builtin">string</span></a> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="scan_string"><span><a class="doc-id-link" href="#scan_string">scan_string<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/tokenizer/tokenizer.odin#L219"><em>Source</em></a></div></h3>
+<h3 id="scan_string"><span><a class="doc-id-link" href="#scan_string">scan_string<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/tokenizer/tokenizer.odin#L236"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">scan_string :: <span class="keyword-type">proc</span>(t: ^<a class="code-typename" href="/core/odin/tokenizer/#Tokenizer">Tokenizer</a>) -> <a href="/base/builtin#string"><span class="doc-builtin">string</span></a> {…}</pre>
 </div>
@@ -784,13 +793,13 @@ Procedure Groups (0)</summary>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="to_string"><span><a class="doc-id-link" href="#to_string">to_string<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/tokenizer/token.odin#L309"><em>Source</em></a></div></h3>
+<h3 id="to_string"><span><a class="doc-id-link" href="#to_string">to_string<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/tokenizer/token.odin#L311"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">to_string :: <span class="keyword-type">proc</span>(kind: <a class="code-typename" href="/core/odin/tokenizer/#Token_Kind">Token_Kind</a>) -> <a href="/base/builtin#string"><span class="doc-builtin">string</span></a> {…}</pre>
 </div>
 </div>
 <div class="pkg-entity">
-<h3 id="token_to_string"><span><a class="doc-id-link" href="#token_to_string">token_to_string<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/tokenizer/token.odin#L302"><em>Source</em></a></div></h3>
+<h3 id="token_to_string"><span><a class="doc-id-link" href="#token_to_string">token_to_string<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/tokenizer/token.odin#L304"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">token_to_string :: <span class="keyword-type">proc</span>(tok: <a class="code-typename" href="/core/odin/tokenizer/#Token">Token</a>) -> <a href="/base/builtin#string"><span class="doc-builtin">string</span></a> {…}</pre>
 </div>
@@ -804,7 +813,7 @@ Procedure Groups (0)</summary>
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/odin/tokenizer/tokenizer.odin">tokenizer.odin</a></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2024-09 (vendor "odin") Windows_amd64 @ 2024-09-18 21:10:40.748602000 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2024-09 (vendor "odin") Windows_amd64 @ 2024-09-19 21:11:08.593818000 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
@@ -842,6 +851,7 @@ Procedure Groups (0)</summary>
 <li><a href="#scan">scan</a></li>
 <li><a href="#scan_comment">scan_comment</a></li>
 <li><a href="#scan_escape">scan_escape</a></li>
+<li><a href="#scan_file_tag">scan_file_tag</a></li>
 <li><a href="#scan_identifier">scan_identifier</a></li>
 <li><a href="#scan_number">scan_number</a></li>
 <li><a href="#scan_raw_string">scan_raw_string</a></li>
