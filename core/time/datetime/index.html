@@ -325,7 +325,7 @@ Reingold & Dershowitz</p>
 <div>
 <details class="doc-index" id="doc-index-Types" aria-labelledby="#doc-index-Types-header">
 <summary id="#doc-index-Types-header">
-Types (8)</summary>
+Types (13)</summary>
 <ul>
 <li><a href="#Date">Date</a></li>
 <li><a href="#DateTime">DateTime</a></li>
@@ -333,6 +333,11 @@ Types (8)</summary>
 <li><a href="#Error">Error</a></li>
 <li><a href="#Month">Month</a></li>
 <li><a href="#Ordinal">Ordinal</a></li>
+<li><a href="#TZ_Date_Kind">TZ_Date_Kind</a></li>
+<li><a href="#TZ_RRule">TZ_RRule</a></li>
+<li><a href="#TZ_Record">TZ_Record</a></li>
+<li><a href="#TZ_Region">TZ_Region</a></li>
+<li><a href="#TZ_Transition_Date">TZ_Transition_Date</a></li>
 <li><a href="#Time">Time</a></li>
 <li><a href="#Weekday">Weekday</a></li>
 </ul>
@@ -457,11 +462,12 @@ ranges from 1 to however many days there are in the specified month.</p>
 </ul>
 </div>
 <div class="pkg-entity">
-<h3 id="DateTime"><span><a class="doc-id-link" href="#DateTime">DateTime<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/datetime/constants.odin#L83"><em>Source</em></a></div></h3>
+<h3 id="DateTime"><span><a class="doc-id-link" href="#DateTime">DateTime<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/datetime/constants.odin#L125"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">DateTime :: <span class="keyword-type">struct</span> {
 	<span class="keyword-type">using</span> date: <a class="code-typename" href="/core/time/datetime/#Date">Date</a>,
 	<span class="keyword-type">using</span> time: <a class="code-typename" href="/core/time/datetime/#Time">Time</a>,
+	tz:   ^<a class="code-typename" href="/core/time/datetime/#TZ_Region">TZ_Region</a>,
 }</pre>
 </div>
 <details class="odin-doc-toggle" open>
@@ -499,7 +505,7 @@ ranges from 1 to however many days there are in the specified month.</p>
 </ul>
 </div>
 <div class="pkg-entity">
-<h3 id="Delta"><span><a class="doc-id-link" href="#Delta">Delta<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/datetime/constants.odin#L95"><em>Source</em></a></div></h3>
+<h3 id="Delta"><span><a class="doc-id-link" href="#Delta">Delta<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/datetime/constants.odin#L138"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Delta :: <span class="keyword-type">struct</span> {
 	days:    <a href="/base/builtin#i64"><span class="doc-builtin">i64</span></a>,
@@ -582,7 +588,7 @@ ranges.</p>
 </ul>
 </div>
 <div class="pkg-entity">
-<h3 id="Month"><span><a class="doc-id-link" href="#Month">Month<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/datetime/constants.odin#L104"><em>Source</em></a></div></h3>
+<h3 id="Month"><span><a class="doc-id-link" href="#Month">Month<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/datetime/constants.odin#L147"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Month :: <span class="keyword-type">enum</span> <a href="/base/builtin#i8"><span class="doc-builtin">i8</span></a> {
 	January   = 1, 
@@ -618,6 +624,64 @@ ranges.</p>
 </details>
 </div>
 <div class="pkg-entity">
+<h3 id="TZ_Date_Kind"><span><a class="doc-id-link" href="#TZ_Date_Kind">TZ_Date_Kind<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/datetime/constants.odin#L87"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">TZ_Date_Kind :: <span class="keyword-type">enum</span> <a href="/base/builtin#int"><span class="doc-builtin">int</span></a> {
+	No_Leap, 
+	Leap, 
+	Month_Week_Day, 
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="TZ_RRule"><span><a class="doc-id-link" href="#TZ_RRule">TZ_RRule<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/datetime/constants.odin#L103"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">TZ_RRule :: <span class="keyword-type">struct</span> {
+	has_dst:    <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>,
+	std_name:   <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>,
+	std_offset: <a href="/base/builtin#i64"><span class="doc-builtin">i64</span></a>,
+	std_date:   <a class="code-typename" href="/core/time/datetime/#TZ_Transition_Date">TZ_Transition_Date</a>,
+	dst_name:   <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>,
+	dst_offset: <a href="/base/builtin#i64"><span class="doc-builtin">i64</span></a>,
+	dst_date:   <a class="code-typename" href="/core/time/datetime/#TZ_Transition_Date">TZ_Transition_Date</a>,
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="TZ_Record"><span><a class="doc-id-link" href="#TZ_Record">TZ_Record<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/datetime/constants.odin#L80"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">TZ_Record :: <span class="keyword-type">struct</span> {
+	time:       <a href="/base/builtin#i64"><span class="doc-builtin">i64</span></a>,
+	utc_offset: <a href="/base/builtin#i64"><span class="doc-builtin">i64</span></a>,
+	shortname:  <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>,
+	dst:        <a href="/base/builtin#bool"><span class="doc-builtin">bool</span></a>,
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="TZ_Region"><span><a class="doc-id-link" href="#TZ_Region">TZ_Region<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/datetime/constants.odin#L115"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">TZ_Region :: <span class="keyword-type">struct</span> {
+	name:       <a href="/base/builtin#string"><span class="doc-builtin">string</span></a>,
+	records:    []<a class="code-typename" href="/core/time/datetime/#TZ_Record">TZ_Record</a>,
+	shortnames: []<a href="/base/builtin#string"><span class="doc-builtin">string</span></a>,
+	rrule:      <a class="code-typename" href="/core/time/datetime/#TZ_RRule">TZ_RRule</a>,
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
+<h3 id="TZ_Transition_Date"><span><a class="doc-id-link" href="#TZ_Transition_Date">TZ_Transition_Date<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/datetime/constants.odin#L93"><em>Source</em></a></div></h3>
+<div>
+<pre class="doc-code">TZ_Transition_Date :: <span class="keyword-type">struct</span> {
+	type:  <a class="code-typename" href="/core/time/datetime/#TZ_Date_Kind">TZ_Date_Kind</a>,
+	month: <a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a>,
+	week:  <a href="/base/builtin#u8"><span class="doc-builtin">u8</span></a>,
+	day:   <a href="/base/builtin#u16"><span class="doc-builtin">u16</span></a>,
+	time:  <a href="/base/builtin#i64"><span class="doc-builtin">i64</span></a>,
+}</pre>
+</div>
+</div>
+<div class="pkg-entity">
 <h3 id="Time"><span><a class="doc-id-link" href="#Time">Time<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/datetime/constants.odin#L73"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Time :: <span class="keyword-type">struct</span> {
@@ -642,7 +706,7 @@ ranges.</p>
 </ul>
 </div>
 <div class="pkg-entity">
-<h3 id="Weekday"><span><a class="doc-id-link" href="#Weekday">Weekday<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/datetime/constants.odin#L122"><em>Source</em></a></div></h3>
+<h3 id="Weekday"><span><a class="doc-id-link" href="#Weekday">Weekday<span class="a-hidden">&nbsp;¶</span></a></span><div class="doc-source"><a href="https://github.com/odin-lang/Odin/tree/master/core/time/datetime/constants.odin#L165"><em>Source</em></a></div></h3>
 <div>
 <pre class="doc-code">Weekday :: <span class="keyword-type">enum</span> <a href="/base/builtin#i8"><span class="doc-builtin">i8</span></a> {
 	Sunday    = 0, 
@@ -1161,7 +1225,7 @@ is not valid, an error is returned.</p>
 <li><a href="https://github.com/odin-lang/Odin/tree/master/core/time/datetime/validation.odin">validation.odin</a></li>
 </ul>
 <h2 id="pkg-generation-information">Generation Information</h2>
-<p>Generated with <code>odin version dev-2024-10 (vendor "odin") Windows_amd64 @ 2024-10-21 21:11:08.455626100 +0000 UTC</code></p>
+<p>Generated with <code>odin version dev-2024-10 (vendor "odin") Windows_amd64 @ 2024-10-22 21:11:26.626811300 +0000 UTC</code></p>
 </article>
 <div class="col-lg-2 odin-toc-border navbar-light"><div class="sticky-top odin-below-navbar py-3">
 <nav id="TableOfContents">
@@ -1173,6 +1237,11 @@ is not valid, an error is returned.</p>
 <li><a href="#Error">Error</a></li>
 <li><a href="#Month">Month</a></li>
 <li><a href="#Ordinal">Ordinal</a></li>
+<li><a href="#TZ_Date_Kind">TZ_Date_Kind</a></li>
+<li><a href="#TZ_RRule">TZ_RRule</a></li>
+<li><a href="#TZ_Record">TZ_Record</a></li>
+<li><a href="#TZ_Region">TZ_Region</a></li>
+<li><a href="#TZ_Transition_Date">TZ_Transition_Date</a></li>
 <li><a href="#Time">Time</a></li>
 <li><a href="#Weekday">Weekday</a></li>
 </ul>
